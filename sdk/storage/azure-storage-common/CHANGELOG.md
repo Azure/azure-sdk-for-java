@@ -7,6 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue in `StorageSeekableByteChannel` where a read after the cached resource length had been consumed
+  would issue an unnecessary "probe past EOF" service round-trip whose 416 response could be corrupted by transient
+  network faults (connection reset, premature close, channel timeout) into an `IOException`. The channel now reports
+  EOF using the cached `ReadBehavior.getResourceLength()` without invoking the behavior again.
 
 ### Other Changes
 

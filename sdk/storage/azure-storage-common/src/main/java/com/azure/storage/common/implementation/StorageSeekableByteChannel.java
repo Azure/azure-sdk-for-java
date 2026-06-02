@@ -163,6 +163,17 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         }
 
         if (buffer.remaining() == 0) {
+            // If the channel has already advanced to (or beyond) the cached end of the resource, avoid issuing an
+            // additional service round-trip just to discover EOF. The behavior's resourceLength is populated up-front
+            // by openSeekableByteChannelRead from the blob's properties, so a probe past the end (which would normally
+            // produce a 416 Range Not Satisfiable response) is unnecessary and is a source of spurious failures when
+            // the network or service injects transient IOExceptions (connection reset, premature close, channel
+            // timeout) on that probe request.
+            long resourceLength = readBehavior.getResourceLength();
+            if (resourceLength >= 0 && absolutePosition >= resourceLength) {
+                absolutePosition = resourceLength;
+                return -1;
+            }
             if (refillReadBuffer(absolutePosition) == -1) {
                 // cap any position overshooting if channel is at end
                 absolutePosition = readBehavior.getResourceLength();

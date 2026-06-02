@@ -198,6 +198,51 @@ public class StorageSeekableByteChannelTests {
         );
     }
 
+    /**
+     * Verifies that once the channel has consumed all bytes of a known-length resource, subsequent reads return -1
+     * (EOF) without invoking ReadBehavior.read(...). This avoids an unnecessary "probe past EOF" service round-trip
+     * that, under fault injection in stress tests, was a major source of spurious failures for
+     * openSeekableByteChannelRead scenarios (see bytechannelreadsmall/large).
+     */
+    @Test
+    public void readAfterConsumingResourceDoesNotInvokeBehavior() throws IOException {
+        int resourceSize = 1024;
+        byte[] data = getRandomData(resourceSize);
+        AtomicInteger readInvocations = new AtomicInteger();
+
+        StorageSeekableByteChannel.ReadBehavior behavior = new MockReadBehavior(resourceSize, (dst, sourceOffset) -> {
+            readInvocations.incrementAndGet();
+            if (sourceOffset >= resourceSize) {
+                // Simulate the fault-injection scenario: a probe past EOF could fail with an IOException instead of
+                // returning -1. If the channel ever calls this branch, the test should fail loudly.
+                throw new RuntimeException(
+                    "ReadBehavior.read should not be invoked past EOF; sourceOffset=" + sourceOffset);
+            }
+            int toRead = Math.min(dst.remaining(), resourceSize - sourceOffset.intValue());
+            dst.put(data, sourceOffset.intValue(), toRead);
+            return toRead;
+        });
+
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(resourceSize, behavior, 0L);
+
+        // Consume the entire resource.
+        ByteBuffer dst = ByteBuffer.allocate(resourceSize);
+        assertEquals(resourceSize, channel.read(dst));
+        assertEquals(1, readInvocations.get(), "expected exactly one behavior read to consume the resource");
+
+        // Now ask for more; the channel should report EOF without consulting the behavior again.
+        dst.clear();
+        assertEquals(-1, channel.read(dst));
+        assertEquals(1, readInvocations.get(),
+            "channel must not call ReadBehavior.read after the cached resource length is reached");
+        assertEquals(resourceSize, channel.position());
+
+        // Even a second post-EOF read must remain inert.
+        dst.clear();
+        assertEquals(-1, channel.read(dst));
+        assertEquals(1, readInvocations.get());
+    }
+
     @ParameterizedTest
     @MethodSource("writeSupplier")
     public void write(int dataSize, int chunkSize, int writeSize) throws IOException {
