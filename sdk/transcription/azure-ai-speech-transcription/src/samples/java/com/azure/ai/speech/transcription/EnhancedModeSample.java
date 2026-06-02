@@ -46,7 +46,7 @@ import java.util.Arrays;
  *   <li>{@code confidence} is not available and always returns 0</li>
  *   <li>Word-level timing ({@code offsetMilliseconds}, {@code durationMilliseconds}) is not supported for the {@code translate} task</li>
  *   <li>Diarization is not supported for the {@code translate} task (only speaker1 label is returned)</li>
- *   <li>{@code locales} is optional in Enhanced Mode. The service operates in multi-lingual mode by default; if specified, the first locale is used as a hint to guide recognition.</li>
+ *   <li>{@code locales} is optional in Enhanced Mode. The service operates in multilingual mode by default; if specified, the first locale is used as a hint to guide recognition.</li>
  *   <li>{@code phraseLists} options are not required or applicable with Enhanced Mode</li>
  * </ul>
  */
