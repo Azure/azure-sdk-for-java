@@ -487,6 +487,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
             jsonWriter.writeFieldName("tool_choice");
             this.toolChoice.writeTo(jsonWriter);
         }
+        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeNumberField("temperature", this.temperature);
         if (this.maxResponseOutputTokens != null) {
             jsonWriter.writeFieldName("max_response_output_tokens");
@@ -563,6 +564,8 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                 } else if ("tool_choice".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("parallel_tool_calls".equals(fieldName)) {
+                    deserializedVoiceLiveSessionOptions.parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("temperature".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("max_response_output_tokens".equals(fieldName)) {
@@ -811,6 +814,34 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     @Generated
     public VoiceLiveSessionOptions setAvatarOptions(AvatarOptions avatarOptions) {
         this.avatarOptions = avatarOptions;
+        return this;
+    }
+
+    /*
+     * Whether the model is allowed to call tools in parallel.
+     */
+    @Generated
+    private Boolean parallelToolCalls;
+
+    /**
+     * Get the parallelToolCalls property: Whether the model is allowed to call tools in parallel.
+     *
+     * @return the parallelToolCalls value.
+     */
+    @Generated
+    public Boolean isParallelToolCalls() {
+        return this.parallelToolCalls;
+    }
+
+    /**
+     * Set the parallelToolCalls property: Whether the model is allowed to call tools in parallel.
+     *
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setParallelToolCalls(Boolean parallelToolCalls) {
+        this.parallelToolCalls = parallelToolCalls;
         return this;
     }
 }
