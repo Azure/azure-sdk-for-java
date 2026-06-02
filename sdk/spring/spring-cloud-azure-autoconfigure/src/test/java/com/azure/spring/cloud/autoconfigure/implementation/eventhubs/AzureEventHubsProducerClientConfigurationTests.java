@@ -58,13 +58,45 @@ class AzureEventHubsProducerClientConfigurationTests {
                 "spring.cloud.azure.eventhubs.event-hub-name=" + eventHubName
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withBean(EventHubClientBuilder.class, () -> clientBuilder)
+            .withBean(AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME, EventHubClientBuilder.class, () -> clientBuilder)
             .run(
                 context -> {
                     assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
                     assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.SharedProducerConnectionConfiguration.class);
                     assertThat(context).hasSingleBean(EventHubProducerClient.class);
                     assertThat(context).hasSingleBean(EventHubProducerAsyncClient.class);
+                }
+            );
+    }
+
+    @Test
+    void sharedProducerInjectsRootBuilderWhenConsumerHasDedicatedOverride() {
+        // Regression for issue #49245: when both a global event-hub-name and a consumer-only override exist,
+        // the shared producer should still bind to the root builder, not the consumer's dedicated builder.
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=base-eventhub",
+                "spring.cloud.azure.eventhubs.consumer.event-hub-name=override-eventhub",
+                "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureEventHubsAutoConfiguration.class)
+            .run(
+                context -> {
+                    assertThat(context).hasSingleBean(AzureEventHubsProducerClientConfiguration.SharedProducerConnectionConfiguration.class);
+                    assertThat(context).doesNotHaveBean(AzureEventHubsProducerClientConfiguration.DedicatedProducerConnectionConfiguration.class);
+                    // Consumer dedicated must be active so multiple EventHubClientBuilder beans coexist,
+                    // proving the shared producer is selecting the root builder by qualifier rather than
+                    // succeeding by accident because only one builder bean exists.
+                    assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class);
+                    assertThat(context.getBeansOfType(EventHubClientBuilder.class)).hasSizeGreaterThan(1);
+                    assertThat(context).hasBean(AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_BEAN_NAME);
+                    assertThat(context).hasSingleBean(EventHubProducerClient.class);
+                    // Pin the shared producer to the root builder: it must target base-eventhub,
+                    // never the consumer-dedicated override-eventhub. This is the actual #49245 invariant.
+                    assertThat(context.getBean(EventHubProducerClient.class).getEventHubName()).isEqualTo("base-eventhub");
+                    assertThat(context.getBean(EventHubProducerAsyncClient.class).getEventHubName()).isEqualTo("base-eventhub");
                 }
             );
     }

@@ -109,7 +109,7 @@ public final class GlobalTracingSample {
         //    Session lifetime is local to this reactive chain; the session is captured by the
         //    lambda passed to flatMapMany and then threaded into per-event handling via flatMap,
         //    so no instance field or shared holder is needed.
-        client.startSession("gpt-realtime")
+        client.startSession("gpt-realtime", null)
             .flatMapMany(session -> configureSession(session, sessionOptions, prompts)
                 .thenMany(session.receiveEvents())
                 .flatMap(GlobalTracingSample::handleServerEvent))
@@ -152,12 +152,12 @@ public final class GlobalTracingSample {
      * inside the reactive chain (no nested subscribe). This sample doesn't send any follow-up
      * events from inside the handler.
      */
-    private static Mono<Void> handleServerEvent(com.azure.ai.voicelive.models.SessionUpdate serverEvent) {
+    private static Mono<Void> handleServerEvent(com.azure.ai.voicelive.models.SessionServerEvent serverEvent) {
         System.out.println("Event: " + serverEvent.getType());
         if (serverEvent instanceof SessionUpdateResponseDone) {
             SessionResponse response = ((SessionUpdateResponseDone) serverEvent).getResponse();
             if (response.getUsage() != null) {
-                System.out.println("  Total tokens: " + response.getUsage().getTotalTokens());
+                System.out.println("  Total tokens: " + response.getUsage().getTotalTokenCount());
             }
         }
         return Mono.empty();

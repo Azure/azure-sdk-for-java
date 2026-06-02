@@ -25,12 +25,6 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
     @Generated
     private AgentEndpointAuthorizationSchemeType type = AgentEndpointAuthorizationSchemeType.ENTRA;
 
-    /*
-     * The isolation_key_source property.
-     */
-    @Generated
-    private IsolationKeySource isolationKeySource;
-
     /**
      * Stores updated model property, the value is property name, not serialized name.
      */
@@ -53,30 +47,6 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
     @Override
     public AgentEndpointAuthorizationSchemeType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the isolationKeySource property: The isolation_key_source property.
-     *
-     * @return the isolationKeySource value.
-     */
-    @Generated
-    public IsolationKeySource getIsolationKeySource() {
-        return this.isolationKeySource;
-    }
-
-    /**
-     * Set the isolationKeySource property: The isolation_key_source property.
-     * <p>Required when create the resource.</p>
-     *
-     * @param isolationKeySource the isolationKeySource value to set.
-     * @return the EntraAuthorizationScheme object itself.
-     */
-    @Generated
-    public EntraAuthorizationScheme setIsolationKeySource(IsolationKeySource isolationKeySource) {
-        this.isolationKeySource = isolationKeySource;
-        this.updatedProperties.add("isolationKeySource");
-        return this;
     }
 
     /**
@@ -139,5 +109,37 @@ public final class EntraAuthorizationScheme extends AgentEndpointAuthorizationSc
             }
             return deserializedEntraAuthorizationScheme;
         });
+    }
+
+    /*
+     * The source from which the per-user isolation key is derived for requests authorized via this scheme. Defaults to
+     * Entra-based isolation when omitted.
+     */
+    @Generated
+    private IsolationKeySource isolationKeySource;
+
+    /**
+     * Get the isolationKeySource property: The source from which the per-user isolation key is derived for requests
+     * authorized via this scheme. Defaults to Entra-based isolation when omitted.
+     *
+     * @return the isolationKeySource value.
+     */
+    @Generated
+    public IsolationKeySource getIsolationKeySource() {
+        return this.isolationKeySource;
+    }
+
+    /**
+     * Set the isolationKeySource property: The source from which the per-user isolation key is derived for requests
+     * authorized via this scheme. Defaults to Entra-based isolation when omitted.
+     *
+     * @param isolationKeySource the isolationKeySource value to set.
+     * @return the EntraAuthorizationScheme object itself.
+     */
+    @Generated
+    public EntraAuthorizationScheme setIsolationKeySource(IsolationKeySource isolationKeySource) {
+        this.isolationKeySource = isolationKeySource;
+        this.updatedProperties.add("isolationKeySource");
+        return this;
     }
 }

@@ -12,6 +12,14 @@
 - [Get](#autoupgradeprofiles_get)
 - [ListByFleet](#autoupgradeprofiles_listbyfleet)
 
+## ClusterMeshProfiles
+
+- [Apply](#clustermeshprofiles_apply)
+- [CreateOrUpdate](#clustermeshprofiles_createorupdate)
+- [Delete](#clustermeshprofiles_delete)
+- [Get](#clustermeshprofiles_get)
+- [ListByFleet](#clustermeshprofiles_listbyfleet)
+
 ## FleetManagedNamespaces
 
 - [CreateOrUpdate](#fleetmanagednamespaces_createorupdate)
@@ -72,7 +80,7 @@
  */
 public final class AutoUpgradeProfileOperationsGenerateUpdateRunSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfileOperations_GenerateUpdateRun.json
+     * x-ms-original-file: 2026-03-02-preview/AutoUpgradeProfileOperations_GenerateUpdateRun.json
      */
     /**
      * Sample code: AutoUpgradeProfileOperations_GenerateUpdateRun.
@@ -99,7 +107,7 @@ import com.azure.resourcemanager.containerservicefleet.models.UpgradeChannel;
  */
 public final class AutoUpgradeProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfiles_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/AutoUpgradeProfiles_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an AutoUpgradeProfile.
@@ -132,7 +140,7 @@ public final class AutoUpgradeProfilesCreateOrUpdateSamples {
  */
 public final class AutoUpgradeProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfiles_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/AutoUpgradeProfiles_Delete.json
      */
     /**
      * Sample code: Delete an AutoUpgradeProfile resource.
@@ -155,7 +163,7 @@ public final class AutoUpgradeProfilesDeleteSamples {
  */
 public final class AutoUpgradeProfilesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfiles_Get.json
+     * x-ms-original-file: 2026-03-02-preview/AutoUpgradeProfiles_Get.json
      */
     /**
      * Sample code: Gets an AutoUpgradeProfile resource.
@@ -178,7 +186,7 @@ public final class AutoUpgradeProfilesGetSamples {
  */
 public final class AutoUpgradeProfilesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfiles_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/AutoUpgradeProfiles_ListByFleet.json
      */
     /**
      * Sample code: Lists the AutoUpgradeProfile resources by fleet.
@@ -188,6 +196,126 @@ public final class AutoUpgradeProfilesListByFleetSamples {
     public static void listsTheAutoUpgradeProfileResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.autoUpgradeProfiles().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_Apply
+
+```java
+/**
+ * Samples for ClusterMeshProfiles Apply.
+ */
+public final class ClusterMeshProfilesApplySamples {
+    /*
+     * x-ms-original-file: 2026-03-02-preview/ClusterMeshProfiles_Apply.json
+     */
+    /**
+     * Sample code: Apply a ClusterMeshProfile.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void
+        applyAClusterMeshProfile(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .apply("rgfleets", "fleet1", "clustermeshprofile1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
+
+/**
+ * Samples for ClusterMeshProfiles CreateOrUpdate.
+ */
+public final class ClusterMeshProfilesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-02-preview/ClusterMeshProfiles_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update a ClusterMeshProfile.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void createOrUpdateAClusterMeshProfile(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .define("clustermeshprofile1")
+            .withExistingFleet("rgfleets", "fleet1")
+            .withMemberSelector(new MemberSelector().withByLabel("env=production"))
+            .withIfMatch("uktvayathbu")
+            .create();
+    }
+}
+```
+
+### ClusterMeshProfiles_Delete
+
+```java
+/**
+ * Samples for ClusterMeshProfiles Delete.
+ */
+public final class ClusterMeshProfilesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-02-preview/ClusterMeshProfiles_Delete.json
+     */
+    /**
+     * Sample code: Delete an ClusterMeshProfile resource.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void deleteAnClusterMeshProfileResource(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .delete("rg1", "fleet1", "clustermeshprofile1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_Get
+
+```java
+/**
+ * Samples for ClusterMeshProfiles Get.
+ */
+public final class ClusterMeshProfilesGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-02-preview/ClusterMeshProfiles_Get.json
+     */
+    /**
+     * Sample code: Get a ClusterMeshProfile resource.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void getAClusterMeshProfileResource(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .getWithResponse("rgfleets", "fleet1", "clustermeshprofile1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_ListByFleet
+
+```java
+/**
+ * Samples for ClusterMeshProfiles ListByFleet.
+ */
+public final class ClusterMeshProfilesListByFleetSamples {
+    /*
+     * x-ms-original-file: 2026-03-02-preview/ClusterMeshProfiles_ListByFleet.json
+     */
+    /**
+     * Sample code: List the ClusterMeshProfile resources by fleet.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void listTheClusterMeshProfileResourcesByFleet(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -229,7 +357,7 @@ import java.util.Map;
  */
 public final class FleetManagedNamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetManagedNamespaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/FleetManagedNamespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: FleetManagedNamespaces_CreateOrUpdate.
@@ -306,7 +434,7 @@ public final class FleetManagedNamespacesCreateOrUpdateSamples {
  */
 public final class FleetManagedNamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetManagedNamespaces_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/FleetManagedNamespaces_Delete.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Delete.
@@ -329,7 +457,7 @@ public final class FleetManagedNamespacesDeleteSamples {
  */
 public final class FleetManagedNamespacesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetManagedNamespaces_Get.json
+     * x-ms-original-file: 2026-03-02-preview/FleetManagedNamespaces_Get.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Get.
@@ -352,7 +480,7 @@ public final class FleetManagedNamespacesGetSamples {
  */
 public final class FleetManagedNamespacesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetManagedNamespaces_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/FleetManagedNamespaces_ListByFleet.json
      */
     /**
      * Sample code: FleetManagedNamespaces_ListByFleet.
@@ -376,7 +504,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamesp
  */
 public final class FleetManagedNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetManagedNamespaces_Update.json
+     * x-ms-original-file: 2026-03-02-preview/FleetManagedNamespaces_Update.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Update.
@@ -401,7 +529,7 @@ public final class FleetManagedNamespacesUpdateSamples {
  */
 public final class FleetMembersCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Create.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Create.json
      */
     /**
      * Sample code: Creates a FleetMember resource with a long running operation.
@@ -428,7 +556,7 @@ public final class FleetMembersCreateSamples {
  */
 public final class FleetMembersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Delete.json
      */
     /**
      * Sample code: Deletes a FleetMember resource asynchronously with a long running operation.
@@ -450,7 +578,7 @@ public final class FleetMembersDeleteSamples {
  */
 public final class FleetMembersGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Get.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Get.json
      */
     /**
      * Sample code: Gets a FleetMember resource.
@@ -459,7 +587,7 @@ public final class FleetMembersGetSamples {
      */
     public static void
         getsAFleetMemberResource(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().getWithResponse("rgfleets", "fleet1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetMembers().getWithResponse("rgfleets", "fleet1", "member1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -472,7 +600,7 @@ public final class FleetMembersGetSamples {
  */
 public final class FleetMembersListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_ListByFleet.json
      */
     /**
      * Sample code: Lists the members of a Fleet.
@@ -496,7 +624,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
  */
 public final class FleetMembersUpdateAsyncSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Update.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Update.json
      */
     /**
      * Sample code: Updates a FleetMember resource synchronously.
@@ -528,7 +656,7 @@ import java.util.Arrays;
  */
 public final class FleetUpdateStrategiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateStrategies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateStrategies_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a FleetUpdateStrategy.
@@ -566,7 +694,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateSamples {
  */
 public final class FleetUpdateStrategiesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateStrategies_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateStrategies_Delete.json
      */
     /**
      * Sample code: Delete a FleetUpdateStrategy resource.
@@ -588,7 +716,7 @@ public final class FleetUpdateStrategiesDeleteSamples {
  */
 public final class FleetUpdateStrategiesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateStrategies_Get.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateStrategies_Get.json
      */
     /**
      * Sample code: Get a FleetUpdateStrategy resource.
@@ -610,7 +738,7 @@ public final class FleetUpdateStrategiesGetSamples {
  */
 public final class FleetUpdateStrategiesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateStrategies_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateStrategies_ListByFleet.json
      */
     /**
      * Sample code: List the FleetUpdateStrategy resources by fleet.
@@ -641,7 +769,7 @@ import java.util.Map;
  */
 public final class FleetsCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates a Fleet resource with a long running operation.
@@ -692,7 +820,7 @@ public final class FleetsCreateSamples {
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_Delete.json
      */
     /**
      * Sample code: Deletes a Fleet resource asynchronously with a long running operation.
@@ -714,7 +842,7 @@ public final class FleetsDeleteSamples {
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_Get.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_Get.json
      */
     /**
      * Sample code: Gets a Fleet resource.
@@ -736,7 +864,7 @@ public final class FleetsGetByResourceGroupSamples {
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_ListBySub.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_ListBySub.json
      */
     /**
      * Sample code: Lists the Fleet resources in a subscription.
@@ -758,7 +886,7 @@ public final class FleetsListSamples {
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists the Fleet resources in a resource group.
@@ -780,7 +908,7 @@ public final class FleetsListByResourceGroupSamples {
  */
 public final class FleetsListCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_ListCredentialsResult.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_ListCredentialsResult.json
      */
     /**
      * Sample code: Lists the user credentials of a Fleet.
@@ -809,7 +937,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateAsyncSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_Update.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_Update.json
      */
     /**
      * Sample code: Update a Fleet.
@@ -830,7 +958,7 @@ public final class FleetsUpdateAsyncSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_PatchTags.json
+     * x-ms-original-file: 2026-03-02-preview/Fleets_PatchTags.json
      */
     /**
      * Sample code: Patch tags of a Fleet during Update.
@@ -867,7 +995,7 @@ public final class FleetsUpdateAsyncSamples {
  */
 public final class GatesGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Gates_Get.json
+     * x-ms-original-file: 2026-03-02-preview/Gates_Get.json
      */
     /**
      * Sample code: Gets a Gate resource.
@@ -890,7 +1018,7 @@ public final class GatesGetSamples {
  */
 public final class GatesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Gates_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/Gates_ListByFleet.json
      */
     /**
      * Sample code: Lists the Gates of a Fleet.
@@ -916,7 +1044,7 @@ import com.azure.resourcemanager.containerservicefleet.models.GateState;
  */
 public final class GatesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Gates_Update.json
+     * x-ms-original-file: 2026-03-02-preview/Gates_Update.json
      */
     /**
      * Sample code: Updates a Gate resource.
@@ -941,7 +1069,7 @@ public final class GatesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-03-02-preview/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.
@@ -975,7 +1103,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an UpdateRun.
@@ -1019,7 +1147,7 @@ public final class UpdateRunsCreateOrUpdateSamples {
  */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_Delete.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_Delete.json
      */
     /**
      * Sample code: Delete an updateRun resource.
@@ -1041,7 +1169,7 @@ public final class UpdateRunsDeleteSamples {
  */
 public final class UpdateRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_Get.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_Get.json
      */
     /**
      * Sample code: Gets an UpdateRun resource.
@@ -1063,7 +1191,7 @@ public final class UpdateRunsGetSamples {
  */
 public final class UpdateRunsListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_ListByFleet.json
      */
     /**
      * Sample code: Lists the UpdateRun resources by fleet.
@@ -1090,7 +1218,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsSkipSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_Skip.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_Skip.json
      */
     /**
      * Sample code: Skips one or more member/group/stage/afterStageWait(s) of an UpdateRun.
@@ -1117,7 +1245,7 @@ public final class UpdateRunsSkipSamples {
  */
 public final class UpdateRunsStartSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_Start.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_Start.json
      */
     /**
      * Sample code: Starts an UpdateRun.
@@ -1139,7 +1267,7 @@ public final class UpdateRunsStartSamples {
  */
 public final class UpdateRunsStopSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateRuns_Stop.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateRuns_Stop.json
      */
     /**
      * Sample code: Stops an UpdateRun.

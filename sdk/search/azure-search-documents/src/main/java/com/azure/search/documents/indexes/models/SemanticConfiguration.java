@@ -103,6 +103,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("prioritizedFields", this.prioritizedFields);
         jsonWriter.writeStringField("rankingOrder", this.rankingOrder == null ? null : this.rankingOrder.toString());
+        jsonWriter.writeBooleanField("flightingOptIn", this.flightingOptIn);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,6 +122,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
             String name = null;
             SemanticPrioritizedFields prioritizedFields = null;
             RankingOrder rankingOrder = null;
+            Boolean flightingOptIn = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -130,6 +132,8 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                     prioritizedFields = SemanticPrioritizedFields.fromJson(reader);
                 } else if ("rankingOrder".equals(fieldName)) {
                     rankingOrder = RankingOrder.fromString(reader.getString());
+                } else if ("flightingOptIn".equals(fieldName)) {
+                    flightingOptIn = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -137,7 +141,38 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
             SemanticConfiguration deserializedSemanticConfiguration
                 = new SemanticConfiguration(name, prioritizedFields);
             deserializedSemanticConfiguration.rankingOrder = rankingOrder;
+            deserializedSemanticConfiguration.flightingOptIn = flightingOptIn;
             return deserializedSemanticConfiguration;
         });
+    }
+
+    /*
+     * Determines which semantic or query rewrite models to use during model flighting/upgrades.
+     */
+    @Generated
+    private Boolean flightingOptIn;
+
+    /**
+     * Get the flightingOptIn property: Determines which semantic or query rewrite models to use during model
+     * flighting/upgrades.
+     *
+     * @return the flightingOptIn value.
+     */
+    @Generated
+    public Boolean isFlightingOptIn() {
+        return this.flightingOptIn;
+    }
+
+    /**
+     * Set the flightingOptIn property: Determines which semantic or query rewrite models to use during model
+     * flighting/upgrades.
+     *
+     * @param flightingOptIn the flightingOptIn value to set.
+     * @return the SemanticConfiguration object itself.
+     */
+    @Generated
+    public SemanticConfiguration setFlightingOptIn(Boolean flightingOptIn) {
+        this.flightingOptIn = flightingOptIn;
+        return this;
     }
 }

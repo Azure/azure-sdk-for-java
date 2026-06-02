@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class EntitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Entities_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/Entities_Delete.json
      */
     /**
      * Sample code: Entities_Delete.
@@ -18,7 +18,6 @@ public final class EntitiesDeleteSamples {
      */
     public static void entitiesDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.entities()
-            .deleteWithResponse("rgopenapi", "model1", "U4VTRFlUkm9kR6H23-c-6U-XHq7n",
-                com.azure.core.util.Context.NONE);
+            .delete("rgopenapi", "model1", "U4VTRFlUkm9kR6H23-c-6U-XHq7n", com.azure.core.util.Context.NONE);
     }
 }

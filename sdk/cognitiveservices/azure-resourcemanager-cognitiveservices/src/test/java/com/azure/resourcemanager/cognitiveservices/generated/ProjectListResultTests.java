@@ -12,8 +12,8 @@ public final class ProjectListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"xoqqpwcyyufmhrun\",\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"displayName\":\"kcdqzhlct\",\"description\":\"unqndyfpchrqb\",\"endpoints\":{\"qqoli\":\"rcgegydcwboxjum\"},\"isDefault\":true},\"tags\":{\"rjtloq\":\"ouau\",\"rzpasccbiuimzdly\":\"fuojrngif\",\"fdvruz\":\"dfqwmkyoq\"},\"location\":\"zojhpctfnmd\",\"etag\":\"tngfdgugeyzihgr\",\"identity\":{\"type\":\"None\",\"tenantId\":\"absnmfpp\",\"principalId\":\"jee\",\"userAssignedIdentities\":{\"qgleohibetnluank\":{\"principalId\":\"hsgz\",\"clientId\":\"zbgomfgbeg\"},\"nw\":{\"principalId\":\"fxeeebtijvacvbm\",\"clientId\":\"bqqxlaj\"},\"inmfgvxirp\":{\"principalId\":\"cevehjkuyxoafg\",\"clientId\":\"qltfaey\"}}},\"id\":\"riypoqeyhlqhyk\",\"name\":\"rlpyznuciqdsmexi\",\"type\":\"tdfuxt\"}]}")
+            "{\"nextLink\":\"bnseqacjjvpilg\",\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"m\",\"description\":\"tg\",\"endpoints\":{\"qacsl\":\"ookjbsahrtdtpde\",\"jkgd\":\"otoebnfxofv\",\"vcopex\":\"razftxejwabmdujt\"},\"isDefault\":true},\"tags\":{\"srogtu\":\"buhhlkyqlt\",\"dfvclglxnfu\":\"kffdjktsys\"},\"location\":\"tkbu\",\"etag\":\"ogsf\",\"identity\":{\"type\":\"None\",\"tenantId\":\"ansharujtjiqxfz\",\"principalId\":\"qttv\",\"userAssignedIdentities\":{\"guaucmfdjwnla\":{\"principalId\":\"hjpenuygbq\",\"clientId\":\"qekewvnqvcd\"},\"sserxhtvsoxhlwn\":{\"principalId\":\"un\",\"clientId\":\"ikczvvitacgxmf\"},\"bnchrsziz\":{\"principalId\":\"j\",\"clientId\":\"rsxypruuu\"},\"lgmtrwahzjmucf\":{\"principalId\":\"uelyetndn\",\"clientId\":\"qyggagfl\"}}},\"id\":\"yrplrohkpigqfus\",\"name\":\"ckzmkwklsnox\",\"type\":\"xmqeqalh\"}]}")
             .toObject(ProjectListResult.class);
-        Assertions.assertEquals("xoqqpwcyyufmhrun", model.nextLink());
+        Assertions.assertEquals("bnseqacjjvpilg", model.nextLink());
     }
 }
