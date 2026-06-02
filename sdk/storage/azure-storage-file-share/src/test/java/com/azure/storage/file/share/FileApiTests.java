@@ -79,7 +79,6 @@ import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
-import com.azure.storage.file.share.specialized.LeaseClientJavaDocCodeSnippets;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -2318,8 +2317,8 @@ class FileApiTests extends FileShareTestBase {
         int rangeLength = Constants.KB;
         primaryFileClient.create(uploadFileSize);
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
-        ShareFileRange firstRange = rangeFromOffsetAndLength(0, rangeLength);
-        ShareFileRange secondRange = rangeFromOffsetAndLength(2L * rangeLength, rangeLength);
+        ShareFileRange firstRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange secondRange = FileShareTestHelper.rangeFromOffsetAndLength(2L * rangeLength, rangeLength);
 
         try (InputStream uploadStream = new BufferedInputStream(Files.newInputStream(uploadFilePath))) {
             ShareFileUploadRangeOptions uploadRangeOptions
@@ -2488,13 +2487,13 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(Constants.MB);
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
 
-        ShareFileRange rangeToClear = rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange rangeToClear = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
         uploadRangeFromFile(uploadFilePath, rangeToClear);
 
         ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
 
-        ShareFileRange populatedRange = rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
-        ClearRange clearedRange = clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
+        ShareFileRange populatedRange = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
+        ClearRange clearedRange = FileShareTestHelper.clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
         uploadRangeFromFile(uploadFilePath, populatedRange);
         primaryFileClient.clearRangeWithResponse(512, clearedRange.getStart(), null, null);
 
@@ -2506,9 +2505,9 @@ class FileApiTests extends FileShareTestBase {
             .getValue();
 
         assertEquals(1, ranges.getRanges().size());
-        assertFileRangeEquals(populatedRange, ranges.getRanges().get(0));
+        FileShareTestHelper.assertFileRangeEquals(populatedRange, ranges.getRanges().get(0));
         assertEquals(1, ranges.getClearRanges().size());
-        assertClearRangeEquals(clearedRange, ranges.getClearRanges().get(0));
+        FileShareTestHelper.assertClearRangeEquals(clearedRange, ranges.getClearRanges().get(0));
     }
 
     @Test
@@ -2516,7 +2515,7 @@ class FileApiTests extends FileShareTestBase {
     public void listRangesDiffAccessConditions() {
         int uploadFileSize = Constants.MB;
         primaryFileClient.create(uploadFileSize);
-        ShareFileRange uploadRange = rangeFromOffsetAndLength(0L, uploadFileSize);
+        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
 
         ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
         String leaseId = setupFileLeaseCondition(primaryFileClient, RECEIVED_LEASE_ID);
@@ -2535,7 +2534,7 @@ class FileApiTests extends FileShareTestBase {
     public void listRangesDiffAccessConditionsFail() {
         int uploadFileSize = Constants.MB;
         primaryFileClient.create(uploadFileSize);
-        ShareFileRange uploadRange = rangeFromOffsetAndLength(0L, uploadFileSize);
+        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
 
         ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
         String leaseId = setupFileLeaseCondition(primaryFileClient, GARBAGE_LEASE_ID);
@@ -3686,14 +3685,6 @@ class FileApiTests extends FileShareTestBase {
         assertArrayEquals(MessageDigest.getInstance("MD5").digest(randomByteArray), decodedContentMd5);
     }
 
-    private static ShareFileRange rangeFromOffsetAndLength(long offset, long length) {
-        return new ShareFileRange(offset, offset + length - 1);
-    }
-
-    private static ClearRange clearRangeFromOffsetAndLength(long offset, long length) {
-        return new ClearRange().setStart(offset).setEnd(offset + length - 1);
-    }
-
     private void uploadRangeFromFile(Path uploadFilePath, ShareFileRange range) throws IOException {
         try (InputStream uploadStream = new BufferedInputStream(Files.newInputStream(uploadFilePath))) {
             long length = range.getEnd() - range.getStart() + 1;
@@ -3701,15 +3692,5 @@ class FileApiTests extends FileShareTestBase {
                 = new ShareFileUploadRangeOptions(uploadStream, length).setOffset(range.getStart());
             primaryFileClient.uploadRangeWithResponse(uploadRangeOptions, null, Context.NONE);
         }
-    }
-
-    private static void assertFileRangeEquals(ShareFileRange expected, FileRange actual) {
-        assertEquals(expected.getStart(), actual.getStart());
-        assertEquals(expected.getEnd(), actual.getEnd());
-    }
-
-    private static void assertClearRangeEquals(ClearRange expected, ClearRange actual) {
-        assertEquals(expected.getStart(), actual.getStart());
-        assertEquals(expected.getEnd(), actual.getEnd());
     }
 }
