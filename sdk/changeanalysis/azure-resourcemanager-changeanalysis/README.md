@@ -6,7 +6,8 @@ This package contains Microsoft Azure SDK for AzureChangeAnalysis Management SDK
 
 > Please note, this package has been deprecated and will no longer be maintained
 > after `2025-10-31`. The Change Analysis service has been retired and its
-> APIs are no longer available. There is no replacement package.
+> APIs are no longer available. There is no replacement package. Refer to our
+> deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## We'd love to hear your feedback
 
@@ -36,7 +37,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-changeanalysis</artifactId>
-    <version>1.2.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
