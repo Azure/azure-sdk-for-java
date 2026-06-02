@@ -272,7 +272,7 @@ public final class EvaluationTaxonomiesClient {
      * </pre>
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -282,9 +282,9 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createEvaluationTaxonomyWithResponse(String name, BinaryData body,
+    public Response<BinaryData> createEvaluationTaxonomyWithResponse(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        return this.serviceClient.createEvaluationTaxonomyWithResponse(name, body, requestOptions);
+        return this.serviceClient.createEvaluationTaxonomyWithResponse(name, taxonomy, requestOptions);
     }
 
     /**
@@ -378,7 +378,7 @@ public final class EvaluationTaxonomiesClient {
      * </pre>
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -388,9 +388,9 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateEvaluationTaxonomyWithResponse(String name, BinaryData body,
+    public Response<BinaryData> updateEvaluationTaxonomyWithResponse(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateEvaluationTaxonomyWithResponse(name, body, requestOptions);
+        return this.serviceClient.updateEvaluationTaxonomyWithResponse(name, taxonomy, requestOptions);
     }
 
     /**
@@ -483,7 +483,7 @@ public final class EvaluationTaxonomiesClient {
      * Create an evaluation taxonomy.
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -494,10 +494,10 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationTaxonomy createEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+    public EvaluationTaxonomy createEvaluationTaxonomy(String name, EvaluationTaxonomy taxonomy) {
         // Generated convenience method for createEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions).getValue()
+        return createEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(taxonomy), requestOptions).getValue()
             .toObject(EvaluationTaxonomy.class);
     }
 
@@ -505,7 +505,7 @@ public final class EvaluationTaxonomiesClient {
      * Update an evaluation taxonomy.
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -516,10 +516,10 @@ public final class EvaluationTaxonomiesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationTaxonomy updateEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+    public EvaluationTaxonomy updateEvaluationTaxonomy(String name, EvaluationTaxonomy taxonomy) {
         // Generated convenience method for updateEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions).getValue()
+        return updateEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(taxonomy), requestOptions).getValue()
             .toObject(EvaluationTaxonomy.class);
     }
 }

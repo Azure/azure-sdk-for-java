@@ -12,29 +12,34 @@ import java.util.Collection;
  */
 public final class SignalOperator extends ExpandableStringEnum<SignalOperator> {
     /**
-     * Lower than.
-     */
-    public static final SignalOperator LOWER_THAN = fromString("LowerThan");
-
-    /**
-     * Lower than or equal to.
-     */
-    public static final SignalOperator LOWER_OR_EQUALS = fromString("LowerOrEquals");
-
-    /**
      * Greater than.
      */
     public static final SignalOperator GREATER_THAN = fromString("GreaterThan");
 
     /**
+     * Less than.
+     */
+    public static final SignalOperator LESS_THAN = fromString("LessThan");
+
+    /**
+     * Less than or equal to.
+     */
+    public static final SignalOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
+
+    /**
      * Greater than or equal to.
      */
-    public static final SignalOperator GREATER_OR_EQUALS = fromString("GreaterOrEquals");
+    public static final SignalOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
     /**
      * Equal to.
      */
-    public static final SignalOperator EQUALS = fromString("Equals");
+    public static final SignalOperator EQUAL = fromString("Equal");
+
+    /**
+     * Not equal to.
+     */
+    public static final SignalOperator NOT_EQUAL = fromString("NotEqual");
 
     /**
      * Creates a new instance of SignalOperator value.

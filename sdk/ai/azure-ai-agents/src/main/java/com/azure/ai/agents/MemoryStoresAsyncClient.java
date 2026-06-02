@@ -5,16 +5,18 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.MemoryStoresImpl;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.models.CreateMemoryRequest;
 import com.azure.ai.agents.implementation.models.CreateMemoryStoreRequest;
-import com.azure.ai.agents.implementation.models.DeleteScopeRequest;
-import com.azure.ai.agents.implementation.models.InputItem;
+import com.azure.ai.agents.implementation.models.ListMemoriesRequest;
 import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
+import com.azure.ai.agents.implementation.models.UpdateMemoryRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
-import com.azure.ai.agents.models.DeleteMemoryStoreResult;
+import com.azure.ai.agents.models.ListMemoriesOptions;
+import com.azure.ai.agents.models.MemoryItem;
+import com.azure.ai.agents.models.MemoryItemKind;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.ai.agents.models.MemoryStoreDefinition;
-import com.azure.ai.agents.models.MemoryStoreDeleteScopeResponse;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.MemoryStoreSearchResponse;
 import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
@@ -33,10 +35,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.openai.models.responses.ResponseInputItem;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -86,7 +90,7 @@ public final class MemoryStoresAsyncClient {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -138,7 +142,7 @@ public final class MemoryStoresAsyncClient {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -178,7 +182,7 @@ public final class MemoryStoresAsyncClient {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -236,7 +240,7 @@ public final class MemoryStoresAsyncClient {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -268,7 +272,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Delete a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -285,12 +289,12 @@ public final class MemoryStoresAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteMemoryStoreWithResponseAsync(name, requestOptions);
+    public Mono<Response<Void>> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteMemoryStoreWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -308,7 +312,7 @@ public final class MemoryStoresAsyncClient {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -477,15 +481,12 @@ public final class MemoryStoresAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the memory store is deleted.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteMemoryStoreResult> deleteMemoryStore(String name) {
-        // Generated convenience method for deleteMemoryStoreWithResponse
+    public Mono<Void> deleteMemoryStore(String name) {
         RequestOptions requestOptions = new RequestOptions();
-        return deleteMemoryStoreWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteMemoryStoreResult.class));
+        return deleteMemoryStoreWithResponse(name, requestOptions).then();
     }
 
     /**
@@ -513,7 +514,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Delete all memories associated with a specific scope from a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -521,9 +522,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -542,14 +543,13 @@ public final class MemoryStoresAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response for deleting memories from a scope along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+    public Mono<Response<Void>> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteScopeWithResponseAsync(name, deleteScopeRequest, requestOptions);
+        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -612,17 +612,13 @@ public final class MemoryStoresAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for deleting memories from a scope on successful completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the memories are deleted.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreDeleteScopeResponse> deleteScope(String name, String scope) {
-        // Generated convenience method for deleteScopeWithResponse
+    public Mono<Void> deleteScope(String name, String scope) {
         RequestOptions requestOptions = new RequestOptions();
-        DeleteScopeRequest deleteScopeRequestObj = new DeleteScopeRequest(scope);
-        BinaryData deleteScopeRequest = BinaryData.fromObject(deleteScopeRequestObj);
-        return deleteScopeWithResponse(name, deleteScopeRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreDeleteScopeResponse.class));
+        BinaryData deleteScopeRequest = BinaryData.fromObject(Collections.singletonMap("scope", scope));
+        return deleteScopeWithResponse(name, deleteScopeRequest, requestOptions).then();
     }
 
     /**
@@ -687,9 +683,7 @@ public final class MemoryStoresAsyncClient {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_search_id: String (Optional)
      *     options (Optional): {
@@ -708,7 +702,7 @@ public final class MemoryStoresAsyncClient {
      *     memories (Required): [
      *          (Required){
      *             memory_item (Required): {
-     *                 kind: String(user_profile/chat_summary) (Required)
+     *                 kind: String(user_profile/chat_summary/procedural) (Required)
      *                 memory_id: String (Required)
      *                 updated_at: long (Required)
      *                 scope: String (Required)
@@ -757,9 +751,7 @@ public final class MemoryStoresAsyncClient {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -780,7 +772,7 @@ public final class MemoryStoresAsyncClient {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -855,7 +847,7 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MemoryStoreSearchResponse> internalSearchMemories(String name, String scope, List<InputItem> items,
+    Mono<MemoryStoreSearchResponse> internalSearchMemories(String name, String scope, List<BinaryData> items,
         String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for internalSearchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -888,7 +880,7 @@ public final class MemoryStoresAsyncClient {
     public Mono<MemoryStoreSearchResponse> searchMemories(String name, String scope, List<ResponseInputItem> items,
         String previousSearchId, MemorySearchOptions options) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
-        List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
+        List<BinaryData> inputItems = OpenAIJsonHelper.toBinaryDataList(items);
         return internalSearchMemories(name, scope, inputItems, previousSearchId, options);
     }
 
@@ -939,7 +931,7 @@ public final class MemoryStoresAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginInternalUpdateMemories(String name,
-        String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
+        String scope, List<BinaryData> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginInternalUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoriesRequest updateMemoriesRequestObj = new UpdateMemoriesRequest(scope).setItems(items)
@@ -981,7 +973,7 @@ public final class MemoryStoresAsyncClient {
      * @param items Conversation items from which to extract memories (OpenAI SDK type).
      * @param previousUpdateId The unique ID of the previous update request, enabling incremental memory updates from
      * where the last operation left off.
-     * @param updateDelay Timeout period before processing the memory update in seconds.
+     * @param updateDelayInSeconds Timeout period before processing the memory update in seconds.
      * If a new update request is received during this period, it will cancel the current request and reset the timeout.
      * Set to 0 to immediately trigger the update without delay.
      * Defaults to 300 (5 minutes).
@@ -995,9 +987,485 @@ public final class MemoryStoresAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
-        String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelay) {
+        String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelayInSeconds) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
-        List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
-        return beginInternalUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelay);
+        List<BinaryData> inputItems = OpenAIJsonHelper.toBinaryDataList(items);
+        return beginInternalUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelayInSeconds);
+    }
+
+    /**
+     * Update memory store with conversation memories.
+     *
+     * @param name The name of the memory store to update.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of provides the status of a memory store update operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+        String scope) {
+        return beginInternalUpdateMemories(name, scope);
+    }
+
+    /**
+     * Delete a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteMemoryStoreWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Delete all memories associated with a specific scope from a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     name: String (Required)
+     *     scope: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param deleteScopeRequest The deleteScopeRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for deleting memories from a scope along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteScopeWithResponseAsync(name, deleteScopeRequest, requestOptions);
+    }
+
+    /**
+     * Create a memory item in a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     *     content: String (Required)
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param createMemoryRequest The createMemoryRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createMemoryWithResponse(String name, BinaryData createMemoryRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createMemoryWithResponseAsync(name, createMemoryRequest, requestOptions);
+    }
+
+    /**
+     * Update a memory item in a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to update.
+     * @param updateMemoryRequest The updateMemoryRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateMemoryWithResponse(String name, String memoryId,
+        BinaryData updateMemoryRequest, RequestOptions requestOptions) {
+        return this.serviceClient.updateMemoryWithResponseAsync(name, memoryId, updateMemoryRequest, requestOptions);
+    }
+
+    /**
+     * Retrieve a memory item from a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMemoryWithResponse(String name, String memoryId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getMemoryWithResponseAsync(name, memoryId, requestOptions);
+    }
+
+    /**
+     * Delete a memory item from a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     memory_id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for deleting a memory item from a memory store along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteMemoryWithResponse(String name, String memoryId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteMemoryWithResponseAsync(name, memoryId, requestOptions);
+    }
+
+    /**
+     * Create a memory item in a memory store.
+     *
+     * @param name The name of the memory store.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @param content The content of the memory.
+     * @param kind The kind of the memory item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single memory item stored in the memory store, containing content and metadata on successful completion
+     * of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MemoryItem> createMemory(String name, String scope, String content, MemoryItemKind kind) {
+        // Generated convenience method for createMemoryWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateMemoryRequest createMemoryRequestObj = new CreateMemoryRequest(scope, content, kind);
+        BinaryData createMemoryRequest = BinaryData.fromObject(createMemoryRequestObj);
+        return createMemoryWithResponse(name, createMemoryRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryItem.class));
+    }
+
+    /**
+     * Update a memory item in a memory store.
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to update.
+     * @param content The updated content of the memory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single memory item stored in the memory store, containing content and metadata on successful completion
+     * of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MemoryItem> updateMemory(String name, String memoryId, String content) {
+        // Generated convenience method for updateMemoryWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateMemoryRequest updateMemoryRequestObj = new UpdateMemoryRequest(content);
+        BinaryData updateMemoryRequest = BinaryData.fromObject(updateMemoryRequestObj);
+        return updateMemoryWithResponse(name, memoryId, updateMemoryRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryItem.class));
+    }
+
+    /**
+     * Retrieve a memory item from a memory store.
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single memory item stored in the memory store, containing content and metadata on successful completion
+     * of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MemoryItem> getMemory(String name, String memoryId) {
+        // Generated convenience method for getMemoryWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getMemoryWithResponse(name, memoryId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(MemoryItem.class));
+    }
+
+    /**
+     * Delete a memory item from a memory store.
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for deleting a memory item from a memory store on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
+        return internalDeleteMemoryWithResponse(name, memoryId, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Delete a memory item from a memory store.
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the memory item is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteMemory(String name, String memoryId) {
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteMemoryWithResponse(name, memoryId, requestOptions).then();
+    }
+
+    /**
+     * List all memory items in a memory store.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMemories(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listMemoriesAsync(name, listMemoriesRequest, requestOptions);
+    }
+
+    /**
+     * List all memory items in a memory store.
+     *
+     * @param options Options for listMemories API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MemoryItem> listMemories(ListMemoriesOptions options) {
+        // Generated convenience method for listMemories
+        RequestOptions requestOptions = new RequestOptions();
+        String name = options.getName();
+        MemoryItemKind kind = options.getKind();
+        Integer limit = options.getLimit();
+        PageOrder order = options.getOrder();
+        String after = options.getAfter();
+        String before = options.getBefore();
+        ListMemoriesRequest listMemoriesRequestObj = new ListMemoriesRequest(options.getScope());
+        BinaryData listMemoriesRequest = BinaryData.fromObject(listMemoriesRequestObj);
+        if (kind != null) {
+            requestOptions.addQueryParam("kind", kind.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listMemories(name, listMemoriesRequest, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, MemoryItem>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(MemoryItem.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }

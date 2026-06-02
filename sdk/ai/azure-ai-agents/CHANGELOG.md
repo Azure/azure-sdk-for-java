@@ -1,13 +1,108 @@
 # Release History
 
-## 2.0.0-beta.4 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
-- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, `DeleteMemoryStoreResult`, `MemoryStoreDeleteScopeResponse`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
+### Bugs Fixed
+
+### Other Changes
+
+## 2.1.0 (2026-06-01)
+
+### Features Added
+
+- Added protocol-style methods on `ResponsesClient` and `ResponsesAsyncClient` that accept a raw JSON request body (`BinaryData`) and a `com.openai.core.RequestOptions`, and return the openai-java raw HTTP response. These mirror the existing `createAzureResponse` and `createStreamingAzureResponse` typed surface: `createResponseWithResponse` (returns `HttpResponseFor<Response>`) and `createResponseStreamWithResponse` (returns `HttpResponseFor<StreamResponse<ResponseStreamEvent>>`). They delegate to the underlying openai-java `ResponseService.withRawResponse()` surface and continue to flow through the Azure HTTP pipeline.
+- Added preview support for external agents via `ExternalAgentDefinition`, `AgentKind.EXTERNAL`, and `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW`.
+- Added preview code-based hosted agent operations on `AgentsClient` and `AgentsAsyncClient`, including `createAgentVersionFromCode`, `updateAgentFromCode`, and `downloadAgentCode`, plus related code package models such as `CreateAgentVersionFromCodeContent`, `CodeFileDetails`, and `CodeDependencyResolution`. `CodeConfiguration` now exposes the service-computed code package hash via `getContentSha256()`.
+- Added preview agent optimization job and candidate management operations on `AgentsClient` and `AgentsAsyncClient`, including creating, listing, retrieving, canceling, and deleting optimization jobs, listing and inspecting candidates, downloading candidate files, and promoting candidates.
+- Added `stopSession` and `stopSessionWithResponse` to stop hosted-agent sessions.
+- Added `force` query parameter support for hosted-agent `deleteAgentWithResponse` and `deleteAgentVersionWithResponse` requests through `RequestOptions`, allowing active sessions to be cascade-deleted.
+- Added individual memory item operations to `MemoryStoresClient` and `MemoryStoresAsyncClient`: `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory`, with new `ListMemoriesOptions`, `DeleteMemoryResponse`, and `MemoryItemKind.PROCEDURAL` support.
+- Added new preview tools `FabricIqPreviewTool` and `ToolboxSearchPreviewTool`, plus related tool call/output models for Azure tools.
+- Added optional per-tool configuration via `ToolConfig` and `toolConfigs` accessors on supported tool classes.
+- Added `getComparisonFilter()` and `getCompoundFilter()` convenience getters on `FileSearchTool` for retrieving OpenAI filter types.
+- Added new feature-flag values, including `AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW`, `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW`, and `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW`.
+- Added hosted-agent, Fabric IQ, Toolbox Search, and async toolbox samples.
+
+### Breaking Changes
+
+- `AgentEndpoint` renamed to `AgentEndpointConfig`.
+- Session file listing methods on `AgentSessionFilesClient` and `AgentSessionFilesAsyncClient` were renamed from `getSessionFiles` to `listSessionFiles` and now return paged `SessionDirectoryEntry` results. `SessionDirectoryListResponse` was removed.
+- Hosted-agent session methods no longer take a required `isolationKey` argument. Use overloads that accept the optional `userIsolationKey` value, or set the `x-ms-user-isolation-key` header through `RequestOptions`.
+- `AgentDefinitionOptInKeys.CONTAINER_AGENTS_V1_PREVIEW` was removed. Use the applicable hosted-agent, code-agent, agent-endpoint, workflow-agent, or external-agent opt-in key instead.
+- `HostedAgentDefinition` no longer exposes top-level `image` or `containerProtocolVersions` accessors. Use `ContainerConfiguration` for container images and `protocolVersions` for ingress protocol configuration.
+- `CodeConfiguration` constructor now requires `CodeDependencyResolution` in addition to runtime and entry point.
+- `WorkIqPreviewTool` now takes the Work IQ project connection ID directly. `WorkIQPreviewToolParameters` was removed.
+
+### Other Changes
+
+- Enabled `ResponsesTests` and `ResponsesAsyncTests` (previously `@Disabled`) with create/retrieve/delete/input-items and background-cancel coverage for the typed (`ResponseService` / `ResponseServiceAsync`) surface, plus coverage for the new protocol-method surface. Recordings published to `Azure/azure-sdk-assets` and referenced from `assets.json`.
+- Re-enabled `SessionLogSyncTest` and `SessionLogAsyncTest`; both tests are recordable via `@RecordWithoutRequestBody` and run live against the configured Foundry project.
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.1.0-beta.1 (2026-05-12)
+
+### Features Added
+
+- Added new `ToolboxesClient` and `ToolboxesAsyncClient` sub-clients (preview, opt-in via `FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW`) for managing toolboxes and toolbox versions, with operations including `createToolboxVersion`, `getToolbox`, `getToolboxVersion`, `listToolboxes`, `listToolboxVersions`, `updateToolbox`, `deleteToolbox`, and `deleteToolboxVersion`. New `buildToolboxesClient()` and `buildToolboxesAsyncClient()` methods on `AgentsClientBuilder`.
+- Added new `AgentSessionFilesClient` and `AgentSessionFilesAsyncClient` sub-clients for working with files in an agent session, with `uploadSessionFile`, `downloadSessionFile`, `getSessionFiles`, and `deleteSessionFile`. New `buildAgentSessionFilesClient()` and `buildAgentSessionFilesAsyncClient()` methods on `AgentsClientBuilder`.
+- Added `buildAgentScopedOpenAIClient(String agentName)` and `buildAgentScopedOpenAIAsyncClient(String agentName)` to `AgentsClientBuilder` for constructing OpenAI clients targeting a specific agent's endpoint (base URL `{endpoint}/agents/{agentName}/endpoint/protocols/openai`). The default `buildOpenAIClient()` / `buildOpenAIAsyncClient()` continue to target `{endpoint}/openai/v1`.
+- Added agent-session operations to `AgentsClient` and `AgentsAsyncClient`: `createSession`, `getSession`, `deleteSession`, `listSessions`, and `getSessionLogStreamWithResponse`. Added typed session log streaming convenience methods: `AgentsClient.getSessionLogStream(...)`, and `AgentsAsyncClient.getSessionLogStream(...)`, returning `SessionLogEvent`. New related models: `AgentSessionResource`, `AgentSessionStatus`, `SessionDirectoryEntry`, `SessionDirectoryListResponse`, `SessionFileWriteResult`, `SessionLogEvent`, `SessionLogEventType`, `IsolationKeySource` (with `Kind`), `EntraIsolationKeySource`, and `HeaderIsolationKeySource`.
+- Added `updateAgentDetails(String, UpdateAgentDetailsPatchRequest, ...)` and `updateAgentDetailsWithResponse` on `AgentsClient`/`AgentsAsyncClient` for patching agent details, plus new `UpdateAgentDetailsPatchRequest` model.
+- Added new agent-endpoint and identity model types for hosted agents: `AgentEndpoint`, `AgentEndpointProtocol`, `AgentEndpointAuthorizationScheme` (with `Type`), `EntraAuthorizationScheme`, `BotServiceAuthorizationScheme`, `BotServiceRbacAuthorizationScheme`, `AgentIdentity`, `AgentBlueprintReference` (with `Type`), `ManagedAgentIdentityBlueprintReference`, `AgentCard`, and `AgentCardSkill`. `AgentDetails` now exposes `getAgentEndpoint`, `getInstanceIdentity`, `getBlueprint`, `getBlueprintReference`, and `getAgentCard`. `AgentVersionDetails` now exposes `getInstanceIdentity`, `getBlueprint`, `getBlueprintReference`, and `getAgentGuid`.
+- Added agent-versioning model types: `VersionIndicator` (with `Type`), `VersionRefIndicator`, `VersionSelector` (with `Type`), `VersionSelectionRule`, `FixedRatioVersionSelectionRule`, and `CreateAgentVersionInput`.
+- `HostedAgentDefinition` now supports both container-based and code-based deployments: added `ContainerConfiguration` and `CodeConfiguration` model types, with new `getContainerConfiguration`/`setContainerConfiguration`, `getCodeConfiguration`/`setCodeConfiguration`, `getProtocolVersions`/`setProtocolVersions`, and `setContainerProtocolVersions` accessors. Container vs. code configuration is mutually exclusive (validated server-side).
+- Added new preview tool `WorkIqPreviewTool` (and parameters `WorkIQPreviewToolParameters`) with discriminator value `work_iq_preview`. Added `ToolType.WORK_IQ_PREVIEW`.
+- Added optional `name` and `description` properties (with getters and setters) to `CodeInterpreterTool`, `CaptureStructuredOutputsTool`, `FileSearchTool`, `ImageGenTool`, `WebSearchTool`, and `WorkIqPreviewTool` for user-defined tool labels.
+- Added new feature-flag values to `FoundryFeaturesOptInKeys`: `TOOLBOXES_V1_PREVIEW` (`Toolboxes=V1Preview`) and `SKILLS_V1_PREVIEW` (`Skills=V1Preview`).
+- Added new feature-flag values to `AgentDefinitionOptInKeys`: `CONTAINER_AGENTS_V1_PREVIEW` (`ContainerAgents=V1Preview`) and `AGENT_ENDPOINT_V1_PREVIEW` (`AgentEndpoints=V1Preview`).
+- Added new toolbox samples under `com.azure.ai.agents.toolboxes`: `CreateToolboxVersion`, `GetToolbox`, `GetToolboxVersion`, `ListToolboxes`, `ListToolboxVersions`, `UpdateToolbox`, `DeleteToolbox`, and `DeleteToolboxVersion`.
+
+### Breaking Changes
+
+- `HostedAgentDefinition`'s canonical (`@Generated`) constructor changed from `HostedAgentDefinition(List<ProtocolVersionRecord> containerProtocolVersions, String cpu, String memory)` to `HostedAgentDefinition(String cpu, String memory)`; `containerProtocolVersions` is now a mutable property set via `setContainerProtocolVersions(...)`. The previous 3-argument constructor is retained for source compatibility but is no longer the recommended entry point.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- Added README examples for synchronous and asynchronous hosted agent session log streaming.
+
+## 2.0.1 (2026-04-16)
+
+### Bugs Fixed
+
+- Fixed streaming APIs to properly stream response data instead of eagerly buffering the entire response body in memory, and moved async completions off I/O threads to prevent blocking.
+
+## 2.0.0 (2026-03-27)
+
+### Features Added
+
+- Added `beginUpdateMemories(String name, String scope)` required-params-only overload to `MemoryStoresClient` and `MemoryStoresAsyncClient`, for updating a memory store without specifying optional conversation items, previous update ID, or delay.
+
+### Breaking Changes
+
+- The following types changed from standard Java `enum` to `ExpandableStringEnum`-based classes, allowing unknown values to be handled without throwing exceptions. The `values()` method now returns a `Collection` instead of an array, and instances should be compared using `.equals()` rather than `==`:
+  - `ComputerEnvironment`
+  - `ContainerMemoryLimit`
+  - `GrammarSyntax`
+  - `ImageGenActionEnum`
+  - `ImageGenToolBackground`
+  - `ImageGenToolModeration`
+  - `ImageGenToolOutputFormat`
+  - `ImageGenToolQuality`
+  - `ImageGenToolSize`
+  - `InputFidelity`
+  - `McpToolConnectorId`
+  - `MemoryStoreUpdateStatus`
+  - `RankerVersionType`
+  - `SearchContextSize`
+  - `WebSearchToolSearchContextSize`
+- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
 - Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
+- `getContainerAsAutoCodeInterpreterToolParam()` on `CodeInterpreterTool` renamed to `getContainerAsAutoCodeInterpreterToolParameter()`, and `setContainer(AutoCodeInterpreterToolParam)` now accepts `AutoCodeInterpreterToolParameter` instead.
 - Renamed remaining `*Param` model classes to `*Parameter` for naming consistency:
   - `AutoCodeInterpreterToolParam` → `AutoCodeInterpreterToolParameter`
   - `ContainerAutoParam` → `ContainerAutoParameter`
@@ -22,8 +117,14 @@
   - `InlineSkillSourceParam` → `InlineSkillSourceParameter`
   - `LocalSkillParam` → `LocalSkillParameter`
   - `SkillReferenceParam` → `SkillReferenceParameter`
-
-### Bugs Fixed
+- `deleteAgentWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteAgentVersionWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteMemoryStoreWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteScopeWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteMemoryStore(String)` on `MemoryStoresClient` now returns `void` instead of `DeleteMemoryStoreResult`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteMemoryStoreResult>`.
+- `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
+- `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
+- `ResponsesUtils` class has been removed. Use `ResponsesClient.getAzureFields(Response)` instead of `ResponsesUtils.getAzureFields(Response)` to extract Azure-specific fields from a response.
 
 ### Other Changes
 
@@ -54,10 +155,11 @@
 ### Breaking Changes
 
 - Removed deprecated convenience methods from `ResponsesClient` and `ResponsesAsyncClient`: `createWithAgent`, `createWithAgentConversation`, `createStreamingWithAgent`, `createStreamingWithAgentConversation`, `createWithAgentStructuredInput`, and `createStreamingWithAgentStructuredInput`. Use `createAzureResponse` and `createStreamingAzureResponse` with `AzureCreateResponseOptions` instead.
-- `deleteAgent(String)` on `AgentsClient` now returns `void` instead of `DeleteAgentResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentResponse>`. The public protocol method `deleteAgentWithResponse` has been removed; use the convenience method instead.
+- `deleteAgent(String)` on `AgentsClient` now returns `void` instead of `DeleteAgentResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentResponse>`.
 - `deleteAgentVersion(String, String)` on `AgentsClient` now returns `void` instead of `DeleteAgentVersionResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentVersionResponse>`.
 - `DeleteAgentResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
 - `DeleteAgentVersionResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
+- The `updateDelay` parameter on `MemoryStoresClient.beginUpdateMemories` was renamed to `updateDelayInSeconds`.
 - `AgentDefinitionOptInKeys` and `FoundryFeaturesOptInKeys` changed from `ExpandableStringEnum`-based classes to standard Java `enum` types. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
 - The `timezone` property in `ApproximateLocation` and `WebSearchApproximateLocation` changed from `String` to `java.util.TimeZone`.
 - The `container` property on `CodeInterpreterTool` no longer exposes `BinaryData` getter/setter publicly. Use the new typed accessors instead (e.g., `setContainer("container-id")` or `setContainer(new AutoCodeInterpreterToolParam())`).

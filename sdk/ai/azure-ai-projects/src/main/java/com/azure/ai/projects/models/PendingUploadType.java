@@ -19,12 +19,6 @@ public final class PendingUploadType extends ExpandableStringEnum<PendingUploadT
     public static final PendingUploadType NONE = fromString("None");
 
     /**
-     * Blob Reference is the only supported type.
-     */
-    @Generated
-    public static final PendingUploadType BLOB_REFERENCE = fromString("BlobReference");
-
-    /**
      * Creates a new instance of PendingUploadType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -54,4 +48,16 @@ public final class PendingUploadType extends ExpandableStringEnum<PendingUploadT
     public static Collection<PendingUploadType> values() {
         return values(PendingUploadType.class);
     }
+
+    /**
+     * Temporary blob reference.
+     */
+    @Generated
+    public static final PendingUploadType TEMPORARY_BLOB_REFERENCE = fromString("TemporaryBlobReference");
+
+    /**
+     * Deprecated: the service never read this value and silently ignored it. Use TemporaryBlobReference instead.
+     */
+    @Generated
+    public static final PendingUploadType BLOB_REFERENCE = fromString("BlobReference");
 }

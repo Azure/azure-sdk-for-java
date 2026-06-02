@@ -17,7 +17,7 @@ public final class ComputeType extends ExpandableStringEnum<ComputeType> {
     public static final ComputeType DEFAULT = fromString("Default");
 
     /**
-     * Create the service with Azure Confidential Compute.
+     * Create the dedicated service with Azure Confidential Compute.
      */
     public static final ComputeType CONFIDENTIAL = fromString("Confidential");
 

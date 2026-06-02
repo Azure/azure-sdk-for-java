@@ -33,12 +33,8 @@ public final class LocationsImpl implements Locations {
 
     public Response<BatchLocationQuota> getQuotasWithResponse(String locationName, Context context) {
         Response<BatchLocationQuotaInner> inner = this.serviceClient().getQuotasWithResponse(locationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BatchLocationQuotaImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BatchLocationQuotaImpl(inner.getValue(), this.manager()));
     }
 
     public BatchLocationQuota getQuotas(String locationName) {
@@ -66,12 +62,8 @@ public final class LocationsImpl implements Locations {
         CheckNameAvailabilityParameters parameters, Context context) {
         Response<CheckNameAvailabilityResultInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(locationName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
     }
 
     public CheckNameAvailabilityResult checkNameAvailability(String locationName,

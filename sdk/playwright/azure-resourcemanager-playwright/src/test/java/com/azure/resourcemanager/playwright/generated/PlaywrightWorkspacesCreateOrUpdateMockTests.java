@@ -11,8 +11,11 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.playwright.PlaywrightManager;
 import com.azure.resourcemanager.playwright.models.EnablementStatus;
+import com.azure.resourcemanager.playwright.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.playwright.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspace;
 import com.azure.resourcemanager.playwright.models.PlaywrightWorkspaceProperties;
+import com.azure.resourcemanager.playwright.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -25,7 +28,7 @@ public final class PlaywrightWorkspacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataplaneUri\":\"giotkftutqxlngx\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"nxkrx\"},\"location\":\"mi\",\"tags\":{\"abhjybi\":\"hzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataplaneUri\":\"nkjzkdeslpvlop\",\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"xpkd\",\"reporting\":\"Disabled\",\"storageUri\":\"iuebbaumny\"},\"identity\":{\"principalId\":\"edeojnabc\",\"tenantId\":\"smtxpsieb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"uutkncw\":{\"principalId\":\"esap\",\"clientId\":\"rdqmhjjdhtldwkyz\"},\"kvceoveilovnotyf\":{\"principalId\":\"wsvlxotogtwrupqs\",\"clientId\":\"nmic\"},\"oqnermclfpl\":{\"principalId\":\"cnjbkcnxdhbt\",\"clientId\":\"phywpnvj\"},\"gxywpmue\":{\"principalId\":\"oxuscrpabgyepsbj\",\"clientId\":\"zq\"}}},\"location\":\"jzwf\",\"tags\":{\"glaocq\":\"ujidsuyono\"},\"id\":\"tcc\",\"name\":\"g\",\"type\":\"udxytlmoyrx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +38,26 @@ public final class PlaywrightWorkspacesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PlaywrightWorkspace response = manager.playwrightWorkspaces()
-            .define("ofmx")
-            .withRegion("vpmouexhdzxib")
-            .withExistingResourceGroup("kdkexxp")
-            .withTags(mapOf("eic", "jnxqbzvddntwn", "cyddglmjthjqk", "twnpzaoqvuhrhcf", "ciwqvhk", "pyeicxm"))
-            .withProperties(new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.ENABLED)
-                .withLocalAuth(EnablementStatus.ENABLED))
+            .define("rcvpnazzmhjrunmp")
+            .withRegion("jwbhqwalmuz")
+            .withExistingResourceGroup("jggmebfsiarbu")
+            .withTags(mapOf("xrhdwbavxbniwdjs", "aepdkzjanc", "dbpgnxytxhp", "zt", "lcuhxwtctyqiklb", "xbzpfzab",
+                "bhvgy", "ovplw"))
+            .withProperties(new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.DISABLED)
+                .withLocalAuth(EnablementStatus.ENABLED)
+                .withReporting(EnablementStatus.ENABLED)
+                .withStorageUri("zfcl"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("eaxib", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("mi", response.location());
-        Assertions.assertEquals("hzrvqd", response.tags().get("abhjybi"));
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.properties().regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.properties().localAuth());
+        Assertions.assertEquals("jzwf", response.location());
+        Assertions.assertEquals("ujidsuyono", response.tags().get("glaocq"));
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.properties().localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, response.properties().reporting());
+        Assertions.assertEquals("iuebbaumny", response.properties().storageUri());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

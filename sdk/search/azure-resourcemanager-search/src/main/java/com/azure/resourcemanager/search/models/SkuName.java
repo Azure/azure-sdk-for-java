@@ -13,7 +13,7 @@ import java.util.Collection;
  * but with more capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12
  * replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity').
  * 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per
- * partition, up to 12 partitions.'.
+ * partition, up to 12 partitions. 'serverless': Serverless tier with auto-scaling capabilities.
  */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /**
@@ -51,6 +51,12 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
      * Billable tier for a dedicated service that supports 2TB per partition, up to 12 partitions.
      */
     public static final SkuName STORAGE_OPTIMIZED_L2 = fromString("storage_optimized_l2");
+
+    /**
+     * Serverless tier, offering low-touch, consumption-based, and pay-as-you-go experience, with auto-scaling
+     * capabilities.
+     */
+    public static final SkuName SERVERLESS = fromString("serverless");
 
     /**
      * Creates a new instance of SkuName value.

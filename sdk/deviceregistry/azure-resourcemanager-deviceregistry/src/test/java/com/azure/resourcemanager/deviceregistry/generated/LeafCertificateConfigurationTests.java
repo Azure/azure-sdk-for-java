@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class LeafCertificateConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LeafCertificateConfiguration model = BinaryData.fromString("{\"validityPeriodInDays\":1456485650}")
+        LeafCertificateConfiguration model = BinaryData.fromString("{\"validityPeriodInDays\":1581079817}")
             .toObject(LeafCertificateConfiguration.class);
-        Assertions.assertEquals(1456485650, model.validityPeriodInDays());
+        Assertions.assertEquals(1581079817, model.validityPeriodInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LeafCertificateConfiguration model = new LeafCertificateConfiguration().withValidityPeriodInDays(1456485650);
+        LeafCertificateConfiguration model = new LeafCertificateConfiguration().withValidityPeriodInDays(1581079817);
         model = BinaryData.fromObject(model).toObject(LeafCertificateConfiguration.class);
-        Assertions.assertEquals(1456485650, model.validityPeriodInDays());
+        Assertions.assertEquals(1581079817, model.validityPeriodInDays());
     }
 }

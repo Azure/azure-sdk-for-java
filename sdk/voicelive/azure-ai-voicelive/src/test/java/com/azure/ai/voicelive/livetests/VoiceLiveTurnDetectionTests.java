@@ -16,7 +16,9 @@ import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.TurnDetection;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,14 +39,13 @@ import java.util.stream.Stream;
 public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
 
     // ===== test_realtime_service_with_turn_detection_long_tts_vad_duration =====
-    // Python: models=[gpt-4o-realtime-preview, gpt-4o], api_versions=[2025-10-01, 2026-01-01-preview]
+    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-04-10]
     // turn_detection: {"type": "azure_semantic_vad", "speech_duration_assistant_speaking_ms": 800}
     // Note: speechDurationAssistantSpeakingMs not available in Java SDK;
     // using speechDurationMs(800) as the closest available parameter.
 
     static Stream<Arguments> longTtsVadDurationParams() {
-        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME_PREVIEW, MODEL_GPT_4O },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { MODEL_GPT_REALTIME, MODEL_GPT_4O }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -83,11 +84,12 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         CountDownLatch audioDeltaLatch = new CountDownLatch(1);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
                 if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
                     if (event instanceof SessionUpdateResponseAudioDelta) {
@@ -109,7 +111,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
 
             // Python: _wait_for_event(conn, {RESPONSE_AUDIO_DELTA}, 30)
             boolean received = audioDeltaLatch.await(30, TimeUnit.SECONDS);
@@ -120,18 +122,20 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             Assertions.assertNotNull(audioDelta.getDelta(), "Audio delta data should not be null");
             Assertions.assertTrue(audioDelta.getDelta().length > 0, "Audio delta data should not be empty");
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
 
     // ===== test_realtime_service_with_turn_detection_multilingual =====
-    // Python: models × semanticVadParams, api_versions=[2025-10-01, 2026-01-01-preview]
+    // Python: models × semanticVadParams, api_versions=[2025-10-01, 2026-04-10]
     // Uses AzureSemanticVadMultilingual(**semantic_vad_params)
 
     static Stream<Arguments> multilingualParams() {
         return withApiVersions(Stream.of(
-            Arguments.of("gpt-4o-realtime-preview, default", MODEL_GPT_4O_REALTIME_PREVIEW,
-                new AzureSemanticVadTurnDetectionMultilingual()),
+            Arguments.of("gpt-realtime, default", MODEL_GPT_REALTIME, new AzureSemanticVadTurnDetectionMultilingual()),
             Arguments.of("gpt-4o, default", MODEL_GPT_4O, new AzureSemanticVadTurnDetectionMultilingual()),
             Arguments.of("gpt-4o, speechDuration200", MODEL_GPT_4O,
                 new AzureSemanticVadTurnDetectionMultilingual().setSpeechDurationMs(200)),
@@ -173,11 +177,12 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         AtomicBoolean collectingEvents = new AtomicBoolean(true);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 if (!collectingEvents.get()) {
                     return;
                 }
@@ -204,8 +209,8 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             // Python uses _collect_event which collects events over a timeout period
             Thread.sleep(EVENT_TIMEOUT_SECONDS * 1000);
@@ -216,6 +221,9 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioResponseBytes.get() > 0,
                 description + ": Should receive audio response bytes, got " + audioResponseBytes.get());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
@@ -223,7 +231,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
     // ===== test_realtime_service_with_eou =====
     // Python: model=gpt-4o, turn_detection_cls × end_of_detection combinations
     // 6 combos: ServerVad/AzureSemanticVad/AzureSemanticVadMultilingual × AzureSemanticDetection/AzureSemanticDetectionEn
-    // api_versions=[2025-10-01, 2026-01-01-preview]
+    // api_versions=[2025-10-01, 2026-04-10]
 
     static Stream<Arguments> eouParams() {
         return withApiVersions(Stream.of(
@@ -286,11 +294,12 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         AtomicBoolean collectingEvents = new AtomicBoolean(true);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 if (!collectingEvents.get()) {
                     return;
                 }
@@ -320,9 +329,10 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
             // Python: _get_trailing_silence_bytes(duration_s=0.5)
-            session.sendInputAudio(getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, 0.5)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, 0.5)))
+                .block(SEND_TIMEOUT);
 
             // Python: _collect_event(conn, event_type=ServerEventType.RESPONSE_DONE)
             Thread.sleep(EVENT_TIMEOUT_SECONDS * 1000);
@@ -333,6 +343,9 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioResponseBytes.get() > 0,
                 description + ": Should receive audio response bytes, got " + audioResponseBytes.get());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }

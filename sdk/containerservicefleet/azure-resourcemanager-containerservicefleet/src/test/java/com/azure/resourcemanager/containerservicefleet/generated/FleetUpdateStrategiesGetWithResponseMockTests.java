@@ -22,7 +22,7 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"yvnqqybaryeuay\",\"groups\":[{\"name\":\"abqgzslesjcbh\"},{\"name\":\"rnntiewdjcv\"},{\"name\":\"quwrbehwag\"},{\"name\":\"hbuffkmrq\"}],\"afterStageWaitInSeconds\":226189444,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]},{\"name\":\"jfutacoebj\",\"groups\":[{\"name\":\"zcjznmwcpmgua\"},{\"name\":\"draufactkah\"},{\"name\":\"ovajjziuxxps\"},{\"name\":\"neekulfg\"}],\"afterStageWaitInSeconds\":1157333655,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"d\",\"id\":\"tujbazpju\",\"name\":\"hminyflnorwmduv\",\"type\":\"pklvxw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"gl\",\"groups\":[{\"name\":\"gkrvqeevto\"},{\"name\":\"pryu\"}],\"afterStageWaitInSeconds\":479918870,\"maxConcurrency\":\"tpzdmovzvfvaawzq\",\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]},{\"name\":\"riglaec\",\"groups\":[{\"name\":\"t\"},{\"name\":\"cokpv\"},{\"name\":\"mlqtmldgxob\"}],\"afterStageWaitInSeconds\":1646739085,\"maxConcurrency\":\"lnpkciay\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"jlb\",\"id\":\"qvkjlmxho\",\"name\":\"dynhdwdigum\",\"type\":\"nraauzz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FleetUpdateStrategy response = manager.fleetUpdateStrategies()
-            .getWithResponse("hubskhudygooo", "kqfqjbvl", "orfmluiqt", com.azure.core.util.Context.NONE)
+            .getWithResponse("levufuztcktyhj", "qedcgzulwm", "rqzz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yvnqqybaryeuay", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("abqgzslesjcbh", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(226189444, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("gl", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("gkrvqeevto", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(479918870, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("tpzdmovzvfvaawzq", response.strategy().stages().get(0).maxConcurrency());
         Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).beforeGates().get(0).type());
         Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).afterGates().get(0).type());
     }

@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -65,9 +64,10 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
+    @Override
     public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
 
-        List<String> labels = Arrays.asList(labelFilters);
+        List<String> labels = new ArrayList<>(Arrays.asList(labelFilters));
         // Reverse labels so they have the right priority order.
         Collections.reverse(labels);
 
@@ -113,7 +113,6 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      *
      * @param key Application Setting name
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
-     * @return Key Vault Secret Value
      * @throws InvalidConfigurationPropertyValueException
      */
     private void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
@@ -136,7 +135,6 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
         throws InvalidConfigurationPropertyValueException {
         // Feature Flags aren't loaded as configuration, but are loaded as feature flags when loading a snapshot.
-        return;
     }
 
     private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
@@ -153,7 +151,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         if (trimStrings != null) {
             for (String trim : trimStrings) {
                 if (key.startsWith(trim)) {
-                    return key.replaceFirst("^" + trim, "").replace('/', '.');
+                    return key.substring(trim.length()).replace('/', '.');
                 }
             }
         }

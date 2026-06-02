@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.util.Beta;
@@ -40,6 +41,7 @@ public final class CosmosRequestOptions {
     private String queryName;
     private Set<String> keywordIdentifiers;
     private ReadConsistencyStrategy readConsistencyStrategy;
+    private CosmosItemSerializer customItemSerializer;
     private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
@@ -452,5 +454,25 @@ public final class CosmosRequestOptions {
      */
     public Set<String> getKeywordIdentifiers() {
         return this.keywordIdentifiers;
+    }
+
+    /**
+     * Gets the custom item serializer.
+     *
+     * @return the custom item serializer.
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return this.customItemSerializer;
+    }
+
+    /**
+     * Sets the custom item serializer.
+     *
+     * @param customItemSerializer the custom item serializer.
+     * @return current CosmosRequestOptions.
+     */
+    public CosmosRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.customItemSerializer = customItemSerializer;
+        return this;
     }
 }

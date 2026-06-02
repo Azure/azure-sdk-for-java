@@ -13,6 +13,7 @@ import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,7 +31,7 @@ import java.util.stream.Stream;
 public class VoiceLiveSessionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> apiVersionParams() {
-        return Stream.of(Arguments.of(API_VERSION_GA), Arguments.of(API_VERSION_PREVIEW));
+        return Arrays.stream(API_VERSIONS).map(Arguments::of);
     }
 
     @ParameterizedTest
@@ -43,6 +44,7 @@ public class VoiceLiveSessionTests extends VoiceLiveTestBase {
         AtomicReference<SessionUpdateSessionUpdated> receivedEvent = new AtomicReference<>();
         CountDownLatch eventLatch = new CountDownLatch(1);
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
 
         try {
             VoiceLiveSessionOptions sessionOptions
@@ -50,12 +52,12 @@ public class VoiceLiveSessionTests extends VoiceLiveTestBase {
                     .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
                     .setInputAudioFormat(InputAudioFormat.PCM16);
 
-            session = client.startSession(TEST_MODEL).block(SESSION_TIMEOUT);
+            session = client.startSession(TEST_MODEL, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
             Assertions.assertTrue(session.isConnected(), "Session should be connected");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -85,6 +87,9 @@ public class VoiceLiveSessionTests extends VoiceLiveTestBase {
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }

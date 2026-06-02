@@ -68,4 +68,17 @@ public final class AudioInputTranscriptionOptionsModel
     public static Collection<AudioInputTranscriptionOptionsModel> values() {
         return values(AudioInputTranscriptionOptionsModel.class);
     }
+
+    /**
+     * Static value gpt-4o-transcribe-diarize for AudioInputTranscriptionOptionsModel.
+     */
+    @Generated
+    public static final AudioInputTranscriptionOptionsModel GPT_4O_TRANSCRIBE_DIARIZE
+        = fromString("gpt-4o-transcribe-diarize");
+
+    /**
+     * Static value mai-transcribe-1 for AudioInputTranscriptionOptionsModel.
+     */
+    @Generated
+    public static final AudioInputTranscriptionOptionsModel MAI_TRANSCRIBE_1 = fromString("mai-transcribe-1");
 }

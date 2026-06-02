@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -134,5 +136,36 @@ public final class SqlQuerySpec {
         }
     }
 
+    /**
+     * Re-serializes all parameter values using the given custom item serializer.
+     * Called internally during query execution to ensure parameter values are serialized
+     * consistently with document values when a custom serializer is configured.
+     *
+     * @param serializer the custom item serializer to apply.
+     */
+    void applySerializerToParameters(CosmosItemSerializer serializer) {
+        List<SqlParameter> params = this.getParameters();
+        if (serializer != null && params != null) {
+            for (SqlParameter param : params) {
+                param.applySerializer(serializer);
+            }
+        }
+    }
+
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    static void initialize() {
+        ImplementationBridgeHelpers.SqlQuerySpecHelper.setSqlQuerySpecAccessor(
+            new ImplementationBridgeHelpers.SqlQuerySpecHelper.SqlQuerySpecAccessor() {
+                @Override
+                public void applySerializerToParameters(SqlQuerySpec sqlQuerySpec, CosmosItemSerializer serializer) {
+                    if (sqlQuerySpec != null) {
+                        sqlQuerySpec.applySerializerToParameters(serializer);
+                    }
+                }
+            }
+        );
+    }
+
+    static { initialize(); }
 }

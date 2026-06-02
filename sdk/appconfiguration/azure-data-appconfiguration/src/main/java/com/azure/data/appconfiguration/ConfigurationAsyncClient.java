@@ -31,15 +31,14 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingLabel;
 import com.azure.data.appconfiguration.models.SettingLabelFields;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -56,6 +55,8 @@ import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
+
+import reactor.core.publisher.Mono;
 
 /**
  * <p>This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
@@ -1051,6 +1052,55 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
+     * Checks configuration settings using a HEAD request, returning only headers without the response body.
+     * This is useful for efficiently checking if settings have changed by comparing ETags.
+     *
+     * <p>The returned items will be empty since HEAD requests do not return a body. Use {@code byPage()} iteration
+     * to access page-level ETags for change detection.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Check all settings that use the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
+     * <pre>
+     * client.checkConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
+     *     .byPage&#40;&#41;
+     *     .subscribe&#40;page -&gt; &#123;
+     *         String eTag = page.getHeaders&#40;&#41;.getValue&#40;HttpHeaderName.ETAG&#41;;
+     *         System.out.printf&#40;&quot;Page ETag: %s%n&quot;, eTag&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.checkConfigurationSettings -->
+     *
+     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @return A Flux of ConfigurationSettings with empty items. Use {@code byPage()} to access page-level ETags.
+     * @throws HttpResponseException If a client or service error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConfigurationSetting> checkConfigurationSettings(SettingSelector selector) {
+        final String keyFilter = selector == null ? null : selector.getKeyFilter();
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
+        AtomicInteger pageETagIndex = new AtomicInteger(0);
+        return new PagedFlux<>(() -> withContext(context -> serviceClient
+            .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, null, null,
+                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+            .map(Utility::toHeadPagedResponse)
+            .onErrorResume(HttpResponseException.class,
+                (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)),
+            afterToken -> withContext(context -> serviceClient
+                .checkKeyValuesWithResponseAsync(keyFilter, labelFilter, afterToken, acceptDateTime, settingFields,
+                    null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+                .map(Utility::toHeadPagedResponse)
+                .onErrorResume(HttpResponseException.class,
+                    (Function<HttpResponseException, Mono<PagedResponse<ConfigurationSetting>>>) Utility::handleHeadNotModifiedErrorToValidResponse)));
+    }
+
+    /**
      * Fetches the configuration settings in a snapshot that matches the {@code snapshotName}. If {@code snapshotName}
      * is {@code null}, then all the {@link ConfigurationSetting configuration settings} are fetched with their
      * current values.
@@ -1070,7 +1120,7 @@ public final class ConfigurationAsyncClient {
      * be the name of the snapshot.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
      * contains all the current settings in the service.
-     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     * @throws HttpResponseException If a client or service error occurs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName) {

@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_Create_SSDv2.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_Create_SSDv2.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource with Premium SSDv2 storage.
@@ -62,7 +62,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_CreateGeoReplica_CMK.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_CreateGeoReplica_CMK.json
      */
     /**
      * Sample code: Creates a replica Mongo Cluster resource with Customer Managed Key encryption from a source
@@ -95,7 +95,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_Create_CMK.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_Create_CMK.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource with Customer Managed Key encryption.
@@ -130,7 +130,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_CreateGeoReplica.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_CreateGeoReplica.json
      */
     /**
      * Sample code: Creates a replica Mongo Cluster resource from a source resource.
@@ -146,12 +146,13 @@ public final class MongoClustersCreateOrUpdateSamples {
             .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.GEO_REPLICA)
                 .withReplicaParameters(new MongoClusterReplicaParameters().withSourceResourceId(
                     "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster")
-                    .withSourceLocation("eastus")))
+                    .withSourceLocation("eastus"))
+                .withStorage(new StorageProperties().withType(StorageType.PREMIUM_SSDV2)))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_CreatePITR.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore.
@@ -175,7 +176,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR_EntraAuth.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_CreatePITR_EntraAuth.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore with Microsoft Entra ID authentication
@@ -200,7 +201,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_Create.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_Create.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource.
@@ -228,7 +229,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_CreatePITR_CMK.json
+     * x-ms-original-file: 2026-02-01-preview/MongoClusters_CreatePITR_CMK.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource with Customer Managed Key encryption from a point in time restore.

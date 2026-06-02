@@ -35,17 +35,6 @@ public class BenchmarkHelper {
         return instance;
     }
 
-    public static boolean shouldContinue(long startTimeMillis, long iterationCount, TenantWorkloadConfig workloadConfig) {
-        Duration maxDurationTime = workloadConfig.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = workloadConfig.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        return startTimeMillis + maxDurationTime.toMillis() > System.currentTimeMillis();
-    }
-
     /**
      * Retries failed bulk operation responses by falling back to individual createItem calls.
      * Ignores 409 (Conflict) errors since the document already exists.

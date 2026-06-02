@@ -18,12 +18,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class ConnectionsClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionsClient.class);
 
     @Generated
     private final ConnectionsImpl serviceClient;
@@ -108,6 +111,28 @@ public final class ConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getConnectionWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getConnectionWithCredentialsWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Get a connection by name.
+     *
+     * @param name The friendly name of the connection, provided by the user.
+     * @param includeCredentials Whether to include connection credentials in the response.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a connection by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getConnectionWithResponse(String name, boolean includeCredentials,
+        RequestOptions requestOptions) {
+        if (includeCredentials) {
+            return getConnectionWithCredentialsWithResponse(name, requestOptions);
+        } else {
+            return getConnectionWithResponse(name, requestOptions);
+        }
     }
 
     /**
@@ -258,10 +283,34 @@ public final class ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Connection getConnection(String name, boolean includeCredentials) {
-        if (includeCredentials) {
-            return getConnectionWithCredentials(name);
-        } else {
-            return getConnection(name);
+        RequestOptions requestOptions = new RequestOptions();
+        return getConnectionWithResponse(name, includeCredentials, requestOptions).getValue()
+            .toObject(Connection.class);
+    }
+
+    /**
+     * Get the default connection for a given connection type.
+     *
+     * @param connectionType The type of the connection. Required.
+     * @param includeCredentials Whether to include credentials in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default connection for the given type.
+     * @throws IllegalStateException if no default connection is found for the given type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Connection getDefaultConnection(ConnectionType connectionType, boolean includeCredentials) {
+        if (connectionType == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("connectionType cannot be null."));
         }
+        for (Connection connection : listConnections(connectionType, true)) {
+            return getConnection(connection.getName(), includeCredentials);
+        }
+        throw LOGGER
+            .logExceptionAsError(new IllegalStateException("No default connection found for type: " + connectionType));
     }
 }

@@ -203,6 +203,15 @@ public final class CosmosRequestContext {
         return requestOptions.getKeywordIdentifiers();
     }
 
+    /**
+     * Gets the custom item serializer.
+     *
+     * @return the custom item serializer. It could be null if not defined or called on an irrelevant operation.
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return requestOptions.getCustomItemSerializer();
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -217,4 +226,6 @@ public final class CosmosRequestContext {
                 }
                 );
     }
+
+    static { initialize(); }
 }

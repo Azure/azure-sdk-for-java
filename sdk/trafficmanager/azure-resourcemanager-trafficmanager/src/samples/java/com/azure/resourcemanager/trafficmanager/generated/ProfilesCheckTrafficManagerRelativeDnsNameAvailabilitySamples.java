@@ -11,7 +11,7 @@ import com.azure.resourcemanager.trafficmanager.models.CheckTrafficManagerRelati
  */
 public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2022-04-01/NameAvailabilityTest_NameNotAvailable-POST-example-23.json
+     * x-ms-original-file: 2024-04-01-preview/NameAvailabilityTest_NameNotAvailable-POST-example-23.json
      */
     /**
      * Sample code: NameAvailabilityTest_NameNotAvailablePOST23.
@@ -29,7 +29,7 @@ public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/NameAvailabilityTest_NameAvailable-POST-example-21.json
+     * x-ms-original-file: 2024-04-01-preview/NameAvailabilityTest_NameAvailable-POST-example-21.json
      */
     /**
      * Sample code: NameAvailabilityTest_NameAvailablePOST21.

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.ContentUnderstandingSkillChunkingMethod;
 import java.io.IOException;
 
 /**
@@ -116,6 +117,7 @@ public final class ContentUnderstandingSkillChunkingProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
         jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
         jsonWriter.writeNumberField("maximumLength", this.maximumLength);
         jsonWriter.writeNumberField("overlapLength", this.overlapLength);
@@ -138,7 +140,10 @@ public final class ContentUnderstandingSkillChunkingProperties
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("unit".equals(fieldName)) {
+                if ("method".equals(fieldName)) {
+                    deserializedContentUnderstandingSkillChunkingProperties.method
+                        = ContentUnderstandingSkillChunkingMethod.fromString(reader.getString());
+                } else if ("unit".equals(fieldName)) {
                     deserializedContentUnderstandingSkillChunkingProperties.unit
                         = ContentUnderstandingSkillChunkingUnit.fromString(reader.getString());
                 } else if ("maximumLength".equals(fieldName)) {
@@ -153,5 +158,33 @@ public final class ContentUnderstandingSkillChunkingProperties
             }
             return deserializedContentUnderstandingSkillChunkingProperties;
         });
+    }
+
+    /*
+     * The chunking strategy. 'fixedSize' (default) or 'semantic'.
+     */
+    @Generated
+    private ContentUnderstandingSkillChunkingMethod method;
+
+    /**
+     * Get the method property: The chunking strategy. 'fixedSize' (default) or 'semantic'.
+     *
+     * @return the method value.
+     */
+    @Generated
+    public ContentUnderstandingSkillChunkingMethod getMethod() {
+        return this.method;
+    }
+
+    /**
+     * Set the method property: The chunking strategy. 'fixedSize' (default) or 'semantic'.
+     *
+     * @param method the method value to set.
+     * @return the ContentUnderstandingSkillChunkingProperties object itself.
+     */
+    @Generated
+    public ContentUnderstandingSkillChunkingProperties setMethod(ContentUnderstandingSkillChunkingMethod method) {
+        this.method = method;
+        return this;
     }
 }

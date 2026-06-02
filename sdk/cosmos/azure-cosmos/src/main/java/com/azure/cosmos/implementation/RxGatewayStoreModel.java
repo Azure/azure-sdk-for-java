@@ -66,6 +66,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerializer {
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
@@ -91,6 +95,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private final Map<String, String> additionalHeaders;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -100,7 +105,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
-        ApiType apiType) {
+        ApiType apiType,
+        Map<String, String> additionalHeaders) {
 
         this.clientContext = clientContext;
 
@@ -116,6 +122,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
+        this.additionalHeaders = additionalHeaders;
     }
 
     public RxGatewayStoreModel(RxGatewayStoreModel inner) {
@@ -127,6 +134,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
+        this.additionalHeaders = inner.additionalHeaders;
     }
 
     protected Map<String, String> getDefaultHeaders(
@@ -238,7 +246,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return new StoreResponse(
                 endpoint,
                 statusCode,
-                HttpUtils.unescape(headers.toLowerCaseMap()),
+                headers,
                 new ByteBufInputStream(retainedContent, true),
                 size);
         } else {
@@ -248,7 +256,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return new StoreResponse(
             endpoint,
             statusCode,
-            HttpUtils.unescape(headers.toLowerCaseMap()),
+            headers,
             null,
             0);
     }
@@ -277,6 +285,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         try {
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+            }
+
+            // Apply client-level additional headers (e.g., workload-id) to all requests
+            // including metadata requests (collection cache, partition key range, etc.)
+            if (this.additionalHeaders != null && !this.additionalHeaders.isEmpty()) {
+                for (Map.Entry<String, String> entry : this.additionalHeaders.entrySet()) {
+                    // Only set if not already present — request-level headers take precedence
+                    if (!request.getHeaders().containsKey(entry.getKey())) {
+                        request.getHeaders().put(entry.getKey(), entry.getValue());
+                    }
+                }
             }
 
             URI uri = getUri(request);
@@ -343,7 +362,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     private HttpHeaders getHttpRequestHeaders(Map<String, String> headers) {
-        HttpHeaders httpHeaders = new HttpHeaders(this.defaultHeaders.size());
+        HttpHeaders httpHeaders = new HttpHeaders(HttpUtils.mapCapacityForSize(this.defaultHeaders.size() + headers.size()));
         // Add default headers.
         for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
             if (!headers.containsKey(entry.getKey())) {
@@ -616,9 +635,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     }
                 }
 
-                ImplementationBridgeHelpers
-                    .CosmosExceptionHelper
-                    .getCosmosExceptionAccessor()
+                cosmosExceptionAccessor()
                     .setRequestUri(dce, Uri.create(httpRequest.uri().toString()));
 
                 if (request.requestContext.cosmosDiagnostics != null) {
@@ -626,17 +643,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
                         BridgeInternal.setRequestTimeline(dce, reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                        ImplementationBridgeHelpers
-                            .CosmosExceptionHelper
-                            .getCosmosExceptionAccessor()
+                        cosmosExceptionAccessor()
                             .setFaultInjectionRuleId(
                                 dce,
                                 request.faultInjectionRequestContext
                                     .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
 
-                        ImplementationBridgeHelpers
-                            .CosmosExceptionHelper
-                            .getCosmosExceptionAccessor()
+                        cosmosExceptionAccessor()
                             .setFaultInjectionEvaluationResults(
                                 dce,
                                 request.faultInjectionRequestContext
@@ -668,9 +681,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                     // Always set the request URI so endpoint is captured in diagnostics on cancellation.
                     // The endpoint is known at request-send time and should not be lost on cancellation.
-                    ImplementationBridgeHelpers
-                        .CosmosExceptionHelper
-                        .getCosmosExceptionAccessor()
+                    cosmosExceptionAccessor()
                         .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
 
                     if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
@@ -682,17 +693,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
 
-                            ImplementationBridgeHelpers
-                                .CosmosExceptionHelper
-                                .getCosmosExceptionAccessor()
+                            cosmosExceptionAccessor()
                                 .setFaultInjectionRuleId(
                                     oce,
                                     request.faultInjectionRequestContext
                                         .getFaultInjectionRuleId(transportRequestId));
 
-                            ImplementationBridgeHelpers
-                                .CosmosExceptionHelper
-                                .getCosmosExceptionAccessor()
+                            cosmosExceptionAccessor()
                                 .setFaultInjectionEvaluationResults(
                                     oce,
                                     request.faultInjectionRequestContext
@@ -969,7 +976,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                null
             )
             .flatMap(collectionRoutingMapValueHolder -> {
-
 
            PartitionKeyRange range =
                collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(pkRangeId.getPartitionKeyRangeId());

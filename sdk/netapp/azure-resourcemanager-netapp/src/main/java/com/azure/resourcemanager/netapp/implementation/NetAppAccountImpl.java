@@ -12,11 +12,7 @@ import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
-import com.azure.resourcemanager.netapp.models.EntraIdConfig;
-import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
-import com.azure.resourcemanager.netapp.models.LdapConfiguration;
-import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
@@ -80,10 +76,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
-    public EntraIdConfig entraIdConfig() {
-        return this.innerModel().entraIdConfig();
-    }
-
     public AccountEncryption encryption() {
         return this.innerModel().encryption();
     }
@@ -98,10 +90,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public MultiAdStatus multiAdStatus() {
         return this.innerModel().multiAdStatus();
-    }
-
-    public LdapConfiguration ldapConfiguration() {
-        return this.innerModel().ldapConfiguration();
     }
 
     public Region region() {
@@ -269,11 +257,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfig entraIdConfig) {
-        this.innerModel().withEntraIdConfig(entraIdConfig);
-        return this;
-    }
-
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
         if (isInCreateMode()) {
             this.innerModel().withEncryption(encryption);
@@ -292,26 +275,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
             return this;
         }
-    }
-
-    public NetAppAccountImpl withLdapConfiguration(LdapConfiguration ldapConfiguration) {
-        this.innerModel().withLdapConfiguration(ldapConfiguration);
-        return this;
-    }
-
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        this.updateBody.withEntraIdConfig(entraIdConfig);
-        return this;
-    }
-
-    public NetAppAccountImpl withMultiAdStatus(MultiAdStatus multiAdStatus) {
-        this.updateBody.withMultiAdStatus(multiAdStatus);
-        return this;
-    }
-
-    public NetAppAccountImpl withLdapConfiguration(LdapConfigurationPatch ldapConfiguration) {
-        this.updateBody.withLdapConfiguration(ldapConfiguration);
-        return this;
     }
 
     private boolean isInCreateMode() {

@@ -13,8 +13,10 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,8 +35,11 @@ import java.util.stream.Stream;
 public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> whisperTranscriptionParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        // gpt-realtime uses WHISPER_1, which the 2026-04-10 service does not emit
+        // transcription.completed events for; restrict it to the GA version. gpt-4.1
+        // uses AZURE_SPEECH, which works on both API versions.
+        return Stream.concat(Stream.of(Arguments.of("gpt-realtime", API_VERSIONS[0])),
+            Arrays.stream(API_VERSIONS).map(v -> Arguments.of("gpt-4.1", v)));
     }
 
     @ParameterizedTest
@@ -50,17 +55,19 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
         AtomicReference<String> transcriptText = new AtomicReference<>("");
         CountDownLatch transcriptionLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
                 .setInputAudioFormat(InputAudioFormat.PCM16)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED) {
@@ -89,23 +96,26 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = transcriptionLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             Assertions.assertTrue(received, "Should receive transcription within timeout");
             Assertions.assertTrue(transcriptionReceived.get(), "Should receive transcription completed event");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
     static Stream<Arguments> gpt4oTranscribeParams() {
+        // gpt-4o-transcribe and gpt-4o-mini-transcribe do not emit transcription.completed
+        // events on the 2026-04-10 service; restrict to the GA version.
         return crossProduct(new String[] { "gpt-4o-transcribe", "gpt-4o-mini-transcribe" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+            new String[] { API_VERSIONS[0] });
     }
 
     @ParameterizedTest
@@ -113,7 +123,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testInputAudioTranscriptionWithGpt4oTranscribe(String transcriptionModel, String apiVersion)
         throws InterruptedException, IOException {
-        String model = "gpt-4o-realtime-preview";
+        String model = "gpt-realtime";
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
@@ -122,6 +132,8 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
         AtomicReference<String> transcriptText = new AtomicReference<>("");
         CountDownLatch transcriptionLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             AudioInputTranscriptionOptionsModel transcriptionOptionsModel
                 = AudioInputTranscriptionOptionsModel.fromString(transcriptionModel);
@@ -129,11 +141,11 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setInputAudioTranscription(
                 new AudioInputTranscriptionOptions(transcriptionOptionsModel).setLanguage("en-US"));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED) {
@@ -162,8 +174,8 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean received = transcriptionLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -175,10 +187,11 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
                 transcriptText.get().toLowerCase().contains("largest")
                     || transcriptText.get().toLowerCase().contains("lake"),
                 "Transcript should contain 'largest' or 'lake', got: " + transcriptText.get());
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 }

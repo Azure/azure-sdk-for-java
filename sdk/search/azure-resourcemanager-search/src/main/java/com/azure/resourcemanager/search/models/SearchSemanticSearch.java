@@ -8,25 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Sets options that control the availability of semantic search. This configuration is only possible for certain Azure
- * AI Search SKUs in certain locations.
+ * Specifies the availability and billing plan for semantic search on the Azure AI Search service. This configuration is
+ * only available for certain pricing tiers in certain regions.
  */
 public final class SearchSemanticSearch extends ExpandableStringEnum<SearchSemanticSearch> {
     /**
-     * Indicates that semantic reranker is disabled for the search service. This is the default.
+     * Indicates that semantic reranker is disabled for the search service.
      */
     public static final SearchSemanticSearch DISABLED = fromString("disabled");
 
     /**
      * Enables semantic reranker on a search service and indicates that it is to be used within the limits of the free
      * plan. The free plan would cap the volume of semantic ranking requests and is offered at no extra charge. This is
-     * the default for newly provisioned search services.
+     * the default for newly provisioned search services. This is the default.
      */
     public static final SearchSemanticSearch FREE = fromString("free");
 
     /**
-     * Enables semantic reranker on a search service as a billable feature, with higher throughput and volume of
-     * semantically reranked queries.
+     * Enables semantic reranker on a search service as a billable feature after the free quota is exhausted, with
+     * higher throughput and volume of semantically reranked queries.
      */
     public static final SearchSemanticSearch STANDARD = fromString("standard");
 

@@ -44,7 +44,18 @@ param(
   [string[]]$ArtifactIds,
   [string]$ServiceDirectoryName,
   [string]$BranchName,
-  [string]$GroupId = 'com.azure'
+  [string]$GroupId = 'com.azure',
+  # When set, creates patch branches from the current branch instead of remote main.
+  [switch]$UseCurrentBranch,
+  # Optional map of artifactId → version for sibling artifacts being patched in the same run.
+  # Passed to GeneratePatch so changelogs show the correct version for sibling dependencies.
+  [hashtable]$PatchVersionOverrides = @{},
+  # Optional captured current pom.xml version for the (single) artifact being patched. The orchestrator
+  # (Generate-Patches-For-Automatic-Releases.ps1) reads each pom version up-front BEFORE any sibling
+  # iteration mutates pom.xml files via update_versions.py, then passes that original value here so
+  # GeneratePatch's reset gate ($currentPomFileVersion -ne $releaseVersion) sees the true pre-patch
+  # version and the source-reset block executes as expected.
+  [string]$CurrentPomFileVersion
 )
 
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -83,11 +94,27 @@ if(!$BranchName) {
 
 Write-Output "Branch Name is: $BranchName"
 
+# Normalize version_client.txt so non-patched in-group dependencies resolve to GA versions.
+$patchedArtifactNames = $ArtifactIds | ForEach-Object { "${GroupId}:$_" }
+$patchedPomPaths = @()
+if ($ServiceDirectoryName) {
+    foreach ($artifactId in $ArtifactIds) {
+        $pomPath = Join-Path $RepoRoot "sdk" $ServiceDirectoryName $artifactId "pom.xml"
+        if (Test-Path $pomPath) { $patchedPomPaths += $pomPath }
+    }
+}
+if ($patchedPomPaths.Count -gt 0) {
+    NormalizeVersionFileForPatching -PatchedArtifactNames $patchedArtifactNames -PatchedPomFilePaths $patchedPomPaths
+}
+
 foreach ($artifactId in $ArtifactIds) {
     $patchInfo = [ArtifactPatchInfo]::new()
     $patchInfo.ArtifactId = $artifactId
     $patchInfo.ServiceDirectoryName = $ServiceDirectoryName
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
+    if (-not [string]::IsNullOrWhiteSpace($CurrentPomFileVersion)) {
+        $patchInfo.CurrentPomFileVersion = $CurrentPomFileVersion
+    }
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
     #TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }
 
