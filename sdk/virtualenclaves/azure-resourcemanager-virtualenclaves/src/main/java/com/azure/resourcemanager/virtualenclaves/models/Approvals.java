@@ -92,7 +92,7 @@ public interface Approvals {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse notifyInitiator(String resourceUri, String approvalName, ApprovalActionRequest body);
 
@@ -106,7 +106,7 @@ public interface Approvals {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response body after handling of approvalCallbackRequest.
      */
     ApprovalActionResponse notifyInitiator(String resourceUri, String approvalName, ApprovalActionRequest body,
         Context context);

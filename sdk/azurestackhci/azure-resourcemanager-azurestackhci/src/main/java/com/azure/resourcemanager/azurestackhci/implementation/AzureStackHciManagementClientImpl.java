@@ -38,6 +38,7 @@ import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SecuritySettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.SkusClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateRunsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.UpdateSummariesOperationGroupsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdateSummariesOperationsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.UpdatesClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ValidatedSolutionRecipesClient;
@@ -308,6 +309,20 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
     }
 
     /**
+     * The UpdateSummariesOperationGroupsClient object to access its operations.
+     */
+    private final UpdateSummariesOperationGroupsClient updateSummariesOperationGroups;
+
+    /**
+     * Gets the UpdateSummariesOperationGroupsClient object to access its operations.
+     * 
+     * @return the UpdateSummariesOperationGroupsClient object.
+     */
+    public UpdateSummariesOperationGroupsClient getUpdateSummariesOperationGroups() {
+        return this.updateSummariesOperationGroups;
+    }
+
+    /**
      * The ValidatedSolutionRecipesClient object to access its operations.
      */
     private final ValidatedSolutionRecipesClient validatedSolutionRecipes;
@@ -352,7 +367,7 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-02-01";
+        this.apiVersion = "2026-04-30";
         this.operations = new OperationsClientImpl(this);
         this.arcSettings = new ArcSettingsClientImpl(this);
         this.offers = new OffersClientImpl(this);
@@ -365,6 +380,7 @@ public final class AzureStackHciManagementClientImpl implements AzureStackHciMan
         this.skus = new SkusClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.updates = new UpdatesClientImpl(this);
+        this.updateSummariesOperationGroups = new UpdateSummariesOperationGroupsClientImpl(this);
         this.validatedSolutionRecipes = new ValidatedSolutionRecipesClientImpl(this);
         this.updateSummariesOperations = new UpdateSummariesOperationsClientImpl(this);
     }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementT
  */
 public final class ProtectionContainersRegisterSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureStorage/ProtectionContainers_Register.json
+     * x-ms-original-file: 2026-01-31-preview/AzureStorage/ProtectionContainers_Register.json
      */
     /**
      * Sample code: RegisterAzure Storage ProtectionContainers.

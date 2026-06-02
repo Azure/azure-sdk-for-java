@@ -5,6 +5,7 @@ package com.azure.ai.agents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -28,7 +29,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
      * Conversation items to be stored in memory.
      */
     @Generated
-    private List<InputItem> items;
+    private List<BinaryData> items;
 
     /*
      * The unique ID of the previous update request, enabling incremental memory updates from where the last operation
@@ -72,7 +73,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
      * @return the items value.
      */
     @Generated
-    public List<InputItem> getItems() {
+    public List<BinaryData> getItems() {
         return this.items;
     }
 
@@ -83,7 +84,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
      * @return the UpdateMemoriesRequest object itself.
      */
     @Generated
-    public UpdateMemoriesRequest setItems(List<InputItem> items) {
+    public UpdateMemoriesRequest setItems(List<BinaryData> items) {
         this.items = items;
         return this;
     }
@@ -148,7 +149,13 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("scope", this.scope);
-        jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("items", this.items, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("previous_update_id", this.previousUpdateId);
         jsonWriter.writeNumberField("update_delay", this.updateDelay);
         return jsonWriter.writeEndObject();
@@ -167,7 +174,7 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
     public static UpdateMemoriesRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String scope = null;
-            List<InputItem> items = null;
+            List<BinaryData> items = null;
             String previousUpdateId = null;
             Integer updateDelay = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -176,7 +183,8 @@ public final class UpdateMemoriesRequest implements JsonSerializable<UpdateMemor
                 if ("scope".equals(fieldName)) {
                     scope = reader.getString();
                 } else if ("items".equals(fieldName)) {
-                    items = reader.readArray(reader1 -> InputItem.fromJson(reader1));
+                    items = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("previous_update_id".equals(fieldName)) {
                     previousUpdateId = reader.getString();
                 } else if ("update_delay".equals(fieldName)) {

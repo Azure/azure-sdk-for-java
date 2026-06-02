@@ -602,8 +602,9 @@ public final class RntbdConstants {
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
-        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
         PopulateQueryAdvice((short) 0x00DA, RntbdTokenType.Byte, false),
+        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
+        WorkloadId((short)0x00DC, RntbdTokenType.Byte, false),
         HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
         // QueryPlan headers for proxy — IDs match server-side RntbdConstants.cs (ADO PR 1982503)
         SupportedQueryFeatures((short) 0x00FF, RntbdTokenType.String, false),

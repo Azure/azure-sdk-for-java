@@ -61,18 +61,6 @@ public final class KnowledgeBaseMessage implements JsonSerializable<KnowledgeBas
     }
 
     /**
-     * Set the role property: The role of the tool response.
-     *
-     * @param role the role value to set.
-     * @return the KnowledgeBaseMessage object itself.
-     */
-    @Generated
-    public KnowledgeBaseMessage setRole(String role) {
-        this.role = role;
-        return this;
-    }
-
-    /**
      * Get the content property: The content of the message.
      *
      * @return the content value.
@@ -123,5 +111,17 @@ public final class KnowledgeBaseMessage implements JsonSerializable<KnowledgeBas
             deserializedKnowledgeBaseMessage.role = role;
             return deserializedKnowledgeBaseMessage;
         });
+    }
+
+    /**
+     * Set the role property: The role of the tool response.
+     *
+     * @param role the role value to set.
+     * @return the KnowledgeBaseMessage object itself.
+     */
+    @Generated
+    public KnowledgeBaseMessage setRole(String role) {
+        this.role = role;
+        return this;
     }
 }

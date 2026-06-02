@@ -60,27 +60,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     @Generated
     private Float weight;
 
-    /*
-     * The threshold used for vector queries. Note this can only be set if all 'fields' use the same similarity metric.
-     */
-    @Generated
-    private VectorThreshold threshold;
-
-    /*
-     * The OData filter expression to apply to this specific vector query. If no filter expression is defined at the
-     * vector level, the expression defined in the top level filter parameter is used instead.
-     */
-    @Generated
-    private String filterOverride;
-
-    /*
-     * Controls how many vectors can be matched from each document in a vector search query. Setting it to 1 ensures at
-     * most one vector per document is matched, guaranteeing results come from distinct documents. Setting it to 0
-     * (unlimited) allows multiple relevant vectors from the same document to be matched. Default is 0.
-     */
-    @Generated
-    private Integer perDocumentVectorLimit;
-
     /**
      * Creates an instance of VectorQuery class.
      */
@@ -209,84 +188,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     }
 
     /**
-     * Get the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
-     * the same similarity metric.
-     *
-     * @return the threshold value.
-     */
-    @Generated
-    public VectorThreshold getThreshold() {
-        return this.threshold;
-    }
-
-    /**
-     * Set the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
-     * the same similarity metric.
-     *
-     * @param threshold the threshold value to set.
-     * @return the VectorQuery object itself.
-     */
-    @Generated
-    public VectorQuery setThreshold(VectorThreshold threshold) {
-        this.threshold = threshold;
-        return this;
-    }
-
-    /**
-     * Get the filterOverride property: The OData filter expression to apply to this specific vector query. If no filter
-     * expression is defined at the vector level, the expression defined in the top level filter parameter is used
-     * instead.
-     *
-     * @return the filterOverride value.
-     */
-    @Generated
-    public String getFilterOverride() {
-        return this.filterOverride;
-    }
-
-    /**
-     * Set the filterOverride property: The OData filter expression to apply to this specific vector query. If no filter
-     * expression is defined at the vector level, the expression defined in the top level filter parameter is used
-     * instead.
-     *
-     * @param filterOverride the filterOverride value to set.
-     * @return the VectorQuery object itself.
-     */
-    @Generated
-    public VectorQuery setFilterOverride(String filterOverride) {
-        this.filterOverride = filterOverride;
-        return this;
-    }
-
-    /**
-     * Get the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
-     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
-     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
-     * matched. Default is 0.
-     *
-     * @return the perDocumentVectorLimit value.
-     */
-    @Generated
-    public Integer getPerDocumentVectorLimit() {
-        return this.perDocumentVectorLimit;
-    }
-
-    /**
-     * Set the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
-     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
-     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
-     * matched. Default is 0.
-     *
-     * @param perDocumentVectorLimit the perDocumentVectorLimit value to set.
-     * @return the VectorQuery object itself.
-     */
-    @Generated
-    public VectorQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
-        this.perDocumentVectorLimit = perDocumentVectorLimit;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -392,6 +293,105 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
     @Generated
     public VectorQuery setWeight(Float weight) {
         this.weight = weight;
+        return this;
+    }
+
+    /*
+     * The threshold used for vector queries. Note this can only be set if all 'fields' use the same similarity metric.
+     */
+    @Generated
+    private VectorThreshold threshold;
+
+    /*
+     * The OData filter expression to apply to this specific vector query. If no filter expression is defined at the
+     * vector level, the expression defined in the top level filter parameter is used instead.
+     */
+    @Generated
+    private String filterOverride;
+
+    /*
+     * Controls how many vectors can be matched from each document in a vector search query. Setting it to 1 ensures at
+     * most one vector per document is matched, guaranteeing results come from distinct documents. Setting it to 0
+     * (unlimited) allows multiple relevant vectors from the same document to be matched. Default is 0.
+     */
+    @Generated
+    private Integer perDocumentVectorLimit;
+
+    /**
+     * Get the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
+     * the same similarity metric.
+     *
+     * @return the threshold value.
+     */
+    @Generated
+    public VectorThreshold getThreshold() {
+        return this.threshold;
+    }
+
+    /**
+     * Set the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
+     * the same similarity metric.
+     *
+     * @param threshold the threshold value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setThreshold(VectorThreshold threshold) {
+        this.threshold = threshold;
+        return this;
+    }
+
+    /**
+     * Get the filterOverride property: The OData filter expression to apply to this specific vector query. If no filter
+     * expression is defined at the vector level, the expression defined in the top level filter parameter is used
+     * instead.
+     *
+     * @return the filterOverride value.
+     */
+    @Generated
+    public String getFilterOverride() {
+        return this.filterOverride;
+    }
+
+    /**
+     * Set the filterOverride property: The OData filter expression to apply to this specific vector query. If no filter
+     * expression is defined at the vector level, the expression defined in the top level filter parameter is used
+     * instead.
+     *
+     * @param filterOverride the filterOverride value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setFilterOverride(String filterOverride) {
+        this.filterOverride = filterOverride;
+        return this;
+    }
+
+    /**
+     * Get the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
+     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
+     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
+     * matched. Default is 0.
+     *
+     * @return the perDocumentVectorLimit value.
+     */
+    @Generated
+    public Integer getPerDocumentVectorLimit() {
+        return this.perDocumentVectorLimit;
+    }
+
+    /**
+     * Set the perDocumentVectorLimit property: Controls how many vectors can be matched from each document in a vector
+     * search query. Setting it to 1 ensures at most one vector per document is matched, guaranteeing results come from
+     * distinct documents. Setting it to 0 (unlimited) allows multiple relevant vectors from the same document to be
+     * matched. Default is 0.
+     *
+     * @param perDocumentVectorLimit the perDocumentVectorLimit value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        this.perDocumentVectorLimit = perDocumentVectorLimit;
         return this;
     }
 }

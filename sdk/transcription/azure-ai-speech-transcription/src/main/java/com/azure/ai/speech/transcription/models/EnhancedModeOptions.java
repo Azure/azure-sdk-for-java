@@ -44,7 +44,7 @@ public final class EnhancedModeOptions implements JsonSerializable<EnhancedModeO
     private List<String> prompts;
 
     /**
-     * Creates an instance of EnhancedModeOptions class with enabled set to true.
+     * Creates an instance of EnhancedModeOptions class with enhanced mode automatically enabled.
      */
     public EnhancedModeOptions() {
         this.enabled = true;

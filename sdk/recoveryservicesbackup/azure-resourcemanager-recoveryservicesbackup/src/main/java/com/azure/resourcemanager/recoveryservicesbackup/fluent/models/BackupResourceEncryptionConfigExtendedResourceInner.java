@@ -20,7 +20,7 @@ import java.util.Map;
 @Immutable
 public final class BackupResourceEncryptionConfigExtendedResourceInner extends ProxyResource {
     /*
-     * BackupResourceEncryptionConfigExtendedResource properties
+     * The properties of the backup resource encryption config extended resource
      */
     private BackupResourceEncryptionConfigExtended properties;
 
@@ -66,7 +66,7 @@ public final class BackupResourceEncryptionConfigExtendedResourceInner extends P
     }
 
     /**
-     * Get the properties property: BackupResourceEncryptionConfigExtendedResource properties.
+     * Get the properties property: The properties of the backup resource encryption config extended resource.
      * 
      * @return the properties value.
      */

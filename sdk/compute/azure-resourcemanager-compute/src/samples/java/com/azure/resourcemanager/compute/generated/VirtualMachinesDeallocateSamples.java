@@ -9,21 +9,22 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesDeallocateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Deallocate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_WithForceDeallocate.json
      */
     /**
-     * Sample code: VirtualMachine_Deallocate_MaximumSet_Gen.
+     * Sample code: VirtualMachine_Deallocate_WithForceDeallocate.
      * 
      * @param manager Entry point to ComputeManager.
      */
-    public static void virtualMachineDeallocateMaximumSetGen(com.azure.resourcemanager.compute.ComputeManager manager) {
+    public static void
+        virtualMachineDeallocateWithForceDeallocate(com.azure.resourcemanager.compute.ComputeManager manager) {
         manager.serviceClient()
             .getVirtualMachines()
-            .deallocate("rgcompute", "aaaaaaaaaa", true, com.azure.core.util.Context.NONE);
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", null, true, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Deallocate_MinimumSet_Gen.
@@ -33,6 +34,21 @@ public final class VirtualMachinesDeallocateSamples {
     public static void virtualMachineDeallocateMinimumSetGen(com.azure.resourcemanager.compute.ComputeManager manager) {
         manager.serviceClient()
             .getVirtualMachines()
-            .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_WithHibernation.json
+     */
+    /**
+     * Sample code: VirtualMachine_Deallocate_WithHibernation.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void
+        virtualMachineDeallocateWithHibernation(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachines()
+            .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", true, null, com.azure.core.util.Context.NONE);
     }
 }

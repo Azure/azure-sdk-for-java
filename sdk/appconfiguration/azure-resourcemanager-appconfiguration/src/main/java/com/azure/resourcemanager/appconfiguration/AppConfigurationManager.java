@@ -28,6 +28,7 @@ import com.azure.resourcemanager.appconfiguration.fluent.AppConfigurationClient;
 import com.azure.resourcemanager.appconfiguration.implementation.AppConfigurationClientBuilder;
 import com.azure.resourcemanager.appconfiguration.implementation.ConfigurationStoresImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.KeyValuesImpl;
+import com.azure.resourcemanager.appconfiguration.implementation.NetworkSecurityPerimeterConfigurationsImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.OperationsImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.PrivateLinkResourcesImpl;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.appconfiguration.implementation.ReplicasImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStores;
 import com.azure.resourcemanager.appconfiguration.models.KeyValues;
+import com.azure.resourcemanager.appconfiguration.models.NetworkSecurityPerimeterConfigurations;
 import com.azure.resourcemanager.appconfiguration.models.Operations;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.appconfiguration.models.PrivateLinkResources;
@@ -56,6 +58,8 @@ public final class AppConfigurationManager {
     private ConfigurationStores configurationStores;
 
     private PrivateEndpointConnections privateEndpointConnections;
+
+    private NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations;
 
     private PrivateLinkResources privateLinkResources;
 
@@ -305,6 +309,19 @@ public final class AppConfigurationManager {
                 = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkSecurityPerimeterConfigurations.
+     * 
+     * @return Resource collection API of NetworkSecurityPerimeterConfigurations.
+     */
+    public NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations() {
+        if (this.networkSecurityPerimeterConfigurations == null) {
+            this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsImpl(
+                clientObject.getNetworkSecurityPerimeterConfigurations(), this);
+        }
+        return networkSecurityPerimeterConfigurations;
     }
 
     /**

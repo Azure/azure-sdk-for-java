@@ -39,6 +39,7 @@ import com.azure.search.documents.testingmodels.HotelRoom;
 import com.azure.search.documents.testingmodels.VectorHotel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -252,42 +253,16 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             "1", "4");
     }
 
-    // a test that creates a hybrid search query with a vector search query and a regular search query, and utilizes the
-    // vector query filter override to filter the vector search results
     @Test
+    @Disabled("VectorQuery.setFilterOverride removed in 2026-04-01 API version")
     public void hybridSearchWithVectorFilterOverrideSync() {
-        // create a new index with a vector field
-        // create a hybrid search query with a vector search query and a regular search query
-        SearchOptions searchOptions = new SearchOptions().setSearchText("fancy")
-            .setFilter("Rating ge 3")
-            .setSelect("HotelId", "HotelName", "Rating")
-            .setVectorQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'"));
-
-        // run the hybrid search query
-        SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-        List<SearchResult> results = searchClient.search(searchOptions).stream().collect(Collectors.toList());
-
-        // check that the results are as expected
-        assertEquals(1, results.size());
-        assertEquals("1", results.get(0).getAdditionalProperties().get("HotelId"));
+        // Disabled: VectorQuery.setFilterOverride was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("VectorQuery.setFilterOverride removed in 2026-04-01 API version")
     public void hybridSearchWithVectorFilterOverrideAsync() {
-        // create a new index with a vector field
-        // create a hybrid search query with a vector search query and a regular search query
-        SearchOptions searchOptions = new SearchOptions().setSearchText("fancy")
-            .setFilter("Rating ge 3")
-            .setSelect("HotelId", "HotelName", "Rating")
-            .setVectorQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'"));
-
-        // run the hybrid search query
-        SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-        StepVerifier.create(searchClient.search(searchOptions).collectList()).assertNext(results -> {
-            // check that the results are as expected
-            assertEquals(1, results.size());
-            assertEquals("1", results.get(0).getAdditionalProperties().get("HotelId"));
-        }).verifyComplete();
+        // Disabled: VectorQuery.setFilterOverride was removed in the 2026-04-01 API version.
     }
 
     @Test
@@ -317,29 +292,15 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("VectorFilterMode.STRICT_POST_FILTER removed in 2026-04-01 API version")
     public void vectorSearchWithStrictPostFilterModeSync() {
-        SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-
-        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
-            .setVectorFilterMode(VectorFilterMode.STRICT_POST_FILTER)
-            .setSelect("HotelId", "HotelName");
-
-        List<SearchResult> results = searchClient.search(searchOptions).stream().collect(Collectors.toList());
-        assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "5", "1");
+        // Disabled: VectorFilterMode.STRICT_POST_FILTER is not supported in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("VectorFilterMode.STRICT_POST_FILTER removed in 2026-04-01 API version")
     public void vectorSearchWithStrictPostFilterModeAsync() {
-        SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-
-        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
-            .setVectorFilterMode(VectorFilterMode.STRICT_POST_FILTER)
-            .setSelect("HotelId", "HotelName");
-
-        StepVerifier.create(searchClient.search(searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
-                "3", "5", "1"))
-            .verifyComplete();
+        // Disabled: VectorFilterMode.STRICT_POST_FILTER is not supported in the 2026-04-01 API version.
     }
 
     private static VectorQuery createDescriptionVectorQuery() {

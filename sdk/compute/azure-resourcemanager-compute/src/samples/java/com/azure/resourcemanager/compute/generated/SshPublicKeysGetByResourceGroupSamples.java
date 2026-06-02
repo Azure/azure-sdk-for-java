@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class SshPublicKeysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/sshPublicKeyExamples/SshPublicKey_Get.json
+     * x-ms-original-file: 2025-11-01/sshPublicKeyExamples/SshPublicKey_Get.json
      */
     /**
      * Sample code: Get an ssh public key.

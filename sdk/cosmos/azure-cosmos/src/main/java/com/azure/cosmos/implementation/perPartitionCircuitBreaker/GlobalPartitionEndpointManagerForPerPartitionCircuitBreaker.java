@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -22,10 +23,9 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
@@ -56,9 +56,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final ConcurrentHashMap<RegionalRoutingContext, String> regionalRoutingContextToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final AtomicBoolean isPartitionRecoveryTaskRunning = new AtomicBoolean(false);
-    private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle(
-        "partition-availability-staleness-check",
-        true);
+    private final AtomicReference<Disposable> partitionRecoveryDisposable = new AtomicReference<>();
 
     public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo = new ConcurrentHashMap<>();
@@ -73,8 +71,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     }
 
     public void init() {
-        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled() && !this.isPartitionRecoveryTaskRunning.get()) {
-            this.updateStaleLocationInfo().subscribeOn(this.partitionRecoveryScheduler).doOnSubscribe(ignore -> this.isPartitionRecoveryTaskRunning.set(true)).subscribe();
+        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()
+            && this.isPartitionRecoveryTaskRunning.compareAndSet(false, true)) {
+
+            this.partitionRecoveryDisposable.set(this.updateStaleLocationInfo()
+                .subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_CHECK_BOUNDED_ELASTIC)
+                .subscribe());
         }
     }
 
@@ -449,7 +451,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     @Override
     public void close() {
         this.isClosed.set(true);
-        this.partitionRecoveryScheduler.dispose();
+        Disposable disposable = this.partitionRecoveryDisposable.getAndSet(null);
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 
     private class PartitionLevelLocationUnavailabilityInfo {

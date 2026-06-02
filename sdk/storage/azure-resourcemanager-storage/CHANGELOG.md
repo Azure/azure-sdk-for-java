@@ -1,14 +1,50 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
+## 2.57.0 (2026-06-01)
 
 ### Features Added
 
-### Breaking Changes
+* `models.AdvancedPlatformMetricsFilterType` was added
 
-### Bugs Fixed
+* `models.AdvancedPlatformMetricsRuleConfig` was added
+
+* `models.MetricsEmitted` was added
+
+* `models.AdvancedPlatformMetricsRuleType` was added
+
+* `models.AdvancedPlatformMetricsRuleProperties` was added
+
+#### `models.FileShareLimits` was modified
+
+* `guardrailIOScalar()` was added
+* `guardrailBandwidthScalar()` was added
+
+## 2.56.0 (2026-05-07)
 
 ### Other Changes
+
+- Updated `api-version` to `2025-08-01`.
+
+## 2.55.5 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.7` to version `2.53.9`.
+
+## 2.55.4 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.6` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-resources` from `2.53.5` to version `2.54.0`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.5` to version `2.53.7`.
+
 
 ## 2.55.3 (2026-01-29)
 

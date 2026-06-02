@@ -269,7 +269,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
 
         DiagnosticSettingsResourceInner inner = setting.innerModel();
         inner.withLogs(new ArrayList<>()).logs().add(new LogSettings().withEnabled(true).withCategoryGroup("audit"));
-        monitorManager.serviceClient()
+        monitorManager.alertRuleClient()
             .getDiagnosticSettingsOperations()
             .createOrUpdate(vault.id(), setting.name(), inner);
 
@@ -343,7 +343,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
             .add(new LogSettings().withCategoryGroup("audit")
                 .withEnabled(true)
                 .withRetentionPolicy(new RetentionPolicy().withEnabled(false)));
-        monitorManager.serviceClient()
+        monitorManager.alertRuleClient()
             .getDiagnosticSettingsOperations()
             .createOrUpdate(wpsResource.id(), dsName, inner);
 

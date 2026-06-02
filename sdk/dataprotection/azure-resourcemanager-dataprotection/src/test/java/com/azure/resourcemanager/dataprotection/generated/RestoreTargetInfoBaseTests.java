@@ -13,18 +13,18 @@ public final class RestoreTargetInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreTargetInfoBase model = BinaryData.fromString(
-            "{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"ymddys\"}")
+            "{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"hfmvfaxkffe\"}")
             .toObject(RestoreTargetInfoBase.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("ymddys", model.restoreLocation());
+        Assertions.assertEquals("hfmvfaxkffe", model.restoreLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RestoreTargetInfoBase model = new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-            .withRestoreLocation("ymddys");
+            .withRestoreLocation("hfmvfaxkffe");
         model = BinaryData.fromObject(model).toObject(RestoreTargetInfoBase.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("ymddys", model.restoreLocation());
+        Assertions.assertEquals("hfmvfaxkffe", model.restoreLocation());
     }
 }

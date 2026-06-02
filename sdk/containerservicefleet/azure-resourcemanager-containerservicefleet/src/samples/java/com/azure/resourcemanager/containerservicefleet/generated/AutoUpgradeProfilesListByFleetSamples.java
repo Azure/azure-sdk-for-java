@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class AutoUpgradeProfilesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/AutoUpgradeProfiles_ListByFleet.json
+     * x-ms-original-file: 2026-03-02-preview/AutoUpgradeProfiles_ListByFleet.json
      */
     /**
      * Sample code: Lists the AutoUpgradeProfile resources by fleet.

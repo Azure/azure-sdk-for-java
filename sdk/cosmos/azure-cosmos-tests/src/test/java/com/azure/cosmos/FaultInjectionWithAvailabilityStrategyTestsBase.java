@@ -22,6 +22,7 @@ import org.testng.SkipException;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -31,6 +32,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
@@ -53,6 +55,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -192,6 +195,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     private String SECOND_REGION_NAME = null;
 
     private List<String> writeableRegions;
+    private List<String> nonCanonicalWriteableRegions;
 
     private String testDatabaseId;
     private String testContainerId;
@@ -234,6 +238,12 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             this.writeableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
+
+            // Build non-canonical (space-stripped) region names for normalization tests
+            this.nonCanonicalWriteableRegions = new ArrayList<>();
+            for (String region : this.writeableRegions) {
+                this.nonCanonicalWriteableRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
+            }
 
             FIRST_REGION_NAME = this.writeableRegions.get(0).toLowerCase(Locale.ROOT);
             SECOND_REGION_NAME = this.writeableRegions.get(1).toLowerCase(Locale.ROOT);
@@ -338,6 +348,111 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             safeClose(dummyClient);
         }
     }
+
+    @Test(groups = {"fi-multi-master"})
+    public void readAfterCreation_nonCanonicalPreferredRegions_shouldRouteCorrectly() {
+        // Verify that a client built with space-stripped preferred regions (e.g., "westus3")
+        // routes correctly with availability strategy — fault injection in first region
+        // should cause failover to second region via hedging
+
+        CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(10))
+                .enable(true)
+                .availabilityStrategy(eagerThresholdAvailabilityStrategy)
+                .build();
+
+        CosmosAsyncClient clientWithNonCanonicalRegions = null;
+
+        try {
+            clientWithNonCanonicalRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .preferredRegions(this.nonCanonicalWriteableRegions)
+                .multipleWriteRegionsEnabled(true)
+                .directMode()
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container = clientWithNonCanonicalRegions
+                .getDatabase(this.testDatabaseId)
+                .getContainer(this.testContainerId);
+
+            ObjectNode testItem = Utils.getSimpleObjectMapper().createObjectNode();
+            testItem.put("id", UUID.randomUUID().toString());
+            testItem.put("mypk", testItem.get("id").asText());
+
+            CosmosItemResponse<ObjectNode> createResponse = container
+                .createItem(testItem, new PartitionKey(testItem.get("mypk").asText()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(201);
+
+            // Step 1: Read without fault injection — should contact first preferred region
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+            readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            CosmosItemResponse<ObjectNode> readResponse = container
+                .readItem(testItem.get("id").asText(), new PartitionKey(testItem.get("mypk").asText()), readOptions, ObjectNode.class)
+                .block();
+
+            assertThat(readResponse).isNotNull();
+            assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+            CosmosDiagnosticsContext diagnosticsContext = readResponse.getDiagnostics().getDiagnosticsContext();
+            assertThat(diagnosticsContext).isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames())
+                .as("Without faults, should contact first preferred region")
+                .isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames().contains(FIRST_REGION_NAME))
+                .as("Without faults, should contact first preferred region")
+                .isTrue();
+
+            // Step 2: Inject 503 into first region — availability strategy should hedge to second region
+            String ruleName = "nonCanonical-503-" + UUID.randomUUID();
+            FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .delay(Duration.ofMillis(5))
+                .build();
+
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder(ruleName)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .region(this.writeableRegions.get(0))
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build())
+                .result(serviceUnavailableResult)
+                .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
+
+            try {
+                CosmosItemResponse<ObjectNode> readWithFaultResponse = container
+                    .readItem(testItem.get("id").asText(), new PartitionKey(testItem.get("mypk").asText()), readOptions, ObjectNode.class)
+                    .block();
+
+                assertThat(readWithFaultResponse).isNotNull();
+                assertThat(readWithFaultResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext faultDiagnostics = readWithFaultResponse.getDiagnostics().getDiagnosticsContext();
+                assertThat(faultDiagnostics).isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames())
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames().contains(SECOND_REGION_NAME))
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .isTrue();
+            } finally {
+                faultRule.disable();
+            }
+        } finally {
+            safeClose(clientWithNonCanonicalRegions);
+        }
+    }
+
     @AfterClass(groups = { "fi-multi-master", "fi-thinclient-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
@@ -3887,6 +4002,315 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         return addBooleanFlagsToAllTestConfigs(testConfigs_readManyAfterCreation);
     }
 
+    private CosmosResponseWrapper readManyByPartitionKeysCore(
+        ItemOperationInvocationParameters params,
+        int numberOfOtherDocumentsWithSamePk
+    ) {
+
+        List<PartitionKey> pkValues = new ArrayList<>();
+        pkValues.add(new PartitionKey(params.idAndPkValuePair.getRight()));
+
+        CosmosReadManyByPartitionKeysRequestOptions options = new CosmosReadManyByPartitionKeysRequestOptions();
+
+        CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
+            .CosmosItemRequestOptionsHelper
+            .getCosmosItemRequestOptionsAccessor()
+            .getEndToEndOperationLatencyPolicyConfig(params.options);
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+        List<FeedResponse<ObjectNode>> returnedPages;
+        // Let CosmosException propagate to execute()'s catch block — it handles
+        // status code + sub-status code validation and diagnostics context extraction
+        // correctly for error cases (the response-level validation path passes null
+        // for sub-status which breaks validators like validateStatusCodeIsServiceUnavailable).
+        returnedPages = params.container
+            .readManyByPartitionKeys(pkValues, options, ObjectNode.class)
+            .byPage()
+            .collectList()
+            .block();
+
+        ArrayList<CosmosDiagnosticsContext> foundCtxs = new ArrayList<>();
+
+        if (returnedPages == null || returnedPages.isEmpty()) {
+            return new CosmosResponseWrapper(
+                null,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                0L);
+        }
+
+        long totalRecordCount = 0L;
+        for (FeedResponse<ObjectNode> page : returnedPages) {
+            if (page.getCosmosDiagnostics() != null) {
+                foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
+            } else {
+                foundCtxs.add(null);
+            }
+
+            if (page.getResults() != null && page.getResults().size() > 0) {
+                totalRecordCount += page.getResults().size();
+            }
+        }
+
+        return new CosmosResponseWrapper(
+            foundCtxs.toArray(new CosmosDiagnosticsContext[0]),
+            HttpConstants.StatusCodes.OK,
+            HttpConstants.SubStatusCodes.UNKNOWN,
+            totalRecordCount);
+    }
+
+    @DataProvider(name = "testConfigs_readManyByPartitionKeysAfterCreation")
+    public Object[][] testConfigs_readManyByPartitionKeysAfterCreation() {
+
+        final int ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE = 10;
+        final int NO_OTHER_DOCS_WITH_SAME_PK = 0;
+        final int NO_OTHER_DOCS_WITH_SAME_ID = 0;
+        final int ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION = PHYSICAL_PARTITION_COUNT * 10;
+        final int SINGLE_REGION = 1;
+        final int TWO_REGIONS = 2;
+
+        BiConsumer<CosmosResponseWrapper, Long> validateExpectedRecordCount = (response, expectedRecordCount) -> {
+            if (expectedRecordCount != null) {
+                assertThat(response).isNotNull();
+                assertThat(response.getTotalRecordCount()).isNotNull();
+                assertThat(response.getTotalRecordCount()).isEqualTo(expectedRecordCount);
+            }
+        };
+
+        Consumer<CosmosResponseWrapper> validateExactlyOneRecordReturned =
+            (response) -> validateExpectedRecordCount.accept(response, 1L);
+
+        Consumer<CosmosResponseWrapper> validateAllRecordsSamePartitionReturned =
+            (response) -> validateExpectedRecordCount.accept(
+                response,
+                1L + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
+            (ctx, expectedNumberOfRegionsContacted) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxSingleRegion =
+            (ctx) -> validateCtxRegions.accept(ctx, SINGLE_REGION);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
+            (ctx) -> validateCtxRegions.accept(ctx, TWO_REGIONS);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOnlyFeedResponses =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                }
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper>
+            readManyByPkSinglePartition = (inputParams) ->
+                readManyByPartitionKeysCore(inputParams, ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper>
+            readManyByPkSingleDoc = (inputParams) ->
+                readManyByPartitionKeysCore(inputParams, NO_OTHER_DOCS_WITH_SAME_PK);
+
+        Object[][] testConfigs = new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout
+            //    Availability Strategy used
+            //    Region switch hint
+            //    ConnectionMode
+            //    readManyByPartitionKeys operation callback
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    Expected number of DiagnosticsContext instances
+            //    Diagnostics context validation callback applied to the first DiagnosticsContext
+            //    Diagnostics context validation callback applied to all other DiagnosticsContext
+            //    Consumer<CosmosResponseWrapper> - callback to validate the response
+            //    numberOfOtherDocumentsWithSameId
+            //    numberOfOtherDocumentsWithSamePk
+            // },
+
+            // readManyByPartitionKeys - single partition, no failures, no availability strategy
+            new Object[] {
+                "ReadManyByPk_SinglePartition_AllGood_NoAvailabilityStrategy",
+                ONE_SECOND_DURATION,
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - single doc, no failures, no availability strategy
+            new Object[] {
+                "ReadManyByPk_SingleDoc_AllGood_NoAvailabilityStrategy",
+                ONE_SECOND_DURATION,
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSingleDoc,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // readManyByPartitionKeys - 408 timeout in first region, eager availability strategy
+            // Should succeed via hedging to second region
+            new Object[] {
+                "ReadManyByPk_SinglePartition_408_FirstRegionOnly_EagerAvailabilityStrategy",
+                THREE_SECOND_DURATION,
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 404/1002 in first region, remote preferred, reluctant strategy
+            // Client retry policy should failover to second region before hedging kicks in
+            new Object[] {
+                "ReadManyByPk_SinglePartition_404-1002_RemotePreferred_FirstRegionOnly_ReluctantAvailabilityStrategy",
+                Duration.ofSeconds(10),
+                reluctantThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 429/3200 in first region, default availability strategy
+            // Should succeed via hedging to second region
+            new Object[] {
+                "ReadManyByPk_SinglePartition_429-3200_FirstRegionOnly_DefaultAvailabilityStrategy",
+                THREE_SECOND_DURATION,
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectRequestRateTooLargeIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 429/3200 in first region, no availability strategy
+            // Should time out since no hedging and 429 retries locally until timeout
+            new Object[] {
+                "ReadManyByPk_SinglePartition_429-3200_FirstRegionOnly_NoAvailabilityStrategy",
+                THREE_SECOND_DURATION,
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectRequestRateTooLargeIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                null,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 503 in first region, no availability strategy
+            // ClientRetryPolicy will failover to second region
+            new Object[] {
+                "ReadManyByPk_SinglePartition_503_FirstRegionOnly_NoAvailabilityStrategy",
+                Duration.ofSeconds(90),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 503 in all regions, eager availability strategy
+            // Both regions fail - should get 503
+            new Object[] {
+                "ReadManyByPk_SinglePartition_503_AllRegions_EagerAvailabilityStrategy",
+                Duration.ofSeconds(10),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions
+                ),
+                null,
+                null,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+        };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs);
+    }
 
 
     private CosmosResponseWrapper readAllReturnsTotalRecordCountCore(

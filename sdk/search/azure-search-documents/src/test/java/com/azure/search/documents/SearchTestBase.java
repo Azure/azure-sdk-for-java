@@ -103,6 +103,13 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String RESOURCE_GROUP
         = Configuration.getGlobalConfiguration().get("SEARCH_RESOURCE_GROUP", "resource-group");
 
+    protected static final String FABRIC_WORKSPACE_ID
+        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_WORKSPACE_ID", "<FABRIC_WORKSPACE_ID>");
+    protected static final String FABRIC_ONTOLOGY_ID
+        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_ONTOLOGY_ID", "<FABRIC_ONTOLOGY_ID>");
+    protected static final String FABRIC_DATA_AGENT_ID
+        = Configuration.getGlobalConfiguration().get("SEARCH_FABRIC_DATA_AGENT_ID", "<FABRIC_DATA_AGENT_ID>");
+
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     private static final String FAKE_DESCRIPTION = "Some data source";
@@ -251,6 +258,21 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
+    protected <T> SearchIndexingBufferedSenderBuilder<T> getBufferedSenderBuilder(String indexName, boolean isSync) {
+        SearchIndexingBufferedSenderBuilder<T> builder
+            = new SearchIndexingBufferedSenderBuilder<T>().endpoint(SEARCH_ENDPOINT)
+                .indexName(indexName)
+                .credential(getTestTokenCredential())
+                .httpClient(getHttpClient(interceptorManager, isSync))
+                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

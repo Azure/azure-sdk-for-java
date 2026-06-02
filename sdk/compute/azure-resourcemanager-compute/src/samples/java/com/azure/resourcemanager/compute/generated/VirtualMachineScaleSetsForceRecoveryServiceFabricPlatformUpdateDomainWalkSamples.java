@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpdateDomainWalkSamples {
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/
      * VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.json
      */
     /**
@@ -26,7 +26,7 @@ public final class VirtualMachineScaleSetsForceRecoveryServiceFabricPlatformUpda
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/virtualMachineScaleSetExamples/
+     * x-ms-original-file: 2025-11-01/virtualMachineScaleSetExamples/
      * VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.json
      */
     /**
