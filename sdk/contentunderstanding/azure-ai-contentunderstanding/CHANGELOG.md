@@ -1,14 +1,11 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2026-06-02)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- `DocumentSource` now parses polygons with any number of points (three or more pairs) instead of requiring exactly four, and supports the page-only `D(page)` form. When only a page number is available, `getPolygon()` and `getBoundingBox()` return `null`.
+- Added `Sample_Advanced_ContentSource` and `Sample_Advanced_ContentSourceAsync` samples demonstrating how to read document grounding sources and render field highlight overlays.
 
 ## 1.1.0-beta.1 (2026-05-01)
 
