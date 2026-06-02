@@ -4,11 +4,25 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- **WebRTC SDP negotiation** for browser/native WebRTC clients:
+  - New `ClientEventRtcCallSdpCreate` (`rtc.call.sdp.create`) to send an SDP offer with an optional initial `VoiceLiveSessionOptions`
+  - New `ServerEventRtcCallSdpCreated` (`rtc.call.sdp.created`) carrying the SDP answer and `rtcCallId`
+  - New `ServerEventRtcCallError` (`rtc.call.error`) with structured `RtcCallErrorDetails` (type/code/message) and originating operation
+- **Streaming input text** into a conversation item:
+  - New `ClientEventInputTextDelta` (`input_text.delta`) and `ClientEventInputTextDone` (`input_text.done`), each with optional `contentIndex`
+- **Output audio buffer playback lifecycle**:
+  - New `ServerEventOutputAudioBufferStarted` (`output_audio_buffer.started`) and `ServerEventOutputAudioBufferStopped` (`output_audio_buffer.stopped`), each exposing `responseId`
+- **Smart audio-based end-of-turn detection**: new `SmartEndOfTurnDetection` (`smart_end_of_turn_detection`) `EouDetection` variant with `thresholdLevel` and `timeoutMs`; new `EouDetectionModel.SMART_END_OF_TURN_DETECTION` value
+- **Echo cancellation reference source**: `AudioEchoCancellation` is now `@Fluent` and exposes `referenceSource` (new `EchoCancellationReferenceSource` enum with `SERVER` / `CLIENT`) and `channels` for stereo input where channel 1 is the client-supplied echo reference
+- **Azure realtime native voices**: new `AzureRealtimeNativeVoice` (type `azure-realtime-native`) and `AzureRealtimeNativeVoiceName` expandable enum (`AARTI`, `ANDREW`, `AVA`, `DENISE`, `DIYA`, `ELSA`, `FLORIAN`, `FRANCISCA`, `MEERA`, `XIAOXIAO`, `YUNXI`, `XIMENA`) for use with the `azure-realtime` model
+- **Parallel tool calls**: `VoiceLiveSessionOptions.setParallelToolCalls(Boolean)` / `isParallelToolCalls()` (and matching getter on `VoiceLiveSessionResponse`) to control whether the model may invoke tools in parallel
+- **Hosted agent invocation passthrough**:
+  - `ResponseCreateParams.setInvokeInput(Map<String, BinaryData>)` to attach input data for a hosted agent invocation on a single response request (preview)
+  - New `ServerEventResponseInvocationDelta` (`response.invocation.delta`) passes through non-speech SSE events from the hosted agent
 
 ### Other Changes
+
+- Regenerated against `2026-06-01-preview` VoiceLive TypeSpec. The default service API version used by `VoiceLiveClientBuilder` is unchanged (`V2026_04_10`, GA).
 
 ## 1.0.0 (2026-06-01)
 
