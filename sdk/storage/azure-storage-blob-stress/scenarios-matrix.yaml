@@ -108,6 +108,150 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation
+    crc64downloadstreamsm:
+      testScenario: downloadstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation and async client
+    crc64downloadstreamasyncsm:
+      testScenario: downloadstreamwithcrc64
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation and large payload
+    crc64downloadstreamlg:
+      testScenario: downloadstreamwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation, async client, and large payload
+    crc64downloadstreamasynclg:
+      testScenario: downloadstreamwithcrc64
+      sync: false
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation
+    crc64downloadcontentsm:
+      testScenario: downloadcontentwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation and async client
+    crc64downloadcontentasyncsm:
+      testScenario: downloadcontentwithcrc64
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation and large payload
+    crc64downloadcontentlg:
+      testScenario: downloadcontentwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation, async client, and large payload
+    crc64downloadcontentasynclg:
+      testScenario: downloadcontentwithcrc64
+      sync: false
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation
+    crc64downloadfilesm:
+      testScenario: downloadtofilewithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation and async client
+    crc64downloadfileasyncsm:
+      testScenario: downloadtofilewithcrc64
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation and multi-block payload
+    crc64downloadfilemd:
+      testScenario: downloadtofilewithcrc64
+      sync: true
+      sizeBytes: "16777216"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation, async client, and multi-block payload
+    crc64downloadfileasyncmd:
+      testScenario: downloadtofilewithcrc64
+      sync: false
+      sizeBytes: "16777216"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobInputStreamOptions with CRC64 validation
+    crc64inputstreamsm:
+      testScenario: openinputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobInputStreamOptions with CRC64 validation and large payload
+    crc64inputstreamlg:
+      testScenario: openinputstreamwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobSeekableByteChannelReadOptions with CRC64 validation
+    crc64bytechannelreadsm:
+      testScenario: openseekablebytechannelreadwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobSeekableByteChannelReadOptions with CRC64 validation and large payload
+    crc64bytechannelreadlg:
+      testScenario: openseekablebytechannelreadwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
     # this test uploads 1KB (1024 bytes) to append blob, no chunking
     appendblocksmall:
       testScenario: appendblock
