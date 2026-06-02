@@ -5,8 +5,9 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentSessionFilesImpl;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.SessionDirectoryListResponse;
-import com.azure.ai.agents.models.SessionFileWriteResponse;
+import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.SessionDirectoryEntry;
+import com.azure.ai.agents.models.SessionFileWriteResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -16,6 +17,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -48,7 +50,10 @@ public final class AgentSessionFilesClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -71,7 +76,7 @@ public final class AgentSessionFilesClient {
      * </pre>
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -83,9 +88,10 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String sessionId, String path,
+    public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String agentSessionId, String path,
         BinaryData content, RequestOptions requestOptions) {
-        return this.serviceClient.uploadSessionFileWithResponse(agentName, sessionId, path, content, requestOptions);
+        return this.serviceClient.uploadSessionFileWithResponse(agentName, agentSessionId, path, content,
+            requestOptions);
     }
 
     /**
@@ -96,7 +102,10 @@ public final class AgentSessionFilesClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -108,7 +117,7 @@ public final class AgentSessionFilesClient {
      * </pre>
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -119,9 +128,9 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String sessionId, String path,
+    public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
-        return this.serviceClient.downloadSessionFileWithResponse(agentName, sessionId, path, requestOptions);
+        return this.serviceClient.downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
     }
 
     /**
@@ -131,8 +140,8 @@ public final class AgentSessionFilesClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. Defaults
-     * to false.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. The
+     * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -141,12 +150,15 @@ public final class AgentSessionFilesClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -157,9 +169,9 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSessionFileWithResponse(String agentName, String sessionId, String path,
+    public Response<Void> deleteSessionFileWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteSessionFileWithResponse(agentName, sessionId, path, requestOptions);
+        return this.serviceClient.deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
     }
 
     /**
@@ -167,38 +179,7 @@ public final class AgentSessionFilesClient {
      * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The destination file path within the sandbox, relative to the session home directory.
-     * @param content The content parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from uploading a file to a session sandbox.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionFileWriteResponse uploadSessionFile(String agentName, String sessionId, String path,
-        BinaryData content, AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for uploadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return uploadSessionFileWithResponse(agentName, sessionId, path, content, requestOptions).getValue()
-            .toObject(SessionFileWriteResponse.class);
-    }
-
-    /**
-     * Upload a file to the session sandbox via binary stream.
-     * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,47 +192,19 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionFileWriteResponse uploadSessionFile(String agentName, String sessionId, String path,
+    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path,
         BinaryData content) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return uploadSessionFileWithResponse(agentName, sessionId, path, content, requestOptions).getValue()
-            .toObject(SessionFileWriteResponse.class);
+        return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions).getValue()
+            .toObject(SessionFileWriteResult.class);
     }
 
     /**
      * Download a file from the session sandbox as a binary stream.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The file path to download from the sandbox, relative to the session home directory.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadSessionFile(String agentName, String sessionId, String path,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for downloadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return downloadSessionFileWithResponse(agentName, sessionId, path, requestOptions).getValue();
-    }
-
-    /**
-     * Download a file from the session sandbox as a binary stream.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -263,10 +216,10 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadSessionFile(String agentName, String sessionId, String path) {
+    public BinaryData downloadSessionFile(String agentName, String agentSessionId, String path) {
         // Generated convenience method for downloadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return downloadSessionFileWithResponse(agentName, sessionId, path, requestOptions).getValue();
+        return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
     }
 
     /**
@@ -274,11 +227,8 @@ public final class AgentSessionFilesClient {
      * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param recursive Whether to recursively delete directory contents. Defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -288,8 +238,105 @@ public final class AgentSessionFilesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSessionFile(String agentName, String sessionId, String path,
-        AgentDefinitionOptInKeys foundryFeatures, Boolean recursive) {
+    public void deleteSessionFile(String agentName, String agentSessionId, String path) {
+        // Generated convenience method for deleteSessionFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
+    }
+
+    /**
+     * Upload a file to the session sandbox via binary stream.
+     * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The destination file path within the sandbox, relative to the session home directory.
+     * @param content The content parameter.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
+     * conversations, sessions) to a specific end user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from uploading a file to a session sandbox.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path,
+        BinaryData content, AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
+        // Generated convenience method for uploadSessionFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (userIsolationKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        }
+        return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions).getValue()
+            .toObject(SessionFileWriteResult.class);
+    }
+
+    /**
+     * Download a file from the session sandbox as a binary stream.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
+     * conversations, sessions) to a specific end user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData downloadSessionFile(String agentName, String agentSessionId, String path,
+        AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
+        // Generated convenience method for downloadSessionFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (userIsolationKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        }
+        return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
+    }
+
+    /**
+     * Delete a file or directory from the session sandbox.
+     * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file or directory path to delete, relative to the session home directory.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param recursive Whether to recursively delete directory contents. The service defaults to `false` if a value is
+     * not specified by the caller.
+     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
+     * conversations, sessions) to a specific end user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSessionFile(String agentName, String agentSessionId, String path,
+        AgentDefinitionOptInKeys foundryFeatures, Boolean recursive, String userIsolationKey) {
         // Generated convenience method for deleteSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
@@ -298,41 +345,48 @@ public final class AgentSessionFilesClient {
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        deleteSessionFileWithResponse(agentName, sessionId, path, requestOptions).getValue();
-    }
-
-    /**
-     * Delete a file or directory from the session sandbox.
-     * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The file or directory path to delete, relative to the session home directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSessionFile(String agentName, String sessionId, String path) {
-        // Generated convenience method for deleteSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteSessionFileWithResponse(agentName, sessionId, path, requestOptions).getValue();
+        if (userIsolationKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        }
+        deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
     }
 
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -340,87 +394,114 @@ public final class AgentSessionFilesClient {
      * <pre>
      * {@code
      * {
-     *     path: String (Required)
-     *     entries (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             size: long (Required)
-     *             is_directory: boolean (Required)
-     *             modified_time: OffsetDateTime (Required)
-     *         }
-     *     ]
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
      * }
      * }
      * </pre>
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
+     * @param agentSessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from listing a directory in a session sandbox along with {@link Response}.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSessionFilesWithResponse(String agentName, String sessionId, String path,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listSessionFiles(String agentName, String agentSessionId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getSessionFilesWithResponse(agentName, sessionId, path, requestOptions);
+        return this.serviceClient.listSessionFiles(agentName, agentSessionId, requestOptions);
     }
 
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
+     * @param agentSessionId The session ID.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
+     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
+     * not provided.
+     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
+     * conversations, sessions) to a specific end user.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from listing a directory in a session sandbox.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionDirectoryListResponse getSessionFiles(String agentName, String sessionId, String path,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for getSessionFilesWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId,
+        AgentDefinitionOptInKeys foundryFeatures, String path, String userIsolationKey, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return getSessionFilesWithResponse(agentName, sessionId, path, requestOptions).getValue()
-            .toObject(SessionDirectoryListResponse.class);
+        if (path != null) {
+            requestOptions.addQueryParam("path", path, false);
+        }
+        if (userIsolationKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listSessionFiles(agentName, agentSessionId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
     }
 
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
      *
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
+     * @param agentSessionId The session ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from listing a directory in a session sandbox.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionDirectoryListResponse getSessionFiles(String agentName, String sessionId, String path) {
-        // Generated convenience method for getSessionFilesWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId) {
+        // Generated convenience method for listSessionFiles
         RequestOptions requestOptions = new RequestOptions();
-        return getSessionFilesWithResponse(agentName, sessionId, path, requestOptions).getValue()
-            .toObject(SessionDirectoryListResponse.class);
+        return serviceClient.listSessionFiles(agentName, agentSessionId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
     }
 }

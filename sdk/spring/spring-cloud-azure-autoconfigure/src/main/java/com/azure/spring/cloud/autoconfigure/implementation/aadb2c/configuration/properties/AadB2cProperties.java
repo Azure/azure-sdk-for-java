@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.exception.AadB2cConfigurationException;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
@@ -60,25 +60,22 @@ public class AadB2cProperties implements InitializingBean {
     private String appIdUri;
 
     /**
-     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Connection Timeout (duration) for the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_CONNECT_TIMEOUT} milliseconds.
      */
-    @Deprecated
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+    private Duration jwtConnectTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Read Timeout (duration) for the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_READ_TIMEOUT} milliseconds.
      */
-    @Deprecated
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+    private Duration jwtReadTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Size limit in Bytes of the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_SIZE_LIMIT} bytes.
      */
-    @Deprecated
-    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
+    private int jwtSizeLimit = JWKSourceBuilder.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * Redirect URL after logout.

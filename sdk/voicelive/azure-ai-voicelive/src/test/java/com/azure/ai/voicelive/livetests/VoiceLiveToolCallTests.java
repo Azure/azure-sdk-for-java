@@ -45,17 +45,13 @@ import java.util.stream.Stream;
  */
 public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
 
-    // API version for the older preview used by session update test
-    private static final String API_VERSION_2025_05_01_PREVIEW = "2025-05-01-preview";
-
     // ===== test_realtime_service_tool_call =====
-    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-01-01-preview]
+    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-04-10]
     // Uses _get_speech_recognition_setting(model), audio=4-1.wav, tool=assess_pronunciation
     // Voice: AzureStandardVoice("en-US-AriaNeural")
 
     static Stream<Arguments> toolCallParams() {
-        return crossProduct(new String[] { MODEL_GPT_REALTIME, MODEL_GPT_4O },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { MODEL_GPT_REALTIME, MODEL_GPT_4O }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -113,7 +109,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
                 .setTools(Arrays.asList(assessTool))
                 .setToolChoice(BinaryData.fromObject("auto"));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -138,7 +134,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             // Send audio and response.create() in tight succession to beat server VAD.
             // With gpt-realtime, the default server VAD detects speech, auto-commits the
             // buffer and triggers its own response before a delayed response.create() arrives.
-            session.sendInputAudio(audioData)
+            session.sendInputAudio(BinaryData.fromBytes(audioData))
                 .then(session.sendEvent(new ClientEventResponseCreate()))
                 .block(SEND_TIMEOUT);
 
@@ -166,14 +162,13 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // ===== test_realtime_service_tool_choice =====
     // Python: models=[gpt-realtime, gpt-4o, gpt-5-chat], skip if "realtime" in model
     //   -> effective models: [gpt-4o, gpt-5-chat]
-    // api_versions=[2025-10-01, 2026-01-01-preview]
+    // api_versions=[2025-10-01, 2026-04-10]
     // Uses azure-speech + ServerVad, audio=ask_weather.wav
     // Tools: get_weather, get_time. ToolChoice: get_time
     // Assert: function_done.name == "get_time", arguments contains Beijing
 
     static Stream<Arguments> toolChoiceParams() {
-        return crossProduct(new String[] { MODEL_GPT_4O, MODEL_GPT_5_CHAT },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { MODEL_GPT_4O, MODEL_GPT_5_CHAT }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -210,7 +205,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
                 .setTools(Arrays.asList(weatherTool, timeTool))
                 .setToolChoice(BinaryData.fromObject(new ToolChoiceFunctionSelection("get_time")));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -233,8 +228,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean done = responseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(done, "Should receive response done event");
@@ -260,14 +255,13 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // ===== test_realtime_service_tool_call_parameter =====
     // Python: models=[gpt-realtime, gpt-4.1, gpt-5, gpt-5.1, gpt-5.2, phi4-mm-realtime],
     //   skip if "realtime" in model -> effective models: [gpt-4.1, gpt-5]
-    // api_versions=[2025-10-01, 2026-01-01-preview]
+    // api_versions=[2025-10-01, 2026-04-10]
     // Uses azure-speech + ServerVad, audio=ask_weather.wav
     // Tool: get_weather. Full tool call flow: get function call -> send tool output -> get transcript
     // Assert: transcript contains "sunny" or chinese equivalent, and "25"
 
     static Stream<Arguments> toolCallParameterParams() {
-        return crossProduct(new String[] { MODEL_GPT_41, MODEL_GPT_5 },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { MODEL_GPT_41, MODEL_GPT_5 }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -311,7 +305,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
                 .setTools(Arrays.asList(weatherTool))
                 .setToolChoice(BinaryData.fromObject("auto"));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             subscription = session.receiveEvents().subscribe(event -> {
@@ -351,8 +345,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             waitForSetup();
 
             // Send audio + trailing silence
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             // Wait for RESPONSE_DONE that contains the function call.
             // This ensures all interleaved audio_transcript events from the same response
@@ -399,15 +393,14 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     }
 
     // ===== test_realtime_service_live_session_update =====
-    // Python: model=[gpt-realtime], api_versions=[2025-05-01-preview, 2026-01-01-preview]
+    // Python: model=[gpt-realtime], api_versions=[2025-10-01, 2026-04-10]
     // Two-phase test:
     //   Phase 1: Session without tools -> send audio -> expect no function call in response
     //   Phase 2: New session with tools -> send audio -> expect function call
     // Uses azure-speech + ServerVad, audio=ask_weather.wav
 
     static Stream<Arguments> liveSessionUpdateParams() {
-        return crossProduct(new String[] { MODEL_GPT_REALTIME },
-            new String[] { API_VERSION_2025_05_01_PREVIEW, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { MODEL_GPT_REALTIME }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -428,7 +421,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
         VoiceLiveSessionAsyncClient session = null;
         Disposable subscription = null;
         try {
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             // Phase tracking: 1 = no tools, 2 = with tools, 3 = post-response.create
@@ -499,8 +492,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptionsNoTools)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean phase1Done = phase1Latch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(phase1Done, "Phase 1: Should receive audio transcript done event");
@@ -527,8 +520,8 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             session.sendEvent(new ClientEventSessionUpdate(sessionOptionsWithTools)).block(SEND_TIMEOUT);
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean phase2Done = phase2Latch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(phase2Done, "Phase 2: Should receive function call after adding tools");
@@ -569,6 +562,6 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // Python: @pytest.mark.skip() - skipped in Python tests
 
     static Stream<Arguments> toolCallNoAudioOverlapParams() {
-        return crossProduct(new String[] { MODEL_GPT_REALTIME }, new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { MODEL_GPT_REALTIME }, API_VERSIONS);
     }
 }
