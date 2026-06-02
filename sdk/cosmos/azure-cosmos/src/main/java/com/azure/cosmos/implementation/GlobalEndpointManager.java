@@ -383,6 +383,29 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.hasThinClientReadLocations.get();
     }
 
+    /**
+     * Returns the underlying {@link AtomicBoolean} that backs
+     * {@link #hasThinClientReadLocations()}.
+     *
+     * <p>This is intentionally package-private and exposes the live reference (not
+     * a copy) so that components which need a long-lived "thin-client effectively
+     * configured" signal (for example, the gateway {@code HttpClient} used to scope
+     * HTTP/2 PING keepalive installation) can capture only the {@code AtomicBoolean}
+     * via a bound method reference (e.g. {@code ref::get}) rather than capturing
+     * this {@code GlobalEndpointManager} instance.
+     *
+     * <p>Capturing {@code GlobalEndpointManager} would transitively pin
+     * {@link DatabaseAccountManagerInternal owner} (which is the owning
+     * {@code RxDocumentClientImpl}, and therefore the {@code CosmosAsyncClient})
+     * for as long as the supplier remains reachable. Capturing only the
+     * {@code AtomicBoolean} avoids that strong-reference chain while still
+     * observing live state updates, since this manager mutates the same
+     * {@code AtomicBoolean} in place on every DatabaseAccount refresh.
+     */
+    AtomicBoolean getHasThinClientReadLocationsRef() {
+        return this.hasThinClientReadLocations;
+    }
+
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
         return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
             .doOnNext(databaseAccount -> {
