@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.SkillDetails;
+import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillInlineContent;
+import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Sample demonstrating CRUD operations on Skills using the synchronous SkillsClient.
@@ -28,42 +27,38 @@ public class SkillsSample {
 
     public static void main(String[] args) {
         // Uncomment the sample you want to run
-//        createSkill();
+//        createSkillVersion();
 //        getSkill();
 //        updateSkill();
 //        listSkills();
 //        deleteSkill();
     }
 
-    public static void createSkill() {
-        // BEGIN:com.azure.ai.projects.SkillsSample.createSkill
+    public static void createSkillVersion() {
+        // BEGIN:com.azure.ai.projects.SkillsSample.createSkillVersion
 
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("domain", "support");
-
-        SkillDetails skill = skillsClient.createSkill(
-            "product-support-skill",
+        SkillInlineContent inlineContent = new SkillInlineContent(
             "Answers product support questions using company policy.",
-            "You help answer product support questions using company policy and product guidance.",
-            metadata
+            "You help answer product support questions using company policy and product guidance."
         );
 
-        System.out.println("Created skill: " + skill.getName());
-        System.out.println("Skill ID: " + skill.getSkillId());
-        System.out.println("Blob present: " + skill.isBlobPresent());
+        SkillVersion skillVersion = skillsClient.createSkillVersion("product-support-skill", inlineContent, true);
 
-        // END:com.azure.ai.projects.SkillsSample.createSkill
+        System.out.println("Created skill version: " + skillVersion.getName());
+        System.out.println("Version: " + skillVersion.getVersion());
+
+        // END:com.azure.ai.projects.SkillsSample.createSkillVersion
     }
 
     public static void getSkill() {
         // BEGIN:com.azure.ai.projects.SkillsSample.getSkill
 
         String skillName = "product-support-skill";
-        SkillDetails skill = skillsClient.getSkill(skillName);
+        Skill skill = skillsClient.getSkill(skillName);
 
         System.out.println("Skill name: " + skill.getName());
-        System.out.println("Skill ID: " + skill.getSkillId());
         System.out.println("Description: " + skill.getDescription());
+        System.out.println("Default version: " + skill.getDefaultVersion());
 
         // END:com.azure.ai.projects.SkillsSample.getSkill
     }
@@ -73,20 +68,10 @@ public class SkillsSample {
 
         String skillName = "product-support-skill";
 
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("domain", "support");
-        metadata.put("status", "updated");
-
-        SkillDetails updated = skillsClient.updateSkill(
-            skillName,
-            "Updated description for the sample skill.",
-            null,
-            metadata
-        );
+        Skill updated = skillsClient.updateSkill(skillName, "2");
 
         System.out.println("Updated skill: " + updated.getName());
-        System.out.println("Description: " + updated.getDescription());
-        System.out.println("Metadata: " + updated.getMetadata());
+        System.out.println("Default version: " + updated.getDefaultVersion());
 
         // END:com.azure.ai.projects.SkillsSample.updateSkill
     }
@@ -94,11 +79,10 @@ public class SkillsSample {
     public static void listSkills() {
         // BEGIN:com.azure.ai.projects.SkillsSample.listSkills
 
-        PagedIterable<SkillDetails> skills = skillsClient.listSkills();
-        for (SkillDetails skill : skills) {
+        PagedIterable<Skill> skills = skillsClient.listSkills();
+        for (Skill skill : skills) {
             System.out.println("Skill name: " + skill.getName());
-            System.out.println("Skill ID: " + skill.getSkillId());
-            System.out.println("Blob present: " + skill.isBlobPresent());
+            System.out.println("Description: " + skill.getDescription());
             System.out.println("-------------------------------------------------");
         }
 

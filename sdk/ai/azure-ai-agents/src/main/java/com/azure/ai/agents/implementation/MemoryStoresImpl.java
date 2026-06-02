@@ -117,7 +117,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateMemoryStore(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoryStoreRequest,
             RequestOptions requestOptions, Context context);
@@ -129,7 +129,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateMemoryStoreSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoryStoreRequest,
             RequestOptions requestOptions, Context context);
@@ -141,7 +141,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMemoryStore(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -151,9 +151,10 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getMemoryStoreSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> getMemoryStoreSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/memory_stores")
         @ExpectedResponses({ 200 })
@@ -182,7 +183,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalDeleteMemoryStore(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -193,7 +194,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalDeleteMemoryStoreSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -204,7 +205,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalSearchMemories(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData searchMemoriesRequest,
             RequestOptions requestOptions, Context context);
@@ -216,7 +217,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalSearchMemoriesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData searchMemoriesRequest,
             RequestOptions requestOptions, Context context);
@@ -228,7 +229,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalUpdateMemories(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoriesRequest,
             RequestOptions requestOptions, Context context);
@@ -240,7 +241,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalUpdateMemoriesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoriesRequest,
             RequestOptions requestOptions, Context context);
@@ -252,8 +253,8 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getUpdateResult(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @PathParam("update_id") String updateId,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("update_id") String updateId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/memory_stores/{name}/updates/{update_id}")
@@ -262,10 +263,10 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getUpdateResultSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @PathParam("update_id") String updateId, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Response<BinaryData> getUpdateResultSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("update_id") String updateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/memory_stores/{name}:delete_scope")
         @ExpectedResponses({ 200 })
@@ -274,7 +275,7 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalDeleteScope(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData deleteScopeRequest,
             RequestOptions requestOptions, Context context);
@@ -286,10 +287,128 @@ public final class MemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalDeleteScopeSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData deleteScopeRequest,
             RequestOptions requestOptions, Context context);
+
+        @Post("/memory_stores/{name}/items")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createMemory(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/memory_stores/{name}/items")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createMemorySync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/memory_stores/{name}/items/{memory_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> updateMemory(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMemoryRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/memory_stores/{name}/items/{memory_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateMemorySync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMemoryRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/memory_stores/{name}/items/{memory_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getMemory(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/memory_stores/{name}/items/{memory_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getMemorySync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/memory_stores/{name}/items:list")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listMemories(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData listMemoriesRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/memory_stores/{name}/items:list")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listMemoriesSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData listMemoriesRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Delete("/memory_stores/{name}/items/{memory_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> internalDeleteMemory(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/memory_stores/{name}/items/{memory_id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> internalDeleteMemorySync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -316,7 +435,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -376,7 +495,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -431,7 +550,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -463,9 +582,9 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMemoryStore(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept,
-            updateMemoryStoreRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateMemoryStore(this.client.getEndpoint(), foundryFeatures,
+            name, this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryStoreRequest,
+            requestOptions, context));
     }
 
     /**
@@ -488,7 +607,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -519,7 +638,7 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateMemoryStoreSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.updateMemoryStoreSync(this.client.getEndpoint(), foundryFeatures, name,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryStoreRequest, requestOptions,
             Context.NONE);
     }
@@ -531,7 +650,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -560,7 +679,7 @@ public final class MemoryStoresImpl {
     public Mono<Response<BinaryData>> getMemoryStoreWithResponseAsync(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getMemoryStore(this.client.getEndpoint(), name, foundryFeatures,
+        return FluxUtil.withContext(context -> service.getMemoryStore(this.client.getEndpoint(), foundryFeatures, name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -571,7 +690,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -599,7 +718,7 @@ public final class MemoryStoresImpl {
     public Response<BinaryData> getMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.getMemoryStoreSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.getMemoryStoreSync(this.client.getEndpoint(), foundryFeatures, name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -630,7 +749,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -692,7 +811,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -747,7 +866,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -807,7 +926,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     id: String (Required)
      *     created_at: long (Required)
      *     updated_at: long (Required)
@@ -842,7 +961,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -862,8 +981,8 @@ public final class MemoryStoresImpl {
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalDeleteMemoryStore(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalDeleteMemoryStore(this.client.getEndpoint(),
+            foundryFeatures, name, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -873,7 +992,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
@@ -892,7 +1011,7 @@ public final class MemoryStoresImpl {
     public Response<BinaryData> internalDeleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.internalDeleteMemoryStoreSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalDeleteMemoryStoreSync(this.client.getEndpoint(), foundryFeatures, name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -905,9 +1024,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_search_id: String (Optional)
      *     options (Optional): {
@@ -926,7 +1043,7 @@ public final class MemoryStoresImpl {
      *     memories (Required): [
      *          (Required){
      *             memory_item (Required): {
-     *                 kind: String(user_profile/chat_summary) (Required)
+     *                 kind: String(user_profile/chat_summary/procedural) (Required)
      *                 memory_id: String (Required)
      *                 updated_at: long (Required)
      *                 scope: String (Required)
@@ -965,9 +1082,9 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalSearchMemories(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, searchMemoriesRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalSearchMemories(this.client.getEndpoint(),
+            foundryFeatures, name, this.client.getServiceVersion().getVersion(), contentType, accept,
+            searchMemoriesRequest, requestOptions, context));
     }
 
     /**
@@ -979,9 +1096,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_search_id: String (Optional)
      *     options (Optional): {
@@ -1000,7 +1115,7 @@ public final class MemoryStoresImpl {
      *     memories (Required): [
      *          (Required){
      *             memory_item (Required): {
-     *                 kind: String(user_profile/chat_summary) (Required)
+     *                 kind: String(user_profile/chat_summary/procedural) (Required)
      *                 memory_id: String (Required)
      *                 updated_at: long (Required)
      *                 scope: String (Required)
@@ -1039,7 +1154,7 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.internalSearchMemoriesSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalSearchMemoriesSync(this.client.getEndpoint(), foundryFeatures, name,
             this.client.getServiceVersion().getVersion(), contentType, accept, searchMemoriesRequest, requestOptions,
             Context.NONE);
     }
@@ -1053,9 +1168,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1076,7 +1189,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1132,9 +1245,9 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalUpdateMemories(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoriesRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalUpdateMemories(this.client.getEndpoint(),
+            foundryFeatures, name, this.client.getServiceVersion().getVersion(), contentType, accept,
+            updateMemoriesRequest, requestOptions, context));
     }
 
     /**
@@ -1146,9 +1259,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1169,7 +1280,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1224,7 +1335,7 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.internalUpdateMemoriesSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalUpdateMemoriesSync(this.client.getEndpoint(), foundryFeatures, name,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoriesRequest, requestOptions,
             Context.NONE);
     }
@@ -1238,9 +1349,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1261,7 +1370,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1337,9 +1446,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1360,7 +1467,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1435,9 +1542,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1458,7 +1563,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1532,9 +1637,7 @@ public final class MemoryStoresImpl {
      * {
      *     scope: String (Required)
      *     items (Optional): [
-     *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
-     *         }
+     *         BinaryData (Optional)
      *     ]
      *     previous_update_id: String (Optional)
      *     update_delay: Integer (Optional)
@@ -1555,7 +1658,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1635,7 +1738,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1689,8 +1792,8 @@ public final class MemoryStoresImpl {
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getUpdateResult(this.client.getEndpoint(), name, updateId,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getUpdateResult(this.client.getEndpoint(), foundryFeatures, name,
+            updateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1708,7 +1811,7 @@ public final class MemoryStoresImpl {
      *              (Required){
      *                 kind: String(create/update/delete) (Required)
      *                 memory_item (Required): {
-     *                     kind: String(user_profile/chat_summary) (Required)
+     *                     kind: String(user_profile/chat_summary/procedural) (Required)
      *                     memory_id: String (Required)
      *                     updated_at: long (Required)
      *                     scope: String (Required)
@@ -1762,7 +1865,7 @@ public final class MemoryStoresImpl {
         RequestOptions requestOptions) {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.getUpdateResultSync(this.client.getEndpoint(), name, updateId, foundryFeatures,
+        return service.getUpdateResultSync(this.client.getEndpoint(), foundryFeatures, name, updateId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1783,7 +1886,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     scope: String (Required)
      *     deleted: boolean (Required)
@@ -1807,9 +1910,9 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalDeleteScope(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalDeleteScope(this.client.getEndpoint(), foundryFeatures,
+            name, this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest, requestOptions,
+            context));
     }
 
     /**
@@ -1829,7 +1932,7 @@ public final class MemoryStoresImpl {
      * <pre>
      * {@code
      * {
-     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
      *     name: String (Required)
      *     scope: String (Required)
      *     deleted: boolean (Required)
@@ -1852,9 +1955,601 @@ public final class MemoryStoresImpl {
         final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.internalDeleteScopeSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalDeleteScopeSync(this.client.getEndpoint(), foundryFeatures, name,
             this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest, requestOptions,
             Context.NONE);
+    }
+
+    /**
+     * Create a memory item in a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     *     content: String (Required)
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param createMemoryRequest The createMemoryRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createMemoryWithResponseAsync(String name, BinaryData createMemoryRequest,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createMemory(this.client.getEndpoint(), foundryFeatures, name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, createMemoryRequest, requestOptions,
+            context));
+    }
+
+    /**
+     * Create a memory item in a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     *     content: String (Required)
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param createMemoryRequest The createMemoryRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createMemoryWithResponse(String name, BinaryData createMemoryRequest,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createMemorySync(this.client.getEndpoint(), foundryFeatures, name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, createMemoryRequest, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Update a memory item in a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to update.
+     * @param updateMemoryRequest The updateMemoryRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateMemoryWithResponseAsync(String name, String memoryId,
+        BinaryData updateMemoryRequest, RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateMemory(this.client.getEndpoint(), foundryFeatures, name,
+            memoryId, this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryRequest,
+            requestOptions, context));
+    }
+
+    /**
+     * Update a memory item in a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to update.
+     * @param updateMemoryRequest The updateMemoryRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateMemoryWithResponse(String name, String memoryId, BinaryData updateMemoryRequest,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryRequest, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Retrieve a memory item from a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getMemoryWithResponseAsync(String name, String memoryId,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getMemory(this.client.getEndpoint(), foundryFeatures, name,
+            memoryId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Retrieve a memory item from a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a single memory item stored in the memory store, containing content and metadata along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String accept = "application/json";
+        return service.getMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List all memory items in a memory store.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listMemoriesSinglePageAsync(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listMemories(this.client.getEndpoint(), foundryFeatures, name,
+                this.client.getServiceVersion().getVersion(), accept, listMemoriesRequest, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), null, null));
+    }
+
+    /**
+     * List all memory items in a memory store.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMemoriesAsync(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listMemoriesSinglePageAsync(name, listMemoriesRequest, requestOptions));
+    }
+
+    /**
+     * List all memory items in a memory store.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listMemoriesSinglePage(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listMemoriesSync(this.client.getEndpoint(), foundryFeatures, name,
+            this.client.getServiceVersion().getVersion(), accept, listMemoriesRequest, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), null, null);
+    }
+
+    /**
+     * List all memory items in a memory store.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>The kind of the memory item. Allowed values: "user_profile",
+     * "chat_summary", "procedural".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(user_profile/chat_summary/procedural) (Required)
+     *     memory_id: String (Required)
+     *     updated_at: long (Required)
+     *     scope: String (Required)
+     *     content: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param listMemoriesRequest The listMemoriesRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMemories(String name, BinaryData listMemoriesRequest,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listMemoriesSinglePage(name, listMemoriesRequest, requestOptions));
+    }
+
+    /**
+     * Delete a memory item from a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     memory_id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for deleting a memory item from a memory store along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> internalDeleteMemoryWithResponseAsync(String name, String memoryId,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.internalDeleteMemory(this.client.getEndpoint(), foundryFeatures,
+            name, memoryId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Delete a memory item from a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     memory_id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for deleting a memory item from a memory store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> internalDeleteMemoryWithResponse(String name, String memoryId,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "MemoryStores=V1Preview";
+        final String accept = "application/json";
+        return service.internalDeleteMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

@@ -60,7 +60,7 @@ class AvatarAndAudioBufferEventsTest {
     void testAvatarSwitchToSpeakingPolymorphicViaSessionUpdate() {
         String json = "{\"type\":\"session.avatar.switch_to_speaking\",\"event_id\":\"e3\",\"turn_id\":\"t3\"}";
 
-        SessionUpdate update = BinaryData.fromString(json).toObject(SessionUpdate.class);
+        SessionServerEvent update = BinaryData.fromString(json).toObject(SessionServerEvent.class);
 
         assertTrue(update instanceof ServerEventSessionAvatarSwitchToSpeaking,
             "Expected ServerEventSessionAvatarSwitchToSpeaking, got " + update.getClass());
@@ -112,7 +112,7 @@ class AvatarAndAudioBufferEventsTest {
     void testServerEventOutputAudioBufferClearedPolymorphicViaSessionUpdate() {
         String json = "{\"type\":\"output_audio_buffer.cleared\",\"event_id\":\"e7\"}";
 
-        SessionUpdate update = BinaryData.fromString(json).toObject(SessionUpdate.class);
+        SessionServerEvent update = BinaryData.fromString(json).toObject(SessionServerEvent.class);
 
         assertTrue(update instanceof ServerEventOutputAudioBufferCleared,
             "Expected ServerEventOutputAudioBufferCleared, got " + update.getClass());
@@ -155,7 +155,7 @@ class AvatarAndAudioBufferEventsTest {
     void testClientEventOutputAudioBufferClearPolymorphicViaClientEvent() {
         ClientEventOutputAudioBufferClear original = new ClientEventOutputAudioBufferClear().setEventId("clear-3");
 
-        ClientEvent deserialized = BinaryData.fromObject(original).toObject(ClientEvent.class);
+        SessionClientEvent deserialized = BinaryData.fromObject(original).toObject(SessionClientEvent.class);
 
         assertTrue(deserialized instanceof ClientEventOutputAudioBufferClear,
             "Expected ClientEventOutputAudioBufferClear, got " + deserialized.getClass());
