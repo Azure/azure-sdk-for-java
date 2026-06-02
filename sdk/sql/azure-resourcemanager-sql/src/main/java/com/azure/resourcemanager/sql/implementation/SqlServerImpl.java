@@ -21,11 +21,12 @@ import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.AdministratorType;
-import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.IdentityType;
+import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerMetric;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtectorOperations;
@@ -34,7 +35,6 @@ import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlFirewallRuleOperations;
 import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
 import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -550,11 +549,17 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     private void initIdentity(IdentityType desiredType) {
         ResourceIdentity existing = this.innerModel().identity();
         if (existing == null || existing.type() == null || existing.type() == IdentityType.NONE) {
-            this.innerModel()
-                .withIdentity(new ResourceIdentity().withType(desiredType).withUserAssignedIdentities(new HashMap<>()));
+            ResourceIdentity identity = new ResourceIdentity().withType(desiredType);
+            if (desiredType == IdentityType.USER_ASSIGNED
+                || desiredType == IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED) {
+                identity.withUserAssignedIdentities(new HashMap<>());
+            }
+            this.innerModel().withIdentity(identity);
         } else if (existing.type() == desiredType || existing.type() == IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED) {
             // Already has the desired type (or already combined) — nothing to change.
-            if (existing.userAssignedIdentities() == null) {
+            if (existing.userAssignedIdentities() == null
+                && (existing.type() == IdentityType.USER_ASSIGNED
+                    || existing.type() == IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
                 existing.withUserAssignedIdentities(new HashMap<>());
             }
         } else {

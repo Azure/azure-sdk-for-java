@@ -951,7 +951,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
 
-//        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
+        //        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
         //        Legacy threat detection policy doesn't support MI. The new Advanced Threat Protection(ATP) does not require
         //        storage account any more. See Oury Ba's answer:
         //        https://learn.microsoft.com/answers/questions/2276392/how-to-create-microsoft-sql-servers-securityalertp
