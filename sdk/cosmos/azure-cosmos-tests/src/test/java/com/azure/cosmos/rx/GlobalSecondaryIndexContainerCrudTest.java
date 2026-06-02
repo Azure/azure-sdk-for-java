@@ -273,11 +273,13 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             assertThat(gsiDef).isNotNull();
 
             // The status field may be populated by the server after creation
-            // (e.g. INITIALIZED, BUILDING, ACTIVE). The public gateway does not
-            // always surface this field, so we only verify the accessor returns
-            // a non-null value (UNKNOWN when absent) without asserting a specific status.
+            // (e.g. Initializing, InitialBuildAfterCreate, Active). The public gateway does not
+            // always surface this field. With ExpandableStringEnum semantics, getStatus() returns
+            // null when the field is absent, so we only verify the accessor does not throw.
             CosmosGlobalSecondaryIndexBuildStatus status = gsiDef.getStatus();
-            assertThat(status).isNotNull();
+            // status may legitimately be null when the gateway does not return the field.
+            // Reference the variable to keep the accessor exercised by the test.
+            assertThat(status == null || status.toString() != null).isTrue();
         } finally {
             safeDeleteAllCollections(database);
         }

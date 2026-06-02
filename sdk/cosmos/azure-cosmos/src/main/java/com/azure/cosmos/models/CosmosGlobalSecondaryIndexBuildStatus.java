@@ -3,72 +3,75 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.cosmos.util.Beta;
+
+import java.util.Collection;
 
 /**
  * Represents the build status of a global secondary index as returned by the Azure Cosmos DB service.
+ * <p>
+ * This is an {@link ExpandableStringEnum} so that values added by the service in the future are not
+ * a breaking change for clients. {@link #fromString(String)} will return an instance for any value,
+ * including ones not declared as a constant on this class.
  */
 @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public enum CosmosGlobalSecondaryIndexBuildStatus {
-
-    /**
-     * The build status returned by the service is not a value that this SDK version recognizes,
-     * or no status was returned.
-     */
-    UNKNOWN("Unknown"),
+public final class CosmosGlobalSecondaryIndexBuildStatus
+    extends ExpandableStringEnum<CosmosGlobalSecondaryIndexBuildStatus> {
 
     /**
      * The global secondary index has been created and is initializing.
      */
-    INITIALIZING("Initializing"),
+    public static final CosmosGlobalSecondaryIndexBuildStatus INITIALIZING = fromString("Initializing");
 
     /**
      * The global secondary index is performing its initial build after being created.
      */
-    INITIAL_BUILD_AFTER_CREATE("InitialBuildAfterCreate"),
+    public static final CosmosGlobalSecondaryIndexBuildStatus INITIAL_BUILD_AFTER_CREATE
+        = fromString("InitialBuildAfterCreate");
 
     /**
      * The global secondary index is performing its initial build after the source container was restored.
      */
-    INITIAL_BUILD_AFTER_RESTORE("InitialBuildAfterRestore"),
+    public static final CosmosGlobalSecondaryIndexBuildStatus INITIAL_BUILD_AFTER_RESTORE
+        = fromString("InitialBuildAfterRestore");
 
     /**
      * The global secondary index has been fully built and is actively serving queries.
      */
-    ACTIVE("Active"),
+    public static final CosmosGlobalSecondaryIndexBuildStatus ACTIVE = fromString("Active");
 
     /**
      * The global secondary index is being deleted.
      */
-    DELETE_IN_PROGRESS("DeleteInProgress");
+    public static final CosmosGlobalSecondaryIndexBuildStatus DELETE_IN_PROGRESS = fromString("DeleteInProgress");
 
-    private final String overWireValue;
-
-    CosmosGlobalSecondaryIndexBuildStatus(String overWireValue) {
-        this.overWireValue = overWireValue;
+    /**
+     * Creates a new instance of {@link CosmosGlobalSecondaryIndexBuildStatus} without a name.
+     * <p>
+     * Prefer {@link #fromString(String)} to obtain instances; this constructor is required by
+     * {@link ExpandableStringEnum}.
+     */
+    public CosmosGlobalSecondaryIndexBuildStatus() {
     }
 
     /**
-     * Returns the {@link CosmosGlobalSecondaryIndexBuildStatus} that matches the provided wire value, or
-     * {@link #UNKNOWN} when the value is {@code null} or not recognized by this SDK version.
+     * Creates or finds a {@link CosmosGlobalSecondaryIndexBuildStatus} from its string representation.
      *
-     * @param value the over-the-wire status value returned by the service.
-     * @return the matching enum value, or {@link #UNKNOWN}.
+     * @param name a name to look for.
+     * @return the corresponding {@link CosmosGlobalSecondaryIndexBuildStatus}, or {@code null} when {@code name}
+     *     is {@code null}.
      */
-    public static CosmosGlobalSecondaryIndexBuildStatus fromString(String value) {
-        if (value == null) {
-            return UNKNOWN;
-        }
-        for (CosmosGlobalSecondaryIndexBuildStatus status : values()) {
-            if (status.overWireValue.equalsIgnoreCase(value)) {
-                return status;
-            }
-        }
-        return UNKNOWN;
+    public static CosmosGlobalSecondaryIndexBuildStatus fromString(String name) {
+        return fromString(name, CosmosGlobalSecondaryIndexBuildStatus.class);
     }
 
-    @Override
-    public String toString() {
-        return this.overWireValue;
+    /**
+     * Gets the known {@link CosmosGlobalSecondaryIndexBuildStatus} values declared on this class.
+     *
+     * @return the known {@link CosmosGlobalSecondaryIndexBuildStatus} values.
+     */
+    public static Collection<CosmosGlobalSecondaryIndexBuildStatus> values() {
+        return values(CosmosGlobalSecondaryIndexBuildStatus.class);
     }
 }

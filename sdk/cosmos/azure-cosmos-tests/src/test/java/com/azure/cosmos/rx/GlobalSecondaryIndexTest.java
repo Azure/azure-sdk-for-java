@@ -163,8 +163,8 @@ public class GlobalSecondaryIndexTest {
         assertThat(definition.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(definition.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
-        // No status field in the JSON, so the accessor returns UNKNOWN.
-        assertThat(definition.getStatus()).isEqualTo(CosmosGlobalSecondaryIndexBuildStatus.UNKNOWN);
+        // No status field in the JSON, so the accessor returns null.
+        assertThat(definition.getStatus()).isNull();
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -184,8 +184,10 @@ public class GlobalSecondaryIndexTest {
         CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
-        // "Initialized" is not a value this SDK version recognizes, so it maps to UNKNOWN.
-        assertThat(definition.getStatus()).isEqualTo(CosmosGlobalSecondaryIndexBuildStatus.UNKNOWN);
+        // "Initialized" is not a value declared as a constant on this SDK version, but ExpandableStringEnum
+        // still echoes the wire value back through toString().
+        assertThat(definition.getStatus()).isNotNull();
+        assertThat(definition.getStatus().toString()).isEqualTo("Initialized");
     }
 
     // -------------------------------------------------------------------------

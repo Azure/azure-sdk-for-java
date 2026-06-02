@@ -87,11 +87,12 @@ public final class CosmosGlobalSecondaryIndexDefinition {
 
     /**
      * Gets the build status of the GlobalSecondaryIndex as returned by the server.
-     * This is a read-only field populated from server responses. When the status field is
-     * absent from the server response, or the server returns a value that this SDK version
-     * does not recognize, {@link CosmosGlobalSecondaryIndexBuildStatus#UNKNOWN} is returned.
+     * This is a read-only field populated from server responses. Returns {@code null} when the status field
+     * is absent from the server response. When the server returns a value this SDK version does not declare
+     * as a known constant, the returned instance still preserves the original wire value via
+     * {@link CosmosGlobalSecondaryIndexBuildStatus#toString()}.
      *
-     * @return the GlobalSecondaryIndex build status.
+     * @return the GlobalSecondaryIndex build status, or {@code null} if the server did not return one.
      */
     @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosGlobalSecondaryIndexBuildStatus getStatus() {
