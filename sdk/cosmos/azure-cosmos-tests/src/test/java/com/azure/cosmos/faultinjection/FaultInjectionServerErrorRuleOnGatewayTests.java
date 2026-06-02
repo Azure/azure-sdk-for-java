@@ -615,10 +615,8 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends FaultInjectionT
     }
 
     private Duration getMaxRetryWithTimeout() {
-        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
-        ConsistencyLevel consistencyLevel = asyncDocumentClient.getConsistencyLevel() != null
-            ? asyncDocumentClient.getConsistencyLevel()
-            : asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
+        ConsistencyLevel consistencyLevel = BridgeInternal.getContextClient(this.client)
+            .getDefaultConsistencyLevelOfAccount();
 
         return consistencyLevel == ConsistencyLevel.STRONG ? Duration.ofSeconds(60) : Duration.ofSeconds(30);
     }
