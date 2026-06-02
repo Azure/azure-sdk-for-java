@@ -13,25 +13,25 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Keys serve as identifiers for key-values and are used to store and retrieve corresponding values.
+ * Labels are used to group key-values.
  */
 @Immutable
-public final class Key implements JsonSerializable<Key> {
+public final class Label implements JsonSerializable<Label> {
     /*
-     * The name of the key.
+     * The name of the label.
      */
     @Generated
     private String name;
 
     /**
-     * Creates an instance of Key class.
+     * Creates an instance of Label class.
      */
     @Generated
-    private Key() {
+    private Label() {
     }
 
     /**
-     * Get the name property: The name of the key.
+     * Get the name property: The name of the label.
      * 
      * @return the name value.
      */
@@ -47,34 +47,34 @@ public final class Key implements JsonSerializable<Key> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of Key from the JsonReader.
+     * Reads an instance of Label from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Key if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * @return An instance of Label if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Key.
+     * @throws IOException If an error occurs while reading the Label.
      */
     @Generated
-    public static Key fromJson(JsonReader jsonReader) throws IOException {
+    public static Label fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Key deserializedKey = new Key();
+            Label deserializedLabel = new Label();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedKey.name = reader.getString();
+                    deserializedLabel.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedKey;
+            return deserializedLabel;
         });
     }
 }
