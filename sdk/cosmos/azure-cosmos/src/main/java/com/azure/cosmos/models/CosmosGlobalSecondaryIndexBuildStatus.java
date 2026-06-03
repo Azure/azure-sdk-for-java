@@ -51,7 +51,10 @@ public final class CosmosGlobalSecondaryIndexBuildStatus
      * <p>
      * Prefer {@link #fromString(String)} to obtain instances; this constructor is required by
      * {@link ExpandableStringEnum}.
+     *
+     * @deprecated Use {@link #fromString(String)} instead.
      */
+    @Deprecated
     public CosmosGlobalSecondaryIndexBuildStatus() {
     }
 
