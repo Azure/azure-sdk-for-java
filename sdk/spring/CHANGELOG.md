@@ -39,6 +39,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 
+- Fixed a bug where the sub-level `event-hub-name` property under `spring.cloud.azure.eventhubs.consumer` or `spring.cloud.azure.eventhubs.producer` was ignored when the base-level `spring.cloud.azure.eventhubs.event-hub-name` was also configured, causing the produced clients to connect to the base event hub instead of the overridden one. [#43593](https://github.com/Azure/azure-sdk-for-java/issues/43593)
 - Fixed Event Hubs autoconfiguration where a dedicated `EventHubClientBuilder` registered by `consumer`-only or `producer`-only sub-level overrides (`connection-string` / `namespace` / `event-hub-name`) suppressed the root builder and got injected into the opposite shared section, causing the shared client to target the other section's event hub. The root builder is now registered under bean name `springCloudAzureEventHubsClientBuilder` with a name-based `@ConditionalOnMissingBean`, and the shared consumer/producer sections gate on and inject that specific bean via `@Qualifier`. ([#49245](https://github.com/Azure/azure-sdk-for-java/issues/49245))
 - Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
 - Fixed Service Bus autoconfiguration for dedicated producer, consumer, and processor connection details so applications can initialize with only sub-level Service Bus `namespace` or `connection-string` settings and no top-level Service Bus connection configuration. ([#49257](https://github.com/Azure/azure-sdk-for-java/pull/49257))
@@ -137,13 +138,6 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
 Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#720-2026-04-17) for more details.
-
-### Spring Cloud Azure Autoconfigure
-This section includes changes in `spring-cloud-azure-autoconfigure` module.
-
-#### Bugs Fixed
-
-- Fixed a bug where the sub-level `event-hub-name` property under `spring.cloud.azure.eventhubs.consumer` or `spring.cloud.azure.eventhubs.producer` was ignored when the base-level `spring.cloud.azure.eventhubs.event-hub-name` was also configured, causing the produced clients to connect to the base event hub instead of the overridden one. [#43593](https://github.com/Azure/azure-sdk-for-java/issues/43593)
 
 ## 6.2.0 (2026-03-25)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
