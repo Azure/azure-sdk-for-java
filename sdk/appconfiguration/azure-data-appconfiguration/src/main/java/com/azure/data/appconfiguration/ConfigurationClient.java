@@ -16,19 +16,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
+import com.azure.data.appconfiguration.implementation.ImplBridge;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
-import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
@@ -296,10 +292,10 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  */
 @ServiceClient(
     builder = ConfigurationClientBuilder.class,
-    serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
+    serviceInterfaces = ConfigurationClientImpl.ConfigurationClientService.class)
 public final class ConfigurationClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
-    private final AzureAppConfigurationImpl serviceClient;
+    private final ConfigurationClientImpl serviceClient;
     private final SyncTokenPolicy syncTokenPolicy;
 
     final CreateSnapshotUtilClient createSnapshotUtilClient;
@@ -308,11 +304,11 @@ public final class ConfigurationClient {
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param serviceClient The {@link AzureAppConfigurationImpl} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
      */
-    ConfigurationClient(AzureAppConfigurationImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
+    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
         this.createSnapshotUtilClient = new CreateSnapshotUtilClient(serviceClient);
@@ -435,8 +431,8 @@ public final class ConfigurationClient {
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response = serviceClient.putKeyValueWithResponse(
-            setting.getKey(), setting.getLabel(), null, ETAG_ANY, toKeyValue(setting), context);
+        final Response<KeyValue> response = ImplBridge.putKeyValueWithResponse(serviceClient, setting.getKey(),
+            setting.getLabel(), null, ETAG_ANY, toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -580,8 +576,8 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
         validateSetting(setting);
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response = serviceClient.putKeyValueWithResponse(
-            setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting), null, toKeyValue(setting), context);
+        final Response<KeyValue> response = ImplBridge.putKeyValueWithResponse(serviceClient, setting.getKey(),
+            setting.getLabel(), getETag(ifUnchanged, setting), null, toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -724,9 +720,9 @@ public final class ConfigurationClient {
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
         validateSetting(setting);
         try {
-            final ResponseBase<GetKeyValueHeaders, KeyValue> response = serviceClient.getKeyValueWithResponse(
-                setting.getKey(), setting.getLabel(), acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                getETag(ifChanged, setting), null, context);
+            final Response<KeyValue> response = ImplBridge.getKeyValueWithResponse(serviceClient, setting.getKey(),
+                setting.getLabel(), acceptDateTime == null ? null : acceptDateTime.toString(), null /* syncToken */,
+                null /* ifMatch */, getETag(ifChanged, setting) /* ifNoneMatch */, null /* fields */, context);
             return toConfigurationSettingWithResponse(response);
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
@@ -850,8 +846,8 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
         validateSetting(setting);
-        final ResponseBase<DeleteKeyValueHeaders, KeyValue> response = serviceClient
-            .deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting), context);
+        final Response<KeyValue> response = ImplBridge.deleteKeyValueWithResponse(serviceClient, setting.getKey(),
+            setting.getLabel(), getETag(ifUnchanged, setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -996,8 +992,10 @@ public final class ConfigurationClient {
         final String label = setting.getLabel();
 
         return isReadOnly
-            ? toConfigurationSettingWithResponse(serviceClient.putLockWithResponse(key, label, null, null, context))
-            : toConfigurationSettingWithResponse(serviceClient.deleteLockWithResponse(key, label, null, null, context));
+            ? toConfigurationSettingWithResponse(
+                ImplBridge.putLockWithResponse(serviceClient, key, label, null, null, context))
+            : toConfigurationSettingWithResponse(
+                ImplBridge.deleteLockWithResponse(serviceClient, key, label, null, null, context));
     }
 
     /**
@@ -1064,8 +1062,9 @@ public final class ConfigurationClient {
         return new PagedIterable<>(() -> {
             PagedResponse<KeyValue> pagedResponse;
             try {
-                pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
-                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context);
+                pagedResponse = ImplBridge.getKeyValuesSinglePage(serviceClient, keyFilter, labelFilter, null,
+                    acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
+                    tagsFilter, context);
             } catch (HttpResponseException ex) {
                 return handleNotModifiedErrorToValidResponse(ex, LOGGER);
             }
@@ -1073,7 +1072,7 @@ public final class ConfigurationClient {
         }, nextLink -> {
             PagedResponse<KeyValue> pagedResponse;
             try {
-                pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
+                pagedResponse = ImplBridge.getKeyValuesNextSinglePage(serviceClient, nextLink, acceptDateTime, null,
                     getPageETag(matchConditionsList, pageETagIndex), context);
             } catch (HttpResponseException ex) {
                 return handleNotModifiedErrorToValidResponse(ex, LOGGER);
@@ -1153,17 +1152,17 @@ public final class ConfigurationClient {
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedIterable<>(() -> {
             try {
-                return toHeadPagedResponse(serviceClient.checkKeyValuesWithResponse(keyFilter, labelFilter, null,
-                    acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
+                return toHeadPagedResponse(ImplBridge.checkKeyValuesWithResponse(serviceClient, keyFilter, labelFilter,
+                    null, acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
                     tagsFilter, context));
             } catch (HttpResponseException ex) {
                 return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER);
             }
         }, afterToken -> {
             try {
-                return toHeadPagedResponse(serviceClient.checkKeyValuesWithResponse(keyFilter, labelFilter, afterToken,
-                    acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
-                    tagsFilter, context));
+                return toHeadPagedResponse(ImplBridge.checkKeyValuesWithResponse(serviceClient, keyFilter, labelFilter,
+                    afterToken, acceptDateTime, settingFields, null, null,
+                    getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context));
             } catch (HttpResponseException ex) {
                 return handleHeadNotModifiedErrorToValidResponse(ex, LOGGER);
             }
@@ -1227,12 +1226,12 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
         List<SettingFields> fields, Context context) {
         return new PagedIterable<>(() -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
-                fields, snapshotName, null, null, null, context);
+            final PagedResponse<KeyValue> pagedResponse = ImplBridge.getKeyValuesSinglePage(serviceClient, null, null,
+                null, null, fields, snapshotName, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse
-                = serviceClient.getKeyValuesNextSinglePage(nextLink, null, null, null, context);
+                = ImplBridge.getKeyValuesNextSinglePage(serviceClient, nextLink, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
     }
@@ -1304,14 +1303,14 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         return new PagedIterable<>(() -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
+            final PagedResponse<KeyValue> pagedResponse = ImplBridge.getRevisionsSinglePage(serviceClient,
                 selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
                 null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()),
                 selector == null ? null : selector.getTagsFilter(), context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse
-                = serviceClient.getRevisionsNextSinglePage(nextLink, acceptDateTime, context);
+                = ImplBridge.getRevisionsNextSinglePage(serviceClient, nextLink, acceptDateTime, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
     }
@@ -1408,9 +1407,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSnapshot> getSnapshotWithResponse(String snapshotName, List<SnapshotFields> fields,
         Context context) {
-        final ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> response
-            = serviceClient.getSnapshotWithResponse(snapshotName, null, null, fields, context);
-        return new SimpleResponse<>(response, response.getValue());
+        return ImplBridge.getSnapshotWithResponse(serviceClient, snapshotName, null, null, fields, context);
     }
 
     /**
@@ -1579,11 +1576,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
-        return new PagedIterable<>(
-            () -> serviceClient.getSnapshotsSinglePage(selector == null ? null : selector.getNameFilter(), null,
-                selector == null ? null : selector.getFields(), selector == null ? null : selector.getStatus(),
-                context),
-            nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink, context));
+        return new PagedIterable<>(() -> ImplBridge.getSnapshotsSinglePage(serviceClient,
+            selector == null ? null : selector.getNameFilter(), null, selector == null ? null : selector.getFields(),
+            selector == null ? null : selector.getStatus(), context),
+            nextLink -> ImplBridge.getSnapshotsNextSinglePage(serviceClient, nextLink, context));
     }
 
     /**
@@ -1667,7 +1663,7 @@ public final class ConfigurationClient {
             ? null
             : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
         final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
-        return serviceClient.getLabels(labelNameFilter, null, acceptDatetime, labelFields, context);
+        return ImplBridge.getLabels(serviceClient, labelNameFilter, null, acceptDatetime, labelFields, context);
     }
 
     /**

@@ -120,6 +120,10 @@ public class SessionClientEvent implements JsonSerializable<SessionClientEvent> 
                     return ClientEventInputAudioTurnCancel.fromJson(readerToUse.reset());
                 } else if ("input_audio.clear".equals(discriminatorValue)) {
                     return ClientEventInputAudioClear.fromJson(readerToUse.reset());
+                } else if ("input_text.delta".equals(discriminatorValue)) {
+                    return ClientEventInputTextDelta.fromJson(readerToUse.reset());
+                } else if ("input_text.done".equals(discriminatorValue)) {
+                    return ClientEventInputTextDone.fromJson(readerToUse.reset());
                 } else if ("input_audio_buffer.append".equals(discriminatorValue)) {
                     return ClientEventInputAudioBufferAppend.fromJson(readerToUse.reset());
                 } else if ("input_audio_buffer.commit".equals(discriminatorValue)) {
@@ -140,6 +144,8 @@ public class SessionClientEvent implements JsonSerializable<SessionClientEvent> 
                     return ClientEventConversationItemRetrieve.fromJson(readerToUse.reset());
                 } else if ("output_audio_buffer.clear".equals(discriminatorValue)) {
                     return ClientEventOutputAudioBufferClear.fromJson(readerToUse.reset());
+                } else if ("rtc.call.sdp.create".equals(discriminatorValue)) {
+                    return ClientEventRtcCallSdpCreate.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
