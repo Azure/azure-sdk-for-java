@@ -39,13 +39,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Skills.
+ * An instance of this class provides access to all the operations defined in BetaSkills.
  */
-public final class SkillsImpl {
+public final class BetaSkillsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final SkillsService service;
+    private final BetaSkillsService service;
 
     /**
      * The service client containing this operation class.
@@ -53,12 +53,13 @@ public final class SkillsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of SkillsImpl.
+     * Initializes an instance of BetaSkillsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SkillsImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(SkillsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BetaSkillsImpl(AIProjectClientImpl client) {
+        this.service
+            = RestProxy.create(BetaSkillsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,12 +73,12 @@ public final class SkillsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientSkills to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for AIProjectClientBetaSkills to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientSkills")
-    public interface SkillsService {
+    @ServiceInterface(name = "AIProjectClientBetaSkills")
+    public interface BetaSkillsService {
         @Get("/skills/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

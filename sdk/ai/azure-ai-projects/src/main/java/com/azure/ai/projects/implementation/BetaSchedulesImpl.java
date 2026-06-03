@@ -39,13 +39,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Schedules.
+ * An instance of this class provides access to all the operations defined in BetaSchedules.
  */
-public final class SchedulesImpl {
+public final class BetaSchedulesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final SchedulesService service;
+    private final BetaSchedulesService service;
 
     /**
      * The service client containing this operation class.
@@ -53,13 +53,13 @@ public final class SchedulesImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of SchedulesImpl.
+     * Initializes an instance of BetaSchedulesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SchedulesImpl(AIProjectClientImpl client) {
+    BetaSchedulesImpl(AIProjectClientImpl client) {
         this.service
-            = RestProxy.create(SchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(BetaSchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,12 +73,12 @@ public final class SchedulesImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientSchedules to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for AIProjectClientBetaSchedules to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientSchedules")
-    public interface SchedulesService {
+    @ServiceInterface(name = "AIProjectClientBetaSchedules")
+    public interface BetaSchedulesService {
         @Delete("/schedules/{id}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

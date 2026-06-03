@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Routines.
+ * An instance of this class provides access to all the operations defined in BetaRoutines.
  */
-public final class RoutinesImpl {
+public final class BetaRoutinesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final RoutinesService service;
+    private final BetaRoutinesService service;
 
     /**
      * The service client containing this operation class.
@@ -54,12 +54,13 @@ public final class RoutinesImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of RoutinesImpl.
+     * Initializes an instance of BetaRoutinesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    RoutinesImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(RoutinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BetaRoutinesImpl(AIProjectClientImpl client) {
+        this.service
+            = RestProxy.create(BetaRoutinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,12 +74,12 @@ public final class RoutinesImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientRoutines to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for AIProjectClientBetaRoutines to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientRoutines")
-    public interface RoutinesService {
+    @ServiceInterface(name = "AIProjectClientBetaRoutines")
+    public interface BetaRoutinesService {
         @Put("/routines/{routine_name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

@@ -38,13 +38,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in RedTeams.
+ * An instance of this class provides access to all the operations defined in BetaRedTeams.
  */
-public final class RedTeamsImpl {
+public final class BetaRedTeamsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final RedTeamsService service;
+    private final BetaRedTeamsService service;
 
     /**
      * The service client containing this operation class.
@@ -52,12 +52,13 @@ public final class RedTeamsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of RedTeamsImpl.
+     * Initializes an instance of BetaRedTeamsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    RedTeamsImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(RedTeamsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BetaRedTeamsImpl(AIProjectClientImpl client) {
+        this.service
+            = RestProxy.create(BetaRedTeamsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,12 +72,12 @@ public final class RedTeamsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientRedTeams to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for AIProjectClientBetaRedTeams to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientRedTeams")
-    public interface RedTeamsService {
+    @ServiceInterface(name = "AIProjectClientBetaRedTeams")
+    public interface BetaRedTeamsService {
         @Get("/redTeams/runs/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

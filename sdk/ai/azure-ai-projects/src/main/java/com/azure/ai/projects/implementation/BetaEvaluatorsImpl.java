@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Evaluators.
+ * An instance of this class provides access to all the operations defined in BetaEvaluators.
  */
-public final class EvaluatorsImpl {
+public final class BetaEvaluatorsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final EvaluatorsService service;
+    private final BetaEvaluatorsService service;
 
     /**
      * The service client containing this operation class.
@@ -54,13 +54,13 @@ public final class EvaluatorsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of EvaluatorsImpl.
+     * Initializes an instance of BetaEvaluatorsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    EvaluatorsImpl(AIProjectClientImpl client) {
+    BetaEvaluatorsImpl(AIProjectClientImpl client) {
         this.service
-            = RestProxy.create(EvaluatorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(BetaEvaluatorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -74,12 +74,12 @@ public final class EvaluatorsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientEvaluators to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for AIProjectClientBetaEvaluators to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientEvaluators")
-    public interface EvaluatorsService {
+    @ServiceInterface(name = "AIProjectClientBetaEvaluators")
+    public interface BetaEvaluatorsService {
         @Get("/evaluators/{name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

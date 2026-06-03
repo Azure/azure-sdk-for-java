@@ -42,13 +42,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Insights.
+ * An instance of this class provides access to all the operations defined in BetaInsights.
  */
-public final class InsightsImpl {
+public final class BetaInsightsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final InsightsService service;
+    private final BetaInsightsService service;
 
     /**
      * The service client containing this operation class.
@@ -56,12 +56,13 @@ public final class InsightsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of InsightsImpl.
+     * Initializes an instance of BetaInsightsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    InsightsImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(InsightsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BetaInsightsImpl(AIProjectClientImpl client) {
+        this.service
+            = RestProxy.create(BetaInsightsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -75,12 +76,12 @@ public final class InsightsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientInsights to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for AIProjectClientBetaInsights to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientInsights")
-    public interface InsightsService {
+    @ServiceInterface(name = "AIProjectClientBetaInsights")
+    public interface BetaInsightsService {
         @Post("/insights")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

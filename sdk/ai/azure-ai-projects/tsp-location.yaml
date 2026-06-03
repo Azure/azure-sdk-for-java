@@ -1,4 +1,4 @@
 directory: specification/ai-foundry/data-plane/Foundry
-commit: 6aa89cf5b93d34e6eea85f12b95cd370ba9d58b1
+commit: 57d28b242672d54fe565734fa13fd582274de5b9
 repo: Azure/azure-rest-api-specs
 entrypointFile: client.java.tsp

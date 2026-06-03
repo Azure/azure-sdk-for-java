@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Models.
+ * An instance of this class provides access to all the operations defined in BetaModels.
  */
-public final class ModelsImpl {
+public final class BetaModelsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final ModelsService service;
+    private final BetaModelsService service;
 
     /**
      * The service client containing this operation class.
@@ -54,12 +54,13 @@ public final class ModelsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of ModelsImpl.
+     * Initializes an instance of BetaModelsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ModelsImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(ModelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BetaModelsImpl(AIProjectClientImpl client) {
+        this.service
+            = RestProxy.create(BetaModelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,12 +74,12 @@ public final class ModelsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientModels to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for AIProjectClientBetaModels to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientModels")
-    public interface ModelsService {
+    @ServiceInterface(name = "AIProjectClientBetaModels")
+    public interface BetaModelsService {
         @Get("/models/{name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

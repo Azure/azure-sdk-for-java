@@ -39,13 +39,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in DataGenerationJobs.
+ * An instance of this class provides access to all the operations defined in BetaDatasets.
  */
-public final class DataGenerationJobsImpl {
+public final class BetaDatasetsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final DataGenerationJobsService service;
+    private final BetaDatasetsService service;
 
     /**
      * The service client containing this operation class.
@@ -53,13 +53,13 @@ public final class DataGenerationJobsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of DataGenerationJobsImpl.
+     * Initializes an instance of BetaDatasetsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    DataGenerationJobsImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(DataGenerationJobsService.class, client.getHttpPipeline(),
-            client.getSerializerAdapter());
+    BetaDatasetsImpl(AIProjectClientImpl client) {
+        this.service
+            = RestProxy.create(BetaDatasetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,12 +73,12 @@ public final class DataGenerationJobsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientDataGenerationJobs to be used by the proxy service to
+     * The interface defining all the services for AIProjectClientBetaDatasets to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientDataGenerationJobs")
-    public interface DataGenerationJobsService {
+    @ServiceInterface(name = "AIProjectClientBetaDatasets")
+    public interface BetaDatasetsService {
         @Get("/data_generation_jobs/{jobId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

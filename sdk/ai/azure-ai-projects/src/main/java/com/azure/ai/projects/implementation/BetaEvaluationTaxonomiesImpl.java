@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in EvaluationTaxonomies.
+ * An instance of this class provides access to all the operations defined in BetaEvaluationTaxonomies.
  */
-public final class EvaluationTaxonomiesImpl {
+public final class BetaEvaluationTaxonomiesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final EvaluationTaxonomiesService service;
+    private final BetaEvaluationTaxonomiesService service;
 
     /**
      * The service client containing this operation class.
@@ -54,12 +54,12 @@ public final class EvaluationTaxonomiesImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of EvaluationTaxonomiesImpl.
+     * Initializes an instance of BetaEvaluationTaxonomiesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    EvaluationTaxonomiesImpl(AIProjectClientImpl client) {
-        this.service = RestProxy.create(EvaluationTaxonomiesService.class, client.getHttpPipeline(),
+    BetaEvaluationTaxonomiesImpl(AIProjectClientImpl client) {
+        this.service = RestProxy.create(BetaEvaluationTaxonomiesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
@@ -74,12 +74,12 @@ public final class EvaluationTaxonomiesImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientEvaluationTaxonomies to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AIProjectClientBetaEvaluationTaxonomies to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientEvaluationTaxonomies")
-    public interface EvaluationTaxonomiesService {
+    @ServiceInterface(name = "AIProjectClientBetaEvaluationTaxonomies")
+    public interface BetaEvaluationTaxonomiesService {
         @Get("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
