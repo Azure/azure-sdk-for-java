@@ -119,6 +119,7 @@ public class HttpConstants {
         public static final String REQUEST_VALIDATION_FAILURE = "x-ms-request-validation-failure";
 
         public static final String WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH = "x-ms-write-request-trigger-refresh";
+        public static final String NO_RETRY_449 = "x-ms-noretry-449";
 
         // Quota Info
         public static final String MAX_RESOURCE_QUOTA = "x-ms-resource-quota";

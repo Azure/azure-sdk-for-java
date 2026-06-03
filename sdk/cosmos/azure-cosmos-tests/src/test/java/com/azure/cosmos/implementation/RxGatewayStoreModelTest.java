@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
+import java.lang.reflect.Method;
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
@@ -594,6 +595,145 @@ public class RxGatewayStoreModelTest {
         HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
         // No workload-id header should be present
         assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isNull();
+    }
+
+    @Test(groups = "unit")
+    public void gatewayAddsNoRetry449Header() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            null);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        try {
+            storeModel.performRequest(request).block();
+            fail("Request should fail");
+        } catch (Exception expectedException) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpClientRequestCaptor.getValue());
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449)).isEqualTo("true");
+    }
+
+    @Test(groups = "unit")
+    public void gatewayOverridesNoRetry449Header() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.NO_RETRY_449, "false");
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            additionalHeaders);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+        request.requestContext = new DocumentServiceRequestContext();
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+        request.getHeaders().put(HttpConstants.HttpHeaders.NO_RETRY_449, "false");
+
+        try {
+            storeModel.performRequest(request).block();
+            fail("Request should fail");
+        } catch (Exception expectedException) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpClientRequestCaptor.getValue());
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449)).isEqualTo("true");
+    }
+
+    @Test(groups = "unit")
+    public void gatewayRetryWithTimeoutUsesStrongConsistencyFromGatewayServiceConfigurationReader() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.STRONG)
+            .when(gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            Mockito.mock(GlobalEndpointManager.class),
+            Mockito.mock(HttpClient.class),
+            null,
+            null);
+        storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
+
+        assertThat(getGatewayRetryWithTimeoutInSeconds(storeModel)).isEqualTo(60);
+    }
+
+    @Test(groups = "unit")
+    public void gatewayRetryWithTimeoutFallsBackToDefaultConsistencyWhenGatewayServiceConfigurationReaderIsNull()
+        throws Exception {
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            mockDiagnosticsClientContext(),
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.STRONG,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            Mockito.mock(GlobalEndpointManager.class),
+            Mockito.mock(HttpClient.class),
+            null,
+            null);
+
+        assertThat(getGatewayRetryWithTimeoutInSeconds(storeModel)).isEqualTo(60);
+    }
+
+    private static int getGatewayRetryWithTimeoutInSeconds(RxGatewayStoreModel storeModel) throws Exception {
+        Method getGatewayRetryWithTimeoutInSeconds = RxGatewayStoreModel.class
+            .getDeclaredMethod("getGatewayRetryWithTimeoutInSeconds");
+        getGatewayRetryWithTimeoutInSeconds.setAccessible(true);
+
+        return (int) getGatewayRetryWithTimeoutInSeconds.invoke(storeModel);
     }
 
     enum SessionTokenType {
