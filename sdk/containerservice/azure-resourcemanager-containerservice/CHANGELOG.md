@@ -2,34 +2,9 @@
 
 ## 2.61.0 (2026-06-03)
 
-### Breaking Changes
+### Other Changes
 
-#### `models.ManagedClusterAgentPoolProfile` was modified
-
-* `nodeImageVersion()` was removed
-
-### Features Added
-
-* `models.IdentityBindingManagedIdentityProfile` was added
-
-* `models.IdentityBindingProperties` was added
-
-* `models.IdentityBindingProvisioningState` was added
-
-* `models.IdentityBindingOidcIssuerProfile` was added
-
-* `models.ManagedClusterAzureMonitorProfileMetricsControlPlane` was added
-
-* `models.AgentPoolRecentlyUsedVersion` was added
-
-#### `models.ManagedClusterAzureMonitorProfileMetrics` was modified
-
-* `controlPlane()` was added
-* `withControlPlane(models.ManagedClusterAzureMonitorProfileMetricsControlPlane)` was added
-
-#### `models.ManagedClusterAgentPoolProfile` was modified
-
-* `withNodeImageVersion(java.lang.String)` was added
+- Updated `api-version` to `2026-04-01`.
 
 ## 2.61.0-beta.1 (2026-05-18)
 
