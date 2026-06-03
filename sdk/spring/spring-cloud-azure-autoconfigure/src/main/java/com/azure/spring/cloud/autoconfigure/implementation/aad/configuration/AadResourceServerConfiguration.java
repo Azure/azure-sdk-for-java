@@ -11,8 +11,10 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constant
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
+import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
+import com.nimbusds.jose.jwk.source.JWKSetCache;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -43,6 +45,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
 
@@ -70,19 +73,20 @@ class AadResourceServerConfiguration {
         return nimbusJwtDecoder;
     }
 
+    @SuppressWarnings("deprecation")
     private JWKSource<SecurityContext> createJwkSource(String jwkSetEndpoint,
                                                        AadAuthenticationProperties aadAuthenticationProperties) {
         RestTemplateBuilder jwtRestTemplateBuilder = restTemplateBuilder
             .connectTimeout(aadAuthenticationProperties.getJwtConnectTimeout())
             .readTimeout(aadAuthenticationProperties.getJwtReadTimeout());
         ResourceRetriever resourceRetriever = new RestOperationsResourceRetriever(jwtRestTemplateBuilder);
+        JWKSetCache jwkSetCache = new DefaultJWKSetCache(
+            aadAuthenticationProperties.getJwkSetCacheLifespan().toMillis(),
+            aadAuthenticationProperties.getJwkSetCacheRefreshTime().toMillis(),
+            TimeUnit.MILLISECONDS);
         try {
             URL jwkSetUrl = URI.create(jwkSetEndpoint).toURL();
-            return JWKSourceBuilder.create(jwkSetUrl, resourceRetriever)
-                .cache(aadAuthenticationProperties.getJwkSetCacheLifespan().toMillis(),
-                    aadAuthenticationProperties.getJwkSetCacheRefreshTime().toMillis())
-                .refreshAheadCache(false)
-                .build();
+            return new RemoteJWKSet<>(jwkSetUrl, resourceRetriever, jwkSetCache);
         } catch (IllegalArgumentException | MalformedURLException e) {
             throw new IllegalStateException("Invalid JWK Set endpoint: " + jwkSetEndpoint, e);
         }
