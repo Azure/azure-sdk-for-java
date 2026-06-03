@@ -451,8 +451,8 @@ class AadResourceServerConfigurationTests {
     }
 
     /**
-     * Verifies that the RestTemplate used by the NimbusJwtDecoder for JWK retrieval
-     * has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     * Verifies that the NimbusJwtDecoder uses the expected JWK retrieval path and that
+     * the recorded HTTP client settings contain the expected connect and read timeouts.
      */
     @SuppressWarnings("deprecation")
     private static void verifyJwtDecoderRestTemplateTimeouts(ApplicationContext context,
