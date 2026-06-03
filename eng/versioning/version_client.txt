@@ -60,7 +60,7 @@ com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;2.0.0;2.1.0-beta.1
 com.azure:azure-ai-translation-document;1.0.8;1.1.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-ai-voicelive;1.0.0;1.1.0-beta.1
+com.azure:azure-ai-voicelive;1.0.0;1.1.0-beta.2
 com.azure:azure-analytics-defender-easm;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-datamap;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.2
@@ -326,7 +326,7 @@ com.azure.resourcemanager:azure-resourcemanager-datadog;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-communication;2.3.0;2.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-apimanagement;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.1.0;1.1.1
 com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0;1.1.0-beta.1
@@ -518,7 +518,7 @@ com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-computelimit;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry-tasks;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-virtualenclaves;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgeactions;1.0.0-beta.1;1.0.0-beta.2
