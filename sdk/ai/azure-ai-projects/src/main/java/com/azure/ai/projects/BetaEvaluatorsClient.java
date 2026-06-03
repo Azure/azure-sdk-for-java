@@ -1129,7 +1129,7 @@ public final class BetaEvaluatorsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return evaluator Generation Job resource â€” a long-running job that generates rubric-based evaluator definitions
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials along with {@link Response}.
      */
     @Generated
@@ -1513,7 +1513,7 @@ public final class BetaEvaluatorsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return evaluator Generation Job resource â€” a long-running job that generates rubric-based evaluator definitions
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials along with {@link Response}.
      */
     @Generated
@@ -1568,7 +1568,7 @@ public final class BetaEvaluatorsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluator Generation Job resource â€” a long-running job that generates rubric-based evaluator definitions
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials.
      */
     @Generated
@@ -1600,7 +1600,7 @@ public final class BetaEvaluatorsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluator Generation Job resource â€” a long-running job that generates rubric-based evaluator definitions
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials.
      */
     @Generated
@@ -1748,7 +1748,7 @@ public final class BetaEvaluatorsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluator Generation Job resource â€” a long-running job that generates rubric-based evaluator definitions
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials.
      */
     @Generated
@@ -1775,7 +1775,7 @@ public final class BetaEvaluatorsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluator Generation Job resource â€” a long-running job that generates rubric-based evaluator definitions
+     * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials.
      */
     @Generated
