@@ -472,7 +472,7 @@ public final class DocumentCollection extends Resource {
      *
      * @return the CosmosGlobalSecondaryIndexDefinition
      */
-    public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
+    public synchronized CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
         if (this.cosmosGlobalSecondaryIndexDefinition == null) {
             // Accept both the new wire format property name and the legacy one
             if (super.has(Constants.Properties.GLOBAL_SECONDARY_INDEX_DEFINITION)) {
@@ -493,8 +493,11 @@ public final class DocumentCollection extends Resource {
      *
      * @param value the CosmosGlobalSecondaryIndexDefinition
      */
-    public void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
+    public synchronized void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         checkNotNull(value, "cosmosGlobalSecondaryIndexDefinition cannot be null");
+        // Synchronized to make the cached-field update and the two wire-key writes appear as a
+        // single atomic update to any concurrent reader (getGlobalSecondaryIndexDefinition() and
+        // populatePropertyBag() are both also synchronized on this DocumentCollection instance).
         this.cosmosGlobalSecondaryIndexDefinition = value;
         // Intentionally dual-write the definition under both the new ("globalSecondaryIndexDefinition")
         // and the legacy ("materializedViewDefinition") wire-format property names. The Cosmos DB service
@@ -508,7 +511,7 @@ public final class DocumentCollection extends Resource {
         this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
     }
 
-    public void populatePropertyBag() {
+    public synchronized void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.indexingPolicy == null) {
             this.getIndexingPolicy();
@@ -529,6 +532,16 @@ public final class DocumentCollection extends Resource {
 
         this.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
         this.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
+
+        // Re-emit the cached GSI definition under both wire keys. setGlobalSecondaryIndexDefinition
+        // dual-writes both the new ("globalSecondaryIndexDefinition") and the legacy
+        // ("materializedViewDefinition") keys to bridge the service rollout boundary; that contract
+        // also has to hold across a populatePropertyBag re-snapshot. Without this, an in-memory
+        // mutation made via getGlobalSecondaryIndexDefinition().<mutate>() (which only updates the
+        // cached field, not the property bag) would silently fail to round-trip through replace().
+        if (this.cosmosGlobalSecondaryIndexDefinition != null) {
+            this.setGlobalSecondaryIndexDefinition(this.cosmosGlobalSecondaryIndexDefinition);
+        }
     }
 
     @Override

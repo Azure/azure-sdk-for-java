@@ -6,6 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Offer;
@@ -1398,38 +1399,41 @@ public class CosmosAsyncDatabase {
             options != null ? ModelBridgeInternal.toRequestOptions(options) : new RequestOptions();
 
         Mono<CosmosContainerResponse> responseMono = Mono.defer(() -> {
-            // Re-read the GSI definition from containerProperties at subscription time so that any
-            // mutations the caller made between Mono construction and subscription are honored
-            // consistently across RID resolution and the create-collection call.
-            CosmosGlobalSecondaryIndexDefinition gsiDefinition =
-                containerProperties.getGlobalSecondaryIndexDefinition();
+            // Take a SDK-private snapshot of the caller's container properties up-front via
+            // ModelBridgeInternal.getV2Collection (which clones via toJson()). All subsequent
+            // mutations — in particular the source-container RID injection performed by
+            // ridResolution — happen against this snapshot, never against the caller-owned
+            // containerProperties / GSI definition. This makes the call safe to run concurrently
+            // against a shared CosmosContainerProperties instance and prevents the SDK from
+            // surfacing torn state back to the caller.
+            DocumentCollection snapshot = ModelBridgeInternal.getV2Collection(containerProperties);
+            CosmosGlobalSecondaryIndexDefinition gsiDefinitionSnapshot =
+                snapshot.getGlobalSecondaryIndexDefinition();
+
             Mono<Void> ridResolution;
-            if (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) {
-                ridResolution = this.getContainer(gsiDefinition.getSourceContainerId())
+            if (gsiDefinitionSnapshot != null && gsiDefinitionSnapshot.getSourceContainerId() != null) {
+                ridResolution = this.getContainer(gsiDefinitionSnapshot.getSourceContainerId())
                     .read(new CosmosContainerRequestOptions(), context)
                     .flatMap(sourceContainerResponse -> {
                         String rid = sourceContainerResponse.getProperties().getResourceId();
                         ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
                             .getCosmosGlobalSecondaryIndexDefinitionAccessor()
-                            .setSourceCollectionRid(gsiDefinition, rid);
+                            .setSourceCollectionRid(gsiDefinitionSnapshot, rid);
+                        // Re-emit the GSI definition under both wire keys on the snapshot so that
+                        // the resolved sourceCollectionRid is guaranteed to appear in the request
+                        // body regardless of whether getObject(...) returned a live or detached
+                        // wrapper around the snapshot's sub-tree.
+                        snapshot.setGlobalSecondaryIndexDefinition(gsiDefinitionSnapshot);
                         return Mono.empty();
                     });
             } else {
                 ridResolution = Mono.empty();
             }
 
-            // ModelBridgeInternal.getV2Collection(containerProperties) below is wrapped
-            // in Mono.defer(...) so it is evaluated AFTER ridResolution completes. getV2Collection
-            // captures a SNAPSHOT of the underlying DocumentCollection (via toJson()), so it must
-            // run after the source-RID has been injected into containerProperties; otherwise the
-            // snapshot — and therefore the wire body — is missing the resolved sourceCollectionRid
-            // and the server rejects the create GSI container with "Unable to fetch source collection".
             return ridResolution
-                .then(Mono.defer(() -> getDocClientWrapper()
-                    .createCollection(this.getLink(),
-                        ModelBridgeInternal.getV2Collection(containerProperties),
-                        nonNullRequestOptions)
-                    .map(ModelBridgeInternal::createCosmosContainerResponse).single()));
+                .then(getDocClientWrapper()
+                    .createCollection(this.getLink(), snapshot, nonNullRequestOptions)
+                    .map(ModelBridgeInternal::createCosmosContainerResponse).single());
         });
 
         return this.client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
