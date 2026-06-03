@@ -40,13 +40,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Toolboxes.
+ * An instance of this class provides access to all the operations defined in BetaToolboxes.
  */
-public final class ToolboxesImpl {
+public final class BetaToolboxesImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final ToolboxesService service;
+    private final BetaToolboxesService service;
 
     /**
      * The service client containing this operation class.
@@ -54,13 +54,13 @@ public final class ToolboxesImpl {
     private final AgentsClientImpl client;
 
     /**
-     * Initializes an instance of ToolboxesImpl.
+     * Initializes an instance of BetaToolboxesImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ToolboxesImpl(AgentsClientImpl client) {
+    BetaToolboxesImpl(AgentsClientImpl client) {
         this.service
-            = RestProxy.create(ToolboxesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(BetaToolboxesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -74,12 +74,12 @@ public final class ToolboxesImpl {
     }
 
     /**
-     * The interface defining all the services for AgentsClientToolboxes to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for AgentsClientBetaToolboxes to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AgentsClientToolboxes")
-    public interface ToolboxesService {
+    @ServiceInterface(name = "AgentsClientBetaToolboxes")
+    public interface BetaToolboxesService {
         @Post("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })

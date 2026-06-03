@@ -46,13 +46,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in MemoryStores.
+ * An instance of this class provides access to all the operations defined in BetaMemoryStores.
  */
-public final class MemoryStoresImpl {
+public final class BetaMemoryStoresImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final MemoryStoresService service;
+    private final BetaMemoryStoresService service;
 
     /**
      * The service client containing this operation class.
@@ -60,13 +60,13 @@ public final class MemoryStoresImpl {
     private final AgentsClientImpl client;
 
     /**
-     * Initializes an instance of MemoryStoresImpl.
+     * Initializes an instance of BetaMemoryStoresImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MemoryStoresImpl(AgentsClientImpl client) {
+    BetaMemoryStoresImpl(AgentsClientImpl client) {
         this.service
-            = RestProxy.create(MemoryStoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(BetaMemoryStoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -80,12 +80,12 @@ public final class MemoryStoresImpl {
     }
 
     /**
-     * The interface defining all the services for AgentsClientMemoryStores to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for AgentsClientBetaMemoryStores to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AgentsClientMemoryStores")
-    public interface MemoryStoresService {
+    @ServiceInterface(name = "AgentsClientBetaMemoryStores")
+    public interface BetaMemoryStoresService {
         @Post("/memory_stores")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
