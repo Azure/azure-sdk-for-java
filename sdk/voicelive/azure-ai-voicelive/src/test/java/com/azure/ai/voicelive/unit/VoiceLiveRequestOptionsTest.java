@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * <p>
  * Tests that exercise how the client applies these options (via the package-private
  * {@code VoiceLiveAsyncClient} constructor and the private {@code convertToWebSocketEndpoint} method) remain in
- * {@code com.azure.ai.voicelive.VoiceLiveRequestOptionsTest}.
+ * {@code com.azure.ai.voicelive.unit.VoiceLiveRequestOptionsClientTest}.
  */
 class VoiceLiveRequestOptionsTest {
     private static final HttpHeaderName X_CUSTOM_HEADER = HttpHeaderName.fromString("X-Custom-Header");
