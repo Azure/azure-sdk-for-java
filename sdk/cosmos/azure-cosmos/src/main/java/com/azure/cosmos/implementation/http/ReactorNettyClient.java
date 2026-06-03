@@ -45,16 +45,15 @@ import java.util.function.BooleanSupplier;
  * HttpClient that is implemented using reactor-netty.
  */
 public class ReactorNettyClient implements HttpClient {
+    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor() {
+        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+    }
 
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
-
-    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor() {
-        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
-    }
 
     private HttpClientConfig httpClientConfig;
     private reactor.netty.http.client.HttpClient httpClient;
@@ -184,8 +183,13 @@ public class ReactorNettyClient implements HttpClient {
                         int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
                         int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
                         if (pingIntervalSeconds > 0) {
+                            // Pass the same scope supplier into the handler so it re-checks
+                            // per tick. If the account flips thin-client off after the handler
+                            // was installed, the supplier returns false on the next scheduled
+                            // tick and the handler cancels itself.
+                            BooleanSupplier scopeForHandler = this.http2PingScopeSupplier;
                             Http2PingHandler.installIfAbsent(parent, pingIntervalSeconds,
-                                pingTimeoutSeconds, pingFailureThreshold);
+                                pingTimeoutSeconds, pingFailureThreshold, scopeForHandler);
                         }
                     }
                 }
@@ -257,7 +261,7 @@ public class ReactorNettyClient implements HttpClient {
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
 
         // Per-request CONNECT_TIMEOUT_MILLIS via reactor-netty's immutable HttpClient.
-        // .option() returns a new config snapshot -- does NOT mutate the shared httpClient.
+        // .option() returns a new config snapshot — does NOT mutate the shared httpClient.
         // Thin client requests (isThinClientRequest=true): connect timeout is configured via
         // HttpClientConfig.getThinClientConnectTimeoutMs() (default 5s) to fail fast.
         // Standard gateway requests: 45s (default).

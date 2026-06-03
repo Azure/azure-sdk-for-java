@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BooleanSupplier;
 
 /**
  * Manual HTTP/2 PING keepalive handler installed on the parent (TCP) channel.
@@ -44,6 +45,10 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     private final long pingIntervalNanos;
     private final long pingTimeoutNanos;
     private final int failureThreshold;
+    // Re-checked per tick so that if the scope condition (e.g. the account's
+    // thin-client configuration) goes away at runtime, the handler stops
+    // sending PINGs even on connections that already had it installed.
+    private final BooleanSupplier scopeSupplier;
 
     // Mutable fields below are accessed only from the channel's EventLoop thread
     // (handlerAdded, channelRead, scheduled task, writeAndFlush listener), so no
@@ -58,11 +63,16 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param pingIntervalSeconds  interval in seconds; when idle longer than this, a PING is sent
      * @param pingTimeoutSeconds   timeout in seconds per PING attempt
      * @param failureThreshold     consecutive timeouts before closing the connection
+     * @param scopeSupplier        re-checked per tick; when it returns false the handler cancels
+     *                             itself, so a runtime scope change (e.g. account losing thin-client
+     *                             read locations) stops PINGs on already-installed handlers
      */
-    public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold) {
+    public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold,
+                            BooleanSupplier scopeSupplier) {
         this.pingIntervalNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingIntervalSeconds));
         this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingTimeoutSeconds));
         this.failureThreshold = Math.max(1, failureThreshold);
+        this.scopeSupplier = scopeSupplier != null ? scopeSupplier : () -> true;
         this.lastReadNanos = System.nanoTime();
     }
 
@@ -106,7 +116,15 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     }
 
     private void maybeSendPing(ChannelHandlerContext ctx) {
-        if (!ctx.channel().isActive() || !Configs.isHttp2PingHealthEnabled()) {
+        // Re-check both gates per tick:
+        //   - Configs.isHttp2PingHealthEnabled(): global kill-switch (system property).
+        //   - scopeSupplier: per-client scope (e.g. thin-client still active). If the
+        //     account drops thin-client read locations after the handler was installed,
+        //     this flips false and we cancel the scheduled task. The connection itself
+        //     stays in the pool and is reaped by the normal idle timeout.
+        if (!ctx.channel().isActive()
+            || !Configs.isHttp2PingHealthEnabled()
+            || !scopeSupplier.getAsBoolean()) {
             cancelPingTask();
             return;
         }
@@ -170,14 +188,19 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param pingIntervalSeconds PING interval in seconds
      * @param pingTimeoutSeconds  PING ACK timeout in seconds
      * @param failureThreshold    consecutive timeouts before closing
+     * @param scopeSupplier       re-checked per tick by the handler; when it returns false
+     *                            the handler cancels itself so runtime scope changes
+     *                            (e.g. account losing thin-client read locations)
+     *                            disable PING even on already-installed handlers
      */
     public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds,
-                                       int failureThreshold) {
+                                       int failureThreshold, BooleanSupplier scopeSupplier) {
         Channel parent = channel.parent() != null ? channel.parent() : channel;
         if (parent.pipeline().get(HANDLER_NAME) == null) {
             try {
                 parent.pipeline().addLast(HANDLER_NAME,
-                    new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds, failureThreshold));
+                    new Http2PingHandler(pingIntervalSeconds, pingTimeoutSeconds, failureThreshold,
+                        scopeSupplier));
             } catch (IllegalArgumentException ignored) {
                 // Duplicate -- race between concurrent streams, benign
             }
