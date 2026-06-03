@@ -1418,11 +1418,18 @@ public class CosmosAsyncDatabase {
                 ridResolution = Mono.empty();
             }
 
+            // ModelBridgeInternal.getV2Collection(containerProperties) below is wrapped
+            // in Mono.defer(...) so it is evaluated AFTER ridResolution completes. getV2Collection
+            // captures a SNAPSHOT of the underlying DocumentCollection (via toJson()), so it must
+            // run after the source-RID has been injected into containerProperties; otherwise the
+            // snapshot — and therefore the wire body — is missing the resolved sourceCollectionRid
+            // and the server rejects the create GSI container with "Unable to fetch source collection".
             return ridResolution
-                .then(getDocClientWrapper()
-                    .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
+                .then(Mono.defer(() -> getDocClientWrapper()
+                    .createCollection(this.getLink(),
+                        ModelBridgeInternal.getV2Collection(containerProperties),
                         nonNullRequestOptions)
-                    .map(ModelBridgeInternal::createCosmosContainerResponse).single());
+                    .map(ModelBridgeInternal::createCosmosContainerResponse).single()));
         });
 
         return this.client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(

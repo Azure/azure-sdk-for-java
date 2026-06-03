@@ -54,11 +54,28 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     // Create GSI container
     // ------------------------------------------------------------------
 
+    /**
+     * Returns a source-container definition whose partition key (/customerId) matches the
+     * partition key projected by {@link #GSI_QUERY_DEFINITION}. The GSI service requires the
+     * source container's partition key path to be present in the GSI projection; otherwise the
+     * gateway rejects the create-collection request with a misleading
+     * "Unable to fetch source collection provided in the Materialized View definition" error.
+     * Tests that derive a GSI from a source MUST use this helper rather than the generic
+     * {@code getCollectionDefinition(...)} (which uses /mypk and would not be projected).
+     */
+    private static CosmosContainerProperties getGsiSourceContainerDefinition(String collectionId) {
+        PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/customerId");
+        pkDef.setPaths(paths);
+        return new CosmosContainerProperties(collectionId, pkDef);
+    }
+
     @Test(groups = {"gsi"}, timeOut = TIMEOUT)
     public void createGsiContainer() {
         // Create the source container first
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        CosmosContainerProperties sourceContainerDef = getGsiSourceContainerDefinition(sourceContainerId);
         database.createContainer(sourceContainerDef).block();
 
         try {
@@ -93,7 +110,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     public void readGsiContainer() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        CosmosContainerProperties sourceContainerDef = getGsiSourceContainerDefinition(sourceContainerId);
         database.createContainer(sourceContainerDef).block();
 
         // Create GSI container
@@ -130,7 +147,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     public void deleteGsiContainer() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        CosmosContainerProperties sourceContainerDef = getGsiSourceContainerDefinition(sourceContainerId);
         database.createContainer(sourceContainerDef).block();
 
         // Create GSI container
@@ -160,7 +177,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     public void createGsiContainerWithCustomIndexingPolicy() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        CosmosContainerProperties sourceContainerDef = getGsiSourceContainerDefinition(sourceContainerId);
         database.createContainer(sourceContainerDef).block();
 
         try {
@@ -208,7 +225,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     public void replaceGsiContainer() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        CosmosContainerProperties sourceContainerDef = getGsiSourceContainerDefinition(sourceContainerId);
         database.createContainer(sourceContainerDef).block();
 
         // Create GSI container
@@ -255,7 +272,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     public void readGsiContainerHasStatusField() {
         // Create source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        CosmosContainerProperties sourceContainerDef = getGsiSourceContainerDefinition(sourceContainerId);
         database.createContainer(sourceContainerDef).block();
 
         // Create GSI container
@@ -314,7 +331,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
     public void createGsiContainer_ridResolvedFromSourceContainer() {
         // Create the source container
         String sourceContainerId = "gsi-src-" + UUID.randomUUID();
-        CosmosContainerProperties sourceContainerDef = getCollectionDefinition(sourceContainerId);
+        CosmosContainerProperties sourceContainerDef = getGsiSourceContainerDefinition(sourceContainerId);
         database.createContainer(sourceContainerDef).block();
 
         try {
