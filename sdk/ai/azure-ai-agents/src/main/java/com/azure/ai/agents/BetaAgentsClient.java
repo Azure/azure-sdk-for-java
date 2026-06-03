@@ -10,6 +10,26 @@ import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
 import com.azure.ai.agents.models.*;
+import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.models.AgentDetails;
+import com.azure.ai.agents.models.AgentSessionResource;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CandidateDeployConfig;
+import com.azure.ai.agents.models.CandidateMetadata;
+import com.azure.ai.agents.models.CandidateResults;
+import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.OptimizationCandidate;
+import com.azure.ai.agents.models.OptimizationJob;
+import com.azure.ai.agents.models.OptimizationJobInputs;
+import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.PromoteCandidateInput;
+import com.azure.ai.agents.models.PromoteCandidateResult;
+import com.azure.ai.agents.models.SessionDirectoryEntry;
+import com.azure.ai.agents.models.SessionFileWriteResult;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -62,7 +82,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -178,7 +198,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -292,7 +312,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -334,9 +354,9 @@ public final class BetaAgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -443,7 +463,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -529,7 +549,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -567,7 +587,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -578,9 +598,9 @@ public final class BetaAgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -628,7 +648,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -791,7 +811,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -860,7 +880,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -906,15 +926,15 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -958,7 +978,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -1021,7 +1041,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1108,7 +1128,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1136,9 +1156,9 @@ public final class BetaAgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1294,7 +1314,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1474,7 +1494,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1628,7 +1648,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1842,7 +1862,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1931,7 +1951,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1993,7 +2013,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2048,7 +2068,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2110,7 +2130,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -2152,7 +2172,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2161,9 +2181,9 @@ public final class BetaAgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

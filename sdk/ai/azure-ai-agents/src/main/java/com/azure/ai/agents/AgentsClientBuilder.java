@@ -476,6 +476,7 @@ public final class AgentsClientBuilder
             BetaMemoryStoresAsyncClient.class,
             BetaToolboxesAsyncClient.class })
     public final class BetaAgentsClientBuilder {
+
         /**
          * Builds an instance of BetaAgentsAsyncClient class.
          *
@@ -535,5 +536,59 @@ public final class AgentsClientBuilder
         public BetaToolboxesClient buildBetaToolboxesClient() {
             return new BetaToolboxesClient(buildInnerClient().getBetaToolboxes());
         }
+    }
+
+    /**
+     * Builds an instance of BetaAgentsAsyncClient class.
+     *
+     * @return an instance of BetaAgentsAsyncClient.
+     */
+    private BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
+        return new BetaAgentsAsyncClient(buildInnerClient().getBetaAgents());
+    }
+
+    /**
+     * Builds an instance of BetaMemoryStoresAsyncClient class.
+     *
+     * @return an instance of BetaMemoryStoresAsyncClient.
+     */
+    private BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
+        return new BetaMemoryStoresAsyncClient(buildInnerClient().getBetaMemoryStores());
+    }
+
+    /**
+     * Builds an instance of BetaToolboxesAsyncClient class.
+     *
+     * @return an instance of BetaToolboxesAsyncClient.
+     */
+    private BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
+        return new BetaToolboxesAsyncClient(buildInnerClient().getBetaToolboxes());
+    }
+
+    /**
+     * Builds an instance of BetaAgentsClient class.
+     *
+     * @return an instance of BetaAgentsClient.
+     */
+    private BetaAgentsClient buildBetaAgentsClient() {
+        return new BetaAgentsClient(buildInnerClient().getBetaAgents());
+    }
+
+    /**
+     * Builds an instance of BetaMemoryStoresClient class.
+     *
+     * @return an instance of BetaMemoryStoresClient.
+     */
+    private BetaMemoryStoresClient buildBetaMemoryStoresClient() {
+        return new BetaMemoryStoresClient(buildInnerClient().getBetaMemoryStores());
+    }
+
+    /**
+     * Builds an instance of BetaToolboxesClient class.
+     *
+     * @return an instance of BetaToolboxesClient.
+     */
+    private BetaToolboxesClient buildBetaToolboxesClient() {
+        return new BetaToolboxesClient(buildInnerClient().getBetaToolboxes());
     }
 }
