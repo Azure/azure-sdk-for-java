@@ -11,28 +11,28 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrateN
  */
 public interface MigrateNetworkStatus {
     /**
-     * Gets the subscriptionId property: The ID of the subscription.
+     * Gets the subscriptionId property: Identifier of the subscription.
      * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
-     * Gets the resourceGroupName property: The name of the resource group.
+     * Gets the resourceGroupName property: Name of the resource group.
      * 
      * @return the resourceGroupName value.
      */
     String resourceGroupName();
 
     /**
-     * Gets the serverName property: The name of the server.
+     * Gets the serverName property: Name of the server.
      * 
      * @return the serverName value.
      */
     String serverName();
 
     /**
-     * Gets the state property: The state of the network migration operation.
+     * Gets the state property: State of the network migration operation.
      * 
      * @return the state value.
      */
