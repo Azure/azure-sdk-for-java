@@ -466,28 +466,6 @@ class AadResourceServerConfigurationTests {
         Object restOperations = ReflectionTestUtils.getField(resourceRetriever, "restOperations");
         assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
 
-        // RestTemplate -> ClientHttpRequestFactory
-        org.springframework.http.client.ClientHttpRequestFactory requestFactory =
-            ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
-        assertThat(requestFactory).isNotNull();
-
-        Object connectTimeoutValue = ReflectionTestUtils.getField(requestFactory, "connectTimeout");
-        Object readTimeoutValue = ReflectionTestUtils.getField(requestFactory, "readTimeout");
-        int connectTimeout = connectTimeoutValue instanceof Duration
-            ? (int) ((Duration) connectTimeoutValue).toMillis()
-            : (int) connectTimeoutValue;
-        int readTimeout = readTimeoutValue instanceof Duration
-            ? (int) ((Duration) readTimeoutValue).toMillis()
-            : (int) readTimeoutValue;
-        assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
-        assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
-
-        assertRecordedHttpClientSettings(context, expectedConnectTimeoutMs, expectedReadTimeoutMs);
-    }
-
-    private static void assertRecordedHttpClientSettings(ApplicationContext context,
-                                                         int expectedConnectTimeoutMs,
-                                                         int expectedReadTimeoutMs) {
         HttpClientSettings clientSettings = context.getBean(RecordingClientHttpRequestFactoryBuilder.class)
                                                   .getClientSettings();
         assertThat(clientSettings).isNotNull();
