@@ -6,10 +6,15 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadResourceServerProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jose.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.util.ResourceRetriever;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,12 +37,14 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.StringUtils;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
-import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createRestTemplate;
 
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
@@ -56,14 +63,29 @@ class AadResourceServerConfiguration {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), tenantId);
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
-            .restOperations(createRestTemplate(restTemplateBuilder
-                .connectTimeout(aadAuthenticationProperties.getJwtConnectTimeout())
-                .readTimeout(aadAuthenticationProperties.getJwtReadTimeout())))
+            .withJwkSource(createJwkSource(identityEndpoints.getJwkSetEndpoint(), aadAuthenticationProperties))
             .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
+    }
+
+    private JWKSource<SecurityContext> createJwkSource(String jwkSetEndpoint,
+                                                       AadAuthenticationProperties aadAuthenticationProperties) {
+        RestTemplateBuilder jwtRestTemplateBuilder = restTemplateBuilder
+            .connectTimeout(aadAuthenticationProperties.getJwtConnectTimeout())
+            .readTimeout(aadAuthenticationProperties.getJwtReadTimeout());
+        ResourceRetriever resourceRetriever = new RestOperationsResourceRetriever(jwtRestTemplateBuilder);
+        try {
+            URL jwkSetUrl = URI.create(jwkSetEndpoint).toURL();
+            return JWKSourceBuilder.create(jwkSetUrl, resourceRetriever)
+                .cache(aadAuthenticationProperties.getJwkSetCacheLifespan().toMillis(),
+                    aadAuthenticationProperties.getJwkSetCacheRefreshTime().toMillis())
+                .refreshAheadCache(false)
+                .build();
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("Invalid JWK Set endpoint: " + jwkSetEndpoint, e);
+        }
     }
 
     List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
