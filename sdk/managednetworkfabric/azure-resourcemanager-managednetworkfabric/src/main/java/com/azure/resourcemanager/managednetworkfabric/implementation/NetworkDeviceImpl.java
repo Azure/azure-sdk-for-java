@@ -80,8 +80,8 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
         return this.innerModel().annotation();
     }
 
-    public String hostName() {
-        return this.innerModel().hostName();
+    public String hostname() {
+        return this.innerModel().hostname();
     }
 
     public String serialNumber() {
@@ -366,12 +366,12 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
         }
     }
 
-    public NetworkDeviceImpl withHostName(String hostName) {
+    public NetworkDeviceImpl withHostname(String hostname) {
         if (isInCreateMode()) {
-            this.innerModel().withHostName(hostName);
+            this.innerModel().withHostname(hostname);
             return this;
         } else {
-            this.updateBody.withHostName(hostName);
+            this.updateBody.withHostname(hostname);
             return this;
         }
     }

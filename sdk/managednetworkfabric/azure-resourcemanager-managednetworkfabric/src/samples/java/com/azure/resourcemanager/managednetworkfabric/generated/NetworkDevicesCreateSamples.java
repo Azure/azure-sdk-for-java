@@ -37,7 +37,7 @@ public final class NetworkDevicesCreateSamples {
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity",
                     new UserAssignedIdentity())))
             .withAnnotation("annotation")
-            .withHostName("NFA-Device")
+            .withHostname("NFA-Device")
             .withIdentitySelector(new IdentitySelector()
                 .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
                 .withUserAssignedIdentityResourceId(

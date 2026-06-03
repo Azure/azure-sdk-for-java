@@ -17,7 +17,7 @@ public final class NetworkDevicePatchParametersPropertiesTests {
             "{\"annotation\":\"bpjbapm\",\"hostName\":\"mmkvav\",\"serialNumber\":\"gjiuaiqpmnufzhrc\",\"identitySelector\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"zdmh\"}}")
             .toObject(NetworkDevicePatchParametersProperties.class);
         Assertions.assertEquals("bpjbapm", model.annotation());
-        Assertions.assertEquals("mmkvav", model.hostName());
+        Assertions.assertEquals("mmkvav", model.hostname());
         Assertions.assertEquals("gjiuaiqpmnufzhrc", model.serialNumber());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.identitySelector().identityType());
@@ -28,14 +28,14 @@ public final class NetworkDevicePatchParametersPropertiesTests {
     public void testSerialize() throws Exception {
         NetworkDevicePatchParametersProperties model
             = new NetworkDevicePatchParametersProperties().withAnnotation("bpjbapm")
-                .withHostName("mmkvav")
+                .withHostname("mmkvav")
                 .withSerialNumber("gjiuaiqpmnufzhrc")
                 .withIdentitySelector(new IdentitySelectorPatch()
                     .withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
                     .withUserAssignedIdentityResourceId("zdmh"));
         model = BinaryData.fromObject(model).toObject(NetworkDevicePatchParametersProperties.class);
         Assertions.assertEquals("bpjbapm", model.annotation());
-        Assertions.assertEquals("mmkvav", model.hostName());
+        Assertions.assertEquals("mmkvav", model.hostname());
         Assertions.assertEquals("gjiuaiqpmnufzhrc", model.serialNumber());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.identitySelector().identityType());

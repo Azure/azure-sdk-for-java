@@ -26,7 +26,7 @@ public final class NetworkDevicePatchParametersProperties
     /*
      * The host name of the device.
      */
-    private String hostName;
+    private String hostname;
 
     /*
      * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
@@ -66,22 +66,22 @@ public final class NetworkDevicePatchParametersProperties
     }
 
     /**
-     * Get the hostName property: The host name of the device.
+     * Get the hostname property: The host name of the device.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
-     * Set the hostName property: The host name of the device.
+     * Set the hostname property: The host name of the device.
      * 
-     * @param hostName the hostName value to set.
+     * @param hostname the hostname value to set.
      * @return the NetworkDevicePatchParametersProperties object itself.
      */
-    public NetworkDevicePatchParametersProperties withHostName(String hostName) {
-        this.hostName = hostName;
+    public NetworkDevicePatchParametersProperties withHostname(String hostname) {
+        this.hostname = hostname;
         return this;
     }
 
@@ -136,7 +136,7 @@ public final class NetworkDevicePatchParametersProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("annotation", this.annotation);
-        jsonWriter.writeStringField("hostName", this.hostName);
+        jsonWriter.writeStringField("hostName", this.hostname);
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
         jsonWriter.writeJsonField("identitySelector", this.identitySelector);
         return jsonWriter.writeEndObject();
@@ -161,7 +161,7 @@ public final class NetworkDevicePatchParametersProperties
                 if ("annotation".equals(fieldName)) {
                     deserializedNetworkDevicePatchParametersProperties.annotation = reader.getString();
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedNetworkDevicePatchParametersProperties.hostName = reader.getString();
+                    deserializedNetworkDevicePatchParametersProperties.hostname = reader.getString();
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedNetworkDevicePatchParametersProperties.serialNumber = reader.getString();
                 } else if ("identitySelector".equals(fieldName)) {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2026-06-02)
+## 1.2.0 (2026-06-03)
 
 - Azure Resource Manager Managed Network Fabric client library for Java. This package contains Microsoft Azure SDK for Managed Network Fabric Management SDK. Self service experience for Azure Network Fabric API. Package api-version 2025-07-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -151,8 +151,8 @@
 
 #### `models.InternalNetwork$Definition` was modified
 
-* `withStaticRouteConfiguration(models.InternalNetworkPropertiesStaticRouteConfiguration)` was removed
 * `withExportRoutePolicyId(java.lang.String)` was removed
+* `withStaticRouteConfiguration(models.InternalNetworkPropertiesStaticRouteConfiguration)` was removed
 * `withImportRoutePolicyId(java.lang.String)` was removed
 * `withBgpConfiguration(models.InternalNetworkPropertiesBgpConfiguration)` was removed
 
@@ -162,16 +162,16 @@
 
 #### `models.L2IsolationDomains` was modified
 
-* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 
 #### `models.L3IsolationDomainPatch` was modified
 
-* `withAggregateRouteConfiguration(models.AggregateRouteConfiguration)` was removed
-* `validate()` was removed
-* `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicy)` was removed
-* `models.AggregateRouteConfiguration aggregateRouteConfiguration()` -> `models.AggregateRoutePatchConfiguration aggregateRouteConfiguration()`
 * `models.ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy()` -> `models.ConnectedSubnetRoutePolicyPatch connectedSubnetRoutePolicy()`
+* `validate()` was removed
+* `withAggregateRouteConfiguration(models.AggregateRouteConfiguration)` was removed
+* `models.AggregateRouteConfiguration aggregateRouteConfiguration()` -> `models.AggregateRoutePatchConfiguration aggregateRouteConfiguration()`
+* `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicy)` was removed
 
 #### `models.ExportRoutePolicyInformation` was modified
 
@@ -200,10 +200,10 @@
 
 #### `models.TerminalServerConfiguration` was modified
 
-* `withPassword(java.lang.String)` was removed
-* `validate()` was removed
-* `withSerialNumber(java.lang.String)` was removed
 * `withUsername(java.lang.String)` was removed
+* `validate()` was removed
+* `withPassword(java.lang.String)` was removed
+* `withSerialNumber(java.lang.String)` was removed
 
 #### `models.NetworkTapRuleMatchCondition` was modified
 
@@ -213,45 +213,41 @@
 
 * `validate()` was removed
 
-#### `models.NetworkDevice$Update` was modified
-
-* `withHostname(java.lang.String)` was removed
-
 #### `models.VpnConfigurationPatchableProperties` was modified
 
-* `models.VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties()` -> `models.VpnOptionAPatchProperties optionAProperties()`
-* `models.OptionBProperties optionBProperties()` -> `models.VpnOptionBPatchProperties optionBProperties()`
 * `validate()` was removed
-* `withOptionAProperties(models.VpnConfigurationPatchablePropertiesOptionAProperties)` was removed
 * `withOptionBProperties(models.OptionBProperties)` was removed
+* `withOptionAProperties(models.VpnConfigurationPatchablePropertiesOptionAProperties)` was removed
+* `models.OptionBProperties optionBProperties()` -> `models.VpnOptionBPatchProperties optionBProperties()`
+* `models.VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties()` -> `models.VpnOptionAPatchProperties optionAProperties()`
 
 #### `models.ExternalNetworkPatch` was modified
 
-* `models.ImportRoutePolicy importRoutePolicy()` -> `models.ImportRoutePolicyPatch importRoutePolicy()`
-* `models.ExportRoutePolicy exportRoutePolicy()` -> `models.ExportRoutePolicyPatch exportRoutePolicy()`
 * `models.L3OptionBProperties optionBProperties()` -> `models.L3OptionBPatchProperties optionBProperties()`
-* `importRoutePolicyId()` was removed
 * `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+* `models.ExportRoutePolicy exportRoutePolicy()` -> `models.ExportRoutePolicyPatch exportRoutePolicy()`
 * `withExportRoutePolicyId(java.lang.String)` was removed
+* `importRoutePolicyId()` was removed
+* `models.ImportRoutePolicy importRoutePolicy()` -> `models.ImportRoutePolicyPatch importRoutePolicy()`
 * `withImportRoutePolicyId(java.lang.String)` was removed
-* `validate()` was removed
-* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
 * `withOptionBProperties(models.L3OptionBProperties)` was removed
+* `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
 * `exportRoutePolicyId()` was removed
+* `validate()` was removed
 
 #### `models.SupportedVersionProperties` was modified
 
 * `SupportedVersionProperties()` was changed to private access
-* `withVersion(java.lang.String)` was removed
 * `withIsDefault(models.BooleanEnumProperty)` was removed
 * `withVendorOsVersion(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
 * `withVendorFirmwareVersion(java.lang.String)` was removed
 * `validate()` was removed
 
 #### `models.ActionIpCommunityProperties` was modified
 
-* `withAdd(models.IpCommunityIdList)` was removed
 * `validate()` was removed
+* `withAdd(models.IpCommunityIdList)` was removed
 
 #### `models.IpPrefixPatch` was modified
 
@@ -264,8 +260,8 @@
 
 #### `models.InternetGatewayRulePatch` was modified
 
-* `withTags(java.util.Map)` was removed
 * `validate()` was removed
+* `withTags(java.util.Map)` was removed
 
 #### `ManagedNetworkFabricManager` was modified
 
@@ -273,25 +269,25 @@
 
 #### `models.ExternalNetworks` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
-* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
 
 #### `models.ExternalNetwork$Update` was modified
 
-* `withExportRoutePolicyId(java.lang.String)` was removed
-* `withImportRoutePolicyId(java.lang.String)` was removed
-* `withOptionBProperties(models.L3OptionBProperties)` was removed
 * `withImportRoutePolicy(models.ImportRoutePolicy)` was removed
 * `withExportRoutePolicy(models.ExportRoutePolicy)` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+* `withOptionBProperties(models.L3OptionBProperties)` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
 
 #### `models.NetworkTaps` was modified
 
-* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
-* `models.CommonPostActionResponseForStateUpdate resync(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.NetworkTapResyncResponse resync(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate resync(java.lang.String,java.lang.String)` -> `models.NetworkTapResyncResponse resync(java.lang.String,java.lang.String)`
 * `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate resync(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.NetworkTapResyncResponse resync(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.PortGroupProperties` was modified
 
@@ -312,29 +308,29 @@
 
 #### `models.AccessControlList$Update` was modified
 
-* `withDynamicMatchConfigurations(java.util.List)` was removed
 * `withMatchConfigurations(java.util.List)` was removed
+* `withDynamicMatchConfigurations(java.util.List)` was removed
 
 #### `models.InternalNetworks` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` was removed
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` was removed
 
 #### `models.ExternalNetworkPropertiesOptionAProperties` was modified
 
-* `withPeerAsn(java.lang.Long)` was removed
-* `withPrimaryIpv6Prefix(java.lang.String)` was removed
-* `withVlanId(java.lang.Integer)` was removed
-* `java.lang.Long peerAsn()` -> `long peerAsn()`
-* `withSecondaryIpv6Prefix(java.lang.String)` was removed
-* `validate()` was removed
-* `java.lang.Integer vlanId()` -> `int vlanId()`
-* `withSecondaryIpv4Prefix(java.lang.String)` was removed
 * `withPrimaryIpv4Prefix(java.lang.String)` was removed
+* `java.lang.Integer vlanId()` -> `int vlanId()`
+* `withPrimaryIpv6Prefix(java.lang.String)` was removed
+* `withSecondaryIpv6Prefix(java.lang.String)` was removed
+* `java.lang.Long peerAsn()` -> `long peerAsn()`
+* `withVlanId(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withSecondaryIpv4Prefix(java.lang.String)` was removed
+* `withPeerAsn(java.lang.Long)` was removed
 
 #### `models.AccessControlListMatchCondition` was modified
 
@@ -347,21 +343,21 @@
 #### `models.InternalNetwork$Update` was modified
 
 * `withStaticRouteConfiguration(models.StaticRouteConfiguration)` was removed
+* `withConnectedIPv6Subnets(java.util.List)` was removed
+* `withConnectedIPv4Subnets(java.util.List)` was removed
 * `withExportRoutePolicyId(java.lang.String)` was removed
 * `withImportRoutePolicyId(java.lang.String)` was removed
-* `withConnectedIPv4Subnets(java.util.List)` was removed
-* `withConnectedIPv6Subnets(java.util.List)` was removed
 * `withBgpConfiguration(models.BgpConfiguration)` was removed
 
 #### `models.NetworkDevices` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)` -> `models.NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)`
+* `upgrade(java.lang.String,java.lang.String,models.UpdateVersion,com.azure.core.util.Context)` was removed
+* `upgrade(java.lang.String,java.lang.String,models.UpdateVersion)` was removed
 * `models.CommonPostActionResponseForStateUpdate refreshConfiguration(java.lang.String,java.lang.String)` -> `models.NetworkDeviceRefreshConfigurationResponse refreshConfiguration(java.lang.String,java.lang.String)`
 * `models.CommonPostActionResponseForStateUpdate refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.NetworkDeviceRefreshConfigurationResponse refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `upgrade(java.lang.String,java.lang.String,models.UpdateVersion,com.azure.core.util.Context)` was removed
 * `models.CommonPostActionResponseForStateUpdate reboot(java.lang.String,java.lang.String,models.RebootProperties)` -> `models.OperationStatusResult reboot(java.lang.String,java.lang.String,models.RebootProperties)`
-* `upgrade(java.lang.String,java.lang.String,models.UpdateVersion)` was removed
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateDeviceAdministrativeState)` -> `models.NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateDeviceAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)` -> `models.NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate reboot(java.lang.String,java.lang.String,models.RebootProperties,com.azure.core.util.Context)` -> `models.OperationStatusResult reboot(java.lang.String,java.lang.String,models.RebootProperties,com.azure.core.util.Context)`
 
 #### `models.NetworkTapRule$Definition` was modified
@@ -395,15 +391,15 @@
 
 #### `models.InternalNetworkPatch` was modified
 
-* `importRoutePolicyId()` was removed
-* `withExportRoutePolicyId(java.lang.String)` was removed
-* `exportRoutePolicyId()` was removed
-* `withStaticRouteConfiguration(models.StaticRouteConfiguration)` was removed
-* `withImportRoutePolicyId(java.lang.String)` was removed
 * `models.StaticRouteConfiguration staticRouteConfiguration()` -> `models.StaticRoutePatchConfiguration staticRouteConfiguration()`
+* `exportRoutePolicyId()` was removed
 * `withBgpConfiguration(models.BgpConfiguration)` was removed
-* `models.BgpConfiguration bgpConfiguration()` -> `models.BgpPatchConfiguration bgpConfiguration()`
+* `withStaticRouteConfiguration(models.StaticRouteConfiguration)` was removed
 * `validate()` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
+* `withImportRoutePolicyId(java.lang.String)` was removed
+* `models.BgpConfiguration bgpConfiguration()` -> `models.BgpPatchConfiguration bgpConfiguration()`
+* `importRoutePolicyId()` was removed
 
 #### `models.RoutePolicyPatch` was modified
 
@@ -419,16 +415,16 @@
 
 #### `models.InternalNetwork` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)`
-* `updateBgpAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
-* `updateBgpAdministrativeState(models.UpdateAdministrativeState)` was removed
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
-* `models.InternalNetworkPropertiesBgpConfiguration bgpConfiguration()` -> `models.BgpConfiguration bgpConfiguration()`
-* `models.InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration()` -> `models.StaticRouteConfiguration staticRouteConfiguration()`
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
 * `importRoutePolicyId()` was removed
-* `exportRoutePolicyId()` was removed
 * `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `updateBgpAdministrativeState(models.UpdateAdministrativeState)` was removed
+* `exportRoutePolicyId()` was removed
+* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
+* `updateBgpAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` was removed
+* `models.InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration()` -> `models.StaticRouteConfiguration staticRouteConfiguration()`
+* `models.InternalNetworkPropertiesBgpConfiguration bgpConfiguration()` -> `models.BgpConfiguration bgpConfiguration()`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
 
 #### `models.IpCommunityIdList` was modified
 
@@ -437,10 +433,6 @@
 #### `models.CommonDynamicMatchConfiguration` was modified
 
 * `validate()` was removed
-
-#### `models.NetworkDevice$Definition` was modified
-
-* `withHostname(java.lang.String)` was removed
 
 #### `models.NeighborGroupDestination` was modified
 
@@ -452,33 +444,32 @@
 
 #### `models.NetworkFabrics` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
-* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForDeviceUpdate provision(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult provision(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties)` -> `models.OperationStatusResult upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties)`
-* `models.CommonPostActionResponseForStateUpdate refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `commitConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `models.CommonPostActionResponseForDeviceUpdate provision(java.lang.String,java.lang.String)` -> `models.OperationStatusResult provision(java.lang.String,java.lang.String)`
-* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
-* `models.ValidateConfigurationResponse getTopology(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.GetTopologyResponse getTopology(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForDeviceUpdate deprovision(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deprovision(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate refreshConfiguration(java.lang.String,java.lang.String)` -> `models.OperationStatusResult refreshConfiguration(java.lang.String,java.lang.String)`
-* `models.CommonPostActionResponseForDeviceUpdate deprovision(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deprovision(java.lang.String,java.lang.String)`
+* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult refreshConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate commitConfiguration(java.lang.String,java.lang.String)` -> `models.CommitConfigurationResponse commitConfiguration(java.lang.String,java.lang.String)`
-* `models.CommonPostActionResponseForStateUpdate upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)` -> `models.OperationStatusResult upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate provision(java.lang.String,java.lang.String)` -> `models.OperationStatusResult provision(java.lang.String,java.lang.String)`
+* `commitConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.ValidateConfigurationResponse getTopology(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.GetTopologyResponse getTopology(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `models.ValidateConfigurationResponse getTopology(java.lang.String,java.lang.String)` -> `models.GetTopologyResponse getTopology(java.lang.String,java.lang.String)`
+* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForDeviceUpdate provision(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult provision(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)` -> `models.OperationStatusResult upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate deprovision(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deprovision(java.lang.String,java.lang.String)`
+* `models.CommonPostActionResponseForDeviceUpdate deprovision(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult deprovision(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties)` -> `models.OperationStatusResult upgrade(java.lang.String,java.lang.String,models.UpgradeNetworkFabricProperties)`
+* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 
 #### `models.NetworkDevice` was modified
 
-* `upgrade(models.UpdateVersion,com.azure.core.util.Context)` was removed
-* `upgrade(models.UpdateVersion)` was removed
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)` -> `models.NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)`
-* `hostname()` was removed
-* `models.CommonPostActionResponseForStateUpdate reboot(models.RebootProperties,com.azure.core.util.Context)` -> `models.OperationStatusResult reboot(models.RebootProperties,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate refreshConfiguration(com.azure.core.util.Context)` -> `models.NetworkDeviceRefreshConfigurationResponse refreshConfiguration(com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateDeviceAdministrativeState)` -> `models.NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateDeviceAdministrativeState)`
+* `upgrade(models.UpdateVersion,com.azure.core.util.Context)` was removed
+* `models.CommonPostActionResponseForStateUpdate reboot(models.RebootProperties,com.azure.core.util.Context)` -> `models.OperationStatusResult reboot(models.RebootProperties,com.azure.core.util.Context)`
+* `upgrade(models.UpdateVersion)` was removed
 * `models.CommonPostActionResponseForStateUpdate reboot(models.RebootProperties)` -> `models.OperationStatusResult reboot(models.RebootProperties)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateDeviceAdministrativeState)` -> `models.NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateDeviceAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)` -> `models.NetworkDeviceUpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateDeviceAdministrativeState,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate refreshConfiguration()` -> `models.NetworkDeviceRefreshConfigurationResponse refreshConfiguration()`
 
 #### `models.NetworkFabricController` was modified
@@ -487,8 +478,8 @@
 
 #### `models.ActionIpExtendedCommunityProperties` was modified
 
-* `validate()` was removed
 * `withAdd(models.IpExtendedCommunityIdList)` was removed
+* `validate()` was removed
 
 #### `models.NetworkPacketBrokerPatch` was modified
 
@@ -508,11 +499,11 @@
 
 #### `models.VpnConfigurationProperties` was modified
 
+* `withOptionAProperties(models.VpnConfigurationPropertiesOptionAProperties)` was removed
 * `validate()` was removed
-* `models.OptionBProperties optionBProperties()` -> `models.VpnOptionBProperties optionBProperties()`
 * `models.VpnConfigurationPropertiesOptionAProperties optionAProperties()` -> `models.VpnOptionAProperties optionAProperties()`
 * `withOptionBProperties(models.OptionBProperties)` was removed
-* `withOptionAProperties(models.VpnConfigurationPropertiesOptionAProperties)` was removed
+* `models.OptionBProperties optionBProperties()` -> `models.VpnOptionBProperties optionBProperties()`
 
 #### `models.UpdateDeviceAdministrativeState` was modified
 
@@ -520,15 +511,15 @@
 
 #### `models.AccessControlList` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
 
 #### `models.DeviceInterfaceProperties` was modified
 
 * `DeviceInterfaceProperties()` was changed to private access
 * `withIdentifier(java.lang.String)` was removed
-* `validate()` was removed
 * `withSupportedConnectorTypes(java.util.List)` was removed
+* `validate()` was removed
 * `withInterfaceType(java.lang.String)` was removed
 
 #### `models.ConnectedSubnet` was modified
@@ -549,11 +540,11 @@
 
 #### `models.NetworkToNetworkInterconnect` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)`
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration()` -> `models.OptionBLayer3Configuration optionBLayer3Configuration()`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
+* `models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration()` -> `models.OptionBLayer3Configuration optionBLayer3Configuration()`
+* `models.CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
 
 #### `models.NetworkTapRule` was modified
 
@@ -563,18 +554,18 @@
 
 #### `models.NetworkToNetworkInterconnectPatch` was modified
 
-* `name()` was removed
-* `withLayer2Configuration(models.Layer2Configuration)` was removed
 * `withImportRoutePolicy(models.ImportRoutePolicyInformation)` was removed
-* `models.NpbStaticRouteConfiguration npbStaticRouteConfiguration()` -> `models.NpbStaticRouteConfigurationPatch npbStaticRouteConfiguration()`
+* `name()` was removed
 * `withExportRoutePolicy(models.ExportRoutePolicyInformation)` was removed
-* `models.OptionBLayer3Configuration optionBLayer3Configuration()` -> `models.OptionBLayer3ConfigurationPatchProperties optionBLayer3Configuration()`
-* `withOptionBLayer3Configuration(models.OptionBLayer3Configuration)` was removed
-* `models.ImportRoutePolicyInformation importRoutePolicy()` -> `models.ImportRoutePolicyInformationPatch importRoutePolicy()`
-* `models.Layer2Configuration layer2Configuration()` -> `models.Layer2ConfigurationPatch layer2Configuration()`
-* `models.ExportRoutePolicyInformation exportRoutePolicy()` -> `models.ExportRoutePolicyInformationPatch exportRoutePolicy()`
 * `validate()` was removed
 * `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfiguration)` was removed
+* `models.Layer2Configuration layer2Configuration()` -> `models.Layer2ConfigurationPatch layer2Configuration()`
+* `models.ExportRoutePolicyInformation exportRoutePolicy()` -> `models.ExportRoutePolicyInformationPatch exportRoutePolicy()`
+* `models.OptionBLayer3Configuration optionBLayer3Configuration()` -> `models.OptionBLayer3ConfigurationPatchProperties optionBLayer3Configuration()`
+* `withOptionBLayer3Configuration(models.OptionBLayer3Configuration)` was removed
+* `withLayer2Configuration(models.Layer2Configuration)` was removed
+* `models.NpbStaticRouteConfiguration npbStaticRouteConfiguration()` -> `models.NpbStaticRouteConfigurationPatch npbStaticRouteConfiguration()`
+* `models.ImportRoutePolicyInformation importRoutePolicy()` -> `models.ImportRoutePolicyInformationPatch importRoutePolicy()`
 
 #### `models.NpbStaticRouteConfiguration` was modified
 
@@ -582,14 +573,14 @@
 
 #### `models.L3IsolationDomain$Update` was modified
 
-* `withAggregateRouteConfiguration(models.AggregateRouteConfiguration)` was removed
 * `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicy)` was removed
+* `withAggregateRouteConfiguration(models.AggregateRouteConfiguration)` was removed
 
 #### `models.ConnectedSubnetRoutePolicy` was modified
 
 * `validate()` was removed
-* `withExportRoutePolicyId(java.lang.String)` was removed
 * `exportRoutePolicyId()` was removed
+* `withExportRoutePolicyId(java.lang.String)` was removed
 
 #### `models.StaticRouteProperties` was modified
 
@@ -619,16 +610,16 @@
 #### `models.BgpConfiguration` was modified
 
 * `java.lang.Long peerAsn()` -> `long peerAsn()`
-* `validate()` was removed
 * `withPeerAsn(java.lang.Long)` was removed
+* `validate()` was removed
 
 #### `models.NetworkFabricPatch` was modified
 
+* `models.ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration()` -> `models.ManagementNetworkPatchConfiguration managementNetworkConfiguration()`
+* `models.NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration()` -> `models.TerminalServerPatchConfiguration terminalServerConfiguration()`
 * `validate()` was removed
 * `withTerminalServerConfiguration(models.NetworkFabricPatchablePropertiesTerminalServerConfiguration)` was removed
 * `withManagementNetworkConfiguration(models.ManagementNetworkConfigurationPatchableProperties)` was removed
-* `models.NetworkFabricPatchablePropertiesTerminalServerConfiguration terminalServerConfiguration()` -> `models.TerminalServerPatchConfiguration terminalServerConfiguration()`
-* `models.ManagementNetworkConfigurationPatchableProperties managementNetworkConfiguration()` -> `models.ManagementNetworkPatchConfiguration managementNetworkConfiguration()`
 
 #### `models.AccessControlListPortCondition` was modified
 
@@ -640,8 +631,8 @@
 
 #### `models.RoutePolicies` was modified
 
-* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 
 #### `models.NeighborGroup$Update` was modified
 
@@ -666,9 +657,9 @@
 #### `models.ControllerServices` was modified
 
 * `ControllerServices()` was changed to private access
-* `validate()` was removed
-* `withIpv6AddressSpaces(java.util.List)` was removed
 * `withIpv4AddressSpaces(java.util.List)` was removed
+* `withIpv6AddressSpaces(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.NetworkTapRuleMatchConfiguration` was modified
 
@@ -681,27 +672,27 @@
 
 #### `models.AccessControlLists` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
 
 #### `models.NetworkFabric` was modified
 
-* `models.ValidateConfigurationResponse getTopology()` -> `models.GetTopologyResponse getTopology()`
-* `models.ValidateConfigurationResponse getTopology(com.azure.core.util.Context)` -> `models.GetTopologyResponse getTopology(com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForDeviceUpdate deprovision()` -> `models.OperationStatusResult deprovision()`
-* `models.CommonPostActionResponseForStateUpdate refreshConfiguration()` -> `models.OperationStatusResult refreshConfiguration()`
-* `commitConfiguration(com.azure.core.util.Context)` was removed
-* `models.CommonPostActionResponseForStateUpdate refreshConfiguration(com.azure.core.util.Context)` -> `models.OperationStatusResult refreshConfiguration(com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate commitConfiguration()` -> `models.CommitConfigurationResponse commitConfiguration()`
-* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState)`
-* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState)`
-* `models.CommonPostActionResponseForDeviceUpdate provision()` -> `models.OperationStatusResult provision()`
-* `models.CommonPostActionResponseForStateUpdate upgrade(models.UpgradeNetworkFabricProperties)` -> `models.OperationStatusResult upgrade(models.UpgradeNetworkFabricProperties)`
-* `models.CommonPostActionResponseForDeviceUpdate provision(com.azure.core.util.Context)` -> `models.OperationStatusResult provision(com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate upgrade(models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)` -> `models.OperationStatusResult upgrade(models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForDeviceUpdate deprovision(com.azure.core.util.Context)` -> `models.OperationStatusResult deprovision(com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse getTopology(com.azure.core.util.Context)` -> `models.GetTopologyResponse getTopology(com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate refreshConfiguration(com.azure.core.util.Context)` -> `models.OperationStatusResult refreshConfiguration(com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate provision()` -> `models.OperationStatusResult provision()`
+* `models.CommonPostActionResponseForStateUpdate commitConfiguration()` -> `models.CommitConfigurationResponse commitConfiguration()`
+* `models.CommonPostActionResponseForStateUpdate upgrade(models.UpgradeNetworkFabricProperties)` -> `models.OperationStatusResult upgrade(models.UpgradeNetworkFabricProperties)`
+* `models.CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateWorkloadManagementBfdConfiguration(models.UpdateAdministrativeState)`
+* `commitConfiguration(com.azure.core.util.Context)` was removed
+* `models.CommonPostActionResponseForStateUpdate refreshConfiguration()` -> `models.OperationStatusResult refreshConfiguration()`
+* `models.CommonPostActionResponseForStateUpdate upgrade(models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)` -> `models.OperationStatusResult upgrade(models.UpgradeNetworkFabricProperties,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate provision(com.azure.core.util.Context)` -> `models.OperationStatusResult provision(com.azure.core.util.Context)`
+* `models.ValidateConfigurationResponse getTopology()` -> `models.GetTopologyResponse getTopology()`
+* `models.CommonPostActionResponseForDeviceUpdate deprovision()` -> `models.OperationStatusResult deprovision()`
+* `models.CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateInfraManagementBfdConfiguration(models.UpdateAdministrativeState)`
 
 #### `models.IpCommunityRule` was modified
 
@@ -714,11 +705,11 @@
 #### `models.ExternalNetwork` was modified
 
 * `importRoutePolicyId()` was removed
-* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
 * `exportRoutePolicyId()` was removed
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateStaticRouteBfdAdministrativeState(models.UpdateAdministrativeState)`
 
 #### `models.UpdateVersion` was modified
 
@@ -726,22 +717,20 @@
 
 #### `models.NetworkFabric$Update` was modified
 
-* `withManagementNetworkConfiguration(models.ManagementNetworkConfigurationPatchableProperties)` was removed
 * `withTerminalServerConfiguration(models.NetworkFabricPatchablePropertiesTerminalServerConfiguration)` was removed
+* `withManagementNetworkConfiguration(models.ManagementNetworkConfigurationPatchableProperties)` was removed
 
 #### `models.NetworkToNetworkInterconnect$Update` was modified
 
 * `withImportRoutePolicy(models.ImportRoutePolicyInformation)` was removed
 * `withExportRoutePolicy(models.ExportRoutePolicyInformation)` was removed
-* `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfiguration)` was removed
-* `withOptionBLayer3Configuration(models.OptionBLayer3Configuration)` was removed
 * `withLayer2Configuration(models.Layer2Configuration)` was removed
+* `withOptionBLayer3Configuration(models.OptionBLayer3Configuration)` was removed
+* `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfiguration)` was removed
 
 #### `models.NetworkDevicePatchParameters` was modified
 
 * `validate()` was removed
-* `withHostname(java.lang.String)` was removed
-* `hostname()` was removed
 
 #### `models.ManagementNetworkConfigurationProperties` was modified
 
@@ -751,8 +740,8 @@
 
 * `models.CommonPostActionResponseForStateUpdate resync(com.azure.core.util.Context)` -> `models.NetworkTapResyncResponse resync(com.azure.core.util.Context)`
 * `models.CommonPostActionResponseForStateUpdate resync()` -> `models.NetworkTapResyncResponse resync()`
-* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForDeviceUpdate updateAdministrativeState(models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(models.UpdateAdministrativeState)`
 
 #### `models.ExportRoutePolicy` was modified
 
@@ -766,8 +755,8 @@
 #### `models.NetworkToNetworkInterconnects` was modified
 
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
-* `models.CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
+* `models.CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateNpbStaticRouteBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
 
 #### `models.RoutePolicy$Update` was modified
@@ -790,9 +779,9 @@
 
 #### `models.NeighborGroupPatch` was modified
 
+* `withDestination(models.NeighborGroupDestination)` was removed
 * `models.NeighborGroupDestination destination()` -> `models.NeighborGroupDestinationPatch destination()`
 * `validate()` was removed
-* `withDestination(models.NeighborGroupDestination)` was removed
 
 #### `models.Layer2Configuration` was modified
 
@@ -828,18 +817,18 @@
 
 #### `models.NetworkInterfaces` was modified
 
-* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 * `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState,com.azure.core.util.Context)`
+* `models.CommonPostActionResponseForStateUpdate updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)` -> `models.UpdateAdministrativeStateResponse updateAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.UpdateAdministrativeState)`
 
 #### `models.ExternalNetworkPatchPropertiesOptionAProperties` was modified
 
-* `models.BfdConfiguration bfdConfiguration()` -> `models.BfdPatchConfiguration bfdConfiguration()`
-* `withBfdConfiguration(models.BfdConfiguration)` was removed
 * `withSecondaryIpv6Prefix(java.lang.String)` was removed
-* `withPrimaryIpv4Prefix(java.lang.String)` was removed
-* `withSecondaryIpv4Prefix(java.lang.String)` was removed
-* `validate()` was removed
+* `withBfdConfiguration(models.BfdConfiguration)` was removed
 * `withPrimaryIpv6Prefix(java.lang.String)` was removed
+* `withSecondaryIpv4Prefix(java.lang.String)` was removed
+* `withPrimaryIpv4Prefix(java.lang.String)` was removed
+* `models.BfdConfiguration bfdConfiguration()` -> `models.BfdPatchConfiguration bfdConfiguration()`
+* `validate()` was removed
 
 #### `models.AccessControlListAction` was modified
 
@@ -848,9 +837,9 @@
 #### `models.SupportedConnectorProperties` was modified
 
 * `SupportedConnectorProperties()` was changed to private access
-* `withMaxSpeedInMbps(java.lang.Integer)` was removed
-* `withConnectorType(java.lang.String)` was removed
 * `validate()` was removed
+* `withConnectorType(java.lang.String)` was removed
+* `withMaxSpeedInMbps(java.lang.Integer)` was removed
 
 #### `models.NetworkTapRulePatch` was modified
 
@@ -875,11 +864,11 @@
 
 #### `models.OptionBLayer3Configuration` was modified
 
-* `withPeerAsn(java.lang.Long)` was removed
-* `java.lang.Integer vlanId()` -> `int vlanId()`
-* `validate()` was removed
 * `withVlanId(java.lang.Integer)` was removed
+* `withPeerAsn(java.lang.Long)` was removed
 * `java.lang.Long peerAsn()` -> `long peerAsn()`
+* `validate()` was removed
+* `java.lang.Integer vlanId()` -> `int vlanId()`
 
 #### `models.IpMatchCondition` was modified
 
@@ -1363,37 +1352,37 @@
 
 #### `models.InternalNetwork$Definition` was modified
 
-* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitProperties)` was added
-* `withBgpConfiguration(models.BgpConfiguration)` was added
 * `withStaticRouteConfiguration(models.StaticRouteConfiguration)` was added
+* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitProperties)` was added
 * `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitProperties)` was added
+* `withBgpConfiguration(models.BgpConfiguration)` was added
 
 #### `models.L3IsolationDomainPatch` was modified
 
-* `withStaticRouteRoutePolicy(models.StaticRouteRoutePolicyPatch)` was added
-* `v6routePrefixLimit()` was added
-* `staticRouteRoutePolicy()` was added
-* `withV4routePrefixLimit(models.RoutePrefixLimitPatchProperties)` was added
-* `exportPolicyConfiguration()` was added
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
-* `withV6routePrefixLimit(models.RoutePrefixLimitPatchProperties)` was added
-* `identity()` was added
-* `withExportPolicyConfiguration(models.BmpExportPolicyPatchProperties)` was added
-* `v4routePrefixLimit()` was added
-* `withAggregateRouteConfiguration(models.AggregateRoutePatchConfiguration)` was added
 * `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicyPatch)` was added
+* `v4routePrefixLimit()` was added
+* `withStaticRouteRoutePolicy(models.StaticRouteRoutePolicyPatch)` was added
+* `identity()` was added
+* `staticRouteRoutePolicy()` was added
+* `v6routePrefixLimit()` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `withAggregateRouteConfiguration(models.AggregateRoutePatchConfiguration)` was added
+* `exportPolicyConfiguration()` was added
+* `withV6routePrefixLimit(models.RoutePrefixLimitPatchProperties)` was added
+* `withExportPolicyConfiguration(models.BmpExportPolicyPatchProperties)` was added
+* `withV4routePrefixLimit(models.RoutePrefixLimitPatchProperties)` was added
 
 #### `models.NeighborGroups` was modified
 
-* `resync(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `resync(java.lang.String,java.lang.String)` was added
+* `resync(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.NetworkInterfacePatch` was modified
 
 * `withAdditionalDescription(java.lang.String)` was added
-* `identity()` was added
 * `additionalDescription()` was added
 * `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `identity()` was added
 
 #### `models.NetworkPacketBroker$Definition` was modified
 
@@ -1401,15 +1390,14 @@
 
 #### `models.TerminalServerConfiguration` was modified
 
+* `serialNumber()` was added
 * `secretRotationStatus()` was added
 * `username()` was added
 * `password()` was added
-* `serialNumber()` was added
 
 #### `models.NetworkDevice$Update` was modified
 
 * `withIdentity(models.ManagedServiceIdentityPatch)` was added
-* `withHostName(java.lang.String)` was added
 * `withIdentitySelector(models.IdentitySelectorPatch)` was added
 
 #### `models.VpnConfigurationPatchableProperties` was modified
@@ -1419,11 +1407,11 @@
 
 #### `models.ExternalNetworkPatch` was modified
 
-* `withStaticRouteConfiguration(models.ExternalNetworkStaticRoutePatchConfiguration)` was added
-* `withImportRoutePolicy(models.ImportRoutePolicyPatch)` was added
-* `withOptionBProperties(models.L3OptionBPatchProperties)` was added
 * `staticRouteConfiguration()` was added
+* `withStaticRouteConfiguration(models.ExternalNetworkStaticRoutePatchConfiguration)` was added
+* `withOptionBProperties(models.L3OptionBPatchProperties)` was added
 * `withExportRoutePolicy(models.ExportRoutePolicyPatch)` was added
+* `withImportRoutePolicy(models.ImportRoutePolicyPatch)` was added
 
 #### `models.ActionIpCommunityProperties` was modified
 
@@ -1431,17 +1419,17 @@
 
 #### `models.IpExtendedCommunity` was modified
 
-* `lastOperation()` was added
 * `networkFabricId()` was added
+* `lastOperation()` was added
 
 #### `models.NetworkInterface` was modified
 
-* `lastOperation()` was added
-* `configurationState()` was added
-* `networkFabricId()` was added
-* `additionalDescription()` was added
-* `identity()` was added
 * `description()` was added
+* `additionalDescription()` was added
+* `lastOperation()` was added
+* `networkFabricId()` was added
+* `configurationState()` was added
+* `identity()` was added
 
 #### `models.NetworkInterface$Update` was modified
 
@@ -1454,8 +1442,8 @@
 
 #### `ManagedNetworkFabricManager` was modified
 
-* `networkMonitors()` was added
 * `networkBootstrapInterfaces()` was added
+* `networkMonitors()` was added
 * `networkBootstrapDevices()` was added
 
 #### `models.ExternalNetworks` was modified
@@ -1465,20 +1453,20 @@
 
 #### `models.ExternalNetwork$Update` was modified
 
-* `withImportRoutePolicy(models.ImportRoutePolicyPatch)` was added
 * `withStaticRouteConfiguration(models.ExternalNetworkStaticRoutePatchConfiguration)` was added
-* `withOptionBProperties(models.L3OptionBPatchProperties)` was added
 * `withExportRoutePolicy(models.ExportRoutePolicyPatch)` was added
+* `withOptionBProperties(models.L3OptionBPatchProperties)` was added
+* `withImportRoutePolicy(models.ImportRoutePolicyPatch)` was added
 
 #### `models.L3IsolationDomain` was modified
 
-* `uniqueRdConfiguration()` was added
-* `v6routePrefixLimit()` was added
-* `staticRouteRoutePolicy()` was added
-* `v4routePrefixLimit()` was added
-* `lastOperation()` was added
 * `identity()` was added
+* `v6routePrefixLimit()` was added
+* `lastOperation()` was added
 * `exportPolicyConfiguration()` was added
+* `uniqueRdConfiguration()` was added
+* `v4routePrefixLimit()` was added
+* `staticRouteRoutePolicy()` was added
 
 #### `models.Layer4Protocol` was modified
 
@@ -1499,74 +1487,74 @@
 
 #### `models.AccessControlList$Update` was modified
 
-* `withDeviceRole(models.DeviceRole)` was added
 * `withGlobalAccessControlListActions(models.GlobalAccessControlListActionPatchProperties)` was added
 * `withControlPlaneAclConfigurationForUpdate(java.util.List)` was added
 * `withMatchConfigurationsForUpdate(java.util.List)` was added
-* `withDynamicMatchConfigurationsForUpdate(java.util.List)` was added
 * `withAclType(models.AclType)` was added
+* `withDynamicMatchConfigurationsForUpdate(java.util.List)` was added
+* `withDeviceRole(models.DeviceRole)` was added
 
 #### `models.InternalNetworks` was modified
 
-* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkUpdateBgpAdministrativeStateRequest)` was added
 * `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkUpdateBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
 * `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkUpdateBgpAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `updateBgpAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkUpdateBgpAdministrativeStateRequest)` was added
 * `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.InternalNetworkUpdateBfdAdministrativeStateRequest)` was added
 
 #### `models.ExternalNetworkPropertiesOptionAProperties` was modified
 
-* `secondaryIpv6Prefix()` was added
-* `withPeerAsn(long)` was added
-* `secondaryIpv4Prefix()` was added
-* `v4OverV6BgpSession()` was added
-* `withBmpConfiguration(models.ExternalNetworkBmpProperties)` was added
-* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitProperties)` was added
-* `nativeIpv6PrefixLimit()` was added
-* `v6OverV4BgpSession()` was added
-* `withVlanId(int)` was added
-* `bmpConfiguration()` was added
-* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
 * `withV6OverV4BgpSession(models.V6OverV4BgpSessionState)` was added
-* `nativeIpv4PrefixLimit()` was added
-* `primaryIpv4Prefix()` was added
+* `secondaryIpv6Prefix()` was added
 * `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitProperties)` was added
+* `nativeIpv4PrefixLimit()` was added
+* `withVlanId(int)` was added
+* `withPeerAsn(long)` was added
+* `nativeIpv6PrefixLimit()` was added
+* `primaryIpv4Prefix()` was added
+* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitProperties)` was added
+* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
+* `v6OverV4BgpSession()` was added
+* `withBmpConfiguration(models.ExternalNetworkBmpProperties)` was added
+* `v4OverV6BgpSession()` was added
+* `bmpConfiguration()` was added
 * `primaryIpv6Prefix()` was added
+* `secondaryIpv4Prefix()` was added
 
 #### `models.AccessControlListMatchCondition` was modified
 
-* `withProtocolNeighbors(java.util.List)` was added
-* `withIcmpConfiguration(models.IcmpConfigurationProperties)` was added
-* `protocolNeighbors()` was added
 * `icmpConfiguration()` was added
+* `withProtocolNeighbors(java.util.List)` was added
+* `protocolNeighbors()` was added
+* `withIcmpConfiguration(models.IcmpConfigurationProperties)` was added
 
 #### `models.InternalNetwork$Update` was modified
 
-* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitPatchProperties)` was added
-* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitPatchProperties)` was added
 * `withStaticRouteConfiguration(models.StaticRoutePatchConfiguration)` was added
-* `withConnectedIPv4SubnetsForUpdate(java.util.List)` was added
 * `withConnectedIPv6SubnetsForUpdate(java.util.List)` was added
 * `withBgpConfiguration(models.BgpPatchConfiguration)` was added
+* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitPatchProperties)` was added
+* `withConnectedIPv4SubnetsForUpdate(java.util.List)` was added
+* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitPatchProperties)` was added
 
 #### `models.NetworkDevices` was modified
 
+* `resyncPasswords(java.lang.String,java.lang.String)` was added
+* `upgrade(java.lang.String,java.lang.String,models.NetworkDeviceUpgradeRequest,com.azure.core.util.Context)` was added
+* `runRwCommand(java.lang.String,java.lang.String,models.DeviceRwCommand)` was added
+* `runRoCommand(java.lang.String,java.lang.String,models.DeviceRoCommand,com.azure.core.util.Context)` was added
+* `runRwCommand(java.lang.String,java.lang.String,models.DeviceRwCommand,com.azure.core.util.Context)` was added
+* `resyncPasswords(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `upgrade(java.lang.String,java.lang.String,models.NetworkDeviceUpgradeRequest)` was added
 * `runRoCommand(java.lang.String,java.lang.String,models.DeviceRoCommand)` was added
-* `runRoCommand(java.lang.String,java.lang.String,models.DeviceRoCommand,com.azure.core.util.Context)` was added
-* `resyncPasswords(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `resyncCertificates(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `upgrade(java.lang.String,java.lang.String,models.NetworkDeviceUpgradeRequest,com.azure.core.util.Context)` was added
-* `runRwCommand(java.lang.String,java.lang.String,models.DeviceRwCommand,com.azure.core.util.Context)` was added
 * `resyncCertificates(java.lang.String,java.lang.String)` was added
-* `runRwCommand(java.lang.String,java.lang.String,models.DeviceRwCommand)` was added
-* `resyncPasswords(java.lang.String,java.lang.String)` was added
 
 #### `models.NetworkTapRule$Definition` was modified
 
-* `withIdentity(models.ManagedServiceIdentity)` was added
 * `withPollingIntervalInSeconds(java.lang.Integer)` was added
-* `withIdentitySelector(models.IdentitySelector)` was added
 * `withGlobalNetworkTapRuleActions(models.GlobalNetworkTapRuleActionProperties)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withIdentitySelector(models.IdentitySelector)` was added
 
 #### `models.AdministrativeState` was modified
 
@@ -1575,17 +1563,17 @@
 
 #### `models.NetworkTapRule$Update` was modified
 
-* `withDynamicMatchConfigurationsForUpdate(java.util.List)` was added
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 * `withIdentitySelector(models.IdentitySelectorPatch)` was added
-* `withGlobalNetworkTapRuleActions(models.GlobalNetworkTapRuleActionPatchProperties)` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 * `withMatchConfigurationsForUpdate(java.util.List)` was added
+* `withDynamicMatchConfigurationsForUpdate(java.util.List)` was added
+* `withGlobalNetworkTapRuleActions(models.GlobalNetworkTapRuleActionPatchProperties)` was added
 
 #### `models.L2IsolationDomain$Definition` was modified
 
 * `withIdentity(models.ManagedServiceIdentity)` was added
-* `withExtendedVlan(models.ExtendedVlan)` was added
 * `withNetworkToNetworkInterconnectId(java.lang.String)` was added
+* `withExtendedVlan(models.ExtendedVlan)` was added
 
 #### `models.ConfigurationState` was modified
 
@@ -1597,13 +1585,13 @@
 
 #### `models.RuleProperties` was modified
 
-* `condition()` was added
-* `withCondition(models.RuleCondition)` was added
-* `withDestinationAddressList(java.util.List)` was added
 * `headerAddressList()` was added
-* `withSourceAddressList(java.util.List)` was added
-* `sourceAddressList()` was added
+* `withDestinationAddressList(java.util.List)` was added
+* `withCondition(models.RuleCondition)` was added
+* `condition()` was added
 * `destinationAddressList()` was added
+* `sourceAddressList()` was added
+* `withSourceAddressList(java.util.List)` was added
 * `withHeaderAddressList(java.util.List)` was added
 
 #### `models.DeviceAdministrativeState` was modified
@@ -1616,23 +1604,23 @@
 
 #### `models.InternalNetworkPatch` was modified
 
-* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitPatchProperties)` was added
 * `withStaticRouteConfiguration(models.StaticRoutePatchConfiguration)` was added
+* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitPatchProperties)` was added
 * `withBgpConfiguration(models.BgpPatchConfiguration)` was added
 * `nativeIpv4PrefixLimit()` was added
-* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitPatchProperties)` was added
+* `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitPatchProperties)` was added
 * `nativeIpv6PrefixLimit()` was added
 
 #### `models.AccessControlListPatch` was modified
 
-* `controlPlaneAclConfiguration()` was added
-* `withDeviceRole(models.DeviceRole)` was added
-* `aclType()` was added
-* `globalAccessControlListActions()` was added
-* `withAclType(models.AclType)` was added
-* `deviceRole()` was added
-* `withGlobalAccessControlListActions(models.GlobalAccessControlListActionPatchProperties)` was added
 * `withControlPlaneAclConfiguration(java.util.List)` was added
+* `withAclType(models.AclType)` was added
+* `aclType()` was added
+* `withGlobalAccessControlListActions(models.GlobalAccessControlListActionPatchProperties)` was added
+* `deviceRole()` was added
+* `withDeviceRole(models.DeviceRole)` was added
+* `globalAccessControlListActions()` was added
+* `controlPlaneAclConfiguration()` was added
 
 #### `models.IpPrefix` was modified
 
@@ -1641,8 +1629,8 @@
 
 #### `models.InternetGateway` was modified
 
-* `lastOperation()` was added
 * `internetGatewayType()` was added
+* `lastOperation()` was added
 
 #### `models.NetworkFabricController$Definition` was modified
 
@@ -1655,14 +1643,14 @@
 
 #### `models.InternalNetwork` was modified
 
+* `lastOperation()` was added
+* `updateBfdAdministrativeState(models.InternalNetworkUpdateBfdAdministrativeStateRequest)` was added
 * `nativeIpv4PrefixLimit()` was added
+* `updateBgpAdministrativeState(models.InternalNetworkUpdateBgpAdministrativeStateRequest,com.azure.core.util.Context)` was added
 * `nativeIpv6PrefixLimit()` was added
-* `updateBfdAdministrativeState(models.InternalNetworkUpdateBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
 * `updateBgpAdministrativeState(models.InternalNetworkUpdateBgpAdministrativeStateRequest)` was added
 * `networkFabricId()` was added
-* `updateBfdAdministrativeState(models.InternalNetworkUpdateBfdAdministrativeStateRequest)` was added
-* `lastOperation()` was added
-* `updateBgpAdministrativeState(models.InternalNetworkUpdateBgpAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `updateBfdAdministrativeState(models.InternalNetworkUpdateBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
 
 #### `models.NetworkRack` was modified
 
@@ -1672,69 +1660,67 @@
 #### `models.NetworkDevice$Definition` was modified
 
 * `withIdentitySelector(models.IdentitySelector)` was added
-* `withHostName(java.lang.String)` was added
 * `withIdentity(models.ManagedServiceIdentity)` was added
 
 #### `models.NetworkFabric$Definition` was modified
 
-* `withTrustedIpPrefixes(java.util.List)` was added
-* `withQosConfiguration(models.QosProperties)` was added
-* `withIdentity(models.ManagedServiceIdentity)` was added
 * `withFeatureFlags(java.util.List)` was added
+* `withTrustedIpPrefixes(java.util.List)` was added
+* `withUniqueRdConfiguration(models.UniqueRouteDistinguisherProperties)` was added
 * `withControlPlaneAcls(java.util.List)` was added
+* `withQosConfiguration(models.QosProperties)` was added
+* `withHardwareAlertThreshold(java.lang.Integer)` was added
 * `withAuthorizedTransceiver(models.AuthorizedTransceiverProperties)` was added
 * `withStorageAccountConfiguration(models.StorageAccountConfiguration)` was added
-* `withHardwareAlertThreshold(java.lang.Integer)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
 * `withStorageArrayCount(java.lang.Integer)` was added
-* `withUniqueRdConfiguration(models.UniqueRouteDistinguisherProperties)` was added
 
 #### `models.NetworkFabrics` was modified
 
-* `rotateCertificates(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `rotatePasswords(java.lang.String,java.lang.String)` was added
-* `resyncPasswords(java.lang.String,java.lang.String)` was added
 * `armConfigurationDiff(java.lang.String,java.lang.String)` was added
-* `commitBatchStatus(java.lang.String,java.lang.String,models.CommitBatchStatusRequest,com.azure.core.util.Context)` was added
-* `lockFabric(java.lang.String,java.lang.String,models.NetworkFabricLockRequest)` was added
-* `rotateCertificates(java.lang.String,java.lang.String)` was added
-* `discardCommitBatch(java.lang.String,java.lang.String,models.DiscardCommitBatchRequest)` was added
-* `resyncCertificates(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `commitBatchStatus(java.lang.String,java.lang.String,models.CommitBatchStatusRequest)` was added
-* `lockFabric(java.lang.String,java.lang.String,models.NetworkFabricLockRequest,com.azure.core.util.Context)` was added
-* `armConfigurationDiff(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `rotatePasswords(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `viewDeviceConfiguration(java.lang.String,java.lang.String)` was added
 * `resyncPasswords(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `viewDeviceConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `resyncCertificates(java.lang.String,java.lang.String)` was added
-* `commitConfiguration(java.lang.String,java.lang.String,models.CommitConfigurationRequest,com.azure.core.util.Context)` was added
+* `armConfigurationDiff(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resyncCertificates(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resyncPasswords(java.lang.String,java.lang.String)` was added
 * `discardCommitBatch(java.lang.String,java.lang.String,models.DiscardCommitBatchRequest,com.azure.core.util.Context)` was added
+* `commitConfiguration(java.lang.String,java.lang.String,models.CommitConfigurationRequest,com.azure.core.util.Context)` was added
+* `resyncCertificates(java.lang.String,java.lang.String)` was added
+* `lockFabric(java.lang.String,java.lang.String,models.NetworkFabricLockRequest)` was added
+* `discardCommitBatch(java.lang.String,java.lang.String,models.DiscardCommitBatchRequest)` was added
+* `rotateCertificates(java.lang.String,java.lang.String)` was added
+* `commitBatchStatus(java.lang.String,java.lang.String,models.CommitBatchStatusRequest,com.azure.core.util.Context)` was added
+* `viewDeviceConfiguration(java.lang.String,java.lang.String)` was added
+* `viewDeviceConfiguration(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `rotateCertificates(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `lockFabric(java.lang.String,java.lang.String,models.NetworkFabricLockRequest,com.azure.core.util.Context)` was added
+* `rotatePasswords(java.lang.String,java.lang.String)` was added
+* `rotatePasswords(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.NetworkDevice` was modified
 
-* `identitySelector()` was added
-* `upgrade(models.NetworkDeviceUpgradeRequest,com.azure.core.util.Context)` was added
-* `resyncPasswords()` was added
-* `rwDeviceConfig()` was added
-* `resyncCertificates()` was added
 * `resyncCertificates(com.azure.core.util.Context)` was added
-* `lastOperation()` was added
-* `secretRotationStatus()` was added
-* `runRoCommand(models.DeviceRoCommand)` was added
-* `identity()` was added
-* `certificateRotationStatus()` was added
-* `upgrade(models.NetworkDeviceUpgradeRequest)` was added
-* `resyncPasswords(com.azure.core.util.Context)` was added
-* `runRwCommand(models.DeviceRwCommand)` was added
-* `networkFabricId()` was added
-* `hostName()` was added
 * `runRwCommand(models.DeviceRwCommand,com.azure.core.util.Context)` was added
+* `resyncPasswords(com.azure.core.util.Context)` was added
+* `identitySelector()` was added
+* `identity()` was added
+* `resyncCertificates()` was added
+* `rwDeviceConfig()` was added
+* `networkFabricId()` was added
+* `lastOperation()` was added
+* `resyncPasswords()` was added
+* `runRwCommand(models.DeviceRwCommand)` was added
+* `runRoCommand(models.DeviceRoCommand)` was added
+* `secretRotationStatus()` was added
+* `upgrade(models.NetworkDeviceUpgradeRequest)` was added
+* `certificateRotationStatus()` was added
 * `runRoCommand(models.DeviceRoCommand,com.azure.core.util.Context)` was added
+* `upgrade(models.NetworkDeviceUpgradeRequest,com.azure.core.util.Context)` was added
 
 #### `models.NetworkFabricController` was modified
 
-* `lastOperation()` was added
 * `identity()` was added
+* `lastOperation()` was added
 
 #### `models.ActionIpExtendedCommunityProperties` was modified
 
@@ -1742,8 +1728,8 @@
 
 #### `models.NetworkPacketBrokerPatch` was modified
 
-* `identity()` was added
 * `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `identity()` was added
 
 #### `models.NetworkInterface$Definition` was modified
 
@@ -1761,12 +1747,12 @@
 
 #### `models.AccessControlList` was modified
 
-* `controlPlaneAclConfiguration()` was added
-* `aclType()` was added
-* `globalAccessControlListActions()` was added
 * `lastOperation()` was added
+* `aclType()` was added
 * `deviceRole()` was added
+* `globalAccessControlListActions()` was added
 * `networkFabricIds()` was added
+* `controlPlaneAclConfiguration()` was added
 
 #### `models.NetworkFabricControllerPatch` was modified
 
@@ -1784,43 +1770,43 @@
 
 #### `models.NetworkToNetworkInterconnect` was modified
 
-* `microBfdState()` was added
 * `lastOperation()` was added
+* `microBfdState()` was added
 * `conditionalDefaultRouteConfiguration()` was added
-* `updateBfdAdministrativeState(models.NniUpdateBfdAdministrativeStateRequest)` was added
-* `staticRouteConfiguration()` was added
 * `updateBfdAdministrativeState(models.NniUpdateBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `staticRouteConfiguration()` was added
+* `updateBfdAdministrativeState(models.NniUpdateBfdAdministrativeStateRequest)` was added
 
 #### `models.NetworkTapRule` was modified
 
-* `networkFabricIds()` was added
-* `identitySelector()` was added
-* `identity()` was added
 * `networkTapIds()` was added
-* `lastOperation()` was added
 * `globalNetworkTapRuleActions()` was added
+* `identity()` was added
+* `networkFabricIds()` was added
+* `lastOperation()` was added
+* `identitySelector()` was added
 
 #### `models.NetworkToNetworkInterconnectPatch` was modified
 
-* `withStaticRouteConfiguration(models.NniStaticRoutePatchConfiguration)` was added
 * `withExportRoutePolicy(models.ExportRoutePolicyInformationPatch)` was added
-* `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfigurationPatch)` was added
-* `withImportRoutePolicy(models.ImportRoutePolicyInformationPatch)` was added
+* `withOptionBLayer3Configuration(models.OptionBLayer3ConfigurationPatchProperties)` was added
+* `microBfdState()` was added
 * `withLayer2Configuration(models.Layer2ConfigurationPatch)` was added
+* `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfigurationPatch)` was added
+* `withStaticRouteConfiguration(models.NniStaticRoutePatchConfiguration)` was added
+* `withImportRoutePolicy(models.ImportRoutePolicyInformationPatch)` was added
 * `staticRouteConfiguration()` was added
 * `withMicroBfdState(models.MicroBfdState)` was added
-* `microBfdState()` was added
-* `withOptionBLayer3Configuration(models.OptionBLayer3ConfigurationPatchProperties)` was added
 
 #### `models.L3IsolationDomain$Update` was modified
 
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
-* `withExportPolicyConfiguration(models.BmpExportPolicyPatchProperties)` was added
 * `withV4routePrefixLimit(models.RoutePrefixLimitPatchProperties)` was added
 * `withStaticRouteRoutePolicy(models.StaticRouteRoutePolicyPatch)` was added
 * `withConnectedSubnetRoutePolicy(models.ConnectedSubnetRoutePolicyPatch)` was added
-* `withV6routePrefixLimit(models.RoutePrefixLimitPatchProperties)` was added
 * `withAggregateRouteConfiguration(models.AggregateRoutePatchConfiguration)` was added
+* `withV6routePrefixLimit(models.RoutePrefixLimitPatchProperties)` was added
+* `withExportPolicyConfiguration(models.BmpExportPolicyPatchProperties)` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 
 #### `models.IpCommunity` was modified
 
@@ -1833,10 +1819,10 @@
 
 #### `models.NetworkToNetworkInterconnect$Definition` was modified
 
-* `withMicroBfdState(models.MicroBfdState)` was added
 * `withOptionBLayer3Configuration(models.OptionBLayer3Configuration)` was added
-* `withConditionalDefaultRouteConfiguration(models.ConditionalDefaultRouteProperties)` was added
 * `withStaticRouteConfiguration(models.NniStaticRouteConfiguration)` was added
+* `withMicroBfdState(models.MicroBfdState)` was added
+* `withConditionalDefaultRouteConfiguration(models.ConditionalDefaultRouteProperties)` was added
 
 #### `models.NetworkTap$Definition` was modified
 
@@ -1846,104 +1832,104 @@
 
 * `v4OverV6BgpSession()` was added
 * `withPeerAsn(long)` was added
-* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
 * `withV6OverV4BgpSession(models.V6OverV4BgpSessionState)` was added
-* `bmpConfiguration()` was added
 * `v6OverV4BgpSession()` was added
+* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
+* `bmpConfiguration()` was added
 * `withBmpConfiguration(models.InternalNetworkBmpProperties)` was added
 
 #### `models.NetworkFabricPatch` was modified
 
 * `featureFlags()` was added
-* `hardwareAlertThreshold()` was added
-* `withHardwareAlertThreshold(java.lang.Integer)` was added
 * `withAuthorizedTransceiver(models.AuthorizedTransceiverPatchProperties)` was added
-* `identity()` was added
-* `storageAccountConfiguration()` was added
-* `withTerminalServerConfiguration(models.TerminalServerPatchConfiguration)` was added
-* `withUniqueRdConfiguration(models.UniqueRouteDistinguisherPatchProperties)` was added
-* `trustedIpPrefixes()` was added
-* `authorizedTransceiver()` was added
 * `withQosConfiguration(models.QosPatchProperties)` was added
-* `uniqueRdConfiguration()` was added
-* `withManagementNetworkConfiguration(models.ManagementNetworkPatchConfiguration)` was added
-* `withControlPlaneAcls(java.util.List)` was added
-* `qosConfiguration()` was added
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
-* `withStorageAccountConfiguration(models.StorageAccountPatchConfiguration)` was added
+* `trustedIpPrefixes()` was added
 * `controlPlaneAcls()` was added
+* `identity()` was added
+* `withTerminalServerConfiguration(models.TerminalServerPatchConfiguration)` was added
 * `withTrustedIpPrefixes(java.util.List)` was added
+* `storageAccountConfiguration()` was added
+* `withManagementNetworkConfiguration(models.ManagementNetworkPatchConfiguration)` was added
+* `withStorageAccountConfiguration(models.StorageAccountPatchConfiguration)` was added
+* `withControlPlaneAcls(java.util.List)` was added
+* `authorizedTransceiver()` was added
+* `hardwareAlertThreshold()` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `qosConfiguration()` was added
+* `withHardwareAlertThreshold(java.lang.Integer)` was added
+* `withUniqueRdConfiguration(models.UniqueRouteDistinguisherPatchProperties)` was added
 * `withFeatureFlags(java.util.List)` was added
+* `uniqueRdConfiguration()` was added
 
 #### `models.NeighborGroup$Update` was modified
 
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 * `withDestination(models.NeighborGroupDestinationPatch)` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 
 #### `models.AccessControlList$Definition` was modified
 
-* `withAclType(models.AclType)` was added
 * `withControlPlaneAclConfiguration(java.util.List)` was added
 * `withGlobalAccessControlListActions(models.GlobalAccessControlListActionProperties)` was added
 * `withDeviceRole(models.DeviceRole)` was added
+* `withAclType(models.AclType)` was added
 
 #### `models.L3IsolationDomain$Definition` was modified
 
-* `withUniqueRdConfiguration(models.L3UniqueRouteDistinguisherProperties)` was added
-* `withIdentity(models.ManagedServiceIdentity)` was added
-* `withV6routePrefixLimit(models.RoutePrefixLimitProperties)` was added
-* `withExportPolicyConfiguration(models.BmpExportPolicyProperties)` was added
 * `withV4routePrefixLimit(models.RoutePrefixLimitProperties)` was added
+* `withV6routePrefixLimit(models.RoutePrefixLimitProperties)` was added
+* `withUniqueRdConfiguration(models.L3UniqueRouteDistinguisherProperties)` was added
+* `withExportPolicyConfiguration(models.BmpExportPolicyProperties)` was added
 * `withStaticRouteRoutePolicy(models.StaticRouteRoutePolicy)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 #### `models.L2IsolationDomain$Update` was modified
 
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 * `withExtendedVlan(models.ExtendedVlan)` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 * `withNetworkToNetworkInterconnectId(java.lang.String)` was added
 
 #### `models.L2IsolationDomain` was modified
 
-* `identity()` was added
-* `extendedVlan()` was added
-* `lastOperation()` was added
 * `networkToNetworkInterconnectId()` was added
+* `extendedVlan()` was added
+* `identity()` was added
+* `lastOperation()` was added
 
 #### `models.NetworkFabric` was modified
 
+* `armConfigurationDiff(com.azure.core.util.Context)` was added
 * `commitConfiguration(models.CommitConfigurationRequest,com.azure.core.util.Context)` was added
-* `lockFabric(models.NetworkFabricLockRequest,com.azure.core.util.Context)` was added
-* `qosConfiguration()` was added
+* `resyncPasswords(com.azure.core.util.Context)` was added
+* `rotatePasswords()` was added
 * `storageAccountConfiguration()` was added
-* `viewDeviceConfiguration()` was added
+* `uniqueRdConfiguration()` was added
+* `lockFabric(models.NetworkFabricLockRequest)` was added
+* `qosConfiguration()` was added
+* `commitBatchStatus(models.CommitBatchStatusRequest,com.azure.core.util.Context)` was added
+* `discardCommitBatch(models.DiscardCommitBatchRequest)` was added
+* `secretRotationSummary()` was added
+* `rotateCertificates()` was added
+* `activeCommitBatches()` was added
+* `viewDeviceConfiguration(com.azure.core.util.Context)` was added
 * `featureFlags()` was added
 * `identity()` was added
-* `trustedIpPrefixes()` was added
-* `lockFabric(models.NetworkFabricLockRequest)` was added
-* `uniqueRdConfiguration()` was added
-* `discardCommitBatch(models.DiscardCommitBatchRequest,com.azure.core.util.Context)` was added
-* `rotatePasswords(com.azure.core.util.Context)` was added
-* `armConfigurationDiff(com.azure.core.util.Context)` was added
-* `activeCommitBatches()` was added
-* `fabricLocks()` was added
-* `resyncPasswords(com.azure.core.util.Context)` was added
-* `rotateCertificates()` was added
-* `authorizedTransceiver()` was added
-* `rotatePasswords()` was added
-* `viewDeviceConfiguration(com.azure.core.util.Context)` was added
-* `hardwareAlertThreshold()` was added
 * `resyncPasswords()` was added
-* `storageArrayCount()` was added
-* `discardCommitBatch(models.DiscardCommitBatchRequest)` was added
-* `resyncCertificates(com.azure.core.util.Context)` was added
-* `rotateCertificates(com.azure.core.util.Context)` was added
+* `discardCommitBatch(models.DiscardCommitBatchRequest,com.azure.core.util.Context)` was added
 * `resyncCertificates()` was added
-* `secretRotationSummary()` was added
-* `commitBatchStatus(models.CommitBatchStatusRequest,com.azure.core.util.Context)` was added
-* `commitBatchStatus(models.CommitBatchStatusRequest)` was added
 * `armConfigurationDiff()` was added
-* `lastOperation()` was added
+* `hardwareAlertThreshold()` was added
+* `fabricLocks()` was added
 * `controlPlaneAcls()` was added
+* `viewDeviceConfiguration()` was added
+* `resyncCertificates(com.azure.core.util.Context)` was added
+* `rotatePasswords(com.azure.core.util.Context)` was added
+* `lastOperation()` was added
+* `commitBatchStatus(models.CommitBatchStatusRequest)` was added
+* `rotateCertificates(com.azure.core.util.Context)` was added
+* `storageArrayCount()` was added
+* `trustedIpPrefixes()` was added
+* `lockFabric(models.NetworkFabricLockRequest,com.azure.core.util.Context)` was added
+* `authorizedTransceiver()` was added
 
 #### `models.SourceDestinationType` was modified
 
@@ -1951,62 +1937,60 @@
 
 #### `models.ExternalNetwork` was modified
 
-* `networkFabricId()` was added
 * `updateBfdAdministrativeState(models.ExternalNetworkUpdateBfdAdministrativeStateRequest)` was added
 * `staticRouteConfiguration()` was added
 * `lastOperation()` was added
 * `updateBfdAdministrativeState(models.ExternalNetworkUpdateBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `networkFabricId()` was added
 
 #### `models.NetworkFabric$Update` was modified
 
-* `withTerminalServerConfiguration(models.TerminalServerPatchConfiguration)` was added
-* `withQosConfiguration(models.QosPatchProperties)` was added
-* `withStorageAccountConfiguration(models.StorageAccountPatchConfiguration)` was added
-* `withTrustedIpPrefixes(java.util.List)` was added
 * `withHardwareAlertThreshold(java.lang.Integer)` was added
 * `withUniqueRdConfiguration(models.UniqueRouteDistinguisherPatchProperties)` was added
-* `withFeatureFlags(java.util.List)` was added
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
-* `withControlPlaneAcls(java.util.List)` was added
 * `withAuthorizedTransceiver(models.AuthorizedTransceiverPatchProperties)` was added
+* `withFeatureFlags(java.util.List)` was added
+* `withTerminalServerConfiguration(models.TerminalServerPatchConfiguration)` was added
+* `withControlPlaneAcls(java.util.List)` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `withStorageAccountConfiguration(models.StorageAccountPatchConfiguration)` was added
 * `withManagementNetworkConfiguration(models.ManagementNetworkPatchConfiguration)` was added
+* `withTrustedIpPrefixes(java.util.List)` was added
+* `withQosConfiguration(models.QosPatchProperties)` was added
 
 #### `models.NetworkToNetworkInterconnect$Update` was modified
 
-* `withOptionBLayer3Configuration(models.OptionBLayer3ConfigurationPatchProperties)` was added
 * `withStaticRouteConfiguration(models.NniStaticRoutePatchConfiguration)` was added
-* `withExportRoutePolicy(models.ExportRoutePolicyInformationPatch)` was added
 * `withNpbStaticRouteConfiguration(models.NpbStaticRouteConfigurationPatch)` was added
 * `withMicroBfdState(models.MicroBfdState)` was added
+* `withOptionBLayer3Configuration(models.OptionBLayer3ConfigurationPatchProperties)` was added
 * `withImportRoutePolicy(models.ImportRoutePolicyInformationPatch)` was added
+* `withExportRoutePolicy(models.ExportRoutePolicyInformationPatch)` was added
 * `withLayer2Configuration(models.Layer2ConfigurationPatch)` was added
 
 #### `models.NetworkDevicePatchParameters` was modified
 
 * `withIdentitySelector(models.IdentitySelectorPatch)` was added
-* `withHostName(java.lang.String)` was added
-* `hostName()` was added
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
-* `identity()` was added
 * `identitySelector()` was added
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 
 #### `models.NetworkTap` was modified
 
-* `networkFabricIds()` was added
 * `identity()` was added
+* `networkFabricIds()` was added
 * `lastOperation()` was added
 
 #### `models.NetworkToNetworkInterconnects` was modified
 
-* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.NniUpdateBfdAdministrativeStateRequest)` was added
 * `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.NniUpdateBfdAdministrativeStateRequest,com.azure.core.util.Context)` was added
+* `updateBfdAdministrativeState(java.lang.String,java.lang.String,java.lang.String,models.NniUpdateBfdAdministrativeStateRequest)` was added
 
 #### `models.NeighborGroup` was modified
 
-* `resync(com.azure.core.util.Context)` was added
+* `configurationState()` was added
 * `identity()` was added
 * `networkFabricIds()` was added
-* `configurationState()` was added
+* `resync(com.azure.core.util.Context)` was added
 * `lastOperation()` was added
 * `resync()` was added
 
@@ -2024,18 +2008,18 @@
 
 #### `models.NeighborGroupPatch` was modified
 
-* `identity()` was added
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 * `withDestination(models.NeighborGroupDestinationPatch)` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `identity()` was added
 
 #### `models.L2IsolationDomainPatch` was modified
 
-* `networkToNetworkInterconnectId()` was added
 * `withIdentity(models.ManagedServiceIdentityPatch)` was added
+* `networkToNetworkInterconnectId()` was added
 * `extendedVlan()` was added
 * `identity()` was added
-* `withNetworkToNetworkInterconnectId(java.lang.String)` was added
 * `withExtendedVlan(models.ExtendedVlan)` was added
+* `withNetworkToNetworkInterconnectId(java.lang.String)` was added
 
 #### `models.InternetGatewayRule` was modified
 
@@ -2044,26 +2028,26 @@
 #### `models.NetworkPacketBroker` was modified
 
 * `identity()` was added
-* `configurationState()` was added
 * `lastOperation()` was added
+* `configurationState()` was added
 
 #### `models.ExternalNetworkPatchPropertiesOptionAProperties` was modified
 
+* `v4OverV6BgpSession()` was added
+* `primaryIpv6Prefix()` was added
+* `withV6OverV4BgpSession(models.V6OverV4BgpSessionState)` was added
+* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitPatchProperties)` was added
+* `secondaryIpv6Prefix()` was added
+* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
+* `primaryIpv4Prefix()` was added
+* `secondaryIpv4Prefix()` was added
 * `bmpConfiguration()` was added
 * `v6OverV4BgpSession()` was added
-* `secondaryIpv6Prefix()` was added
-* `withBmpConfiguration(models.ExternalNetworkBmpPatchProperties)` was added
-* `primaryIpv4Prefix()` was added
-* `nativeIpv6PrefixLimit()` was added
-* `primaryIpv6Prefix()` was added
-* `secondaryIpv4Prefix()` was added
-* `withNativeIpv6PrefixLimit(models.NativeIpv6PrefixLimitPatchProperties)` was added
-* `withV6OverV4BgpSession(models.V6OverV4BgpSessionState)` was added
-* `v4OverV6BgpSession()` was added
 * `withNativeIpv4PrefixLimit(models.NativeIpv4PrefixLimitPatchProperties)` was added
-* `withV4OverV6BgpSession(models.V4OverV6BgpSessionState)` was added
-* `nativeIpv4PrefixLimit()` was added
+* `withBmpConfiguration(models.ExternalNetworkBmpPatchProperties)` was added
+* `nativeIpv6PrefixLimit()` was added
 * `withBfdConfiguration(models.BfdPatchConfiguration)` was added
+* `nativeIpv4PrefixLimit()` was added
 
 #### `models.AccessControlListAction` was modified
 
@@ -2074,12 +2058,12 @@
 
 #### `models.NetworkTapRulePatch` was modified
 
+* `withIdentitySelector(models.IdentitySelectorPatch)` was added
 * `globalNetworkTapRuleActions()` was added
 * `withGlobalNetworkTapRuleActions(models.GlobalNetworkTapRuleActionPatchProperties)` was added
-* `withIdentity(models.ManagedServiceIdentityPatch)` was added
-* `withIdentitySelector(models.IdentitySelectorPatch)` was added
 * `identity()` was added
 * `identitySelector()` was added
+* `withIdentity(models.ManagedServiceIdentityPatch)` was added
 
 #### `models.NetworkTapPatch` was modified
 
@@ -2096,14 +2080,14 @@
 
 #### `models.OptionBLayer3Configuration` was modified
 
-* `peLoopbackIpAddress()` was added
-* `bmpConfiguration()` was added
-* `withPeLoopbackIpAddress(java.util.List)` was added
-* `withPrefixLimits(java.util.List)` was added
+* `withPeerAsn(long)` was added
 * `prefixLimits()` was added
 * `withVlanId(int)` was added
-* `withPeerAsn(long)` was added
+* `withPeLoopbackIpAddress(java.util.List)` was added
 * `withBmpConfiguration(models.NniBmpProperties)` was added
+* `peLoopbackIpAddress()` was added
+* `withPrefixLimits(java.util.List)` was added
+* `bmpConfiguration()` was added
 
 ## 1.1.0 (2024-12-11)
 

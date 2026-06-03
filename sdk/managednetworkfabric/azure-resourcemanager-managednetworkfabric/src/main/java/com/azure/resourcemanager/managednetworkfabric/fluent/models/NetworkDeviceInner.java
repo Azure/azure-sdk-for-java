@@ -174,25 +174,25 @@ public final class NetworkDeviceInner extends Resource {
     }
 
     /**
-     * Get the hostName property: The host name of the device.
+     * Get the hostname property: The host name of the device.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.innerProperties() == null ? null : this.innerProperties().hostName();
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
-     * Set the hostName property: The host name of the device.
+     * Set the hostname property: The host name of the device.
      * 
-     * @param hostName the hostName value to set.
+     * @param hostname the hostname value to set.
      * @return the NetworkDeviceInner object itself.
      */
-    public NetworkDeviceInner withHostName(String hostName) {
+    public NetworkDeviceInner withHostname(String hostname) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkDeviceProperties();
         }
-        this.innerProperties().withHostName(hostName);
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 

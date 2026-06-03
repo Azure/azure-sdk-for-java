@@ -72,11 +72,11 @@ public interface NetworkDevice {
     String annotation();
 
     /**
-     * Gets the hostName property: The host name of the device.
+     * Gets the hostname property: The host name of the device.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    String hostName();
+    String hostname();
 
     /**
      * Gets the serialNumber property: Serial number of the device. Format of serial Number -
@@ -291,7 +291,7 @@ public interface NetworkDevice {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithAnnotation, DefinitionStages.WithHostName, DefinitionStages.WithIdentitySelector,
+            DefinitionStages.WithAnnotation, DefinitionStages.WithHostname, DefinitionStages.WithIdentitySelector,
             DefinitionStages.WithNetworkDeviceSku {
             /**
              * Executes the create request.
@@ -349,16 +349,16 @@ public interface NetworkDevice {
         }
 
         /**
-         * The stage of the NetworkDevice definition allowing to specify hostName.
+         * The stage of the NetworkDevice definition allowing to specify hostname.
          */
-        interface WithHostName {
+        interface WithHostname {
             /**
-             * Specifies the hostName property: The host name of the device..
+             * Specifies the hostname property: The host name of the device..
              * 
-             * @param hostName The host name of the device.
+             * @param hostname The host name of the device.
              * @return the next definition stage.
              */
-            WithCreate withHostName(String hostName);
+            WithCreate withHostname(String hostname);
         }
 
         /**
@@ -401,7 +401,7 @@ public interface NetworkDevice {
      * The template for NetworkDevice update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithAnnotation,
-        UpdateStages.WithHostName, UpdateStages.WithSerialNumber, UpdateStages.WithIdentitySelector {
+        UpdateStages.WithHostname, UpdateStages.WithSerialNumber, UpdateStages.WithIdentitySelector {
         /**
          * Executes the update request.
          * 
@@ -462,16 +462,16 @@ public interface NetworkDevice {
         }
 
         /**
-         * The stage of the NetworkDevice update allowing to specify hostName.
+         * The stage of the NetworkDevice update allowing to specify hostname.
          */
-        interface WithHostName {
+        interface WithHostname {
             /**
-             * Specifies the hostName property: The host name of the device..
+             * Specifies the hostname property: The host name of the device..
              * 
-             * @param hostName The host name of the device.
+             * @param hostname The host name of the device.
              * @return the next definition stage.
              */
-            Update withHostName(String hostName);
+            Update withHostname(String hostname);
         }
 
         /**

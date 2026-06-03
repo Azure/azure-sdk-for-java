@@ -33,7 +33,7 @@ public final class NetworkDeviceProperties implements JsonSerializable<NetworkDe
     /*
      * The host name of the device.
      */
-    private String hostName;
+    private String hostname;
 
     /*
      * Serial number of the device. Format of serial Number - Make;Model;HardwareRevisionId;SerialNumber.
@@ -143,22 +143,22 @@ public final class NetworkDeviceProperties implements JsonSerializable<NetworkDe
     }
 
     /**
-     * Get the hostName property: The host name of the device.
+     * Get the hostname property: The host name of the device.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
-     * Set the hostName property: The host name of the device.
+     * Set the hostname property: The host name of the device.
      * 
-     * @param hostName the hostName value to set.
+     * @param hostname the hostname value to set.
      * @return the NetworkDeviceProperties object itself.
      */
-    public NetworkDeviceProperties withHostName(String hostName) {
-        this.hostName = hostName;
+    public NetworkDeviceProperties withHostname(String hostname) {
+        this.hostname = hostname;
         return this;
     }
 
@@ -351,7 +351,7 @@ public final class NetworkDeviceProperties implements JsonSerializable<NetworkDe
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
         jsonWriter.writeStringField("annotation", this.annotation);
-        jsonWriter.writeStringField("hostName", this.hostName);
+        jsonWriter.writeStringField("hostName", this.hostname);
         jsonWriter.writeJsonField("identitySelector", this.identitySelector);
         jsonWriter.writeStringField("networkDeviceSku", this.networkDeviceSku);
         return jsonWriter.writeEndObject();
@@ -378,7 +378,7 @@ public final class NetworkDeviceProperties implements JsonSerializable<NetworkDe
                 } else if ("annotation".equals(fieldName)) {
                     deserializedNetworkDeviceProperties.annotation = reader.getString();
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedNetworkDeviceProperties.hostName = reader.getString();
+                    deserializedNetworkDeviceProperties.hostname = reader.getString();
                 } else if ("identitySelector".equals(fieldName)) {
                     deserializedNetworkDeviceProperties.identitySelector = IdentitySelector.fromJson(reader);
                 } else if ("version".equals(fieldName)) {

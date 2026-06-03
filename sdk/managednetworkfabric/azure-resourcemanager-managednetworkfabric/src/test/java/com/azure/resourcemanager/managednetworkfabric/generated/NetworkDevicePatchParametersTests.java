@@ -24,7 +24,7 @@ public final class NetworkDevicePatchParametersTests {
         Assertions.assertEquals("uidpmtonvhg", model.tags().get("htmep"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("sanmameu", model.annotation());
-        Assertions.assertEquals("qiqmlfvhlq", model.hostName());
+        Assertions.assertEquals("qiqmlfvhlq", model.hostname());
         Assertions.assertEquals("kkqjmxptueipuug", model.serialNumber());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.identitySelector().identityType());
@@ -37,7 +37,7 @@ public final class NetworkDevicePatchParametersTests {
             .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf("j", new UserAssignedIdentity())))
             .withAnnotation("sanmameu")
-            .withHostName("qiqmlfvhlq")
+            .withHostname("qiqmlfvhlq")
             .withSerialNumber("kkqjmxptueipuug")
             .withIdentitySelector(new IdentitySelectorPatch()
                 .withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
@@ -46,7 +46,7 @@ public final class NetworkDevicePatchParametersTests {
         Assertions.assertEquals("uidpmtonvhg", model.tags().get("htmep"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("sanmameu", model.annotation());
-        Assertions.assertEquals("qiqmlfvhlq", model.hostName());
+        Assertions.assertEquals("qiqmlfvhlq", model.hostname());
         Assertions.assertEquals("kkqjmxptueipuug", model.serialNumber());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.identitySelector().identityType());
