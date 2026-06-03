@@ -83,7 +83,7 @@ class AadResourceServerConfiguration {
                     aadAuthenticationProperties.getJwkSetCacheRefreshTime().toMillis())
                 .refreshAheadCache(false)
                 .build();
-        } catch (MalformedURLException e) {
+        } catch (IllegalArgumentException | MalformedURLException e) {
             throw new IllegalStateException("Invalid JWK Set endpoint: " + jwkSetEndpoint, e);
         }
     }
