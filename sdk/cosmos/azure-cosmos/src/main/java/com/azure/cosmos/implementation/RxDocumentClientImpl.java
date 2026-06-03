@@ -1995,7 +1995,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw new BadRequestException(
                     String.format(
                         RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
-                        readConsistencyStrategy.toString(),
+                        readConsistencyStrategy,
                         HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                         ConsistencyLevel.STRONG,
                         accountConsistency));

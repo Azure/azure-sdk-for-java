@@ -51,7 +51,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 @JsonFilter("RntbdToken")
 final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
-    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestHeaders.class);
 
     private static ImplementationBridgeHelpers.PriorityLevelHelper.PriorityLevelAccessor priorityLevelAccessor() {
         return ImplementationBridgeHelpers.PriorityLevelHelper.getPriorityLevelAccessor();
@@ -59,6 +58,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Fields
 
+    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestHeaders.class);
     private static final String URL_TRIM = "/";
 
     // endregion
