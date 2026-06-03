@@ -11,8 +11,12 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -75,7 +79,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         logger.info("Seed item created: {}", this.seedItem.getId());
     }
 
-    @AfterClass(groups = {"manual-http-network-fault"}, timeOut = 60_000)
+    @AfterClass(groups = {"manual-http-network-fault"}, timeOut = 60_000, alwaysRun = true)
     public void afterClass() {
         safeClose(this.client);
         System.clearProperty("COSMOS.HTTP2_ENABLED");
@@ -195,7 +199,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         }
     }
 
-    private String readAndGetParentChannelId() {
+    private String readAndGetParentChannelId() throws JsonProcessingException {
         CosmosItemResponse<TestObject> response = this.cosmosAsyncContainer.readItem(
             seedItem.getId(), new PartitionKey(seedItem.getId()), TestObject.class).block();
 
@@ -205,28 +209,25 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         return extractParentChannelId(response.getDiagnostics());
     }
 
-    private String extractParentChannelId(CosmosDiagnostics diagnostics) {
-        String diagStr = diagnostics.toString();
-        int idx = diagStr.indexOf("parentChannelId");
-        if (idx > 0) {
-            int start = diagStr.indexOf("\"", idx + 16) + 1;
-            int end = diagStr.indexOf("\"", start);
-            if (start > 0 && end > start) {
-                return diagStr.substring(start, end);
+    /**
+     * Mirrors {@code Http2ConnectionLifecycleTests#extractParentChannelId} -- parse
+     * the diagnostics JSON rather than substring-scan the toString() so a future change
+     * to JSON formatting can't silently break the test.
+     */
+    private String extractParentChannelId(CosmosDiagnostics diagnostics) throws JsonProcessingException {
+        ObjectNode node = (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics.toString());
+        JsonNode gwStats = node.get("gatewayStatisticsList");
+        if (gwStats != null && gwStats.isArray()) {
+            for (JsonNode stat : gwStats) {
+                if (stat.has("parentChannelId")) {
+                    String id = stat.get("parentChannelId").asText();
+                    if (id != null && !id.isEmpty() && !"null".equals(id)) {
+                        return id;
+                    }
+                }
             }
         }
-
-        throw new AssertionError("Could not extract parentChannelId from diagnostics: " + diagStr);
-    }
-
-    private static String extractHostFromEndpoint(String endpoint) {
-        // Extract hostname from "https://foo.documents.azure.com:443/"
-        try {
-            java.net.URI uri = new java.net.URI(endpoint);
-            return uri.getHost();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse endpoint: " + endpoint, e);
-        }
+        throw new AssertionError("Could not extract parentChannelId from diagnostics: " + diagnostics);
     }
 
     private static void execCommand(String command) throws Exception {

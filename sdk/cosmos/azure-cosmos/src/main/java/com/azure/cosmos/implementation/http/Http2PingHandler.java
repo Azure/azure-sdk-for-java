@@ -53,7 +53,13 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     // Mutable fields below are accessed only from the channel's EventLoop thread
     // (handlerAdded, channelRead, scheduled task, writeAndFlush listener), so no
     // synchronization or volatile is needed.
-    private long lastReadNanos;              // nanoTime of last inbound frame (response); PING triggers when no read for interval
+    //
+    // nanoTime of the last connection-level activity (inbound frame or PING send).
+    // Note: H2 stream frames (HEADERS/DATA -- i.e. actual HTTP responses) are
+    // dispatched by Http2MultiplexHandler to child channels and never surface on
+    // the parent pipeline, so this does NOT track request/response traffic; it
+    // tracks PING ACKs, SETTINGS, GOAWAY, and our own PING sends.
+    private long lastActivityNanos;
     private long pingOutstandingSinceNanos;  // nanoTime when PING was sent; 0 = no outstanding PING
     private int consecutiveFailures;         // incremented on timeout, reset on ACK
     private int pingsSent;
@@ -63,9 +69,10 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param pingIntervalSeconds  interval in seconds; when idle longer than this, a PING is sent
      * @param pingTimeoutSeconds   timeout in seconds per PING attempt
      * @param failureThreshold     consecutive timeouts before closing the connection
-     * @param scopeSupplier        re-checked per tick; when it returns false the handler cancels
-     *                             itself, so a runtime scope change (e.g. account losing thin-client
-     *                             read locations) stops PINGs on already-installed handlers
+     * @param scopeSupplier        re-checked per tick; when it returns false the handler stops
+     *                             sending PINGs but keeps the timer alive (dormant), so a runtime
+     *                             scope flip back to true automatically re-arms PING on the same
+     *                             connection without waiting for connection recycling
      */
     public Http2PingHandler(int pingIntervalSeconds, int pingTimeoutSeconds, int failureThreshold,
                             BooleanSupplier scopeSupplier) {
@@ -73,7 +80,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingTimeoutSeconds));
         this.failureThreshold = Math.max(1, failureThreshold);
         this.scopeSupplier = scopeSupplier != null ? scopeSupplier : () -> true;
-        this.lastReadNanos = System.nanoTime();
+        this.lastActivityNanos = System.nanoTime();
     }
 
     @Override
@@ -107,25 +114,33 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        lastReadNanos = System.nanoTime();
-        if (msg instanceof Http2PingFrame && ((Http2PingFrame) msg).ack()) {
-            pingOutstandingSinceNanos = 0;
-            consecutiveFailures = 0;
+        lastActivityNanos = System.nanoTime();
+        if (msg instanceof Http2PingFrame) {
+            Http2PingFrame ping = (Http2PingFrame) msg;
+            // RFC 9113 §6.7: PING ACK echoes the 8-byte payload we sent.
+            // Match by payload so a late ACK for a PING that already counted as a
+            // timeout cannot reset the failure counter and mask ongoing degradation.
+            if (ping.ack() && ping.content() == pingsSent) {
+                pingOutstandingSinceNanos = 0;
+                consecutiveFailures = 0;
+            }
         }
         super.channelRead(ctx, msg);
     }
 
     private void maybeSendPing(ChannelHandlerContext ctx) {
-        // Re-check both gates per tick:
-        //   - Configs.isHttp2PingHealthEnabled(): global kill-switch (system property).
-        //   - scopeSupplier: per-client scope (e.g. thin-client still active). If the
-        //     account drops thin-client read locations after the handler was installed,
-        //     this flips false and we cancel the scheduled task. The connection itself
-        //     stays in the pool and is reaped by the normal idle timeout.
-        if (!ctx.channel().isActive()
-            || !Configs.isHttp2PingHealthEnabled()
-            || !scopeSupplier.getAsBoolean()) {
+        // Channel-dead is a hard stop -- cancel the timer.
+        if (!ctx.channel().isActive()) {
             cancelPingTask();
+            return;
+        }
+        // Two soft gates re-checked per tick:
+        //   - Configs.isHttp2PingHealthEnabled(): global kill-switch (system property).
+        //   - scopeSupplier: per-client scope (e.g. thin-client still active).
+        // Either flipping false makes this tick a no-op but KEEPS the timer alive, so
+        // if the gate flips back to true the handler automatically resumes PINGing on
+        // the same connection (no need to wait for connection recycling).
+        if (!Configs.isHttp2PingHealthEnabled() || !scopeSupplier.getAsBoolean()) {
             return;
         }
 
@@ -151,7 +166,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             return;
         }
 
-        long idleNanos = System.nanoTime() - lastReadNanos;
+        long idleNanos = System.nanoTime() - lastActivityNanos;
         if (idleNanos >= pingIntervalNanos) {
             int count = ++pingsSent;
             pingOutstandingSinceNanos = System.nanoTime();
@@ -168,8 +183,8 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                             f.cause() != null ? f.cause().getMessage() : "unknown");
                     }
                 });
-            // Reset read timestamp so we don't send another PING immediately
-            lastReadNanos = System.nanoTime();
+            // Reset activity timestamp so we don't send another PING immediately
+            lastActivityNanos = System.nanoTime();
         }
     }
 
@@ -189,9 +204,10 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * @param pingTimeoutSeconds  PING ACK timeout in seconds
      * @param failureThreshold    consecutive timeouts before closing
      * @param scopeSupplier       re-checked per tick by the handler; when it returns false
-     *                            the handler cancels itself so runtime scope changes
-     *                            (e.g. account losing thin-client read locations)
-     *                            disable PING even on already-installed handlers
+     *                            the tick is a no-op (dormant) so runtime scope changes
+     *                            (e.g. account losing thin-client read locations) stop
+     *                            PINGs immediately, but the timer stays alive so a flip
+     *                            back to true automatically re-arms on the same connection
      */
     public static void installIfAbsent(Channel channel, int pingIntervalSeconds, int pingTimeoutSeconds,
                                        int failureThreshold, BooleanSupplier scopeSupplier) {

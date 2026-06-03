@@ -1720,6 +1720,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return false;
         }
 
+        // Mirror the transport-side guard in Http2PingHandler#installIfAbsent: if the
+        // configured interval is non-positive the handler is not installed, so the UA
+        // flag must not advertise PING either.
+        if (Configs.getHttp2PingIntervalInSeconds() <= 0) {
+            return false;
+        }
+
         boolean h2EffectivelyEnabled = Configs.isHttp2Enabled();
         if (this.connectionPolicy.getHttp2ConnectionConfig() != null
             && this.connectionPolicy.getHttp2ConnectionConfig().isEnabled() != null) {
