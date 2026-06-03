@@ -458,62 +458,82 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of BetaAgentsAsyncClient class.
-     *
-     * @return an instance of BetaAgentsAsyncClient.
+     * A builder for creating a new instance of the beta AgentsClient type.
      */
-    @Generated
-    public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-        return new BetaAgentsAsyncClient(buildInnerClient().getBetaAgents());
+    public BetaAgentsClientBuilder beta() {
+        return new BetaAgentsClientBuilder();
     }
 
     /**
-     * Builds an instance of BetaMemoryStoresAsyncClient class.
-     *
-     * @return an instance of BetaMemoryStoresAsyncClient.
+     * A builder for creating a new instance of the beta AgentsClient type.
      */
-    @Generated
-    public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
-        return new BetaMemoryStoresAsyncClient(buildInnerClient().getBetaMemoryStores());
-    }
+    @ServiceClientBuilder(
+        serviceClients = {
+            BetaAgentsClient.class,
+            BetaMemoryStoresClient.class,
+            BetaToolboxesClient.class,
+            BetaAgentsAsyncClient.class,
+            BetaMemoryStoresAsyncClient.class,
+            BetaToolboxesAsyncClient.class })
+    public final class BetaAgentsClientBuilder {
+        /**
+         * Builds an instance of BetaAgentsAsyncClient class.
+         *
+         * @return an instance of BetaAgentsAsyncClient.
+         */
+        @Generated
+        public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
+            return new BetaAgentsAsyncClient(buildInnerClient().getBetaAgents());
+        }
 
-    /**
-     * Builds an instance of BetaToolboxesAsyncClient class.
-     *
-     * @return an instance of BetaToolboxesAsyncClient.
-     */
-    @Generated
-    public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-        return new BetaToolboxesAsyncClient(buildInnerClient().getBetaToolboxes());
-    }
+        /**
+         * Builds an instance of BetaMemoryStoresAsyncClient class.
+         *
+         * @return an instance of BetaMemoryStoresAsyncClient.
+         */
+        @Generated
+        public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
+            return new BetaMemoryStoresAsyncClient(buildInnerClient().getBetaMemoryStores());
+        }
 
-    /**
-     * Builds an instance of BetaAgentsClient class.
-     *
-     * @return an instance of BetaAgentsClient.
-     */
-    @Generated
-    public BetaAgentsClient buildBetaAgentsClient() {
-        return new BetaAgentsClient(buildInnerClient().getBetaAgents());
-    }
+        /**
+         * Builds an instance of BetaToolboxesAsyncClient class.
+         *
+         * @return an instance of BetaToolboxesAsyncClient.
+         */
+        @Generated
+        public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
+            return new BetaToolboxesAsyncClient(buildInnerClient().getBetaToolboxes());
+        }
 
-    /**
-     * Builds an instance of BetaMemoryStoresClient class.
-     *
-     * @return an instance of BetaMemoryStoresClient.
-     */
-    @Generated
-    public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
-        return new BetaMemoryStoresClient(buildInnerClient().getBetaMemoryStores());
-    }
+        /**
+         * Builds an instance of BetaAgentsClient class.
+         *
+         * @return an instance of BetaAgentsClient.
+         */
+        @Generated
+        public BetaAgentsClient buildBetaAgentsClient() {
+            return new BetaAgentsClient(buildInnerClient().getBetaAgents());
+        }
 
-    /**
-     * Builds an instance of BetaToolboxesClient class.
-     *
-     * @return an instance of BetaToolboxesClient.
-     */
-    @Generated
-    public BetaToolboxesClient buildBetaToolboxesClient() {
-        return new BetaToolboxesClient(buildInnerClient().getBetaToolboxes());
+        /**
+         * Builds an instance of BetaMemoryStoresClient class.
+         *
+         * @return an instance of BetaMemoryStoresClient.
+         */
+        @Generated
+        public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
+            return new BetaMemoryStoresClient(buildInnerClient().getBetaMemoryStores());
+        }
+
+        /**
+         * Builds an instance of BetaToolboxesClient class.
+         *
+         * @return an instance of BetaToolboxesClient.
+         */
+        @Generated
+        public BetaToolboxesClient buildBetaToolboxesClient() {
+            return new BetaToolboxesClient(buildInnerClient().getBetaToolboxes());
+        }
     }
 }

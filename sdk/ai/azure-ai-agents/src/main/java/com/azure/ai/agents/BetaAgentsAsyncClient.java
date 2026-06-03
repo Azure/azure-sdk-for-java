@@ -6,28 +6,10 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.BetaAgentsImpl;
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
 import com.azure.ai.agents.implementation.MultipartFormDataHelper;
+import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.AgentDetails;
-import com.azure.ai.agents.models.AgentSessionResource;
-import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.CandidateDeployConfig;
-import com.azure.ai.agents.models.CandidateMetadata;
-import com.azure.ai.agents.models.CandidateResults;
-import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
-import com.azure.ai.agents.models.JobStatus;
-import com.azure.ai.agents.models.OptimizationCandidate;
-import com.azure.ai.agents.models.OptimizationJob;
-import com.azure.ai.agents.models.OptimizationJobInputs;
-import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.PromoteCandidateInput;
-import com.azure.ai.agents.models.PromoteCandidateResult;
-import com.azure.ai.agents.models.SessionDirectoryEntry;
-import com.azure.ai.agents.models.SessionFileWriteResult;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionIndicator;
+import com.azure.ai.agents.models.*;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -85,7 +67,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -202,7 +184,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -317,7 +299,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -359,9 +341,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -469,7 +451,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -555,7 +537,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -593,7 +575,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -604,9 +586,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -654,7 +636,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -784,7 +766,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -853,7 +835,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -885,6 +867,40 @@ public final class BetaAgentsAsyncClient {
     }
 
     /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
+     * {@link SessionLogEvent} values.
+     *
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId) {
+        RequestOptions requestOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
+            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
+        return getSessionLogStream(agentName, agentVersion, sessionId, requestOptions);
+    }
+
+    /**
+     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
+     * {@link SessionLogEvent} values.
+     *
+     * @param agentName The name of the hosted agent.
+     * @param agentVersion The version of the agent.
+     * @param sessionId The session ID (maps to an ADC sandbox).
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
+        RequestOptions requestOptions) {
+        return SessionLogStreamHelper
+            .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
+                .flatMapMany(response -> response.getValue().toFluxByteBuffer()));
+    }
+
+    /**
      * Upload a file to the session sandbox via binary stream.
      * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
      * <p><strong>Header Parameters</strong></p>
@@ -900,15 +916,15 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -953,7 +969,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -1016,7 +1032,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1103,7 +1119,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1131,9 +1147,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1291,7 +1307,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1471,7 +1487,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1625,7 +1641,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1840,7 +1856,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1929,7 +1945,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1992,7 +2008,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2047,7 +2063,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2110,7 +2126,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -2154,7 +2170,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2163,9 +2179,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
