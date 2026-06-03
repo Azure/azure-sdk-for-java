@@ -467,3 +467,243 @@ matrix:
       uploadFaults: true
       durationMin: 60
       imageBuildDir: "../../.."
+
+    crc64appendblock-sm:
+      testScenario: appendblockwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64appendblock-lg:
+      testScenario: appendblockwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 30
+      imageBuildDir: "../../.."
+
+    crc64appendblockasync-sm:
+      testScenario: appendblockwithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64appendblockasync-lg:
+      testScenario: appendblockwithcrc64
+      sync: false
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 30
+      imageBuildDir: "../../.."
+
+    crc64appendoutputstream-sm:
+      testScenario: appendbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64appendoutputstream-lg:
+      testScenario: appendbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: "10240"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64blockblobupload-sm:
+      testScenario: blockblobuploadwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64blockblobupload-lg:
+      testScenario: blockblobuploadwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64blockoutputstream-sm:
+      testScenario: blockbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64blockoutputstream-lg:
+      testScenario: blockbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64bytechannelwrite-sm:
+      testScenario: seekablebytechannelwritewithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    crc64bytechannelwrite-lg:
+      testScenario: seekablebytechannelwritewithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64stageblock-sm:
+      testScenario: stageblockwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64stageblock-lg:
+      testScenario: stageblockwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64stageblockasync-sm:
+      testScenario: stageblockwithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64stageblockasync-lg:
+      testScenario: stageblockwithcrc64
+      sync: false
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64pageoutputstream-sm:
+      testScenario: pagebloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64pageoutputstream-lg:
+      testScenario: pagebloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: "10240"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadpages-sm:
+      testScenario: uploadpageswithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadpages-lg:
+      testScenario: uploadpageswithcrc64
+      sync: true
+      sizeBytes: "4194304"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadpagesasync-sm:
+      testScenario: uploadpageswithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadpagesasync-lg:
+      testScenario: uploadpageswithcrc64
+      sync: false
+      sizeBytes: "4194304"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64upload-sm:
+      testScenario: uploadwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64upload-lg:
+      testScenario: uploadwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadasync-sm:
+      testScenario: uploadwithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadasync-lg:
+      testScenario: uploadwithcrc64
+      sync: false
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfile-sm:
+      testScenario: uploadfromfilewithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfile-lg:
+      testScenario: uploadfromfilewithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfileasync-sm:
+      testScenario: uploadfromfilewithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfileasync-lg:
+      testScenario: uploadfromfilewithcrc64
+      sync: false
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
