@@ -7,7 +7,7 @@ import os
 try:
     from termcolor import colored
 except ImportError:
-    def colored(content, _):
+    def colored(content, *args, **kwargs):
         return content
 
 

@@ -460,7 +460,10 @@ class AadResourceServerConfigurationTests {
                                                              int expectedConnectTimeoutMs,
                                                              int expectedReadTimeoutMs) {
         RemoteJWKSet<?> remoteJwkSet = getRemoteJwkSet(jwtDecoder);
-        Object resourceRetriever = ReflectionTestUtils.getField(remoteJwkSet, "jwkSetRetriever");
+        Object resourceRetriever = getFieldIfExists(remoteJwkSet, "resourceRetriever");
+        if (resourceRetriever == null) {
+            resourceRetriever = getFieldIfExists(remoteJwkSet, "jwkSetRetriever");
+        }
         assertThat(resourceRetriever).isInstanceOf(RestOperationsResourceRetriever.class);
 
         Object restOperations = ReflectionTestUtils.getField(resourceRetriever, "restOperations");
@@ -505,5 +508,13 @@ class AadResourceServerConfigurationTests {
         com.nimbusds.jose.jwk.source.JWKSource<?> jwkSource =
             ((com.nimbusds.jose.proc.JWSVerificationKeySelector<?>) keySelector).getJWKSource();
         return jwkSource;
+    }
+
+    private static Object getFieldIfExists(Object target, String name) {
+        try {
+            return ReflectionTestUtils.getField(target, name);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
     }
 }
