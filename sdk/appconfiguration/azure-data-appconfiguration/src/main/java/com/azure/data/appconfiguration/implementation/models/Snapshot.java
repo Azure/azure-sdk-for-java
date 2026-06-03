@@ -88,6 +88,12 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
     private Map<String, String> tags;
 
     /*
+     * The description of the snapshot.
+     */
+    @Generated
+    private String description;
+
+    /*
      * A value representing the current state of the snapshot.
      */
     @Generated
@@ -252,6 +258,28 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
     }
 
     /**
+     * Get the description property: The description of the snapshot.
+     * 
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: The description of the snapshot.
+     * 
+     * @param description the description value to set.
+     * @return the Snapshot object itself.
+     */
+    @Generated
+    public Snapshot setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Get the etag property: A value representing the current state of the snapshot.
      * 
      * @return the etag value.
@@ -273,6 +301,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
             this.compositionType == null ? null : this.compositionType.toString());
         jsonWriter.writeNumberField("retention_period", this.retentionPeriod);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -298,6 +327,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
             Long size = null;
             Long itemsCount = null;
             Map<String, String> tags = null;
+            String description = null;
             String etag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -325,6 +355,8 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
                     itemsCount = reader.getNullable(JsonReader::getLong);
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     etag = reader.getString();
                 } else {
@@ -341,6 +373,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
             deserializedSnapshot.size = size;
             deserializedSnapshot.itemsCount = itemsCount;
             deserializedSnapshot.tags = tags;
+            deserializedSnapshot.description = description;
             deserializedSnapshot.etag = etag;
 
             return deserializedSnapshot;
