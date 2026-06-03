@@ -59,7 +59,8 @@ public class Utility {
             .setEtag(setting.getETag())
             .setLastModified(setting.getLastModified())
             .setLocked(setting.isReadOnly())
-            .setTags(setting.getTags());
+            .setTags(setting.getTags())
+            .setDescription(setting.getDescription());
     }
 
     // SettingFields[] to List<SettingFields>

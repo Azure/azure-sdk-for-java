@@ -73,6 +73,12 @@ public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
     public static final SnapshotFields TAGS = fromString("tags");
 
     /**
+     * Description field.
+     */
+    @Generated
+    public static final SnapshotFields DESCRIPTION = fromString("description");
+
+    /**
      * Etag field.
      */
     @Generated

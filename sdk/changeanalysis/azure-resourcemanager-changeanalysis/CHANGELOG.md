@@ -1,14 +1,15 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.1.1 (2026-06-01)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+> Please note, this package has been deprecated and will no longer be maintained
+> after `2025-10-31`. The Change Analysis service has been retired and its
+> APIs are no longer available. There is no replacement package. Refer to our
+> deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ### Other Changes
+
+- Deprecated the `azure-resourcemanager-changeanalysis` package because the Change Analysis service has been retired.
 
 ## 1.1.0 (2024-12-06)
 

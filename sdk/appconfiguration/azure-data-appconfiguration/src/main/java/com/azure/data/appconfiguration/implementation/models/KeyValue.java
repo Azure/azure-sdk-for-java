@@ -58,6 +58,12 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     private Map<String, String> tags;
 
     /*
+     * The description of the key-value.
+     */
+    @Generated
+    private String description;
+
+    /*
      * Indicates whether the key-value is locked.
      */
     @Generated
@@ -208,6 +214,28 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
     }
 
     /**
+     * Get the description property: The description of the key-value.
+     * 
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: The description of the key-value.
+     * 
+     * @param description the description value to set.
+     * @return the KeyValue object itself.
+     */
+    @Generated
+    public KeyValue setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Get the locked property: Indicates whether the key-value is locked.
      * 
      * @return the locked value.
@@ -264,6 +292,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
         jsonWriter.writeStringField("last_modified",
             this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeBooleanField("locked", this.locked);
         jsonWriter.writeStringField("etag", this.etag);
         return jsonWriter.writeEndObject();
@@ -300,6 +329,8 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedKeyValue.tags = tags;
+                } else if ("description".equals(fieldName)) {
+                    deserializedKeyValue.description = reader.getString();
                 } else if ("locked".equals(fieldName)) {
                     deserializedKeyValue.locked = reader.getNullable(JsonReader::getBoolean);
                 } else if ("etag".equals(fieldName)) {
