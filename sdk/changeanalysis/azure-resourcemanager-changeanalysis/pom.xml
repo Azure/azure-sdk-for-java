@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-changeanalysis</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-changeanalysis;current} -->
+  <version>1.1.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-changeanalysis;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for AzureChangeAnalysis Management</name>
-  <description>This package contains Microsoft Azure SDK for AzureChangeAnalysis Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2021-04-01.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained after 2025-10-31. The Change Analysis service has been retired and its APIs are no longer available. There is no replacement package. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
