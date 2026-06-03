@@ -38,7 +38,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     @Disabled
     public void validatesSessionLogStream(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        AgentsAsyncClient client = getAgentsAsyncClient(httpClient, serviceVersion);
+        BetaAgentsAsyncClient client = getClientBuilder(httpClient, serviceVersion).beta().buildBetaAgentsAsyncClient();
         RequestOptions featureOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
             AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
 
@@ -71,15 +71,15 @@ public class SessionLogAsyncTest extends ClientTestBase {
         }
     }
 
-    private static Disposable scheduleSessionDelete(AgentsAsyncClient client) {
+    private static Disposable scheduleSessionDelete(BetaAgentsAsyncClient client) {
         return Mono.delay(Duration.ofSeconds(20)).then(deleteSessionAsync(client)).subscribe();
     }
 
-    private static void deleteSession(AgentsAsyncClient client) {
+    private static void deleteSession(BetaAgentsAsyncClient client) {
         deleteSessionAsync(client).block(Duration.ofSeconds(60));
     }
 
-    private static Mono<Void> deleteSessionAsync(AgentsAsyncClient client) {
+    private static Mono<Void> deleteSessionAsync(BetaAgentsAsyncClient client) {
         return client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
             .onErrorResume(error -> Mono.empty());
     }

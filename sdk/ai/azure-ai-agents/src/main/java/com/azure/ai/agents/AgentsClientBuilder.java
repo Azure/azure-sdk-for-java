@@ -459,6 +459,8 @@ public final class AgentsClientBuilder
 
     /**
      * A builder for creating a new instance of the beta AgentsClient type.
+     *
+     * @return a builder for creating a new instance of the beta AgentsClient type.
      */
     public BetaAgentsClientBuilder beta() {
         return new BetaAgentsClientBuilder();
@@ -476,6 +478,12 @@ public final class AgentsClientBuilder
             BetaMemoryStoresAsyncClient.class,
             BetaToolboxesAsyncClient.class })
     public final class BetaAgentsClientBuilder {
+
+        /**
+         * Creates a new instance of BetaAgentsClientBuilder.
+         */
+        public BetaAgentsClientBuilder() {
+        }
 
         /**
          * Builds an instance of BetaAgentsAsyncClient class.

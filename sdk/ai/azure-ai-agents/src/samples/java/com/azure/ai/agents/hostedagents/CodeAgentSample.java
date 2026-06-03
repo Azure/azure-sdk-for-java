@@ -5,6 +5,7 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -27,10 +28,11 @@ public class CodeAgentSample {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = CodeAgentSampleUtils.SAMPLE_AGENT_NAME;
 
-        AgentsClient agentsClient = new AgentsClientBuilder()
+        AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildAgentsClient();
+            .endpoint(endpoint);
+        AgentsClient agentsClient = builder.buildAgentsClient();
+        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         try {
             agentsClient.deleteAgent(agentName);
@@ -44,7 +46,7 @@ public class CodeAgentSample {
             BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
             String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
 
-            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(
+            AgentVersionDetails version = betaAgentsClient.createAgentVersionFromCode(
                 agentName,
                 codeZipSha256,
                 CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
@@ -57,7 +59,7 @@ public class CodeAgentSample {
 
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 
-            BinaryData downloadedCode = agentsClient.downloadAgentCode(agentName,
+            BinaryData downloadedCode = betaAgentsClient.downloadAgentCode(agentName,
                 AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null);
             Path downloadPath = Files.createTempFile(agentName + "-", ".zip");
             Files.write(downloadPath, downloadedCode.toBytes());
@@ -67,7 +69,7 @@ public class CodeAgentSample {
 
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode
 
-            AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(
+            AgentVersionDetails newVersion = betaAgentsClient.createAgentVersionFromCode(
                 agentName,
                 codeZipSha256,
                 CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),

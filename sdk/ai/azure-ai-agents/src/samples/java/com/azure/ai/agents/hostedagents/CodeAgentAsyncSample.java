@@ -5,6 +5,7 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
@@ -28,10 +29,11 @@ public class CodeAgentAsyncSample {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = CodeAgentSampleUtils.SAMPLE_AGENT_NAME;
 
-        AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
+        AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildAgentsAsyncClient();
+            .endpoint(endpoint);
+        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 
         Mono<Void> workflow = agentsAsyncClient.deleteAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
@@ -41,7 +43,7 @@ public class CodeAgentAsyncSample {
 
                 // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode_initial
 
-                return agentsAsyncClient.createAgentVersionFromCode(
+                return betaAgentsAsyncClient.createAgentVersionFromCode(
                     agentName,
                     codeZipSha256,
                     CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
@@ -55,7 +57,7 @@ public class CodeAgentAsyncSample {
 
                     // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
 
-                    .then(agentsAsyncClient.downloadAgentCode(agentName,
+                    .then(betaAgentsAsyncClient.downloadAgentCode(agentName,
                         AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null))
                     .flatMap(downloadedCode -> writeDownloadedCode(agentName, downloadedCode))
 
@@ -63,7 +65,7 @@ public class CodeAgentAsyncSample {
 
                     // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode
 
-                    .then(agentsAsyncClient.createAgentVersionFromCode(
+                    .then(betaAgentsAsyncClient.createAgentVersionFromCode(
                         agentName,
                         codeZipSha256,
                         CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),

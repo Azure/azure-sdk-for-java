@@ -3,8 +3,8 @@
 
 package com.azure.ai.agents.hostedagents;
 
-import com.azure.ai.agents.AgentSessionFilesAsyncClient;
 import com.azure.ai.agents.AgentsAsyncClient;
+import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
@@ -42,32 +42,32 @@ public class SessionFilesAsyncSample {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        AgentSessionFilesAsyncClient sessionFilesAsyncClient = builder.buildAgentSessionFilesAsyncClient();
+        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
-        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, agentName, image)
+        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName, image)
             .flatMap(resources -> {
                 resourcesRef.set(resources);
                 String sessionId = resources.getSession().getAgentSessionId();
 
-                return sessionFilesAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
+                return betaAgentsAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
                     BinaryData.fromString("Sample session file 1."),
                     AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
-                    .then(sessionFilesAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
+                    .then(betaAgentsAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
                         BinaryData.fromString("Sample session file 2."),
                         AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
                     .then(Mono.defer(() -> {
                         System.out.println("Listing session files for the session at path '/remote'...");
-                        return sessionFilesAsyncClient.listSessionFiles(agentName, sessionId,
+                        return betaAgentsAsyncClient.listSessionFiles(agentName, sessionId,
                             AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, "/remote", null, null, null, null, null)
                             .doOnNext(entry -> System.out.printf("  - name=%s, size=%d, isDirectory=%s%n",
                                 entry.getName(), entry.getSize(), entry.isDirectory()))
                             .then();
                     }))
-                    .then(sessionFilesAsyncClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
+                    .then(betaAgentsAsyncClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
                         AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null))
                     .doOnNext(downloaded -> {
                         System.out.printf("Downloading and printing content from '%s'%n", REMOTE_FILE_PATH_1);
@@ -76,20 +76,20 @@ public class SessionFilesAsyncSample {
                     })
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_1);
-                        return sessionFilesAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
+                        return betaAgentsAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
                             AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
                     }))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_2);
-                        return sessionFilesAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
+                        return betaAgentsAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
                             AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
                     }));
             });
 
         workflow
-            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
+            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
                 resourcesRef.get()).then(Mono.error(error)))
-            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
+            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
                 resourcesRef.get())))
             .timeout(Duration.ofMinutes(15))
             .block();
