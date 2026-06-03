@@ -115,14 +115,14 @@ Several operation groups in the AI Projects client library are in **preview** an
 
 | Sub-client | Opt-in flag |
 |---|---|
-| `EvaluatorsClient` | `Evaluations=V1Preview` |
-| `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
-| `ModelsClient` | `Models=V1Preview` |
-| `RedTeamsClient` | `RedTeams=V1Preview` |
-| `SchedulesClient` | `Schedules=V1Preview` |
-| `SkillsClient` | `Skills=V1Preview` |
+| `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
+| `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
+| `BetaModelsClient` | `Models=V1Preview` |
+| `BetaRedTeamsClient` | `RedTeams=V1Preview` |
+| `BetaSchedulesClient` | `Schedules=V1Preview` |
+| `BetaSkillsClient` | `Skills=V1Preview` |
 
-The `DataGenerationJobsClient`, `RoutinesClient`, `EvaluationRulesClient`, and `InsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling methods that accept it (e.g., `FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW`, `FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW`, `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
+The `BetaDatasetsClient`, `BetaRoutinesClient`, `EvaluationRulesClient`, and `BetaInsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling methods that accept it (e.g., `FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW`, `FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW`, `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
 
 The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `ROUTINES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`, `DATA_GENERATION_JOBS_V1_PREVIEW`, `MODELS_V1_PREVIEW`, `AGENTS_OPTIMIZATION_V1_PREVIEW`.
 
@@ -652,7 +652,7 @@ return indexesAsyncClient.deleteIndexVersion(indexName, indexVersion)
 
 ### Skills operations
 
-Skills are a preview feature. The `SkillsClient` automatically sets the `Skills=V1Preview` opt-in flag on every request.
+Skills are a preview feature. The `BetaSkillsClient` automatically sets the `Skills=V1Preview` opt-in flag on every request.
 
 #### Create a skill
 
