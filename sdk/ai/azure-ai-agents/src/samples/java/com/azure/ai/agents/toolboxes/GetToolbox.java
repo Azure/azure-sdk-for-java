@@ -4,13 +4,13 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * This sample demonstrates how to retrieve a toolbox using the ToolboxesClient.
+ * This sample demonstrates how to retrieve a toolbox using the BetaToolboxesClient.
  *
  * <p>The {@code getToolbox} method returns the toolbox metadata including its name,
  * ID, and default version.</p>
@@ -25,10 +25,10 @@ public class GetToolbox {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String toolboxName = "toolbox_created_from_java";
         // Code sample for retrieving a toolbox
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildToolboxesClient();
+                .beta().buildBetaToolboxesClient();
 
         ToolboxDetails toolbox = toolboxesClient.getToolbox(toolboxName);
 
