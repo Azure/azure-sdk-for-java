@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (2026-05-28)
+## 2.0.0-beta.1 (2026-05-28)
 
 - Azure Resource Manager DevTestLabs client library for Java. This package contains Microsoft Azure SDK for DevTestLabs Management SDK. The DevTest Labs Client. Package api-version 2018-09-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
