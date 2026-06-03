@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
  * Integration tests for container CRUD operations with GlobalSecondaryIndex definitions.
@@ -292,11 +293,13 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             // The status field may be populated by the server after creation
             // (e.g. Initializing, InitialBuildAfterCreate, Active). The public gateway does not
             // always surface this field. With ExpandableStringEnum semantics, getStatus() returns
-            // null when the field is absent, so we only verify the accessor does not throw.
+            // null when the field is absent, so verify the accessor does not throw, and when a
+            // status is returned, its name round-trips through toString() as a non-empty value.
+            assertThatCode(() -> gsiDef.getStatus()).doesNotThrowAnyException();
             CosmosGlobalSecondaryIndexBuildStatus status = gsiDef.getStatus();
-            // status may legitimately be null when the gateway does not return the field.
-            // Reference the variable to keep the accessor exercised by the test.
-            assertThat(status == null || status.toString() != null).isTrue();
+            if (status != null) {
+                assertThat(status.toString()).isNotEmpty();
+            }
         } finally {
             safeDeleteAllCollections(database);
         }
