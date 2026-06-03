@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 /**
- * Sample demonstrating data generation job operations using the synchronous DataGenerationJobsClient.
+ * Sample demonstrating data generation job operations using the synchronous BetaDatasetsClient.
  *
  * <p>Data generation jobs are a preview feature. Before running, set the following environment variables:</p>
  * <ul>
@@ -29,10 +29,10 @@ public class DataGenerationJobsSample {
     private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
         = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
-    private static final DataGenerationJobsClient DATA_GENERATION_JOBS_CLIENT = new AIProjectClientBuilder()
+    private static final BetaDatasetsClient DATA_GENERATION_JOBS_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildDataGenerationJobsClient();
+        .beta().buildBetaDatasetsClient();
 
     public static void main(String[] args) {
         listGenerationJobs();

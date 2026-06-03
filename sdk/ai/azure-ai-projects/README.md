@@ -52,19 +52,19 @@ The Azure AI Foundry provides a centralized spot to manage your AI Foundry resou
 AIProjectClientBuilder builder = new AIProjectClientBuilder();
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
-DataGenerationJobsClient dataGenerationJobsClient = builder.buildDataGenerationJobsClient();
+BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
-EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
+BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.beta().buildBetaEvaluationTaxonomiesClient();
+BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
-InsightsClient insightsClient = builder.buildInsightsClient();
-ModelsClient modelsClient = builder.buildModelsClient();
-RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
-RoutinesClient routinesClient = builder.buildRoutinesClient();
-SchedulesClient schedulesClient = builder.buildSchedulesClient();
-SkillsClient skillsClient = builder.buildSkillsClient();
+BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();
+BetaModelsClient modelsClient = builder.beta().buildBetaModelsClient();
+BetaRedTeamsClient redTeamsClient = builder.beta().buildBetaRedTeamsClient();
+BetaRoutinesClient routinesClient = builder.beta().buildBetaRoutinesClient();
+BetaSchedulesClient schedulesClient = builder.beta().buildBetaSchedulesClient();
+BetaSkillsClient skillsClient = builder.beta().buildBetaSkillsClient();
 ```
 
 In the particular case of the `Evals` feature, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
@@ -98,7 +98,7 @@ For the Agents operation, you can use the `azure-ai-agents` package which is ava
 AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
 
 AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
-MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
+BetaMemoryStoresClient memoryStoresClient = agentsClientBuilder.beta().buildBetaMemoryStoresClient();
 ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
 ```
 

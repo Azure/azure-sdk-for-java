@@ -20,7 +20,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Sample demonstrating data generation job operations using the asynchronous DataGenerationJobsAsyncClient.
+ * Sample demonstrating data generation job operations using the asynchronous BetaDatasetsAsyncClient.
  *
  * <p>Data generation jobs are a preview feature. Before running, set the following environment variables:</p>
  * <ul>
@@ -32,10 +32,10 @@ public class DataGenerationJobsAsyncSample {
     private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
         = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
-    private static final DataGenerationJobsAsyncClient DATA_GENERATION_JOBS_ASYNC_CLIENT = new AIProjectClientBuilder()
+    private static final BetaDatasetsAsyncClient DATA_GENERATION_JOBS_ASYNC_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildDataGenerationJobsAsyncClient();
+        .beta().buildBetaDatasetsAsyncClient();
 
     public static void main(String[] args) {
         listGenerationJobs()

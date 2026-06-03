@@ -679,12 +679,17 @@ public final class AIProjectClientBuilder
         return new BetaDatasetsClient(buildInnerClient().getBetaDatasets());
     }
 
+    /**
+     * A builder for creating a new instance of the beta AIProjectClient type.
+     *
+     * @return a builder for creating a new instance of the beta AIProjectClient type.
+     */
     public BetaAIProjectClientBuilder beta() {
         return new BetaAIProjectClientBuilder();
     }
 
     /**
-     * A builder for creating a new instance of the beta AgentsClient type.
+     * A builder for creating a new instance of the beta AIProjectClient type.
      */
     @ServiceClientBuilder(
         serviceClients = {
@@ -705,7 +710,7 @@ public final class AIProjectClientBuilder
             BetaSchedulesClient.class,
             BetaRoutinesClient.class,
             BetaSkillsClient.class,
-            BetaDatasetsClient.class})
+            BetaDatasetsClient.class })
     public final class BetaAIProjectClientBuilder {
 
         private BetaAIProjectClientBuilder() {

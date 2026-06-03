@@ -42,8 +42,8 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
+        BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsAsyncClient();
 
         StepVerifier.create(
             dataGenerationJobsAsyncClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
@@ -62,8 +62,8 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
     public void dataGenerationJobWithEvaluationAsyncSample(HttpClient httpClient,
         AIProjectsServiceVersion serviceVersion) {
         AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
-            = projectClientBuilder.buildDataGenerationJobsAsyncClient();
+        BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
+            = projectClientBuilder.beta().buildBetaDatasetsAsyncClient();
         DatasetsAsyncClient datasetsAsyncClient = projectClientBuilder.buildDatasetsAsyncClient();
         OpenAIClientAsync openAIAsyncClient = projectClientBuilder.buildOpenAIAsyncClient();
 
@@ -131,13 +131,12 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
         });
     }
 
-    private Mono<DataGenerationJob> waitForDataGenerationJob(
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient, String jobId, int pollIntervalSeconds,
-        int maxAttempts) {
+    private Mono<DataGenerationJob> waitForDataGenerationJob(BetaDatasetsAsyncClient dataGenerationJobsAsyncClient,
+        String jobId, int pollIntervalSeconds, int maxAttempts) {
         return pollDataGenerationJob(dataGenerationJobsAsyncClient, jobId, pollIntervalSeconds, maxAttempts, 0);
     }
 
-    private Mono<DataGenerationJob> pollDataGenerationJob(DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient,
+    private Mono<DataGenerationJob> pollDataGenerationJob(BetaDatasetsAsyncClient dataGenerationJobsAsyncClient,
         String jobId, int pollIntervalSeconds, int maxAttempts, int attempts) {
         return sleepBeforePolling(pollIntervalSeconds, attempts)
             .then(dataGenerationJobsAsyncClient.getGenerationJob(jobId, DATA_GENERATION_PREVIEW))

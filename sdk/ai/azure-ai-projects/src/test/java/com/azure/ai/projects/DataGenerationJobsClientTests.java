@@ -38,8 +38,8 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
+        BetaDatasetsClient dataGenerationJobsClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
 
         Iterable<DataGenerationJob> jobs
             = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
@@ -62,7 +62,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     public void dataGenerationJobWithEvaluationSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws InterruptedException {
         AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
-        DataGenerationJobsClient dataGenerationJobsClient = projectClientBuilder.buildDataGenerationJobsClient();
+        BetaDatasetsClient dataGenerationJobsClient = projectClientBuilder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();
 
@@ -114,7 +114,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         dataGenerationJobsClient.deleteGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
     }
 
-    private DataGenerationJob waitForDataGenerationJob(DataGenerationJobsClient dataGenerationJobsClient, String jobId,
+    private DataGenerationJob waitForDataGenerationJob(BetaDatasetsClient dataGenerationJobsClient, String jobId,
         int pollIntervalSeconds, int maxAttempts) throws InterruptedException {
         DataGenerationJob job;
         int attempts = 0;

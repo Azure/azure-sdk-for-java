@@ -8,7 +8,7 @@ import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.SkillFileDetails;
 import com.azure.ai.projects.models.ModelVersion;
-import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -40,7 +40,7 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void skillsPackageSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) throws IOException {
-        SkillsClient skillsClient = getClientBuilder(httpClient, serviceVersion).buildSkillsClient();
+        BetaSkillsClient skillsClient = getClientBuilder(httpClient, serviceVersion).beta().buildBetaSkillsClient();
         String skillName = SAMPLE_SKILL_NAME;
 
         try {
@@ -55,7 +55,7 @@ public class SamplesTests extends ClientTestBase {
             Assertions.assertNotNull(imported);
             Assertions.assertEquals(skillName, imported.getName());
 
-            Skill fetched = skillsClient.getSkill(imported.getName());
+            SkillDetails fetched = skillsClient.getSkill(imported.getName());
             Assertions.assertNotNull(fetched);
             Assertions.assertEquals(imported.getName(), fetched.getName());
 
@@ -77,7 +77,8 @@ public class SamplesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void skillsPackageAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws IOException {
-        SkillsAsyncClient skillsAsyncClient = getClientBuilder(httpClient, serviceVersion).buildSkillsAsyncClient();
+        BetaSkillsAsyncClient skillsAsyncClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaSkillsAsyncClient();
         String skillName = SAMPLE_SKILL_ASYNC_NAME;
 
         StepVerifier.create(skillsAsyncClient.deleteSkill(skillName)
@@ -100,8 +101,8 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
+        BetaDatasetsClient dataGenerationJobsClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
 
         Iterable<DataGenerationJob> jobs
             = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
@@ -122,8 +123,8 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
+        BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsAsyncClient();
 
         StepVerifier.create(
             dataGenerationJobsAsyncClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
@@ -140,7 +141,7 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        ModelsClient modelsClient = getClientBuilder(httpClient, serviceVersion).buildModelsClient();
+        BetaModelsClient modelsClient = getClientBuilder(httpClient, serviceVersion).beta().buildBetaModelsClient();
 
         Iterable<ModelVersion> modelVersions = modelsClient.listLatestModelVersions();
         Assertions.assertNotNull(modelVersions);
@@ -161,7 +162,8 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        ModelsAsyncClient modelsAsyncClient = getClientBuilder(httpClient, serviceVersion).buildModelsAsyncClient();
+        BetaModelsAsyncClient modelsAsyncClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaModelsAsyncClient();
 
         AtomicBoolean sawModel = new AtomicBoolean(false);
         StepVerifier.create(modelsAsyncClient.listLatestModelVersions().take(5).doOnNext(modelVersion -> {
