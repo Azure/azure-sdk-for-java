@@ -326,7 +326,7 @@ com.azure.resourcemanager:azure-resourcemanager-datadog;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-communication;2.3.0;2.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-apimanagement;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.1.0;1.2.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.1.0;1.1.1
 com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0;1.1.0-beta.1
