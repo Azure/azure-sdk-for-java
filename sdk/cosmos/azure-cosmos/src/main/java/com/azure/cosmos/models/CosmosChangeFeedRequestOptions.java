@@ -106,6 +106,9 @@ public final class CosmosChangeFeedRequestOptions {
      * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
      * is not SESSION then session token capturing also needs to be enabled by calling
      * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
+     * <p>Honored across Direct, Gateway V1 (compute gateway), and Gateway V2 (thin client proxy) connection modes.
+     * {@code GLOBAL_STRONG} is rejected client-side with a {@link com.azure.cosmos.CosmosException} (HTTP 400)
+     * when the account's default consistency is not {@link com.azure.cosmos.ConsistencyLevel#STRONG}. Such failures must NOT be retried.</p>
      *
      * @param readConsistencyStrategy the consistency level.
      * @return the request options.

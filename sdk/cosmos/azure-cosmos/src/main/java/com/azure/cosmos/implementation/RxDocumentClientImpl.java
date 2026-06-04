@@ -1988,16 +1988,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
-            && readConsistencyStrategyName != null
-            && ! readConsistencyStrategyName.equalsIgnoreCase(ReadConsistencyStrategy.DEFAULT.toString())) {
-
-            logger.warn(
-                "ReadConsistencyStrategy {} defined in Gateway mode. "
-                    + "This version of the SDK only supports ReadConsistencyStrategy in DIRECT mode. "
-                    + "This setting will be ignored.",
-                readConsistencyStrategyName);
+    public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        if (readConsistencyStrategy == ReadConsistencyStrategy.GLOBAL_STRONG) {
+            ConsistencyLevel accountConsistency = this.getDefaultConsistencyLevelOfAccount();
+            if (accountConsistency != ConsistencyLevel.STRONG) {
+                throw new BadRequestException(
+                    String.format(
+                        RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
+                        readConsistencyStrategy,
+                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                        ConsistencyLevel.STRONG,
+                        accountConsistency));
+            }
         }
     }
 
@@ -2029,8 +2031,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = readConsistencyStrategy.toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(readConsistencyStrategy);
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
         if (options == null) {
@@ -2074,13 +2080,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(options.getReadConsistencyStrategy());
             headers.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
-        if (options.getConsistencyLevel() != null) {
+        if (options.getConsistencyLevel() != null
+            && !headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
+            // Only set ConsistencyLevel when ReadConsistencyStrategy is NOT already present.
+            // readConsistencyStrategy takes precedence — setting both causes gateway rejection.
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 
@@ -5498,8 +5511,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-                RxDocumentClientImpl.this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+                RxDocumentClientImpl.this.validateReadConsistencyStrategy(readConsistencyStrategy);
             }
 
             @Override
