@@ -79,8 +79,6 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SemanticRerankResult;
-import com.azure.cosmos.models.SemanticRerankScore;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -2044,78 +2042,6 @@ public class ImplementationBridgeHelpers {
 
         public interface SqlParameterAccessor {
             SqlParameter createCopy(SqlParameter original);
-        }
-    }
-
-    public static final class SemanticRerankResultHelper {
-        private static final AtomicReference<SemanticRerankResultAccessor> accessor = new AtomicReference<>();
-        private static final AtomicBoolean semanticRerankResultClassLoaded = new AtomicBoolean(false);
-
-        private SemanticRerankResultHelper() {}
-
-        public static void setSemanticRerankResultAccessor(final SemanticRerankResultAccessor newAccessor) {
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("SemanticRerankResultAccessor already initialized!");
-            } else {
-                logger.debug("Setting SemanticRerankResultAccessor...");
-                semanticRerankResultClassLoaded.set(true);
-            }
-        }
-
-        public static SemanticRerankResultAccessor getSemanticRerankResultAccessor() {
-            if (!semanticRerankResultClassLoaded.get()) {
-                logger.debug("Initializing SemanticRerankResultAccessor...");
-                initializeAllAccessors();
-            }
-
-            SemanticRerankResultAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("SemanticRerankResultAccessor is not initialized yet!");
-            }
-
-            return snapshot;
-        }
-
-        public interface SemanticRerankResultAccessor {
-            void setScores(SemanticRerankResult result, java.util.List<SemanticRerankScore> scores);
-            void setLatency(SemanticRerankResult result, java.util.Map<String, Object> latency);
-            void setTokenUsage(SemanticRerankResult result, java.util.Map<String, Object> tokenUsage);
-        }
-    }
-
-    public static final class SemanticRerankScoreHelper {
-        private static final AtomicReference<SemanticRerankScoreAccessor> accessor = new AtomicReference<>();
-        private static final AtomicBoolean semanticRerankScoreClassLoaded = new AtomicBoolean(false);
-
-        private SemanticRerankScoreHelper() {}
-
-        public static void setSemanticRerankScoreAccessor(final SemanticRerankScoreAccessor newAccessor) {
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("SemanticRerankScoreAccessor already initialized!");
-            } else {
-                logger.debug("Setting SemanticRerankScoreAccessor...");
-                semanticRerankScoreClassLoaded.set(true);
-            }
-        }
-
-        public static SemanticRerankScoreAccessor getSemanticRerankScoreAccessor() {
-            if (!semanticRerankScoreClassLoaded.get()) {
-                logger.debug("Initializing SemanticRerankScoreAccessor...");
-                initializeAllAccessors();
-            }
-
-            SemanticRerankScoreAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("SemanticRerankScoreAccessor is not initialized yet!");
-            }
-
-            return snapshot;
-        }
-
-        public interface SemanticRerankScoreAccessor {
-            void setIndex(SemanticRerankScore score, int index);
-            void setScore(SemanticRerankScore score, double scoreValue);
-            void setDocument(SemanticRerankScore score, String document);
         }
     }
 }

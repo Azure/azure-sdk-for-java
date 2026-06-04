@@ -421,12 +421,6 @@ public class Configs {
     private static final String CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = "COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT";
     private static final int DEFAULT_CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = 120;
 
-    // Inference service related configs.
-    // Following the convention used elsewhere in this file: the system property uses dot.notation
-    // and the environment variable uses UPPER_SNAKE_CASE.
-    private static final String INFERENCE_ENDPOINT_PROPERTY = "azure.cosmos.semanticReranker.inferenceEndpoint";
-    private static final String INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
-
     private static final Object lockObject = new Object();
     private static Boolean cachedIsHostnameValidationDisabled = null;
 
@@ -535,19 +529,6 @@ public class Configs {
         }
 
         return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
-    }
-
-    public URI getInferenceServiceEndpoint() {
-        String valueFromSystemProperty = System.getProperty(INFERENCE_ENDPOINT_PROPERTY);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return URI.create(valueFromSystemProperty);
-        }
-
-        String valueFromEnvVariable = System.getenv(INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return URI.create(valueFromEnvVariable);
-        }
-        return null;
     }
 
     public static boolean isThinClientEnabled() {

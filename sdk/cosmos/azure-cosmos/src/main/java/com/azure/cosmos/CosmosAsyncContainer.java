@@ -35,7 +35,7 @@ import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.inference.InferenceService;
+
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
@@ -69,7 +69,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.SemanticRerankResult;
+
 import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -1946,46 +1946,6 @@ public class CosmosAsyncContainer {
                 .readAllDocuments(getLink(), partitionKey, state, classType)
                 .map(response -> prepareFeedResponse(response, false));
         });
-    }
-
-    /**
-     * Performs semantic reranking of documents using the Azure Cosmos DB inference service.
-     * <p>
-     * Requires the {@link CosmosAsyncClient} to have been built with AAD authentication
-     * ({@code .credential(TokenCredential)}). Key-based auth is not supported.
-     * <p>
-     * The request timeout defaults to 120 seconds. To override it, pass
-     * {@code "timeout_seconds"} (as a {@link Number}) in the {@code options} map.
-     * You can also apply {@code .timeout(Duration)} to the returned {@code Mono} directly.
-     *
-     * @param rerankContext The query or context string used to score documents.
-     * @param documents The list of document strings to rerank (must be non-null and non-empty).
-     * @param options Optional reranking parameters as a {@code Map<String, Object>}.
-     *                Supported keys:
-     *                <ul>
-     *                  <li>{@code "return_documents"} (Boolean) — include document text in the response</li>
-     *                  <li>{@code "top_k"} (Integer) — maximum number of results to return</li>
-     *                  <li>{@code "batch_size"} (Integer) — documents per inference batch</li>
-     *                  <li>{@code "sort"} (Boolean) — sort results by relevance score</li>
-     *                  <li>{@code "document_type"} (String) — {@code "string"} or {@code "json"}</li>
-     *                  <li>{@code "target_paths"} (String) — JSON paths for extraction when
-     *                      {@code document_type} is {@code "json"}</li>
-     *                  <li>{@code "timeout_seconds"} (Number) — per-request timeout override</li>
-     *                </ul>
-     * @return A {@link Mono} emitting the {@link SemanticRerankResult}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Mono<SemanticRerankResult> semanticRerank(
-        String rerankContext,
-        List<String> documents,
-        Map<String, Object> options) {
-
-        checkNotNull(rerankContext, "Argument 'rerankContext' must not be null.");
-        checkNotNull(documents, "Argument 'documents' must not be null.");
-        checkArgument(!rerankContext.trim().isEmpty(), "Argument 'rerankContext' must not be empty.");
-        checkArgument(!documents.isEmpty(), "Argument 'documents' must not be empty.");
-
-        return this.database.getClient().getOrCreateInferenceService().semanticRerank(rerankContext, documents, options);
     }
 
     /**

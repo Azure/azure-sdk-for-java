@@ -769,7 +769,5 @@ public final class ModelBridgeInternal {
         PriorityLevel.initialize();
         SqlQuerySpec.initialize();
         SqlParameter.initialize();
-        SemanticRerankResult.initialize();
-        SemanticRerankScore.initialize();
     }
 }

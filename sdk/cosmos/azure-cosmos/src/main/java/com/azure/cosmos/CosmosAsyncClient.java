@@ -22,7 +22,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
-import com.azure.cosmos.implementation.inference.InferenceService;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -62,7 +61,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -122,7 +120,6 @@ public final class CosmosAsyncClient implements Closeable {
     private final List<CosmosOperationPolicy> requestPolicies;
     private final CosmosItemSerializer defaultCustomSerializer;
     private final java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory;
-    private final AtomicReference<InferenceService> inferenceService = new AtomicReference<>();
     private volatile boolean closed;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
@@ -306,42 +303,6 @@ public final class CosmosAsyncClient implements Closeable {
         return this.tokenCredential;
     }
 
-    /**
-     * Returns the shared InferenceService instance for this client, creating it lazily on first use.
-     * The instance is tied to this client's lifecycle and will be shut down in {@link #close()}.
-     *
-     * @throws IllegalStateException if the client was built with key-based auth instead of AAD.
-     */
-    InferenceService getOrCreateInferenceService() {
-        if (this.closed) {
-            throw new IllegalStateException("CosmosAsyncClient has been closed.");
-        }
-        if (this.tokenCredential == null) {
-            throw new IllegalStateException(
-                "Semantic reranking requires AAD authentication. "
-                    + "The CosmosClient was built with key-based auth (master key or AzureKeyCredential), "
-                    + "which is not supported for this operation. "
-                    + "Rebuild the client using .credential(TokenCredential) with a DefaultAzureCredential "
-                    + "or another TokenCredential implementation.");
-        }
-        if (this.inferenceService.get() == null) {
-            InferenceService newSvc = new InferenceService(this.tokenCredential);
-            if (!this.inferenceService.compareAndSet(null, newSvc)) {
-                // Another thread already set the instance; close the losing one to prevent resource leak
-                newSvc.close();
-            } else if (this.closed) {
-                // close() ran concurrently and already saw a null reference; ensure the late-arriving
-                // instance we just published is torn down so we don't leak the Netty event-loop group
-                // and pooled connections held by the underlying HttpClient.
-                InferenceService leaked = this.inferenceService.getAndSet(null);
-                if (leaked != null) {
-                    leaked.close();
-                }
-                throw new IllegalStateException("CosmosAsyncClient has been closed.");
-            }
-        }
-        return this.inferenceService.get();
-    }
 
     /***
      * Get the client telemetry config.
@@ -611,17 +572,9 @@ public final class CosmosAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        // Set the closed flag BEFORE reading the inference reference. getOrCreateInferenceService()
-        // re-checks this flag after publishing a new instance and tears it down if it raced with us,
-        // so the combination of (closed = true) + getAndSet(null) here guarantees that any
-        // InferenceService that is ever published is also closed exactly once.
         this.closed = true;
         if (this.clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
-        }
-        InferenceService svc = this.inferenceService.getAndSet(null);
-        if (svc != null) {
-            svc.close();
         }
         asyncDocumentClient.close();
     }

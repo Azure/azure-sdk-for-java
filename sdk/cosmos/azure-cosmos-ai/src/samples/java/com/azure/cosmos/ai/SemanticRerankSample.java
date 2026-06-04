@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.semanticrerank;
+package com.azure.cosmos.ai;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.SemanticRerankResult;
-import com.azure.cosmos.models.SemanticRerankScore;
+import com.azure.cosmos.ai.models.SemanticRerankResult;
+import com.azure.cosmos.ai.models.SemanticRerankScore;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,26 +12,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sample demonstrating semantic rerank functionality in Azure Cosmos DB.
+ * Sample demonstrating semantic rerank functionality using Azure Cosmos DB AI SDK.
  * <p>
  * Prerequisites:
- * 1. Set environment variable {@code COSMOS_ENDPOINT} with your Cosmos DB account endpoint.
- * 2. Set environment variable {@code AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT} with
- *    the inference service endpoint.
- * 3. Use Azure AD authentication — provide a {@link TokenCredential} implementation.
+ * 1. Set environment variable {@code AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT} with
+ *    the inference service endpoint, or pass it to the builder via {@code .endpoint(...)}.
+ * 2. Use Azure AD authentication — provide a {@link TokenCredential} implementation.
  *    If you have {@code azure-identity} on your classpath, use:
  *    {@code new com.azure.identity.DefaultAzureCredentialBuilder().build()}
  * </p>
  */
 public class SemanticRerankSample {
 
+    /**
+     * Main entry point.
+     *
+     * @param args command line arguments (not used).
+     */
     public static void main(String[] args) {
-        String endpoint = System.getenv("COSMOS_ENDPOINT");
-        if (endpoint == null || endpoint.isEmpty()) {
-            System.err.println("Please set COSMOS_ENDPOINT environment variable");
-            return;
-        }
-
         String inferenceEndpoint = System.getenv("AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT");
         if (inferenceEndpoint == null || inferenceEndpoint.isEmpty()) {
             System.err.println("Please set AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT environment variable");
@@ -49,17 +44,21 @@ public class SemanticRerankSample {
     }
 
     /**
-     * Runs the semantic rerank demo using the provided client and a container in the given database.
+     * Runs the semantic rerank demo.
      *
-     * @param client       Cosmos async client built with AAD credentials.
-     * @param databaseName Name of the database.
-     * @param containerName Name of the container.
+     * @param endpoint The inference service endpoint.
+     * @param credential The Azure AD token credential.
      */
-    static void runSemanticRerankDemo(CosmosAsyncClient client, String databaseName, String containerName) {
+    static void runSemanticRerankDemo(String endpoint, TokenCredential credential) {
         System.out.println("Semantic Rerank Sample");
         System.out.println("======================\n");
 
-        CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(containerName);
+        // BEGIN: readme-sample-createClient
+        CosmosAIAsyncClient client = new CosmosAIClientBuilder()
+            .endpoint(endpoint)
+            .credential(credential)
+            .buildAsyncClient();
+        // END: readme-sample-createClient
 
         List<String> documents = Arrays.asList(
             "Berlin is the capital of Germany.",
@@ -79,20 +78,19 @@ public class SemanticRerankSample {
         System.out.println();
 
         // Basic rerank with default options
-        container.semanticRerank(rerankContext, documents, null)
+        client.semanticRerank(rerankContext, documents, null)
             .subscribe(
                 result -> printResults(result),
                 error -> System.err.println("Error: " + error.getMessage())
             );
 
-        // Rerank with custom options. Keys are passed through to the inference endpoint as-is.
-        // See the JavaDoc on CosmosAsyncContainer.semanticRerank for the list of supported keys.
+        // Rerank with custom options
         Map<String, Object> options = new HashMap<>();
         options.put("return_documents", true);
         options.put("top_k", 3);
         options.put("sort", true);
 
-        container.semanticRerank(rerankContext, documents, options)
+        client.semanticRerank(rerankContext, documents, options)
             .subscribe(
                 result -> printResults(result),
                 error -> System.err.println("Error: " + error.getMessage())
