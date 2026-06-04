@@ -3,11 +3,14 @@
 
 package com.azure.cosmos.implementation.http;
 
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.handler.codec.http2.DefaultHttp2PingFrame;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   <li>PING ACK with mismatched payload is ignored (late ACK after timeout cannot mask degradation).</li>
  *   <li>{@code installIfAbsent} is idempotent.</li>
  *   <li>Constructor clamps non-positive interval / timeout / threshold to safe minimums.</li>
+ *   <li>Runtime kill-switch toggle clears outstanding PING state (no spurious timeout on re-enable).</li>
+ *   <li>{@code channelInactive} cancels the scheduled PING task (no leaked timer).</li>
  * </ul>
  * Time-based behaviors (interval-driven PING send, timeout-driven failure increment, threshold-driven
  * close) are exercised by the integration test {@code Http2PingKeepaliveTest} under Docker with real
@@ -110,6 +115,69 @@ public class Http2PingHandlerTest {
         assertThat((long) getField(handler, "pingIntervalNanos")).isEqualTo(TimeUnit.SECONDS.toNanos(1));
         assertThat((long) getField(handler, "pingTimeoutNanos")).isEqualTo(TimeUnit.SECONDS.toNanos(1));
         assertThat((int) getField(handler, "failureThreshold")).isEqualTo(1);
+    }
+
+    @Test(groups = "unit")
+    public void killSwitchOff_clearsOutstandingPingState() throws Exception {
+        // M1: When Configs.isHttp2PingHealthEnabled() flips to false, the next maybeSendPing
+        // tick must clear any in-flight PING bookkeeping. Otherwise toggling the kill-switch
+        // back on after a long dormant window would charge a spurious timeout from a stale
+        // pingOutstandingSinceNanos that has been "outstanding" for hours.
+        final String prop = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
+        final String prior = System.getProperty(prop);
+        try {
+            Http2PingHandler handler = new Http2PingHandler(1, 1, 3);
+            EmbeddedChannel channel = new EmbeddedChannel(handler);
+
+            // Simulate an in-flight PING with a partial failure already accumulated.
+            setField(handler, "pingOutstandingSinceNanos", System.nanoTime());
+            setField(handler, "consecutiveFailures", 2);
+
+            // Flip kill-switch OFF and trigger the periodic tick.
+            System.setProperty(prop, "false");
+            ChannelHandlerContext ctx = channel.pipeline().firstContext();
+            invokeMaybeSendPing(handler, ctx);
+
+            assertThat((long) getField(handler, "pingOutstandingSinceNanos")).isZero();
+            assertThat((int) getField(handler, "consecutiveFailures")).isZero();
+
+            // Timer must still be alive so re-enabling resumes PINGing on the same connection.
+            assertThat((Object) getField(handler, "pingTask")).isNotNull();
+
+            channel.finishAndReleaseAll();
+        } finally {
+            if (prior == null) {
+                System.clearProperty(prop);
+            } else {
+                System.setProperty(prop, prior);
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void channelInactive_cancelsPingTask() throws Exception {
+        // M2: channelInactive must cancel the scheduled PING task. Otherwise the timer
+        // would keep firing on a dead connection until GC reclaims the handler.
+        Http2PingHandler handler = new Http2PingHandler(1, 1, 3);
+        EmbeddedChannel channel = new EmbeddedChannel(handler);
+
+        ScheduledFuture<?> scheduled = (ScheduledFuture<?>) getField(handler, "pingTask");
+        assertThat((Object) scheduled).isNotNull();
+        assertThat(scheduled.isCancelled()).isFalse();
+
+        // Closing the EmbeddedChannel fires channelInactive on the handler.
+        channel.close().syncUninterruptibly();
+
+        assertThat(scheduled.isCancelled()).isTrue();
+        assertThat((Object) getField(handler, "pingTask")).isNull();
+
+        channel.finishAndReleaseAll();
+    }
+
+    private static void invokeMaybeSendPing(Http2PingHandler handler, ChannelHandlerContext ctx) throws Exception {
+        Method m = Http2PingHandler.class.getDeclaredMethod("maybeSendPing", ChannelHandlerContext.class);
+        m.setAccessible(true);
+        m.invoke(handler, ctx);
     }
 
     private static Object getField(Object target, String name) throws Exception {
