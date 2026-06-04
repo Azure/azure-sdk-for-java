@@ -123,6 +123,20 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The ModelsImpl object to access its operations.
+     */
+    private final ModelsImpl models;
+
+    /**
+     * Gets the ModelsImpl object to access its operations.
+     * 
+     * @return the ModelsImpl object.
+     */
+    public ModelsImpl getModels() {
+        return this.models;
+    }
+
+    /**
      * The DeploymentsImpl object to access its operations.
      */
     private final DeploymentsImpl deployments;
@@ -221,6 +235,20 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The RoutinesImpl object to access its operations.
+     */
+    private final RoutinesImpl routines;
+
+    /**
+     * Gets the RoutinesImpl object to access its operations.
+     * 
+     * @return the RoutinesImpl object.
+     */
+    public RoutinesImpl getRoutines() {
+        return this.routines;
+    }
+
+    /**
      * The SkillsImpl object to access its operations.
      */
     private final SkillsImpl skills;
@@ -232,6 +260,20 @@ public final class AIProjectClientImpl {
      */
     public SkillsImpl getSkills() {
         return this.skills;
+    }
+
+    /**
+     * The DataGenerationJobsImpl object to access its operations.
+     */
+    private final DataGenerationJobsImpl dataGenerationJobs;
+
+    /**
+     * Gets the DataGenerationJobsImpl object to access its operations.
+     * 
+     * @return the DataGenerationJobsImpl object.
+     */
+    public DataGenerationJobsImpl getDataGenerationJobs() {
+        return this.dataGenerationJobs;
     }
 
     /**
@@ -285,6 +327,7 @@ public final class AIProjectClientImpl {
         this.connections = new ConnectionsImpl(this);
         this.datasets = new DatasetsImpl(this);
         this.indexes = new IndexesImpl(this);
+        this.models = new ModelsImpl(this);
         this.deployments = new DeploymentsImpl(this);
         this.redTeams = new RedTeamsImpl(this);
         this.evaluationRules = new EvaluationRulesImpl(this);
@@ -292,6 +335,8 @@ public final class AIProjectClientImpl {
         this.evaluators = new EvaluatorsImpl(this);
         this.insights = new InsightsImpl(this);
         this.schedules = new SchedulesImpl(this);
+        this.routines = new RoutinesImpl(this);
         this.skills = new SkillsImpl(this);
+        this.dataGenerationJobs = new DataGenerationJobsImpl(this);
     }
 }

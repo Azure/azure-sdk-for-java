@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.1.0-beta.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -57,9 +57,9 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. Also includes agent-session operations (`createSession`, `getSession`, `deleteSession`, `listSessions`, `getSessionLogStream`, `getSessionLogStreamWithResponse`).
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. Also includes hosted-agent sessions, code package operations and preview agent optimization operations.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
-- `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
+- `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
 - `ToolboxesClient` / `ToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions. This operation group requires the `Toolboxes=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
 - `AgentSessionFilesClient` / `AgentSessionFilesAsyncClient` **(preview)**: Work with files in an agent session, including uploading, downloading, listing, and deleting session files.
 
@@ -121,21 +121,25 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `BingCustomSearchPreviewTool` | Bing custom search |
 | `BrowserAutomationPreviewTool` | Browser automation |
 | `ComputerUsePreviewTool` | Computer use |
+| `FabricIqPreviewTool` | Fabric IQ |
 | `McpTool` | Model Context Protocol (MCP) |
 | `MemorySearchPreviewTool` | Memory search |
 | `MicrosoftFabricPreviewTool` | Microsoft Fabric |
 | `SharepointPreviewTool` | SharePoint grounding |
+| `ToolboxSearchPreviewTool` | Toolbox search |
 | `WebSearchPreviewTool` | Web search |
 | `WorkIqPreviewTool` | Work IQ |
+
+Supported tool classes may also expose optional `name`, `description`, and `toolConfigs` properties for user-defined labels and per-tool configuration.
 
 ### Experimental features and opt-in flags
 
 Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK provides two enums for these flags:
 
-- **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `CONTAINER_AGENTS_V1_PREVIEW`, `AGENT_ENDPOINT_V1_PREVIEW`.
-- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`.
+- **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `AGENT_ENDPOINT_V1_PREVIEW`, `CODE_AGENTS_V1_PREVIEW`, `EXTERNAL_AGENTS_V1_PREVIEW`.
+- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `ROUTINES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`, `DATA_GENERATION_JOBS_V1_PREVIEW`, `MODELS_V1_PREVIEW`, `AGENTS_OPTIMIZATION_V1_PREVIEW`.
 
-> **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request. The `ToolboxesClient` automatically sets the `Toolboxes=V1Preview` opt-in flag on every request.
+> **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request. The `ToolboxesClient` automatically sets the `Toolboxes=V1Preview` opt-in flag on every request. Agent optimization methods accept `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW`; code-based hosted agents and external agents use the corresponding `AgentDefinitionOptInKeys` values.
 
 ```java
 // OpenAI SDK ResponseService accessed from ResponsesClient
@@ -146,6 +150,23 @@ ResponseService responseService = responsesClient.getResponseService();
 OpenAIClient openAIClient = builder.buildOpenAIClient();
 ConversationService conversationService = openAIClient.conversations();
 ```
+
+### Preview hosted-agent capabilities
+
+Hosted-agent previews are exposed on `AgentsClient` and `AgentsAsyncClient`. The following capabilities require the corresponding opt-in flag when you create or modify preview resources:
+
+| Capability | APIs and models | Opt-in flag |
+|---|---|---|
+| Code-based hosted agents | `createAgentVersionFromCode`, `updateAgentFromCode`, `downloadAgentCode`, `CodeConfiguration`, `CodeDependencyResolution` | `AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW` |
+| External agents | `ExternalAgentDefinition`, `AgentKind.EXTERNAL` | `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW` |
+| Agent endpoints and sessions | `AgentEndpointConfig`, `createSession`, `listSessions`, `stopSession`, `AgentSessionFilesClient` | `AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW` |
+| Agent optimization | `createOptimizationJob`, `listOptimizationJobs`, `listOptimizationCandidates`, `promoteOptimizationCandidate` | `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW` |
+
+For code-based hosted agents, `CodeConfiguration.getContentSha256()` returns the service-computed SHA-256 hash of the uploaded code package. Session APIs that need per-user isolation can use overloads that accept `userIsolationKey`, or set the `x-ms-user-isolation-key` header through `RequestOptions`. To delete hosted agents or agent versions that still have active sessions, add the `force=true` query parameter through `RequestOptions` when calling the corresponding `deleteAgentWithResponse` or `deleteAgentVersionWithResponse` method.
+
+### Memory item management
+
+`MemoryStoresClient` and `MemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`.
 
 ### Using OpenAI's official library
 
@@ -492,6 +513,24 @@ See the full sample in [FabricSync.java](https://github.com/Azure/azure-sdk-for-
 
 ---
 
+##### **Fabric IQ (Preview)**
+
+Connect agents to Fabric IQ project connections for enterprise data grounding:
+
+```java com.azure.ai.agents.define_fabric_iq
+
+FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
+    .setServerLabel("fabric_iq")
+    .setRequireApproval("never")
+    .setName("fabric_iq_lookup")
+    .setDescription("Use FabricIQ to answer questions grounded in enterprise data.");
+
+```
+
+See the full sample in [FabricIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQSync.java).
+
+---
+
 ##### **Microsoft SharePoint (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/sharepoint?pivots=java))
 
 Search through SharePoint documents for grounding:
@@ -573,6 +612,40 @@ OpenApiTool openApiTool = new OpenApiTool(
 ```
 
 See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiWithConnectionSync.java).
+
+---
+
+#### Toolbox Tools
+
+Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`.
+
+##### **Toolbox Search (Preview)**
+
+Use `ToolboxSearchPreviewTool` inside a toolbox version to let an agent search the available toolbox tools at runtime:
+
+```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
+
+ToolboxSearchPreviewTool toolboxSearchTool = new ToolboxSearchPreviewTool()
+    .setName("search_tools")
+    .setDescription("Search over available toolbox tools at runtime.");
+
+ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
+    toolboxName,
+    Collections.singletonList(toolboxSearchTool),
+    "Toolbox version with a Toolbox Search preview tool.",
+    null,
+    null,
+    null);
+
+System.out.printf("Created toolbox: %s%n", version.getName());
+System.out.printf("Toolbox version: %s%n", version.getVersion());
+for (Tool tool : version.getTools()) {
+    System.out.printf("Tool type: %s%n", tool.getType());
+}
+
+```
+
+See the full sample in [ToolboxSearchToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ToolboxSearchToolboxSample.java).
 
 ---
 

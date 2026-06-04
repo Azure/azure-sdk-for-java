@@ -60,7 +60,7 @@ class AvatarAndAudioBufferEventsTest {
     void testAvatarSwitchToSpeakingPolymorphicViaSessionUpdate() {
         String json = "{\"type\":\"session.avatar.switch_to_speaking\",\"event_id\":\"e3\",\"turn_id\":\"t3\"}";
 
-        SessionUpdate update = BinaryData.fromString(json).toObject(SessionUpdate.class);
+        SessionServerEvent update = BinaryData.fromString(json).toObject(SessionServerEvent.class);
 
         assertTrue(update instanceof ServerEventSessionAvatarSwitchToSpeaking,
             "Expected ServerEventSessionAvatarSwitchToSpeaking, got " + update.getClass());
@@ -112,7 +112,7 @@ class AvatarAndAudioBufferEventsTest {
     void testServerEventOutputAudioBufferClearedPolymorphicViaSessionUpdate() {
         String json = "{\"type\":\"output_audio_buffer.cleared\",\"event_id\":\"e7\"}";
 
-        SessionUpdate update = BinaryData.fromString(json).toObject(SessionUpdate.class);
+        SessionServerEvent update = BinaryData.fromString(json).toObject(SessionServerEvent.class);
 
         assertTrue(update instanceof ServerEventOutputAudioBufferCleared,
             "Expected ServerEventOutputAudioBufferCleared, got " + update.getClass());
@@ -155,11 +155,42 @@ class AvatarAndAudioBufferEventsTest {
     void testClientEventOutputAudioBufferClearPolymorphicViaClientEvent() {
         ClientEventOutputAudioBufferClear original = new ClientEventOutputAudioBufferClear().setEventId("clear-3");
 
-        ClientEvent deserialized = BinaryData.fromObject(original).toObject(ClientEvent.class);
+        SessionClientEvent deserialized = BinaryData.fromObject(original).toObject(SessionClientEvent.class);
 
         assertTrue(deserialized instanceof ClientEventOutputAudioBufferClear,
             "Expected ClientEventOutputAudioBufferClear, got " + deserialized.getClass());
         assertEquals(ClientEventType.OUTPUT_AUDIO_BUFFER_CLEAR, deserialized.getType());
         assertEquals("clear-3", deserialized.getEventId());
+    }
+
+    @Test
+    void testOutputAudioBufferLifecycleTypesRegistered() {
+        assertEquals("output_audio_buffer.started", ServerEventType.OUTPUT_AUDIO_BUFFER_STARTED.toString());
+        assertEquals("output_audio_buffer.stopped", ServerEventType.OUTPUT_AUDIO_BUFFER_STOPPED.toString());
+    }
+
+    @Test
+    void testServerEventOutputAudioBufferStartedPolymorphic() {
+        String json = "{\"type\":\"output_audio_buffer.started\",\"event_id\":\"a1\",\"response_id\":\"resp-7\"}";
+
+        SessionServerEvent event = BinaryData.fromString(json).toObject(SessionServerEvent.class);
+
+        assertTrue(event instanceof ServerEventOutputAudioBufferStarted);
+        ServerEventOutputAudioBufferStarted started = (ServerEventOutputAudioBufferStarted) event;
+        assertEquals(ServerEventType.OUTPUT_AUDIO_BUFFER_STARTED, started.getType());
+        assertEquals("a1", started.getEventId());
+        assertEquals("resp-7", started.getResponseId());
+    }
+
+    @Test
+    void testServerEventOutputAudioBufferStoppedPolymorphic() {
+        String json = "{\"type\":\"output_audio_buffer.stopped\",\"event_id\":\"a2\",\"response_id\":\"resp-8\"}";
+
+        SessionServerEvent event = BinaryData.fromString(json).toObject(SessionServerEvent.class);
+
+        assertTrue(event instanceof ServerEventOutputAudioBufferStopped);
+        ServerEventOutputAudioBufferStopped stopped = (ServerEventOutputAudioBufferStopped) event;
+        assertEquals(ServerEventType.OUTPUT_AUDIO_BUFFER_STOPPED, stopped.getType());
+        assertEquals("resp-8", stopped.getResponseId());
     }
 }

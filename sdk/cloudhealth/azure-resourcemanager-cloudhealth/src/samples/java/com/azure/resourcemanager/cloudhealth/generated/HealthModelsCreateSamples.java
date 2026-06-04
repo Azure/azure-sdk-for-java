@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.cloudhealth.generated;
 
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.ModelDiscoverySettings;
 import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +16,7 @@ import java.util.Map;
  */
 public final class HealthModelsCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/HealthModels_Create.json
+     * x-ms-original-file: 2026-01-01-preview/HealthModels_Create.json
      */
     /**
      * Sample code: HealthModels_Create.
@@ -31,10 +29,7 @@ public final class HealthModelsCreateSamples {
             .withRegion("eastus2")
             .withExistingResourceGroup("rgopenapi")
             .withTags(mapOf("key2961", "fakeTokenPlaceholder"))
-            .withProperties(new HealthModelProperties().withDiscovery(
-                new ModelDiscoverySettings().withScope("/providers/Microsoft.Management/serviceGroups/myServiceGroup")
-                    .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
-                    .withIdentity("SystemAssigned")))
+            .withProperties(new HealthModelProperties())
             .withIdentity(new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
                 .withUserAssignedIdentities(mapOf(

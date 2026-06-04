@@ -15,30 +15,30 @@ public final class RaiPolicyContentFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyContentFilter model = BinaryData.fromString(
-            "{\"name\":\"xw\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":true,\"source\":\"PreToolCall\",\"action\":\"ANNOTATING\"}")
+            "{\"name\":\"kpnb\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Prompt\",\"action\":\"RETRY\"}")
             .toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("xw", model.name());
+        Assertions.assertEquals("kpnb", model.name());
         Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
-        Assertions.assertTrue(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
-        Assertions.assertEquals(RaiActionType.ANNOTATING, model.action());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
+        Assertions.assertEquals(RaiActionType.RETRY, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("xw")
+        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("kpnb")
             .withEnabled(false)
             .withSeverityThreshold(ContentLevel.MEDIUM)
-            .withBlocking(true)
-            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL)
-            .withAction(RaiActionType.ANNOTATING);
+            .withBlocking(false)
+            .withSource(RaiPolicyContentSource.PROMPT)
+            .withAction(RaiActionType.RETRY);
         model = BinaryData.fromObject(model).toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("xw", model.name());
+        Assertions.assertEquals("kpnb", model.name());
         Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
-        Assertions.assertTrue(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
-        Assertions.assertEquals(RaiActionType.ANNOTATING, model.action());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
+        Assertions.assertEquals(RaiActionType.RETRY, model.action());
     }
 }

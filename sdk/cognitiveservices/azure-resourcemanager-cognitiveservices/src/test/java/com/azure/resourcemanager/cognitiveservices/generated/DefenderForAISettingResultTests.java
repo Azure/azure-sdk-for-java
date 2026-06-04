@@ -13,10 +13,10 @@ public final class DefenderForAISettingResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingResult model = BinaryData.fromString(
-            "{\"nextLink\":\"dqohmc\",\"value\":[{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"etpwbralll\",\"tags\":{\"n\":\"hbqzmizakakankjp\",\"xprimrsop\":\"zhajoylhjlmuo\"},\"id\":\"ecj\",\"name\":\"eislstvasylwx\",\"type\":\"zaum\"},{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"guufuzboyjathwtz\",\"tags\":{\"mwmdxmebwjscjpa\":\"a\"},\"id\":\"xveabf\",\"name\":\"xnmwmqtibxyijddt\",\"type\":\"qcttadijaeukmrsi\"},{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"dzaapmudqme\",\"tags\":{\"bu\":\"gp\",\"znrtffyaqit\":\"qwyxebeybpm\"},\"id\":\"heioqa\",\"name\":\"hvseufuqyrx\",\"type\":\"dlcgqlsismjqfr\"}]}")
+            "{\"nextLink\":\"buiyji\",\"value\":[{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"gneik\",\"tags\":{\"z\":\"oxgjiuqhibt\"},\"id\":\"qw\",\"name\":\"edmurrxxge\",\"type\":\"pkt\"},{\"properties\":{\"state\":\"Disabled\"},\"etag\":\"mqpzoyhlfbcgw\",\"tags\":{\"jipnwj\":\"oxoebqi\",\"zpofoiyjwpfilk\":\"ujqlafcbahh\",\"ogphuartvtiu\":\"kkholvdndvia\"},\"id\":\"efchn\",\"name\":\"n\",\"type\":\"hmnxhkxjqi\"},{\"properties\":{\"state\":\"Enabled\"},\"etag\":\"ooxf\",\"tags\":{\"rsnewmozqvbubqma\":\"hx\",\"taboidvmf\":\"hsycxhxzgaz\"},\"id\":\"ppu\",\"name\":\"owsepdfgkmtdhern\",\"type\":\"btcjuah\"}]}")
             .toObject(DefenderForAISettingResult.class);
-        Assertions.assertEquals("dqohmc", model.nextLink());
-        Assertions.assertEquals("hbqzmizakakankjp", model.value().get(0).tags().get("n"));
-        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.value().get(0).state());
+        Assertions.assertEquals("buiyji", model.nextLink());
+        Assertions.assertEquals("oxgjiuqhibt", model.value().get(0).tags().get("z"));
+        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.value().get(0).state());
     }
 }

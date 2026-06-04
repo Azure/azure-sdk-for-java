@@ -391,4 +391,34 @@ public final class ServerEventType extends ExpandableStringEnum<ServerEventType>
     @Generated
     public static final ServerEventType RESPONSE_AUDIO_TRANSCRIPT_ANNOTATION_ADDED
         = fromString("response.audio_transcript.annotation.added");
+
+    /**
+     * Invocation passthrough delta from hosted agent.
+     */
+    @Generated
+    public static final ServerEventType RESPONSE_INVOCATION_DELTA = fromString("response.invocation.delta");
+
+    /**
+     * Returned when the WebRTC SDP negotiation completes successfully.
+     */
+    @Generated
+    public static final ServerEventType RTC_CALL_SDP_CREATED = fromString("rtc.call.sdp.created");
+
+    /**
+     * Returned when a WebRTC call operation fails.
+     */
+    @Generated
+    public static final ServerEventType RTC_CALL_ERROR = fromString("rtc.call.error");
+
+    /**
+     * Output audio buffer playback started.
+     */
+    @Generated
+    public static final ServerEventType OUTPUT_AUDIO_BUFFER_STARTED = fromString("output_audio_buffer.started");
+
+    /**
+     * Output audio buffer playback stopped.
+     */
+    @Generated
+    public static final ServerEventType OUTPUT_AUDIO_BUFFER_STOPPED = fromString("output_audio_buffer.stopped");
 }

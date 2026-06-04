@@ -32,10 +32,10 @@ class RequestImageContentPartTest {
         String imageUrl = "https://example.com/image.jpg";
 
         // Act
-        RequestImageContentPart result = imagePart.setUrl(imageUrl);
+        RequestImageContentPart result = imagePart.setImageUrl(imageUrl);
 
         // Assert
-        assertEquals(imageUrl, imagePart.getUrl());
+        assertEquals(imageUrl, imagePart.getImageUrl());
         assertEquals(imagePart, result); // Fluent API
     }
 
@@ -55,7 +55,7 @@ class RequestImageContentPartTest {
     @Test
     void testFromJsonWithUrl() {
         // Arrange
-        String json = "{\"type\":\"input_image\",\"url\":\"https://example.com/test.png\"}";
+        String json = "{\"type\":\"input_image\",\"image_url\":\"https://example.com/test.png\"}";
         BinaryData data = BinaryData.fromString(json);
 
         // Act
@@ -64,14 +64,14 @@ class RequestImageContentPartTest {
         // Assert
         assertNotNull(imagePart);
         assertEquals(ContentPartType.INPUT_IMAGE, imagePart.getType());
-        assertEquals("https://example.com/test.png", imagePart.getUrl());
+        assertEquals("https://example.com/test.png", imagePart.getImageUrl());
         assertNull(imagePart.getDetail());
     }
 
     @Test
     void testFromJsonWithAllFields() {
         // Arrange
-        String json = "{\"type\":\"input_image\",\"url\":\"https://example.com/image.jpg\",\"detail\":\"high\"}";
+        String json = "{\"type\":\"input_image\",\"image_url\":\"https://example.com/image.jpg\",\"detail\":\"high\"}";
         BinaryData data = BinaryData.fromString(json);
 
         // Act
@@ -80,14 +80,14 @@ class RequestImageContentPartTest {
         // Assert
         assertNotNull(imagePart);
         assertEquals(ContentPartType.INPUT_IMAGE, imagePart.getType());
-        assertEquals("https://example.com/image.jpg", imagePart.getUrl());
+        assertEquals("https://example.com/image.jpg", imagePart.getImageUrl());
         assertEquals(RequestImageContentPartDetail.HIGH, imagePart.getDetail());
     }
 
     @Test
     void testJsonRoundTrip() {
         // Arrange
-        RequestImageContentPart original = new RequestImageContentPart().setUrl("https://example.com/photo.png")
+        RequestImageContentPart original = new RequestImageContentPart().setImageUrl("https://example.com/photo.png")
             .setDetail(RequestImageContentPartDetail.AUTO);
 
         // Act
@@ -97,14 +97,14 @@ class RequestImageContentPartTest {
         // Assert
         assertNotNull(deserialized);
         assertEquals(original.getType(), deserialized.getType());
-        assertEquals(original.getUrl(), deserialized.getUrl());
+        assertEquals(original.getImageUrl(), deserialized.getImageUrl());
         assertEquals(original.getDetail(), deserialized.getDetail());
     }
 
     @Test
     void testWithLowDetail() {
         // Arrange
-        String json = "{\"type\":\"input_image\",\"url\":\"https://example.com/low-res.jpg\",\"detail\":\"low\"}";
+        String json = "{\"type\":\"input_image\",\"image_url\":\"https://example.com/low-res.jpg\",\"detail\":\"low\"}";
         BinaryData data = BinaryData.fromString(json);
 
         // Act
@@ -117,7 +117,7 @@ class RequestImageContentPartTest {
     @Test
     void testWithAutoDetail() {
         // Arrange
-        String json = "{\"type\":\"input_image\",\"url\":\"https://example.com/auto.jpg\",\"detail\":\"auto\"}";
+        String json = "{\"type\":\"input_image\",\"image_url\":\"https://example.com/auto.jpg\",\"detail\":\"auto\"}";
         BinaryData data = BinaryData.fromString(json);
 
         // Act
@@ -130,12 +130,12 @@ class RequestImageContentPartTest {
     @Test
     void testFluentApi() {
         // Act
-        RequestImageContentPart imagePart = new RequestImageContentPart().setUrl("https://example.com/fluent.png")
+        RequestImageContentPart imagePart = new RequestImageContentPart().setImageUrl("https://example.com/fluent.png")
             .setDetail(RequestImageContentPartDetail.HIGH);
 
         // Assert
         assertNotNull(imagePart);
-        assertEquals("https://example.com/fluent.png", imagePart.getUrl());
+        assertEquals("https://example.com/fluent.png", imagePart.getImageUrl());
         assertEquals(RequestImageContentPartDetail.HIGH, imagePart.getDetail());
     }
 }

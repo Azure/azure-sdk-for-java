@@ -3,15 +3,19 @@
 ### 4.81.0-beta.1 (Unreleased)
 
 #### Features Added
-
+* Promoted the Full Fidelity Change Feed (AllVersionsAndDeletes) APIs to GA - See [PR 49283](https://github.com/Azure/azure-sdk-for-java/pull/49283)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixed an issue in direct connectivity mode where 429 (Too Many Requests) responses during read/write barrier requests could cause excessive retries instead of yielding early. When all contacted replicas return 429 on consecutive barrier attempts, the SDK now propagates the throttle response (for reads) or returns a 408 with substatus 21013 (for writes) to allow the built-in `ResourceThrottleRetryPolicy` to handle backoff. This behavior is gated behind a feature flag and is disabled by default; enable it with system property `COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429` or environment variable `COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429`. - See [PR 48914](https://github.com/Azure/azure-sdk-for-java/pull/48914)
+* Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
+* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 
 #### Other Changes
 * Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)
+* Fixed a sporadic `NullPointerException` in `JsonSerializable.getWithMapping` triggered by concurrent first-time calls to `DatabaseAccount.getConsistencyPolicy()` and its sibling lazy getters (`getReplicationPolicy`, `getSystemReplicationPolicy`, `getQueryEngineConfiguration`). The fix makes `JsonSerializable.propertyBag` `final`, closing an unsafe-publication race in the lazy-initialisation pattern. - See [Issue 49256](https://github.com/Azure/azure-sdk-for-java/issues/49256) and [PR #49258](https://github.com/Azure/azure-sdk-for-java/pull/49258)
+* Changed 449 (`Retry With`) retries in Gateway V1 and Gateway V2 to be consistently orchestrated client-side. - See [PR 49332](https://github.com/Azure/azure-sdk-for-java/pull/49332)
 
 ### 4.80.0 (2026-05-01)
 
