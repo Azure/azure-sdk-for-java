@@ -1638,7 +1638,25 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesAccessConditionsFails(@TempDir Path tempDir) throws IOException {
+    public void listRangesAccessConditionsFails() {
+        int uploadFileSize = Constants.MB;
+        ShareFileRange startRange = new ShareFileRange(0L, (long) (uploadFileSize - 1));
+        String leaseId = testResourceNamer.randomUuid();
+
+        StepVerifier
+            .create(
+                primaryFileAsyncClient.create(uploadFileSize)
+                    .thenMany(primaryFileAsyncClient.listRanges(startRange,
+                        new ShareRequestConditions().setLeaseId(leaseId))))
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals("LeaseNotPresentWithFileOperation", e.getErrorCode().getValue());
+            });
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listRangesDiffAccessConditionsFailWrongId(@TempDir Path tempDir) throws IOException {
         int uploadFileSize = Constants.MB;
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(Constants.KB));
         ShareFileRange offsetRange = new ShareFileRange(Constants.KB, 2L * Constants.KB - 1);

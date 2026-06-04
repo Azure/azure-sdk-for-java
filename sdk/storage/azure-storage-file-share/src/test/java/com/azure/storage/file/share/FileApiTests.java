@@ -2289,25 +2289,35 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesAccessConditionsFails(@TempDir Path tempDir) throws IOException {
+    public void listRangesAccessConditionsFails() {
         int uploadFileSize = Constants.MB;
         primaryFileClient.create(uploadFileSize);
-        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(Constants.KB));
-        ShareFileRange offsetRange = new ShareFileRange(Constants.KB, 2L * Constants.KB - 1);
         ShareFileRange startRange = new ShareFileRange(0L, (long) (uploadFileSize - 1));
+        ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
 
-        try (InputStream uploadStream = new BufferedInputStream(Files.newInputStream(uploadFilePath))) {
-            ShareFileUploadRangeOptions uploadRangeOptions
-                = new ShareFileUploadRangeOptions(uploadStream, Constants.KB).setOffset(offsetRange.getStart());
-            primaryFileClient.uploadRangeWithResponse(uploadRangeOptions, null, Context.NONE);
-        }
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.listRanges(startRange, conditions, null, null).forEach(ignored -> {
+            }));
+        assertEquals("LeaseNotPresentWithFileOperation", e.getErrorCode().getValue(), e.getErrorCode().getValue());
+    }
 
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listRangesDiffAccessConditionsFailWrongId() {
+        int uploadFileSize = Constants.MB;
+        primaryFileClient.create(uploadFileSize);
+        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
+
+        ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
         String leaseId = setupFileLeaseCondition(primaryFileClient, GARBAGE_LEASE_ID);
-        ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(leaseId);
-        List<ShareFileRange> ranges = new ArrayList<>();
+        ShareFileListRangesDiffOptions options
+            = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
 
-        assertThrows(ShareStorageException.class,
-            () -> primaryFileClient.listRanges(startRange, conditions, null, null).forEach(ranges::add));
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryFileClient.listRangesDiffWithResponse(options, null, null));
+        assertTrue("LeaseIdMismatchWithFileOperation".contentEquals(e.getErrorCode().getValue()),
+            "Error code thrown does not match: LeaseIdMismatchWithFileOperation");
     }
 
     @Test
@@ -2542,9 +2552,30 @@ class FileApiTests extends FileShareTestBase {
             = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
                 .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
 
-        assertThrows(ShareStorageException.class,
+        ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryFileClient.listRangesDiffWithResponse(options, null, null));
+        assertTrue("LeaseIdMismatchWithFileOperation".contentEquals(e.getErrorCode().getValue()),
+            "Error code thrown does not match: LeaseIdMismatchWithFileOperation");
     }
+    //
+    //    @Test
+    //    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    //    public void listRangesDiffAccessConditionsFailNoLease() {
+    //        int uploadFileSize = Constants.MB;
+    //        primaryFileClient.create(uploadFileSize);
+    //        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
+    //
+    //        ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
+    //        String leaseId = setupFileLeaseCondition(primaryFileClient, GARBAGE_LEASE_ID);
+    //        ShareFileListRangesDiffOptions options
+    //            = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
+    //            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
+    //
+    //        ShareStorageException e = assertThrows(ShareStorageException.class,
+    //            () -> primaryFileClient.listRangesDiffWithResponse(options, null, null));
+    //        assertTrue("LeaseIdMismatchWithFileOperation".contentEquals(e.getErrorCode().getValue()),
+    //            "Error code thrown does not match: LeaseIdMismatchWithFileOperation");
+    //    }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
