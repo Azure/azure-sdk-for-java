@@ -3,6 +3,7 @@
 ### 4.81.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for creating Global Secondary Index (GSI) containers via `CosmosContainerProperties.setGlobalSecondaryIndexDefinition()` / `getGlobalSecondaryIndexDefinition()`, the new `CosmosGlobalSecondaryIndexDefinition` model, and the `CosmosGlobalSecondaryIndexBuildStatus` enum returned by `getStatus()`. - See [PR 48480](https://github.com/Azure/azure-sdk-for-java/pull/48480)
 * Promoted the Full Fidelity Change Feed (AllVersionsAndDeletes) APIs to GA - See [PR 49283](https://github.com/Azure/azure-sdk-for-java/pull/49283)
 * Enabled `ReadConsistencyStrategy` for Gateway V1 (compute gateway) and Gateway V2 (thin client proxy). Previously only supported in Direct mode. - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
 
