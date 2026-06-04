@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.SpyClientUnderTestFactory;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -44,8 +45,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -649,7 +652,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
             gwPolicy.setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true));
         }
         try {
-            return SpyClientUnderTestFactory.createClientUnderTest(
+            SpyClientUnderTestFactory.ClientUnderTest spy = SpyClientUnderTestFactory.createClientUnderTest(
                 new URI(TestConfigurations.HOST),
                 TestConfigurations.MASTER_KEY,
                 gwPolicy,
@@ -659,8 +662,26 @@ public class GatewayReadConsistencyStrategySpyWireTest {
                 null,
                 true,
                 new CosmosClientTelemetryConfig());
+            // The spy client's super(...) constructor bypasses the Builder path that initializes
+            // operationPolicies via Builder.withOperationPolicies(...). Without this field set,
+            // change-feed and other code paths that call this.operationPolicies.forEach(...) NPE.
+            // Initialize to an empty list so spy clients behave like default-built production clients.
+            initOperationPoliciesIfNull(spy);
+            return spy;
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void initOperationPoliciesIfNull(SpyClientUnderTestFactory.ClientUnderTest spy) {
+        try {
+            Field field = RxDocumentClientImpl.class.getDeclaredField("operationPolicies");
+            field.setAccessible(true);
+            if (field.get(spy) == null) {
+                field.set(spy, new ArrayList<>());
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to initialize operationPolicies on spy client", e);
         }
     }
 
@@ -693,7 +714,8 @@ public class GatewayReadConsistencyStrategySpyWireTest {
     /**
      * Finds the feed request (query / change-feed / readMany) that targets the test collection's docs endpoint.
      * For V2, any request to the thin-client proxy port (:10250) qualifies (writes don't route through V2).
-     * For V1, the feed request is POST to {@code .../colls/{containerId}/docs} (without a trailing {@code /docId}).
+     * For V1, the feed request hits {@code .../colls/{containerId}/docs} (without a trailing {@code /docId}).
+     * Query and readMany use POST; change-feed uses GET with {@code A-IM: Incremental feed}.
      */
     private HttpRequest findFeedRequest(String mode, List<HttpRequest> requests) {
         String docsPath = "/colls/" + containerId + "/docs";
@@ -704,7 +726,17 @@ public class GatewayReadConsistencyStrategySpyWireTest {
                     return request;
                 }
             } else {
-                if (!"POST".equalsIgnoreCase(request.httpMethod().toString())) {
+                String httpMethod = request.httpMethod().toString();
+                boolean isPost = "POST".equalsIgnoreCase(httpMethod);
+                boolean isGet = "GET".equalsIgnoreCase(httpMethod);
+                if (!isPost && !isGet) {
+                    continue;
+                }
+                // Skip query-plan precursor requests: queries first POST to /colls/{id}/docs with
+                // x-ms-cosmos-is-query-plan-request: True (no ReadConsistencyStrategy header),
+                // followed by the actual data POST to the same endpoint (which carries the header).
+                String isQueryPlan = request.headers().toMap().get(HttpConstants.HttpHeaders.IS_QUERY_PLAN_REQUEST);
+                if ("True".equalsIgnoreCase(isQueryPlan)) {
                     continue;
                 }
                 int idx = uri.indexOf(docsPath);
@@ -742,10 +774,22 @@ public class GatewayReadConsistencyStrategySpyWireTest {
      * Decodes the RNTBD binary frame and returns the typed request object.
      * Uses the production decoder (RntbdRequest.decode) so token presence/absence
      * is determined by the actual RNTBD wire format, not brute-force byte scanning.
+     *
+     * <p>The HTTP body may contain trailing payload bytes (for query / readMany operations:
+     * {@code [4-byte LE expectedLength][frame][headers][4-byte payload length][payload]}).
+     * {@code expectedLength} encodes the total of {@code length prefix + frame + headers}.
+     * {@link RntbdRequest#decode(ByteBuf)} computes payloadBuf size as
+     * {@code expectedLength - bytes consumed so far}, which is 0 when no payload is expected —
+     * but {@link com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders#decode}
+     * reads tokens until the buffer is exhausted (not until the headers section ends). So we must
+     * slice the buffer to exactly {@code expectedLength} bytes to prevent header decoding from
+     * walking past the headers boundary and into payload bytes.
      */
     private static RntbdRequest decodeRntbdFrame(byte[] rntbdFrame) {
         ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
-        return RntbdRequest.decode(buffer);
+        int expectedLength = buffer.getIntLE(buffer.readerIndex());
+        ByteBuf sliced = buffer.slice(buffer.readerIndex(), expectedLength);
+        return RntbdRequest.decode(sliced);
     }
 
     // endregion
