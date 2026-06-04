@@ -648,9 +648,14 @@ public class GatewayReadConsistencyStrategySpyWireTest {
 
     private SpyClientUnderTestFactory.ClientUnderTest createSpyClient(ReadConsistencyStrategy ReadConsistencyStrategy, boolean http2Enabled) {
         ConnectionPolicy gwPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-        if (http2Enabled) {
-            gwPolicy.setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true));
-        }
+        // Explicitly pin HTTP/2 to the requested state. The default GatewayConnectionConfig
+        // installs a non-null Http2ConnectionConfig with enabled=null, which falls back to
+        // the global COSMOS.HTTP2_ENABLED system property. CI sets that property to true, so
+        // the "V1" spy would otherwise silently route via the thin-client path and the test's
+        // V1-shaped request assertions (GET /docs/{id}, POST /docs without id) would never
+        // match. Pin enabled=false explicitly to keep V1 deterministic regardless of the JVM
+        // flag, and enabled=true for V2 to match the existing intent.
+        gwPolicy.setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(http2Enabled));
         try {
             SpyClientUnderTestFactory.ClientUnderTest spy = SpyClientUnderTestFactory.createClientUnderTest(
                 new URI(TestConfigurations.HOST),
