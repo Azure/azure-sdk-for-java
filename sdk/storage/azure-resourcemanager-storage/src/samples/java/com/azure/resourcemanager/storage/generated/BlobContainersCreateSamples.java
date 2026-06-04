@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
  */
 public final class BlobContainersCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersPutDefaultEncryptionScope.json
+     * x-ms-original-file: 2026-04-01/BlobContainersPutDefaultEncryptionScope.json
      */
     /**
      * Sample code: PutContainerWithDefaultEncryptionScope.
@@ -30,7 +30,7 @@ public final class BlobContainersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersPutObjectLevelWorm.json
+     * x-ms-original-file: 2026-04-01/BlobContainersPutObjectLevelWorm.json
      */
     /**
      * Sample code: PutContainerWithObjectLevelWorm.
@@ -46,7 +46,7 @@ public final class BlobContainersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersPut.json
+     * x-ms-original-file: 2026-04-01/BlobContainersPut.json
      */
     /**
      * Sample code: PutContainers.

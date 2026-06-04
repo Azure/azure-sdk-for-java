@@ -24,7 +24,7 @@ public final class DiscoveryRulesListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"yhddvia\",\"resourceGraphQuery\":\"egfnmntfpmvmemfn\",\"authenticationSetting\":\"zdwvvbalxl\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Enabled\",\"deletionDate\":\"2021-02-04T22:36:53Z\",\"errorMessage\":\"db\",\"numberOfDiscoveredEntities\":1253836101,\"entityName\":\"wrd\"},\"id\":\"fukuvsjcswsmystu\",\"name\":\"uqypfcvle\",\"type\":\"chpqbmfpjba\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"v\",\"authenticationSetting\":\"xyasflvgsgzw\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"oi\",\"context\":[\"smjblmljhlnym\",\"otqyry\"]},\"entityName\":\"zcbmqqvxmvwf\"},\"id\":\"ayxonsupeujl\",\"name\":\"qnhcvsqltnzoibg\",\"type\":\"xgnxfyqonmpqoxwd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,12 @@ public final class DiscoveryRulesListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DiscoveryRule> response = manager.discoveryRules()
-            .listByHealthModel("stcyohpfkyrkdbd", "iogsjkmnwq", OffsetDateTime.parse("2021-04-07T00:43:37Z"),
+            .listByHealthModel("uamwabzxrvxc", "s", OffsetDateTime.parse("2021-05-06T22:41:55Z"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yhddvia", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("egfnmntfpmvmemfn", response.iterator().next().properties().resourceGraphQuery());
-        Assertions.assertEquals("zdwvvbalxl", response.iterator().next().properties().authenticationSetting());
-        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
+        Assertions.assertEquals("v", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("xyasflvgsgzw", response.iterator().next().properties().authenticationSetting());
+        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED,
             response.iterator().next().properties().discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
             response.iterator().next().properties().addRecommendedSignals());

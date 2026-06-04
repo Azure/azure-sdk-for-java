@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/CreateAccountMin.json
+     * x-ms-original-file: 2026-03-15-preview/CreateAccountMin.json
      */
     /**
      * Sample code: Create Account Min.
@@ -39,7 +39,7 @@ public final class AccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-15-preview/CreateAccount.json
+     * x-ms-original-file: 2026-03-15-preview/CreateAccount.json
      */
     /**
      * Sample code: Create Account.

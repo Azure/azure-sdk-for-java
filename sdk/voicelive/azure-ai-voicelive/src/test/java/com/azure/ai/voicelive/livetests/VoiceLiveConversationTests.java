@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,7 +38,7 @@ import java.util.stream.Stream;
 public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> retrieveItemParams() {
-        return crossProduct(new String[] { "gpt-realtime" }, new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime" }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -61,7 +62,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
                 = new VoiceLiveSessionOptions().setInstructions("You are a helpful assistant.")
                     .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)));
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -101,8 +102,8 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean outputReceived = outputItemLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(outputReceived, "Should receive output item done event");
@@ -132,7 +133,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> truncateItemParams() {
-        return crossProduct(new String[] { "gpt-realtime" }, new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime" }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -155,7 +156,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
             VoiceLiveSessionOptions sessionOptions
                 = new VoiceLiveSessionOptions().setInstructions("You are a helpful assistant.");
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -193,15 +194,15 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(getTrailingSilenceBytes())).block(SEND_TIMEOUT);
 
             boolean outputReceived = outputItemLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(outputReceived, "Should receive output item done event");
             Assertions.assertNotNull(outputItemId.get(), "Output item ID should not be null");
 
             // Truncate the conversation item at 1000ms
-            session.truncateConversation(outputItemId.get(), 0, 1000).block(SEND_TIMEOUT);
+            session.truncateConversation(outputItemId.get(), 0, Duration.ofMillis(1000)).block(SEND_TIMEOUT);
 
             boolean truncated = truncateLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(truncated, "Should receive conversation item truncated event");

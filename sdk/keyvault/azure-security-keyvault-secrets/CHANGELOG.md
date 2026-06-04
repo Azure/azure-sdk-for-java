@@ -1,26 +1,18 @@
 # Release History
 
-## 4.11.0-beta.2 (2026-05-18)
+## 4.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
-#### `models.SecretProperties` was modified
+- Added support for service API version `2026-03-01-preview`. This is now the default service version used by the client.
 
-* `getPreviousVersion()` was added
+## 4.11.0 (2026-05-26)
 
-#### `SecretClient` was modified
+### Features Added
 
-* `getSecretWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `getSecret(java.lang.String,java.lang.String,java.lang.String)` was added
-
-#### `SecretServiceVersion` was modified
-
-* `V2026_03_01_PREVIEW` was added
-
-#### `SecretAsyncClient` was modified
-
-* `getSecret(java.lang.String,java.lang.String,java.lang.String)` was added
-* `getSecretWithResponse(java.lang.String,java.lang.String,java.lang.String)` was added
+- Added support for service version `V2025_07_01`.
+- Added `previousVersion` property to `SecretProperties` which returns the version of the previous secret, if applicable. Applies only to secrets created after June 1, 2025.
+- Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret()` and `getSecretWithResponse()` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
 
 ## 4.10.7 (2026-05-05)
 

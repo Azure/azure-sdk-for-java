@@ -145,7 +145,7 @@ try {
     TranscriptionResult result = client.transcribe(options);
 
     // Process results
-    System.out.println("Duration: " + result.getDuration() + " ms");
+    System.out.println("Duration: " + result.getDuration().toMillis() + " ms");
     result.getCombinedPhrases().forEach(phrase -> {
         System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
     });
@@ -200,6 +200,8 @@ result.getPhrases().forEach(phrase -> {
 ### Transcribe with enhanced mode
 
 Enhanced mode provides advanced features to improve transcription accuracy with custom prompts. Enhanced mode is automatically enabled when you create an `EnhancedModeOptions` instance.
+
+Enhanced Mode runs in multi-lingual mode by default, so you don't need to specify the input language. Optionally, to guide recognition toward a specific language, set `locales` using a supported locale code (for example, `en-US`). The service uses the first locale as a hint to bias recognition.
 
 ```java com.azure.ai.speech.transcription.transcriptionoptions.enhancedmode
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));

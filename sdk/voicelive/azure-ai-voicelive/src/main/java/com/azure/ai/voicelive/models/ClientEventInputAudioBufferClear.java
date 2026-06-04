@@ -15,7 +15,7 @@ import java.io.IOException;
  * respond with an `input_audio_buffer.cleared` event.
  */
 @Fluent
-public final class ClientEventInputAudioBufferClear extends ClientEvent {
+public final class ClientEventInputAudioBufferClear extends SessionClientEvent {
 
     /*
      * The type of event.

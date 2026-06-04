@@ -4,10 +4,15 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.projects.implementation.MultipartFormDataHelper;
 import com.azure.ai.projects.implementation.SkillsImpl;
-import com.azure.ai.projects.implementation.models.CreateSkillRequest;
+import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
-import com.azure.ai.projects.models.SkillDetails;
+import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
+import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillFileDetails;
+import com.azure.ai.projects.models.SkillInlineContent;
+import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -21,9 +26,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,150 +54,34 @@ public final class SkillsAsyncClient {
     }
 
     /**
-     * Creates a skill.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     instructions: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skill_id: String (Required)
-     *     has_blob: boolean (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param createSkillRequest The createSkillRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSkillWithResponse(BinaryData createSkillRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createSkillWithResponseAsync(createSkillRequest, requestOptions);
-    }
-
-    /**
-     * Creates a skill from a zip package.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skill_id: String (Required)
-     *     has_blob: boolean (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param body The zip package used to create the skill.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSkillFromPackageWithResponse(BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createSkillFromPackageWithResponseAsync(body, requestOptions);
-    }
-
-    /**
      * Retrieves a skill.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     skill_id: String (Required)
-     *     has_blob: boolean (Required)
+     *     id: String (Required)
      *     name: String (Required)
-     *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
+     *     description: String (Required)
+     *     created_at: long (Required)
+     *     default_version: String (Required)
+     *     latest_version: String (Required)
      * }
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a skill resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.getSkillWithResponseAsync(skillName, requestOptions);
-    }
-
-    /**
-     * Downloads a skill package as a ZIP archive containing {@code SKILL.md}. Returns the original uploaded archive for
-     * skills created via {@code createSkillFromPackage}; materializes a ZIP from stored instructions for skills created
-     * via {@code createSkill}.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param skillName The unique name of the skill.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.downloadSkillWithResponseAsync(skillName, requestOptions);
+    public Mono<Response<BinaryData>> getSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getSkillWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -221,13 +111,12 @@ public final class SkillsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     skill_id: String (Required)
-     *     has_blob: boolean (Required)
+     *     id: String (Required)
      *     name: String (Required)
-     *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
+     *     description: String (Required)
+     *     created_at: long (Required)
+     *     default_version: String (Required)
+     *     latest_version: String (Required)
      * }
      * }
      * </pre>
@@ -246,17 +135,13 @@ public final class SkillsAsyncClient {
     }
 
     /**
-     * Updates an existing skill.
+     * Update a skill.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     description: String (Optional)
-     *     instructions: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
+     *     default_version: String (Required)
      * }
      * }
      * </pre>
@@ -266,179 +151,79 @@ public final class SkillsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     skill_id: String (Required)
-     *     has_blob: boolean (Required)
+     *     id: String (Required)
      *     name: String (Required)
-     *     description: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
+     *     description: String (Required)
+     *     created_at: long (Required)
+     *     default_version: String (Required)
+     *     latest_version: String (Required)
      * }
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The name of the skill to update.
      * @param updateSkillRequest The updateSkillRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a skill object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a skill resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateSkillWithResponse(String skillName, BinaryData updateSkillRequest,
+    public Mono<Response<BinaryData>> updateSkillWithResponse(String name, BinaryData updateSkillRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateSkillWithResponseAsync(skillName, updateSkillRequest, requestOptions);
+        return this.serviceClient.updateSkillWithResponseAsync(name, updateSkillRequest, requestOptions);
     }
 
     /**
      * Deletes a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
+     *     id: String (Required)
      *     name: String (Required)
      *     deleted: boolean (Required)
      * }
      * }
      * </pre>
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted skill Object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a deleted skill along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteSkillWithResponse(String skillName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteSkillWithResponseAsync(skillName, requestOptions);
-    }
-
-    /**
-     * Creates a skill.
-     *
-     * @param name The unique name of the skill.
-     * @param description A human-readable description of the skill.
-     * @param instructions Instructions that define the behavior of the skill.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a skill object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> createSkill(String name, String description, String instructions,
-        Map<String, String> metadata) {
-        // Generated convenience method for createSkillWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSkillRequest createSkillRequestObj = new CreateSkillRequest(name).setDescription(description)
-            .setInstructions(instructions)
-            .setMetadata(metadata);
-        BinaryData createSkillRequest = BinaryData.fromObject(createSkillRequestObj);
-        return createSkillWithResponse(createSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
-    }
-
-    /**
-     * Creates a skill.
-     *
-     * @param name The unique name of the skill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a skill object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> createSkill(String name) {
-        // Generated convenience method for createSkillWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSkillRequest createSkillRequestObj = new CreateSkillRequest(name);
-        BinaryData createSkillRequest = BinaryData.fromObject(createSkillRequestObj);
-        return createSkillWithResponse(createSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
-    }
-
-    /**
-     * Creates a skill from a zip package.
-     *
-     * @param body The zip package used to create the skill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a skill object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> createSkillFromPackage(BinaryData body) {
-        // Generated convenience method for createSkillFromPackageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createSkillFromPackageWithResponse(body, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
+    public Mono<Response<Void>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteSkillWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
      * Retrieves a skill.
      *
-     * @param skillName The unique name of the skill.
+     * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a skill object on successful completion of {@link Mono}.
+     * @return a skill resource on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> getSkill(String skillName) {
+    public Mono<Skill> getSkill(String name) {
         // Generated convenience method for getSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillWithResponse(skillName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
-    }
-
-    /**
-     * Downloads a skill package as a ZIP archive containing {@code SKILL.md}. Returns the original uploaded archive for
-     * skills created via {@code createSkillFromPackage}; materializes a ZIP from stored instructions for skills created
-     * via {@code createSkill}.
-     *
-     * @param skillName The unique name of the skill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadSkill(String skillName) {
-        // Generated convenience method for downloadSkillWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return downloadSkillWithResponse(skillName, requestOptions).flatMap(FluxUtil::toMono);
+        return getSkillWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Skill.class));
     }
 
     /**
@@ -464,7 +249,7 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkillDetails> listSkills(Integer limit, PageOrder order, String after, String before) {
+    public PagedFlux<Skill> listSkills(Integer limit, PageOrder order, String after, String before) {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -484,11 +269,11 @@ public final class SkillsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Skill>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(Skill.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
@@ -506,7 +291,7 @@ public final class SkillsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SkillDetails> listSkills() {
+    public PagedFlux<Skill> listSkills() {
         // Generated convenience method for listSkills
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSkills(requestOptions);
@@ -514,70 +299,14 @@ public final class SkillsAsyncClient {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillDetails>(pagedResponse.getRequest(),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Skill>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
                     .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class))
+                    .map(protocolMethodData -> protocolMethodData.toObject(Skill.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Updates an existing skill.
-     *
-     * @param skillName The unique name of the skill.
-     * @param description A human-readable description of the skill.
-     * @param instructions Instructions that define the behavior of the skill.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a skill object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> updateSkill(String skillName, String description, String instructions,
-        Map<String, String> metadata) {
-        // Generated convenience method for updateSkillWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateSkillRequest updateSkillRequestObj
-            = new UpdateSkillRequest().setDescription(description).setInstructions(instructions).setMetadata(metadata);
-        BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
-        return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
-    }
-
-    /**
-     * Updates an existing skill.
-     *
-     * @param skillName The unique name of the skill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a skill object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SkillDetails> updateSkill(String skillName) {
-        // Generated convenience method for updateSkillWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateSkillRequest updateSkillRequestObj = new UpdateSkillRequest();
-        BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
-        return updateSkillWithResponse(skillName, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SkillDetails.class));
     }
 
     /**
@@ -597,5 +326,595 @@ public final class SkillsAsyncClient {
         // Generated convenience method for deleteSkillWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteSkillWithResponse(skillName, requestOptions).then();
+    }
+
+    /**
+     * Creates a new version of a skill. If the skill does not exist, it will be created.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     inline_content (Optional): {
+     *         description: String (Required)
+     *         instructions: String (Required)
+     *         license: String (Optional)
+     *         compatibility: String (Optional)
+     *         metadata (Optional): {
+     *             String: String (Required)
+     *         }
+     *         allowed_tools (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     default: Boolean (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     skill_id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Required)
+     *     created_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill. If the skill does not exist, it will be created.
+     * @param createSkillVersionRequest The createSkillVersionRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createSkillVersionWithResponse(String name, BinaryData createSkillVersionRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createSkillVersionWithResponseAsync(name, createSkillVersionRequest, requestOptions);
+    }
+
+    /**
+     * Creates a new version of a skill from uploaded files via multipart form data.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     skill_id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Required)
+     *     created_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param content The content parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponse(String name, BinaryData content,
+        RequestOptions requestOptions) {
+        // Operation 'createSkillVersionFromFiles' is of content-type 'multipart/form-data'. Protocol API is not usable
+        // and hence not generated.
+        return this.serviceClient.createSkillVersionFromFilesWithResponseAsync(name, content, requestOptions);
+    }
+
+    /**
+     * List all versions of a skill.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     skill_id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Required)
+     *     created_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill to list versions for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listSkillVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listSkillVersionsAsync(name, requestOptions);
+    }
+
+    /**
+     * Retrieve a specific version of a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     skill_id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Required)
+     *     created_at: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param version The version identifier to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSkillVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getSkillVersionWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
+     * Download the zip content for the default version of a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSkillContentWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getSkillContentWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Download the zip content for a specific version of a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param version The version to download content for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSkillVersionContentWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getSkillVersionContentWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
+     * Delete a specific version of a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     *     version: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param version The version identifier to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted skill version along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteSkillVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteSkillVersionWithResponseAsync(name, version, requestOptions);
+    }
+
+    /**
+     * Update a skill.
+     *
+     * @param name The name of the skill to update.
+     * @param defaultVersion The version identifier that the skill should point to. When set, the skill's default
+     * version will resolve to this version instead of the latest.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a skill resource on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Skill> updateSkill(String name, String defaultVersion) {
+        // Generated convenience method for updateSkillWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateSkillRequest updateSkillRequestObj = new UpdateSkillRequest(defaultVersion);
+        BinaryData updateSkillRequest = BinaryData.fromObject(updateSkillRequestObj);
+        return updateSkillWithResponse(name, updateSkillRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Skill.class));
+    }
+
+    /**
+     * Creates a new version of a skill. If the skill does not exist, it will be created.
+     *
+     * @param name The name of the skill. If the skill does not exist, it will be created.
+     * @param inlineContent Inline skill content for simple skills without file uploads. Foundry-specific extension.
+     * @param defaultParameter Whether to set this version as the default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a skill on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SkillVersion> createSkillVersion(String name, SkillInlineContent inlineContent,
+        Boolean defaultParameter) {
+        // Generated convenience method for createSkillVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateSkillVersionRequest createSkillVersionRequestObj
+            = new CreateSkillVersionRequest().setInlineContent(inlineContent).setDefaultProperty(defaultParameter);
+        BinaryData createSkillVersionRequest = BinaryData.fromObject(createSkillVersionRequestObj);
+        return createSkillVersionWithResponse(name, createSkillVersionRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class));
+    }
+
+    /**
+     * Creates a new version of a skill. If the skill does not exist, it will be created.
+     *
+     * @param name The name of the skill. If the skill does not exist, it will be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a skill on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SkillVersion> createSkillVersion(String name) {
+        // Generated convenience method for createSkillVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateSkillVersionRequest createSkillVersionRequestObj = new CreateSkillVersionRequest();
+        BinaryData createSkillVersionRequest = BinaryData.fromObject(createSkillVersionRequestObj);
+        return createSkillVersionWithResponse(name, createSkillVersionRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class));
+    }
+
+    /**
+     * Creates a new version of a skill from uploaded files via multipart form data.
+     *
+     * @param name The name of the skill.
+     * @param content The content parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a skill on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SkillVersion> createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
+        // Generated convenience method for createSkillVersionFromFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createSkillVersionFromFilesWithResponse(name,
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileFields("files",
+                    content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
+                    content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
+                .serializeTextField("default", Objects.toString(content.isDefaultProperty()))
+                .end()
+                .getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class));
+    }
+
+    /**
+     * List all versions of a skill.
+     *
+     * @param name The name of the skill to list versions for.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SkillVersion> listSkillVersions(String name, Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listSkillVersions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List all versions of a skill.
+     *
+     * @param name The name of the skill to list versions for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SkillVersion> listSkillVersions(String name) {
+        // Generated convenience method for listSkillVersions
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listSkillVersions(name, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SkillVersion>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Retrieve a specific version of a skill.
+     *
+     * @param name The name of the skill.
+     * @param version The version identifier to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific version of a skill on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SkillVersion> getSkillVersion(String name, String version) {
+        // Generated convenience method for getSkillVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getSkillVersionWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SkillVersion.class));
+    }
+
+    /**
+     * Download the zip content for the default version of a skill.
+     *
+     * @param name The name of the skill.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getSkillContent(String name) {
+        // Generated convenience method for getSkillContentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getSkillContentWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Download the zip content for a specific version of a skill.
+     *
+     * @param name The name of the skill.
+     * @param version The version to download content for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getSkillVersionContent(String name, String version) {
+        // Generated convenience method for getSkillVersionContentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getSkillVersionContentWithResponse(name, version, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Delete a specific version of a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     *     version: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skill.
+     * @param version The version identifier to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSkillVersionWithResponse(String name, String version,
+        RequestOptions requestOptions) {
+        return internalDeleteSkillVersionWithResponse(name, version, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Delete a specific version of a skill.
+     *
+     * @param name The name of the skill.
+     * @param version The version identifier to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the skill version is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSkillVersion(String name, String version) {
+        // Generated convenience method for deleteSkillVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteSkillVersionWithResponse(name, version, requestOptions).then();
+    }
+
+    /**
+     * Deletes a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> internalDeleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteSkillWithResponseAsync(name, requestOptions);
     }
 }

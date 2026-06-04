@@ -189,7 +189,8 @@ public class ManagedClusterAgentPoolProfileProperties
     private String currentOrchestratorVersion;
 
     /*
-     * The version of node image
+     * The version of the node image. Setting this value triggers an agentPool rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      */
     private String nodeImageVersion;
 
@@ -902,7 +903,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the nodeImageVersion property: The version of node image.
+     * Get the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @return the nodeImageVersion value.
      */
@@ -911,12 +914,14 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the nodeImageVersion property: The version of node image.
+     * Set the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @param nodeImageVersion the nodeImageVersion value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
+    public ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
         this.nodeImageVersion = nodeImageVersion;
         return this;
     }
@@ -1717,6 +1722,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("orchestratorVersion", this.orchestratorVersion);
+        jsonWriter.writeStringField("nodeImageVersion", this.nodeImageVersion);
         jsonWriter.writeJsonField("upgradeSettings", this.upgradeSettings);
         jsonWriter.writeJsonField("powerState", this.powerState);
         jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,

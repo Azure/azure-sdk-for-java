@@ -1,14 +1,44 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.3 (2026-04-29)
 
-### Features Added
+- Azure Resource Manager Compute Fleet client library for Java. This package contains Microsoft Azure SDK for Compute Fleet Management SDK.  Package api-version 2026-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Fleet` was modified
 
-### Other Changes
+* `cancel(com.azure.core.util.Context)` was removed
+* `cancel()` was removed
+
+#### `models.FleetMode` was modified
+
+* `INSTANCE` was removed
+
+#### `models.Fleets` was modified
+
+* `cancel(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `cancel(java.lang.String,java.lang.String)` was removed
+
+#### `models.VMOperationStatus` was modified
+
+* `CANCEL_FAILED_STATUS_UNKNOWN` was removed
+* `CANCELED` was removed
+
+### Features Added
+
+#### `models.FleetProperties` was modified
+
+* `withVmNamePrefix(java.lang.String)` was added
+* `vmNamePrefix()` was added
+
+#### `models.FleetMode` was modified
+
+* `LAUNCH` was added
+
+#### `models.VMOperationStatus` was modified
+
+* `LAUNCHING` was added
 
 ## 1.1.0-beta.2 (2025-09-23)
 
