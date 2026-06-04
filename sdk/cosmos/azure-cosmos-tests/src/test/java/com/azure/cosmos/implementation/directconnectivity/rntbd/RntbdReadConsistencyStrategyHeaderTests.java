@@ -373,6 +373,47 @@ public class RntbdReadConsistencyStrategyHeaderTests {
 
     // endregion
 
+    // region Invariant — every non-DEFAULT enum value must produce a non-zero RNTBD byte.
+
+    /**
+     * Guard against silent drops in {@code RntbdRequestHeaders.addReadConsistencyStrategy()}'s switch
+     * statement. The switch ends with {@code default: assert false; break;} — in production JVMs
+     * ({@code -da} is the default) a new {@link ReadConsistencyStrategy} enum value would slip through
+     * without emitting an RNTBD byte and the thin-client proxy would silently apply the wrong
+     * consistency. This test iterates {@link ReadConsistencyStrategy#values()} so adding a new value
+     * forces this test to fail loudly until the switch is updated.
+     */
+    @Test(groups = { "unit" })
+    public void thinClient_wrapInHttpRequest_allNonDefaultEnumValues_emitNonZeroRntbdByte() throws Exception {
+        ThinClientStoreModel storeModel = createMockThinClientStoreModel();
+
+        for (ReadConsistencyStrategy strategy : ReadConsistencyStrategy.values()) {
+            if (strategy == ReadConsistencyStrategy.DEFAULT) {
+                // DEFAULT is intentionally transparent — no RNTBD byte should be written.
+                continue;
+            }
+
+            RxDocumentServiceRequest request = createDocumentReadRequest();
+            request.getHeaders().put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, strategy.toString());
+            request.getHeaders().remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+
+            HttpRequest httpRequest =
+                storeModel.wrapInHttpRequest(request, URI.create("https://test-proxy:10250/"));
+
+            byte[] rntbdFrame = collectHttpBody(httpRequest);
+            RntbdRequest decoded = decodeRntbdFrame(rntbdFrame);
+            Byte rcsValue = decoded.getHeader(RntbdConstants.RntbdRequestHeader.ReadConsistencyStrategy);
+
+            assertThat(rcsValue)
+                .as("ReadConsistencyStrategy.%s must encode to a non-zero RNTBD byte. "
+                    + "If you added a new enum value, update RntbdRequestHeaders.addReadConsistencyStrategy() "
+                    + "to map it to a RntbdConstants.RntbdReadConsistencyStrategy id.", strategy)
+                .isNotEqualTo((byte) 0);
+        }
+    }
+
+    // endregion
+
     // region Helpers
 
     private static ThinClientStoreModel createMockThinClientStoreModel() {
