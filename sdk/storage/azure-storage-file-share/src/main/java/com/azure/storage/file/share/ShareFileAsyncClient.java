@@ -2849,13 +2849,12 @@ public class ShareFileAsyncClient {
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         ShareFileRange finalRange = range == null ? new ShareFileRange(0L) : range;
-        String finalPreviousSnapshot = previousSnapshot == null ? "" : previousSnapshot;
         Boolean finalSupportRename = supportRename == null ? false : supportRename;
         String marker = response.getValue().getNextMarker();
 
         return CoreUtils.isNullOrEmpty(marker)
             ? Mono.empty()
-            : withContext(context -> listRangesWithResponse(finalRange, finalRequestConditions, finalPreviousSnapshot,
+            : withContext(context -> listRangesWithResponse(finalRange, finalRequestConditions, previousSnapshot,
                 finalSupportRename, marker, null, context));
     }
 
