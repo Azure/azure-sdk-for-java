@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/OutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file: 2026-04-01/OutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Managed Cluster.

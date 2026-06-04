@@ -45,6 +45,7 @@ import java.util.UUID;
 import static com.azure.cosmos.rx.TestSuiteBase.createDatabase;
 import static com.azure.cosmos.rx.TestSuiteBase.safeClose;
 import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
+import static com.azure.cosmos.rx.TestSuiteBase.waitForCollectionToBeAvailableToRead;
 import static org.assertj.core.api.Assertions.assertThat;
 import com.azure.cosmos.SuperFlakyTestRetryAnalyzer;
 
@@ -100,6 +101,8 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(2));
         database.createContainer(containerProperties).block();
         largeDataContainer = database.getContainer(largeDataContainerId);
+
+        waitForCollectionToBeAvailableToRead();
 
         for (Document doc : getVectorDocs()) {
             flatIndexContainer.createItem(doc).block();

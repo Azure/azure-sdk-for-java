@@ -147,4 +147,23 @@ class VoiceLiveSessionOptionsNewFeaturesTest {
         assertNotNull(response);
         assertNotNull(response.getInterimResponse());
     }
+
+    @Test
+    void testVoiceLiveSessionOptionsParallelToolCallsRoundTrip() {
+        VoiceLiveSessionOptions options
+            = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview").setParallelToolCalls(true);
+
+        VoiceLiveSessionOptions deserialized = BinaryData.fromObject(options).toObject(VoiceLiveSessionOptions.class);
+
+        assertEquals(Boolean.TRUE, deserialized.isParallelToolCalls());
+    }
+
+    @Test
+    void testVoiceLiveSessionResponseParallelToolCallsDeserialization() {
+        String json = "{\"id\":\"sess-1\",\"model\":\"gpt-4o-realtime-preview\",\"parallel_tool_calls\":false}";
+
+        VoiceLiveSessionResponse response = BinaryData.fromString(json).toObject(VoiceLiveSessionResponse.class);
+
+        assertEquals(Boolean.FALSE, response.isParallelToolCalls());
+    }
 }
