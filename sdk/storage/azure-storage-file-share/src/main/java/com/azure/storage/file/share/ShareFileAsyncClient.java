@@ -2831,17 +2831,11 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-            ShareFileRange range = options.getRange();
-            ShareRequestConditions requestConditions = options.getRequestConditions() == null
-                ? new ShareRequestConditions()
-                : options.getRequestConditions();
-            String previousSnapshot = options.getPreviousSnapshot();
-            Boolean supportRename = options.isRenameIncluded();
 
-            return listRangesWithResponse(range, requestConditions, previousSnapshot, supportRename, null, null,
-                Context.NONE)
-                    .expand(response -> getNextListRangesDiffPage(response, range, requestConditions, previousSnapshot,
-                        supportRename))
+            return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
+                options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE)
+                    .expand(response -> getNextListRangesDiffPage(response, options.getRange(),
+                        options.getRequestConditions(), options.getPreviousSnapshot(), options.isRenameIncluded()))
                     .collectList()
                     .map(this::aggregateListRangesDiffResponses);
         } catch (RuntimeException ex) {
@@ -2852,12 +2846,17 @@ public class ShareFileAsyncClient {
     private Mono<Response<ShareFileRangeList>> getNextListRangesDiffPage(Response<ShareFileRangeList> response,
         ShareFileRange range, ShareRequestConditions requestConditions, String previousSnapshot,
         Boolean supportRename) {
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        ShareFileRange finalRange = range == null ? new ShareFileRange(0L) : range;
+        String finalPreviousSnapshot = previousSnapshot == null ? "" : previousSnapshot;
+        Boolean finalSupportRename = supportRename == null ? false : supportRename;
         String marker = response.getValue().getNextMarker();
 
         return CoreUtils.isNullOrEmpty(marker)
             ? Mono.empty()
-            : listRangesWithResponse(range, requestConditions, previousSnapshot, supportRename, marker, null,
-                Context.NONE);
+            : withContext(context -> listRangesWithResponse(finalRange, finalRequestConditions, finalPreviousSnapshot,
+                finalSupportRename, marker, null, context));
     }
 
     private Response<ShareFileRangeList>
