@@ -26,6 +26,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.URI;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,9 +40,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  * uses a new connection.
  * <p>
  * Run in Docker with {@code --cap-add=NET_ADMIN} (group: {@code manual-http-network-fault}).
- * Requires an HTTP/2-capable Cosmos DB Gateway endpoint; both {@code COSMOS.HTTP2_ENABLED=true}
- * and {@code COSMOS.THINCLIENT_ENABLED=true} are set before client construction because
- * H2 is currently negotiated only on the thin-client proxy path.
+ * <p>
+ * Two transports exercise the same handler -- pick one per pipeline run via system properties:
+ * <ul>
+ *   <li>{@code COSMOS.THINCLIENT_ENABLED=true} (default): data plane goes to thin-client proxy
+ *       on port 10250; iptables drops by port only (no other process uses 10250).</li>
+ *   <li>{@code COSMOS.THINCLIENT_ENABLED=false}: data plane goes to the regional Gateway V2
+ *       endpoint on port 443; iptables drops by destination IP + port to avoid killing
+ *       unrelated TLS traffic in the JVM. Requires an account whose regional gateway
+ *       negotiates {@code h2} via ALPN; the warm-up read asserts this and the test
+ *       fails fast on a Classic (HTTP/1.1-only) endpoint.</li>
+ * </ul>
+ * Override the port explicitly with {@code -DHTTP2_PING_TEST_PORT=<n>} if needed.
+ * {@code COSMOS.HTTP2_ENABLED=true} is always set by the test.
  */
 public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
@@ -49,6 +61,12 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
     // sudo prefix: empty when running as root (Docker), "sudo " on CI VMs
     private static final String SUDO = "root".equals(System.getProperty("user.name")) ? "" : "sudo ";
+
+    // Transport selection -- defaults to thin-client for back-compat with the existing pipeline.
+    private static final boolean THIN_CLIENT_ENABLED =
+        Boolean.parseBoolean(System.getProperty("COSMOS.THINCLIENT_ENABLED", "true"));
+    private static final int H2_PORT =
+        Integer.getInteger("HTTP2_PING_TEST_PORT", THIN_CLIENT_ENABLED ? 10250 : 443);
 
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
@@ -64,10 +82,11 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = 120_000)
     public void beforeClass() {
-        // Enable HTTP/2 and thin client BEFORE client construction.
-        // H2 is currently negotiated on the thin-client proxy path; both flags are required.
+        // HTTP/2 must be enabled before the client is constructed. THINCLIENT_ENABLED is
+        // set externally (Maven profile or -D) so a single test class covers both transports
+        // across two pipeline runs.
         System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        logger.info("Transport selected: thinClient={}, h2Port={}", THIN_CLIENT_ENABLED, H2_PORT);
 
         this.client = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
@@ -82,7 +101,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     public void afterClass() {
         safeClose(this.client);
         System.clearProperty("COSMOS.HTTP2_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
     }
 
     @BeforeMethod(groups = {"manual-http-network-fault"})
@@ -116,6 +134,10 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         // Override threshold to 2 for faster test (default=5 aligned with Rust SDK)
         System.setProperty("COSMOS.HTTP2_PING_FAILURE_THRESHOLD", "2");
 
+        // Lifted out of the try so the finally-block cleanup can reach it whether or not
+        // the iptables ADD ran -- finally needs the exact -D form of whatever -A we installed.
+        String iptablesDelete = null;
+
         try {
             safeClose(this.client);
 
@@ -134,35 +156,62 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 .buildAsyncClient();
             this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
 
-            // Warm-up read -- establish H2 connection (over thin-client port 10250)
-            String initialChannelId = readAndGetParentChannelId();
-            logger.info("Initial parentChannelId: {}", initialChannelId);
+            // Warm-up read -- establish the H2 connection and capture diagnostics so we can
+            // (a) prove H2 was actually negotiated, (b) discover the regional endpoint host
+            // for IP-scoped iptables targeting on the Compute / port-443 path.
+            CosmosItemResponse<TestObject> warmup = this.cosmosAsyncContainer.readItem(
+                seedItem.getId(), new PartitionKey(seedItem.getId()), TestObject.class).block();
+            assertThat(warmup).isNotNull();
+            assertThat(warmup.getStatusCode()).isEqualTo(200);
 
-            // Thin-client traffic goes to port 10250 on regional thin-client endpoints
-            // (e.g., thin-client-mr-bs-ci-westcentralus.documents.azure.com:10250).
-            // The regional hostname differs from the account-level endpoint, so we
-            // blackhole by port only -- catching all thin-client traffic regardless of region.
-            int thinClientPort = 10250;
-            logger.info("Will blackhole port: {} (thin-client H2)", thinClientPort);
+            CosmosDiagnostics warmupDiag = warmup.getDiagnostics();
+            String diagStr = warmupDiag.toString();
+            assertThat(diagStr)
+                .as("Warm-up connection must negotiate H2 (thinClient=%s). "
+                    + "If false, the account does not expose an H2-capable Gateway V2 endpoint "
+                    + "and this test cannot exercise the PING handler.", THIN_CLIENT_ENABLED)
+                .contains("\"isHttp2\":true");
 
-            // Blackhole all traffic to thin-client port -- prevents PING ACKs from arriving
-            String iptablesRule = String.format(
-                "%siptables -A OUTPUT -p tcp --dport %d -j DROP", SUDO, thinClientPort);
-            logger.info("Installing iptables DROP rule: {}", iptablesRule);
-            execCommand(iptablesRule);
+            String initialChannelId = extractParentChannelId(warmupDiag);
+            String regionalHost = extractEndpointHost(warmupDiag);
+            logger.info("Initial parentChannelId: {}, regionalHost: {}", initialChannelId, regionalHost);
+
+            // iptables rule: port-only for thin-client (10250 is exclusive to thin-client traffic);
+            // destination-IP + port for Compute (port 443 is shared with everything else in the JVM,
+            // so we must scope to the regional gateway's resolved address).
+            String iptablesAdd;
+            if (THIN_CLIENT_ENABLED) {
+                iptablesAdd = String.format(
+                    "%siptables -A OUTPUT -p tcp --dport %d -j DROP", SUDO, H2_PORT);
+                iptablesDelete = String.format(
+                    "%siptables -D OUTPUT -p tcp --dport %d -j DROP", SUDO, H2_PORT);
+            } else {
+                String regionalIp = InetAddress.getByName(regionalHost).getHostAddress();
+                logger.info("Resolved {} -> {} (Compute variant uses IP-scoped DROP)",
+                    regionalHost, regionalIp);
+                iptablesAdd = String.format(
+                    "%siptables -A OUTPUT -p tcp -d %s --dport %d -j DROP",
+                    SUDO, regionalIp, H2_PORT);
+                iptablesDelete = String.format(
+                    "%siptables -D OUTPUT -p tcp -d %s --dport %d -j DROP",
+                    SUDO, regionalIp, H2_PORT);
+            }
+
+            logger.info("Installing iptables DROP rule: {}", iptablesAdd);
+            execCommand(iptablesAdd);
 
             // Wait for PING timeout with consecutive failure threshold=2 (test override):
             // Round 1: 1s interval + 2s timeout = 3s (failure #1)
-            // Round 2: ~1s interval + 2s timeout = 3s (failure #2 ≥ threshold → close)
+            // Round 2: ~1s interval + 2s timeout = 3s (failure #2 >= threshold -> close)
             // Total ~6s + buffer = 10s
             logger.info("Waiting 10s for consecutive PING timeouts to close the connection...");
             Thread.sleep(10_000);
 
             // Remove iptables rule BEFORE attempting recovery read
-            String iptablesRemove = String.format(
-                "%siptables -D OUTPUT -p tcp --dport %d -j DROP", SUDO, thinClientPort);
-            logger.info("Removing iptables DROP rule: {}", iptablesRemove);
-            execCommand(iptablesRemove);
+            logger.info("Removing iptables DROP rule: {}", iptablesDelete);
+            execCommand(iptablesDelete);
+            // Cleared -- finally-block no longer needs to delete it.
+            iptablesDelete = null;
 
             // Small wait for network to stabilize
             Thread.sleep(1_000);
@@ -171,25 +220,28 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             String recoveryChannelId = readAndGetParentChannelId();
             logger.info("Recovery parentChannelId: {}", recoveryChannelId);
 
-            logger.info("RESULT: initial={}, recovery={}, DIFFERENT_CONNECTION={}",
-                initialChannelId, recoveryChannelId,
+            logger.info("RESULT: thinClient={}, port={}, initial={}, recovery={}, DIFFERENT_CONNECTION={}",
+                THIN_CLIENT_ENABLED, H2_PORT, initialChannelId, recoveryChannelId,
                 !initialChannelId.equals(recoveryChannelId));
 
             // The connection MUST be different -- the old one was closed by PING timeout
             assertThat(recoveryChannelId)
-                .as("After PING timeout, the handler should have closed the connection. "
-                    + "The recovery request must use a new connection.")
+                .as("After PING timeout (thinClient=%s, port=%d), the handler should have "
+                    + "closed the connection. The recovery request must use a new connection.",
+                    THIN_CLIENT_ENABLED, H2_PORT)
                 .isNotEqualTo(initialChannelId);
 
             logger.info("PING timeout test passed: connection {} was closed, new connection {} established",
                 initialChannelId, recoveryChannelId);
         } finally {
-            // Safety: remove any leftover iptables rules
-            try {
-                String cleanup = String.format(
-                    "%siptables -D OUTPUT -p tcp --dport 10250 -j DROP 2>/dev/null", SUDO);
-                execCommand(cleanup);
-            } catch (Exception ignored) {}
+            // Safety: if we installed an iptables rule and didn't manage to remove it above
+            // (e.g., assertion failed before we reached the eager delete), best-effort
+            // remove it now. The exact -D form was captured when we built -A.
+            if (iptablesDelete != null) {
+                try {
+                    execCommand(iptablesDelete);
+                } catch (Exception ignored) {}
+            }
 
             System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
             System.clearProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS");
@@ -206,6 +258,33 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         assertThat(response.getStatusCode()).isEqualTo(200);
 
         return extractParentChannelId(response.getDiagnostics());
+    }
+
+    /**
+     * Pulls the regional gateway hostname out of the first {@code gatewayStatisticsList[]}
+     * entry whose {@code endpoint} URI exposes a host. Used by the Compute / port-443
+     * path to scope the iptables DROP rule to a single destination IP -- a port-only
+     * rule on :443 would also kill every other outbound TLS connection in the JVM.
+     */
+    private String extractEndpointHost(CosmosDiagnostics diagnostics) throws JsonProcessingException {
+        ObjectNode node = (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics.toString());
+        JsonNode gwStats = node.get("gatewayStatisticsList");
+        if (gwStats != null && gwStats.isArray()) {
+            for (JsonNode stat : gwStats) {
+                if (stat.has("endpoint")) {
+                    String endpoint = stat.get("endpoint").asText();
+                    try {
+                        String host = URI.create(endpoint).getHost();
+                        if (host != null && !host.isEmpty()) {
+                            return host;
+                        }
+                    } catch (IllegalArgumentException ignored) {
+                        // Bad URI -- fall through to the next stat entry.
+                    }
+                }
+            }
+        }
+        throw new AssertionError("Could not extract endpoint host from diagnostics: " + diagnostics);
     }
 
     /**
