@@ -2146,6 +2146,7 @@ public class ContainerApiTests extends BlobTestBase {
     //    }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowBasic() {
         // Upload a test blob
         String blobName = generateBlobName();
@@ -2164,6 +2165,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowWithMetadata() {
         String blobName = generateBlobName();
         Map<String, String> metadata = new HashMap<>();
@@ -2183,6 +2185,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowPagination() {
         // Upload 3 blobs
         for (int i = 0; i < 3; i++) {
@@ -2202,6 +2205,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowNullUseArrowUsesXml() {
         // Default apacheArrowEnabled is null — should use XML path without error
         String blobName = generateBlobName();
@@ -2244,6 +2248,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @LiveOnly
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowEncryptedBlob() {
         // Upload a blob with CPK (customer-provided key)
         String blobName = generateBlobName();
@@ -2411,8 +2416,8 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowDeserializer() throws Exception {
-        // Upload a test blob with metadata
         String blobName = generateBlobName();
         Map<String, String> metadata = new HashMap<>();
         metadata.put("testkey", "testvalue");
@@ -2420,7 +2425,6 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
 
-        // Construct AzureBlobStorageImpl directly
         AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(cc.getHttpPipeline())
             .url(cc.getAccountUrl())
             .version(BlobServiceVersion.V2026_06_06.getVersion())
@@ -2481,6 +2485,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsByHierarchyArrowBasic() {
         // Upload blobs in a directory structure
         cc.getBlobClient("dir/blob1")
@@ -2517,6 +2522,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsByHierarchyArrowWithMetadata() {
         String blobName = generateBlobName();
         Map<String, String> metadata = new HashMap<>();
@@ -2541,6 +2547,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsByHierarchyArrowPagination() {
         // Upload blobs across multiple directories
         for (int i = 0; i < 3; i++) {
@@ -2564,6 +2571,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowWithTags() {
         // Upload a blob and set tags
         String blobName = generateBlobName();
