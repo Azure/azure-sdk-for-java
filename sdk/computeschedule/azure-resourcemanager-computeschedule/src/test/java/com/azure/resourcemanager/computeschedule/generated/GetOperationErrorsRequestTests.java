@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class GetOperationErrorsContentTests {
+public final class GetOperationErrorsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetOperationErrorsContent model = BinaryData.fromString("{\"operationIds\":[\"pxodlqiyntorzih\"]}")
-            .toObject(GetOperationErrorsContent.class);
+        GetOperationErrorsRequest model = BinaryData.fromString("{\"operationIds\":[\"pxodlqiyntorzih\"]}")
+            .toObject(GetOperationErrorsRequest.class);
         Assertions.assertEquals("pxodlqiyntorzih", model.operationIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetOperationErrorsContent model
-            = new GetOperationErrorsContent().withOperationIds(Arrays.asList("pxodlqiyntorzih"));
-        model = BinaryData.fromObject(model).toObject(GetOperationErrorsContent.class);
+        GetOperationErrorsRequest model
+            = new GetOperationErrorsRequest().withOperationIds(Arrays.asList("pxodlqiyntorzih"));
+        model = BinaryData.fromObject(model).toObject(GetOperationErrorsRequest.class);
         Assertions.assertEquals("pxodlqiyntorzih", model.operationIds().get(0));
     }
 }

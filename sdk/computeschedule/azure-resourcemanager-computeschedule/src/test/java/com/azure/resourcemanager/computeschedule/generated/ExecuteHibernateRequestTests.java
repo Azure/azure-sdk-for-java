@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -14,12 +14,12 @@ import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class ExecuteHibernateContentTests {
+public final class ExecuteHibernateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteHibernateContent model = BinaryData.fromString(
+        ExecuteHibernateRequest model = BinaryData.fromString(
             "{\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":681393134,\"retryWindowInMinutes\":264024813,\"onFailureAction\":\"Hibernate\"}},\"resources\":{\"ids\":[\"wrwjfeu\",\"nhutjeltmrldhugj\"]},\"correlationid\":\"zdatqxhocdg\"}")
-            .toObject(ExecuteHibernateContent.class);
+            .toObject(ExecuteHibernateRequest.class);
         Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(681393134, model.executionParameters().retryPolicy().retryCount());
@@ -32,7 +32,7 @@ public final class ExecuteHibernateContentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteHibernateContent model = new ExecuteHibernateContent()
+        ExecuteHibernateRequest model = new ExecuteHibernateRequest()
             .withExecutionParameters(
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.AVAILABILITY)
                     .withRetryPolicy(new RetryPolicy().withRetryCount(681393134)
@@ -40,7 +40,7 @@ public final class ExecuteHibernateContentTests {
                         .withOnFailureAction(ResourceOperationType.HIBERNATE)))
             .withResources(new Resources().withIds(Arrays.asList("wrwjfeu", "nhutjeltmrldhugj")))
             .withCorrelationid("zdatqxhocdg");
-        model = BinaryData.fromObject(model).toObject(ExecuteHibernateContent.class);
+        model = BinaryData.fromObject(model).toObject(ExecuteHibernateRequest.class);
         Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(681393134, model.executionParameters().retryPolicy().retryCount());

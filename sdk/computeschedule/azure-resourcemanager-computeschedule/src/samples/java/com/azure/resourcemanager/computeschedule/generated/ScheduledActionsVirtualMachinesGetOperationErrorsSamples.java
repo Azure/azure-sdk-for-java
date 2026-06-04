@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.generated;
 
-import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
 import java.util.Arrays;
 
 /**
@@ -23,7 +23,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesGetOperationErrorsWithResponse("eastus2",
-                new GetOperationErrorsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
+                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -39,7 +39,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesGetOperationErrorsWithResponse("eastus2",
-                new GetOperationErrorsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
+                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
                 com.azure.core.util.Context.NONE);
     }
 }

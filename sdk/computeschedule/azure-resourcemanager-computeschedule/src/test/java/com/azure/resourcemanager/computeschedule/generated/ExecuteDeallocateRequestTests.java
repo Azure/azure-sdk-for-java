@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -14,12 +14,12 @@ import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class ExecuteDeallocateContentTests {
+public final class ExecuteDeallocateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteDeallocateContent model = BinaryData.fromString(
+        ExecuteDeallocateRequest model = BinaryData.fromString(
             "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":775754231,\"retryWindowInMinutes\":1098993569,\"onFailureAction\":\"Start\"}},\"resources\":{\"ids\":[\"gxsabkyq\",\"uujitcjc\"]},\"correlationid\":\"dzevndhkrw\"}")
-            .toObject(ExecuteDeallocateContent.class);
+            .toObject(ExecuteDeallocateRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(775754231, model.executionParameters().retryPolicy().retryCount());
@@ -32,7 +32,7 @@ public final class ExecuteDeallocateContentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteDeallocateContent model = new ExecuteDeallocateContent()
+        ExecuteDeallocateRequest model = new ExecuteDeallocateRequest()
             .withExecutionParameters(
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
                     .withRetryPolicy(new RetryPolicy().withRetryCount(775754231)
@@ -40,7 +40,7 @@ public final class ExecuteDeallocateContentTests {
                         .withOnFailureAction(ResourceOperationType.START)))
             .withResources(new Resources().withIds(Arrays.asList("gxsabkyq", "uujitcjc")))
             .withCorrelationid("dzevndhkrw");
-        model = BinaryData.fromObject(model).toObject(ExecuteDeallocateContent.class);
+        model = BinaryData.fromObject(model).toObject(ExecuteDeallocateRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(775754231, model.executionParameters().retryPolicy().retryCount());

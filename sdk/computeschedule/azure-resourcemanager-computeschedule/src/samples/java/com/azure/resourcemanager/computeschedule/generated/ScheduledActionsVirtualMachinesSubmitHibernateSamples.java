@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -30,7 +30,7 @@ public final class ScheduledActionsVirtualMachinesSubmitHibernateSamples {
     public static void scheduledActionsVirtualMachinesSubmitHibernateMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateContent()
+            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateRequest()
                 .withSchedule(new Schedule().withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
@@ -49,7 +49,7 @@ public final class ScheduledActionsVirtualMachinesSubmitHibernateSamples {
     public static void scheduledActionsVirtualMachinesSubmitHibernateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateContent()
+            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateRequest()
                 .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withTimezone("America/Los_Angeles")

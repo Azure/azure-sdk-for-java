@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.generated;
 
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -27,7 +27,7 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     public static void scheduledActionsVirtualMachinesExecuteHibernateMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateContent()
+            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateRequest()
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
@@ -45,7 +45,7 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     public static void scheduledActionsVirtualMachinesExecuteHibernateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateContent()
+            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateRequest()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                         .withRetryPolicy(new RetryPolicy().withRetryCount(3)

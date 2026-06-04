@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.generated;
 
-import com.azure.resourcemanager.computeschedule.models.ExecuteStartContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -27,7 +27,7 @@ public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
     public static void scheduledActionsVirtualMachinesExecuteStartMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartContent()
+            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartRequest()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                         .withRetryPolicy(new RetryPolicy().withRetryCount(3)
@@ -49,7 +49,7 @@ public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
     public static void scheduledActionsVirtualMachinesExecuteStartMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartContent()
+            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartRequest()
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))

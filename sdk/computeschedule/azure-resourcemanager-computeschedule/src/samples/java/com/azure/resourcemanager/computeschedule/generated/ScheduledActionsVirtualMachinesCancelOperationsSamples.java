@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.computeschedule.generated;
 
-import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
+import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import java.util.Arrays;
 
 /**
@@ -23,7 +23,7 @@ public final class ScheduledActionsVirtualMachinesCancelOperationsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesCancelOperationsWithResponse("eastus2",
-                new CancelOperationsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
+                new CancelOperationsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
                     .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
                 com.azure.core.util.Context.NONE);
     }
@@ -40,7 +40,7 @@ public final class ScheduledActionsVirtualMachinesCancelOperationsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesCancelOperationsWithResponse("eastus2",
-                new CancelOperationsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
+                new CancelOperationsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
                     .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
                 com.azure.core.util.Context.NONE);
     }

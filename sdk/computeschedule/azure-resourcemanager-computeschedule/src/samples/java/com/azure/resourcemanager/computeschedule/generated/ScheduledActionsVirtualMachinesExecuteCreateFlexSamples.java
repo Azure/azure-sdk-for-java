@@ -19,7 +19,7 @@ import com.azure.resourcemanager.computeschedule.models.DiskControllerTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.computeschedule.models.DistributionStrategy;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.FlexProperties;
 import com.azure.resourcemanager.computeschedule.models.ImageReference;
@@ -73,7 +73,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateFlexSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesExecuteCreateFlexWithResponse("eastus2",
-                new ExecuteCreateFlexContent()
+                new ExecuteCreateFlexRequest()
                     .withResourceConfigParameters(
                         new ResourceProvisionFlexPayload()
                             .withVirtualMachineBaseProfile(
@@ -204,7 +204,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateFlexSamples {
     public static void scheduledActionsVirtualMachinesExecuteCreateFlexMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteCreateFlexWithResponse("eastus2", new ExecuteCreateFlexContent()
+            .virtualMachinesExecuteCreateFlexWithResponse("eastus2", new ExecuteCreateFlexRequest()
                 .withResourceConfigParameters(new ResourceProvisionFlexPayload().withResourceCount(24)
                     .withFlexProperties(new FlexProperties()
                         .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("Standard_D2s_v3").withRank(24),

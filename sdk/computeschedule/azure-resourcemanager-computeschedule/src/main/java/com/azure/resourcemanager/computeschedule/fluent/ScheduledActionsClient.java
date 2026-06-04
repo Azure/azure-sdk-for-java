@@ -25,22 +25,22 @@ import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionIn
 import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
-import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteStartContent;
-import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsContent;
-import com.azure.resourcemanager.computeschedule.models.GetOperationStatusContent;
+import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
+import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
+import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
 import com.azure.resourcemanager.computeschedule.models.ResourceAttachRequest;
 import com.azure.resourcemanager.computeschedule.models.ResourceDetachRequest;
 import com.azure.resourcemanager.computeschedule.models.ResourcePatchRequest;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionUpdate;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
-import com.azure.resourcemanager.computeschedule.models.SubmitHibernateContent;
-import com.azure.resourcemanager.computeschedule.models.SubmitStartContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
 
 /**
  * An instance of this class provides access to all the operations defined in ScheduledActionsClient.
@@ -60,7 +60,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeallocateResourceOperationResponseInner> virtualMachinesSubmitDeallocateWithResponse(
-        String locationparameter, SubmitDeallocateContent requestBody, Context context);
+        String locationparameter, SubmitDeallocateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
@@ -75,7 +75,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DeallocateResourceOperationResponseInner virtualMachinesSubmitDeallocate(String locationparameter,
-        SubmitDeallocateContent requestBody);
+        SubmitDeallocateRequest requestBody);
 
     /**
      * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
@@ -91,7 +91,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HibernateResourceOperationResponseInner> virtualMachinesSubmitHibernateWithResponse(
-        String locationparameter, SubmitHibernateContent requestBody, Context context);
+        String locationparameter, SubmitHibernateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
@@ -106,7 +106,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HibernateResourceOperationResponseInner virtualMachinesSubmitHibernate(String locationparameter,
-        SubmitHibernateContent requestBody);
+        SubmitHibernateRequest requestBody);
 
     /**
      * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
@@ -121,7 +121,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StartResourceOperationResponseInner> virtualMachinesSubmitStartWithResponse(String locationparameter,
-        SubmitStartContent requestBody, Context context);
+        SubmitStartRequest requestBody, Context context);
 
     /**
      * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
@@ -135,7 +135,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     StartResourceOperationResponseInner virtualMachinesSubmitStart(String locationparameter,
-        SubmitStartContent requestBody);
+        SubmitStartRequest requestBody);
 
     /**
      * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
@@ -151,7 +151,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeallocateResourceOperationResponseInner> virtualMachinesExecuteDeallocateWithResponse(
-        String locationparameter, ExecuteDeallocateContent requestBody, Context context);
+        String locationparameter, ExecuteDeallocateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
@@ -166,7 +166,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DeallocateResourceOperationResponseInner virtualMachinesExecuteDeallocate(String locationparameter,
-        ExecuteDeallocateContent requestBody);
+        ExecuteDeallocateRequest requestBody);
 
     /**
      * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
@@ -182,7 +182,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateWithResponse(
-        String locationparameter, ExecuteHibernateContent requestBody, Context context);
+        String locationparameter, ExecuteHibernateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
@@ -197,7 +197,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     HibernateResourceOperationResponseInner virtualMachinesExecuteHibernate(String locationparameter,
-        ExecuteHibernateContent requestBody);
+        ExecuteHibernateRequest requestBody);
 
     /**
      * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
@@ -213,7 +213,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StartResourceOperationResponseInner> virtualMachinesExecuteStartWithResponse(String locationparameter,
-        ExecuteStartContent requestBody, Context context);
+        ExecuteStartRequest requestBody, Context context);
 
     /**
      * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
@@ -228,7 +228,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     StartResourceOperationResponseInner virtualMachinesExecuteStart(String locationparameter,
-        ExecuteStartContent requestBody);
+        ExecuteStartRequest requestBody);
 
     /**
      * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
@@ -244,7 +244,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexWithResponse(
-        String locationparameter, ExecuteCreateFlexContent body, Context context);
+        String locationparameter, ExecuteCreateFlexRequest body, Context context);
 
     /**
      * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
@@ -259,7 +259,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CreateFlexResourceOperationResponseInner virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexContent body);
+        ExecuteCreateFlexRequest body);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
@@ -275,7 +275,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateWithResponse(String locationparameter,
-        ExecuteCreateContent requestBody, Context context);
+        ExecuteCreateRequest requestBody, Context context);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
@@ -290,7 +290,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CreateResourceOperationResponseInner virtualMachinesExecuteCreate(String locationparameter,
-        ExecuteCreateContent requestBody);
+        ExecuteCreateRequest requestBody);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
@@ -306,7 +306,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteWithResponse(String locationparameter,
-        ExecuteDeleteContent requestBody, Context context);
+        ExecuteDeleteRequest requestBody, Context context);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
@@ -321,7 +321,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DeleteResourceOperationResponseInner virtualMachinesExecuteDelete(String locationparameter,
-        ExecuteDeleteContent requestBody);
+        ExecuteDeleteRequest requestBody);
 
     /**
      * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
@@ -336,7 +336,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusWithResponse(String locationparameter,
-        GetOperationStatusContent requestBody, Context context);
+        GetOperationStatusRequest requestBody, Context context);
 
     /**
      * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
@@ -350,7 +350,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GetOperationStatusResponseInner virtualMachinesGetOperationStatus(String locationparameter,
-        GetOperationStatusContent requestBody);
+        GetOperationStatusRequest requestBody);
 
     /**
      * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
@@ -365,7 +365,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CancelOperationsResponseInner> virtualMachinesCancelOperationsWithResponse(String locationparameter,
-        CancelOperationsContent requestBody, Context context);
+        CancelOperationsRequest requestBody, Context context);
 
     /**
      * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
@@ -379,7 +379,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CancelOperationsResponseInner virtualMachinesCancelOperations(String locationparameter,
-        CancelOperationsContent requestBody);
+        CancelOperationsRequest requestBody);
 
     /**
      * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
@@ -395,7 +395,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GetOperationErrorsResponseInner> virtualMachinesGetOperationErrorsWithResponse(String locationparameter,
-        GetOperationErrorsContent requestBody, Context context);
+        GetOperationErrorsRequest requestBody, Context context);
 
     /**
      * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
@@ -410,7 +410,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GetOperationErrorsResponseInner virtualMachinesGetOperationErrors(String locationparameter,
-        GetOperationErrorsContent requestBody);
+        GetOperationErrorsRequest requestBody);
 
     /**
      * Get a ScheduledAction.

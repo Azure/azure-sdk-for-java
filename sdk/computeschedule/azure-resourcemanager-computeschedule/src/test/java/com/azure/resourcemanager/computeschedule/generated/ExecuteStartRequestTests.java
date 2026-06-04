@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.ExecuteStartContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -14,12 +14,12 @@ import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class ExecuteStartContentTests {
+public final class ExecuteStartRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteStartContent model = BinaryData.fromString(
+        ExecuteStartRequest model = BinaryData.fromString(
             "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":950218840,\"retryWindowInMinutes\":1780121294,\"onFailureAction\":\"Hibernate\"}},\"resources\":{\"ids\":[\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\",\"fkgiawxk\"]},\"correlationid\":\"ryplwckbasyypn\"}")
-            .toObject(ExecuteStartContent.class);
+            .toObject(ExecuteStartRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(950218840, model.executionParameters().retryPolicy().retryCount());
@@ -32,7 +32,7 @@ public final class ExecuteStartContentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteStartContent model = new ExecuteStartContent()
+        ExecuteStartRequest model = new ExecuteStartRequest()
             .withExecutionParameters(
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
                     .withRetryPolicy(new RetryPolicy().withRetryCount(950218840)
@@ -41,7 +41,7 @@ public final class ExecuteStartContentTests {
             .withResources(
                 new Resources().withIds(Arrays.asList("ndv", "aozwyiftyhxhu", "okftyxolniwpwcuk", "fkgiawxk")))
             .withCorrelationid("ryplwckbasyypn");
-        model = BinaryData.fromObject(model).toObject(ExecuteStartContent.class);
+        model = BinaryData.fromObject(model).toObject(ExecuteStartRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(950218840, model.executionParameters().retryPolicy().retryCount());

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -30,7 +30,7 @@ public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     public static void scheduledActionsVirtualMachinesSubmitDeallocateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateContent()
+            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateRequest()
                 .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withTimezone("America/Los_Angeles")
@@ -57,7 +57,7 @@ public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     public static void scheduledActionsVirtualMachinesSubmitDeallocateMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateContent()
+            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateRequest()
                 .withSchedule(new Schedule().withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(

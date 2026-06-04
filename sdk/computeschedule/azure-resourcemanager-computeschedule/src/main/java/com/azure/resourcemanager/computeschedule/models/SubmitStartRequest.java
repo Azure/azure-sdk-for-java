@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The deallocate request for resources.
+ * This is the request for start.
  */
 @Fluent
-public final class SubmitDeallocateContent implements JsonSerializable<SubmitDeallocateContent> {
+public final class SubmitStartRequest implements JsonSerializable<SubmitStartRequest> {
     /*
      * The schedule for the request
      */
@@ -37,9 +37,9 @@ public final class SubmitDeallocateContent implements JsonSerializable<SubmitDea
     private String correlationid;
 
     /**
-     * Creates an instance of SubmitDeallocateContent class.
+     * Creates an instance of SubmitStartRequest class.
      */
-    public SubmitDeallocateContent() {
+    public SubmitStartRequest() {
     }
 
     /**
@@ -55,9 +55,9 @@ public final class SubmitDeallocateContent implements JsonSerializable<SubmitDea
      * Set the schedule property: The schedule for the request.
      * 
      * @param schedule the schedule value to set.
-     * @return the SubmitDeallocateContent object itself.
+     * @return the SubmitStartRequest object itself.
      */
-    public SubmitDeallocateContent withSchedule(Schedule schedule) {
+    public SubmitStartRequest withSchedule(Schedule schedule) {
         this.schedule = schedule;
         return this;
     }
@@ -75,9 +75,9 @@ public final class SubmitDeallocateContent implements JsonSerializable<SubmitDea
      * Set the executionParameters property: The execution parameters for the request.
      * 
      * @param executionParameters the executionParameters value to set.
-     * @return the SubmitDeallocateContent object itself.
+     * @return the SubmitStartRequest object itself.
      */
-    public SubmitDeallocateContent withExecutionParameters(ExecutionParameters executionParameters) {
+    public SubmitStartRequest withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
     }
@@ -95,9 +95,9 @@ public final class SubmitDeallocateContent implements JsonSerializable<SubmitDea
      * Set the resources property: The resources for the request.
      * 
      * @param resources the resources value to set.
-     * @return the SubmitDeallocateContent object itself.
+     * @return the SubmitStartRequest object itself.
      */
-    public SubmitDeallocateContent withResources(Resources resources) {
+    public SubmitStartRequest withResources(Resources resources) {
         this.resources = resources;
         return this;
     }
@@ -115,9 +115,9 @@ public final class SubmitDeallocateContent implements JsonSerializable<SubmitDea
      * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
-     * @return the SubmitDeallocateContent object itself.
+     * @return the SubmitStartRequest object itself.
      */
-    public SubmitDeallocateContent withCorrelationid(String correlationid) {
+    public SubmitStartRequest withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;
     }
@@ -136,35 +136,35 @@ public final class SubmitDeallocateContent implements JsonSerializable<SubmitDea
     }
 
     /**
-     * Reads an instance of SubmitDeallocateContent from the JsonReader.
+     * Reads an instance of SubmitStartRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SubmitDeallocateContent if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of SubmitStartRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SubmitDeallocateContent.
+     * @throws IOException If an error occurs while reading the SubmitStartRequest.
      */
-    public static SubmitDeallocateContent fromJson(JsonReader jsonReader) throws IOException {
+    public static SubmitStartRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SubmitDeallocateContent deserializedSubmitDeallocateContent = new SubmitDeallocateContent();
+            SubmitStartRequest deserializedSubmitStartRequest = new SubmitStartRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("schedule".equals(fieldName)) {
-                    deserializedSubmitDeallocateContent.schedule = Schedule.fromJson(reader);
+                    deserializedSubmitStartRequest.schedule = Schedule.fromJson(reader);
                 } else if ("executionParameters".equals(fieldName)) {
-                    deserializedSubmitDeallocateContent.executionParameters = ExecutionParameters.fromJson(reader);
+                    deserializedSubmitStartRequest.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
-                    deserializedSubmitDeallocateContent.resources = Resources.fromJson(reader);
+                    deserializedSubmitStartRequest.resources = Resources.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedSubmitDeallocateContent.correlationid = reader.getString();
+                    deserializedSubmitStartRequest.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSubmitDeallocateContent;
+            return deserializedSubmitStartRequest;
         });
     }
 }

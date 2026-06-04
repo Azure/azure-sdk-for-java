@@ -5,26 +5,26 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.GetOperationStatusContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class GetOperationStatusContentTests {
+public final class GetOperationStatusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetOperationStatusContent model = BinaryData
+        GetOperationStatusRequest model = BinaryData
             .fromString("{\"operationIds\":[\"yrs\",\"dsytgadgvr\",\"ea\",\"neqn\"],\"correlationid\":\"arrwlquu\"}")
-            .toObject(GetOperationStatusContent.class);
+            .toObject(GetOperationStatusRequest.class);
         Assertions.assertEquals("yrs", model.operationIds().get(0));
         Assertions.assertEquals("arrwlquu", model.correlationid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetOperationStatusContent model
-            = new GetOperationStatusContent().withOperationIds(Arrays.asList("yrs", "dsytgadgvr", "ea", "neqn"))
+        GetOperationStatusRequest model
+            = new GetOperationStatusRequest().withOperationIds(Arrays.asList("yrs", "dsytgadgvr", "ea", "neqn"))
                 .withCorrelationid("arrwlquu");
-        model = BinaryData.fromObject(model).toObject(GetOperationStatusContent.class);
+        model = BinaryData.fromObject(model).toObject(GetOperationStatusRequest.class);
         Assertions.assertEquals("yrs", model.operationIds().get(0));
         Assertions.assertEquals("arrwlquu", model.correlationid());
     }

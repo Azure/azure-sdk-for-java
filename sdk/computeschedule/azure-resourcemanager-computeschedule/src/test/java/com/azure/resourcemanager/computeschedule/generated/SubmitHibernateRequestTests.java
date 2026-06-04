@@ -12,17 +12,17 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class SubmitHibernateContentTests {
+public final class SubmitHibernateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubmitHibernateContent model = BinaryData.fromString(
+        SubmitHibernateRequest model = BinaryData.fromString(
             "{\"schedule\":{\"deadline\":\"2021-02-13T07:50:35Z\",\"deadLine\":\"2021-07-14T10:08:19Z\",\"timezone\":\"osygex\",\"timeZone\":\"ojakhmsbzjhcrze\",\"deadlineType\":\"CompleteBy\"},\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":148902907,\"retryWindowInMinutes\":757345112,\"onFailureAction\":\"Delete\"}},\"resources\":{\"ids\":[\"trg\",\"jbp\",\"zfsinzgvf\",\"jrwzox\"]},\"correlationid\":\"j\"}")
-            .toObject(SubmitHibernateContent.class);
+            .toObject(SubmitHibernateRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-13T07:50:35Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T10:08:19Z"), model.schedule().deadLine());
         Assertions.assertEquals("osygex", model.schedule().timezone());
@@ -39,7 +39,7 @@ public final class SubmitHibernateContentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubmitHibernateContent model = new SubmitHibernateContent()
+        SubmitHibernateRequest model = new SubmitHibernateRequest()
             .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2021-02-13T07:50:35Z"))
                 .withDeadLine(OffsetDateTime.parse("2021-07-14T10:08:19Z"))
                 .withTimezone("osygex")
@@ -51,7 +51,7 @@ public final class SubmitHibernateContentTests {
                     .withOnFailureAction(ResourceOperationType.DELETE)))
             .withResources(new Resources().withIds(Arrays.asList("trg", "jbp", "zfsinzgvf", "jrwzox")))
             .withCorrelationid("j");
-        model = BinaryData.fromObject(model).toObject(SubmitHibernateContent.class);
+        model = BinaryData.fromObject(model).toObject(SubmitHibernateRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-13T07:50:35Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T10:08:19Z"), model.schedule().deadLine());
         Assertions.assertEquals("osygex", model.schedule().timezone());

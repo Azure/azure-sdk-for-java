@@ -25,7 +25,7 @@ public interface ScheduledActions {
      * @return the response from a deallocate request along with {@link Response}.
      */
     Response<DeallocateResourceOperationResponse> virtualMachinesSubmitDeallocateWithResponse(String locationparameter,
-        SubmitDeallocateContent requestBody, Context context);
+        SubmitDeallocateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesSubmitDeallocate: Schedule deallocate operation for a batch of virtual machines at datetime in
@@ -39,7 +39,7 @@ public interface ScheduledActions {
      * @return the response from a deallocate request.
      */
     DeallocateResourceOperationResponse virtualMachinesSubmitDeallocate(String locationparameter,
-        SubmitDeallocateContent requestBody);
+        SubmitDeallocateRequest requestBody);
 
     /**
      * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
@@ -54,7 +54,7 @@ public interface ScheduledActions {
      * @return the response from a Hibernate request along with {@link Response}.
      */
     Response<HibernateResourceOperationResponse> virtualMachinesSubmitHibernateWithResponse(String locationparameter,
-        SubmitHibernateContent requestBody, Context context);
+        SubmitHibernateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesSubmitHibernate: Schedule hibernate operation for a batch of virtual machines at datetime in
@@ -68,7 +68,7 @@ public interface ScheduledActions {
      * @return the response from a Hibernate request.
      */
     HibernateResourceOperationResponse virtualMachinesSubmitHibernate(String locationparameter,
-        SubmitHibernateContent requestBody);
+        SubmitHibernateRequest requestBody);
 
     /**
      * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
@@ -82,7 +82,7 @@ public interface ScheduledActions {
      * @return the response from a start request along with {@link Response}.
      */
     Response<StartResourceOperationResponse> virtualMachinesSubmitStartWithResponse(String locationparameter,
-        SubmitStartContent requestBody, Context context);
+        SubmitStartRequest requestBody, Context context);
 
     /**
      * VirtualMachinesSubmitStart: Schedule start operation for a batch of virtual machines at datetime in future.
@@ -94,7 +94,7 @@ public interface ScheduledActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a start request.
      */
-    StartResourceOperationResponse virtualMachinesSubmitStart(String locationparameter, SubmitStartContent requestBody);
+    StartResourceOperationResponse virtualMachinesSubmitStart(String locationparameter, SubmitStartRequest requestBody);
 
     /**
      * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
@@ -109,7 +109,7 @@ public interface ScheduledActions {
      * @return the response from a deallocate request along with {@link Response}.
      */
     Response<DeallocateResourceOperationResponse> virtualMachinesExecuteDeallocateWithResponse(String locationparameter,
-        ExecuteDeallocateContent requestBody, Context context);
+        ExecuteDeallocateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is
@@ -123,7 +123,7 @@ public interface ScheduledActions {
      * @return the response from a deallocate request.
      */
     DeallocateResourceOperationResponse virtualMachinesExecuteDeallocate(String locationparameter,
-        ExecuteDeallocateContent requestBody);
+        ExecuteDeallocateRequest requestBody);
 
     /**
      * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
@@ -138,7 +138,7 @@ public interface ScheduledActions {
      * @return the response from a Hibernate request along with {@link Response}.
      */
     Response<HibernateResourceOperationResponse> virtualMachinesExecuteHibernateWithResponse(String locationparameter,
-        ExecuteHibernateContent requestBody, Context context);
+        ExecuteHibernateRequest requestBody, Context context);
 
     /**
      * VirtualMachinesExecuteHibernate: Execute hibernate operation for a batch of virtual machines, this operation is
@@ -152,7 +152,7 @@ public interface ScheduledActions {
      * @return the response from a Hibernate request.
      */
     HibernateResourceOperationResponse virtualMachinesExecuteHibernate(String locationparameter,
-        ExecuteHibernateContent requestBody);
+        ExecuteHibernateRequest requestBody);
 
     /**
      * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
@@ -167,7 +167,7 @@ public interface ScheduledActions {
      * @return the response from a start request along with {@link Response}.
      */
     Response<StartResourceOperationResponse> virtualMachinesExecuteStartWithResponse(String locationparameter,
-        ExecuteStartContent requestBody, Context context);
+        ExecuteStartRequest requestBody, Context context);
 
     /**
      * VirtualMachinesExecuteStart: Execute start operation for a batch of virtual machines, this operation is triggered
@@ -181,7 +181,7 @@ public interface ScheduledActions {
      * @return the response from a start request.
      */
     StartResourceOperationResponse virtualMachinesExecuteStart(String locationparameter,
-        ExecuteStartContent requestBody);
+        ExecuteStartRequest requestBody);
 
     /**
      * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
@@ -196,7 +196,7 @@ public interface ScheduledActions {
      * @return the response from a create flex request along with {@link Response}.
      */
     Response<CreateFlexResourceOperationResponse> virtualMachinesExecuteCreateFlexWithResponse(String locationparameter,
-        ExecuteCreateFlexContent body, Context context);
+        ExecuteCreateFlexRequest body, Context context);
 
     /**
      * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
@@ -210,7 +210,7 @@ public interface ScheduledActions {
      * @return the response from a create flex request.
      */
     CreateFlexResourceOperationResponse virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexContent body);
+        ExecuteCreateFlexRequest body);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
@@ -225,7 +225,7 @@ public interface ScheduledActions {
      * @return the response from a create request along with {@link Response}.
      */
     Response<CreateResourceOperationResponse> virtualMachinesExecuteCreateWithResponse(String locationparameter,
-        ExecuteCreateContent requestBody, Context context);
+        ExecuteCreateRequest requestBody, Context context);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
@@ -239,7 +239,7 @@ public interface ScheduledActions {
      * @return the response from a create request.
      */
     CreateResourceOperationResponse virtualMachinesExecuteCreate(String locationparameter,
-        ExecuteCreateContent requestBody);
+        ExecuteCreateRequest requestBody);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
@@ -254,7 +254,7 @@ public interface ScheduledActions {
      * @return the response from a delete request along with {@link Response}.
      */
     Response<DeleteResourceOperationResponse> virtualMachinesExecuteDeleteWithResponse(String locationparameter,
-        ExecuteDeleteContent requestBody, Context context);
+        ExecuteDeleteRequest requestBody, Context context);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
@@ -268,7 +268,7 @@ public interface ScheduledActions {
      * @return the response from a delete request.
      */
     DeleteResourceOperationResponse virtualMachinesExecuteDelete(String locationparameter,
-        ExecuteDeleteContent requestBody);
+        ExecuteDeleteRequest requestBody);
 
     /**
      * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
@@ -282,7 +282,7 @@ public interface ScheduledActions {
      * @return this is the response from a get operations status request along with {@link Response}.
      */
     Response<GetOperationStatusResponse> virtualMachinesGetOperationStatusWithResponse(String locationparameter,
-        GetOperationStatusContent requestBody, Context context);
+        GetOperationStatusRequest requestBody, Context context);
 
     /**
      * VirtualMachinesGetOperationStatus: Polling endpoint to read status of operations performed on virtual machines.
@@ -295,7 +295,7 @@ public interface ScheduledActions {
      * @return this is the response from a get operations status request.
      */
     GetOperationStatusResponse virtualMachinesGetOperationStatus(String locationparameter,
-        GetOperationStatusContent requestBody);
+        GetOperationStatusRequest requestBody);
 
     /**
      * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
@@ -309,7 +309,7 @@ public interface ScheduledActions {
      * @return this is the response from a cancel operations request along with {@link Response}.
      */
     Response<CancelOperationsResponse> virtualMachinesCancelOperationsWithResponse(String locationparameter,
-        CancelOperationsContent requestBody, Context context);
+        CancelOperationsRequest requestBody, Context context);
 
     /**
      * VirtualMachinesCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
@@ -322,7 +322,7 @@ public interface ScheduledActions {
      * @return this is the response from a cancel operations request.
      */
     CancelOperationsResponse virtualMachinesCancelOperations(String locationparameter,
-        CancelOperationsContent requestBody);
+        CancelOperationsRequest requestBody);
 
     /**
      * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
@@ -337,7 +337,7 @@ public interface ScheduledActions {
      * @return this is the response from a get operations errors request along with {@link Response}.
      */
     Response<GetOperationErrorsResponse> virtualMachinesGetOperationErrorsWithResponse(String locationparameter,
-        GetOperationErrorsContent requestBody, Context context);
+        GetOperationErrorsRequest requestBody, Context context);
 
     /**
      * VirtualMachinesGetOperationErrors: Get error details on operation errors (like transient errors encountered,
@@ -351,7 +351,7 @@ public interface ScheduledActions {
      * @return this is the response from a get operations errors request.
      */
     GetOperationErrorsResponse virtualMachinesGetOperationErrors(String locationparameter,
-        GetOperationErrorsContent requestBody);
+        GetOperationErrorsRequest requestBody);
 
     /**
      * Get a ScheduledAction.

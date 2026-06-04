@@ -803,7 +803,7 @@ public final class ScheduledActionsUpdateSamples {
 ### ScheduledActions_VirtualMachinesCancelOperations
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
+import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import java.util.Arrays;
 
 /**
@@ -822,7 +822,7 @@ public final class ScheduledActionsVirtualMachinesCancelOperationsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesCancelOperationsWithResponse("eastus2",
-                new CancelOperationsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
+                new CancelOperationsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
                     .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
                 com.azure.core.util.Context.NONE);
     }
@@ -839,7 +839,7 @@ public final class ScheduledActionsVirtualMachinesCancelOperationsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesCancelOperationsWithResponse("eastus2",
-                new CancelOperationsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
+                new CancelOperationsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
                     .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
                 com.azure.core.util.Context.NONE);
     }
@@ -862,7 +862,7 @@ import com.azure.resourcemanager.computeschedule.models.DiagnosticsProfile;
 import com.azure.resourcemanager.computeschedule.models.DiskControllerTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskDeleteOptionTypes;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.ImageReference;
 import com.azure.resourcemanager.computeschedule.models.LinuxConfiguration;
@@ -909,7 +909,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesExecuteCreateWithResponse("eastus2",
-                new ExecuteCreateContent()
+                new ExecuteCreateRequest()
                     .withResourceConfigParameters(
                         new ResourceProvisionPayload()
                             .withVirtualMachineBaseProfile(
@@ -1030,7 +1030,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesExecuteCreateWithResponse("eastus2",
-                new ExecuteCreateContent()
+                new ExecuteCreateRequest()
                     .withResourceConfigParameters(new ResourceProvisionPayload().withResourceCount(3))
                     .withExecutionParameters(new ExecutionParameters()),
                 com.azure.core.util.Context.NONE);
@@ -1068,7 +1068,7 @@ import com.azure.resourcemanager.computeschedule.models.DiskControllerTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskDeleteOptionTypes;
 import com.azure.resourcemanager.computeschedule.models.DistributionStrategy;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.FlexProperties;
 import com.azure.resourcemanager.computeschedule.models.ImageReference;
@@ -1122,7 +1122,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateFlexSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesExecuteCreateFlexWithResponse("eastus2",
-                new ExecuteCreateFlexContent()
+                new ExecuteCreateFlexRequest()
                     .withResourceConfigParameters(
                         new ResourceProvisionFlexPayload()
                             .withVirtualMachineBaseProfile(
@@ -1253,7 +1253,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateFlexSamples {
     public static void scheduledActionsVirtualMachinesExecuteCreateFlexMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteCreateFlexWithResponse("eastus2", new ExecuteCreateFlexContent()
+            .virtualMachinesExecuteCreateFlexWithResponse("eastus2", new ExecuteCreateFlexRequest()
                 .withResourceConfigParameters(new ResourceProvisionFlexPayload().withResourceCount(24)
                     .withFlexProperties(new FlexProperties()
                         .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("Standard_D2s_v3").withRank(24),
@@ -1280,7 +1280,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateFlexSamples {
 ### ScheduledActions_VirtualMachinesExecuteDeallocate
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -1303,7 +1303,7 @@ public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
     public static void scheduledActionsVirtualMachinesExecuteDeallocateMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeallocateWithResponse("eastus2", new ExecuteDeallocateContent()
+            .virtualMachinesExecuteDeallocateWithResponse("eastus2", new ExecuteDeallocateRequest()
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
@@ -1321,7 +1321,7 @@ public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
     public static void scheduledActionsVirtualMachinesExecuteDeallocateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeallocateWithResponse("eastus2", new ExecuteDeallocateContent()
+            .virtualMachinesExecuteDeallocateWithResponse("eastus2", new ExecuteDeallocateRequest()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                         .withRetryPolicy(new RetryPolicy().withRetryCount(3)
@@ -1337,7 +1337,7 @@ public final class ScheduledActionsVirtualMachinesExecuteDeallocateSamples {
 ### ScheduledActions_VirtualMachinesExecuteDelete
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -1360,7 +1360,7 @@ public final class ScheduledActionsVirtualMachinesExecuteDeleteSamples {
     public static void scheduledActionsVirtualMachinesExecuteDeleteMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeleteWithResponse("eastus2", new ExecuteDeleteContent()
+            .virtualMachinesExecuteDeleteWithResponse("eastus2", new ExecuteDeleteRequest()
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"))),
@@ -1378,7 +1378,7 @@ public final class ScheduledActionsVirtualMachinesExecuteDeleteSamples {
     public static void scheduledActionsVirtualMachinesExecuteDeleteMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteDeleteWithResponse("eastus2", new ExecuteDeleteContent()
+            .virtualMachinesExecuteDeleteWithResponse("eastus2", new ExecuteDeleteRequest()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                         .withRetryPolicy(new RetryPolicy().withRetryCount(3)
@@ -1395,7 +1395,7 @@ public final class ScheduledActionsVirtualMachinesExecuteDeleteSamples {
 ### ScheduledActions_VirtualMachinesExecuteHibernate
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -1418,7 +1418,7 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     public static void scheduledActionsVirtualMachinesExecuteHibernateMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateContent()
+            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateRequest()
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
@@ -1436,7 +1436,7 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     public static void scheduledActionsVirtualMachinesExecuteHibernateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateContent()
+            .virtualMachinesExecuteHibernateWithResponse("eastus2", new ExecuteHibernateRequest()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                         .withRetryPolicy(new RetryPolicy().withRetryCount(3)
@@ -1452,7 +1452,7 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
 ### ScheduledActions_VirtualMachinesExecuteStart
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.ExecuteStartContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -1475,7 +1475,7 @@ public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
     public static void scheduledActionsVirtualMachinesExecuteStartMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartContent()
+            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartRequest()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                         .withRetryPolicy(new RetryPolicy().withRetryCount(3)
@@ -1497,7 +1497,7 @@ public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
     public static void scheduledActionsVirtualMachinesExecuteStartMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartContent()
+            .virtualMachinesExecuteStartWithResponse("eastus2", new ExecuteStartRequest()
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
@@ -1509,7 +1509,7 @@ public final class ScheduledActionsVirtualMachinesExecuteStartSamples {
 ### ScheduledActions_VirtualMachinesGetOperationErrors
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
 import java.util.Arrays;
 
 /**
@@ -1528,7 +1528,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesGetOperationErrorsWithResponse("eastus2",
-                new GetOperationErrorsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
+                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -1544,7 +1544,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesGetOperationErrorsWithResponse("eastus2",
-                new GetOperationErrorsContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
+                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1553,7 +1553,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
 ### ScheduledActions_VirtualMachinesGetOperationStatus
 
 ```java
-import com.azure.resourcemanager.computeschedule.models.GetOperationStatusContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
 import java.util.Arrays;
 
 /**
@@ -1572,7 +1572,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationStatusSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesGetOperationStatusWithResponse("eastus2",
-                new GetOperationStatusContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
+                new GetOperationStatusRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
                     .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
                 com.azure.core.util.Context.NONE);
     }
@@ -1589,7 +1589,7 @@ public final class ScheduledActionsVirtualMachinesGetOperationStatusSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesGetOperationStatusWithResponse("eastus2",
-                new GetOperationStatusContent().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
+                new GetOperationStatusRequest().withOperationIds(Arrays.asList("01234567-89ab-cdef-0123-456789abcdef"))
                     .withCorrelationid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
                 com.azure.core.util.Context.NONE);
     }
@@ -1606,7 +1606,7 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -1625,7 +1625,7 @@ public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     public static void scheduledActionsVirtualMachinesSubmitDeallocateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateContent()
+            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateRequest()
                 .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withTimezone("America/Los_Angeles")
@@ -1652,7 +1652,7 @@ public final class ScheduledActionsVirtualMachinesSubmitDeallocateSamples {
     public static void scheduledActionsVirtualMachinesSubmitDeallocateMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateContent()
+            .virtualMachinesSubmitDeallocateWithResponse("eastus2", new SubmitDeallocateRequest()
                 .withSchedule(new Schedule().withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
@@ -1672,7 +1672,7 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -1691,7 +1691,7 @@ public final class ScheduledActionsVirtualMachinesSubmitHibernateSamples {
     public static void scheduledActionsVirtualMachinesSubmitHibernateMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateContent()
+            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateRequest()
                 .withSchedule(new Schedule().withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
@@ -1710,7 +1710,7 @@ public final class ScheduledActionsVirtualMachinesSubmitHibernateSamples {
     public static void scheduledActionsVirtualMachinesSubmitHibernateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateContent()
+            .virtualMachinesSubmitHibernateWithResponse("eastus2", new SubmitHibernateRequest()
                 .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withTimezone("America/Los_Angeles")
@@ -1738,7 +1738,7 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitStartContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -1757,7 +1757,7 @@ public final class ScheduledActionsVirtualMachinesSubmitStartSamples {
     public static void scheduledActionsVirtualMachinesSubmitStartMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartContent()
+            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartRequest()
                 .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withTimezone("America/Los_Angeles")
@@ -1784,7 +1784,7 @@ public final class ScheduledActionsVirtualMachinesSubmitStartSamples {
     public static void scheduledActionsVirtualMachinesSubmitStartMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartContent()
+            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartRequest()
                 .withSchedule(new Schedule().withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(

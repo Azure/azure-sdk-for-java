@@ -12,10 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ExecuteDeleteRequest for delete VM operation.
+ * This is the request for hibernate.
  */
 @Fluent
-public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDeleteContent> {
+public final class SubmitHibernateRequest implements JsonSerializable<SubmitHibernateRequest> {
+    /*
+     * The schedule for the request
+     */
+    private Schedule schedule;
+
     /*
      * The execution parameters for the request
      */
@@ -31,15 +36,30 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
      */
     private String correlationid;
 
-    /*
-     * Forced delete resource item
+    /**
+     * Creates an instance of SubmitHibernateRequest class.
      */
-    private Boolean forceDeletion;
+    public SubmitHibernateRequest() {
+    }
 
     /**
-     * Creates an instance of ExecuteDeleteContent class.
+     * Get the schedule property: The schedule for the request.
+     * 
+     * @return the schedule value.
      */
-    public ExecuteDeleteContent() {
+    public Schedule schedule() {
+        return this.schedule;
+    }
+
+    /**
+     * Set the schedule property: The schedule for the request.
+     * 
+     * @param schedule the schedule value to set.
+     * @return the SubmitHibernateRequest object itself.
+     */
+    public SubmitHibernateRequest withSchedule(Schedule schedule) {
+        this.schedule = schedule;
+        return this;
     }
 
     /**
@@ -55,9 +75,9 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
      * Set the executionParameters property: The execution parameters for the request.
      * 
      * @param executionParameters the executionParameters value to set.
-     * @return the ExecuteDeleteContent object itself.
+     * @return the SubmitHibernateRequest object itself.
      */
-    public ExecuteDeleteContent withExecutionParameters(ExecutionParameters executionParameters) {
+    public SubmitHibernateRequest withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
     }
@@ -75,9 +95,9 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
      * Set the resources property: The resources for the request.
      * 
      * @param resources the resources value to set.
-     * @return the ExecuteDeleteContent object itself.
+     * @return the SubmitHibernateRequest object itself.
      */
-    public ExecuteDeleteContent withResources(Resources resources) {
+    public SubmitHibernateRequest withResources(Resources resources) {
         this.resources = resources;
         return this;
     }
@@ -95,30 +115,10 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
      * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
-     * @return the ExecuteDeleteContent object itself.
+     * @return the SubmitHibernateRequest object itself.
      */
-    public ExecuteDeleteContent withCorrelationid(String correlationid) {
+    public SubmitHibernateRequest withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
-        return this;
-    }
-
-    /**
-     * Get the forceDeletion property: Forced delete resource item.
-     * 
-     * @return the forceDeletion value.
-     */
-    public Boolean forceDeletion() {
-        return this.forceDeletion;
-    }
-
-    /**
-     * Set the forceDeletion property: Forced delete resource item.
-     * 
-     * @param forceDeletion the forceDeletion value to set.
-     * @return the ExecuteDeleteContent object itself.
-     */
-    public ExecuteDeleteContent withForceDeletion(Boolean forceDeletion) {
-        this.forceDeletion = forceDeletion;
         return this;
     }
 
@@ -128,43 +128,43 @@ public final class ExecuteDeleteContent implements JsonSerializable<ExecuteDelet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("schedule", this.schedule);
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
         jsonWriter.writeJsonField("resources", this.resources);
         jsonWriter.writeStringField("correlationid", this.correlationid);
-        jsonWriter.writeBooleanField("forceDeletion", this.forceDeletion);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ExecuteDeleteContent from the JsonReader.
+     * Reads an instance of SubmitHibernateRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ExecuteDeleteContent if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of SubmitHibernateRequest if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ExecuteDeleteContent.
+     * @throws IOException If an error occurs while reading the SubmitHibernateRequest.
      */
-    public static ExecuteDeleteContent fromJson(JsonReader jsonReader) throws IOException {
+    public static SubmitHibernateRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ExecuteDeleteContent deserializedExecuteDeleteContent = new ExecuteDeleteContent();
+            SubmitHibernateRequest deserializedSubmitHibernateRequest = new SubmitHibernateRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("executionParameters".equals(fieldName)) {
-                    deserializedExecuteDeleteContent.executionParameters = ExecutionParameters.fromJson(reader);
+                if ("schedule".equals(fieldName)) {
+                    deserializedSubmitHibernateRequest.schedule = Schedule.fromJson(reader);
+                } else if ("executionParameters".equals(fieldName)) {
+                    deserializedSubmitHibernateRequest.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
-                    deserializedExecuteDeleteContent.resources = Resources.fromJson(reader);
+                    deserializedSubmitHibernateRequest.resources = Resources.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteDeleteContent.correlationid = reader.getString();
-                } else if ("forceDeletion".equals(fieldName)) {
-                    deserializedExecuteDeleteContent.forceDeletion = reader.getNullable(JsonReader::getBoolean);
+                    deserializedSubmitHibernateRequest.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedExecuteDeleteContent;
+            return deserializedSubmitHibernateRequest;
         });
     }
 }

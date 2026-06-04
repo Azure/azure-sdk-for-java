@@ -12,17 +12,17 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class SubmitDeallocateContentTests {
+public final class SubmitDeallocateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubmitDeallocateContent model = BinaryData.fromString(
+        SubmitDeallocateRequest model = BinaryData.fromString(
             "{\"schedule\":{\"deadline\":\"2021-09-06T02:12:49Z\",\"deadLine\":\"2021-12-03T06:58:55Z\",\"timezone\":\"zvgnwzs\",\"timeZone\":\"glzufc\",\"deadlineType\":\"CompleteBy\"},\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1757371466,\"retryWindowInMinutes\":1730607260,\"onFailureAction\":\"Create\"}},\"resources\":{\"ids\":[\"fhfcb\",\"y\",\"a\"]},\"correlationid\":\"ithxqhabifpi\"}")
-            .toObject(SubmitDeallocateContent.class);
+            .toObject(SubmitDeallocateRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T02:12:49Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T06:58:55Z"), model.schedule().deadLine());
         Assertions.assertEquals("zvgnwzs", model.schedule().timezone());
@@ -40,7 +40,7 @@ public final class SubmitDeallocateContentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubmitDeallocateContent model = new SubmitDeallocateContent()
+        SubmitDeallocateRequest model = new SubmitDeallocateRequest()
             .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2021-09-06T02:12:49Z"))
                 .withDeadLine(OffsetDateTime.parse("2021-12-03T06:58:55Z"))
                 .withTimezone("zvgnwzs")
@@ -53,7 +53,7 @@ public final class SubmitDeallocateContentTests {
                         .withOnFailureAction(ResourceOperationType.CREATE)))
             .withResources(new Resources().withIds(Arrays.asList("fhfcb", "y", "a")))
             .withCorrelationid("ithxqhabifpi");
-        model = BinaryData.fromObject(model).toObject(SubmitDeallocateContent.class);
+        model = BinaryData.fromObject(model).toObject(SubmitDeallocateRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T02:12:49Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T06:58:55Z"), model.schedule().deadLine());
         Assertions.assertEquals("zvgnwzs", model.schedule().timezone());

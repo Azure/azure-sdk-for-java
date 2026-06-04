@@ -17,7 +17,7 @@ import com.azure.resourcemanager.computeschedule.models.DiagnosticsProfile;
 import com.azure.resourcemanager.computeschedule.models.DiskControllerTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.computeschedule.models.DiskDeleteOptionTypes;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.ImageReference;
 import com.azure.resourcemanager.computeschedule.models.LinuxConfiguration;
@@ -64,7 +64,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesExecuteCreateWithResponse("eastus2",
-                new ExecuteCreateContent()
+                new ExecuteCreateRequest()
                     .withResourceConfigParameters(
                         new ResourceProvisionPayload()
                             .withVirtualMachineBaseProfile(
@@ -185,7 +185,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesExecuteCreateWithResponse("eastus2",
-                new ExecuteCreateContent()
+                new ExecuteCreateRequest()
                     .withResourceConfigParameters(new ResourceProvisionPayload().withResourceCount(3))
                     .withExecutionParameters(new ExecutionParameters()),
                 com.azure.core.util.Context.NONE);

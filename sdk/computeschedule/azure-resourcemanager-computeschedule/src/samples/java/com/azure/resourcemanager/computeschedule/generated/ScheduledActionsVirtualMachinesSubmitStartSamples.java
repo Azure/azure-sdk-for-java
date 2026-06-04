@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitStartContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -30,7 +30,7 @@ public final class ScheduledActionsVirtualMachinesSubmitStartSamples {
     public static void scheduledActionsVirtualMachinesSubmitStartMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartContent()
+            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartRequest()
                 .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withDeadLine(OffsetDateTime.parse("2026-03-12T02:39:44.444Z"))
                     .withTimezone("America/Los_Angeles")
@@ -57,7 +57,7 @@ public final class ScheduledActionsVirtualMachinesSubmitStartSamples {
     public static void scheduledActionsVirtualMachinesSubmitStartMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartContent()
+            .virtualMachinesSubmitStartWithResponse("eastus2", new SubmitStartRequest()
                 .withSchedule(new Schedule().withDeadlineType(DeadlineType.UNKNOWN))
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(

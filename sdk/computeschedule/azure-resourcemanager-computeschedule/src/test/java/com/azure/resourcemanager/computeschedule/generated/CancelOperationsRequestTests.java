@@ -5,26 +5,26 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
+import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class CancelOperationsContentTests {
+public final class CancelOperationsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CancelOperationsContent model
+        CancelOperationsRequest model
             = BinaryData.fromString("{\"operationIds\":[\"f\",\"ohqkvpuvksgpls\",\"kn\"],\"correlationid\":\"n\"}")
-                .toObject(CancelOperationsContent.class);
+                .toObject(CancelOperationsRequest.class);
         Assertions.assertEquals("f", model.operationIds().get(0));
         Assertions.assertEquals("n", model.correlationid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CancelOperationsContent model
-            = new CancelOperationsContent().withOperationIds(Arrays.asList("f", "ohqkvpuvksgpls", "kn"))
+        CancelOperationsRequest model
+            = new CancelOperationsRequest().withOperationIds(Arrays.asList("f", "ohqkvpuvksgpls", "kn"))
                 .withCorrelationid("n");
-        model = BinaryData.fromObject(model).toObject(CancelOperationsContent.class);
+        model = BinaryData.fromObject(model).toObject(CancelOperationsRequest.class);
         Assertions.assertEquals("f", model.operationIds().get(0));
         Assertions.assertEquals("n", model.correlationid());
     }

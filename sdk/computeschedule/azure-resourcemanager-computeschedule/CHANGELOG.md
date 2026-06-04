@@ -1,32 +1,10 @@
 # Release History
 
-## 1.2.0-beta.2 (2026-05-06)
+## 1.2.0-beta.2 (2026-06-04)
 
 - Azure Resource Manager Compute Schedule client library for Java. This package contains Microsoft Azure SDK for Compute Schedule Management SDK. Microsoft.ComputeSchedule Resource Provider management API. Package api-version 2026-04-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
-
-#### `models.SubmitDeallocateRequest` was removed
-
-#### `models.ExecuteDeallocateRequest` was removed
-
-#### `models.ExecuteCreateRequest` was removed
-
-#### `models.GetOperationErrorsRequest` was removed
-
-#### `models.ExecuteDeleteRequest` was removed
-
-#### `models.ExecuteStartRequest` was removed
-
-#### `models.SubmitHibernateRequest` was removed
-
-#### `models.CancelOperationsRequest` was removed
-
-#### `models.GetOperationStatusRequest` was removed
-
-#### `models.ExecuteHibernateRequest` was removed
-
-#### `models.SubmitStartRequest` was removed
 
 #### `models.OccurrenceResultSummary` was modified
 
@@ -37,6 +15,14 @@
 * `validate()` was removed
 
 #### `models.RetryPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.SubmitDeallocateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteDeallocateRequest` was modified
 
 * `validate()` was removed
 
@@ -52,6 +38,10 @@
 
 * `validate()` was removed
 
+#### `models.ExecuteCreateRequest` was modified
+
+* `validate()` was removed
+
 #### `models.CancelOccurrenceRequest` was modified
 
 * `validate()` was removed
@@ -64,30 +54,9 @@
 
 * `validate()` was removed
 
-#### `models.ScheduledActions` was modified
+#### `models.GetOperationErrorsRequest` was modified
 
-* `virtualMachinesSubmitHibernate(java.lang.String,models.SubmitHibernateRequest)` was removed
-* `virtualMachinesExecuteCreateWithResponse(java.lang.String,models.ExecuteCreateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesSubmitDeallocateWithResponse(java.lang.String,models.SubmitDeallocateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteDelete(java.lang.String,models.ExecuteDeleteRequest)` was removed
-* `virtualMachinesExecuteDeleteWithResponse(java.lang.String,models.ExecuteDeleteRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesGetOperationStatusWithResponse(java.lang.String,models.GetOperationStatusRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteCreate(java.lang.String,models.ExecuteCreateRequest)` was removed
-* `virtualMachinesExecuteDeallocate(java.lang.String,models.ExecuteDeallocateRequest)` was removed
-* `virtualMachinesCancelOperationsWithResponse(java.lang.String,models.CancelOperationsRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesGetOperationErrorsWithResponse(java.lang.String,models.GetOperationErrorsRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteHibernate(java.lang.String,models.ExecuteHibernateRequest)` was removed
-* `virtualMachinesExecuteStart(java.lang.String,models.ExecuteStartRequest)` was removed
-* `virtualMachinesExecuteHibernateWithResponse(java.lang.String,models.ExecuteHibernateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesSubmitHibernateWithResponse(java.lang.String,models.SubmitHibernateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteDeallocateWithResponse(java.lang.String,models.ExecuteDeallocateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesSubmitDeallocate(java.lang.String,models.SubmitDeallocateRequest)` was removed
-* `virtualMachinesGetOperationStatus(java.lang.String,models.GetOperationStatusRequest)` was removed
-* `virtualMachinesGetOperationErrors(java.lang.String,models.GetOperationErrorsRequest)` was removed
-* `virtualMachinesExecuteStartWithResponse(java.lang.String,models.ExecuteStartRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesSubmitStartWithResponse(java.lang.String,models.SubmitStartRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesCancelOperations(java.lang.String,models.CancelOperationsRequest)` was removed
-* `virtualMachinesSubmitStart(java.lang.String,models.SubmitStartRequest)` was removed
+* `validate()` was removed
 
 #### `models.ScheduledActionProperties` was modified
 
@@ -95,11 +64,11 @@
 
 #### `models.ResourceProvisionPayload` was modified
 
-* `withResourceOverrides(java.util.List)` was removed
 * `withBaseProfile(java.util.Map)` was removed
-* `resourceOverrides()` was removed
-* `validate()` was removed
 * `baseProfile()` was removed
+* `validate()` was removed
+* `withResourceOverrides(java.util.List)` was removed
+* `resourceOverrides()` was removed
 
 #### `models.OccurrenceProperties` was modified
 
@@ -113,11 +82,27 @@
 
 * `validate()` was removed
 
+#### `models.ExecuteDeleteRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteStartRequest` was modified
+
+* `validate()` was removed
+
 #### `models.ResourceOperation` was modified
 
 * `validate()` was removed
 
 #### `models.ScheduledActionsSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.SubmitHibernateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CancelOperationsRequest` was modified
 
 * `validate()` was removed
 
@@ -141,6 +126,14 @@
 
 * `validate()` was removed
 
+#### `models.GetOperationStatusRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteHibernateRequest` was modified
+
+* `validate()` was removed
+
 #### `models.ScheduledActionResources` was modified
 
 * `models.ScheduledActionProperties properties()` -> `models.ScheduledActionsExtensionProperties properties()`
@@ -154,6 +147,10 @@
 * `validate()` was removed
 
 #### `models.NotificationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SubmitStartRequest` was modified
 
 * `validate()` was removed
 
@@ -199,11 +196,7 @@
 
 * `models.SshPublicKey` was added
 
-* `models.ExecuteCreateFlexContent` was added
-
 * `models.TerminateNotificationProfile` was added
-
-* `models.SubmitStartContent` was added
 
 * `models.ZonePlacementPolicyType` was added
 
@@ -243,11 +236,7 @@
 
 * `models.ScheduledActionsExtensionProperties` was added
 
-* `models.ExecuteDeleteContent` was added
-
 * `models.PriorityType` was added
-
-* `models.ExecuteStartContent` was added
 
 * `models.ApiEntityReference` was added
 
@@ -267,8 +256,6 @@
 
 * `models.NetworkApiVersion` was added
 
-* `models.ExecuteDeallocateContent` was added
-
 * `models.DiagnosticsProfile` was added
 
 * `models.VirtualMachineIdentity` was added
@@ -284,8 +271,6 @@
 * `models.ProtocolTypes` was added
 
 * `models.NetworkProfile` was added
-
-* `models.SubmitHibernateContent` was added
 
 * `models.Mode` was added
 
@@ -319,8 +304,6 @@
 
 * `models.EventGridAndResourceGraph` was added
 
-* `models.ExecuteCreateContent` was added
-
 * `models.LinuxVMGuestPatchAutomaticByPlatformRebootSetting` was added
 
 * `models.OperatingSystemTypes` was added
@@ -328,8 +311,6 @@
 * `models.AdditionalUnattendContentComponentName` was added
 
 * `models.DiskEncryptionSettings` was added
-
-* `models.GetOperationErrorsContent` was added
 
 * `models.DiskDetachOptionTypes` was added
 
@@ -353,17 +334,11 @@
 
 * `models.UserAssignedIdentitiesValue` was added
 
-* `models.ExecuteHibernateContent` was added
-
 * `models.BulkActionVMExtension` was added
 
 * `models.OSDisk` was added
 
-* `models.SubmitDeallocateContent` was added
-
 * `models.VmSizeProfile` was added
-
-* `models.GetOperationStatusContent` was added
 
 * `models.NetworkInterfaceReferenceProperties` was added
 
@@ -405,8 +380,6 @@
 
 * `models.VirtualMachineIpTag` was added
 
-* `models.CancelOperationsContent` was added
-
 * `models.DiskCreateOptionTypes` was added
 
 * `models.SettingNames` was added
@@ -416,6 +389,8 @@
 * `models.ResourceProvisionFlexPayload` was added
 
 * `models.VirtualMachineNetworkInterfaceIPConfigurationProperties` was added
+
+* `models.ExecuteCreateFlexRequest` was added
 
 * `models.VirtualMachinePublicIPAddressConfiguration` was added
 
@@ -439,8 +414,8 @@
 
 #### `models.RetryPolicy` was modified
 
-* `withOnFailureAction(models.ResourceOperationType)` was added
 * `onFailureAction()` was added
+* `withOnFailureAction(models.ResourceOperationType)` was added
 
 #### `models.ResourceOperationType` was modified
 
@@ -449,35 +424,13 @@
 
 #### `models.ScheduledActions` was modified
 
-* `virtualMachinesExecuteDelete(java.lang.String,models.ExecuteDeleteContent)` was added
-* `virtualMachinesExecuteCreateWithResponse(java.lang.String,models.ExecuteCreateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesGetOperationErrorsWithResponse(java.lang.String,models.GetOperationErrorsContent,com.azure.core.util.Context)` was added
-* `virtualMachinesCancelOperationsWithResponse(java.lang.String,models.CancelOperationsContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteStartWithResponse(java.lang.String,models.ExecuteStartContent,com.azure.core.util.Context)` was added
-* `virtualMachinesGetOperationErrors(java.lang.String,models.GetOperationErrorsContent)` was added
-* `virtualMachinesExecuteDeallocateWithResponse(java.lang.String,models.ExecuteDeallocateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteHibernateWithResponse(java.lang.String,models.ExecuteHibernateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteCreateFlex(java.lang.String,models.ExecuteCreateFlexContent)` was added
-* `virtualMachinesSubmitStartWithResponse(java.lang.String,models.SubmitStartContent,com.azure.core.util.Context)` was added
-* `virtualMachinesSubmitDeallocate(java.lang.String,models.SubmitDeallocateContent)` was added
-* `virtualMachinesExecuteDeallocate(java.lang.String,models.ExecuteDeallocateContent)` was added
-* `virtualMachinesExecuteCreate(java.lang.String,models.ExecuteCreateContent)` was added
-* `virtualMachinesSubmitStart(java.lang.String,models.SubmitStartContent)` was added
-* `virtualMachinesGetOperationStatus(java.lang.String,models.GetOperationStatusContent)` was added
-* `virtualMachinesExecuteDeleteWithResponse(java.lang.String,models.ExecuteDeleteContent,com.azure.core.util.Context)` was added
-* `virtualMachinesCancelOperations(java.lang.String,models.CancelOperationsContent)` was added
-* `virtualMachinesGetOperationStatusWithResponse(java.lang.String,models.GetOperationStatusContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteStart(java.lang.String,models.ExecuteStartContent)` was added
-* `virtualMachinesSubmitHibernate(java.lang.String,models.SubmitHibernateContent)` was added
-* `virtualMachinesSubmitDeallocateWithResponse(java.lang.String,models.SubmitDeallocateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteHibernate(java.lang.String,models.ExecuteHibernateContent)` was added
-* `virtualMachinesSubmitHibernateWithResponse(java.lang.String,models.SubmitHibernateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteCreateFlexWithResponse(java.lang.String,models.ExecuteCreateFlexContent,com.azure.core.util.Context)` was added
+* `virtualMachinesExecuteCreateFlex(java.lang.String,models.ExecuteCreateFlexRequest)` was added
+* `virtualMachinesExecuteCreateFlexWithResponse(java.lang.String,models.ExecuteCreateFlexRequest,com.azure.core.util.Context)` was added
 
 #### `models.ResourceProvisionPayload` was modified
 
-* `virtualMachineBaseProfile()` was added
 * `withVirtualMachineBaseProfile(models.BulkVMConfiguration)` was added
+* `virtualMachineBaseProfile()` was added
 * `virtualMachineOverrides()` was added
 * `withVirtualMachineOverrides(java.util.List)` was added
 

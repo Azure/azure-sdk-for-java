@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
@@ -14,12 +14,12 @@ import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class ExecuteDeleteContentTests {
+public final class ExecuteDeleteRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteDeleteContent model = BinaryData.fromString(
+        ExecuteDeleteRequest model = BinaryData.fromString(
             "{\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":549865384,\"retryWindowInMinutes\":1223650177,\"onFailureAction\":\"Hibernate\"}},\"resources\":{\"ids\":[\"pqwcciuqgbdbutau\"]},\"correlationid\":\"btkuwhh\",\"forceDeletion\":true}")
-            .toObject(ExecuteDeleteContent.class);
+            .toObject(ExecuteDeleteRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
         Assertions.assertEquals(549865384, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1223650177, model.executionParameters().retryPolicy().retryWindowInMinutes());
@@ -32,7 +32,7 @@ public final class ExecuteDeleteContentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteDeleteContent model = new ExecuteDeleteContent()
+        ExecuteDeleteRequest model = new ExecuteDeleteRequest()
             .withExecutionParameters(new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                 .withRetryPolicy(new RetryPolicy().withRetryCount(549865384)
                     .withRetryWindowInMinutes(1223650177)
@@ -40,7 +40,7 @@ public final class ExecuteDeleteContentTests {
             .withResources(new Resources().withIds(Arrays.asList("pqwcciuqgbdbutau")))
             .withCorrelationid("btkuwhh")
             .withForceDeletion(true);
-        model = BinaryData.fromObject(model).toObject(ExecuteDeleteContent.class);
+        model = BinaryData.fromObject(model).toObject(ExecuteDeleteRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
         Assertions.assertEquals(549865384, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1223650177, model.executionParameters().retryPolicy().retryWindowInMinutes());

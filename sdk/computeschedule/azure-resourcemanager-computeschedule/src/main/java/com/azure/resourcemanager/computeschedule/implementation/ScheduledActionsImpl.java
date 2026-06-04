@@ -24,21 +24,21 @@ import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionIn
 import com.azure.resourcemanager.computeschedule.fluent.models.ScheduledActionResourceInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
-import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
+import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsResponse;
 import com.azure.resourcemanager.computeschedule.models.CreateFlexResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.CreateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeallocateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeleteResourceOperationResponse;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteStartContent;
-import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
+import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
 import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsResponse;
-import com.azure.resourcemanager.computeschedule.models.GetOperationStatusContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
 import com.azure.resourcemanager.computeschedule.models.GetOperationStatusResponse;
 import com.azure.resourcemanager.computeschedule.models.HibernateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.Occurrence;
@@ -50,9 +50,9 @@ import com.azure.resourcemanager.computeschedule.models.ScheduledAction;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionResource;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActions;
 import com.azure.resourcemanager.computeschedule.models.StartResourceOperationResponse;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
-import com.azure.resourcemanager.computeschedule.models.SubmitHibernateContent;
-import com.azure.resourcemanager.computeschedule.models.SubmitStartContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
 
 public final class ScheduledActionsImpl implements ScheduledActions {
     private static final ClientLogger LOGGER = new ClientLogger(ScheduledActionsImpl.class);
@@ -68,7 +68,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<DeallocateResourceOperationResponse> virtualMachinesSubmitDeallocateWithResponse(
-        String locationparameter, SubmitDeallocateContent requestBody, Context context) {
+        String locationparameter, SubmitDeallocateRequest requestBody, Context context) {
         Response<DeallocateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesSubmitDeallocateWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -76,7 +76,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public DeallocateResourceOperationResponse virtualMachinesSubmitDeallocate(String locationparameter,
-        SubmitDeallocateContent requestBody) {
+        SubmitDeallocateRequest requestBody) {
         DeallocateResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesSubmitDeallocate(locationparameter, requestBody);
         if (inner != null) {
@@ -87,7 +87,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<HibernateResourceOperationResponse> virtualMachinesSubmitHibernateWithResponse(
-        String locationparameter, SubmitHibernateContent requestBody, Context context) {
+        String locationparameter, SubmitHibernateRequest requestBody, Context context) {
         Response<HibernateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesSubmitHibernateWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -95,7 +95,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public HibernateResourceOperationResponse virtualMachinesSubmitHibernate(String locationparameter,
-        SubmitHibernateContent requestBody) {
+        SubmitHibernateRequest requestBody) {
         HibernateResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesSubmitHibernate(locationparameter, requestBody);
         if (inner != null) {
@@ -106,7 +106,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<StartResourceOperationResponse> virtualMachinesSubmitStartWithResponse(String locationparameter,
-        SubmitStartContent requestBody, Context context) {
+        SubmitStartRequest requestBody, Context context) {
         Response<StartResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesSubmitStartWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -114,7 +114,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public StartResourceOperationResponse virtualMachinesSubmitStart(String locationparameter,
-        SubmitStartContent requestBody) {
+        SubmitStartRequest requestBody) {
         StartResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesSubmitStart(locationparameter, requestBody);
         if (inner != null) {
@@ -125,7 +125,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<DeallocateResourceOperationResponse> virtualMachinesExecuteDeallocateWithResponse(
-        String locationparameter, ExecuteDeallocateContent requestBody, Context context) {
+        String locationparameter, ExecuteDeallocateRequest requestBody, Context context) {
         Response<DeallocateResourceOperationResponseInner> inner = this.serviceClient()
             .virtualMachinesExecuteDeallocateWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -133,7 +133,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public DeallocateResourceOperationResponse virtualMachinesExecuteDeallocate(String locationparameter,
-        ExecuteDeallocateContent requestBody) {
+        ExecuteDeallocateRequest requestBody) {
         DeallocateResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesExecuteDeallocate(locationparameter, requestBody);
         if (inner != null) {
@@ -144,7 +144,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<HibernateResourceOperationResponse> virtualMachinesExecuteHibernateWithResponse(
-        String locationparameter, ExecuteHibernateContent requestBody, Context context) {
+        String locationparameter, ExecuteHibernateRequest requestBody, Context context) {
         Response<HibernateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteHibernateWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -152,7 +152,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public HibernateResourceOperationResponse virtualMachinesExecuteHibernate(String locationparameter,
-        ExecuteHibernateContent requestBody) {
+        ExecuteHibernateRequest requestBody) {
         HibernateResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesExecuteHibernate(locationparameter, requestBody);
         if (inner != null) {
@@ -163,7 +163,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<StartResourceOperationResponse> virtualMachinesExecuteStartWithResponse(String locationparameter,
-        ExecuteStartContent requestBody, Context context) {
+        ExecuteStartRequest requestBody, Context context) {
         Response<StartResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteStartWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -171,7 +171,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public StartResourceOperationResponse virtualMachinesExecuteStart(String locationparameter,
-        ExecuteStartContent requestBody) {
+        ExecuteStartRequest requestBody) {
         StartResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesExecuteStart(locationparameter, requestBody);
         if (inner != null) {
@@ -182,7 +182,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<CreateFlexResourceOperationResponse> virtualMachinesExecuteCreateFlexWithResponse(
-        String locationparameter, ExecuteCreateFlexContent body, Context context) {
+        String locationparameter, ExecuteCreateFlexRequest body, Context context) {
         Response<CreateFlexResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteCreateFlexWithResponse(locationparameter, body, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -190,7 +190,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public CreateFlexResourceOperationResponse virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexContent body) {
+        ExecuteCreateFlexRequest body) {
         CreateFlexResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesExecuteCreateFlex(locationparameter, body);
         if (inner != null) {
@@ -201,7 +201,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<CreateResourceOperationResponse> virtualMachinesExecuteCreateWithResponse(String locationparameter,
-        ExecuteCreateContent requestBody, Context context) {
+        ExecuteCreateRequest requestBody, Context context) {
         Response<CreateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteCreateWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -209,7 +209,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public CreateResourceOperationResponse virtualMachinesExecuteCreate(String locationparameter,
-        ExecuteCreateContent requestBody) {
+        ExecuteCreateRequest requestBody) {
         CreateResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesExecuteCreate(locationparameter, requestBody);
         if (inner != null) {
@@ -220,7 +220,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<DeleteResourceOperationResponse> virtualMachinesExecuteDeleteWithResponse(String locationparameter,
-        ExecuteDeleteContent requestBody, Context context) {
+        ExecuteDeleteRequest requestBody, Context context) {
         Response<DeleteResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteDeleteWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -228,7 +228,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public DeleteResourceOperationResponse virtualMachinesExecuteDelete(String locationparameter,
-        ExecuteDeleteContent requestBody) {
+        ExecuteDeleteRequest requestBody) {
         DeleteResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesExecuteDelete(locationparameter, requestBody);
         if (inner != null) {
@@ -239,7 +239,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<GetOperationStatusResponse> virtualMachinesGetOperationStatusWithResponse(String locationparameter,
-        GetOperationStatusContent requestBody, Context context) {
+        GetOperationStatusRequest requestBody, Context context) {
         Response<GetOperationStatusResponseInner> inner = this.serviceClient()
             .virtualMachinesGetOperationStatusWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -247,7 +247,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public GetOperationStatusResponse virtualMachinesGetOperationStatus(String locationparameter,
-        GetOperationStatusContent requestBody) {
+        GetOperationStatusRequest requestBody) {
         GetOperationStatusResponseInner inner
             = this.serviceClient().virtualMachinesGetOperationStatus(locationparameter, requestBody);
         if (inner != null) {
@@ -258,7 +258,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<CancelOperationsResponse> virtualMachinesCancelOperationsWithResponse(String locationparameter,
-        CancelOperationsContent requestBody, Context context) {
+        CancelOperationsRequest requestBody, Context context) {
         Response<CancelOperationsResponseInner> inner
             = this.serviceClient().virtualMachinesCancelOperationsWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -266,7 +266,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public CancelOperationsResponse virtualMachinesCancelOperations(String locationparameter,
-        CancelOperationsContent requestBody) {
+        CancelOperationsRequest requestBody) {
         CancelOperationsResponseInner inner
             = this.serviceClient().virtualMachinesCancelOperations(locationparameter, requestBody);
         if (inner != null) {
@@ -277,7 +277,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<GetOperationErrorsResponse> virtualMachinesGetOperationErrorsWithResponse(String locationparameter,
-        GetOperationErrorsContent requestBody, Context context) {
+        GetOperationErrorsRequest requestBody, Context context) {
         Response<GetOperationErrorsResponseInner> inner = this.serviceClient()
             .virtualMachinesGetOperationErrorsWithResponse(locationparameter, requestBody, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -285,7 +285,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public GetOperationErrorsResponse virtualMachinesGetOperationErrors(String locationparameter,
-        GetOperationErrorsContent requestBody) {
+        GetOperationErrorsRequest requestBody) {
         GetOperationErrorsResponseInner inner
             = this.serviceClient().virtualMachinesGetOperationErrors(locationparameter, requestBody);
         if (inner != null) {

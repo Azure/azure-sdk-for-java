@@ -12,17 +12,17 @@ import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
-import com.azure.resourcemanager.computeschedule.models.SubmitStartContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
-public final class SubmitStartContentTests {
+public final class SubmitStartRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubmitStartContent model = BinaryData.fromString(
+        SubmitStartRequest model = BinaryData.fromString(
             "{\"schedule\":{\"deadline\":\"2021-08-23T15:48:59Z\",\"deadLine\":\"2021-11-03T12:14:35Z\",\"timezone\":\"eotusivyevc\",\"timeZone\":\"qi\",\"deadlineType\":\"CompleteBy\"},\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1255006284,\"retryWindowInMinutes\":1282249013,\"onFailureAction\":\"Delete\"}},\"resources\":{\"ids\":[\"fygxgispemvtzfk\",\"fublj\",\"fxqeof\",\"aeqjhqjbasvms\"]},\"correlationid\":\"jqul\"}")
-            .toObject(SubmitStartContent.class);
+            .toObject(SubmitStartRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T15:48:59Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T12:14:35Z"), model.schedule().deadLine());
         Assertions.assertEquals("eotusivyevc", model.schedule().timezone());
@@ -40,7 +40,7 @@ public final class SubmitStartContentTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubmitStartContent model = new SubmitStartContent()
+        SubmitStartRequest model = new SubmitStartRequest()
             .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2021-08-23T15:48:59Z"))
                 .withDeadLine(OffsetDateTime.parse("2021-11-03T12:14:35Z"))
                 .withTimezone("eotusivyevc")
@@ -54,7 +54,7 @@ public final class SubmitStartContentTests {
             .withResources(
                 new Resources().withIds(Arrays.asList("fygxgispemvtzfk", "fublj", "fxqeof", "aeqjhqjbasvms")))
             .withCorrelationid("jqul");
-        model = BinaryData.fromObject(model).toObject(SubmitStartContent.class);
+        model = BinaryData.fromObject(model).toObject(SubmitStartRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T15:48:59Z"), model.schedule().deadline());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T12:14:35Z"), model.schedule().deadLine());
         Assertions.assertEquals("eotusivyevc", model.schedule().timezone());
