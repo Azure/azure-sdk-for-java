@@ -2219,33 +2219,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(blobName, blobs.get(0).getName());
     }
 
-    // TODO: listBlobsArrowXmlFallback — needs a non-Photon account without the preprod endpoint hack.
-    // Currently all test accounts use preprod.blob.core.windows.net which only resolves for the Photon account.
-    // @LiveOnly
-    // @Test
-    // public void listBlobsArrowXmlFallback() {
-    //     // Use a non-Photon account — service should return XML even though Arrow was requested
-    //     String altContainerName = generateContainerName();
-    //     BlobContainerClient altCc = premiumBlobServiceClient.getBlobContainerClient(altContainerName);
-    //     altCc.create();
-    //
-    //     try {
-    //         String blobName = generateBlobName();
-    //         altCc.getBlobClient(blobName)
-    //             .getBlockBlobClient()
-    //             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-    //
-    //         ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
-    //         List<BlobItem> blobs = altCc.listBlobs(options, null).stream().collect(Collectors.toList());
-    //
-    //         // Should still work via XML fallback
-    //         assertEquals(1, blobs.size());
-    //         assertEquals(blobName, blobs.get(0).getName());
-    //     } finally {
-    //         altCc.delete();
-    //     }
-    // }
-
     @LiveOnly
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
