@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -1932,7 +1933,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         CosmosAsyncClient newClient = null;
         String faultInjectionRuleId = "barrier-429-read-yield-" + UUID.randomUUID();
-        System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
         FaultInjectionRule barrierThrottleRule =
             new FaultInjectionRuleBuilder(faultInjectionRuleId)
                 .condition(
@@ -1950,6 +1950,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .build();
 
         try {
+            System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
             newClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
@@ -2012,7 +2013,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         CosmosAsyncClient newClient = null;
         String faultInjectionRuleId = "barrier-429-write-408-" + UUID.randomUUID();
-        System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
         FaultInjectionRule barrierThrottleRule =
             new FaultInjectionRuleBuilder(faultInjectionRuleId)
                 .condition(
@@ -2030,6 +2030,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .build();
 
         try {
+            System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
             newClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
@@ -2064,9 +2065,15 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 // If we get here, the barrier was met before throttle exhaustion (possible if
                 // GCLSN catches up between retries). That's acceptable — skip the assertion.
             } catch (Exception e) {
-                // Validate: the write operation failed with 408 due to barrier throttle exhaustion,
-                // or was retried and eventually succeeded. The fault injection rule should have been hit.
+                // Validate: the write barrier failed due to throttle exhaustion and surfaced as a
+                // 408 (RequestTimeout) with the SERVER_WRITE_BARRIER_THROTTLED (21013) substatus.
                 assertThat(barrierThrottleRule.getHitCount()).isGreaterThanOrEqualTo(1);
+                assertThat(e).isInstanceOf(CosmosException.class);
+                CosmosException cosmosException = (CosmosException) e;
+                assertThat(cosmosException.getStatusCode())
+                    .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(cosmosException.getSubStatusCode())
+                    .isEqualTo(HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
             }
 
         } finally {
@@ -2091,7 +2098,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         CosmosAsyncClient newClient = null;
         String faultInjectionRuleId = "barrier-429-recover-" + UUID.randomUUID();
-        System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
         FaultInjectionRule barrierThrottleRule =
             new FaultInjectionRuleBuilder(faultInjectionRuleId)
                 .condition(
@@ -2110,6 +2116,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .build();
 
         try {
+            System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
             newClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)

@@ -442,8 +442,10 @@ public class QuorumReader {
                     // instead of returning QuorumNotSelected which would trigger an unnecessary primary read attempt.
                     if (!responseResult.isEmpty() && responseResult.stream().allMatch(r -> r.isThrottledException)) {
                         logger.info("QuorumReader: ensureQuorumSelectedStoreResponse - All contacted replicas returned "
-                            + "429 Too Many Requests. Yielding early to ResourceThrottleRetryPolicy.");
+                            + "429 Too Many Requests.");
                         if (this.enableBarrierEarlyYieldOn429) {
+                            logger.info("QuorumReader: ensureQuorumSelectedStoreResponse - Yielding early to "
+                                + "ResourceThrottleRetryPolicy.");
                             return Mono.error(responseResult.get(0).getException());
                         }
                     }
@@ -706,9 +708,9 @@ public class QuorumReader {
                     // Check if all contacted replicas returned 429 Too Many Requests.
                     // Yield early to let ResourceThrottleRetryPolicy handle the retry with appropriate backoff.
                     if (!responses.isEmpty() && responses.stream().allMatch(r -> r.isThrottledException)) {
-                        logger.info("QuorumReader: waitForReadBarrierAsync - All contacted replicas returned 429 Too Many Requests. "
-                            + "Yielding early to ResourceThrottleRetryPolicy.");
+                        logger.info("QuorumReader: waitForReadBarrierAsync - All contacted replicas returned 429 Too Many Requests.");
                         if (this.enableBarrierEarlyYieldOn429) {
+                            logger.info("QuorumReader: waitForReadBarrierAsync - Yielding early to ResourceThrottleRetryPolicy.");
                             return Flux.error(responses.get(0).getException());
                         }
                     }
@@ -804,8 +806,10 @@ public class QuorumReader {
                                            // Yield early to let ResourceThrottleRetryPolicy handle the retry with appropriate backoff.
                                            if (!responses.isEmpty() && responses.stream().allMatch(r -> r.isThrottledException)) {
                                                logger.info("QuorumReader: waitForReadBarrierAsync - All contacted replicas returned 429 "
-                                                   + "Too Many Requests in multi-region barrier. Yielding early to ResourceThrottleRetryPolicy.");
+                                                   + "Too Many Requests in multi-region barrier.");
                                                if (this.enableBarrierEarlyYieldOn429) {
+                                                   logger.info("QuorumReader: waitForReadBarrierAsync - Yielding early to "
+                                                       + "ResourceThrottleRetryPolicy.");
                                                    return Flux.error(responses.get(0).getException());
                                                }
                                            }
