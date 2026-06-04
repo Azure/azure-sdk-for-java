@@ -1,0 +1,4 @@
+directory: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/DesktopVirtualization
+commit: f986464b93a57f9090a94b207ce303ef456703ce
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
