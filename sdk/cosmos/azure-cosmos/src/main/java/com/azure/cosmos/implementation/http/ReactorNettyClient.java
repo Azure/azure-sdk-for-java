@@ -39,7 +39,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
-import java.util.function.BooleanSupplier;
 
 /**
  * HttpClient that is implemented using reactor-netty.
@@ -60,18 +59,6 @@ public class ReactorNettyClient implements HttpClient {
     private ConnectionProvider connectionProvider;
     private String reactorNetworkLogCategory;
     private Logger wireTapLogger;
-
-    // Defensive scope for HTTP/2 PING keepalive installation. Defaults to a
-    // closed gate (no PING) so that during the HttpClient bootstrap window --
-    // before GlobalEndpointManager has finished the first DatabaseAccount
-    // refresh -- no PING handlers are installed. The first DatabaseAccount
-    // fetch itself is over H1.1 to the standard gateway, so it would not
-    // have triggered PING anyway.
-    //
-    // MUST be assigned a supplier that does NOT capture RxDocumentClientImpl
-    // (CosmosAsyncClient) transitively -- see HttpClient#setHttp2PingScopeSupplier
-    // and GlobalEndpointManager#getHasThinClientReadLocationsRef().
-    private volatile BooleanSupplier http2PingScopeSupplier = () -> false;
 
     private ReactorNettyClient() {}
 
@@ -165,15 +152,10 @@ public class ReactorNettyClient implements HttpClient {
                 // For H2, doOnConnected fires for both the parent TCP channel and child stream
                 // channels. We install on the parent channel via Http2MultiplexHandler detection.
                 //
-                // Scoping (defensive): PING is only installed when both
-                //   (a) the global kill-switch Configs.isHttp2PingHealthEnabled() is true, and
-                //   (b) the late-bound http2PingScopeSupplier returns true -- which today is
-                //       wired to GlobalEndpointManager.hasThinClientReadLocations(), so PING
-                //       is restricted to clients whose account is configured for thin client.
-                // This guard makes the existing implicit "H2 == thin client" behavior explicit
-                // and prevents future changes that enable H2 elsewhere from silently turning on
-                // PING on non-thin-client connections.
-                if (Configs.isHttp2PingHealthEnabled() && this.http2PingScopeSupplier.getAsBoolean()) {
+                // Gated by the global kill-switch Configs.isHttp2PingHealthEnabled() (system
+                // property). The handler re-checks this gate per tick, so toggling it at runtime
+                // immediately stops/resumes PINGing on already-installed connections.
+                if (Configs.isHttp2PingHealthEnabled()) {
                     // Resolve to the parent (TCP) channel -- doOnConnected may fire for
                     // child stream channels where Http2MultiplexHandler is absent.
                     Channel ch = connection.channel();
@@ -183,13 +165,8 @@ public class ReactorNettyClient implements HttpClient {
                         int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
                         int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
                         if (pingIntervalSeconds > 0) {
-                            // Pass the same scope supplier into the handler so it re-checks
-                            // per tick. If the account flips thin-client off after the handler
-                            // was installed, the supplier returns false on the next scheduled
-                            // tick and the handler cancels itself.
-                            BooleanSupplier scopeForHandler = this.http2PingScopeSupplier;
                             Http2PingHandler.installIfAbsent(parent, pingIntervalSeconds,
-                                pingTimeoutSeconds, pingFailureThreshold, scopeForHandler);
+                                pingTimeoutSeconds, pingFailureThreshold);
                         }
                     }
                 }
@@ -324,20 +301,6 @@ public class ReactorNettyClient implements HttpClient {
     public void shutdown() {
         if (this.connectionProvider != null) {
             this.connectionProvider.dispose();
-        }
-    }
-
-    @Override
-    public void setHttp2PingScopeSupplier(BooleanSupplier supplier) {
-        // The supplier is read inside doOnConnected on a Netty event loop. We use a
-        // volatile write here so the lambda observes the latest value without locking.
-        //
-        // IMPORTANT: callers must pass a supplier that does NOT capture
-        // RxDocumentClientImpl / GlobalEndpointManager. See
-        // GlobalEndpointManager.getHasThinClientReadLocationsRef() for the
-        // memory-safety rationale and the bound-method-reference pattern.
-        if (supplier != null) {
-            this.http2PingScopeSupplier = supplier;
         }
     }
 

@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BooleanSupplier;
 
 /**
  * This class uses a shared HttpClient for multiple Cosmos Clients.
@@ -42,12 +41,6 @@ public class SharedGatewayHttpClient implements HttpClient {
 
     private SharedGatewayHttpClient(HttpClientConfig httpClientConfig) {
         this.httpClient = HttpClient.createFixed(httpClientConfig);
-        // Defensive scoping: HTTP/2 PING keepalive is always disabled on the shared
-        // gateway HttpClient. Multiple CosmosAsyncClient instances may share this
-        // underlying client with differing thin-client configurations, so a single
-        // PING decision cannot represent all callers. Per-client scope suppliers
-        // registered via setHttp2PingScopeSupplier are intentionally ignored here.
-        this.httpClient.setHttp2PingScopeSupplier(() -> false);
     }
 
     @Override
@@ -75,11 +68,5 @@ public class SharedGatewayHttpClient implements HttpClient {
                 sharedGatewayHttpClient = null;
             }
         }
-    }
-
-    @Override
-    public void setHttp2PingScopeSupplier(BooleanSupplier supplier) {
-        // Intentional no-op: PING is permanently disabled on the shared HttpClient.
-        // See constructor for rationale.
     }
 }

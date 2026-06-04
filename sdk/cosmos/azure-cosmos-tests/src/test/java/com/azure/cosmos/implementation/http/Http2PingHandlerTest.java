@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   <li>PING ACK with mismatched payload is ignored (late ACK after timeout cannot mask degradation).</li>
  *   <li>{@code installIfAbsent} is idempotent.</li>
  *   <li>Constructor clamps non-positive interval / timeout / threshold to safe minimums.</li>
- *   <li>Null {@code scopeSupplier} is treated as always-true.</li>
  * </ul>
  * Time-based behaviors (interval-driven PING send, timeout-driven failure increment, threshold-driven
  * close) are exercised by the integration test {@code Http2PingKeepaliveTest} under Docker with real
@@ -32,7 +30,7 @@ public class Http2PingHandlerTest {
 
     @Test(groups = "unit")
     public void ackWithMatchingPayload_resetsState() throws Exception {
-        Http2PingHandler handler = new Http2PingHandler(1, 1, 3, () -> true);
+        Http2PingHandler handler = new Http2PingHandler(1, 1, 3);
         EmbeddedChannel channel = new EmbeddedChannel(handler);
 
         // Simulate an outstanding PING #5 that recorded one failure.
@@ -50,7 +48,7 @@ public class Http2PingHandlerTest {
 
     @Test(groups = "unit")
     public void ackWithMismatchedPayload_doesNotResetState() throws Exception {
-        Http2PingHandler handler = new Http2PingHandler(1, 1, 3, () -> true);
+        Http2PingHandler handler = new Http2PingHandler(1, 1, 3);
         EmbeddedChannel channel = new EmbeddedChannel(handler);
 
         long outstandingAt = System.nanoTime();
@@ -72,8 +70,8 @@ public class Http2PingHandlerTest {
     public void installIfAbsent_isIdempotent() {
         EmbeddedChannel channel = new EmbeddedChannel();
 
-        Http2PingHandler.installIfAbsent(channel, 1, 1, 3, () -> true);
-        Http2PingHandler.installIfAbsent(channel, 1, 1, 3, () -> true);
+        Http2PingHandler.installIfAbsent(channel, 1, 1, 3);
+        Http2PingHandler.installIfAbsent(channel, 1, 1, 3);
 
         long count = channel.pipeline().toMap().values().stream()
             .filter(h -> h instanceof Http2PingHandler)
@@ -85,37 +83,11 @@ public class Http2PingHandlerTest {
 
     @Test(groups = "unit")
     public void constructor_clampsNonPositiveValues() throws Exception {
-        Http2PingHandler handler = new Http2PingHandler(-5, 0, -1, () -> true);
+        Http2PingHandler handler = new Http2PingHandler(-5, 0, -1);
 
         assertThat((long) getField(handler, "pingIntervalNanos")).isEqualTo(TimeUnit.SECONDS.toNanos(1));
         assertThat((long) getField(handler, "pingTimeoutNanos")).isEqualTo(TimeUnit.SECONDS.toNanos(1));
         assertThat((int) getField(handler, "failureThreshold")).isEqualTo(1);
-    }
-
-    @Test(groups = "unit")
-    public void nullScopeSupplier_treatedAsAlwaysTrue() throws Exception {
-        Http2PingHandler handler = new Http2PingHandler(1, 1, 3, null);
-
-        Object supplier = getField(handler, "scopeSupplier");
-        assertThat(supplier).isNotNull();
-        java.util.function.BooleanSupplier bs = (java.util.function.BooleanSupplier) supplier;
-        assertThat(bs.getAsBoolean()).isTrue();
-    }
-
-    @Test(groups = "unit")
-    public void scopeSupplier_evaluatedPerCall() {
-        AtomicBoolean scope = new AtomicBoolean(true);
-        Http2PingHandler handler = new Http2PingHandler(1, 1, 3, scope::get);
-        EmbeddedChannel channel = new EmbeddedChannel(handler);
-
-        // Flipping the supplier should be observed on the next read by the handler --
-        // we just verify it's the same supplier instance, since the per-tick check is
-        // exercised end-to-end by Http2PingKeepaliveTest under Docker.
-        assertThat(channel.pipeline().get(Http2PingHandler.class)).isSameAs(handler);
-        scope.set(false);
-        scope.set(true);
-
-        channel.finishAndReleaseAll();
     }
 
     private static Object getField(Object target, String name) throws Exception {
