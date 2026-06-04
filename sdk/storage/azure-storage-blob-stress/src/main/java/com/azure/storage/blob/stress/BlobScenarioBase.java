@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.stress;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
@@ -46,6 +48,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
             .credential(defaultAzureCredential)
             .endpoint(endpoint)
+            .httpClient(buildHttpClient(options.getSize()))
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
@@ -220,5 +223,71 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
             .setPartialRequestIndefinite(0.06)
             .setPartialRequestClose(0.06)
             .setPartialRequestAbort(0.06);
+    }
+
+    /**
+     * Builds a Netty HTTP client whose {@code responseTimeout}, {@code readTimeout},
+     * and {@code writeTimeout} are all sized to the payload being exercised by the
+     * scenario.
+     *
+     * <p>Background: the Azure SDK Netty client defaults to a 60&nbsp;s
+     * {@code responseTimeoutInSeconds}. Under fault injection, scenarios whose
+     * single logical operation issues many HTTP requests (e.g. chunked 50&nbsp;MB
+     * uploads/downloads) cross a per-op fault probability of &gt;50%, so the
+     * median operation time becomes dominated by the 60&nbsp;s timeout firing
+     * rather than the real payload-transfer time. See
+     * {@code stress-logs-ibrandes/perfRuntimeCatch-uncompiled-storage-stress-storage-blob/operation-duration-analysis.md}
+     * for the full analysis.</p>
+     *
+     * <p>Note: {@code responseTimeout} alone is insufficient for download faults,
+     * because download faults arrive after the response status (200 OK) is already
+     * received and instead truncate or hang the response body. That triggers
+     * {@code readTimeout} (idle interval between body reads), not
+     * {@code responseTimeout}. The 2026-06-03 16:36 UTC stress run confirmed
+     * this empirically: upload-fault scenarios honored the new short timeouts,
+     * but download-fault scenarios still clustered at the default 60&nbsp;s. We
+     * therefore set all three timeouts to the same per-tier value. Streaming
+     * downloads at network speed have continuous read activity, so the short
+     * idle-{@code readTimeout} only fires when the body stops flowing
+     * (i.e. when a fault actually occurs).</p>
+     *
+     * <p>The tier table below is taken from the analysis doc's "Recommended
+     * {@code responseTimeoutInSeconds} per tier" section, validated against the
+     * 2026-06-02 22:16 UTC no-fault baseline (see
+     * {@code stress-logs-ibrandes/nofault-baseline.md}). Headroom of at least
+     * ~2&times; the worst-case observed median is preserved.</p>
+     *
+     * <table>
+     *   <caption>Per-tier I/O timeouts</caption>
+     *   <tr><th>Payload size</th><th>Real median</th><th>Suggested timeout</th></tr>
+     *   <tr><td>&le; 1&nbsp;MB</td><td>22&ndash;80&nbsp;ms</td><td>5&nbsp;s</td></tr>
+     *   <tr><td>&le; 4&nbsp;MB</td><td>55&nbsp;ms (per page)</td><td>10&nbsp;s</td></tr>
+     *   <tr><td>&le; 25&nbsp;MB</td><td>308&ndash;361&nbsp;ms</td><td>10&nbsp;s</td></tr>
+     *   <tr><td>&le; 50&nbsp;MB</td><td>0.6&ndash;5&nbsp;s</td><td>30&nbsp;s</td></tr>
+     *   <tr><td>&gt; 50&nbsp;MB</td><td>n/a</td><td>60&nbsp;s (SDK default)</td></tr>
+     * </table>
+     */
+    protected static HttpClient buildHttpClient(long payloadSizeBytes) {
+        Duration timeout = suggestedResponseTimeout(payloadSizeBytes);
+        return new NettyAsyncHttpClientBuilder()
+            .responseTimeout(timeout)
+            .readTimeout(timeout)
+            .writeTimeout(timeout)
+            .build();
+    }
+
+    static Duration suggestedResponseTimeout(long payloadSizeBytes) {
+        final long oneMb = 1L * 1024 * 1024;
+        if (payloadSizeBytes <= oneMb) {
+            return Duration.ofSeconds(5);
+        } else if (payloadSizeBytes <= 25L * oneMb) {
+            // Covers 4 MB (uploadPages per-page) and 25 MB single-shot block uploads.
+            return Duration.ofSeconds(10);
+        } else if (payloadSizeBytes <= 50L * oneMb) {
+            // 50 MB chunked upload/download paths can legitimately take 5-15 s per op.
+            return Duration.ofSeconds(30);
+        }
+        // Fall back to the SDK default for anything larger.
+        return Duration.ofSeconds(60);
     }
 }
