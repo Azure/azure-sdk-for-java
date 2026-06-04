@@ -86,7 +86,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             TimeUnit.MILLISECONDS);
 
         logger.debug("Http2PingHandler installed on channel {}, interval={}s, timeout={}s, checkEvery={}ms",
-            ctx.channel().id().asShortText(),
+            ctx.channel(),
             TimeUnit.NANOSECONDS.toSeconds(pingIntervalNanos),
             TimeUnit.NANOSECONDS.toSeconds(pingTimeoutNanos),
             checkIntervalMs);
@@ -150,12 +150,12 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                 if (consecutiveFailures >= failureThreshold) {
                     // Threshold reached -- connection is broken.
                     logger.info("PING ACK not received for {} consecutive attempts on channel {} -- closing connection",
-                        consecutiveFailures, ctx.channel().id().asShortText());
+                        consecutiveFailures, ctx.channel());
                     cancelPingTask();
                     ctx.close();
                 } else {
                     logger.debug("PING ACK timeout on channel {} (attempt {}/{}) -- will retry",
-                        ctx.channel().id().asShortText(), consecutiveFailures, failureThreshold);
+                        ctx.channel(), consecutiveFailures, failureThreshold);
                 }
             }
             // Don't send another PING while one is outstanding
@@ -169,13 +169,13 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             ctx.writeAndFlush(new DefaultHttp2PingFrame(count))
                 .addListener(f -> {
                     if (f.isSuccess()) {
-                        logger.debug("PING #{} sent on channel {}", count, ctx.channel().id().asShortText());
+                        logger.debug("PING #{} sent on channel {}", count, ctx.channel());
                     } else {
                         // Listener runs on the same event loop as the scheduled task,
                         // so mutating pingOutstandingSinceNanos is thread-safe.
                         pingOutstandingSinceNanos = 0; // unblock next attempt on send failure
                         logger.debug("PING #{} send failed on channel {}: {}",
-                            count, ctx.channel().id().asShortText(),
+                            count, ctx.channel(),
                             f.cause() != null ? f.cause().getMessage() : "unknown");
                     }
                 });
