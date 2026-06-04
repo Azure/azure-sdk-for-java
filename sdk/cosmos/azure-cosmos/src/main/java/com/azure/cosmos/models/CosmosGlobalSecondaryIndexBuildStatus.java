@@ -22,28 +22,33 @@ public final class CosmosGlobalSecondaryIndexBuildStatus
     /**
      * The global secondary index has been created and is initializing.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static final CosmosGlobalSecondaryIndexBuildStatus INITIALIZING = fromString("Initializing");
 
     /**
      * The global secondary index is performing its initial build after being created.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static final CosmosGlobalSecondaryIndexBuildStatus INITIAL_BUILD_AFTER_CREATE
         = fromString("InitialBuildAfterCreate");
 
     /**
      * The global secondary index is performing its initial build after the source container was restored.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static final CosmosGlobalSecondaryIndexBuildStatus INITIAL_BUILD_AFTER_RESTORE
         = fromString("InitialBuildAfterRestore");
 
     /**
      * The global secondary index has been fully built and is actively serving queries.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static final CosmosGlobalSecondaryIndexBuildStatus ACTIVE = fromString("Active");
 
     /**
      * The global secondary index is being deleted.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static final CosmosGlobalSecondaryIndexBuildStatus DELETE_IN_PROGRESS = fromString("DeleteInProgress");
 
     /**
@@ -54,6 +59,7 @@ public final class CosmosGlobalSecondaryIndexBuildStatus
      *
      * @deprecated Use {@link #fromString(String)} instead.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated
     public CosmosGlobalSecondaryIndexBuildStatus() {
     }
@@ -65,6 +71,7 @@ public final class CosmosGlobalSecondaryIndexBuildStatus
      * @return the corresponding {@link CosmosGlobalSecondaryIndexBuildStatus}, or {@code null} when {@code name}
      *     is {@code null}.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosGlobalSecondaryIndexBuildStatus fromString(String name) {
         return fromString(name, CosmosGlobalSecondaryIndexBuildStatus.class);
     }
@@ -74,6 +81,7 @@ public final class CosmosGlobalSecondaryIndexBuildStatus
      *
      * @return the known {@link CosmosGlobalSecondaryIndexBuildStatus} values.
      */
+    @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static Collection<CosmosGlobalSecondaryIndexBuildStatus> values() {
         return values(CosmosGlobalSecondaryIndexBuildStatus.class);
     }
