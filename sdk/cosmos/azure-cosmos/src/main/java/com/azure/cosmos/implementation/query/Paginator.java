@@ -97,7 +97,6 @@ public class Paginator {
         int preFetchCount,
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
-        boolean emptyPagesAllowed,
         Long endLsn,
         OperationContextAndListenerTuple operationContext,
         DiagnosticsClientContext diagnosticsClientContext) {
@@ -113,7 +112,6 @@ public class Paginator {
                 maxPageSize,
                 isSplitHandlingDisabled,
                 completeAfterAllCurrentChangesRetrieved,
-                emptyPagesAllowed,
                 endLsn,
                 operationContext,
                 client.getGlobalEndpointManager(),

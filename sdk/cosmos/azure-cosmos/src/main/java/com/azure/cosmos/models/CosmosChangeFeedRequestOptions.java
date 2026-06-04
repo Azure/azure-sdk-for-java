@@ -789,16 +789,6 @@ public final class CosmosChangeFeedRequestOptions {
                 public CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.disableSplitHandling();
                 }
-
-                @Override
-                public void setAllowNotModifiedPages(CosmosChangeFeedRequestOptions options, boolean notModifiedPagesAllowed) {
-                    options.getImpl().setNotModifiedPagesAllowed(notModifiedPagesAllowed);
-                }
-
-                @Override
-                public boolean getAllowNotModifiedPages(CosmosChangeFeedRequestOptions options) {
-                    return options.getImpl().isNotModifiedPagesAllowed();
-                }
             });
     }
 

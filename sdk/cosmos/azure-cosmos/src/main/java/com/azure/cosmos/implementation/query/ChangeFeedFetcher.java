@@ -45,7 +45,6 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
     private final boolean completeAfterAllCurrentChangesRetrieved;
-    private final boolean notModifiedPagesAllowed;
     private final Long endLSN;
 
     public ChangeFeedFetcher(
@@ -58,7 +57,6 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int maxItemCount,
         boolean isSplitHandlingDisabled,
         boolean completeAfterAllCurrentChangesRetrieved,
-        boolean notModifiedPagesAllowed,
         Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
@@ -87,7 +85,6 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 diagnosticsClientContext);
         this.createRequestFunc = createRequestFunc;
         this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
-        this.notModifiedPagesAllowed = notModifiedPagesAllowed;
         this.endLSN = endLSN;
     }
 
@@ -121,64 +118,42 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private Mono<FeedResponse<T>> nextPageInternal(DocumentClientRetryPolicy retryPolicy) {
         return Mono.fromSupplier(() -> nextPageCore(retryPolicy))
                    .flatMap(Function.identity())
-                   .flatMap(this::applyNoChangesDecision)
+                   .flatMap((r) -> {
+                       FeedRangeContinuation continuationSnapshot =
+                           this.changeFeedState.getContinuation();
+
+                       if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
+                           if (continuationSnapshot != null) {
+
+                               //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
+                               if (shouldComplete) {
+                                   this.disableShouldFetchMore();
+                                   return Mono.just(r);
+                               }
+
+                               if (ModelBridgeInternal.<T>noChanges(r)) {
+                                   // if we have reached here, it means we have got 304 for the current feedRange,
+                                   // but we need to continue drain the changes from other sub-feedRange
+                                   this.reEnableShouldFetchMoreForRetry();
+                                   return Mono.empty();
+                               }
+                           }
+                       } else {
+                           // complete query based on 304s
+                           if (continuationSnapshot != null &&
+                               continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+
+                               // not all continuations have been drained yet
+                               // repeat with the next continuation
+                               this.reEnableShouldFetchMoreForRetry();
+                               return Mono.empty();
+                           }
+                       }
+
+                       return Mono.just(r);
+                   })
                    .repeatWhenEmpty(o -> o);
-    }
-
-    /**
-     * Decides what to do with a single FeedResponse before it reaches the outer Paginator loop:
-     * surface it, swallow it via {@code repeatWhenEmpty}, or terminate iteration entirely. The
-     * decision depends on the change-feed mode (bounded vs streaming), whether the response is
-     * a noChanges 304, the continuation's {@code handleChangeFeedNotModified} signal, and whether
-     * the caller opted into {@code notModifiedPagesAllowed=true}.
-     */
-    private Mono<FeedResponse<T>> applyNoChangesDecision(FeedResponse<T> r) {
-        FeedRangeContinuation continuationSnapshot = this.changeFeedState.getContinuation();
-
-        if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
-            if (continuationSnapshot != null) {
-                //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
-                boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
-                if (shouldComplete) {
-                    this.disableShouldFetchMore();
-                    return Mono.just(r);
-                }
-
-                if (ModelBridgeInternal.<T>noChanges(r)) {
-                    // 304 for the current sub-feedRange; need to drain the next one.
-                    return surfaceOrRetryNoChangesPage(r);
-                }
-            }
-        } else {
-            // Streaming change feed (no endLSN). Terminate either when no continuation
-            // exists or when handleChangeFeedNotModified signals NO_RETRY (single-partition
-            // case, multi-partition full-cycle complete, or the >4*(size+1) consecutive-304
-            // defense in FeedRangeCompositeContinuationImpl).
-            if (continuationSnapshot != null) {
-                ShouldRetryResult retryResult = continuationSnapshot.handleChangeFeedNotModified(r);
-                if (retryResult == ShouldRetryResult.RETRY_NOW) {
-                    // not all continuations have been drained yet; repeat with the next continuation
-                    return surfaceOrRetryNoChangesPage(r);
-                }
-            }
-        }
-
-        return Mono.just(r);
-    }
-
-    /**
-     * Either surface a noChanges page to the caller (when notModifiedPagesAllowed=true) or swallow it via
-     * Reactor's repeatWhenEmpty (the legacy behavior). When swallowing, shouldFetchMore must be
-     * re-enabled first because isFullyDrained() already flipped it off for the noChanges page.
-     */
-    private Mono<FeedResponse<T>> surfaceOrRetryNoChangesPage(FeedResponse<T> r) {
-        this.reEnableShouldFetchMoreForRetry();
-
-        if (this.notModifiedPagesAllowed) {
-            ModelBridgeInternal.setFeedResponseContinuationToken(this.changeFeedState.toString(), r);
-            return Mono.just(r);
-        }
-        return Mono.empty();
     }
 
     @Override

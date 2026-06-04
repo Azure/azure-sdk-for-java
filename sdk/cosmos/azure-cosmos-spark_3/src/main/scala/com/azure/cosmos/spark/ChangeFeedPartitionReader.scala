@@ -214,12 +214,6 @@ private case class ChangeFeedPartitionReader
         .setEndLSN(options, this.partition.endLsn.get)
     }
 
-    // Bubble empty pages up to the iterator so the per-page end-to-end timeout
-    // applies to each individual page rather than being exceeded by serial
-    // empty-page drains inside ChangeFeedFetcher.
-    ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor
-      .setAllowNotModifiedPages(options, true)
-
     options.setCustomItemSerializer(itemDeserializer)
   }
 
