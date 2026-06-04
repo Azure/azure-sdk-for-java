@@ -1,18 +1,25 @@
 # Release History
 
-## 4.11.0-beta.1 (2026-05-18)
+## 4.12.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added support for service version `2026-03-01-preview`.
+- The default service version is now `2026-03-01-preview` for both `KeyServiceVersion` and `CryptographyServiceVersion`.
 
 #### `cryptography.CryptographyServiceVersion` was modified
 
 * `V2026_03_01_PREVIEW` was added
-* `V2025_07_01` was added
 
 #### `KeyServiceVersion` was modified
 
 * `V2026_03_01_PREVIEW` was added
-* `V2025_07_01` was added
+
+## 4.11.0 (2026-05-27)
+
+### Features Added
+
+- Added support for service version `2025-07-01`
 
 ## 4.10.7 (2026-05-05)
 

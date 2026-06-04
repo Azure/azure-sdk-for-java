@@ -14,7 +14,7 @@ import java.io.IOException;
  * Indicates the MCP call running.
  */
 @Immutable
-public final class ServerEventResponseMcpCallInProgress extends SessionUpdate {
+public final class ServerEventResponseMcpCallInProgress extends SessionServerEvent {
 
     /*
      * The type of event.

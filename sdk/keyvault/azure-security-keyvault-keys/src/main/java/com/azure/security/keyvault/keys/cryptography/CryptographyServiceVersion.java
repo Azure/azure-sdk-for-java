@@ -74,6 +74,6 @@ public enum CryptographyServiceVersion implements ServiceVersion {
      * @return the latest {@link CryptographyServiceVersion}
      */
     public static CryptographyServiceVersion getLatest() {
-        return V2025_07_01;
+        return V2026_03_01_PREVIEW;
     }
 }

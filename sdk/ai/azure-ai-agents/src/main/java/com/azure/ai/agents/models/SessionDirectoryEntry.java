@@ -5,14 +5,14 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
 
 /**
  * A single entry in a directory listing.
@@ -39,10 +39,10 @@ public final class SessionDirectoryEntry implements JsonSerializable<SessionDire
     private final boolean isDirectory;
 
     /*
-     * The last modification time in UTC (ISO 8601).
+     * The Unix timestamp (in seconds) when the file was last modified.
      */
     @Generated
-    private final OffsetDateTime modifiedTime;
+    private final long modifiedTime;
 
     /**
      * Creates an instance of SessionDirectoryEntry class.
@@ -57,7 +57,11 @@ public final class SessionDirectoryEntry implements JsonSerializable<SessionDire
         this.name = name;
         this.size = size;
         this.isDirectory = isDirectory;
-        this.modifiedTime = modifiedTime;
+        if (modifiedTime == null) {
+            this.modifiedTime = 0L;
+        } else {
+            this.modifiedTime = modifiedTime.toEpochSecond();
+        }
     }
 
     /**
@@ -91,13 +95,13 @@ public final class SessionDirectoryEntry implements JsonSerializable<SessionDire
     }
 
     /**
-     * Get the modifiedTime property: The last modification time in UTC (ISO 8601).
+     * Get the modifiedTime property: The Unix timestamp (in seconds) when the file was last modified.
      *
      * @return the modifiedTime value.
      */
     @Generated
     public OffsetDateTime getModifiedTime() {
-        return this.modifiedTime;
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.modifiedTime), ZoneOffset.UTC);
     }
 
     /**
@@ -110,8 +114,7 @@ public final class SessionDirectoryEntry implements JsonSerializable<SessionDire
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeLongField("size", this.size);
         jsonWriter.writeBooleanField("is_directory", this.isDirectory);
-        jsonWriter.writeStringField("modified_time",
-            this.modifiedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.modifiedTime));
+        jsonWriter.writeLongField("modified_time", this.modifiedTime);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,8 +144,7 @@ public final class SessionDirectoryEntry implements JsonSerializable<SessionDire
                 } else if ("is_directory".equals(fieldName)) {
                     isDirectory = reader.getBoolean();
                 } else if ("modified_time".equals(fieldName)) {
-                    modifiedTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    modifiedTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else {
                     reader.skipChildren();
                 }

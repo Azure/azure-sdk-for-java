@@ -67,6 +67,6 @@ public enum KeyServiceVersion implements ServiceVersion {
      * @return The latest {@link KeyServiceVersion}.
      */
     public static KeyServiceVersion getLatest() {
-        return V2025_07_01;
+        return V2026_03_01_PREVIEW;
     }
 }

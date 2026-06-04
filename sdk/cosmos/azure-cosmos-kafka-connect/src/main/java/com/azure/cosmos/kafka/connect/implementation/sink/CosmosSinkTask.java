@@ -50,7 +50,11 @@ public class CosmosSinkTask extends SinkTask {
                     this.sinkTaskConfig.getClientMetadataCachesSnapshot());
             LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
             this.throughputControlClientItem = this.getThroughputControlCosmosClient();
-            this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
+
+            this.sinkRecordTransformer = new SinkRecordTransformer(
+                this.sinkTaskConfig,
+                this.context.errantRecordReporter(),
+                this.sinkTaskConfig.getWriteConfig().getToleranceOnErrorLevel());
 
             if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
                 this.cosmosWriter =
@@ -129,7 +133,7 @@ public class CosmosSinkTask extends SinkTask {
             List<SinkRecord> transformedRecords = sinkRecordTransformer.transform(containerName, entry.getValue());
             this.cosmosWriter.write(container, transformedRecords);
 
-            totalWrittenRecordsPerContainer.merge(containerName, (long) entry.getValue().size(), Long::sum);
+            totalWrittenRecordsPerContainer.merge(containerName, (long) transformedRecords.size(), Long::sum);
         }
 
         logWrittenRecordCount();

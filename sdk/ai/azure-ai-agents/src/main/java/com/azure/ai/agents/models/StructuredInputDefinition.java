@@ -38,7 +38,8 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
     private Map<String, BinaryData> schema;
 
     /*
-     * Whether the input property is required when the agent is invoked.
+     * Whether the input property is required when the agent is invoked. The service defaults to `false` if a value is
+     * not specified by the caller.
      */
     @Generated
     private Boolean required;
@@ -105,7 +106,8 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
     }
 
     /**
-     * Get the required property: Whether the input property is required when the agent is invoked.
+     * Get the required property: Whether the input property is required when the agent is invoked. The service defaults
+     * to `false` if a value is not specified by the caller.
      *
      * @return the required value.
      */
@@ -115,7 +117,8 @@ public final class StructuredInputDefinition implements JsonSerializable<Structu
     }
 
     /**
-     * Set the required property: Whether the input property is required when the agent is invoked.
+     * Set the required property: Whether the input property is required when the agent is invoked. The service defaults
+     * to `false` if a value is not specified by the caller.
      *
      * @param required the required value to set.
      * @return the StructuredInputDefinition object itself.

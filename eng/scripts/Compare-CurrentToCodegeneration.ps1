@@ -98,18 +98,38 @@ if ($Parallelization -lt 1) {
   $Parallelization = 1
 }
 
-# Split the ServiceDirectories by comma and trim whitespace.
+# Normalize, deduplicate, and sort ServiceDirectories so top-level services are processed
+# before specific libraries. This prevents duplicate work when both are provided.
 # Then search for 'Update-Codegeneration.ps1' or 'tsp-location.yaml' scripts in those directories,
 # based on RegenerationType, and store the results in a list of GenerationInformation objects.
 $generationInformations = New-Object 'Collections.ArrayList'
-foreach ($serviceDirectory in $ServiceDirectories.Split(',')) {
-  $serviceDirectory = $serviceDirectory.Trim()
-  if ($serviceDirectory -match '\w+/\w+') {
-    # The service directory is a specific library, e.g., "communication/azure-communication-chat"
-    # Search the directory directly for an "Update-Codegeneration.ps1" script.
+$orderedServiceDirectories = $ServiceDirectories.Split(',') |
+  ForEach-Object { $_.Trim().Trim('/') } |
+  Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+  Sort-Object -Unique |
+  Sort-Object @(
+    @{ Expression = { ($_ -split '/').Count } },
+    @{ Expression = { $_ } }
+  )
+
+$processedTopLevelServiceDirectories = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+
+foreach ($serviceDirectory in $orderedServiceDirectories) {
+  if ($serviceDirectory.Contains('/')) {
+    # The service directory is a specific library, e.g., "communication/azure-communication-chat".
+    # If the top-level service has already been processed, skip the specific library.
+    $topLevelServiceDirectory = ($serviceDirectory -split '/')[0]
+    if ($processedTopLevelServiceDirectories.Contains($topLevelServiceDirectory)) {
+      Write-Host "Skipping '$serviceDirectory' because top-level service '$topLevelServiceDirectory' is already included."
+      continue
+    }
+
     Find-GenerationInformation $generationInformations $serviceDirectory
   } else {
-    # The service directory is a top-level service, e.g., "storage"
+    # The service directory is a top-level service, e.g., "storage".
+    # Track it so specific libraries under it can be skipped if present in input.
+    $processedTopLevelServiceDirectories.Add($serviceDirectory) | Out-Null
+
     # Search for all libraries under the service directory.
     $searchPath = Join-Path -Path $sdkFolder $serviceDirectory
     Get-ChildItem -Path $searchPath -Directory | ForEach-Object {

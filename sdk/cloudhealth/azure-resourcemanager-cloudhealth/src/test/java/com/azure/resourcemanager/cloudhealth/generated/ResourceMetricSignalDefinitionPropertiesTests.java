@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cloudhealth.models.DynamicDetectionRule;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdDirection;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdModel;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceMetricSignalDefinitionProperties;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
-import com.azure.resourcemanager.cloudhealth.models.ThresholdRule;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -23,77 +19,58 @@ public final class ResourceMetricSignalDefinitionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceMetricSignalDefinitionProperties model = BinaryData.fromString(
-            "{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"igdtopbob\",\"metricName\":\"og\",\"timeGrain\":\"m\",\"aggregationType\":\"None\",\"dimension\":\"a\",\"dimensionFilter\":\"uhrzayvvt\",\"provisioningState\":\"Creating\",\"displayName\":\"f\",\"refreshInterval\":\"PT1H\",\"labels\":{\"nxkrx\":\"ftutqxlngxlefgu\",\"tthzrvqd\":\"qmi\",\"ehoqfbowskan\":\"abhjybi\",\"ywgndrv\":\"ktzlcuiywg\"},\"dataUnit\":\"hzgpphrcgyncocpe\",\"evaluationRules\":{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":1.8683451643171978,\"dynamicThresholdDirection\":\"GreaterOrLowerThan\",\"trainingStartTime\":\"2021-05-04T16:53:18Z\"},\"degradedRule\":{\"operator\":\"GreaterOrEquals\",\"threshold\":\"xlzevgbmqjqabcy\"},\"unhealthyRule\":{\"operator\":\"LowerThan\",\"threshold\":\"vkwlzuvccfwnf\"}},\"deletionDate\":\"2021-06-18T14:17:09Z\"}")
+            "{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"fsxlzevgbmqjqa\",\"metricName\":\"c\",\"timeGrain\":\"pmivkwlzu\",\"aggregationType\":\"Total\",\"dimension\":\"fwnfnb\",\"dimensionFilter\":\"fionl\",\"provisioningState\":\"Canceled\",\"displayName\":\"tqgtzxdpnqbqq\",\"refreshInterval\":\"PT5M\",\"tags\":{\"mpmngnzscxaqwoo\":\"eallnwsubisnj\",\"njeaseipheofloke\":\"hcbonqvpkvlr\",\"enjbdlwtgrhp\":\"y\"},\"dataUnit\":\"pj\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":41.591678166082936},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":6.31350486182829}}}")
             .toObject(ResourceMetricSignalDefinitionProperties.class);
-        Assertions.assertEquals("f", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT1H, model.refreshInterval());
-        Assertions.assertEquals("ftutqxlngxlefgu", model.labels().get("nxkrx"));
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(1.8683451643171978, model.evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.GREATER_OR_LOWER_THAN,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T16:53:18Z"),
-            model.evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.GREATER_OR_EQUALS, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.LOWER_THAN, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("vkwlzuvccfwnf", model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals("igdtopbob", model.metricNamespace());
-        Assertions.assertEquals("og", model.metricName());
-        Assertions.assertEquals("m", model.timeGrain());
-        Assertions.assertEquals(MetricAggregationType.NONE, model.aggregationType());
-        Assertions.assertEquals("a", model.dimension());
-        Assertions.assertEquals("uhrzayvvt", model.dimensionFilter());
+        Assertions.assertEquals("tqgtzxdpnqbqq", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT5M, model.refreshInterval());
+        Assertions.assertEquals("eallnwsubisnj", model.tags().get("mpmngnzscxaqwoo"));
+        Assertions.assertEquals("pj", model.dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(41.591678166082936, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.LESS_THAN, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(6.31350486182829, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals("fsxlzevgbmqjqa", model.metricNamespace());
+        Assertions.assertEquals("c", model.metricName());
+        Assertions.assertEquals("pmivkwlzu", model.timeGrain());
+        Assertions.assertEquals(MetricAggregationType.TOTAL, model.aggregationType());
+        Assertions.assertEquals("fwnfnb", model.dimension());
+        Assertions.assertEquals("fionl", model.dimensionFilter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceMetricSignalDefinitionProperties model = new ResourceMetricSignalDefinitionProperties()
-            .withDisplayName("f")
-            .withRefreshInterval(RefreshInterval.PT1H)
-            .withLabels(mapOf("nxkrx", "ftutqxlngxlefgu", "tthzrvqd", "qmi", "ehoqfbowskan", "abhjybi", "ywgndrv",
-                "ktzlcuiywg"))
-            .withDataUnit("hzgpphrcgyncocpe")
-            .withEvaluationRules(new EvaluationRule()
-                .withDynamicDetectionRule(
-                    new DynamicDetectionRule().withDynamicThresholdModel(DynamicThresholdModel.ANOMALY_DETECTION)
-                        .withModelSensitivity(1.8683451643171978)
-                        .withDynamicThresholdDirection(DynamicThresholdDirection.GREATER_OR_LOWER_THAN)
-                        .withTrainingStartTime(OffsetDateTime.parse("2021-05-04T16:53:18Z")))
-                .withDegradedRule(
-                    new ThresholdRule().withOperator(SignalOperator.GREATER_OR_EQUALS).withThreshold("xlzevgbmqjqabcy"))
-                .withUnhealthyRule(
-                    new ThresholdRule().withOperator(SignalOperator.LOWER_THAN).withThreshold("vkwlzuvccfwnf")))
-            .withMetricNamespace("igdtopbob")
-            .withMetricName("og")
-            .withTimeGrain("m")
-            .withAggregationType(MetricAggregationType.NONE)
-            .withDimension("a")
-            .withDimensionFilter("uhrzayvvt");
+        ResourceMetricSignalDefinitionProperties model
+            = new ResourceMetricSignalDefinitionProperties().withDisplayName("tqgtzxdpnqbqq")
+                .withRefreshInterval(RefreshInterval.PT5M)
+                .withTags(
+                    mapOf("mpmngnzscxaqwoo", "eallnwsubisnj", "njeaseipheofloke", "hcbonqvpkvlr", "enjbdlwtgrhp", "y"))
+                .withDataUnit("pj")
+                .withEvaluationRules(new EvaluationRule()
+                    .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN_OR_EQUAL)
+                        .withThreshold(41.591678166082936))
+                    .withUnhealthyRule(
+                        new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN).withThreshold(6.31350486182829)))
+                .withMetricNamespace("fsxlzevgbmqjqa")
+                .withMetricName("c")
+                .withTimeGrain("pmivkwlzu")
+                .withAggregationType(MetricAggregationType.TOTAL)
+                .withDimension("fwnfnb")
+                .withDimensionFilter("fionl");
         model = BinaryData.fromObject(model).toObject(ResourceMetricSignalDefinitionProperties.class);
-        Assertions.assertEquals("f", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT1H, model.refreshInterval());
-        Assertions.assertEquals("ftutqxlngxlefgu", model.labels().get("nxkrx"));
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.dataUnit());
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(1.8683451643171978, model.evaluationRules().dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.GREATER_OR_LOWER_THAN,
-            model.evaluationRules().dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T16:53:18Z"),
-            model.evaluationRules().dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.GREATER_OR_EQUALS, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.LOWER_THAN, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals("vkwlzuvccfwnf", model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals("igdtopbob", model.metricNamespace());
-        Assertions.assertEquals("og", model.metricName());
-        Assertions.assertEquals("m", model.timeGrain());
-        Assertions.assertEquals(MetricAggregationType.NONE, model.aggregationType());
-        Assertions.assertEquals("a", model.dimension());
-        Assertions.assertEquals("uhrzayvvt", model.dimensionFilter());
+        Assertions.assertEquals("tqgtzxdpnqbqq", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT5M, model.refreshInterval());
+        Assertions.assertEquals("eallnwsubisnj", model.tags().get("mpmngnzscxaqwoo"));
+        Assertions.assertEquals("pj", model.dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(41.591678166082936, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(SignalOperator.LESS_THAN, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(6.31350486182829, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals("fsxlzevgbmqjqa", model.metricNamespace());
+        Assertions.assertEquals("c", model.metricName());
+        Assertions.assertEquals("pmivkwlzu", model.timeGrain());
+        Assertions.assertEquals(MetricAggregationType.TOTAL, model.aggregationType());
+        Assertions.assertEquals("fwnfnb", model.dimension());
+        Assertions.assertEquals("fionl", model.dimensionFilter());
     }
 
     // Use "Map.of" if available

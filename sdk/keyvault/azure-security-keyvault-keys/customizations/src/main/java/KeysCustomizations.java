@@ -77,7 +77,7 @@ public class KeysCustomizations extends Customization {
             .setType("KeyServiceVersion")
             .setJavadocComment(new Javadoc(parseText("Gets the latest service version supported by this client library."))
                 .addBlockTag("return", "The latest {@link KeyServiceVersion}."))
-            .setBody(StaticJavaParser.parseBlock("{ return V2025_07_01; }"));
+            .setBody(StaticJavaParser.parseBlock("{ return V2026_03_01_PREVIEW; }"));
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/security/keyvault/keys/KeyServiceVersion.java",

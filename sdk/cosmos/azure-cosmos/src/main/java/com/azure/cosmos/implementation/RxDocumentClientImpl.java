@@ -68,7 +68,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
+import com.azure.cosmos.implementation.routing.RegionIdRegistry;
+import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -125,7 +126,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -833,9 +833,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         while (readableLocationsIterator.hasNext()) {
             DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
 
-            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
-
-            if (RegionNameToRegionIdMap.getRegionId(normalizedReadableRegion) == -1) {
+            if (RegionIdRegistry.getRegionId(readableLocation.getName()) == -1) {
                 return false;
             }
         }
@@ -8576,13 +8574,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
         if (excludedRegions != null) {
-            excludedRegions.forEach(r -> normalizedExcludedRegions.add(r.toLowerCase(Locale.ROOT)));
+            excludedRegions.forEach(r -> normalizedExcludedRegions.add(RegionNameNormalizer.normalize(r)));
         }
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
         regionalRoutingContextList.forEach(consolidatedLocationEndpoints -> {
             String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), operationType);
-            if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
+            if (!normalizedExcludedRegions.contains(RegionNameNormalizer.normalize(regionName))) {
                 orderedRegionsForSpeculation.add(regionName);
             }
         });

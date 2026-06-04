@@ -31,18 +31,6 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
     private final List<String> entryPoint;
 
     /**
-     * Creates an instance of CodeConfiguration class.
-     *
-     * @param runtime the runtime value to set.
-     * @param entryPoint the entryPoint value to set.
-     */
-    @Generated
-    public CodeConfiguration(String runtime, List<String> entryPoint) {
-        this.runtime = runtime;
-        this.entryPoint = entryPoint;
-    }
-
-    /**
      * Get the runtime property: The runtime identifier for code execution (e.g., 'python_3_11', 'python_3_12',
      * 'python_3_13').
      *
@@ -72,6 +60,8 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("runtime", this.runtime);
         jsonWriter.writeArrayField("entry_point", this.entryPoint, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("dependency_resolution",
+            this.dependencyResolution == null ? null : this.dependencyResolution.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -89,6 +79,8 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
         return jsonReader.readObject(reader -> {
             String runtime = null;
             List<String> entryPoint = null;
+            CodeDependencyResolution dependencyResolution = null;
+            String contentSha256 = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -96,11 +88,73 @@ public final class CodeConfiguration implements JsonSerializable<CodeConfigurati
                     runtime = reader.getString();
                 } else if ("entry_point".equals(fieldName)) {
                     entryPoint = reader.readArray(reader1 -> reader1.getString());
+                } else if ("dependency_resolution".equals(fieldName)) {
+                    dependencyResolution = CodeDependencyResolution.fromString(reader.getString());
+                } else if ("content_hash".equals(fieldName)) {
+                    contentSha256 = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new CodeConfiguration(runtime, entryPoint);
+            CodeConfiguration deserializedCodeConfiguration
+                = new CodeConfiguration(runtime, entryPoint, dependencyResolution);
+            deserializedCodeConfiguration.contentSha256 = contentSha256;
+            return deserializedCodeConfiguration;
         });
+    }
+
+    /*
+     * How package dependencies are resolved at deployment time. Defaults to `bundled`,
+     * where the caller bundles all dependencies into the uploaded zip and the service
+     * performs no remote build. `remote_build` instructs the service to build
+     * dependencies remotely from the manifest included in the uploaded zip.
+     */
+    @Generated
+    private final CodeDependencyResolution dependencyResolution;
+
+    /**
+     * Creates an instance of CodeConfiguration class.
+     *
+     * @param runtime the runtime value to set.
+     * @param entryPoint the entryPoint value to set.
+     * @param dependencyResolution the dependencyResolution value to set.
+     */
+    @Generated
+    public CodeConfiguration(String runtime, List<String> entryPoint, CodeDependencyResolution dependencyResolution) {
+        this.runtime = runtime;
+        this.entryPoint = entryPoint;
+        this.dependencyResolution = dependencyResolution;
+    }
+
+    /**
+     * Get the dependencyResolution property: How package dependencies are resolved at deployment time. Defaults to
+     * `bundled`,
+     * where the caller bundles all dependencies into the uploaded zip and the service
+     * performs no remote build. `remote_build` instructs the service to build
+     * dependencies remotely from the manifest included in the uploaded zip.
+     *
+     * @return the dependencyResolution value.
+     */
+    @Generated
+    public CodeDependencyResolution getDependencyResolution() {
+        return this.dependencyResolution;
+    }
+
+    /*
+     * The SHA-256 hex digest of the uploaded code zip. Set by the service from the `x-ms-code-zip-sha256` request
+     * header; read-only in responses and never accepted in request payloads.
+     */
+    @Generated
+    private String contentSha256;
+
+    /**
+     * Get the contentSha256 property: The SHA-256 hex digest of the uploaded code zip. Set by the service from the
+     * `x-ms-code-zip-sha256` request header; read-only in responses and never accepted in request payloads.
+     *
+     * @return the contentSha256 value.
+     */
+    @Generated
+    public String getContentSha256() {
+        return this.contentSha256;
     }
 }
