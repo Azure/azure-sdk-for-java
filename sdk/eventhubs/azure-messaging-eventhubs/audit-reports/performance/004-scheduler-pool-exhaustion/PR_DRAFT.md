@@ -30,12 +30,19 @@ this.publishSubscription = publishEvents(eventDataAggregator)
 - Result: `BUILD SUCCESS`
 - `Tests run: 8, Failures: 0, Errors: 0, Skipped: 0`
 
+## Benchmark Snapshot
+
+Repeated emulator-backed runs on commit `7ab2c7b`, 5 samples:
+
+- enqueue: samples `[171, 175, 168, 155, 156]`, median `168 ms`
+- flush: samples `[17, 10, 17, 17, 17]`, median `17 ms`
+- successful batches: samples `[4, 4, 4, 4, 4]`, median `4`
+- failed batches: samples `[0, 0, 0, 0, 0]`, median `0`
+- throughput: samples `[5294, 5365, 5367, 5764, 5757]`, median `5367 msgs/sec`
+
 ## Related
 
-- **Benchmark Script**: [benchmark.java](./benchmark.java)
-- **Thread Analysis**: [thread-analysis.java](./thread-analysis.java) 
 - **Performance Report**: [REPORT.md](./REPORT.md)
-- **Proposed Patch**: [fix.patch](./fix.patch)
 
 ---
 

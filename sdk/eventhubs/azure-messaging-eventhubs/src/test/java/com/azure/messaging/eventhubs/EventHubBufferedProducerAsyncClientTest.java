@@ -17,6 +17,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -39,6 +41,7 @@ public class EventHubBufferedProducerAsyncClientTest {
     private static final String[] PARTITION_IDS = new String[] { "one", "two", PARTITION_ID, "four" };
 
     private AutoCloseable mockCloseable;
+    private Scheduler scheduler;
 
     private final Queue<EventDataBatch> returnedBatches = new LinkedList<>();
 
@@ -69,6 +72,8 @@ public class EventHubBufferedProducerAsyncClientTest {
     @BeforeEach
     public void beforeEach() {
         mockCloseable = MockitoAnnotations.openMocks(this);
+        scheduler = Schedulers.newSingle("buffered-producer-async-client-test");
+
         returnedBatches.add(batch);
         returnedBatches.add(batch2);
         returnedBatches.add(batch3);
@@ -79,6 +84,7 @@ public class EventHubBufferedProducerAsyncClientTest {
 
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
+        when(asyncClient.getScheduler()).thenReturn(scheduler);
         when(asyncClient.getPartitionIds()).thenReturn(Flux.fromArray(PARTITION_IDS));
 
         when(asyncClient.createBatch(any(CreateBatchOptions.class))).thenAnswer(invocation -> {
@@ -92,6 +98,10 @@ public class EventHubBufferedProducerAsyncClientTest {
     public void afterEach() throws Exception {
         if (mockCloseable != null) {
             mockCloseable.close();
+        }
+
+        if (scheduler != null) {
+            scheduler.dispose();
         }
 
         Mockito.framework().clearInlineMock(this);

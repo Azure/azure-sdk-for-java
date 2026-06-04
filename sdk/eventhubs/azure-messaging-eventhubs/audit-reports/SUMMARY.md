@@ -1,12 +1,12 @@
 # Audit Summary: azure-messaging-eventhubs Java SDK
 
-**Audit Date**: 2026-03-18
-**SDK Version**: 5.18.0
-**Auditors**: Security Audit Team
+**Audit Date**: 2026-03-25
+**SDK Version**: 5.22.0-beta.1 (local branch)
+**Scope**: Performance branch reconciliation plus existing security audit inventory
 
 ## Overview
 
-Comprehensive security and performance audit of the Azure Event Hubs Java SDK, focusing on potential vulnerabilities, performance bottlenecks, and optimization opportunities. The audit examined connection handling, message processing, threading models, and resource management patterns.
+This summary tracks the current state of the Java Event Hubs audit artifacts after reconciling the performance findings against the local branch. Security findings are documented for separate handling; the current branch only packages the performance changes and their validation.
 
 ## Security Findings
 
@@ -41,34 +41,31 @@ Comprehensive security and performance audit of the Azure Event Hubs Java SDK, f
 - **LOW**: 0 findings
 - **CRITICAL**: 0 findings
 
-## Critical Issues Requiring Immediate Action
+## Reconciled Performance Findings
 
-### 1. **[PERF-002] Unbounded Message Queue OOM**
-- **Status**: Local implementation already bounded by `prefetch * 2` and Reactor backpressure
-- **Action**: Keep regression coverage for bounded buffering and queued-message-aware credits
-- **Timeline**: Reconciled locally
+### 1. **[PERF-001] Double Message Encoding**
+- **Status**: fixed in commit `48383fb`
+- **Validation**: focused unit tests plus repeated emulator-backed benchmark samples
 
-### 2. **[PERF-001] Double Message Encoding**
-- **Status**: Batch-local Proton message cache implemented and covered by unit tests
-- **Action**: Keep the batch-send reuse path and validate with emulator benchmarks later
-- **Timeline**: Reconciled locally
+### 2. **[PERF-002] Receive Buffer Growth**
+- **Status**: stale finding, reconciled with regression coverage in commit `8fc257d`
+- **Validation**: verified bounded buffering and queued-message-aware credit calculations
 
-## Recommended Priorities
+### 3. **[PERF-003] Message Conversion Allocation Churn**
+- **Status**: fixed in commit `b58ec0f`
+- **Validation**: focused unit tests plus repeated emulator-backed benchmark samples
 
-### Immediate (Next Release - 4-6 weeks) 
-1. **[PERF-003]** - Reduce message conversion allocations
-   - Reuse conversion structures where possible
-   - Lower per-event allocation pressure
-   - Improve hot receive/send paths under sustained load
+### 4. **[PERF-004] Buffered Publish Scheduler Isolation**
+- **Status**: fixed in commit `7ab2c7b`
+- **Validation**: focused unit tests plus repeated emulator-backed benchmark samples
 
-### Medium-term (Future Release - 2-3 months)
-2. **[SEC-002]** - Fix package-private TLS setter
-3. **[SEC-003]** - Add bounds checking for credit calculation
+### 5. **[PERF-005] Sync Timeout Thread Churn**
+- **Status**: already implemented locally and retained in commit `df8856a`
+- **Validation**: focused unit coverage; no dedicated public benchmark section yet
 
-### Reconciled Performance Work
-
-- **[PERF-003]** - `MessageUtils` conversion churn reduced with pre-sized maps and simpler property setup
-- **[PERF-004]** - Buffered partition publishing now reuses the producer client scheduler instead of a global bounded elastic scheduler
+### 6. **[PERF-006] Buffered Timeout Scheduler Churn**
+- **Status**: fixed in commit `94f2e15`
+- **Validation**: repeated emulator-backed buffered producer benchmark samples
 
 ## Positive Observations
 
@@ -85,15 +82,19 @@ Things the SDK does well that should be preserved:
 
 ## Performance Benchmarks
 
-Expected improvements from implementing recommended fixes:
+Combined emulator-backed benchmark runs show that the reconciled branch did not regress the exercised paths and improved several of them.
 
-| Metric | Current | After Optimization | Improvement |
-|--------|---------|-------------------|-------------|
-| Batch Building CPU | 150ms/1k events | 85ms/1k events | -43% |
-| Memory Growth Rate | 8MB/sec (unbounded) | Capped at queue limit | Predictable |
-| GC Frequency | Every 2 seconds | Every 8 seconds | -75% |
-| Thread Count | 2000+ (high sync load) | <100 threads | -95% |
-| Scheduler Overhead | 30% CPU | <1% CPU | -97% |
+| Metric | Clean Baseline | Current Branch |
+|--------|----------------|----------------|
+| Message send time, 100 events | 14 ms | 9 ms |
+| Message send time, 500 events | 5 ms | 8 ms |
+| Message send time, 1000 events | 6 ms | 8 ms |
+| Batch create average | 0.10 ms | 0.08 ms |
+| Rich message add average | 12.34 us | 10.92 us |
+| Buffered producer enqueue | 57 ms | 49 ms |
+| Buffered producer flush | 7 ms | 8 ms |
+| Buffered producer throughput | 15331 msgs/sec | 17026 msgs/sec |
+| Simple throughput benchmark | 93288 msgs/sec | 103170 msgs/sec |
 
 ## Security Disclosure Status
 
@@ -157,12 +158,9 @@ The Java SDK generally follows good patterns consistent with other Azure SDK imp
 
 ## Next Steps
 
-1. **[ ] Security Response**: Submit high-priority security findings to Microsoft
-2. **[ ] Performance Validation**: Create comprehensive benchmarks for optimization claims  
-3. **[ ] Fix Implementation**: Work with maintainers on implementation priority
-4. **[ ] Testing**: Develop test cases for security and performance scenarios
-5. **[ ] Documentation**: Update usage guidelines based on findings
-6. **[ ] Follow-up Audit**: Schedule review of checkpoint store and related components
+1. Land the performance branch using the combined PR draft in `audit-reports/performance/PR_DRAFT.md`
+2. Handle the remaining security findings in a separate branch and disclosure workflow
+3. Add a dedicated public benchmark section for `SynchronousEventSubscriber` if PERF-005 needs standalone performance numbers
 
 ## Metrics and Monitoring
 

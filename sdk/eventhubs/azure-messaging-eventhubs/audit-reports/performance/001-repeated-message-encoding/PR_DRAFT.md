@@ -49,9 +49,17 @@ public Mono<Void> send(EventDataBatch batch) {
 - `EventDataBatchTest`: 5 tests, 0 failures/errors
 - `EventHubProducerAsyncClientTest`: 38 tests, 0 failures/errors
 
+## Benchmark Snapshot
+
+Repeated emulator-backed runs on commit `48383fb`, 5 samples:
+
+- send time, 100 events: samples `[20, 10, 10, 10, 10]`, median `10 ms`
+- send time, 500 events: samples `[10, 11, 9, 6, 7]`, median `9 ms`
+- send time, 1000 events: samples `[7, 4, 4, 5, 7]`, median `5 ms`
+- simple throughput section: samples `[70490, 71758, 63597, 75279, 76092]`, median `71758 msgs/sec`
+
 ## Related
 
-- **Benchmark Script**: [benchmark.java](./benchmark.java)
 - **Performance Report**: [REPORT.md](./REPORT.md)
 - **Proposed Patch**: [fix.patch](./fix.patch)
 

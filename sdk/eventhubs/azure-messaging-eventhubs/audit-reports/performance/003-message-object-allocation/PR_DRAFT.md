@@ -54,12 +54,20 @@ private static Properties getOrCreateProperties(Message protonJMessage) {
 - Result: `BUILD SUCCESS`
 - `Tests run: 18, Failures: 0, Errors: 0, Skipped: 0`
 
+## Benchmark Snapshot
+
+Repeated emulator-backed runs on commit `b58ec0f`, 5 samples:
+
+- avg batch create: samples `[0.99, 0.97, 0.98, 0.93, 0.93]`, median `0.97 ms`
+- p50 batch create: samples `[0, 0, 0, 0, 0]`, median `0 ms`
+- p99 batch create: samples `[99, 97, 98, 93, 93]`, median `97 ms`
+- avg rich-message add: samples `[14.44, 14.02, 14.33, 13.68, 14.78]`, median `14.33 us`
+- p50 rich-message add: samples `[5, 3, 7, 5, 7]`, median `5 us`
+- p99 rich-message add: samples `[133, 136, 90, 133, 110]`, median `133 us`
+
 ## Related
 
-- **Benchmark Script**: [benchmark.java](./benchmark.java)
-- **Memory Profiler Tests**: [memory-profile.java](./memory-profile.java)
 - **Performance Report**: [REPORT.md](./REPORT.md)
-- **Proposed Patch**: [fix.patch](./fix.patch)
 
 ---
 
