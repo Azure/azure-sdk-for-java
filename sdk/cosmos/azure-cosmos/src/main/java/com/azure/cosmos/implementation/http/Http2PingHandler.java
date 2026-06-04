@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -187,6 +189,35 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             pingTask.cancel(false);
             pingTask = null;
         }
+    }
+
+    /**
+     * Returns {@code true} when the manual HTTP/2 PING keepalive should be active for
+     * a client built with the given {@link Http2ConnectionConfig}. This is the single
+     * source of truth shared by the transport install site (see
+     * {@link ReactorNettyClient}) and the user-agent flag emission (see
+     * {@code RxDocumentClientImpl}) so the two cannot drift.
+     * <p>
+     * All three gates must pass:
+     * <ul>
+     *   <li>The global kill-switch {@link Configs#isHttp2PingHealthEnabled()} is true.</li>
+     *   <li>{@link Configs#getHttp2PingIntervalInSeconds()} is &gt; 0 (a non-positive
+     *       interval disables the handler at install time).</li>
+     *   <li>HTTP/2 is effectively enabled for this client
+     *       (either via {@link Configs#isHttp2Enabled()} or the per-client
+     *       {@link Http2ConnectionConfig} override).</li>
+     * </ul>
+     */
+    public static boolean isPingHealthEffectivelyEnabled(Http2ConnectionConfig http2Cfg) {
+        if (!Configs.isHttp2PingHealthEnabled()) {
+            return false;
+        }
+        if (Configs.getHttp2PingIntervalInSeconds() <= 0) {
+            return false;
+        }
+        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper
+            .getHttp2ConnectionConfigAccessor()
+            .isEffectivelyEnabled(http2Cfg);
     }
 
     /**

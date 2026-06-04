@@ -152,22 +152,20 @@ public class ReactorNettyClient implements HttpClient {
                 // For H2, doOnConnected fires for both the parent TCP channel and child stream
                 // channels. We install on the parent channel via Http2MultiplexHandler detection.
                 //
-                // Gated by the global kill-switch Configs.isHttp2PingHealthEnabled() (system
-                // property). The handler re-checks this gate per tick, so toggling it at runtime
-                // immediately stops/resumes PINGing on already-installed connections.
-                if (Configs.isHttp2PingHealthEnabled()) {
+                // Gating is consolidated in Http2PingHandler.isPingHealthEffectivelyEnabled so
+                // the transport install site and the user-agent feature flag cannot drift.
+                // The handler also re-checks the kill-switch per tick so toggling it at
+                // runtime immediately stops/resumes PINGing on already-installed connections.
+                if (Http2PingHandler.isPingHealthEffectivelyEnabled(http2Cfg)) {
                     // Resolve to the parent (TCP) channel -- doOnConnected may fire for
                     // child stream channels where Http2MultiplexHandler is absent.
                     Channel ch = connection.channel();
                     Channel parent = ch.parent() != null ? ch.parent() : ch;
                     if (parent.pipeline().get(Http2MultiplexHandler.class) != null) {
-                        int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
-                        int pingTimeoutSeconds = Configs.getHttp2PingTimeoutInSeconds();
-                        int pingFailureThreshold = Configs.getHttp2PingFailureThreshold();
-                        if (pingIntervalSeconds > 0) {
-                            Http2PingHandler.installIfAbsent(parent, pingIntervalSeconds,
-                                pingTimeoutSeconds, pingFailureThreshold);
-                        }
+                        Http2PingHandler.installIfAbsent(parent,
+                            Configs.getHttp2PingIntervalInSeconds(),
+                            Configs.getHttp2PingTimeoutInSeconds(),
+                            Configs.getHttp2PingFailureThreshold());
                     }
                 }
             });

@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.Http2PingHandler;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
@@ -1683,33 +1684,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     /**
      * Returns true when HTTP/2 PING keepalive is effectively enabled for this client,
-     * mirroring the gating used by {@link com.azure.cosmos.implementation.http.ReactorNettyClient}
-     * to actually install the PING handler:
-     *
-     * <ul>
-     *   <li>The global kill-switch {@link Configs#isHttp2PingHealthEnabled()} is true.</li>
-     *   <li>HTTP/2 is effectively enabled (either via {@link Configs#isHttp2Enabled()} or
-     *       an explicit {@link Http2ConnectionConfig#isEnabled()} override).</li>
-     * </ul>
+     * delegating to {@link Http2PingHandler#isPingHealthEffectivelyEnabled} so the
+     * user-agent feature flag stays in lockstep with the transport install gate in
+     * {@code ReactorNettyClient}.
      */
     private boolean isHttp2PingHealthEffectivelyEnabled() {
-        if (!Configs.isHttp2PingHealthEnabled()) {
-            return false;
-        }
-
-        // Mirror the transport-side guard in Http2PingHandler#installIfAbsent: if the
-        // configured interval is non-positive the handler is not installed, so the UA
-        // flag must not advertise PING either.
-        if (Configs.getHttp2PingIntervalInSeconds() <= 0) {
-            return false;
-        }
-
-        boolean h2EffectivelyEnabled = Configs.isHttp2Enabled();
-        if (this.connectionPolicy.getHttp2ConnectionConfig() != null
-            && this.connectionPolicy.getHttp2ConnectionConfig().isEnabled() != null) {
-            h2EffectivelyEnabled = this.connectionPolicy.getHttp2ConnectionConfig().isEnabled();
-        }
-        return h2EffectivelyEnabled;
+        return Http2PingHandler.isPingHealthEffectivelyEnabled(
+            this.connectionPolicy.getHttp2ConnectionConfig());
     }
 
     @Override
