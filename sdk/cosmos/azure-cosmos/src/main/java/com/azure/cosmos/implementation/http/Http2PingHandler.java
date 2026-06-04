@@ -135,8 +135,12 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         // Configs.isHttp2PingHealthEnabled() (system property). Flipping it false
         // makes this tick a no-op but KEEPS the timer alive, so toggling it back
         // to true automatically resumes PINGing on the same connection (no need
-        // to wait for connection recycling).
+        // to wait for connection recycling). Clear any in-flight PING state so a
+        // long dormant window followed by re-enable cannot charge a spurious
+        // timeout from a pre-disable outstanding PING.
         if (!Configs.isHttp2PingHealthEnabled()) {
+            pingOutstandingSinceNanos = 0;
+            consecutiveFailures = 0;
             return;
         }
 
@@ -222,9 +226,12 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     /**
      * Installs the PING handler on the parent H2 channel if not already installed.
-     * Safe to call from doOnConnected (which fires per-stream for H2).
+     * For reactor-netty 1.2.x, {@code doOnConnected} fires on the parent TCP channel
+     * (State.CONFIGURED) and not on child stream channels (STREAM_CONFIGURED), so the
+     * input {@code channel} here is normally the parent already. The parent resolution
+     * and idempotency guard below are defensive in case that contract ever changes.
      *
-     * @param channel the channel from doOnConnected (may be stream or parent)
+     * @param channel the channel from doOnConnected (normally the parent, but child-safe)
      * @param pingIntervalSeconds PING interval in seconds
      * @param pingTimeoutSeconds  PING ACK timeout in seconds
      * @param failureThreshold    consecutive timeouts before closing

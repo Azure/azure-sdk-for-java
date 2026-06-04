@@ -149,16 +149,20 @@ public class ReactorNettyClient implements HttpClient {
             this.httpClient = this.httpClient.doOnConnected(connection -> {
                 // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
                 // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
-                // For H2, doOnConnected fires for both the parent TCP channel and child stream
-                // channels. We install on the parent channel via Http2MultiplexHandler detection.
+                // For H2, doOnConnected fires on the parent TCP channel when the connection
+                // is first established (State.CONFIGURED). Child stream channels emit
+                // STREAM_CONFIGURED, which does not trigger this callback. The parent-
+                // resolution and installIfAbsent guard below are defensive -- they correctly
+                // handle both parent and child channels if the reactor-netty contract
+                // ever changes.
                 //
                 // Gating is consolidated in Http2PingHandler.isPingHealthEffectivelyEnabled so
                 // the transport install site and the user-agent feature flag cannot drift.
                 // The handler also re-checks the kill-switch per tick so toggling it at
                 // runtime immediately stops/resumes PINGing on already-installed connections.
                 if (Http2PingHandler.isPingHealthEffectivelyEnabled(http2Cfg)) {
-                    // Resolve to the parent (TCP) channel -- doOnConnected may fire for
-                    // child stream channels where Http2MultiplexHandler is absent.
+                    // Resolve to the parent (TCP) channel -- defensive in case reactor-netty
+                    // ever invokes this callback for a child stream channel.
                     Channel ch = connection.channel();
                     Channel parent = ch.parent() != null ? ch.parent() : ch;
                     if (parent.pipeline().get(Http2MultiplexHandler.class) != null) {

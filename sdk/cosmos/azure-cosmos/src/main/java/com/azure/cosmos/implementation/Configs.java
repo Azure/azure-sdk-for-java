@@ -153,16 +153,20 @@ public class Configs {
     // Guarded by an explicit enable flag; default ON. Set COSMOS.HTTP2_PING_HEALTH_ENABLED=false to disable.
     private static final boolean DEFAULT_HTTP2_PING_HEALTH_ENABLED = true;
     private static final String HTTP2_PING_HEALTH_ENABLED = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
+    private static final String HTTP2_PING_HEALTH_ENABLED_VARIABLE = "COSMOS_HTTP2_PING_HEALTH_ENABLED";
     // Aligned with Rust SDK (hyper): interval=1s, timeout=2s. Dead connection detected within 3s.
     private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 1;
     private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS";
     private static final int DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS = 2;
     private static final String HTTP2_PING_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS";
+    private static final String HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_TIMEOUT_IN_SECONDS";
     // Consecutive PING failures (timeout without ACK) before closing the connection.
     // Aligned with Rust SDK's http2_consecutive_failure_threshold = 5.
     // With interval=1s and timeout=2s, worst-case detection = 5*(1+2) = ~15s.
     private static final int DEFAULT_HTTP2_PING_FAILURE_THRESHOLD = 5;
     private static final String HTTP2_PING_FAILURE_THRESHOLD = "COSMOS.HTTP2_PING_FAILURE_THRESHOLD";
+    private static final String HTTP2_PING_FAILURE_THRESHOLD_VARIABLE = "COSMOS_HTTP2_PING_FAILURE_THRESHOLD";
 
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -760,25 +764,39 @@ public class Configs {
     }
 
     public static boolean isHttp2PingHealthEnabled() {
-        return getJVMConfigAsBoolean(HTTP2_PING_HEALTH_ENABLED, DEFAULT_HTTP2_PING_HEALTH_ENABLED);
+        String configValue = System.getProperty(
+            HTTP2_PING_HEALTH_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_PING_HEALTH_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_PING_HEALTH_ENABLED)));
+        return Boolean.parseBoolean(configValue);
     }
 
     public static int getHttp2PingIntervalInSeconds() {
-        return getJVMConfigAsInt(
+        String configValue = System.getProperty(
             HTTP2_PING_INTERVAL_IN_SECONDS,
-            DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS)));
+        return Integer.parseInt(configValue);
     }
 
     public static int getHttp2PingTimeoutInSeconds() {
-        return getJVMConfigAsInt(
+        String configValue = System.getProperty(
             HTTP2_PING_TIMEOUT_IN_SECONDS,
-            DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS);
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS)));
+        return Integer.parseInt(configValue);
     }
 
     public static int getHttp2PingFailureThreshold() {
-        return getJVMConfigAsInt(
+        String configValue = System.getProperty(
             HTTP2_PING_FAILURE_THRESHOLD,
-            DEFAULT_HTTP2_PING_FAILURE_THRESHOLD);
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_PING_FAILURE_THRESHOLD_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_PING_FAILURE_THRESHOLD)));
+        return Integer.parseInt(configValue);
     }
 
     public static Integer getPendingAcquireMaxCount() {
