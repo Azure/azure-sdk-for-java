@@ -107,9 +107,15 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         if (msg instanceof Http2PingFrame) {
             Http2PingFrame ping = (Http2PingFrame) msg;
             // RFC 9113 §6.7: PING ACK echoes the 8-byte payload we sent.
-            // Match by payload so a late ACK for a PING that already counted as a
-            // timeout cannot reset the failure counter and mask ongoing degradation.
-            if (ping.ack() && ping.content() == pingsSent) {
+            // Two guards prevent a late ACK from masking ongoing degradation:
+            //   1) pingOutstandingSinceNanos != 0 -- after timeout fires we clear
+            //      this to 0; a late ACK arriving before the next PING is sent
+            //      still has ping.content() == pingsSent (pingsSent isn't bumped
+            //      until the next send), so the payload alone is insufficient.
+            //   2) ping.content() == pingsSent -- guards the window AFTER the next
+            //      PING is sent (pingsSent has advanced), so a late ACK for the
+            //      previous PING no longer matches.
+            if (ping.ack() && pingOutstandingSinceNanos != 0 && ping.content() == pingsSent) {
                 pingOutstandingSinceNanos = 0;
                 consecutiveFailures = 0;
             }

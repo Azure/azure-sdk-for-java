@@ -31,17 +31,16 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * HTTP/2 PING keepalive handler tests.
+ * HTTP/2 PING keepalive handler test.
  * <p>
- * Test 1: Verifies PINGs are sent at the configured interval on idle connections.
- * Test 2: Uses iptables DROP to blackhole PING ACKs, verifying the handler closes
- *         the broken connection and a subsequent request uses a new connection.
+ * Uses {@code iptables DROP} to blackhole PING ACKs, verifying the handler closes
+ * the broken connection after consecutive PING timeouts and a subsequent request
+ * uses a new connection.
  * <p>
- * Run in Docker with --cap-add=NET_ADMIN (group: manual-http-network-fault).
- * Requires: thin-client-enabled Cosmos DB account whose DatabaseAccount response
- * exposes {@code thinClientReadableLocations}. PING is scoped to thin-client
- * endpoints only, so both {@code COSMOS.HTTP2_ENABLED=true} and
- * {@code COSMOS.THINCLIENT_ENABLED=true} must be set before client construction.
+ * Run in Docker with {@code --cap-add=NET_ADMIN} (group: {@code manual-http-network-fault}).
+ * Requires an HTTP/2-capable Cosmos DB Gateway endpoint; both {@code COSMOS.HTTP2_ENABLED=true}
+ * and {@code COSMOS.THINCLIENT_ENABLED=true} are set before client construction because
+ * H2 is currently negotiated only on the thin-client proxy path.
  */
 public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
@@ -66,7 +65,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     @BeforeClass(groups = {"manual-http-network-fault"}, timeOut = 120_000)
     public void beforeClass() {
         // Enable HTTP/2 and thin client BEFORE client construction.
-        // PING is scoped to thin-client endpoints; both flags are required.
+        // H2 is currently negotiated on the thin-client proxy path; both flags are required.
         System.setProperty("COSMOS.HTTP2_ENABLED", "true");
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
@@ -230,6 +229,13 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         throw new AssertionError("Could not extract parentChannelId from diagnostics: " + diagnostics);
     }
 
+    /**
+     * Runs a shell command and throws on non-zero exit. The test must fail loudly
+     * if iptables setup fails (e.g., missing NET_ADMIN capability), rather than
+     * silently continuing without network fault injection and reporting a
+     * misleading assertion failure downstream. Cleanup-only callers in
+     * {@code finally} blocks can swallow the exception locally.
+     */
     private static void execCommand(String command) throws Exception {
         Process p = Runtime.getRuntime().exec(new String[]{"bash", "-c", command});
         int exit = p.waitFor();
@@ -241,7 +247,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            logger.warn("Command '{}' exited with code {}: {}", command, exit, sb.toString().trim());
+            String stderr = sb.toString().trim();
+            logger.warn("Command '{}' exited with code {}: {}", command, exit, stderr);
+            throw new RuntimeException("Command failed (exit=" + exit + "): " + command + " -- " + stderr);
         }
     }
 }

@@ -67,6 +67,28 @@ public class Http2PingHandlerTest {
     }
 
     @Test(groups = "unit")
+    public void ackAfterTimeoutCleared_doesNotResetState() throws Exception {
+        // Reproduces the race fixed by the `pingOutstandingSinceNanos != 0` guard in
+        // channelRead: PING #5 is sent (pingsSent=5), timeout fires and sets
+        // pingOutstandingSinceNanos=0 + consecutiveFailures=1, then a late ACK for #5
+        // arrives BEFORE the next PING is sent (so pingsSent is still 5). Payload alone
+        // matches; the outstanding-flag guard is what prevents masking the failure.
+        Http2PingHandler handler = new Http2PingHandler(1, 1, 3);
+        EmbeddedChannel channel = new EmbeddedChannel(handler);
+
+        setField(handler, "pingsSent", 5);
+        setField(handler, "pingOutstandingSinceNanos", 0L);
+        setField(handler, "consecutiveFailures", 1);
+
+        channel.writeInbound(new DefaultHttp2PingFrame(5L, true));
+
+        assertThat((long) getField(handler, "pingOutstandingSinceNanos")).isZero();
+        assertThat((int) getField(handler, "consecutiveFailures")).isEqualTo(1);
+
+        channel.finishAndReleaseAll();
+    }
+
+    @Test(groups = "unit")
     public void installIfAbsent_isIdempotent() {
         EmbeddedChannel channel = new EmbeddedChannel();
 
