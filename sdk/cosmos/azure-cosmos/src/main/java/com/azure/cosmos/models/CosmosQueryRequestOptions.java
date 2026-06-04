@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.List;
@@ -69,7 +68,6 @@ public class CosmosQueryRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return this.actualRequestOptions.getReadConsistencyStrategy();
     }
@@ -106,7 +104,6 @@ public class CosmosQueryRequestOptions {
      * @param readConsistencyStrategy the consistency level.
      * @return the CosmosQueryRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
         return this;
