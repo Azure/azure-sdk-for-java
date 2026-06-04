@@ -2166,6 +2166,49 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowWithTags() {
+        // Upload a blob and set tags
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tagkey", "tagvalue");
+        cc.getBlobClient(blobName).setTags(tags);
+
+        // List with Arrow + retrieveTags
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
+            .setDetails(new BlobListDetails().setRetrieveTags(true));
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        assertNotNull(blobs.get(0).getTags());
+        assertEquals("tagvalue", blobs.get(0).getTags().get("tagkey"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
+
+        bc.upload(DATA.getDefaultInputStream(), 7);
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE);
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority),
+                null, null);
+        }
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
+        BlobItem item = cc.listBlobs(options, null).iterator().next();
+
+        assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowWithMetadata() {
         String blobName = generateBlobName();
         Map<String, String> metadata = new HashMap<>();
@@ -2395,25 +2438,4 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(4, allItems.size());
     }
 
-    @Test
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
-    public void listBlobsArrowWithTags() {
-        // Upload a blob and set tags
-        String blobName = generateBlobName();
-        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-
-        Map<String, String> tags = new HashMap<>();
-        tags.put("tagkey", "tagvalue");
-        cc.getBlobClient(blobName).setTags(tags);
-
-        // List with Arrow + retrieveTags
-        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
-            .setDetails(new BlobListDetails().setRetrieveTags(true));
-        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
-
-        assertEquals(1, blobs.size());
-        assertEquals(blobName, blobs.get(0).getName());
-        assertNotNull(blobs.get(0).getTags());
-        assertEquals("tagvalue", blobs.get(0).getTags().get("tagkey"));
-    }
 }
