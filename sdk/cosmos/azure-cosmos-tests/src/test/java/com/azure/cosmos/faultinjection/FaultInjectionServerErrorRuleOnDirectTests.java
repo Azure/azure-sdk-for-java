@@ -1932,6 +1932,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         CosmosAsyncClient newClient = null;
         String faultInjectionRuleId = "barrier-429-read-yield-" + UUID.randomUUID();
+        System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
         FaultInjectionRule barrierThrottleRule =
             new FaultInjectionRuleBuilder(faultInjectionRuleId)
                 .condition(
@@ -1992,6 +1993,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         } finally {
             barrierThrottleRule.disable();
             safeClose(newClient);
+            System.clearProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429");
         }
     }
 
@@ -2010,6 +2012,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         CosmosAsyncClient newClient = null;
         String faultInjectionRuleId = "barrier-429-write-408-" + UUID.randomUUID();
+        System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
         FaultInjectionRule barrierThrottleRule =
             new FaultInjectionRuleBuilder(faultInjectionRuleId)
                 .condition(
@@ -2069,6 +2072,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         } finally {
             barrierThrottleRule.disable();
             safeClose(newClient);
+            System.clearProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429");
         }
     }
 
@@ -2087,6 +2091,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
         CosmosAsyncClient newClient = null;
         String faultInjectionRuleId = "barrier-429-recover-" + UUID.randomUUID();
+        System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "true");
         FaultInjectionRule barrierThrottleRule =
             new FaultInjectionRuleBuilder(faultInjectionRuleId)
                 .condition(
@@ -2143,6 +2148,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         } finally {
             barrierThrottleRule.disable();
             safeClose(newClient);
+            System.clearProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429");
         }
     }
 

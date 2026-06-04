@@ -31,16 +31,38 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuorumReaderTest {
+    private static final String BARRIER_EARLY_YIELD_ON_429_PROPERTY = "COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429";
     private final Duration timeResolution = Duration.ofMillis(10);
     private final Configs configs;
 
     public QuorumReaderTest() {
         configs = new Configs();
+    }
+
+    // The barrier early-yield-on-429 behavior is gated behind the Configs feature flag
+    // (COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429), which is read at QuorumReader construction time and defaults
+    // to false. This helper constructs a QuorumReader with the flag toggled so tests can exercise the
+    // flag-enabled behavior deterministically.
+    private static QuorumReader createQuorumReaderWithBarrierEarlyYieldOn429(
+        boolean enableBarrierEarlyYieldOn429,
+        Supplier<QuorumReader> quorumReaderSupplier) {
+        String previous = System.getProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY);
+        System.setProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY, String.valueOf(enableBarrierEarlyYieldOn429));
+        try {
+            return quorumReaderSupplier.get();
+        } finally {
+            if (previous == null) {
+                System.clearProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY);
+            } else {
+                System.setProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY, previous);
+            }
+        }
     }
 
     @DataProvider(name = "simpleReadStrongArgProvider")
@@ -693,7 +715,9 @@ public class QuorumReaderTest {
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
+            mockDiagnosticsClientContext(), configs, transportClientWrapper.transportClient,
+            addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider));
 
         Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(mockDiagnosticsClientContext(), request, replicaCountToRead, ReadMode.Strong);
 
@@ -761,10 +785,10 @@ public class QuorumReaderTest {
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
             mockDiagnosticsClientContext(), configs,
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
-            storeReader, serviceConfigurator, authTokenProvider);
+            storeReader, serviceConfigurator, authTokenProvider));
 
         Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
             mockDiagnosticsClientContext(), request, replicaCountToRead, ReadMode.Strong);
@@ -843,10 +867,10 @@ public class QuorumReaderTest {
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
             mockDiagnosticsClientContext(), configs,
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
-            storeReader, serviceConfigurator, authTokenProvider);
+            storeReader, serviceConfigurator, authTokenProvider));
 
         Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
             mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
@@ -913,10 +937,10 @@ public class QuorumReaderTest {
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
             mockDiagnosticsClientContext(), configs,
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
-            storeReader, serviceConfigurator, authTokenProvider);
+            storeReader, serviceConfigurator, authTokenProvider));
 
         Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
             mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);
@@ -999,10 +1023,10 @@ public class QuorumReaderTest {
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
         GatewayServiceConfigurationReader serviceConfigurator = Mockito.mock(GatewayServiceConfigurationReader.class);
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
-        QuorumReader quorumReader = new QuorumReader(
+        QuorumReader quorumReader = createQuorumReaderWithBarrierEarlyYieldOn429(true, () -> new QuorumReader(
             mockDiagnosticsClientContext(), configs,
             transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector,
-            storeReader, serviceConfigurator, authTokenProvider);
+            storeReader, serviceConfigurator, authTokenProvider));
 
         Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(
             mockDiagnosticsClientContext(), request, replicaCountToRead, readMode);

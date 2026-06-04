@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
@@ -90,6 +91,7 @@ public class ConsistencyWriter {
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final StoreReader storeReader;
     private final SessionRetryOptions sessionRetryOptions;
+    private final boolean enableBarrierEarlyYieldOn429 = Configs.isBarrierEarlyYieldOn429Enabled();
 
     public ConsistencyWriter(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -517,7 +519,7 @@ public class ConsistencyWriter {
             }
 
             if (writeBarrierRetryCount.get() == 0) {
-                if (lastAttemptWasThrottled.get()) {
+                if (this.enableBarrierEarlyYieldOn429 && lastAttemptWasThrottled.get()) {
                     logger.warn("ConsistencyWriter: Write barrier failed after all retries; last attempt was "
                         + "throttled (429). Throwing RequestTimeoutException (408).");
                     return Flux.error(
@@ -569,7 +571,11 @@ public class ConsistencyWriter {
                         && responses.stream().allMatch(r -> r.isThrottledException)) {
                         logger.info("ConsistencyWriter: waitForWriteBarrierAsync - All contacted replicas returned "
                             + "429 Too Many Requests for this attempt. Continuing retries.");
-                        lastAttemptWasThrottled.set(true);
+                        if (this.enableBarrierEarlyYieldOn429) {
+                            lastAttemptWasThrottled.set(true);
+                        } else {
+                            lastAttemptWasThrottled.set(false);
+                        }
                     } else {
                         lastAttemptWasThrottled.set(false);
                     }

@@ -620,6 +620,27 @@ public class ConsistencyWriterTest {
             null);
     }
 
+    // The barrier early-yield-on-429 behavior is gated behind the Configs feature flag
+    // (COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429), which is read at ConsistencyWriter construction time and
+    // defaults to false. This helper toggles the flag around construction so tests can exercise the
+    // flag-enabled behavior deterministically.
+    private void initializeConsistencyWriterWithStoreReader(boolean useMultipleWriteLocation, StoreReader reader,
+                                                            boolean enableBarrierEarlyYieldOn429) {
+        String previous = System.getProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY);
+        System.setProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY, String.valueOf(enableBarrierEarlyYieldOn429));
+        try {
+            initializeConsistencyWriterWithStoreReader(useMultipleWriteLocation, reader);
+        } finally {
+            if (previous == null) {
+                System.clearProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY);
+            } else {
+                System.setProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY, previous);
+            }
+        }
+    }
+
+    private static final String BARRIER_EARLY_YIELD_ON_429_PROPERTY = "COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429";
+
     public static <T> void validateError(Mono<T> single,
                                          FailureValidator validator) {
         TestSubscriber<T> testSubscriber = TestSubscriber.create();
@@ -677,7 +698,7 @@ public class ConsistencyWriterTest {
                 Mockito.anyBoolean()))
             .thenReturn(Mono.just(throttledResults));
 
-        initializeConsistencyWriterWithStoreReader(false, storeReader);
+        initializeConsistencyWriterWithStoreReader(false, storeReader, true);
 
         RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -692,6 +713,39 @@ public class ConsistencyWriterTest {
                 RequestTimeoutException rte = (RequestTimeoutException) error;
                 assertThat(rte.getSubStatusCode()).isEqualTo(SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
             })
+            .verify(Duration.ofSeconds(30));
+    }
+
+    @Test(groups = "unit")
+    public void writeBarrier_FlagDisabled_AllReplicasThrottled_ReturnsFalse() {
+        // When the barrier early-yield-on-429 feature flag is disabled (the default), the writer must preserve
+        // the original behavior: all replicas returning 429 during the write barrier results in
+        // false (barrier not met) after retries are exhausted - NOT a 408.
+        RequestRateTooLargeException throttleException = new RequestRateTooLargeException();
+        StoreResult throttledStoreResult = new StoreResult(
+            null, throttleException, "1", 0, 0, 0.0,
+            UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            4, 2, false, null, 0, 0, 1, 1, null, 0.3, 90.0);
+
+        StoreReader storeReader = Mockito.mock(StoreReader.class);
+        Mockito.when(storeReader.readMultipleReplicaAsync(
+                Mockito.any(), Mockito.anyBoolean(), Mockito.anyInt(),
+                Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.any(),
+                Mockito.anyBoolean(), Mockito.anyBoolean()))
+            .thenReturn(Mono.just(Collections.singletonList(throttledStoreResult)));
+
+        initializeConsistencyWriterWithStoreReader(false, storeReader, false);
+
+        RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        barrierRequest.requestContext.timeoutHelper = timeoutHelper;
+
+        Mono<Boolean> result = consistencyWriter.waitForWriteBarrierAsync(
+            barrierRequest, 100L, new java.util.concurrent.atomic.AtomicReference<>(null), BarrierType.GLOBAL_STRONG_WRITE);
+
+        StepVerifier.create(result)
+            .expectNext(Boolean.FALSE)
+            .expectComplete()
             .verify(Duration.ofSeconds(30));
     }
 
@@ -757,7 +811,7 @@ public class ConsistencyWriterTest {
                 Mockito.anyBoolean()))
             .thenReturn(Mono.just(mixedResults));
 
-        initializeConsistencyWriterWithStoreReader(false, storeReader);
+        initializeConsistencyWriterWithStoreReader(false, storeReader, true);
 
         RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -815,7 +869,7 @@ public class ConsistencyWriterTest {
             .thenReturn(Mono.just(Collections.singletonList(throttledStoreResult)))
             .thenReturn(Mono.just(Collections.singletonList(barrierMetResult)));
 
-        initializeConsistencyWriterWithStoreReader(false, storeReader);
+        initializeConsistencyWriterWithStoreReader(false, storeReader, true);
 
         RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -869,7 +923,7 @@ public class ConsistencyWriterTest {
         Mockito.when(storeReader.readPrimaryAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyBoolean()))
             .thenReturn(Mono.just(primaryNotMetResult));
 
-        initializeConsistencyWriterWithStoreReader(false, storeReader);
+        initializeConsistencyWriterWithStoreReader(false, storeReader, true);
 
         RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -902,7 +956,7 @@ public class ConsistencyWriterTest {
                 Mockito.anyBoolean(), Mockito.anyBoolean()))
             .thenReturn(Mono.just(Collections.singletonList(throttledStoreResult)));
 
-        initializeConsistencyWriterWithStoreReader(false, storeReader);
+        initializeConsistencyWriterWithStoreReader(false, storeReader, true);
 
         RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);

@@ -319,6 +319,10 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    private static final boolean DEFAULT_ENABLE_BARRIER_EARLY_YIELD_ON_429 = false;
+    private static final String ENABLE_BARRIER_EARLY_YIELD_ON_429 = "COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429";
+    private static final String ENABLE_BARRIER_EARLY_YIELD_ON_429_VARIABLE = "COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429";
+
     private static final String DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "";
     private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
     private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE = "COSMOS_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
@@ -1171,6 +1175,17 @@ public class Configs {
                     String.valueOf(DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED)));
 
         return Boolean.parseBoolean(isSessionTokenFalseProgressMergeDisabledAsString);
+    }
+
+    public static boolean isBarrierEarlyYieldOn429Enabled() {
+        String isBarrierEarlyYieldOn429EnabledAsString =
+            System.getProperty(
+                ENABLE_BARRIER_EARLY_YIELD_ON_429,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(ENABLE_BARRIER_EARLY_YIELD_ON_429_VARIABLE)),
+                    String.valueOf(DEFAULT_ENABLE_BARRIER_EARLY_YIELD_ON_429)));
+
+        return Boolean.parseBoolean(isBarrierEarlyYieldOn429EnabledAsString);
     }
 
     public static int getAllowedE2ETimeoutHitCountForPPAF() {
