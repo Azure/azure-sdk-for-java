@@ -1,14 +1,169 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-06-04)
 
-### Features Added
+- Azure Resource Manager Azure Sphere client library for Java. This package contains Microsoft Azure SDK for Azure Sphere Management SDK. Azure Sphere resource management API. Package api-version 2024-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.CountDeviceResponse` was removed
 
-### Other Changes
+#### `models.ImageListResult` was removed
+
+#### `models.PagedDeviceInsight` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.DeviceGroupListResult` was removed
+
+#### `models.DeploymentListResult` was removed
+
+#### `models.ProductListResult` was removed
+
+#### `models.CatalogListResult` was removed
+
+#### `models.DeviceListResult` was removed
+
+#### `models.DeviceUpdateProperties` was removed
+
+#### `models.DeviceGroupUpdateProperties` was removed
+
+#### `models.ProductUpdateProperties` was removed
+
+#### `models.CertificateListResult` was removed
+
+#### `models.DeviceGroupProperties` was modified
+
+* `validate()` was removed
+
+#### `AzureSphereManager` was modified
+
+* `fluent.AzureSphereMgmtClient serviceClient()` -> `fluent.AzureSphereManagementClient serviceClient()`
+
+#### `models.CatalogUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.DeviceGroup$Update` was modified
+
+* `withProperties(models.DeviceGroupUpdateProperties)` was removed
+
+#### `models.ProofOfPossessionNonceRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DeviceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Product$Update` was modified
+
+* `withProperties(models.ProductUpdateProperties)` was removed
+
+#### `models.DeviceUpdate` was modified
+
+* `properties()` was removed
+* `withProperties(models.DeviceUpdateProperties)` was removed
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.DeploymentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ListDeviceGroupsRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Device$Update` was modified
+
+* `withProperties(models.DeviceUpdateProperties)` was removed
+
+#### `models.CountElementsResponse` was modified
+
+* `models.CountElementsResponse withValue(int)` -> `models.CountElementsResponse withValue(int)`
+* `validate()` was removed
+
+#### `models.GenerateCapabilityImageRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CatalogProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ProductUpdate` was modified
+
+* `withProperties(models.ProductUpdateProperties)` was removed
+* `validate()` was removed
+* `properties()` was removed
+
+#### `models.ClaimDevicesRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DeviceGroupUpdate` was modified
+
+* `withProperties(models.DeviceGroupUpdateProperties)` was removed
+* `validate()` was removed
+* `properties()` was removed
+
+#### `models.ImageProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ProductProperties` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+#### `models.DeviceGroup$Update` was modified
+
+* `withUpdatePolicy(models.UpdatePolicy)` was added
+* `withAllowCrashDumpsCollection(models.AllowCrashDumpCollection)` was added
+* `withRegionalDataBoundary(models.RegionalDataBoundary)` was added
+* `withDescription(java.lang.String)` was added
+* `withOsFeedType(models.OSFeedType)` was added
+
+#### `models.Product$Update` was modified
+
+* `withDescription(java.lang.String)` was added
+
+#### `models.DeviceUpdate` was modified
+
+* `withDeviceGroupId(java.lang.String)` was added
+* `deviceGroupId()` was added
+
+#### `models.Device$Update` was modified
+
+* `withDeviceGroupId(java.lang.String)` was added
+
+#### `models.ProductUpdate` was modified
+
+* `description()` was added
+* `withDescription(java.lang.String)` was added
+
+#### `models.DeviceGroupUpdate` was modified
+
+* `allowCrashDumpsCollection()` was added
+* `withUpdatePolicy(models.UpdatePolicy)` was added
+* `withRegionalDataBoundary(models.RegionalDataBoundary)` was added
+* `withOsFeedType(models.OSFeedType)` was added
+* `withAllowCrashDumpsCollection(models.AllowCrashDumpCollection)` was added
+* `withDescription(java.lang.String)` was added
+* `osFeedType()` was added
+* `updatePolicy()` was added
+* `description()` was added
+* `regionalDataBoundary()` was added
 
 ## 1.1.0 (2024-12-19)
 
