@@ -2231,7 +2231,7 @@ public class ContainerApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowPagination() {
         // Upload 3 blobs
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             cc.getBlobClient("blob" + i)
                 .getBlockBlobClient()
                 .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
@@ -2244,7 +2244,11 @@ public class ContainerApiTests extends BlobTestBase {
             allBlobs.addAll(page.getValue());
         }
 
-        assertEquals(3, allBlobs.size());
+        cc.listBlobs().iterableByPage(2).forEach(page -> {
+            assertEquals(2, page.getValue().size());
+        });
+
+        assertEquals(4, allBlobs.size());
     }
 
     @Test
