@@ -148,10 +148,6 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         if (v2SpyClient != null) {
             v2SpyClient.close();
         }
-        // Close throw-away CosmosAsyncClient instances created by
-        // TestUtils.createDummyQueryFeedOperationState so the leak detector
-        // does not flag them.
-        TestUtils.closeDummyClients();
     }
 
     @DataProvider(name = "transportModes")

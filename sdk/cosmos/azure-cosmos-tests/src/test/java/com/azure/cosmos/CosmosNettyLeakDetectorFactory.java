@@ -127,6 +127,10 @@ public final class CosmosNettyLeakDetectorFactory
             if (remainingInstanceCount == 0) {
                 String failMessage = "";
                 logger.info("LEAK DETECTION EVALUATION for test class {}", testClassName);
+                // Drain any throw-away CosmosAsyncClient instances created by
+                // TestUtils.createDummyQueryFeedOperationState(..., AsyncDocumentClient)
+                // so they do not register as leaks below.
+                com.azure.cosmos.implementation.TestUtils.closeDummyClients();
                 Map<Integer, String> leakedClientSnapshotNow = RxDocumentClientImpl.getActiveClientsSnapshot();
                 StringBuilder sb = new StringBuilder();
                 Map<Integer, String> leakedClientSnapshotAtBegin = activeClientsAtBegin;
