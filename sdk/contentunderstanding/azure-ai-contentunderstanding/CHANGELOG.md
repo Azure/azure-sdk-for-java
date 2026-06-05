@@ -8,7 +8,11 @@
 
 ### Bugs Fixed
 
+- Filtered service-emitted `LLMStats:` telemetry entries from the rendered `rai_warnings` front matter in `LlmInputHelper.toLlmInput`.
+
 ### Other Changes
+
+- Updated `LlmInputHelper.toLlmInput` page markers from `<!-- page N -->` to `<!-- InputPageNumber: N -->` and avoided duplicate marker injection when the service markdown already includes `InputPageNumber` markers.
 
 ## 1.1.0-beta.1 (2026-05-01)
 
