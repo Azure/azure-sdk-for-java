@@ -227,9 +227,10 @@ public class ReactorNettyClient implements HttpClient {
                 .doOnRequest((req, conn) -> {
                     // Install a @Sharable head-of-pipeline rewrap handler on each H2
                     // child-stream pipeline. When Http2PingHandler closes the parent
-                    // (TCP) channel after consecutive PING-ACK timeouts, the H2 multiplex
-                    // codec propagates channelInactive to every child stream; the rewrap
-                    // handler intercepts that and fires exceptionCaught with a typed
+                    // (TCP) channel after consecutive PING-ACK timeouts or PING-send
+                    // failures, the H2 multiplex codec propagates channelInactive to
+                    // every child stream; the rewrap handler intercepts that and fires
+                    // exceptionCaught with a typed
                     // Http2PingTimeoutChannelClosedException so reactor-netty's
                     // HttpClientOperations fails the response Mono with the typed
                     // exception (instead of bare PrematureCloseException). The rest of the

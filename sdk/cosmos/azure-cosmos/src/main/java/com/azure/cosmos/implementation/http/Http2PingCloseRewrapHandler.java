@@ -13,8 +13,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * <p>
  * Installed at the head of each H2 child-stream pipeline by
  * {@code ReactorNettyClient}'s {@code .doOnRequest(...)} hook. When the parent (TCP)
- * channel is closed by {@link Http2PingHandler} after consecutive PING-ACK timeouts,
- * the H2 multiplex codec propagates {@code channelInactive} to every child stream.
+ * channel is closed by {@link Http2PingHandler} after consecutive PING-ACK timeouts
+ * or consecutive PING-send failures, the H2 multiplex codec propagates
+ * {@code channelInactive} to every child stream.
  * This handler fires first (head-of-pipeline), inspects the parent channel's
  * {@link Http2PingHandler#PING_TIMEOUT_CLOSED} attribute, and on match fires
  * {@code exceptionCaught} with the typed exception <em>before</em> the default close
@@ -47,7 +48,7 @@ final class Http2PingCloseRewrapHandler extends ChannelInboundHandlerAdapter {
             // HttpClientOperations.exceptionCaught fails the response Mono with the
             // typed exception, beating its own onInboundClose(PrematureCloseException).
             ctx.fireExceptionCaught(new Http2PingTimeoutChannelClosedException(
-                "HTTP/2 connection closed by PING keepalive after consecutive ACK timeouts.",
+                "HTTP/2 connection closed by PING keepalive after consecutive PING-ACK timeouts or PING-send failures.",
                 null));
         }
         super.channelInactive(ctx);

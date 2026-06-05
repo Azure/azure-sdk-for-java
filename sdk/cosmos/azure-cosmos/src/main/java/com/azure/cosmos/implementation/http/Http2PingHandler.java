@@ -175,9 +175,9 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                     logger.info("PING ACK not received for {} consecutive attempts on channel {} -- closing connection",
                         consecutiveFailures, ctx.channel());
                     cancelPingTask();
-                    // Mark BEFORE close so a per-request captor in ReactorNettyClient.onErrorMap
-                    // observes the attribute when the in-flight stream Mono fails. Same event
-                    // loop, no cross-thread visibility concerns.
+                    // Mark BEFORE close so Http2PingCloseRewrapHandler.channelInactive on each
+                    // H2 child stream observes the attribute when the multiplex codec fires
+                    // channelInactive. Same event loop, no cross-thread visibility concerns.
                     ctx.channel().attr(PING_TIMEOUT_CLOSED).set(Boolean.TRUE);
                     ctx.close();
                 } else {
@@ -211,7 +211,7 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                             logger.info("PING send failed for {} consecutive attempts on channel {} -- closing connection",
                                 consecutiveFailures, ctx.channel());
                             cancelPingTask();
-                            // See note at the ACK-timeout close site above.
+                            // Same mark-before-close rationale as the ACK-timeout close site above.
                             ctx.channel().attr(PING_TIMEOUT_CLOSED).set(Boolean.TRUE);
                             ctx.close();
                         } else {
