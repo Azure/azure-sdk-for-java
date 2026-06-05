@@ -2471,7 +2471,9 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @return {@link ShareFileRange ranges} in the files.
+     * @deprecated Use {@link #listAllRanges()} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges() {
         return listRanges((ShareFileRange) null, null, null);
@@ -2502,7 +2504,9 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions, Duration, Context)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, Duration timeout, Context context) {
         return this.listRanges(range, null, timeout, context);
@@ -2535,7 +2539,9 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions, Duration, Context)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -2660,7 +2666,9 @@ public class ShareFileClient {
      * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRangesDiff(String)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileRangeList listRangesDiff(String previousSnapshot) {
         return this.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot), null, Context.NONE)
@@ -2695,7 +2703,9 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @deprecated Use {@link #listAllRangesDiff(ShareFileListRangesDiffOptions, Duration, Context)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options,
         Duration timeout, Context context) {

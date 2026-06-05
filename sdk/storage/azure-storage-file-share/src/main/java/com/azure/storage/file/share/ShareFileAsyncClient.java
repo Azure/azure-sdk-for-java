@@ -2705,7 +2705,9 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @return {@link ShareFileRange ranges} in the files.
+     * @deprecated Use {@link #listAllRanges()} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRange> listRanges() {
         return listRanges(null);
@@ -2731,7 +2733,9 @@ public class ShareFileAsyncClient {
      *
      * @param range Optional byte range which returns file data only from the specified range.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range) {
         return this.listRanges(range, null);
@@ -2759,7 +2763,9 @@ public class ShareFileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @param requestConditions {@link ShareRequestConditions}
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
@@ -2824,7 +2830,9 @@ public class ShareFileAsyncClient {
      * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
      * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRangesDiff(String)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileRangeList> listRangesDiff(String previousSnapshot) {
         try {
@@ -2859,7 +2867,9 @@ public class ShareFileAsyncClient {
      *
      * @param options {@link ShareFileListRangesDiffOptions}.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRangesDiff(ShareFileListRangesDiffOptions)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
