@@ -3,7 +3,6 @@
 
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -33,45 +32,45 @@ public class FoundryFeaturesHeaderVerificationTest {
         AIProjectClientBuilder builder = createBuilder(httpClient).allowPreview(true);
 
         builder.beta().buildBetaModelsClient().getModelVersionWithResponse("model", "1", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.MODELS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Models=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaRedTeamsClient().getRedTeamWithResponse("red-team", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.RED_TEAMS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("RedTeams=V1Preview", foundryFeatures(httpClient));
 
         builder.beta()
             .buildBetaEvaluationTaxonomiesClient()
             .getEvaluationTaxonomyWithResponse("taxonomy", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.EVALUATIONS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
 
         builder.beta()
             .buildBetaEvaluatorsClient()
             .getEvaluatorVersionWithResponse("evaluator", "1", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.EVALUATIONS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaInsightsClient().getInsightWithResponse("insight", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.INSIGHTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Insights=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaSchedulesClient().getScheduleWithResponse("schedule", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.SCHEDULES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Schedules=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaRoutinesClient().getRoutineWithResponse("routine", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Routines=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.SKILLS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
 
         builder.buildEvaluationRulesClient()
             .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.EVALUATIONS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
     }
 
     @Test
     public void allowPreviewDoesNotOverrideExplicitHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
-        String explicitHeader = FoundryFeaturesOptInKeys.INSIGHTS_V1_PREVIEW.toString();
+        String explicitHeader = "Insights=V1Preview";
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
         createBuilder(httpClient).allowPreview(true)
@@ -104,7 +103,7 @@ public class FoundryFeaturesHeaderVerificationTest {
             .buildBetaDatasetsClient()
             .getGenerationJobWithResponse("job", new RequestOptions());
 
-        assertEquals(FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
     }
 
     private static AIProjectClientBuilder createBuilder(RecordingHttpClient httpClient) {

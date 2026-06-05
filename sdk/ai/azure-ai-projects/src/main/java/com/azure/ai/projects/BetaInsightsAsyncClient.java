@@ -4,7 +4,6 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaInsightsImpl;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.Insight;
 import com.azure.ai.projects.models.InsightType;
 import com.azure.core.annotation.Generated;
@@ -15,7 +14,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -63,7 +61,7 @@ public final class BetaInsightsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -83,9 +81,9 @@ public final class BetaInsightsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -143,7 +141,7 @@ public final class BetaInsightsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -205,7 +203,7 @@ public final class BetaInsightsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -271,7 +269,6 @@ public final class BetaInsightsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific insight by Id on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Insight> getInsight(String id) {
         // Generated convenience method for getInsightWithResponse
@@ -290,7 +287,6 @@ public final class BetaInsightsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Insight items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Insight> listInsights() {
         // Generated convenience method for listInsights
@@ -314,8 +310,6 @@ public final class BetaInsightsAsyncClient {
      * Get a specific insight by Id.
      *
      * @param id The unique identifier for the insights report.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param includeCoordinates Whether to include coordinates for visualization in the response. Defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -325,14 +319,10 @@ public final class BetaInsightsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific insight by Id on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Insight> getInsight(String id, FoundryFeaturesOptInKeys foundryFeatures, Boolean includeCoordinates) {
+    public Mono<Insight> getInsight(String id, Boolean includeCoordinates) {
         // Generated convenience method for getInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         if (includeCoordinates != null) {
             requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
         }
@@ -343,8 +333,6 @@ public final class BetaInsightsAsyncClient {
     /**
      * List all insights in reverse chronological order (newest first).
      *
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param type Filter by the type of analysis.
      * @param evalId Filter by the evaluation ID.
      * @param runId Filter by the evaluation run ID.
@@ -358,15 +346,11 @@ public final class BetaInsightsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Insight items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Insight> listInsights(FoundryFeaturesOptInKeys foundryFeatures, InsightType type, String evalId,
-        String runId, String agentName, Boolean includeCoordinates) {
+    public PagedFlux<Insight> listInsights(InsightType type, String evalId, String runId, String agentName,
+        Boolean includeCoordinates) {
         // Generated convenience method for listInsights
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
         }

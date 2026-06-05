@@ -9,7 +9,6 @@ import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.EvaluatorCredentialInput;
 import com.azure.ai.projects.models.EvaluatorGenerationJob;
 import com.azure.ai.projects.models.EvaluatorVersion;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.ListVersionsRequestType;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
@@ -59,7 +58,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -140,7 +139,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -211,7 +210,7 @@ public final class BetaEvaluatorsClient {
      * Get the specific version of the EvaluatorVersion. The service returns 404 Not Found error if the EvaluatorVersion
      * does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -304,7 +303,7 @@ public final class BetaEvaluatorsClient {
     /**
      * Create a new EvaluatorVersion with auto incremented version id.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -357,9 +356,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -432,7 +431,7 @@ public final class BetaEvaluatorsClient {
     /**
      * Update an existing EvaluatorVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -485,9 +484,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -762,7 +761,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -772,9 +771,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -824,7 +823,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -832,9 +831,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -910,7 +909,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1000,9 +999,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1125,7 +1124,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1266,7 +1265,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1386,7 +1385,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1528,8 +1527,6 @@ public final class BetaEvaluatorsClient {
      * definitions from the provided source materials asynchronously.
      *
      * @param job The job to create.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
      * unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1541,15 +1538,10 @@ public final class BetaEvaluatorsClient {
      * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluatorGenerationJob createEvaluatorGenerationJob(EvaluatorGenerationJob job,
-        FoundryFeaturesOptInKeys foundryFeatures, String operationId) {
+    public EvaluatorGenerationJob createEvaluatorGenerationJob(EvaluatorGenerationJob job, String operationId) {
         // Generated convenience method for createEvaluatorGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         if (operationId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
         }
@@ -1573,7 +1565,6 @@ public final class BetaEvaluatorsClient {
      * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvaluatorGenerationJob createEvaluatorGenerationJob(EvaluatorGenerationJob job) {
         // Generated convenience method for createEvaluatorGenerationJobWithResponse
@@ -1609,8 +1600,6 @@ public final class BetaEvaluatorsClient {
     /**
      * Returns a list of evaluator generation jobs.
      *
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
@@ -1629,15 +1618,11 @@ public final class BetaEvaluatorsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EvaluatorGenerationJob> listEvaluatorGenerationJobs(FoundryFeaturesOptInKeys foundryFeatures,
-        Integer limit, PageOrder order, String after, String before) {
+    public PagedIterable<EvaluatorGenerationJob> listEvaluatorGenerationJobs(Integer limit, PageOrder order,
+        String after, String before) {
         // Generated convenience method for listEvaluatorGenerationJobs
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -1664,7 +1649,6 @@ public final class BetaEvaluatorsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EvaluatorGenerationJob> listEvaluatorGenerationJobs() {
         // Generated convenience method for listEvaluatorGenerationJobs

@@ -5,7 +5,7 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.AIProjectsServiceVersion;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.projects.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;

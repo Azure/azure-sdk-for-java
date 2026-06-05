@@ -6,7 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.AIProjectClientImpl;
 import com.azure.ai.projects.implementation.TokenUtils;
 import com.azure.ai.projects.implementation.http.HttpClientHelper;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.projects.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -1015,8 +1015,7 @@ public final class AIProjectClientBuilder
      * @param foundryFeatures the foundryFeatures value.
      * @return the AIProjectClientBuilder.
      */
-    @Generated
-    public AIProjectClientBuilder foundryFeatures(FoundryFeaturesOptInKeys foundryFeatures) {
+    private AIProjectClientBuilder foundryFeatures(FoundryFeaturesOptInKeys foundryFeatures) {
         this.foundryFeatures = foundryFeatures;
         return this;
     }

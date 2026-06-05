@@ -7,7 +7,6 @@ import com.azure.ai.projects.implementation.BetaRoutinesImpl;
 import com.azure.ai.projects.implementation.models.CreateOrUpdateRoutineRequest;
 import com.azure.ai.projects.implementation.models.DispatchRoutineAsyncRequest;
 import com.azure.ai.projects.models.DispatchRoutineResult;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
 import com.azure.ai.projects.models.RoutineDispatchPayload;
@@ -21,7 +20,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -67,7 +65,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -84,9 +82,9 @@ public final class BetaRoutinesAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -139,7 +137,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -189,7 +187,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -239,7 +237,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -302,7 +300,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -393,7 +391,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -507,7 +505,6 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Routine> listRoutines() {
         // Generated convenience method for listRoutines
@@ -558,7 +555,6 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoutineRun> listRoutineRuns(String routineName) {
         // Generated convenience method for listRoutineRuns
@@ -638,8 +634,6 @@ public final class BetaRoutinesAsyncClient {
     /**
      * List routines.
      *
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param limit The maximum number of routines to return.
      * @param after An opaque cursor returned as last_id by the previous list response.
      * @param before Unsupported. Reserved for future backward pagination support.
@@ -652,15 +646,10 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Routine> listRoutines(FoundryFeaturesOptInKeys foundryFeatures, Integer limit, String after,
-        String before, String order) {
+    public PagedFlux<Routine> listRoutines(Integer limit, String after, String before, String order) {
         // Generated convenience method for listRoutines
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -692,8 +681,6 @@ public final class BetaRoutinesAsyncClient {
      * List prior runs for a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param filter An optional MLflow search-runs filter expression applied within the routine's experiment.
      * @param limit The maximum number of runs to return.
      * @param after An opaque cursor returned as last_id by the previous list-runs response.
@@ -707,15 +694,11 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RoutineRun> listRoutineRuns(String routineName, FoundryFeaturesOptInKeys foundryFeatures,
-        String filter, Integer limit, String after, String before, String order) {
+    public PagedFlux<RoutineRun> listRoutineRuns(String routineName, String filter, Integer limit, String after,
+        String before, String order) {
         // Generated convenience method for listRoutineRuns
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         if (filter != null) {
             requestOptions.addQueryParam("filter", filter, false);
         }
@@ -760,7 +743,7 @@ public final class BetaRoutinesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -770,9 +753,9 @@ public final class BetaRoutinesAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
