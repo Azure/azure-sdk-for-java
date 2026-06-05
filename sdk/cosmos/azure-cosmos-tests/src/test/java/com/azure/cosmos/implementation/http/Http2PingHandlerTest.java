@@ -4,10 +4,14 @@
 package com.azure.cosmos.implementation.http;
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelOutboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
 import io.netty.channel.embedded.EmbeddedChannel;
 import io.netty.handler.codec.http2.DefaultHttp2PingFrame;
+import io.netty.util.ReferenceCountUtil;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.concurrent.ScheduledFuture;
@@ -170,6 +174,55 @@ public class Http2PingHandlerTest {
 
         assertThat(scheduled.isCancelled()).isTrue();
         assertThat((Object) getField(handler, "pingTask")).isNull();
+
+        channel.finishAndReleaseAll();
+    }
+
+    @Test(groups = "unit")
+    public void writeFailure_incrementsConsecutiveFailuresAndClosesAtThreshold() throws Exception {
+        // Reviewer-flagged invariant (PR #49095): a failed PING write must count as a
+        // failed health probe. Otherwise a channel stuck in a state where writes always
+        // fail (e.g. H2 codec rejecting frames, stalled flow-control, queued
+        // ClosedChannelException not yet propagated) but channel.isActive() stays true
+        // would loop on every tick without ever reaching the close threshold.
+        final int threshold = 2;
+        Http2PingHandler handler = new Http2PingHandler(1, 1, threshold);
+        EmbeddedChannel channel = new EmbeddedChannel(handler);
+
+        // Insert an outbound handler at HEAD that fails every write. Outbound writes
+        // from Http2PingHandler flow head-ward, so this intercepts them and fails the
+        // promise synchronously -- producing the same listener-on-failure path the
+        // handler would see if a real H2 codec rejected the PING frame.
+        channel.pipeline().addFirst("failOnWrite", new ChannelOutboundHandlerAdapter() {
+            @Override
+            public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+                ReferenceCountUtil.release(msg);
+                promise.setFailure(new IOException("simulated write failure"));
+            }
+        });
+
+        ChannelHandlerContext ctx = channel.pipeline().context(handler);
+        long longAgo = System.nanoTime() - TimeUnit.SECONDS.toNanos(60);
+
+        // First tick: force idle -> PING send attempt -> write fails.
+        // Expect consecutiveFailures=1, channel still open, task still scheduled.
+        setField(handler, "lastActivityNanos", longAgo);
+        invokeMaybeSendPing(handler, ctx);
+        channel.runPendingTasks(); // run the write + listener on the embedded event loop
+
+        assertThat((int) getField(handler, "consecutiveFailures")).isEqualTo(1);
+        assertThat((long) getField(handler, "pingOutstandingSinceNanos")).isZero();
+        assertThat(channel.isOpen()).isTrue();
+        assertThat((Object) getField(handler, "pingTask")).isNotNull();
+
+        // Second tick: write fails again -> threshold reached -> task cancelled, channel closed.
+        setField(handler, "lastActivityNanos", longAgo);
+        invokeMaybeSendPing(handler, ctx);
+        channel.runPendingTasks();
+
+        assertThat((int) getField(handler, "consecutiveFailures")).isEqualTo(threshold);
+        assertThat((Object) getField(handler, "pingTask")).isNull();
+        assertThat(channel.isOpen()).isFalse();
 
         channel.finishAndReleaseAll();
     }

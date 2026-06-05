@@ -176,11 +176,24 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                         logger.debug("PING #{} sent on channel {}", count, ctx.channel());
                     } else {
                         // Listener runs on the same event loop as the scheduled task,
-                        // so mutating pingOutstandingSinceNanos is thread-safe.
-                        pingOutstandingSinceNanos = 0; // unblock next attempt on send failure
-                        logger.debug("PING #{} send failed on channel {}: {}",
-                            count, ctx.channel(),
-                            f.cause() != null ? f.cause().getMessage() : "unknown");
+                        // so mutating these fields is thread-safe.
+                        // A failed write is a failed health probe -- count it toward the
+                        // close threshold. Otherwise a channel stuck in a state where
+                        // writes always fail but isActive() remains true (e.g. H2 codec
+                        // rejecting frames, stalled flow-control, queued ClosedChannelException
+                        // not yet propagated) would loop here forever without ever closing.
+                        pingOutstandingSinceNanos = 0;
+                        consecutiveFailures++;
+                        if (consecutiveFailures >= failureThreshold) {
+                            logger.info("PING send failed for {} consecutive attempts on channel {} -- closing connection",
+                                consecutiveFailures, ctx.channel());
+                            cancelPingTask();
+                            ctx.close();
+                        } else {
+                            logger.debug("PING #{} send failed on channel {} (attempt {}/{}): {}",
+                                count, ctx.channel(), consecutiveFailures, failureThreshold,
+                                f.cause() != null ? f.cause().getMessage() : "unknown");
+                        }
                     }
                 });
             // Reset activity timestamp so we don't send another PING immediately
