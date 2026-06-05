@@ -58,7 +58,7 @@ public final class DataBoundariesClientImpl implements DataBoundariesClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DataBoundariesManage")
+    @ServiceInterface(name = "DataBoundariesManagementClientDataBoundaries")
     public interface DataBoundariesService {
         @Headers({ "Content-Type: application/json" })
         @Put("/providers/Microsoft.Resources/dataBoundaries/{default}")

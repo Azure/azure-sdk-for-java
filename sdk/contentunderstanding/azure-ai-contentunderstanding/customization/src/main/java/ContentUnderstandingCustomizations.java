@@ -166,7 +166,8 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Strip trailing numeric suffixes from emitter-generated parameter names
         // e.g., analyzeRequest1 -> analyzeRequest, grantCopyAuthorizationRequest1 -> grantCopyAuthorizationRequest
-        renameRequestParameters(customization, logger);
+        // This should no longer needed, after the fixes in emitter dependency lib.
+        // renameRequestParameters(customization, logger);
 
         // Default LRO polling interval to 3 seconds for Content Understanding operations
         customizePollingInterval(customization, logger);
@@ -416,7 +417,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                                 && ("String".equals(p.getType().asString()) || "java.lang.String".equals(p.getType().asString())));
 
                         if ("beginAnalyze".equals(name)) {
-                            // Hide useless 1-param overload beginAnalyze(String analyzerId) that creates empty AnalyzeRequest1
+                            // Hide useless 1-param overload beginAnalyze(String analyzerId) that creates empty AnalyzeRequest
                             if (method.getParameters().size() == 1) {
                                 String paramType = method.getParameters().get(0).getType().asString();
                                 String paramName = method.getParameters().get(0).getNameAsString();
@@ -787,7 +788,7 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
+            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.time.Duration");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
@@ -829,9 +830,9 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
-                        + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                        + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions)"
+                        + "AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);"
+                        + "BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);"
+                        + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest, requestOptions)"
                         + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });
@@ -880,9 +881,9 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
                         + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
-                        + "AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);"
-                        + "BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);"
-                        + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions)"
+                        + "AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);"
+                        + "BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);"
+                        + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions)"
                         + ".setPollInterval(Duration.ofSeconds(3)); }"));
             });
         });
@@ -1488,18 +1489,20 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "import java.util.List;\n"
         + "import java.util.Objects;\n\n"
         + "/**\n"
-        + " * Represents a parsed document grounding source in the format {@code D(page,x1,y1,x2,y2,x3,y3,x4,y4)}.\n"
+        + " * Represents a parsed document grounding source in the format {@code D(page,x1,y1,...,xN,yN)}\n"
+        + " * or {@code D(page)} when only a page number is available.\n"
         + " *\n"
-        + " * <p>The page number is 1-based. The polygon is a quadrilateral defined by four points\n"
-        + " * with coordinates in the document's coordinate space.</p>\n"
+        + " * <p>The page number is 1-based. When coordinates are present, the polygon defines a region\n"
+        + " * with three or more points in the document's coordinate space. When only a page number is\n"
+        + " * provided (no coordinates), {@link #getPolygon()} and {@link #getBoundingBox()} return\n"
+        + " * {@code null}.</p>\n"
         + " *\n"
         + " * @see ContentSource\n"
         + " */\n"
         + "@Immutable\n"
         + "public final class DocumentSource extends ContentSource {\n"
         + "    private static final ClientLogger LOGGER = new ClientLogger(DocumentSource.class);\n"
-        + "    private static final String PREFIX = \"D(\";\n"
-        + "    private static final int EXPECTED_PARAM_COUNT = 9;\n\n"
+        + "    private static final String PREFIX = \"D(\";\n\n"
         + "    private final int pageNumber;\n"
         + "    private final List<PointF> polygon;\n"
         + "    private final RectangleF boundingBox;\n\n"
@@ -1511,11 +1514,6 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "        }\n"
         + "        String inner = source.substring(PREFIX.length(), source.length() - 1);\n"
         + "        String[] parts = inner.split(\",\");\n"
-        + "        if (parts.length != EXPECTED_PARAM_COUNT) {\n"
-        + "            throw LOGGER.logExceptionAsError(\n"
-        + "                new IllegalArgumentException(\"Document source expected \" + EXPECTED_PARAM_COUNT\n"
-        + "                    + \" parameters (page + 8 coordinates), got \" + parts.length + \": '\" + source + \"'.\"));\n"
-        + "        }\n"
         + "        try {\n"
         + "            this.pageNumber = Integer.parseInt(parts[0].trim());\n"
         + "        } catch (NumberFormatException e) {\n"
@@ -1525,11 +1523,24 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "        if (this.pageNumber < 1) {\n"
         + "            throw LOGGER.logExceptionAsError(\n"
         + "                new IllegalArgumentException(\"Page number must be >= 1, got \" + this.pageNumber + \".\"));\n"
-        + "        }\n"
-        + "        List<PointF> points = new ArrayList<>(4);\n"
+        + "        }\n\n"
+        + "        if (parts.length == 1) {\n"
+        + "            // Page-only form: D(page)\n"
+        + "            this.polygon = null;\n"
+        + "            this.boundingBox = null;\n"
+        + "            return;\n"
+        + "        }\n\n"
+        + "        int coordCount = parts.length - 1;\n"
+        + "        if (coordCount < 6 || coordCount % 2 != 0) {\n"
+        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\n"
+        + "                \"Document source expected page-only (1 param) or page + at least 3 coordinate pairs (7+ params), got \"\n"
+        + "                    + parts.length + \": '\" + source + \"'.\"));\n"
+        + "        }\n\n"
+        + "        int pointCount = coordCount / 2;\n"
+        + "        List<PointF> points = new ArrayList<>(pointCount);\n"
         + "        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;\n"
         + "        float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;\n"
-        + "        for (int i = 0; i < 4; i++) {\n"
+        + "        for (int i = 0; i < pointCount; i++) {\n"
         + "            int xIndex = 1 + (i * 2);\n"
         + "            int yIndex = 2 + (i * 2);\n"
         + "            float x, y;\n"
@@ -1563,18 +1574,20 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "        return pageNumber;\n"
         + "    }\n\n"
         + "    /**\n"
-        + "     * Gets the polygon coordinates as four points defining a quadrilateral region.\n"
+        + "     * Gets the polygon coordinates defining the region, or {@code null} when only a page\n"
+        + "     * number is available (i.e., the source was in the form {@code D(page)}).\n"
         + "     *\n"
-        + "     * @return An unmodifiable list of four {@link PointF} values.\n"
+        + "     * @return An unmodifiable list of {@link PointF} values, or {@code null}.\n"
         + "     */\n"
         + "    public List<PointF> getPolygon() {\n"
         + "        return polygon;\n"
         + "    }\n\n"
         + "    /**\n"
-        + "     * Gets the axis-aligned bounding rectangle computed from the polygon coordinates.\n"
+        + "     * Gets the axis-aligned bounding rectangle computed from the polygon coordinates,\n"
+        + "     * or {@code null} when no polygon is available.\n"
         + "     * Useful for drawing highlight rectangles over extracted fields.\n"
         + "     *\n"
-        + "     * @return The bounding box.\n"
+        + "     * @return The bounding box, or {@code null}.\n"
         + "     */\n"
         + "    public RectangleF getBoundingBox() {\n"
         + "        return boundingBox;\n"
@@ -1582,7 +1595,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         + "    /**\n"
         + "     * Parses a single document source segment.\n"
         + "     *\n"
-        + "     * @param source The source string in the format {@code D(page,x1,y1,...,x4,y4)}.\n"
+        + "     * @param source The source string in the format {@code D(page,x1,y1,...,xN,yN)} or {@code D(page)}.\n"
         + "     * @return A new {@link DocumentSource}.\n"
         + "     * @throws NullPointerException if {@code source} is null.\n"
         + "     * @throws IllegalArgumentException if the source string is not in the expected format.\n"

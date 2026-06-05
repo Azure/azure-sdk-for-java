@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionState;
  */
 public final class ProtectedItemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/StopProtection.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/StopProtection.json
      */
     /**
      * Sample code: Stop Protection with retain data on Azure IaasVm.
@@ -32,7 +32,7 @@ public final class ProtectedItemsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/ConfigureProtection.json
+     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/ConfigureProtection.json
      */
     /**
      * Sample code: Enable Protection on Azure IaasVm.

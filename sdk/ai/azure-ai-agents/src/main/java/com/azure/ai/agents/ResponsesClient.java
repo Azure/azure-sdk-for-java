@@ -5,15 +5,24 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.implementation.StreamingUtils;
+import com.azure.ai.agents.models.AzureCreateResponseDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
+import com.openai.core.RequestOptions;
+import com.openai.core.http.HttpResponseFor;
+import com.openai.core.http.StreamResponse;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.services.blocking.ResponseService;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -43,67 +52,121 @@ public final class ResponsesClient {
     }
 
     /**
-     * Creates a response with an agent conversation.
+     * Creates a response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
-     * @return The created Response.
-     */
-    public Response createWithAgentConversation(AgentReference agentReference, String conversationId) {
-        return createWithAgentConversation(agentReference, conversationId, new ResponseCreateParams.Builder());
-    }
-
-    /**
-     * Creates a response with an agent conversation.
-     *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
+     * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
      * @return The created Response.
      */
-    public Response createWithAgentConversation(AgentReference agentReference, String conversationId,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response createAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        params.conversation(conversationId);
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
         return this.responseService.create(params.build());
     }
 
     /**
-     * Creates a response with an agent conversation.
+     * Creates a streaming response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
-     * @param agentReference The agent reference.
+     * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
-     * @return The created Response.
+     * @return An IterableStream of ResponseStreamEvent.
      */
-    public Response createWithAgent(AgentReference agentReference, ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return this.responseService.create(params.build());
+        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
     }
 
     /**
-     * Creates a response with an agent conversation.
+     * Extracts Azure-specific fields from a Response's additional properties.
      *
-     * @param agentReference The agent reference.
-     * @return The created Response.
+     * @param response the OpenAI response.
+     * @return the Azure-specific create response result, or null if not present.
      */
-    public Response createWithAgent(AgentReference agentReference) {
-        return createWithAgent(agentReference, new ResponseCreateParams.Builder());
+    public static AzureCreateResponseDetails getAzureFields(Response response) {
+        Objects.requireNonNull(response, "response cannot be null");
+        return OpenAIJsonHelper.fromAdditionalProperties(response._additionalProperties(),
+            AzureCreateResponseDetails::fromJson);
     }
+
+    /**
+     * Creates a response from a raw JSON request body and returns the raw HTTP response.
+     *
+     * <p>This protocol method delegates to the OpenAI Java SDK's
+     * {@link ResponseService.WithRawResponse#create(ResponseCreateParams, RequestOptions)}. The
+     * {@code createResponseRequest} payload is forwarded as the request body (semantically, not
+     * byte-for-byte: the JSON is parsed and re-serialized via {@code additionalBodyProperties},
+     * so property ordering and exact formatting may change and duplicate top-level keys are not
+     * preserved), so callers can include Azure-specific extensions (such as
+     * {@link com.azure.ai.agents.models.AgentReference}) without going through the strongly-typed
+     * {@link ResponseCreateParams.Builder}.</p>
+     *
+     * <p>The returned {@link HttpResponseFor} exposes the status code, headers, and the raw
+     * response stream via {@code body()}, or the typed {@link Response} via {@code parse()}. Only
+     * one of {@code body()} or {@code parse()} may be invoked per response, and the caller must
+     * close the response (e.g. via try-with-resources) to release the underlying connection.</p>
+     *
+     * <p>Note: the second parameter is the openai-java {@link RequestOptions} (not the azure-core
+     * type) so that the OpenAI-supported options (timeout, response validation) translate
+     * faithfully. Additional headers or query parameters must be supplied via the OpenAI request
+     * builder pattern (e.g. by using {@link #createAzureResponse} for fully-typed requests).</p>
+     *
+     * @param createResponseRequest the JSON body representing the create-response request; must be a JSON object.
+     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
+     * @return the raw HTTP response, parseable as a {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HttpResponseFor<Response> createResponseWithResponse(BinaryData createResponseRequest,
+        RequestOptions requestOptions) {
+        Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
+
+        ResponseCreateParams params = ResponseCreateParams.builder()
+            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
+            .build();
+        return this.responseService.withRawResponse()
+            .create(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+    }
+
+    /**
+     * Creates a streaming response from a raw JSON request body and returns the raw HTTP response.
+     *
+     * <p>Delegates to the OpenAI Java SDK's
+     * {@link ResponseService.WithRawResponse#createStreaming(ResponseCreateParams, RequestOptions)}.
+     * The {@code createResponseRequest} payload is forwarded as the request body (semantically,
+     * not byte-for-byte: the JSON is parsed and re-serialized, so property ordering and exact
+     * formatting may change and duplicate top-level keys are not preserved).</p>
+     *
+     * <p>The returned {@link HttpResponseFor} wraps a {@link StreamResponse} of
+     * {@link ResponseStreamEvent} items, which the caller iterates via {@link HttpResponseFor#parse()}.
+     * The underlying stream must be closed when iteration completes; the typical pattern is
+     * try-with-resources on either the {@link HttpResponseFor} or the parsed {@link StreamResponse}.</p>
+     *
+     * @param createResponseRequest the JSON body representing the create-response request; must be a JSON object.
+     * @param requestOptions optional OpenAI request options; pass {@code null} to use the defaults.
+     * @return the raw HTTP response, parseable as a {@link StreamResponse} of {@link ResponseStreamEvent}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public HttpResponseFor<StreamResponse<ResponseStreamEvent>>
+        createResponseStreamWithResponse(BinaryData createResponseRequest, RequestOptions requestOptions) {
+        Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
+
+        ResponseCreateParams params = ResponseCreateParams.builder()
+            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
+            .build();
+        return this.responseService.withRawResponse()
+            .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+    }
+
 }

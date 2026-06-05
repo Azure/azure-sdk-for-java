@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -237,7 +238,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         super(cosmosClientBuilder);
     }
 
-    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region"})
+    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master"})
     public void beforeClass() {
         try (CosmosAsyncClient testClient = getClientBuilder().buildAsyncClient()) {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
@@ -2800,7 +2801,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     // Added FlakyTestRetryAnalyzer to handle transient failures in circuit breaker tests with fault injection
     // Increased timeout from 4*TIMEOUT to 5*TIMEOUT (200 seconds) to allow for timing variations in CI
-    @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "miscellaneousOpTestConfigsGateway", timeOut = 5 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"circuit-breaker-misc-gateway", "fi-thinclient-multi-master"}, dataProvider = "miscellaneousOpTestConfigsGateway", timeOut = 5 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegionsGateway(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -2904,6 +2905,11 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
         if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
             throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         CosmosAsyncClient asyncClient = null;
@@ -3650,6 +3656,13 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                             validateRegionsContactedWhenShortCircuitingHasKickedIn.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                         }
                     }
+
+                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                        CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
+                        if (ctx != null) {
+                            assertThinClientEndpointUsed(ctx);
+                        }
+                    }
                 }
 
                 // Ensure circuit breaker has kicked in before fail back
@@ -3692,6 +3705,13 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                         validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
+
+                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                        CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
+                        if (ctx != null) {
+                            assertThinClientEndpointUsed(ctx);
+                        }
+                    }
                 }
             }
         } catch (InterruptedException ex) {
@@ -3703,6 +3723,19 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             safeClose(client);
         }
+    }
+
+    private static CosmosDiagnosticsContext getDiagnosticsContext(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics().getDiagnosticsContext();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics().getDiagnosticsContext();
+        }
+        return null;
     }
 
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
@@ -4529,18 +4562,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    @BeforeMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
     public void beforeMethod() throws Exception {
         // add a cool off time
         CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
     }
 
-    @AfterMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void afterMethod() throws Exception {
         logger.info("captureNettyLeaks: {}", captureNettyLeaks());
     }
 
-    @AfterClass(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" })
+    @AfterClass(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -5232,6 +5265,113 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
             this.regionNameToEndpoint = regionNameToEndpoint;
+        }
+    }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 4 * TIMEOUT)
+    public void nonCanonicalPreferredRegions_ppcbShouldStillRouteCorrectly() {
+
+        if (this.writeRegions == null || this.writeRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account");
+        }
+
+        // Build non-canonical preferred regions: "West US 3" → "westus3", "East US" → "eastus"
+        List<String> nonCanonicalRegions = new ArrayList<>();
+        for (String region : this.writeRegions) {
+            nonCanonicalRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
+        }
+
+        String firstRegionCanonicalLower = this.writeRegions.get(0).toLowerCase(Locale.ROOT);
+        String secondRegionCanonicalLower = this.writeRegions.get(1).toLowerCase(Locale.ROOT);
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
+        CosmosClientBuilder clientBuilder = getClientBuilder()
+            .multipleWriteRegionsEnabled(true)
+            .preferredRegions(nonCanonicalRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Test only applicable to DIRECT mode");
+        }
+
+        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT mode is not supported with thin client");
+        }
+
+        CosmosAsyncClient asyncClient = null;
+
+        try {
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            CosmosAsyncContainer container = asyncClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            // Bootstrap: create a test item
+            TestObject testObject = TestObject.create();
+            container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+
+            // Step 1: Inject 503 (ServiceUnavailable) into the first preferred region for READ_ITEM
+            FaultInjectionCondition faultCondition = new FaultInjectionConditionBuilder()
+                .region(this.writeRegions.get(0))
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .build();
+
+            FaultInjectionServerErrorResult serverError = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .build();
+
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder("ppcb-non-canonical-region-test-" + UUID.randomUUID())
+                .condition(faultCondition)
+                .result(serverError)
+                .hitLimit(15)
+                .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
+
+            // Step 2: Issue reads until circuit breaker trips — expect failover to second region
+            boolean circuitBreakerTripped = false;
+
+            for (int i = 0; i < 20; i++) {
+                CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+                readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+
+                CosmosItemResponse<TestObject> readResponse = container
+                    .readItem(testObject.getId(), new PartitionKey(testObject.getId()), readOptions, TestObject.class)
+                    .block();
+
+                assertThat(readResponse).isNotNull();
+                assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext ctx = readResponse.getDiagnostics().getDiagnosticsContext();
+
+                // Once we see only the second region contacted, the circuit breaker has tripped
+                if (ctx.getContactedRegionNames().contains(secondRegionCanonicalLower)
+                    && !ctx.getContactedRegionNames().contains(firstRegionCanonicalLower)) {
+                    circuitBreakerTripped = true;
+                    logger.info("Circuit breaker tripped at iteration {}, routing to second region: {}", i, secondRegionCanonicalLower);
+                    break;
+                }
+            }
+
+            assertThat(circuitBreakerTripped)
+                .as("PPCB should have tripped and routed reads to the second preferred region (%s) "
+                    + "even though preferred regions were passed in non-canonical form (%s)",
+                    secondRegionCanonicalLower, nonCanonicalRegions)
+                .isTrue();
+
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            if (asyncClient != null) {
+                asyncClient.close();
+            }
         }
     }
 }

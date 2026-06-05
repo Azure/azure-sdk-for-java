@@ -29,12 +29,8 @@ public final class DiagnosticsImpl implements Diagnostics {
     public Response<DiagnosticResource> getWithResponse(String scope, String diagnosticsResourceName, Context context) {
         Response<DiagnosticResourceInner> inner
             = this.serviceClient().getWithResponse(scope, diagnosticsResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DiagnosticResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DiagnosticResourceImpl(inner.getValue(), this.manager()));
     }
 
     public DiagnosticResource get(String scope, String diagnosticsResourceName) {

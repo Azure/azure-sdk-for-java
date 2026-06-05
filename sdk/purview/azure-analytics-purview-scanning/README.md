@@ -102,9 +102,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://central.sonatype.com/artifact/com.azure/azure-analytics-purview-scanning
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-scanning/src/samples/README.md
-[protocol_method]: https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods
+[protocol_method]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/protocol-methods.md
 [create_azure_purview_account]: https://learn.microsoft.com/azure/purview/
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [cla]: https://cla.opensource.microsoft.com/
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

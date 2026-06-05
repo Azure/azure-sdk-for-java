@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base for session configuration in the response.
@@ -30,12 +31,6 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
      */
     @Generated
     private List<InteractionModality> modalities;
-
-    /*
-     * The animation configuration for the session.
-     */
-    @Generated
-    private AnimationOptions animation;
 
     /*
      * The voice configuration for the session.
@@ -88,12 +83,6 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
      */
     @Generated
     private AudioEchoCancellation inputAudioEchoCancellation;
-
-    /*
-     * Configuration for avatar streaming and behavior during the session.
-     */
-    @Generated
-    private AvatarConfiguration avatar;
 
     /*
      * Configuration for input audio transcription.
@@ -191,28 +180,6 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
     @Generated
     public VoiceLiveSessionResponse setModalities(List<InteractionModality> modalities) {
         this.modalities = modalities;
-        return this;
-    }
-
-    /**
-     * Get the animation property: The animation configuration for the session.
-     *
-     * @return the animation value.
-     */
-    @Generated
-    public AnimationOptions getAnimation() {
-        return this.animation;
-    }
-
-    /**
-     * Set the animation property: The animation configuration for the session.
-     *
-     * @param animation the animation value to set.
-     * @return the VoiceLiveSessionResponse object itself.
-     */
-    @Generated
-    public VoiceLiveSessionResponse setAnimation(AnimationOptions animation) {
-        this.animation = animation;
         return this;
     }
 
@@ -391,28 +358,6 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
     }
 
     /**
-     * Get the avatar property: Configuration for avatar streaming and behavior during the session.
-     *
-     * @return the avatar value.
-     */
-    @Generated
-    public AvatarConfiguration getAvatar() {
-        return this.avatar;
-    }
-
-    /**
-     * Set the avatar property: Configuration for avatar streaming and behavior during the session.
-     *
-     * @param avatar the avatar value to set.
-     * @return the VoiceLiveSessionResponse object itself.
-     */
-    @Generated
-    public VoiceLiveSessionResponse setAvatar(AvatarConfiguration avatar) {
-        this.avatar = avatar;
-        return this;
-    }
-
-    /**
      * Get the inputAudioTranscription property: Configuration for input audio transcription.
      *
      * @return the inputAudioTranscription value.
@@ -575,7 +520,7 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeArrayField("modalities", this.modalities,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeJsonField("animation", this.animation);
+        jsonWriter.writeJsonField("animation", this.animationOptions);
         if (this.voice != null) {
             jsonWriter.writeFieldName("voice");
             this.voice.writeTo(jsonWriter);
@@ -589,7 +534,7 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
         jsonWriter.writeJsonField("turn_detection", this.turnDetection);
         jsonWriter.writeJsonField("input_audio_noise_reduction", this.inputAudioNoiseReduction);
         jsonWriter.writeJsonField("input_audio_echo_cancellation", this.inputAudioEchoCancellation);
-        jsonWriter.writeJsonField("avatar", this.avatar);
+        jsonWriter.writeJsonField("avatar", this.avatarOptions);
         jsonWriter.writeJsonField("input_audio_transcription", this.inputAudioTranscription);
         jsonWriter.writeArrayField("output_audio_timestamp_types", this.outputAudioTimestampTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -598,6 +543,7 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
             jsonWriter.writeFieldName("tool_choice");
             this.toolChoice.writeTo(jsonWriter);
         }
+        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeNumberField("temperature", this.temperature);
         if (this.maxResponseOutputTokens != null) {
             jsonWriter.writeFieldName("max_response_output_tokens");
@@ -609,6 +555,9 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
             jsonWriter.writeFieldName("interim_response");
             this.interimResponse.writeTo(jsonWriter);
         }
+        jsonWriter.writeArrayField("include", this.include,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("agent", this.agent);
         jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
@@ -636,7 +585,7 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
                         = reader.readArray(reader1 -> InteractionModality.fromString(reader1.getString()));
                     deserializedVoiceLiveSessionResponse.modalities = modalities;
                 } else if ("animation".equals(fieldName)) {
-                    deserializedVoiceLiveSessionResponse.animation = AnimationOptions.fromJson(reader);
+                    deserializedVoiceLiveSessionResponse.animationOptions = AnimationOptions.fromJson(reader);
                 } else if ("voice".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.voice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -660,7 +609,7 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
                     deserializedVoiceLiveSessionResponse.inputAudioEchoCancellation
                         = AudioEchoCancellation.fromJson(reader);
                 } else if ("avatar".equals(fieldName)) {
-                    deserializedVoiceLiveSessionResponse.avatar = AvatarConfiguration.fromJson(reader);
+                    deserializedVoiceLiveSessionResponse.avatarOptions = AvatarOptions.fromJson(reader);
                 } else if ("input_audio_transcription".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.inputAudioTranscription
                         = AudioInputTranscriptionOptions.fromJson(reader);
@@ -675,6 +624,8 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
                 } else if ("tool_choice".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("parallel_tool_calls".equals(fieldName)) {
+                    deserializedVoiceLiveSessionResponse.parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("temperature".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("max_response_output_tokens".equals(fieldName)) {
@@ -686,6 +637,13 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
                 } else if ("interim_response".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.interimResponse
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("include".equals(fieldName)) {
+                    List<SessionIncludeOption> include
+                        = reader.readArray(reader1 -> SessionIncludeOption.fromString(reader1.getString()));
+                    deserializedVoiceLiveSessionResponse.include = include;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVoiceLiveSessionResponse.metadata = metadata;
                 } else if ("agent".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.agent = RespondingAgentOptions.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
@@ -794,6 +752,160 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
     @Generated
     public VoiceLiveSessionResponse setInterimResponse(BinaryData interimResponse) {
         this.interimResponse = interimResponse;
+        return this;
+    }
+
+    /*
+     * List of include options for the session (e.g., logprobs, phrases, file search results).
+     */
+    @Generated
+    private List<SessionIncludeOption> include;
+
+    /*
+     * Set of up to 16 key-value pairs that can be attached to the session. This is useful for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
+    /**
+     * Get the include property: List of include options for the session (e.g., logprobs, phrases, file search results).
+     *
+     * @return the include value.
+     */
+    @Generated
+    public List<SessionIncludeOption> getInclude() {
+        return this.include;
+    }
+
+    /**
+     * Set the include property: List of include options for the session (e.g., logprobs, phrases, file search results).
+     *
+     * @param include the include value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setInclude(List<SessionIncludeOption> include) {
+        this.include = include;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Set of up to 16 key-value pairs that can be attached to the session. This is useful
+     * for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Set of up to 16 key-value pairs that can be attached to the session. This is useful
+     * for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     *
+     * @param metadata the metadata value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /*
+     * The animation configuration for the session.
+     */
+    @Generated
+    private AnimationOptions animationOptions;
+
+    /*
+     * Configuration for avatar streaming and behavior during the session.
+     */
+    @Generated
+    private AvatarOptions avatarOptions;
+
+    /**
+     * Get the animationOptions property: The animation configuration for the session.
+     *
+     * @return the animationOptions value.
+     */
+    @Generated
+    public AnimationOptions getAnimationOptions() {
+        return this.animationOptions;
+    }
+
+    /**
+     * Set the animationOptions property: The animation configuration for the session.
+     *
+     * @param animationOptions the animationOptions value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setAnimationOptions(AnimationOptions animationOptions) {
+        this.animationOptions = animationOptions;
+        return this;
+    }
+
+    /**
+     * Get the avatarOptions property: Configuration for avatar streaming and behavior during the session.
+     *
+     * @return the avatarOptions value.
+     */
+    @Generated
+    public AvatarOptions getAvatarOptions() {
+        return this.avatarOptions;
+    }
+
+    /**
+     * Set the avatarOptions property: Configuration for avatar streaming and behavior during the session.
+     *
+     * @param avatarOptions the avatarOptions value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setAvatarOptions(AvatarOptions avatarOptions) {
+        this.avatarOptions = avatarOptions;
+        return this;
+    }
+
+    /*
+     * Whether the model is allowed to call tools in parallel.
+     */
+    @Generated
+    private Boolean parallelToolCalls;
+
+    /**
+     * Get the parallelToolCalls property: Whether the model is allowed to call tools in parallel.
+     *
+     * @return the parallelToolCalls value.
+     */
+    @Generated
+    public Boolean isParallelToolCalls() {
+        return this.parallelToolCalls;
+    }
+
+    /**
+     * Set the parallelToolCalls property: Whether the model is allowed to call tools in parallel.
+     *
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setParallelToolCalls(Boolean parallelToolCalls) {
+        this.parallelToolCalls = parallelToolCalls;
         return this;
     }
 }

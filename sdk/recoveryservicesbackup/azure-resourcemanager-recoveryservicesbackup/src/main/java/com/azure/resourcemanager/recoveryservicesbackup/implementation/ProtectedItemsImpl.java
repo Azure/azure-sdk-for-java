@@ -31,12 +31,8 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         Response<ProtectedItemResourceInner> inner = this.serviceClient()
             .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ProtectedItemResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ProtectedItemResourceImpl(inner.getValue(), this.manager()));
     }
 
     public ProtectedItemResource get(String vaultName, String resourceGroupName, String fabricName,

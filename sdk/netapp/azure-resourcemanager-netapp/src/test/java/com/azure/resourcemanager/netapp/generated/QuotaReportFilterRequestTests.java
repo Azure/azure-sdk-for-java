@@ -13,21 +13,21 @@ public final class QuotaReportFilterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaReportFilterRequest model = BinaryData.fromString(
-            "{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"pvjzbe\",\"usageThresholdPercentage\":151747977}")
+            "{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"cjefuzmu\",\"usageThresholdPercentage\":1018285327}")
             .toObject(QuotaReportFilterRequest.class);
         Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("pvjzbe", model.quotaTarget());
-        Assertions.assertEquals(151747977, model.usageThresholdPercentage());
+        Assertions.assertEquals("cjefuzmu", model.quotaTarget());
+        Assertions.assertEquals(1018285327, model.usageThresholdPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaReportFilterRequest model = new QuotaReportFilterRequest().withQuotaType(QuotaType.INDIVIDUAL_USER_QUOTA)
-            .withQuotaTarget("pvjzbe")
-            .withUsageThresholdPercentage(151747977);
+            .withQuotaTarget("cjefuzmu")
+            .withUsageThresholdPercentage(1018285327);
         model = BinaryData.fromObject(model).toObject(QuotaReportFilterRequest.class);
         Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("pvjzbe", model.quotaTarget());
-        Assertions.assertEquals(151747977, model.usageThresholdPercentage());
+        Assertions.assertEquals("cjefuzmu", model.quotaTarget());
+        Assertions.assertEquals(1018285327, model.usageThresholdPercentage());
     }
 }

@@ -9,6 +9,12 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
+import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,9 +22,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -188,29 +201,197 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("ensureStateResourceAndPermissionSupplier")
     public void ensureStateResourceAndPermission(String container, String blob, String snapshot, String versionId,
-        BlobContainerSasPermission blobContainerSasPermission, BlobSasPermission blobSasPermission, String resource,
-        String permissionString) {
+        boolean isDirectory, Integer directoryDepth, BlobContainerSasPermission blobContainerSasPermission,
+        BlobSasPermission blobSasPermission, String resource, String permissionString) {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
         BlobServiceSasSignatureValues values = blobContainerSasPermission != null
-            ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission)
-            : new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
+            ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission).setDirectory(isDirectory)
+            : new BlobServiceSasSignatureValues(expiryTime, blobSasPermission).setDirectory(isDirectory);
 
         BlobSasImplUtil implUtil = new BlobSasImplUtil(values, container, blob, snapshot, versionId, null);
         implUtil.ensureState();
+
         assertEquals(resource, implUtil.getResource());
         assertEquals(permissionString, implUtil.getPermissions());
+        assertEquals(directoryDepth, implUtil.getDirectoryDepth());
     }
 
     private static Stream<Arguments> ensureStateResourceAndPermissionSupplier() {
         return Stream.of(
-            Arguments.of("container", null, null, null,
+            // container, blob, snapshot, versionId, isDirectory, directoryDepth, containerSasPermission, 
+            // blobSasPermission, resource, permissionString
+            Arguments.of("container", null, null, null, false, null,
                 new BlobContainerSasPermission().setReadPermission(true).setListPermission(true), null, "c", "rl"),
-            Arguments.of("container", "blob", null, null, null, new BlobSasPermission().setReadPermission(true), "b",
-                "r"),
-            Arguments.of("container", "blob", "snapshot", null, null, new BlobSasPermission().setReadPermission(true),
-                "bs", "r"),
-            Arguments.of("container", "blob", null, "version", null, new BlobSasPermission().setReadPermission(true),
-                "bv", "r"));
+            Arguments.of("container", "blob", null, null, false, null, null,
+                new BlobSasPermission().setReadPermission(true), "b", "r"),
+            Arguments.of("container", "blob", "snapshot", null, false, null, null,
+                new BlobSasPermission().setReadPermission(true), "bs", "r"),
+            Arguments.of("container", "blob", null, "version", false, null, null,
+                new BlobSasPermission().setReadPermission(true), "bv", "r"),
+            Arguments.of("container", "foo/bar/hello", null, null, true, 3, null,
+                new BlobSasPermission().setReadPermission(true), "d", "r"),
+            Arguments.of("container", "foo/bar", null, null, true, 2, null,
+                new BlobSasPermission().setReadPermission(true), "d", "r"),
+            Arguments.of("container", "foo/", null, null, true, 1, null,
+                new BlobSasPermission().setReadPermission(true), "d", "r"),
+            Arguments.of("container", "/", null, null, true, 0, null, new BlobSasPermission().setReadPermission(true),
+                "d", "r"));
+    }
+
+    /**
+     * Validates encoded query parameters for a directory scoped blob SAS signed with the account key.
+     */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void toSasQueryParametersDirectoryTest() {
+        String containerName = generateContainerName();
+        String blobName = "foo/bar/hello";
+
+        OffsetDateTime start = OffsetDateTime.of(2020, 1, 2, 3, 4, 5, 0, ZoneOffset.UTC);
+        OffsetDateTime expiry = OffsetDateTime.of(2020, 1, 3, 3, 4, 5, 0, ZoneOffset.UTC);
+        SasIpRange ipRange = new SasIpRange().setIpMin("1.1.1.1").setIpMax("2.2.2.2");
+
+        BlobSasPermission permissions = getAllBlobSasPermissions();
+
+        BlobServiceSasSignatureValues sasValues
+            = new BlobServiceSasSignatureValues(expiry, permissions).setDirectory(true)
+                .setIdentifier("myidentifier")
+                .setStartTime(start)
+                .setProtocol(SasProtocol.HTTPS_HTTP)
+                .setSasIpRange(ipRange)
+                .setCacheControl("cache")
+                .setContentDisposition("disposition")
+                .setContentEncoding("encoding")
+                .setContentLanguage("language")
+                .setContentType("type");
+
+        BlobSasImplUtil implUtil = new BlobSasImplUtil(sasValues, containerName, blobName, null, null, null);
+
+        List<String> stringToSignHolder = new ArrayList<>();
+        String sasToken = implUtil.generateSas(ENVIRONMENT.getPrimaryAccount().getCredential(), stringToSignHolder::add,
+            Context.NONE);
+        assertEquals(1, stringToSignHolder.size());
+        assertNotNull(stringToSignHolder.get(0));
+
+        CommonSasQueryParameters qp
+            = BlobUrlParts.parse("https://account.blob.core.windows.net/c?" + sasToken).getCommonSasQueryParameters();
+
+        String expectedSig = ENVIRONMENT.getPrimaryAccount().getCredential().computeHmac256(stringToSignHolder.get(0));
+
+        assertEquals(Constants.SAS_SERVICE_VERSION, qp.getVersion());
+        assertNull(qp.getServices());
+        assertNull(qp.getResourceTypes());
+        assertEquals(SasProtocol.HTTPS_HTTP, qp.getProtocol());
+        assertEquals(start, qp.getStartTime());
+        assertEquals(expiry, qp.getExpiryTime());
+        assertEquals(ipRange.getIpMin(), qp.getSasIpRange().getIpMin());
+        assertEquals(ipRange.getIpMax(), qp.getSasIpRange().getIpMax());
+        assertEquals("myidentifier", qp.getIdentifier());
+        assertEquals("d", qp.getResource());
+        assertEquals(3, qp.getDirectoryDepth());
+        assertEquals(permissions.toString(), qp.getPermissions());
+        assertEquals(expectedSig, qp.getSignature());
+        assertEquals("cache", qp.getCacheControl());
+        assertEquals("disposition", qp.getContentDisposition());
+        assertEquals("encoding", qp.getContentEncoding());
+        assertEquals("language", qp.getContentLanguage());
+        assertEquals("type", qp.getContentType());
+    }
+
+    /**
+     * Validates encoded query parameters for a directory scoped user delegation SAS,
+     *  including delegated OID and request header/query key lists.
+     */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void toSasQueryParametersDirectoryIdentityTest() {
+        String containerName = generateContainerName();
+        String blobName = "foo/bar/hello";
+        String accountName = ENVIRONMENT.getPrimaryAccount().getName();
+
+        OffsetDateTime start = OffsetDateTime.of(2020, 1, 2, 3, 4, 5, 0, ZoneOffset.UTC);
+        OffsetDateTime expiry = OffsetDateTime.of(2020, 1, 3, 3, 4, 5, 0, ZoneOffset.UTC);
+        OffsetDateTime keyStart = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime keyExpiry = OffsetDateTime.of(2020, 1, 10, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        SasIpRange ipRange = new SasIpRange().setIpMin("1.1.1.1").setIpMax("2.2.2.2");
+
+        BlobSasPermission permissions = getAllBlobSasPermissions();
+
+        Map<String, String> requestHeaders = new TreeMap<>();
+        requestHeaders.put("a-header", "a-value");
+        requestHeaders.put("b-header", "b-value");
+
+        Map<String, String> requestQueryParams = new TreeMap<>();
+        requestQueryParams.put("q-one", "1");
+        requestQueryParams.put("q-two", "2");
+
+        String delegatedOid = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
+        String delegatedKeyTid = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb";
+
+        BlobServiceSasSignatureValues sasValues
+            = new BlobServiceSasSignatureValues(expiry, permissions).setDirectory(true)
+                .setStartTime(start)
+                .setProtocol(SasProtocol.HTTPS_HTTP)
+                .setSasIpRange(ipRange)
+                .setDelegatedUserObjectId(delegatedOid)
+                .setRequestHeaders(requestHeaders)
+                .setRequestQueryParameters(requestQueryParams)
+                .setCacheControl("cache")
+                .setContentDisposition("disposition")
+                .setContentEncoding("encoding")
+                .setContentLanguage("language")
+                .setContentType("type");
+
+        UserDelegationKey key = new UserDelegationKey().setSignedObjectId("keyOid")
+            .setSignedTenantId("keyTid")
+            .setSignedStart(keyStart)
+            .setSignedExpiry(keyExpiry)
+            .setSignedService("b")
+            .setSignedVersion("2019-02-02")
+            .setSignedDelegatedUserTenantId(delegatedKeyTid)
+            .setValue(ENVIRONMENT.getPrimaryAccount().getKey());
+
+        BlobSasImplUtil implUtil = new BlobSasImplUtil(sasValues, containerName, blobName, null, null, null);
+
+        List<String> stringToSignHolder = new ArrayList<>();
+        String sasToken = implUtil.generateUserDelegationSas(key, accountName, stringToSignHolder::add, Context.NONE);
+        assertEquals(1, stringToSignHolder.size());
+        assertNotNull(stringToSignHolder.get(0));
+
+        CommonSasQueryParameters qp
+            = BlobUrlParts.parse("https://account.blob.core.windows.net/c?" + sasToken).getCommonSasQueryParameters();
+
+        String expectedSig = StorageImplUtils.computeHMac256(key.getValue(), stringToSignHolder.get(0));
+
+        assertEquals(Constants.SAS_SERVICE_VERSION, qp.getVersion());
+        assertNull(qp.getServices());
+        assertNull(qp.getResourceTypes());
+        assertEquals(SasProtocol.HTTPS_HTTP, qp.getProtocol());
+        assertEquals(start, qp.getStartTime());
+        assertEquals(expiry, qp.getExpiryTime());
+        assertEquals(ipRange.getIpMin(), qp.getSasIpRange().getIpMin());
+        assertEquals(ipRange.getIpMax(), qp.getSasIpRange().getIpMax());
+        assertNull(qp.getIdentifier());
+        assertEquals("keyOid", qp.getKeyObjectId());
+        assertEquals("keyTid", qp.getKeyTenantId());
+        assertEquals(keyStart, qp.getKeyStart());
+        assertEquals(keyExpiry, qp.getKeyExpiry());
+        assertEquals("b", qp.getKeyService());
+        assertEquals("2019-02-02", qp.getKeyVersion());
+        assertEquals(delegatedKeyTid, qp.getKeyDelegatedUserTenantId());
+        assertEquals("d", qp.getResource());
+        assertEquals(3, qp.getDirectoryDepth());
+        assertEquals(permissions.toString(), qp.getPermissions());
+        assertEquals(delegatedOid, qp.getDelegatedUserObjectId());
+        assertEquals(Arrays.asList("a-header", "b-header"), qp.getRequestHeaders());
+        assertEquals(Arrays.asList("q-one", "q-two"), qp.getRequestQueryParameters());
+        assertEquals(expectedSig, qp.getSignature());
+        assertEquals("cache", qp.getCacheControl());
+        assertEquals("disposition", qp.getContentDisposition());
+        assertEquals("encoding", qp.getContentEncoding());
+        assertEquals("language", qp.getContentLanguage());
+        assertEquals("type", qp.getContentType());
     }
 }

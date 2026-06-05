@@ -16,16 +16,16 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.query.queryadvisor.QueryAdvice;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -39,9 +39,9 @@ import java.util.regex.Pattern;
  */
 public class FeedResponse<T> implements ContinuablePage<String, T> {
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
     private static final Pattern DELIMITER_CHARS_PATTERN = Pattern.compile(Constants.Quota.DELIMITER_CHARS);
     private final List<T> results;
@@ -55,6 +55,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
+
+    // The header map stored on FeedResponse must be mutable: downstream stages
+    // (e.g. the readManyByPartitionKeys stamping lambda) may add or replace
+    // headers in place. Normalize at construction time so the field can stay
+    // final and getResponseHeaders() consistently returns the same instance.
+    // Mutable inputs are passed through without copying; null and the known
+    // immutable shapes produced by Utils.immutableMapOf / Collections.emptyMap
+    // are replaced with a fresh HashMap (preserving entries).
+    private static Map<String, String> ensureMutableHeadersMap(Map<String, String> headers) {
+        if (headers == null) {
+            return new HashMap<>();
+        }
+        if (Utils.isImmutableMap(headers)) {
+            return new HashMap<>(headers);
+        }
+        return headers;
+    }
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -92,14 +109,14 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
         if (diagnostics != null) {
             ClientSideRequestStatistics requestStatistics =
-                diagnosticsAccessor.getClientSideRequestStatisticsRaw(diagnostics);
+                diagAccessor().getClientSideRequestStatisticsRaw(diagnostics);
             if (requestStatistics != null) {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(cosmosDiagnostics,
+                diagAccessor().addClientSideDiagnosticsToFeed(cosmosDiagnostics,
                     Collections.singletonList(requestStatistics));
             } else {
-                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                diagAccessor().addClientSideDiagnosticsToFeed(
                     cosmosDiagnostics,
-                    diagnosticsAccessor.getClientSideRequestStatistics(diagnostics));
+                    diagAccessor().getClientSideRequestStatistics(diagnostics));
             }
         }
     }
@@ -113,7 +130,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         boolean nochanges,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -130,7 +147,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         CosmosDiagnostics diagnostics) {
         this.results = results;
-        this.header = header;
+        this.header = ensureMutableHeadersMap(header);
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
@@ -146,7 +163,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
         // NOTE - it is important to use HashMap over ConcurrentHashMap here because some keys/values might be null
         // and this is not allowed in ConcurrentHashMap - while it is ok in HashMap
-        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : null;
+        this.header = toBeCloned.header != null ? new HashMap<>(toBeCloned.header) : new HashMap<>();
 
         this.usageHeaders = toBeCloned.usageHeaders != null ? new HashMap<>(toBeCloned.usageHeaders) : null;
         this.quotaHeaders = toBeCloned.quotaHeaders != null ? new HashMap<>(toBeCloned.quotaHeaders) : null;
@@ -431,9 +448,13 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             ? HttpConstants.HttpHeaders.E_TAG
             : HttpConstants.HttpHeaders.CONTINUATION;
 
+        setContinuationTokenInternal(headerName, continuationToken);
+    }
+
+    private void setContinuationTokenInternal(String headerName, String continuationToken) {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
             this.header.put(headerName, continuationToken);
-        } else {
+        } else if (!this.header.isEmpty() && this.header.containsKey(headerName)) {
             this.header.remove(headerName);
         }
     }
@@ -458,6 +479,28 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public Map<String, String> getResponseHeaders() {
         return header;
+    }
+
+    /**
+     * Gets the query advice returned by the Cosmos DB query advisor, or {@code null} if the
+     * request was not made with {@code populateQueryAdvice} enabled or no advice is available.
+     *
+     * <p>The returned string contains one advice recommendation per line. Each line has the form:
+     * {@code <RuleId>: <message> For more information, please visit <url>}</p>
+     *
+     * @return human-readable query advice string, or {@code null} if none is available.
+     */
+    public String getQueryAdvice() {
+        String rawHeader = getValueOrNull(this.header, HttpConstants.HttpHeaders.QUERY_ADVICE);
+        if (rawHeader == null) {
+            return null;
+        }
+        QueryAdvice queryAdvice = QueryAdvice.tryCreateFromString(rawHeader);
+        if (queryAdvice == null) {
+            return null;
+        }
+        String result = queryAdvice.toString();
+        return result.isEmpty() ? null : result;
     }
 
     private String getQueryMetricsString() {

@@ -280,7 +280,7 @@ class VirtualMachineImpl
         return this.manager()
             .serviceClient()
             .getVirtualMachines()
-            .deallocateAsync(this.resourceGroupName(), this.name(), hibernate)
+            .deallocateAsync(this.resourceGroupName(), this.name(), hibernate, null)
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
             .then(this.refreshAsync())
             .then();

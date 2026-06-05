@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appnetwork/ci.yml
+      - sdk/appnetwork/azure-resourcemanager-appnetwork/
+    exclude:
+      - sdk/appnetwork/pom.xml
+      - sdk/appnetwork/azure-resourcemanager-appnetwork/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appnetwork/ci.yml
+      - sdk/appnetwork/azure-resourcemanager-appnetwork/
+    exclude:
+      - sdk/appnetwork/pom.xml
+      - sdk/appnetwork/azure-resourcemanager-appnetwork/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerappnetwork
+    displayName: azure-resourcemanager-appnetwork
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: appnetwork
+    Artifacts:
+      - name: azure-resourcemanager-appnetwork
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappnetwork
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerappnetwork }}

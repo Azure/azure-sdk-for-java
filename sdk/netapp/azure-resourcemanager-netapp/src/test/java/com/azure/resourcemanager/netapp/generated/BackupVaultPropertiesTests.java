@@ -11,7 +11,7 @@ public final class BackupVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"t\"}").toObject(BackupVaultProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"rd\"}").toObject(BackupVaultProperties.class);
     }
 
     @org.junit.jupiter.api.Test

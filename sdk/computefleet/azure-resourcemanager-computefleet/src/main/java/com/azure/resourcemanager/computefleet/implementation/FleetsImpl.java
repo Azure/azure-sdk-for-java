@@ -34,12 +34,8 @@ public final class FleetsImpl implements Fleets {
     public Response<Fleet> getByResourceGroupWithResponse(String resourceGroupName, String fleetName, Context context) {
         Response<FleetInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, fleetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FleetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FleetImpl(inner.getValue(), this.manager()));
     }
 
     public Fleet getByResourceGroup(String resourceGroupName, String fleetName) {
@@ -102,14 +98,6 @@ public final class FleetsImpl implements Fleets {
         PagedIterable<VirtualMachineInner> inner
             = this.serviceClient().listVirtualMachines(resourceGroupName, name, filter, skiptoken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
-    }
-
-    public void cancel(String resourceGroupName, String fleetName) {
-        this.serviceClient().cancel(resourceGroupName, fleetName);
-    }
-
-    public void cancel(String resourceGroupName, String fleetName, Context context) {
-        this.serviceClient().cancel(resourceGroupName, fleetName, context);
     }
 
     public Fleet getById(String id) {

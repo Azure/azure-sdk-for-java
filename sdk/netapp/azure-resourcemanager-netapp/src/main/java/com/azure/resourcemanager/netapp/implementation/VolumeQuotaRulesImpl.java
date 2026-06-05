@@ -31,12 +31,8 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
         String volumeName, String volumeQuotaRuleName, Context context) {
         Response<VolumeQuotaRuleInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VolumeQuotaRuleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VolumeQuotaRuleImpl(inner.getValue(), this.manager()));
     }
 
     public VolumeQuotaRule get(String resourceGroupName, String accountName, String poolName, String volumeName,

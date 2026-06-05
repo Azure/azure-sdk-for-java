@@ -8,25 +8,23 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.AudioNoiseReduction;
 import com.azure.ai.voicelive.models.AudioNoiseReductionType;
+import com.azure.ai.voicelive.models.AzureStandardVoice;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.InteractionModality;
-import com.azure.ai.voicelive.models.OpenAIVoice;
-import com.azure.ai.voicelive.models.OpenAIVoiceName;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -37,6 +35,7 @@ import javax.sound.sampled.TargetDataLine;
 
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,46 +53,49 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>{@link AuthenticationMethodsSample} - Different authentication methods</li>
  * </ul>
  *
+ * <p>Use this sample when you want the closest thing to an end-to-end assistant experience in this
+ * package. It combines session configuration, microphone capture, speaker playback, and interruption
+ * handling in one place.</p>
+ *
+ * <p>When you run it, the sample opens a realtime session, sends the session configuration, waits
+ * for the service to report the session as ready, and then starts full-duplex microphone capture
+ * and speaker playback.</p>
+ *
  * <p>This sample demonstrates:</p>
  * <ul>
  *   <li>Real-time microphone audio capture</li>
  *   <li>Streaming audio to VoiceLive service</li>
- *   <li>Receiving and playing audio responses</li>
+ *   <li>Receiving and playing audio responses through speakers</li>
  *   <li>Voice Activity Detection (VAD) with interruption handling</li>
  *   <li>Multi-threaded audio processing</li>
  *   <li>Audio transcription with Whisper</li>
  *   <li>Noise reduction and echo cancellation</li>
- *   <li>Dual authentication support (API key and token credential)</li>
  * </ul>
  *
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
  *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
- *   <li>AZURE_VOICELIVE_API_KEY - The API key (required if not using --use-token-credential)</li>
  * </ul>
  *
  * <p><strong>Audio Requirements:</strong></p>
  * The sample requires a working microphone and speakers/headphones.
  * Audio format is 24kHz, 16-bit PCM, mono as required by the VoiceLive service.
  *
+ * <p>This sample uses {@link DefaultAzureCredentialBuilder} (Entra ID, recommended). For an example
+ * of API key authentication, see {@link AuthenticationMethodsSample}.</p>
+ *
  * <p><strong>How to Run:</strong></p>
  * <pre>{@code
- * # With API Key (default):
  * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test
- *
- * # With Token Credential:
- * mvn exec:java -Dexec.mainClass="com.azure.ai.voicelive.VoiceAssistantSample" -Dexec.classpathScope=test -Dexec.args="--use-token-credential"
  * }</pre>
  */
 public final class VoiceAssistantSample {
 
     // Service configuration constants
-    private static final String DEFAULT_API_VERSION = "2025-10-01";
-    private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
+    private static final String DEFAULT_MODEL = "gpt-realtime";
 
     // Environment variable names
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
-    private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
 
     // Audio format constants (VoiceLive requirements)
     private static final int SAMPLE_RATE = 24000;          // 24kHz as required by VoiceLive
@@ -137,12 +139,14 @@ public final class VoiceAssistantSample {
         private final AudioFormat audioFormat;
 
         // Audio capture components
-        private TargetDataLine microphone;
+        // volatile: shared between the reactor event thread (startCapture) and the audio capture worker thread
+        private volatile TargetDataLine microphone;
         private final AtomicBoolean isCapturing = new AtomicBoolean(false);
 
         // Audio playback components
-        private SourceDataLine speaker;
-        private final BlockingQueue<AudioPlaybackPacket> playbackQueue = new LinkedBlockingQueue<>();
+        // volatile: shared between the reactor event thread (startPlayback) and the audio playback worker thread
+        private volatile SourceDataLine speaker;
+        private final BlockingQueue<AudioPlaybackPacket> playbackQueue = new LinkedBlockingQueue<>(1000);
         private final AtomicBoolean isPlaying = new AtomicBoolean(false);
         private final AtomicInteger nextSequenceNumber = new AtomicInteger(0);
         private final AtomicInteger playbackBase = new AtomicInteger(0);
@@ -242,18 +246,16 @@ public final class VoiceAssistantSample {
                         // Send audio to VoiceLive service
                         byte[] audioChunk = Arrays.copyOf(buffer, bytesRead);
 
-                        // Send audio asynchronously using the session's audio buffer append
-                        session.sendInputAudio(BinaryData.fromBytes(audioChunk))
-                            .subscribeOn(Schedulers.boundedElastic())
-                            .subscribe(
-                                v -> {}, // onNext
-                                error -> {
-                                    // Only log non-interruption errors
-                                    if (!error.getMessage().contains("cancelled")) {
-                                        System.err.println("❌ Error sending audio: " + error.getMessage());
-                                    }
-                                }
-                            );
+                        // Block on this capture thread so sends are serialized; fire-and-forget
+                        // subscribes can flood the WebSocket send sink and trigger FAIL_OVERFLOW.
+                        try {
+                            session.sendInputAudio(BinaryData.fromBytes(audioChunk)).block();
+                        } catch (Exception sendError) {
+                            String msg = sendError.getMessage();
+                            if (isCapturing.get() && (msg == null || !msg.contains("cancelled"))) {
+                                System.err.println("❌ Error sending audio: " + msg);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     if (isCapturing.get()) {
@@ -305,7 +307,10 @@ public final class VoiceAssistantSample {
         void queueAudio(byte[] audioData) {
             if (audioData != null && audioData.length > 0) {
                 int seqNum = nextSequenceNumber.getAndIncrement();
-                playbackQueue.offer(new AudioPlaybackPacket(seqNum, audioData));
+                // offer() returns false if the bounded queue is full; warn so a slow consumer is visible
+                if (!playbackQueue.offer(new AudioPlaybackPacket(seqNum, audioData))) {
+                    System.err.println("Warning: playback queue full, dropping audio packet seq=" + seqNum);
+                }
             }
         }
 
@@ -350,35 +355,16 @@ public final class VoiceAssistantSample {
     /**
      * Main method to run the voice assistant sample.
      *
-     * <p>Supports two authentication methods:</p>
-     * <ul>
-     *   <li>API Key: Default authentication (requires AZURE_VOICELIVE_API_KEY env var)</li>
-     *   <li>Token Credential: Use --use-token-credential flag</li>
-     * </ul>
+     * <p>Authenticates using {@link DefaultAzureCredentialBuilder} (Entra ID). For an example of
+     * API key authentication, see {@link AuthenticationMethodsSample}.</p>
      *
-     * @param args Command line arguments. Use --use-token-credential to use token-based authentication.
+     * @param args Unused command line arguments.
      */
     public static void main(String[] args) {
-        // Parse command line arguments
-        boolean useTokenCredential = false;
-        for (String arg : args) {
-            if ("--use-token-credential".equals(arg)) {
-                useTokenCredential = true;
-                break;
-            }
-        }
-
         // Validate environment variables
         String endpoint = System.getenv(ENV_ENDPOINT);
-        String apiKey = System.getenv(ENV_API_KEY);
 
         if (endpoint == null) {
-            printUsage();
-            return;
-        }
-
-        if (!useTokenCredential && apiKey == null) {
-            System.err.println("❌ AZURE_VOICELIVE_API_KEY environment variable is required when not using --use-token-credential");
             printUsage();
             return;
         }
@@ -392,17 +378,10 @@ public final class VoiceAssistantSample {
         System.out.println("🎙️ Starting Voice Assistant...");
 
         try {
-            if (useTokenCredential) {
-                // Use token credential authentication (Azure CLI)
-                System.out.println("🔑 Using Token Credential authentication (Azure CLI)");
-                System.out.println("   Make sure you have run 'az login' before running this sample");
-                TokenCredential credential = new AzureCliCredentialBuilder().build();
-                runVoiceAssistant(endpoint, credential);
-            } else {
-                // Use API Key authentication
-                System.out.println("🔑 Using API Key authentication");
-                runVoiceAssistant(endpoint, new KeyCredential(apiKey));
-            }
+            System.out.println("🔑 Using DefaultAzureCredential authentication");
+            System.out.println("   Make sure you have run 'az login' before running this sample");
+            TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+            runVoiceAssistant(endpoint, credential);
             System.out.println("✓ Voice Assistant completed successfully");
         } catch (Exception e) {
             System.err.println("❌ Voice Assistant failed: " + e.getMessage());
@@ -446,29 +425,6 @@ public final class VoiceAssistantSample {
     private static void printUsage() {
         System.err.println("\nRequired Environment Variables:");
         System.err.println("  " + ENV_ENDPOINT + "=<your-voicelive-endpoint>");
-        System.err.println("  " + ENV_API_KEY + "=<your-api-key> (required if not using --use-token-credential)");
-        System.err.println("\nOptional:");
-        System.err.println("  Use --use-token-credential flag to authenticate with Azure CLI (requires 'az login')");
-    }
-
-    /**
-     * Run the voice assistant with API key authentication.
-     *
-     * @param endpoint The VoiceLive service endpoint
-     * @param credential The API key credential
-     */
-    private static void runVoiceAssistant(String endpoint, KeyCredential credential) {
-        System.out.println("🔧 Initializing VoiceLive client:");
-        System.out.println("   Endpoint: " + endpoint);
-
-        // Create the VoiceLive client
-        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
-            .endpoint(endpoint)
-            .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
-            .buildAsyncClient();
-
-        runVoiceAssistantWithClient(client);
     }
 
     /**
@@ -485,7 +441,6 @@ public final class VoiceAssistantSample {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
-            .serviceVersion(VoiceLiveServiceVersion.V2025_10_01)
             .buildAsyncClient();
 
         runVoiceAssistantWithClient(client);
@@ -499,66 +454,59 @@ public final class VoiceAssistantSample {
     private static void runVoiceAssistantWithClient(VoiceLiveAsyncClient client) {
         System.out.println("✓ VoiceLive client created");
 
-        // Configure session options for voice conversation
-        VoiceLiveSessionOptions sessionOptions = createVoiceSessionOptions();
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
 
-        // Execute the reactive workflow - start with just the model
-        client.startSession(DEFAULT_MODEL)
-            .flatMap(session -> {
+        // Latch keeps main alive until the event stream completes (or an error occurs).
+        final CountDownLatch completionLatch = new CountDownLatch(1);
+
+        // Start session. Session lifetime is local to this reactive chain — the session is
+        // captured by the lambda passed to flatMapMany and then threaded into per-event handling
+        // via flatMap, so no instance field or shared holder is needed.
+        client.startSession(DEFAULT_MODEL, null)
+            .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
-
-                // Create audio processor
-                AudioProcessor audioProcessor = new AudioProcessor(session);
-                audioProcessorRef.set(audioProcessor);
-
-                // Subscribe to receive server events asynchronously
-                session.receiveEvents()
-                    .doOnSubscribe(subscription -> System.out.println("🔗 Subscribed to event stream"))
-                    .doOnComplete(() -> System.out.println("⚠️ Event stream completed (this might indicate a connection issue)"))
-                    .doOnError(error -> System.out.println("❌ Event stream error: " + error.getMessage()))
-                    .subscribe(
-                        event -> handleServerEvent(event, audioProcessor),
-                        error -> System.err.println("❌ Error receiving events: " + error.getMessage()),
-                        () -> System.out.println("✓ Event stream completed")
-                    );
-
-                System.out.println("📤 Sending session.update configuration...");
-                ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                session.sendEvent(updateEvent)
-                    .doOnSuccess(v -> System.out.println("✓ Session configuration sent"))
-                    .doOnError(error -> System.err.println("❌ Failed to send session.update: " + error.getMessage()))
-                    .subscribe();
-
-
-                // Start audio systems
-                audioProcessor.startPlayback();
-
-                System.out.println("🎤 VOICE ASSISTANT READY");
-                System.out.println("Start speaking to begin conversation");
-                System.out.println("Press Ctrl+C to exit");
-
-                // Install shutdown hook for graceful cleanup
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    System.out.println("\n🛑 Shutting down gracefully...");
-                    audioProcessor.shutdown();
-                }));
-
-                // Keep the reactive chain alive to continue processing events
-                // Mono.never() prevents the chain from completing, allowing the event stream to run
-                // The shutdown hook above handles cleanup when the JVM exits (Ctrl+C)
-                // Note: In production, use a proper signal mechanism (e.g., CountDownLatch, CompletableFuture)
-                return Mono.never();
+                audioProcessorRef.set(new AudioProcessor(session));
+                return configureSession(session)
+                    .thenMany(session.receiveEvents())
+                    .flatMap(event -> handleServerEvent(event, audioProcessorRef.get()));
             })
-            .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
-            .doFinally(signalType -> {
-                // Cleanup audio processor
-                AudioProcessor audioProcessor = audioProcessorRef.get();
-                if (audioProcessor != null) {
-                    audioProcessor.shutdown();
+            .subscribe(
+                ignored -> { },
+                error -> {
+                    System.err.println("❌ Error receiving events: " + error.getMessage());
+                    shutdownAudio(audioProcessorRef);
+                    completionLatch.countDown();
+                },
+                () -> {
+                    System.out.println("✓ Event stream completed");
+                    shutdownAudio(audioProcessorRef);
+                    completionLatch.countDown();
                 }
-            })
-            .block(); // Block only for demo purposes; use reactive patterns in production
+            );
+
+        try {
+            completionLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * Send the session configuration for voice conversation.
+     */
+    private static Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
+        System.out.println("📤 Sending session.update configuration...");
+        return session.sendEvent(new ClientEventSessionUpdate(createVoiceSessionOptions())).then();
+    }
+
+    /**
+     * Cleanup audio processor.
+     */
+    private static void shutdownAudio(AtomicReference<AudioProcessor> audioProcessorRef) {
+        AudioProcessor audioProcessor = audioProcessorRef.getAndSet(null);
+        if (audioProcessor != null) {
+            audioProcessor.shutdown();
+        }
     }
 
     /**
@@ -577,12 +525,12 @@ public final class VoiceAssistantSample {
             .setCreateResponse(true);
 
         // Create audio input transcription configuration
-        AudioInputTranscriptionOptions transcriptionOptions = new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1);
+        AudioInputTranscriptionOptions transcriptionOptions = new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1).setLanguage("en");
 
         VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful AI voice assistant. Respond naturally and conversationally. Keep your responses concise but engaging. Speak as if having a real conversation.")
             // Voice: OpenAIVoice (OpenAIVoiceName enum) or AzureStandardVoice/AzureCustomVoice/AzurePersonalVoice
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
+            .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AvaNeural")))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
@@ -598,28 +546,30 @@ public final class VoiceAssistantSample {
     }
 
     /**
-     * Handle incoming server events
+     * Handle a single server event. Returns a {@link Mono} so the per-event handling stays
+     * inside the reactive chain (no nested subscribe). The voice assistant doesn't send any
+     * follow-up events, so handlers always return {@link Mono#empty()}.
      */
-    private static void handleServerEvent(SessionUpdate event, AudioProcessor audioProcessor) {
+    private static Mono<Void> handleServerEvent(SessionServerEvent event, AudioProcessor audioProcessor) {
         ServerEventType eventType = event.getType();
 
         try {
             if (eventType == ServerEventType.SESSION_CREATED) {
                 System.out.println("✓ Session created - initializing...");
-            } else if (eventType == ServerEventType.SESSION_UPDATED) {
-                System.out.println("✓ Session updated - starting microphone");
+            } else if (event instanceof SessionUpdateSessionUpdated) {
+                System.out.println("✓ Session updated - starting audio");
 
-                // Now that bufferObject() bug is fixed in generated code, we can access the typed class
-                if (event instanceof SessionUpdateSessionUpdated) {
-                    SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
+                // Print the full JSON representation
+                SessionUpdateSessionUpdated sessionUpdated = (SessionUpdateSessionUpdated) event;
+                System.out.println("📄 Session Updated Event (Full JSON):");
+                System.out.println(BinaryData.fromObject(sessionUpdated).toString());
 
-                    // Print the full JSON representation
-                    System.out.println("📄 Session Updated Event (Full JSON):");
-                    String eventJson = BinaryData.fromObject(sessionUpdated).toString();
-                    System.out.println(eventJson);
-                }
-
+                audioProcessor.startPlayback();
                 audioProcessor.startCapture();
+
+                System.out.println("🎤 VOICE ASSISTANT READY");
+                System.out.println("Start speaking to begin conversation");
+                System.out.println("Press Ctrl+C to exit");
             } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
                 System.out.println("🎤 Speech detected");
                 // Server handles interruption automatically with interruptResponse=true
@@ -627,30 +577,25 @@ public final class VoiceAssistantSample {
                 audioProcessor.skipPendingAudio();
             } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
                 System.out.println("🤔 Speech ended - processing...");
-            } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-                // Handle audio response - extract and queue for playback
-                if (event instanceof SessionUpdateResponseAudioDelta) {
-                    SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
-                    byte[] audioData = audioEvent.getDelta();
-                    if (audioData != null && audioData.length > 0) {
-                        audioProcessor.queueAudio(audioData);
-                    }
+            } else if (event instanceof SessionUpdateResponseAudioDelta) {
+                SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
+                byte[] audioData = audioEvent.getDelta();
+                if (audioData != null && audioData.length > 0) {
+                    audioProcessor.queueAudio(audioData);
                 }
             } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {
                 System.out.println("🎤 Ready for next input...");
             } else if (eventType == ServerEventType.RESPONSE_DONE) {
                 System.out.println("✅ Response complete");
-            } else if (eventType == ServerEventType.ERROR) {
-                if (event instanceof SessionUpdateError) {
-                    SessionUpdateError errorEvent = (SessionUpdateError) event;
-                    System.out.println("❌ VoiceLive error: " + errorEvent.getError().getMessage());
-                } else {
-                    System.out.println("❌ VoiceLive error occurred");
-                }
+            } else if (event instanceof SessionUpdateError) {
+                SessionUpdateError errorEvent = (SessionUpdateError) event;
+                System.out.println("❌ VoiceLive error: " + errorEvent.getError().getMessage());
             }
         } catch (Exception e) {
             System.err.println("❌ Error handling event: " + e.getMessage());
             e.printStackTrace();
         }
+
+        return Mono.empty();
     }
 }

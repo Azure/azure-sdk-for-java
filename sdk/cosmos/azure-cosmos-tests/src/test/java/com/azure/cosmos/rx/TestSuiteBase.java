@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos.rx;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -15,6 +16,9 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
@@ -99,6 +103,7 @@ import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -115,6 +120,7 @@ import static org.mockito.Mockito.spy;
 
 public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
+    protected static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 5;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final CosmosItemRequestOptions DEFAULT_DELETE_ITEM_OPTIONS = new CosmosItemRequestOptions()
@@ -560,14 +566,24 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .getCosmosAsyncClientAccessor()
             .getPreferredRegions(client).size() > 1;
         if (throughput > 6000 || isMultiRegional) {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            waitForCollectionToBeAvailableToRead();
         }
 
         return database.getContainer(cosmosContainerProperties.getId());
+    }
+
+    protected static void waitForCollectionToBeAvailableToRead() {
+        // Creating a container is an async task - especially with multiple regions it can
+        // take some time until the container is available in the remote regions as well.
+        // When the container does not exist yet, metadata reads or item operations can
+        // fail with 404/1013 "Collection is not yet available for read".
+        // So, adding this delay after container creation to minimize risk of hitting these errors.
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
@@ -2001,6 +2017,34 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 // Ignore deletion errors
             }
         }
+    }
+
+    protected static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
+        assertThat(diagnostics).isNotNull();
+
+        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+
+        assertThinClientEndpointUsed(ctx);
+    }
+
+    protected static void assertThinClientEndpointUsed(CosmosDiagnosticsContext ctx) {
+        assertThat(ctx).isNotNull();
+
+        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
+        assertThat(requests).isNotNull();
+        assertThat(requests.size()).isPositive();
+
+        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
+            if (requestInfo.getEndpoint() != null
+                && requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
+                return;
+            }
+        }
+
+        assertThat(false)
+            .as("No request targeting thin client proxy endpoint (" + THIN_CLIENT_ENDPOINT_INDICATOR + ")")
+            .isTrue();
     }
 
     protected static void safeClose(AsyncDocumentClient client) {

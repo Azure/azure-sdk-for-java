@@ -31,12 +31,8 @@ public final class UsageMetricsImpl implements UsageMetrics {
         Context context) {
         Response<UsageMetricInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new UsageMetricImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new UsageMetricImpl(inner.getValue(), this.manager()));
     }
 
     public UsageMetric get(String resourceGroupName, String workspaceName, String name) {

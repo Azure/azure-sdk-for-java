@@ -313,7 +313,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
@@ -330,7 +330,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
@@ -346,7 +346,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
@@ -363,7 +363,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
@@ -509,7 +509,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParent(String resourceGroupName,
@@ -526,7 +526,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParent(String resourceGroupName,
@@ -542,7 +542,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VolumeInner splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName);
@@ -558,7 +558,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VolumeInner splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -640,7 +640,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -659,7 +659,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -677,7 +677,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
@@ -695,7 +695,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,

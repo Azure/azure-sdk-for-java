@@ -80,7 +80,7 @@ public class TranscribeWithPhraseListSample {
                 System.out.println("\nDetailed phrases:");
                 result.getPhrases().forEach(phrase ->
                     System.out.println(String.format("  [%dms]: %s",
-                        phrase.getOffset(),
+                        phrase.getOffset().toMillis(),
                         phrase.getText()))
                 );
             }

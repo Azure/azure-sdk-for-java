@@ -32,12 +32,8 @@ public final class SnapshotsImpl implements Snapshots {
         String volumeName, String snapshotName, Context context) {
         Response<SnapshotInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SnapshotImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SnapshotImpl(inner.getValue(), this.manager()));
     }
 
     public Snapshot get(String resourceGroupName, String accountName, String poolName, String volumeName,

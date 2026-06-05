@@ -21,7 +21,7 @@ public final class TaskHubsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dashboardUrl\":\"yvxyqjp\"},\"id\":\"attpngjcrcczsq\",\"name\":\"jh\",\"type\":\"mdajv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dashboardUrl\":\"vwvxyslqbhsfx\"},\"id\":\"lyt\",\"name\":\"blmpewww\",\"type\":\"bkrvrnsvshqj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class TaskHubsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TaskHub response = manager.taskHubs()
-            .define("fwhybcibvy")
-            .withExistingScheduler("jixhbk", "ofqweykhmenevfye")
+            .define("tswb")
+            .withExistingScheduler("mjh", "xjyngudivk")
             .withProperties(new TaskHubProperties())
             .create();
 

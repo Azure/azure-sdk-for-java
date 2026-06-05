@@ -8,12 +8,11 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 
-import com.codahale.metrics.MetricRegistry;
 
 class SyncReadBenchmark extends SyncBenchmark<CosmosItemResponse> {
 
-    SyncReadBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws Exception {
-        super(workloadCfg, sharedRegistry);
+    SyncReadBenchmark(TenantWorkloadConfig workloadCfg) throws Exception {
+        super(workloadCfg);
     }
 
     @Override
@@ -22,7 +21,9 @@ class SyncReadBenchmark extends SyncBenchmark<CosmosItemResponse> {
         PojoizedJson doc = docsToRead.get(index);
 
         String partitionKeyValue = doc.getId();
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setExcludedRegions(workloadConfig.getExcludedRegionsList());
         return cosmosContainer.readItem(doc.getId(), new PartitionKey(partitionKeyValue),
-                                        new CosmosItemRequestOptions(), InternalObjectNode.class);
+                                        options, InternalObjectNode.class);
     }
 }

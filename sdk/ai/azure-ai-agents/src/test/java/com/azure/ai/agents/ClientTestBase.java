@@ -14,6 +14,11 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.services.async.ConversationServiceAsync;
+import com.openai.services.async.ResponseServiceAsync;
+import com.openai.services.blocking.ConversationService;
+import com.openai.services.blocking.ResponseService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,10 +44,10 @@ public class ClientTestBase extends TestProxyTestBase {
             builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else {
-            builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT"))
+            builder.endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         }
 
@@ -62,14 +67,14 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).buildAgentsAsyncClient();
     }
 
-    protected ConversationsClient getConversationsSyncClient(HttpClient httpClient,
+    protected ConversationService getConversationsSyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildConversationsClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIClient().conversations();
     }
 
-    protected ConversationsAsyncClient getConversationsAsyncClient(HttpClient httpClient,
+    protected ConversationServiceAsync getConversationsAsyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildConversationsAsyncClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIAsyncClient().conversations();
     }
 
     protected ResponsesClient getResponsesSyncClient(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion) {
@@ -79,6 +84,16 @@ public class ClientTestBase extends TestProxyTestBase {
     protected ResponsesAsyncClient getResponsesAsyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
         return getClientBuilder(httpClient, agentsServiceVersion).buildResponsesAsyncClient();
+    }
+
+    protected ResponseService getResponseServiceSyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIClient().responses();
+    }
+
+    protected ResponseServiceAsync getResponseServiceAsyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIAsyncClient().responses();
     }
 
     protected MemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
@@ -95,6 +110,7 @@ public class ClientTestBase extends TestProxyTestBase {
 
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..image", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
         sanitizers.add(new TestProxySanitizer("Content-Type",
             "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",

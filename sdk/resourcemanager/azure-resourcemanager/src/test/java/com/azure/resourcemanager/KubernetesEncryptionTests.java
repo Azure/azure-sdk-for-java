@@ -8,10 +8,12 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
 
+    @Disabled("Temporarily disabled, due to change of query order in authorization lib")
     @Test
     public void canCreateClusterWithDiskEncryption() {
         final String userPrincipalName = this.azureCliSignedInUser().userPrincipalName();

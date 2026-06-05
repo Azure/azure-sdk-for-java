@@ -27,6 +27,24 @@ public final class RntbdConstants {
         public static final String SuccessValue = "Success";
     }
 
+    public enum RntbdReadConsistencyStrategy {
+
+        Eventual((byte) 0x01),
+        Session((byte) 0x02),
+        LatestCommitted((byte) 0x03),
+        GlobalStrong((byte) 0x04);
+
+        private final byte id;
+
+        RntbdReadConsistencyStrategy(final byte id) {
+            this.id = id;
+        }
+
+        public byte id() {
+            return this.id;
+        }
+    }
+
     public enum RntbdConsistencyLevel {
 
         Strong((byte) 0x00),
@@ -597,8 +615,11 @@ public final class RntbdConstants {
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
+        PopulateQueryAdvice((short) 0x00DA, RntbdTokenType.Byte, false),
         ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
-        HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false);
+        WorkloadId((short)0x00DC, RntbdTokenType.Byte, false),
+        HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
+        ReadConsistencyStrategy((short)0x00FE, RntbdTokenType.Byte, false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,
@@ -908,6 +929,7 @@ public final class RntbdConstants {
         SessionToken((short) 0x003E, RntbdTokenType.String, false),
         BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false),
         CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false),
+        QueryAdvice((short) 0x0075, RntbdTokenType.String, false),
         GlobalNRegionCommittedGLSN((short) 0x0078, RntbdTokenType.LongLong, false);
 
         public static final Map<Short, RntbdResponseHeader> map;

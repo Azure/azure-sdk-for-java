@@ -12,18 +12,18 @@ public final class KeyVaultPrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeyVaultPrivateEndpoint model
-            = BinaryData.fromString("{\"virtualNetworkId\":\"oi\",\"privateEndpointId\":\"ukry\"}")
+            = BinaryData.fromString("{\"virtualNetworkId\":\"aimlnwiaaom\",\"privateEndpointId\":\"weazul\"}")
                 .toObject(KeyVaultPrivateEndpoint.class);
-        Assertions.assertEquals("oi", model.virtualNetworkId());
-        Assertions.assertEquals("ukry", model.privateEndpointId());
+        Assertions.assertEquals("aimlnwiaaom", model.virtualNetworkId());
+        Assertions.assertEquals("weazul", model.privateEndpointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KeyVaultPrivateEndpoint model
-            = new KeyVaultPrivateEndpoint().withVirtualNetworkId("oi").withPrivateEndpointId("ukry");
+            = new KeyVaultPrivateEndpoint().withVirtualNetworkId("aimlnwiaaom").withPrivateEndpointId("weazul");
         model = BinaryData.fromObject(model).toObject(KeyVaultPrivateEndpoint.class);
-        Assertions.assertEquals("oi", model.virtualNetworkId());
-        Assertions.assertEquals("ukry", model.privateEndpointId());
+        Assertions.assertEquals("aimlnwiaaom", model.virtualNetworkId());
+        Assertions.assertEquals("weazul", model.privateEndpointId());
     }
 }

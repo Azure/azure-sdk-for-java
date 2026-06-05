@@ -28,43 +28,6 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     private Long count;
 
     /*
-     * The resulting total avg for the facet when a avg metric is requested.
-     */
-    @Generated
-    private Double avg;
-
-    /*
-     * The resulting total min for the facet when a min metric is requested.
-     */
-    @Generated
-    private Double min;
-
-    /*
-     * The resulting total max for the facet when a max metric is requested.
-     */
-    @Generated
-    private Double max;
-
-    /*
-     * The resulting total sum for the facet when a sum metric is requested.
-     */
-    @Generated
-    private Double sum;
-
-    /*
-     * The resulting total cardinality for the facet when a cardinality metric is requested.
-     */
-    @Generated
-    private Long cardinality;
-
-    /*
-     * The nested facet query results for the search operation, organized as a collection of buckets for each faceted
-     * field; null if the query did not contain any nested facets.
-     */
-    @Generated
-    private Map<String, List<FacetResult>> facets;
-
-    /*
      * A single bucket of a facet query result. Reports the number of documents with a field value falling within a
      * particular range or having a particular value or interval.
      */
@@ -86,68 +49,6 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     @Generated
     public Long getCount() {
         return this.count;
-    }
-
-    /**
-     * Get the avg property: The resulting total avg for the facet when a avg metric is requested.
-     *
-     * @return the avg value.
-     */
-    @Generated
-    public Double getAvg() {
-        return this.avg;
-    }
-
-    /**
-     * Get the min property: The resulting total min for the facet when a min metric is requested.
-     *
-     * @return the min value.
-     */
-    @Generated
-    public Double getMin() {
-        return this.min;
-    }
-
-    /**
-     * Get the max property: The resulting total max for the facet when a max metric is requested.
-     *
-     * @return the max value.
-     */
-    @Generated
-    public Double getMax() {
-        return this.max;
-    }
-
-    /**
-     * Get the sum property: The resulting total sum for the facet when a sum metric is requested.
-     *
-     * @return the sum value.
-     */
-    @Generated
-    public Double getSum() {
-        return this.sum;
-    }
-
-    /**
-     * Get the cardinality property: The resulting total cardinality for the facet when a cardinality metric is
-     * requested.
-     *
-     * @return the cardinality value.
-     */
-    @Generated
-    public Long getCardinality() {
-        return this.cardinality;
-    }
-
-    /**
-     * Get the facets property: The nested facet query results for the search operation, organized as a collection of
-     * buckets for each faceted field; null if the query did not contain any nested facets.
-     *
-     * @return the facets value.
-     */
-    @Generated
-    public Map<String, List<FacetResult>> getFacets() {
-        return this.facets;
     }
 
     /**
@@ -231,5 +132,104 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
             deserializedFacetResult.additionalProperties = additionalProperties;
             return deserializedFacetResult;
         });
+    }
+
+    /*
+     * The resulting total avg for the facet when a avg metric is requested.
+     */
+    @Generated
+    private Double avg;
+
+    /*
+     * The resulting total min for the facet when a min metric is requested.
+     */
+    @Generated
+    private Double min;
+
+    /*
+     * The resulting total max for the facet when a max metric is requested.
+     */
+    @Generated
+    private Double max;
+
+    /*
+     * The resulting total sum for the facet when a sum metric is requested.
+     */
+    @Generated
+    private Double sum;
+
+    /*
+     * The resulting total cardinality for the facet when a cardinality metric is requested.
+     */
+    @Generated
+    private Long cardinality;
+
+    /*
+     * The nested facet query results for the search operation, organized as a collection of buckets for each faceted
+     * field; null if the query did not contain any nested facets.
+     */
+    @Generated
+    private Map<String, List<FacetResult>> facets;
+
+    /**
+     * Get the avg property: The resulting total avg for the facet when a avg metric is requested.
+     *
+     * @return the avg value.
+     */
+    @Generated
+    public Double getAvg() {
+        return this.avg;
+    }
+
+    /**
+     * Get the min property: The resulting total min for the facet when a min metric is requested.
+     *
+     * @return the min value.
+     */
+    @Generated
+    public Double getMin() {
+        return this.min;
+    }
+
+    /**
+     * Get the max property: The resulting total max for the facet when a max metric is requested.
+     *
+     * @return the max value.
+     */
+    @Generated
+    public Double getMax() {
+        return this.max;
+    }
+
+    /**
+     * Get the sum property: The resulting total sum for the facet when a sum metric is requested.
+     *
+     * @return the sum value.
+     */
+    @Generated
+    public Double getSum() {
+        return this.sum;
+    }
+
+    /**
+     * Get the cardinality property: The resulting total cardinality for the facet when a cardinality metric is
+     * requested.
+     *
+     * @return the cardinality value.
+     */
+    @Generated
+    public Long getCardinality() {
+        return this.cardinality;
+    }
+
+    /**
+     * Get the facets property: The nested facet query results for the search operation, organized as a collection of
+     * buckets for each faceted field; null if the query did not contain any nested facets.
+     *
+     * @return the facets value.
+     */
+    @Generated
+    public Map<String, List<FacetResult>> getFacets() {
+        return this.facets;
     }
 }

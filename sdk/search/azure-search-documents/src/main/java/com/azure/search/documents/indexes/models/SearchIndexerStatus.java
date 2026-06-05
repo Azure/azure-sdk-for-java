@@ -31,12 +31,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     private IndexerStatus status;
 
     /*
-     * Snapshot of the indexer's cumulative runtime consumption for the service over the current UTC period.
-     */
-    @Generated
-    private IndexerRuntime runtime;
-
-    /*
      * The result of the most recent or an in-progress indexer execution.
      */
     @Generated
@@ -53,12 +47,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
      */
     @Generated
     private SearchIndexerLimits limits;
-
-    /*
-     * All of the state that defines and dictates the indexer's current execution.
-     */
-    @Generated
-    private IndexerCurrentState currentState;
 
     /**
      * Creates an instance of SearchIndexerStatus class.
@@ -85,17 +73,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     public IndexerStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Get the runtime property: Snapshot of the indexer's cumulative runtime consumption for the service over the
-     * current UTC period.
-     *
-     * @return the runtime value.
-     */
-    @Generated
-    public IndexerRuntime getRuntime() {
-        return this.runtime;
     }
 
     /**
@@ -127,16 +104,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     public SearchIndexerLimits getLimits() {
         return this.limits;
-    }
-
-    /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     *
-     * @return the currentState value.
-     */
-    @Generated
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
     }
 
     /**
@@ -187,5 +154,38 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
             }
             return deserializedSearchIndexerStatus;
         });
+    }
+
+    /*
+     * Snapshot of the indexer's cumulative runtime consumption for the service over the current UTC period.
+     */
+    @Generated
+    private IndexerRuntime runtime;
+
+    /*
+     * All of the state that defines and dictates the indexer's current execution.
+     */
+    @Generated
+    private IndexerCurrentState currentState;
+
+    /**
+     * Get the runtime property: Snapshot of the indexer's cumulative runtime consumption for the service over the
+     * current UTC period.
+     *
+     * @return the runtime value.
+     */
+    @Generated
+    public IndexerRuntime getRuntime() {
+        return this.runtime;
+    }
+
+    /**
+     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
+     *
+     * @return the currentState value.
+     */
+    @Generated
+    public IndexerCurrentState getCurrentState() {
+        return this.currentState;
     }
 }

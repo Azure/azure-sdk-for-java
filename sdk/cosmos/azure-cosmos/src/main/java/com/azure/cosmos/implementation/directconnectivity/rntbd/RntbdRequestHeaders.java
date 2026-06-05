@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
 import com.azure.cosmos.implementation.FanoutOperationState;
@@ -23,6 +24,8 @@ import com.azure.cosmos.models.PriorityLevel;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -49,8 +52,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @JsonFilter("RntbdToken")
 final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
+    private static ImplementationBridgeHelpers.PriorityLevelHelper.PriorityLevelAccessor priorityLevelAccessor() {
+        return ImplementationBridgeHelpers.PriorityLevelHelper.getPriorityLevelAccessor();
+    }
+
     // region Fields
 
+    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestHeaders.class);
     private static final String URL_TRIM = "/";
 
     // endregion
@@ -133,7 +141,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addPriorityLevel(headers);
         this.addGlobalDatabaseAccountName(headers);
         this.addThroughputBucket(headers);
+        this.addPopulateQueryAdvice(headers);
         this.addHubRegionProcessingOnly(headers);
+        this.addReadConsistencyStrategy(headers);
+        this.addWorkloadId(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -295,7 +306,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getThroughputBucket() { return this.get(RntbdRequestHeader.ThroughputBucket); }
 
+    private RntbdToken getPopulateQueryAdvice() { return this.get(RntbdRequestHeader.PopulateQueryAdvice); }
+
     private RntbdToken getHubRegionProcessingOnly() { return this.get(RntbdRequestHeader.HubRegionProcessingOnly); }
+
+    private RntbdToken getWorkloadId() { return this.get(RntbdRequestHeader.WorkloadId); }
 
     private RntbdToken getGlobalDatabaseAccountName() {
         return this.get(RntbdRequestHeader.GlobalDatabaseAccountName);
@@ -790,9 +805,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
             }
 
             this.getPriorityLevel().setValue(
-                ImplementationBridgeHelpers
-                    .PriorityLevelHelper
-                    .getPriorityLevelAccessor()
+                priorityLevelAccessor()
                     .getPriorityValue(priorityLevel)
             );
         }
@@ -807,12 +820,74 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         }
     }
 
+    private void addPopulateQueryAdvice(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.POPULATE_QUERY_ADVICE);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getPopulateQueryAdvice().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
     private void addHubRegionProcessingOnly(final Map<String, String> headers) {
         final String value = headers.get(HttpHeaders.HUB_REGION_PROCESSING_ONLY);
 
         if (StringUtils.isNotEmpty(value)) {
             final boolean hubRegionProcessingOnly = Boolean.parseBoolean(value);
             this.getHubRegionProcessingOnly().setValue(hubRegionProcessingOnly);
+        }
+    }
+
+    private RntbdToken getReadConsistencyStrategy() {
+        return this.get(RntbdRequestHeader.ReadConsistencyStrategy);
+    }
+
+    private void addReadConsistencyStrategy(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.READ_CONSISTENCY_STRATEGY);
+
+        if (StringUtils.isNotEmpty(value)) {
+
+            final ReadConsistencyStrategy strategy = ImplementationBridgeHelpers
+                .ReadConsistencyStrategyHelper
+                .getReadConsistencyStrategyAccessor()
+                .createFromServiceSerializedFormat(value);
+
+            if (strategy == null) {
+                throw new IllegalArgumentException(
+                    "Unknown ReadConsistencyStrategy value '" + value + "' — cannot encode in RNTBD frame");
+            }
+
+            switch (strategy) {
+                case EVENTUAL:
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.Eventual.id());
+                    break;
+                case SESSION:
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.Session.id());
+                    break;
+                case LATEST_COMMITTED:
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.LatestCommitted.id());
+                    break;
+                case GLOBAL_STRONG:
+                    this.getReadConsistencyStrategy().setValue(RntbdConstants.RntbdReadConsistencyStrategy.GlobalStrong.id());
+                    break;
+                case DEFAULT:
+                    // DEFAULT means use the account/client default — skip writing to the RNTBD frame
+                    break;
+                default:
+                    assert false;
+                    break;
+            }
+        }
+    }
+
+    private void addWorkloadId(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.WORKLOAD_ID);
+
+        if (StringUtils.isNotEmpty(value)) {
+            try {
+                final int workloadId = Integer.parseInt(value);
+                this.getWorkloadId().setValue((byte) workloadId);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid value for workload id header: {}", value, e);
+            }
         }
     }
 

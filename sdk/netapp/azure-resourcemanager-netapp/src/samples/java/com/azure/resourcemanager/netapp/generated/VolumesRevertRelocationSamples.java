@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesRevertRelocationSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Volumes_RevertRelocation.json
+     * x-ms-original-file: 2026-01-01/Volumes_RevertRelocation.json
      */
     /**
      * Sample code: Volumes_RevertRelocation.

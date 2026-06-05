@@ -3,18 +3,24 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.RecordingClientHttpRequestFactoryBuilderConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.RecordingClientHttpRequestFactoryBuilderConfiguration.RecordingClientHttpRequestFactoryBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.http.client.HttpClientSettings;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.restclient.autoconfigure.RestTemplateAutoConfiguration;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -31,6 +37,7 @@ import org.springframework.security.oauth2.server.resource.web.authentication.Be
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -67,15 +74,57 @@ class AadResourceServerConfigurationTests {
     }
 
     @Test
-    void testNotAudienceDefaultValidator() {
+    void testJwtDecoderTimeoutDefaultValues() {
         resourceServerContextRunner()
+            .withUserConfiguration(RecordingClientHttpRequestFactoryBuilderConfiguration.class)
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwtConnectTimeout())
+                    .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT));
+                assertThat(properties.getJwtReadTimeout())
+                    .isEqualTo(Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT));
+                // Verify the default timeouts are applied to the RestTemplate used by the JwtDecoder
+                final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                verifyJwtDecoderRestTemplateTimeouts(context, jwtDecoder,
+                    JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT,
+                    JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
+            });
+    }
+
+    @Test
+    void testJwtDecoderTimeoutCustomValues() {
+        resourceServerContextRunner()
+            .withUserConfiguration(RecordingClientHttpRequestFactoryBuilderConfiguration.class)
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.jwt-connect-timeout=2000",
+                "spring.cloud.azure.active-directory.jwt-read-timeout=3000")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwtConnectTimeout()).isEqualTo(Duration.ofMillis(2000));
+                assertThat(properties.getJwtReadTimeout()).isEqualTo(Duration.ofMillis(3000));
+                // Verify JwtDecoder is still created successfully with custom timeouts
+                final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                assertThat(jwtDecoder).isNotNull();
+                assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
+                // Verify the configured timeouts are applied to the RestTemplate used by the JwtDecoder
+                verifyJwtDecoderRestTemplateTimeouts(context, jwtDecoder, 2000, 3000);
+            });
+    }
+
+    @Test
+    void testNotAudienceDefaultValidator() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 AadResourceServerConfiguration bean = context
                     .getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
+                // No AUD validator (no app-id-uri or client-id configured) + TID + ISS + Timestamp validators
                 assertThat(defaultValidator).hasSize(3);
             });
     }
@@ -90,7 +139,152 @@ class AadResourceServerConfigurationTests {
                     .getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
-                assertThat(defaultValidator).hasSize(3);
+                // AUD (from app-id-uri) + TID + ISS + Timestamp validators
+                assertThat(defaultValidator).hasSize(4);
+            });
+    }
+
+    @Test
+    void testSingleTenantUsesTrustedIssuerRepository() {
+        resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
+
+                AadJwtIssuerValidator issuerValidator = (AadJwtIssuerValidator) defaultValidator.stream()
+                    .filter(AadJwtIssuerValidator.class::isInstance)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("AadJwtIssuerValidator not found"));
+
+                assertThat(ReflectionTestUtils.getField(issuerValidator, "trustedIssuerRepo")).isNotNull();
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsCommon() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=common",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsOrganizations() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsConsumers() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsNull() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                // When tenant-id is null, AadAuthenticationProperties.afterPropertiesSet() sets it to "common"
+                // Then our validation should reject "common"
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsEmptyString() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                // When tenant-id is empty string, AadAuthenticationProperties.afterPropertiesSet() sets it to "common"
+                // Then our validation should reject "common"
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdRejectsWhitespacePaddedReservedValue() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id= common ",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure())
+                    .hasRootCauseInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("cannot be null, empty, or set to");
+            });
+    }
+
+    @Test
+    void testValidateTenantIdAcceptsValidGuid() {
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=12345678-1234-1234-1234-123456789012",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasNotFailed();
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
+
+                AadJwtIssuerValidator issuerValidator = (AadJwtIssuerValidator) defaultValidator.stream()
+                    .filter(AadJwtIssuerValidator.class::isInstance)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("AadJwtIssuerValidator not found"));
+
+                assertThat(ReflectionTestUtils.getField(issuerValidator, "trustedIssuerRepo")).isNotNull();
+            });
+    }
+
+    @Test
+    void testValidateTenantIdNormalizesUppercaseGuid() {
+        // Uppercase GUIDs are valid; the configured value should be normalized to lowercase
+        // so that the tid/iss validators can match AAD tokens (which always use lowercase UUIDs).
+        resourceServerRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=12345678-ABCD-ABCD-ABCD-123456789012",
+                "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri")
+            .run(context -> {
+                assertThat(context).hasNotFailed();
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
+                // AUD (from app-id-uri) + TID + ISS + Timestamp validators
+                assertThat(defaultValidator).hasSize(4);
             });
     }
 
@@ -153,6 +347,7 @@ class AadResourceServerConfigurationTests {
     void useDefaultWebSecurityConfigurerAdapter() {
         resourceServerRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
@@ -173,6 +368,7 @@ class AadResourceServerConfigurationTests {
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class, ClientRegistration.class))
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
@@ -213,5 +409,59 @@ class AadResourceServerConfigurationTests {
         public Collection<GrantedAuthority> convert(Jwt source) {
             return null;
         }
+    }
+
+    /**
+     * Verifies that the RestTemplate used by the NimbusJwtDecoder for JWK retrieval
+     * has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     */
+    @SuppressWarnings("unchecked")
+    private static void verifyJwtDecoderRestTemplateTimeouts(ApplicationContext context,
+                                                             JwtDecoder jwtDecoder,
+                                                             int expectedConnectTimeoutMs,
+                                                             int expectedReadTimeoutMs) {
+        // NimbusJwtDecoder -> jwtProcessor (DefaultJWTProcessor)
+        Object jwtProcessor = ReflectionTestUtils.getField(jwtDecoder, "jwtProcessor");
+        assertThat(jwtProcessor).isInstanceOf(com.nimbusds.jwt.proc.DefaultJWTProcessor.class);
+
+        // DefaultJWTProcessor -> JWSKeySelector (JWSVerificationKeySelector)
+        com.nimbusds.jose.proc.JWSKeySelector<?> keySelector =
+            ((com.nimbusds.jwt.proc.DefaultJWTProcessor<?>) jwtProcessor).getJWSKeySelector();
+        assertThat(keySelector).isInstanceOf(com.nimbusds.jose.proc.JWSVerificationKeySelector.class);
+
+        // JWSVerificationKeySelector -> JWKSource (JWKSetBasedJWKSource)
+        com.nimbusds.jose.jwk.source.JWKSource<?> jwkSource =
+            ((com.nimbusds.jose.proc.JWSVerificationKeySelector<?>) keySelector).getJWKSource();
+        assertThat(jwkSource).isInstanceOf(com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource.class);
+
+        // JWKSetBasedJWKSource -> JWKSetSource (CachingJWKSetSource -> JWKSetSourceWrapper -> actual source)
+        Object jwkSetSource =
+            ((com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource<?>) jwkSource).getJWKSetSource();
+
+        // Unwrap JWKSetSourceWrapper chain to find the source with restOperations
+        while (jwkSetSource instanceof com.nimbusds.jose.jwk.source.JWKSetSourceWrapper<?> wrapper) {
+            jwkSetSource = wrapper.getSource();
+        }
+
+        // actual source -> restOperations (RestTemplate)
+        Object restOperations = ReflectionTestUtils.getField(jwkSetSource, "restOperations");
+        assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
+
+        // RestTemplate -> ClientHttpRequestFactory
+        org.springframework.http.client.ClientHttpRequestFactory requestFactory =
+            ((org.springframework.web.client.RestTemplate) restOperations).getRequestFactory();
+        assertThat(requestFactory).isNotNull();
+
+        assertRecordedHttpClientSettings(context, expectedConnectTimeoutMs, expectedReadTimeoutMs);
+    }
+
+    private static void assertRecordedHttpClientSettings(ApplicationContext context,
+                                                         int expectedConnectTimeoutMs,
+                                                         int expectedReadTimeoutMs) {
+        HttpClientSettings clientSettings = context.getBean(RecordingClientHttpRequestFactoryBuilder.class)
+                                                  .getClientSettings();
+        assertThat(clientSettings).isNotNull();
+        assertThat(clientSettings.connectTimeout()).isEqualTo(Duration.ofMillis(expectedConnectTimeoutMs));
+        assertThat(clientSettings.readTimeout()).isEqualTo(Duration.ofMillis(expectedReadTimeoutMs));
     }
 }

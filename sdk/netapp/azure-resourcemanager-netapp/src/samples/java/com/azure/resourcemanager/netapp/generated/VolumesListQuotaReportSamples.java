@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesListQuotaReportSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Volumes_ListQuotaReport.json
+     * x-ms-original-file: 2026-01-01/Volumes_ListQuotaReport.json
      */
     /**
      * Sample code: ListQuotaReport.

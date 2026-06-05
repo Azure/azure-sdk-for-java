@@ -11,7 +11,7 @@ public final class AzureBackupRecoveryPointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupRecoveryPointResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"hewpusdsttwv\",\"name\":\"gvbbejdcng\",\"type\":\"qmoa\"}")
+            "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"fxzsjabibsyst\",\"name\":\"wfsdjpvkvpbj\",\"type\":\"bkzbzkd\"}")
             .toObject(AzureBackupRecoveryPointResourceInner.class);
     }
 }

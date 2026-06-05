@@ -32,12 +32,8 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
         String discoveryRuleName, Context context) {
         Response<DiscoveryRuleInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DiscoveryRuleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DiscoveryRuleImpl(inner.getValue(), this.manager()));
     }
 
     public DiscoveryRule get(String resourceGroupName, String healthModelName, String discoveryRuleName) {
@@ -49,13 +45,12 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String discoveryRuleName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
-    }
-
     public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName) {
         this.serviceClient().delete(resourceGroupName, healthModelName, discoveryRuleName);
+    }
+
+    public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName, Context context) {
+        this.serviceClient().delete(resourceGroupName, healthModelName, discoveryRuleName, context);
     }
 
     public PagedIterable<DiscoveryRule> listByHealthModel(String resourceGroupName, String healthModelName) {
@@ -125,10 +120,10 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
+        this.delete(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -144,7 +139,7 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
+        this.delete(resourceGroupName, healthModelName, discoveryRuleName, context);
     }
 
     private DiscoveryRulesClient serviceClient() {

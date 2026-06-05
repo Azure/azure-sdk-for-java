@@ -140,4 +140,17 @@ class ResponseCreateParamsNewFeaturesTest {
         assertNotNull(deserialized.getMetadata());
         assertEquals(0, deserialized.getMetadata().size());
     }
+
+    @Test
+    void testResponseCreateParamsInvokeInputRoundTrip() {
+        Map<String, BinaryData> invokeInput
+            = java.util.Collections.singletonMap("query", BinaryData.fromString("\"hello\""));
+        ResponseCreateParams params = new ResponseCreateParams().setInvokeInput(invokeInput);
+
+        ResponseCreateParams deserialized = BinaryData.fromObject(params).toObject(ResponseCreateParams.class);
+
+        assertNotNull(deserialized.getInvokeInput());
+        org.junit.jupiter.api.Assertions.assertTrue(deserialized.getInvokeInput().containsKey("query"));
+        assertNotNull(deserialized.getInvokeInput().get("query"));
+    }
 }

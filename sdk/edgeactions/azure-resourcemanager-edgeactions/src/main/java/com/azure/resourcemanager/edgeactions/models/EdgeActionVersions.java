@@ -101,7 +101,7 @@ public interface EdgeActionVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName, String version,
         VersionCodeInner body);
@@ -117,7 +117,7 @@ public interface EdgeActionVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     EdgeActionVersionProperties deployVersionCode(String resourceGroupName, String edgeActionName, String version,
         VersionCodeInner body, Context context);

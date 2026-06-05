@@ -83,13 +83,16 @@ public interface UpdateRuns {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a UpdateRun list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UpdateRun> listByFleet(String resourceGroupName, String fleetName, Context context);
+    PagedIterable<UpdateRun> listByFleet(String resourceGroupName, String fleetName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Starts an UpdateRun.
@@ -100,7 +103,7 @@ public interface UpdateRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun start(String resourceGroupName, String fleetName, String updateRunName);
 
@@ -115,7 +118,7 @@ public interface UpdateRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun start(String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
 
@@ -128,7 +131,7 @@ public interface UpdateRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun stop(String resourceGroupName, String fleetName, String updateRunName);
 
@@ -143,7 +146,7 @@ public interface UpdateRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun stop(String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
 
@@ -157,7 +160,7 @@ public interface UpdateRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body);
 
@@ -173,7 +176,7 @@ public interface UpdateRuns {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body,
         String ifMatch, Context context);

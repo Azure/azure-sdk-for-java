@@ -44,12 +44,13 @@ import java.util.function.Supplier;
  */
 public abstract class DocumentQueryExecutionContextBase<T>
 implements IDocumentQueryExecutionContext<T> {
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
-
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
     protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
@@ -79,7 +80,7 @@ implements IDocumentQueryExecutionContext<T> {
         this.resourceLink = resourceLink;
         this.correlatedActivityId = correlatedActivityId;
         this.diagnosticsClientContext = diagnosticsClientContext;
-        this.operationContext = qryOptAccessor
+        this.operationContext = qryOptAccessor()
             .getImpl(cosmosQueryRequestOptions)
             .getOperationContextAndListenerTuple();
         this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
@@ -123,7 +124,7 @@ implements IDocumentQueryExecutionContext<T> {
                                                : this.createReadFeedDocumentServiceRequest(requestHeaders);
         request.requestContext.resolvedCollectionRid = collectionRid;
 
-        qryOptAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionRid);
+        qryOptAccessor().setCollectionRid(cosmosQueryRequestOptions, collectionRid);
 
         request.setResourceId(collectionRid);
         request.throughputControlGroupName = throughputControlGroupName;
@@ -133,7 +134,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor()
             .getImpl(cosmosQueryRequestOptions)
             .getCosmosEndToEndLatencyPolicyConfig();
 
@@ -141,9 +142,9 @@ implements IDocumentQueryExecutionContext<T> {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
         request.requestContext.setExcludeRegions(
-            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getExcludedRegions());
+            qryOptAccessor().getImpl(cosmosQueryRequestOptions).getExcludedRegions());
         request.requestContext.setKeywordIdentifiers(
-            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
+            qryOptAccessor().getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;
@@ -175,12 +176,12 @@ implements IDocumentQueryExecutionContext<T> {
         CosmosItemSerializer itemSerializer,
         Mono<RxDocumentServiceResponse> response) {
 
-        return response.map(resp -> feedResponseAccessor.createFeedResponse(resp, itemSerializer, resourceType));
+        return response.map(resp -> feedResponseAccessor().createFeedResponse(resp, itemSerializer, resourceType));
     }
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
         CosmosQueryRequestOptions options =
-            qryOptAccessor.clone(this.cosmosQueryRequestOptions);
+            qryOptAccessor().clone(this.cosmosQueryRequestOptions);
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }
@@ -236,14 +237,14 @@ implements IDocumentQueryExecutionContext<T> {
             }
         }
 
-        Map<String, String> customOptions = qryOptAccessor
+        Map<String, String> customOptions = qryOptAccessor()
             .getImpl(cosmosQueryRequestOptions)
             .getHeaders();
         if(customOptions != null) {
             requestHeaders.putAll(customOptions);
         }
 
-        UUID correlationActivityId = qryOptAccessor
+        UUID correlationActivityId = qryOptAccessor()
             .getImpl(cosmosQueryRequestOptions)
             .getCorrelationActivityId();
         if (correlationActivityId != null) {
@@ -291,24 +292,34 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_INDEX_METRICS, String.valueOf(cosmosQueryRequestOptions.isIndexMetricsEnabled()));
         }
 
+        if (cosmosQueryRequestOptions.isQueryAdviceEnabled()) {
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_ADVICE, String.valueOf(cosmosQueryRequestOptions.isQueryAdviceEnabled()));
+        }
+
         boolean consistencyLevelOverrideApplicable = true;
 
         if (cosmosQueryRequestOptions.getReadConsistencyStrategy() != null) {
 
-            String readConsistencyStrategyName = cosmosQueryRequestOptions.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
-            requestHeaders.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            this.client.validateReadConsistencyStrategy(cosmosQueryRequestOptions.getReadConsistencyStrategy());
+
+            if (cosmosQueryRequestOptions.getReadConsistencyStrategy() != ReadConsistencyStrategy.DEFAULT) {
+                requestHeaders.put(
+                    HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                    cosmosQueryRequestOptions.getReadConsistencyStrategy().toString());
+            }
 
             consistencyLevelOverrideApplicable =
                 cosmosQueryRequestOptions.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
         }
 
         if (consistencyLevelOverrideApplicable && this.client.getReadConsistencyStrategy() != null) {
-            String readConsistencyStrategyName = this.client.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
-            requestHeaders.put(
-                HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
-                readConsistencyStrategyName);
+            this.client.validateReadConsistencyStrategy(this.client.getReadConsistencyStrategy());
+
+            if (this.client.getReadConsistencyStrategy() != ReadConsistencyStrategy.DEFAULT) {
+                requestHeaders.put(
+                    HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                    this.client.getReadConsistencyStrategy().toString());
+            }
 
             consistencyLevelOverrideApplicable =
                 this.client.getReadConsistencyStrategy() == ReadConsistencyStrategy.DEFAULT;
@@ -368,15 +379,15 @@ implements IDocumentQueryExecutionContext<T> {
                 this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
                 requestHeaders);
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor()
                 .getImpl(cosmosQueryRequestOptions)
                 .getCosmosEndToEndLatencyPolicyConfig();
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
-            executeQueryRequest.requestContext.setKeywordIdentifiers(qryOptAccessor.getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
+            executeQueryRequest.requestContext.setKeywordIdentifiers(qryOptAccessor().getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
 
-            executeQueryRequest.setPartitionKeyDefinition(qryOptAccessor.getPartitionKeyDefinition(this.cosmosQueryRequestOptions));
+            executeQueryRequest.setPartitionKeyDefinition(qryOptAccessor().getPartitionKeyDefinition(this.cosmosQueryRequestOptions));
 
             executeQueryRequest.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);

@@ -55,6 +55,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * 3. Start throughput refresh task if necessary
  */
 public class SDKThroughputContainerController implements IThroughputContainerController {
+    private static ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor databaseAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(SDKThroughputContainerController.class);
 
     private static final Duration DEFAULT_THROUGHPUT_REFRESH_INTERVAL = Duration.ofMinutes(15);
@@ -179,6 +183,13 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
     }
 
     private Mono<SDKThroughputContainerController> resolveContainerMaxThroughput() {
+        // When no group uses targetThroughputThreshold, there is no need to resolve the container's
+        // max throughput. Skip the query to avoid requiring throughputSettings/read permission
+        // (which AAD principals may not have).
+        if (this.throughputProvisioningScope == ThroughputProvisioningScope.NONE) {
+            return Mono.just(this);
+        }
+
         return this.throughputQueryMono
             .flatMap(maxThroughput -> {
                 this.maxContainerThroughput.set(maxThroughput);
@@ -236,7 +247,7 @@ public class SDKThroughputContainerController implements IThroughputContainerCon
         // use https://github.com/Azure/azure-sdk-for-java/issues/18776 to keep track for possible future work.
         checkArgument(StringUtils.isNotEmpty(resourceId), "ResourceId can not be null or empty");
         QueryFeedOperationState state = new QueryFeedOperationState(
-            ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor().getCosmosAsyncClient(this.targetContainer.getDatabase()),
+            databaseAccessor().getCosmosAsyncClient(this.targetContainer.getDatabase()),
             "resolveThroughputByResourceId",
             this.targetContainer.getDatabase().getId(),
             this.targetContainer.getId(),

@@ -30,12 +30,8 @@ public final class GetTieringCostOperationResultsImpl implements GetTieringCostO
         Context context) {
         Response<TieringCostInfoInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TieringCostInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TieringCostInfoImpl(inner.getValue(), this.manager()));
     }
 
     public TieringCostInfo get(String resourceGroupName, String vaultName, String operationId) {

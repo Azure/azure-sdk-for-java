@@ -38,12 +38,8 @@ public final class CapacitiesImpl implements Capacities {
         String dedicatedCapacityName, Context context) {
         Response<DedicatedCapacityInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DedicatedCapacityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DedicatedCapacityImpl(inner.getValue(), this.manager()));
     }
 
     public DedicatedCapacity getByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
@@ -105,12 +101,8 @@ public final class CapacitiesImpl implements Capacities {
         String dedicatedCapacityName, Context context) {
         Response<SkuEnumerationForExistingResourceResultInner> inner
             = this.serviceClient().listSkusForCapacityWithResponse(resourceGroupName, dedicatedCapacityName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuEnumerationForExistingResourceResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuEnumerationForExistingResourceResultImpl(inner.getValue(), this.manager()));
     }
 
     public SkuEnumerationForExistingResourceResult listSkusForCapacity(String resourceGroupName,
@@ -126,12 +118,8 @@ public final class CapacitiesImpl implements Capacities {
 
     public Response<SkuEnumerationForNewResourceResult> listSkusWithResponse(Context context) {
         Response<SkuEnumerationForNewResourceResultInner> inner = this.serviceClient().listSkusWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SkuEnumerationForNewResourceResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SkuEnumerationForNewResourceResultImpl(inner.getValue(), this.manager()));
     }
 
     public SkuEnumerationForNewResourceResult listSkus() {
@@ -147,12 +135,8 @@ public final class CapacitiesImpl implements Capacities {
         CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
         Response<CheckCapacityNameAvailabilityResultInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(location, capacityParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckCapacityNameAvailabilityResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckCapacityNameAvailabilityResultImpl(inner.getValue(), this.manager()));
     }
 
     public CheckCapacityNameAvailabilityResult checkNameAvailability(String location,

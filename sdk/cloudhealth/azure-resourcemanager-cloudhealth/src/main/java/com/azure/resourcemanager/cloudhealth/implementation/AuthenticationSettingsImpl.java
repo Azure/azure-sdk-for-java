@@ -31,12 +31,8 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
         String authenticationSettingName, Context context) {
         Response<AuthenticationSettingInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, healthModelName, authenticationSettingName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AuthenticationSettingImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AuthenticationSettingImpl(inner.getValue(), this.manager()));
     }
 
     public AuthenticationSetting get(String resourceGroupName, String healthModelName,
@@ -50,14 +46,13 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName,
-        String authenticationSettingName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, healthModelName, authenticationSettingName, context);
-    }
-
     public void delete(String resourceGroupName, String healthModelName, String authenticationSettingName) {
         this.serviceClient().delete(resourceGroupName, healthModelName, authenticationSettingName);
+    }
+
+    public void delete(String resourceGroupName, String healthModelName, String authenticationSettingName,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, healthModelName, authenticationSettingName, context);
     }
 
     public PagedIterable<AuthenticationSetting> listByHealthModel(String resourceGroupName, String healthModelName) {
@@ -128,10 +123,10 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'authenticationsettings'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE);
+        this.delete(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -147,7 +142,7 @@ public final class AuthenticationSettingsImpl implements AuthenticationSettings 
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'authenticationsettings'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, healthModelName, authenticationSettingName, context);
+        this.delete(resourceGroupName, healthModelName, authenticationSettingName, context);
     }
 
     private AuthenticationSettingsClient serviceClient() {

@@ -1,16 +1,55 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.10.0-beta.1 (2026-06-04)
 
 ### Features Added
 
-### Breaking Changes
+- Added an experimental PlatformManaged property on CertificatePolicy for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point. [#49210](https://github.com/Azure/azure-sdk-for-java/pull/49210)
+
+### Other Changes
+
+- Upgraded to API service version `2026-03-01-preview`
+
+## 4.9.0 (2026-05-26)
+
+### Features Added
+
+- Added support for service version `V2025_07_01`.
+- Added the following methods to `SubjectAlternativeNames`:
+  - `setUniformResourceIdentifiers(java.util.List)`
+  - `setIpAddresses(java.util.List)`
+  - `getUniformResourceIdentifiers()`
+  - `getIpAddresses()`
+
+## 4.8.7 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 4.9.0-beta.1 (2026-04-08)
+
+### Features Added
+
+#### `models.SubjectAlternativeNames` was modified
+
+* `setUniformResourceIdentifiers(java.util.List)` was added
+* `setIpAddresses(java.util.List)` was added
+* `getUniformResourceIdentifiers()` was added
+* `getIpAddresses()` was added
+
+#### `CertificateServiceVersion` was modified
+
+* `V2025_07_01` was added
+
+## 4.8.6 (2026-03-23)
 
 ### Bugs Fixed
 
 - Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
-
-### Other Changes
 
 ## 4.8.5 (2026-01-29)
 

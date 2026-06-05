@@ -26,7 +26,7 @@ public final class GatesUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"wkyhkobopgxe\",\"gateType\":\"Approval\",\"target\":{\"id\":\"owepbqpcrfkb\",\"updateRunProperties\":{\"name\":\"csnjvcdwxlpqekft\",\"stage\":\"htjsying\",\"group\":\"qatmtdhtmdvy\",\"timing\":\"Before\"}},\"state\":\"Pending\"},\"eTag\":\"dgszywkbirryuzh\",\"id\":\"kj\",\"name\":\"qrvqq\",\"type\":\"atjinrvgoupmfiib\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"tymoxoftp\",\"gateType\":\"Approval\",\"target\":{\"id\":\"iwyczuh\",\"updateRunProperties\":{\"name\":\"cpqjlihhyu\",\"stage\":\"skasdvlmfwdgzxu\",\"group\":\"cvpa\",\"timing\":\"Before\"}},\"state\":\"Pending\"},\"eTag\":\"euzvx\",\"id\":\"i\",\"name\":\"jn\",\"type\":\"nytx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,13 +36,13 @@ public final class GatesUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Gate response = manager.gates()
-            .update("semdwzrmu", "apfcqdpsq", "qvpsvuoymg",
-                new GatePatch().withProperties(new GatePatchProperties().withState(GateState.PENDING)), "elvezrypq",
-                "mfe", com.azure.core.util.Context.NONE);
+            .update("qvpn", "yujviylwdshfssn", "bgye",
+                new GatePatch().withProperties(new GatePatchProperties().withState(GateState.COMPLETED)),
+                "ymsgaojfmwnc", "tmr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wkyhkobopgxe", response.displayName());
+        Assertions.assertEquals("tymoxoftp", response.displayName());
         Assertions.assertEquals(GateType.APPROVAL, response.gateType());
-        Assertions.assertEquals("owepbqpcrfkb", response.target().id());
+        Assertions.assertEquals("iwyczuh", response.target().id());
         Assertions.assertEquals(Timing.BEFORE, response.target().updateRunProperties().timing());
         Assertions.assertEquals(GateState.PENDING, response.state());
     }

@@ -8,12 +8,9 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
-import org.reactivestreams.Subscription;
-import reactor.core.publisher.BaseSubscriber;
+
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,39 +20,8 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
     private int pageCount = 0;
 
-    class LatencySubscriber<T> extends BaseSubscriber<T> {
-
-        Timer.Context context;
-        BaseSubscriber<T> baseSubscriber;
-
-        LatencySubscriber(BaseSubscriber<T> baseSubscriber) {
-            this.baseSubscriber = baseSubscriber;
-        }
-
-        @Override
-        protected void hookOnSubscribe(Subscription subscription) {
-            super.hookOnSubscribe(subscription);
-        }
-
-        @Override
-        protected void hookOnNext(T value) {
-        }
-
-        @Override
-        protected void hookOnComplete() {
-            context.stop();
-            baseSubscriber.onComplete();
-        }
-
-        @Override
-        protected void hookOnError(Throwable throwable) {
-            context.stop();
-            baseSubscriber.onError(throwable);
-        }
-    }
-
-    AsyncQueryBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
-        super(cfg, sharedRegistry);
+    AsyncQueryBenchmark(TenantWorkloadConfig cfg) {
+        super(cfg);
     }
 
     @Override
@@ -70,10 +36,11 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
+    protected Mono<FeedResponse<PojoizedJson>> performWorkload(long i) {
         Flux<FeedResponse<PojoizedJson>> obs;
         Random r = new Random();
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setExcludedRegions(workloadConfig.getExcludedRegionsList());
 
         if (workloadConfig.getOperationType() == Operation.QueryCross) {
 
@@ -133,9 +100,6 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
             throw new IllegalArgumentException("Unsupported Operation: " + workloadConfig.getOperationType());
         }
 
-        concurrencyControlSemaphore.acquire();
-        LatencySubscriber<FeedResponse> latencySubscriber = new LatencySubscriber(baseSubscriber);
-        latencySubscriber.context = latency.time();
-        obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
+        return obs.last();
     }
 }

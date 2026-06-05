@@ -149,6 +149,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return null;
     }
 
+    @Override
+    public Boolean isQueryAdviceEnabled() {
+        return null;
+    }
+
     public void setMaxItemCount(int maxItemCount) {
         this.maxItemCount = maxItemCount;
     }
@@ -211,6 +216,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return null;
     }
 
+    @Override
     public CosmosItemSerializer getCustomItemSerializer() {
         return this.customSerializer;
     }
@@ -263,7 +269,6 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return this;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptionsImpl allVersionsAndDeletes() {
 
         if (!this.startFromInternal.supportsFullFidelityRetention()) {
@@ -416,6 +421,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.throughputControlGroupName = overrideOption(cosmosRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(cosmosRequestOptions.getDiagnosticsThresholds(), this.thresholds);
         this.keywordIdentifiers = overrideOption(cosmosRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+        this.customSerializer = overrideOption(cosmosRequestOptions.getCustomItemSerializer(), this.customSerializer);
     }
 
 }
