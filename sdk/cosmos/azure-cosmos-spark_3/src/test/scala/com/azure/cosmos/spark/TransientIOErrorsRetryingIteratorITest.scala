@@ -113,6 +113,7 @@ class TransientIOErrorsRetryingIteratorITest
       2,
       Queues.XS_BUFFER_SIZE,
       None,
+      None,
       None
     )
     retryingIterator.maxRetryIntervalInMs = 5
@@ -254,6 +255,7 @@ class TransientIOErrorsRetryingIteratorITest
       },
       2,
       Queues.XS_BUFFER_SIZE,
+      None,
       None,
       None
     )

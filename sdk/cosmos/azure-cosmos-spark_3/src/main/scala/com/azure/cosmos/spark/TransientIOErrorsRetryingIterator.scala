@@ -42,7 +42,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   val pagePrefetchBufferSize: Int,
   val operationContextAndListener: Option[OperationContextAndListenerTuple],
   val endLsn: Option[Long],
-  val startLsn: Option[Long] = None
+  val startLsn: Option[Long]
 ) extends BufferedIterator[TSparkRow] with BasicLoggingTrait with AutoCloseable {
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
@@ -74,11 +74,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   }
 
   def getLatestContinuationToken: Option[String] = {
-    if (lastContinuationToken == null) {
-      None
-    } else {
-      Some(lastContinuationToken.get())
-    }
+    Option(lastContinuationToken.get())
   }
 
   override def hasNext: Boolean = {
@@ -241,8 +237,19 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
   private[this] def validateEofProgressOrThrow(): Unit = {
     endLsn.foreach { targetEndLsn =>
-      val latestMinLsn = Option(lastContinuationToken.get())
-        .map(extractLatestMinLsnFromContinuation)
+      val latestMinLsn = try {
+        Option(lastContinuationToken.get())
+          .map(extractLatestMinLsnFromContinuation)
+      } catch {
+        case NonFatal(parseFailure) =>
+          val message = s"Continuation token parse failure - treating EOF as inconclusive. " +
+            s"startLsn: ${formatLsn(startLsn)}, endLsn: $targetEndLsn, " +
+            s"totalChangesCnt: ${totalChangesCnt.get()}, Context: $operationContextString"
+          val exception = new OperationCancelledException(message, null)
+          exception.addSuppressed(parseFailure)
+          logError(message, exception)
+          throw exception
+      }
 
       val isEofValid = latestMinLsn match {
         case Some(observedLsn) => observedLsn >= targetEndLsn
@@ -252,34 +259,28 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
       if (!isEofValid) {
         val observedLsnText = latestMinLsn.map(_.toString).getOrElse("no page consumed")
         val message = s"Bounded change feed read reached EOF before planned endLsn. " +
-          s"startLsn: $startLsn, endLsn: $targetEndLsn, observed minLatestLsn: $observedLsnText, " +
-          s"totalChangesCnt: ${totalChangesCnt.get()}, Context: $operationContextString"
+          s"startLsn: ${formatLsn(startLsn)}, endLsn: $targetEndLsn, " +
+          s"observed minLatestLsn: $observedLsnText, totalChangesCnt: ${totalChangesCnt.get()}, " +
+          s"Context: $operationContextString. If this occurred during Spark task cancellation/decommission, " +
+          s"expect the task to retry from the last committed checkpoint. Continuation tokens are expected " +
+          s"to preserve split child ranges; range-set shrinkage is undefined behavior."
+        val exception = new OperationCancelledException(message, null)
 
-        throw new OperationCancelledException(message, null)
+        // TODO: Consider moving bounded change-feed EOF validation into a dedicated decorator and short-circuiting
+        // deterministic zero-progress retries once this policy is separated from transient I/O retry handling.
+        logWarning(message)
+        logError(message, exception)
+        throw exception
       }
     }
   }
 
   private[this] def extractLatestMinLsnFromContinuation(continuationToken: String): Long = {
-    try {
-      val continuationTokens = SparkBridgeImplementationInternal
-        .extractContinuationTokensFromChangeFeedStateJson(continuationToken)
+    SparkBridgeImplementationInternal.extractMinLatestLsnFromChangeFeedContinuationOrFallback(continuationToken)
+  }
 
-      if (continuationTokens.nonEmpty) {
-        continuationTokens.map(_._2).min
-      } else {
-        SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationToken)
-      }
-    } catch {
-      case NonFatal(rangeEnumerationFailure) =>
-        try {
-          SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationToken)
-        } catch {
-          case NonFatal(fallbackFailure) =>
-            rangeEnumerationFailure.addSuppressed(fallbackFailure)
-            throw rangeEnumerationFailure
-        }
-    }
+  private[this] def formatLsn(lsn: Option[Long]): String = {
+    lsn.map(_.toString).getOrElse("n/a")
   }
 
   //  Clean up iterator references - the underlying Reactor subscription

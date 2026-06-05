@@ -23,7 +23,6 @@ import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
 
 import java.util
-import scala.util.control.NonFatal
 
 private object ChangeFeedPartitionReader {
   val LsnPropertyName: String = LsnAttributeName
@@ -187,19 +186,7 @@ private case class ChangeFeedPartitionReader
 
   private def getPartitionStartLsn: Option[Long] = {
     partition.continuationState.map { continuationState =>
-      try {
-        val continuationTokens = SparkBridgeImplementationInternal
-          .extractContinuationTokensFromChangeFeedStateJson(continuationState)
-
-        if (continuationTokens.nonEmpty) {
-          continuationTokens.minBy(_._2)._2
-        } else {
-          SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationState)
-        }
-      } catch {
-        case NonFatal(_) =>
-          SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationState)
-      }
+      SparkBridgeImplementationInternal.extractMinLatestLsnFromChangeFeedContinuationOrFallback(continuationState)
     }
   }
 
@@ -306,8 +293,7 @@ private case class ChangeFeedPartitionReader
         // for cases where the feed range spans multiple physical partitions
         // pick the smallest lsn
         Some(SparkBridgeImplementationInternal
-         .extractContinuationTokensFromChangeFeedStateJson(continuationToken)
-         .minBy(_._2)._2)
+          .extractMinLatestLsnFromChangeFeedContinuationOrFallback(continuationToken))
       case None =>
         // for change feed, we would only reach here before the first page got fetched
         // fallback to use the continuation token from the partition instead

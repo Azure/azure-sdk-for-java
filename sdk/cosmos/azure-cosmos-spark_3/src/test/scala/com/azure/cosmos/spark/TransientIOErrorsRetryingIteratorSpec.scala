@@ -47,6 +47,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       pageSize,
       1,
       None,
+      None,
       None
     )
     iterator.maxRetryIntervalInMs = 5
@@ -67,6 +68,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       pageSize,
       1,
       None,
+      None,
       None
     )
     iterator.maxRetryIntervalInMs = 5
@@ -86,6 +88,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = Some(Duration.ofSeconds(70))),
       pageSize,
       1,
+      None,
       None,
       None
     )
@@ -109,6 +112,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       },
       pageSize,
       1,
+      None,
       None,
       None
     )
@@ -134,6 +138,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       },
       pageSize,
       1,
+      None,
       None,
       None
     )
@@ -166,6 +171,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       },
       pageSize,
       1,
+      None,
       None,
       None
     )
@@ -201,7 +207,8 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       pageSize,
       1,
       None,
-      Some(endLsn)
+      Some(endLsn),
+      Some(10L)
     )
     iterator.maxRetryCount = 0
 
@@ -385,6 +392,101 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       None,
       Some(endLsn),
       Some(10L)
+    )
+    iterator.maxRetryCount = 0
+
+    iterator.hasNext shouldEqual false
+  }
+
+  "Bounded change feed reads" should
+    "treat malformed continuation EOF as retryable inconclusive progress" in {
+
+    val endLsn = 20L
+    val response = generateFeedResponse("ChangeFeed", 1, -1)
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      malformedChangeFeedContinuation(),
+      response
+    )
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => UtilBridgeInternal.createCosmosPagedFlux(
+        _ => Flux.fromArray(Array(response))
+      ),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(10L)
+    )
+    iterator.maxRetryCount = 0
+
+    val error = intercept[OperationCancelledException](iterator.hasNext)
+    error.getStatusCode shouldEqual 408
+    error.getMessage should include("Continuation token parse failure")
+    error.getSuppressed.length should be > 0
+  }
+
+  "Bounded change feed reads" should
+    "complete cleanly when multi-page progress reaches the planned end LSN" in {
+
+    val endLsn = 20L
+    val rowAtLsn12 = ChangeFeedSparkRowItem(Row.empty, None, "12")
+    val firstResponse: FeedResponse[ChangeFeedSparkRowItem] = ModelBridgeInternal
+      .createFeedResponse(
+        java.util.Collections.singletonList(rowAtLsn12),
+        new ConcurrentHashMap[String, String]
+      )
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      changeFeedContinuation(12L),
+      firstResponse
+    )
+
+    val secondResponse: FeedResponse[ChangeFeedSparkRowItem] = ModelBridgeInternal
+      .createFeedResponse(
+        java.util.Collections.emptyList[ChangeFeedSparkRowItem](),
+        new ConcurrentHashMap[String, String]
+      )
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      changeFeedContinuation(endLsn),
+      secondResponse
+    )
+
+    val iterator = new TransientIOErrorsRetryingIterator[ChangeFeedSparkRowItem](
+      _ => UtilBridgeInternal.createCosmosPagedFlux(
+        _ => Flux.fromArray(Array(firstResponse, secondResponse))
+      ),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(10L)
+    )
+    iterator.maxRetryCount = 0
+
+    iterator.hasNext shouldEqual true
+    iterator.next() shouldEqual rowAtLsn12
+    iterator.hasNext shouldEqual false
+  }
+
+  "Bounded change feed reads" should
+    "complete cleanly when startLsn equals endLsn and a page continuation reaches the same LSN" in {
+
+    val endLsn = 20L
+    val response = generateFeedResponse("ChangeFeed", 1, -1)
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      changeFeedContinuation(endLsn),
+      response
+    )
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => UtilBridgeInternal.createCosmosPagedFlux(
+        _ => Flux.fromArray(Array(response))
+      ),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(endLsn)
     )
     iterator.maxRetryCount = 0
 
@@ -580,6 +682,10 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
          |}""".stripMargin
 
     Base64.getEncoder.encodeToString(state.getBytes("UTF-8"))
+  }
+
+  private def malformedChangeFeedContinuation(): String = {
+    Base64.getEncoder.encodeToString("not-json".getBytes("UTF-8"))
   }
 
   private def multiRangeChangeFeedContinuation(lsns: Seq[Long]): String = {

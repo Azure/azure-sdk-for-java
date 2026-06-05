@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 import scala.collection.convert.ImplicitConversions.`list asScalaBuffer`
 import scala.collection.mutable
+import scala.util.control.NonFatal
 
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.feedranges._
@@ -145,6 +146,29 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .asScala
       .map(t => Tuple2(rangeToNormalizedRange(t.getRange), toLsn(t.getToken)))
       .toArray
+  }
+
+  def extractMinLatestLsnFromChangeFeedContinuationOrFallback(continuation: String): Long = {
+    try {
+      val continuationTokens = extractContinuationTokensFromChangeFeedStateJson(continuation)
+
+      if (continuationTokens.nonEmpty) {
+        // FeedRangeContinuation.handleFeedRangeGone expands split ranges by adding child tokens, so the
+        // minimum across the current token set represents the planned feed range after split handling.
+        continuationTokens.map(_._2).min
+      } else {
+        extractLsnFromChangeFeedContinuation(continuation)
+      }
+    } catch {
+      case NonFatal(rangeEnumerationFailure) =>
+        try {
+          extractLsnFromChangeFeedContinuation(continuation)
+        } catch {
+          case NonFatal(fallbackFailure) =>
+            rangeEnumerationFailure.addSuppressed(fallbackFailure)
+            throw rangeEnumerationFailure
+        }
+    }
   }
 
   private[cosmos] def rangeToNormalizedRange(rangeInput: Range[String]) = {

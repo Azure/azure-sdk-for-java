@@ -256,6 +256,7 @@ private case class ItemsPartitionReader
     readConfig.maxItemCount,
     readConfig.prefetchBufferSize,
     operationContextAndListenerTuple,
+    None,
     None
   )
 
