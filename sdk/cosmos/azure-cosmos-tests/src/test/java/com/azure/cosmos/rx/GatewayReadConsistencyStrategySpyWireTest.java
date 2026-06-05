@@ -148,10 +148,6 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         if (v2SpyClient != null) {
             v2SpyClient.close();
         }
-        // Close throw-away CosmosAsyncClient instances created by
-        // TestUtils.createDummyQueryFeedOperationState so the leak detector
-        // does not flag them.
-        TestUtils.closeDummyClients();
     }
 
     @DataProvider(name = "transportModes")
@@ -517,7 +513,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         CosmosQueryRequestOptions queryOptions) {
 
         QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
-            ResourceType.Document, OperationType.Query, queryOptions, client);
+            ResourceType.Document, OperationType.Query, queryOptions, cosmosClient);
         client.clearCapturedRequests();
         client.queryDocuments(getCollectionLink(), "SELECT * FROM c", state, Document.class)
             .blockFirst();
@@ -563,7 +559,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         CosmosQueryRequestOptions queryOptions) {
 
         QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
-            ResourceType.Document, OperationType.Query, queryOptions, client);
+            ResourceType.Document, OperationType.Query, queryOptions, cosmosClient);
         client.clearCapturedRequests();
         client.readManyByPartitionKeys(
                 Collections.singletonList(new PartitionKey(DOCUMENT_ID)),
