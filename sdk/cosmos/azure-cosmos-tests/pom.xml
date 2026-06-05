@@ -875,6 +875,10 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <COSMOS.THINCLIENT_ENABLED>true</COSMOS.THINCLIENT_ENABLED>
+                <COSMOS.HTTP2_ENABLED>true</COSMOS.HTTP2_ENABLED>
+                <COSMOS.HTTP2_PING_HEALTH_ENABLED>true</COSMOS.HTTP2_PING_HEALTH_ENABLED>
+                <COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>1</COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>
+                <COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>2</COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -904,6 +908,10 @@ Licensed under the MIT License.
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
                 <COSMOS.THINCLIENT_ENABLED>false</COSMOS.THINCLIENT_ENABLED>
+                <COSMOS.HTTP2_ENABLED>true</COSMOS.HTTP2_ENABLED>
+                <COSMOS.HTTP2_PING_HEALTH_ENABLED>true</COSMOS.HTTP2_PING_HEALTH_ENABLED>
+                <COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>1</COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>
+                <COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>2</COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>
               </systemPropertyVariables>
             </configuration>
           </plugin>

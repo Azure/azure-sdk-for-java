@@ -100,7 +100,10 @@ extends:
           TestResultsFiles: '**/junitreports/TEST-*.xml'
           AdditionalVariables:
             - name: AdditionalArgs
-              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key) -DCOSMOS.THINCLIENT_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true -DCOSMOS.HTTP2_PING_HEALTH_ENABLED=true -DCOSMOS.HTTP2_PING_INTERVAL_IN_SECONDS=1 -DCOSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS=2'
+              # COSMOS.THINCLIENT_ENABLED / HTTP2_* are driven by the per-profile
+              # <systemPropertyVariables> in azure-cosmos-tests/pom.xml so the Compute
+              # matrix leg can route to the regional gateway on :443 instead of :10250.
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key)'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
