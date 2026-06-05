@@ -2866,11 +2866,7 @@ public class ShareFileAsyncClient {
             StorageImplUtils.assertNotNull("options", options);
 
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE)
-                    .expand(response -> getNextListRangesDiffPage(response, options.getRange(),
-                        options.getRequestConditions(), options.getPreviousSnapshot(), options.isRenameIncluded()))
-                    .collectList()
-                    .map(this::aggregateListRangesDiffResponses);
+                options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2911,52 +2907,23 @@ public class ShareFileAsyncClient {
         }
     }
 
-    private Mono<Response<ShareFileRangeList>> getNextListRangesDiffPage(Response<ShareFileRangeList> response,
-        ShareFileRange range, ShareRequestConditions requestConditions, String previousSnapshot,
-        Boolean supportRename) {
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        ShareFileRange finalRange = range == null ? new ShareFileRange(0L) : range;
-        Boolean finalSupportRename = supportRename == null ? false : supportRename;
-        String marker = response.getValue().getNextMarker();
-
-        return CoreUtils.isNullOrEmpty(marker)
-            ? Mono.empty()
-            : withContext(context -> listRangesWithResponse(finalRange, finalRequestConditions, previousSnapshot,
-                finalSupportRename, marker, null, context));
-    }
-
-    private Response<ShareFileRangeList>
-        aggregateListRangesDiffResponses(List<Response<ShareFileRangeList>> responses) {
-        ShareFileRangeList rangeList = new ShareFileRangeList();
-
-        responses.forEach(response -> {
-            ShareFileRangeList responseValue = response.getValue();
-            rangeList.getRanges().addAll(responseValue.getRanges());
-            rangeList.getClearRanges().addAll(responseValue.getClearRanges());
-        });
-
-        return new SimpleResponse<>(responses.get(0), rangeList);
-    }
-
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
 
-        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRange>>> retriever = (marker,
-            pageSize) -> StorageImplUtils.applyOptionalTimeout(
-                this.listRangesWithResponse(range, requestConditions, null, null, marker, pageSize, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue()
-                        .getRanges()
-                        .stream()
-                        .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                        .map(ShareFileRange::new)
-                        .collect(Collectors.toList()),
-                    // The service marker is surfaced as the PagedFlux continuation token.
-                    response.getValue().getNextMarker(), response.getHeaders()));
+        Function<String, Mono<PagedResponse<ShareFileRange>>> retriever = marker -> StorageImplUtils
+            .applyOptionalTimeout(
+                this.listRangesWithResponse(range, requestConditions, null, null, null, null, context), timeout)
+            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                response.getValue()
+                    .getRanges()
+                    .stream()
+                    .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                    .map(ShareFileRange::new)
+                    .collect(Collectors.toList()),
+                null, response.getHeaders()));
 
-        return new PagedFlux<>(pageSize -> retriever.apply(null, pageSize), retriever);
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
     PagedFlux<ShareFileRangeItem> listAllRangesWithOptionalTimeout(ShareFileListRangesOptions options, Duration timeout,
