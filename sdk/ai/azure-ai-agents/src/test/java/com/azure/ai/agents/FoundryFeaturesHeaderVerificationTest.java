@@ -84,7 +84,7 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
-    public void allowPreviewUsesFirstServiceRouteSegment() {
+    public void allowPreviewUsesBuiltClientFeatureHeaderWithoutPathMatching() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
 
         createBuilder(httpClient).endpoint("https://localhost:8080/api/projects/project/evaluations/evaluation")
@@ -93,7 +93,7 @@ public class FoundryFeaturesHeaderVerificationTest {
             .buildBetaAgentsClient()
             .getSessionWithResponse("agent", "session", new RequestOptions());
 
-        assertNull(foundryFeatures(httpClient));
+        assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
     }
 
     private static AgentsClientBuilder createBuilder(RecordingHttpClient httpClient) {
