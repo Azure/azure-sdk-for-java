@@ -32,6 +32,7 @@ public class SkillsPackageSample {
     private static final String SKILL_NAME = "java-sample-skill-package";
 
     private static final BetaSkillsClient SKILLS_CLIENT = new AIProjectClientBuilder()
+        .allowPreview(true)
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .beta().buildBetaSkillsClient();

@@ -6,7 +6,6 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.EvaluationRulesImpl;
 import com.azure.ai.projects.models.EvaluationRule;
 import com.azure.ai.projects.models.EvaluationRuleActionType;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -15,7 +14,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -263,8 +261,6 @@ public final class EvaluationRulesClient {
      *
      * @param id Unique identifier for the evaluation rule.
      * @param evaluationRule Evaluation rule resource.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -273,34 +269,6 @@ public final class EvaluationRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return evaluation rule model.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
-            .getValue()
-            .toObject(EvaluationRule.class);
-    }
-
-    /**
-     * Create or update an evaluation rule.
-     *
-     * @param id Unique identifier for the evaluation rule.
-     * @param evaluationRule Evaluation rule resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluation rule model.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule) {
         // Generated convenience method for createOrUpdateEvaluationRuleWithResponse

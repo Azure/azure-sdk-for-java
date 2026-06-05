@@ -244,7 +244,6 @@ public final class BetaInsightsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body for cluster insights.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Insight generateInsight(Insight insight) {
         // Generated convenience method for generateInsightWithResponse
@@ -290,32 +289,6 @@ public final class BetaInsightsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listInsights(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
-    }
-
-    /**
-     * Generate Insights.
-     *
-     * @param insight Complete evaluation configuration including data source, evaluators, and result settings.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body for cluster insights.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight generateInsight(Insight insight, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for generateInsightWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return generateInsightWithResponse(BinaryData.fromObject(insight), requestOptions).getValue()
-            .toObject(Insight.class);
     }
 
     /**

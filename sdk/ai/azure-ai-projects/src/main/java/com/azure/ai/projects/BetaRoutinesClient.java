@@ -431,8 +431,6 @@ public final class BetaRoutinesClient {
      * Retrieve a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -441,30 +439,6 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Routine getRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getRoutineWithResponse(routineName, requestOptions).getValue().toObject(Routine.class);
-    }
-
-    /**
-     * Retrieve a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Routine getRoutine(String routineName) {
         // Generated convenience method for getRoutineWithResponse
@@ -476,8 +450,6 @@ public final class BetaRoutinesClient {
      * Enable a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -486,30 +458,6 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Routine enableRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for enableRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return enableRoutineWithResponse(routineName, requestOptions).getValue().toObject(Routine.class);
-    }
-
-    /**
-     * Enable a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Routine enableRoutine(String routineName) {
         // Generated convenience method for enableRoutineWithResponse
@@ -521,8 +469,6 @@ public final class BetaRoutinesClient {
      * Disable a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -531,30 +477,6 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Routine disableRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for disableRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return disableRoutineWithResponse(routineName, requestOptions).getValue().toObject(Routine.class);
-    }
-
-    /**
-     * Disable a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Routine disableRoutine(String routineName) {
         // Generated convenience method for disableRoutineWithResponse
@@ -585,8 +507,6 @@ public final class BetaRoutinesClient {
      * Delete a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -594,29 +514,6 @@ public final class BetaRoutinesClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        deleteRoutineWithResponse(routineName, requestOptions).getValue();
-    }
-
-    /**
-     * Delete a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRoutine(String routineName) {
         // Generated convenience method for deleteRoutineWithResponse

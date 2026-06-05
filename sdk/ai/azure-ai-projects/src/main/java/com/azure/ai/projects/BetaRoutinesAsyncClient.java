@@ -441,8 +441,6 @@ public final class BetaRoutinesAsyncClient {
      * Retrieve a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -451,31 +449,6 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Routine> getRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getRoutineWithResponse(routineName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Routine.class));
-    }
-
-    /**
-     * Retrieve a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service on successful completion of {@link Mono}.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Routine> getRoutine(String routineName) {
         // Generated convenience method for getRoutineWithResponse
@@ -488,8 +461,6 @@ public final class BetaRoutinesAsyncClient {
      * Enable a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -498,31 +469,6 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Routine> enableRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for enableRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return enableRoutineWithResponse(routineName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Routine.class));
-    }
-
-    /**
-     * Enable a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service on successful completion of {@link Mono}.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Routine> enableRoutine(String routineName) {
         // Generated convenience method for enableRoutineWithResponse
@@ -535,8 +481,6 @@ public final class BetaRoutinesAsyncClient {
      * Disable a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -545,31 +489,6 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Routine> disableRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for disableRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return disableRoutineWithResponse(routineName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Routine.class));
-    }
-
-    /**
-     * Disable a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service on successful completion of {@link Mono}.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Routine> disableRoutine(String routineName) {
         // Generated convenience method for disableRoutineWithResponse
@@ -612,8 +531,6 @@ public final class BetaRoutinesAsyncClient {
      * Delete a routine.
      *
      * @param routineName The unique name of the routine.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -622,30 +539,6 @@ public final class BetaRoutinesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteRoutine(String routineName, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteRoutineWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return deleteRoutineWithResponse(routineName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Delete a routine.
-     *
-     * @param routineName The unique name of the routine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRoutine(String routineName) {
         // Generated convenience method for deleteRoutineWithResponse

@@ -11,7 +11,6 @@ import com.azure.ai.projects.models.DataGenerationJobScenario;
 import com.azure.ai.projects.models.DataGenerationModelOptions;
 import com.azure.ai.projects.models.DatasetDataGenerationJobOutput;
 import com.azure.ai.projects.models.DatasetVersion;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.JobStatus;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
 import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
@@ -58,8 +57,6 @@ import java.util.UUID;
  * </ul>
  */
 public class DataGenerationJobWithEvaluationSample {
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
     private static final String DEFAULT_DATASET_NAME = "dataset-generation-eval-sample";
     private static final int DEFAULT_POLL_INTERVAL_SECONDS = 10;
 
@@ -71,6 +68,7 @@ public class DataGenerationJobWithEvaluationSample {
             .get("POLL_INTERVAL_SECONDS", String.valueOf(DEFAULT_POLL_INTERVAL_SECONDS)));
 
         AIProjectClientBuilder projectClientBuilder = new AIProjectClientBuilder()
+            .allowPreview(true)
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build());
 
@@ -84,7 +82,7 @@ public class DataGenerationJobWithEvaluationSample {
         try {
             System.out.println("Create a data generation job.");
             job = dataGenerationJobsClient.createGenerationJob(createDataGenerationJob(modelName, datasetName),
-                DATA_GENERATION_PREVIEW, UUID.randomUUID().toString());
+                UUID.randomUUID().toString());
             System.out.printf("Created data generation job `%s` (status: `%s`).%n", job.getId(), job.getStatus());
 
             job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), pollIntervalSeconds);
@@ -129,7 +127,7 @@ public class DataGenerationJobWithEvaluationSample {
             }
             if (job != null) {
                 System.out.printf("Delete the data generation job `%s`.%n", job.getId());
-                dataGenerationJobsClient.deleteGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
+                dataGenerationJobsClient.deleteGenerationJob(job.getId());
             }
         }
     }
@@ -163,7 +161,7 @@ public class DataGenerationJobWithEvaluationSample {
         do {
             Thread.sleep(pollIntervalSeconds * 1000L);
             System.out.print(".");
-            job = dataGenerationJobsClient.getGenerationJob(jobId, DATA_GENERATION_PREVIEW);
+            job = dataGenerationJobsClient.getGenerationJob(jobId);
         } while (!isTerminalStatus(job.getStatus()));
         System.out.println();
         return job;

@@ -23,14 +23,15 @@ import java.util.Map;
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.projects.clientInitialization
-        AIProjectClientBuilder builder = new AIProjectClientBuilder();
+        AIProjectClientBuilder builder = new AIProjectClientBuilder().allowPreview(true);
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
         BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
         EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-        BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.beta().buildBetaEvaluationTaxonomiesClient();
+        BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
+            = builder.beta().buildBetaEvaluationTaxonomiesClient();
         BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
         IndexesClient indexesClient = builder.buildIndexesClient();
         BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();

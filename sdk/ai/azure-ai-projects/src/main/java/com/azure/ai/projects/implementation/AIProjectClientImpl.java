@@ -5,6 +5,7 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.AIProjectsServiceVersion;
+import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -31,11 +32,25 @@ public final class AIProjectClientImpl {
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
+     */
+    private final FoundryFeaturesOptInKeys foundryFeatures;
+
+    /**
+     * Gets A feature flag opt-in required when using preview operations or modifying persisted preview resources.
+     *
+     * @return the foundryFeatures value.
+     */
+    public FoundryFeaturesOptInKeys getFoundryFeatures() {
+        return this.foundryFeatures;
     }
 
     /**
@@ -45,7 +60,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public AIProjectsServiceVersion getServiceVersion() {
@@ -59,7 +74,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -73,7 +88,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -87,7 +102,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaModelsImpl object to access its operations.
-     * 
+     *
      * @return the BetaModelsImpl object.
      */
     public BetaModelsImpl getBetaModels() {
@@ -101,7 +116,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaRedTeamsImpl object to access its operations.
-     * 
+     *
      * @return the BetaRedTeamsImpl object.
      */
     public BetaRedTeamsImpl getBetaRedTeams() {
@@ -115,7 +130,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaEvaluationTaxonomiesImpl object to access its operations.
-     * 
+     *
      * @return the BetaEvaluationTaxonomiesImpl object.
      */
     public BetaEvaluationTaxonomiesImpl getBetaEvaluationTaxonomies() {
@@ -129,7 +144,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaEvaluatorsImpl object to access its operations.
-     * 
+     *
      * @return the BetaEvaluatorsImpl object.
      */
     public BetaEvaluatorsImpl getBetaEvaluators() {
@@ -143,7 +158,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaInsightsImpl object to access its operations.
-     * 
+     *
      * @return the BetaInsightsImpl object.
      */
     public BetaInsightsImpl getBetaInsights() {
@@ -157,7 +172,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaSchedulesImpl object to access its operations.
-     * 
+     *
      * @return the BetaSchedulesImpl object.
      */
     public BetaSchedulesImpl getBetaSchedules() {
@@ -171,7 +186,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaRoutinesImpl object to access its operations.
-     * 
+     *
      * @return the BetaRoutinesImpl object.
      */
     public BetaRoutinesImpl getBetaRoutines() {
@@ -185,7 +200,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaSkillsImpl object to access its operations.
-     * 
+     *
      * @return the BetaSkillsImpl object.
      */
     public BetaSkillsImpl getBetaSkills() {
@@ -199,7 +214,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaDatasetsImpl object to access its operations.
-     * 
+     *
      * @return the BetaDatasetsImpl object.
      */
     public BetaDatasetsImpl getBetaDatasets() {
@@ -213,7 +228,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the ConnectionsImpl object to access its operations.
-     * 
+     *
      * @return the ConnectionsImpl object.
      */
     public ConnectionsImpl getConnections() {
@@ -227,7 +242,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the DatasetsImpl object to access its operations.
-     * 
+     *
      * @return the DatasetsImpl object.
      */
     public DatasetsImpl getDatasets() {
@@ -241,7 +256,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the IndexesImpl object to access its operations.
-     * 
+     *
      * @return the IndexesImpl object.
      */
     public IndexesImpl getIndexes() {
@@ -255,7 +270,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the DeploymentsImpl object to access its operations.
-     * 
+     *
      * @return the DeploymentsImpl object.
      */
     public DeploymentsImpl getDeployments() {
@@ -269,7 +284,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the EvaluationRulesImpl object to access its operations.
-     * 
+     *
      * @return the EvaluationRulesImpl object.
      */
     public EvaluationRulesImpl getEvaluationRules() {
@@ -278,37 +293,43 @@ public final class AIProjectClientImpl {
 
     /**
      * Initializes an instance of AIProjectClient client.
-     * 
+     *
      * @param endpoint Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param serviceVersion Service version.
      */
-    public AIProjectClientImpl(String endpoint, AIProjectsServiceVersion serviceVersion) {
+    public AIProjectClientImpl(String endpoint, FoundryFeaturesOptInKeys foundryFeatures,
+        AIProjectsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, foundryFeatures, serviceVersion);
     }
 
     /**
      * Initializes an instance of AIProjectClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param serviceVersion Service version.
      */
-    public AIProjectClientImpl(HttpPipeline httpPipeline, String endpoint, AIProjectsServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    public AIProjectClientImpl(HttpPipeline httpPipeline, String endpoint, FoundryFeaturesOptInKeys foundryFeatures,
+        AIProjectsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, foundryFeatures, serviceVersion);
     }
 
     /**
      * Initializes an instance of AIProjectClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Foundry Project endpoint in the form
@@ -316,13 +337,16 @@ public final class AIProjectClientImpl {
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param serviceVersion Service version.
      */
     public AIProjectClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        AIProjectsServiceVersion serviceVersion) {
+        FoundryFeaturesOptInKeys foundryFeatures, AIProjectsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.foundryFeatures = foundryFeatures;
         this.serviceVersion = serviceVersion;
         this.betaModels = new BetaModelsImpl(this);
         this.betaRedTeams = new BetaRedTeamsImpl(this);

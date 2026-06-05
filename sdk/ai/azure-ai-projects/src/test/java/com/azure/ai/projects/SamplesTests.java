@@ -5,7 +5,6 @@ package com.azure.ai.projects;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
 import com.azure.ai.projects.models.DataGenerationJob;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.SkillFileDetails;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.SkillDetails;
@@ -33,14 +32,13 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 public class SamplesTests extends ClientTestBase {
     private static final String SAMPLE_SKILL_NAME = "java-sample-skill-package-test";
     private static final String SAMPLE_SKILL_ASYNC_NAME = "java-sample-skill-package-async-test";
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void skillsPackageSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) throws IOException {
-        BetaSkillsClient skillsClient = getClientBuilder(httpClient, serviceVersion).beta().buildBetaSkillsClient();
+        BetaSkillsClient skillsClient
+            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaSkillsClient();
         String skillName = SAMPLE_SKILL_NAME;
 
         try {
@@ -78,7 +76,7 @@ public class SamplesTests extends ClientTestBase {
     public void skillsPackageAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws IOException {
         BetaSkillsAsyncClient skillsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaSkillsAsyncClient();
+            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaSkillsAsyncClient();
         String skillName = SAMPLE_SKILL_ASYNC_NAME;
 
         StepVerifier.create(skillsAsyncClient.deleteSkill(skillName)
@@ -102,10 +100,9 @@ public class SamplesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaDatasetsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
+            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaDatasetsClient();
 
-        Iterable<DataGenerationJob> jobs
-            = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
+        Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;
@@ -124,24 +121,21 @@ public class SamplesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsAsyncClient();
+            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaDatasetsAsyncClient();
 
         StepVerifier.create(
-            dataGenerationJobsAsyncClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null)
-                .take(5)
-                .doOnNext(job -> {
-                    Assertions.assertNotNull(job);
-                    Assertions.assertNotNull(job.getId());
-                })
-                .then())
-            .verifyComplete();
+            dataGenerationJobsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
+                Assertions.assertNotNull(job);
+                Assertions.assertNotNull(job.getId());
+            }).then()).verifyComplete();
     }
 
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        BetaModelsClient modelsClient = getClientBuilder(httpClient, serviceVersion).beta().buildBetaModelsClient();
+        BetaModelsClient modelsClient
+            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaModelsClient();
 
         Iterable<ModelVersion> modelVersions = modelsClient.listLatestModelVersions();
         Assertions.assertNotNull(modelVersions);
@@ -163,7 +157,7 @@ public class SamplesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaModelsAsyncClient modelsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaModelsAsyncClient();
+            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaModelsAsyncClient();
 
         AtomicBoolean sawModel = new AtomicBoolean(false);
         StepVerifier.create(modelsAsyncClient.listLatestModelVersions().take(5).doOnNext(modelVersion -> {
@@ -176,8 +170,8 @@ public class SamplesTests extends ClientTestBase {
         Assertions.assertNotNull(sawModel);
     }
 
-    @Disabled("Data generation live validation is blocked by 400: API operation not supported for token authentication; "
-        + "the create flow is also a long-running preview operation.")
+    @Disabled("Data generation live validation is blocked by 400: API operation not supported for token "
+        + "authentication; the create flow is also a long-running preview operation.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationCreateGetCancelDeleteSample(HttpClient httpClient,

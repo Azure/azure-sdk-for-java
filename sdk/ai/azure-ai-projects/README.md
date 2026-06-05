@@ -49,14 +49,15 @@ Various documentation is available to help you get started
 The Azure AI Foundry provides a centralized spot to manage your AI Foundry resources. In order to access each feature you need to initialize your builder and access the corresponding sub-client like it's shown in the following code snippet:
 
 ```java com.azure.ai.projects.clientInitialization
-AIProjectClientBuilder builder = new AIProjectClientBuilder();
+AIProjectClientBuilder builder = new AIProjectClientBuilder().allowPreview(true);
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.beta().buildBetaEvaluationTaxonomiesClient();
+BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
+    = builder.beta().buildBetaEvaluationTaxonomiesClient();
 BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
 BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();

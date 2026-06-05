@@ -17,6 +17,7 @@ import java.util.Map;
  */
 public class ModelsSample {
     private static final BetaModelsClient MODELS_CLIENT = new AIProjectClientBuilder()
+        .allowPreview(true)
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .beta().buildBetaModelsClient();

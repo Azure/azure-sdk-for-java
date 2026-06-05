@@ -39,6 +39,7 @@ public class ModelsCreateAndPollSample {
         Path sourceDirectory = getSourceDirectory();
 
         BetaModelsClient modelsClient = new AIProjectClientBuilder()
+            .allowPreview(true)
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .beta().buildBetaModelsClient();
