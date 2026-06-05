@@ -46,7 +46,7 @@ public final class PromotionInfo implements JsonSerializable<PromotionInfo> {
      * @param agentVersion the agentVersion value to set.
      */
     @Generated
-    private PromotionInfo(OffsetDateTime promotedAt, String agentName, String agentVersion) {
+    public PromotionInfo(OffsetDateTime promotedAt, String agentName, String agentVersion) {
         if (promotedAt == null) {
             this.promotedAt = 0L;
         } else {

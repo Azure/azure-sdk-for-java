@@ -13,11 +13,9 @@ import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.CandidateDeployConfig;
 import com.azure.ai.agents.models.CandidateMetadata;
 import com.azure.ai.agents.models.CandidateResults;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.OptimizationCandidate;
 import com.azure.ai.agents.models.OptimizationJob;
@@ -1129,11 +1127,6 @@ public final class BetaAgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
      * absent, the server creates the job unconditionally.</td></tr>
      * </table>
@@ -1315,17 +1308,6 @@ public final class BetaAgentsAsyncClient {
      * Get info about an agent optimization job.
      *
      * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1495,17 +1477,6 @@ public final class BetaAgentsAsyncClient {
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1649,17 +1620,6 @@ public final class BetaAgentsAsyncClient {
      * Cancels an agent optimization job.
      *
      * Request cancellation. Idempotent on terminal states.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1814,17 +1774,6 @@ public final class BetaAgentsAsyncClient {
      * state.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1864,17 +1813,6 @@ public final class BetaAgentsAsyncClient {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1953,17 +1891,6 @@ public final class BetaAgentsAsyncClient {
      * Get a candidate by id.
      *
      * Get a single candidate's metadata, manifest, and promotion info.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2016,17 +1943,6 @@ public final class BetaAgentsAsyncClient {
      * Get candidate deploy config.
      *
      * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2071,17 +1987,6 @@ public final class BetaAgentsAsyncClient {
      * Get candidate evaluation results.
      *
      * Get full per-task evaluation results for a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2134,17 +2039,6 @@ public final class BetaAgentsAsyncClient {
      * Get a candidate file.
      *
      * Stream a specific file from the candidate's blob directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2178,17 +2072,6 @@ public final class BetaAgentsAsyncClient {
      * Promote a candidate.
      *
      * Promotes a candidate, recording the deployment timestamp and target agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3219,10 +3102,6 @@ public final class BetaAgentsAsyncClient {
      * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
      *
      * @param inputs The optimization job inputs.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
-     * unconditionally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3232,39 +3111,6 @@ public final class BetaAgentsAsyncClient {
      * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
      * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> createOptimizationJob(OptimizationJobInputs inputs,
-        FoundryFeaturesOptInKeys foundryFeatures, String operationId) {
-        // Generated convenience method for createOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (operationId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
-        }
-        return createOptimizationJobWithResponse(BinaryData.fromObject(inputs), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Creates an agent optimization job.
-     *
-     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
-     *
-     * @param inputs The optimization job inputs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OptimizationJob> createOptimizationJob(OptimizationJobInputs inputs) {
         // Generated convenience method for createOptimizationJobWithResponse
@@ -3280,8 +3126,6 @@ public final class BetaAgentsAsyncClient {
      * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
      *
      * @param jobId The ID of the job.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3292,110 +3136,12 @@ public final class BetaAgentsAsyncClient {
      *
      * Get an optimization job by id on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> getOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Get info about an agent optimization job.
-     *
-     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     *
-     * @param jobId The ID of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return info about an agent optimization job.
-     *
-     * Get an optimization job by id on successful completion of {@link Mono}.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OptimizationJob> getOptimizationJob(String jobId) {
         // Generated convenience method for getOptimizationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Returns a list of agent optimization jobs.
-     *
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
-     *
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param status Filter to jobs in this lifecycle state.
-     * @param agentName Filter to jobs targeting this agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OptimizationJob> listOptimizationJobs(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
-        PageOrder order, String after, String before, JobStatus status, String agentName) {
-        // Generated convenience method for listOptimizationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agent_name", agentName, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationJobs(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, OptimizationJob>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**
@@ -3436,8 +3182,6 @@ public final class BetaAgentsAsyncClient {
      * Request cancellation. Idempotent on terminal states.
      *
      * @param jobId The ID of the job to cancel.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3447,34 +3191,6 @@ public final class BetaAgentsAsyncClient {
      * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
      * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> cancelOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for cancelOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return cancelOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Cancels an agent optimization job.
-     *
-     * Request cancellation. Idempotent on terminal states.
-     *
-     * @param jobId The ID of the job to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OptimizationJob> cancelOptimizationJob(String jobId) {
         // Generated convenience method for cancelOptimizationJobWithResponse
@@ -3489,9 +3205,6 @@ public final class BetaAgentsAsyncClient {
      * Delete the job and its candidate artifacts. Cancels first if non-terminal.
      *
      * @param jobId The ID of the job to delete.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param force When true, force-delete even if the job is in a non-terminal state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3500,103 +3213,11 @@ public final class BetaAgentsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures, Boolean force) {
-        // Generated convenience method for deleteOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (force != null) {
-            requestOptions.addQueryParam("force", String.valueOf(force), false);
-        }
-        return deleteOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes an agent optimization job.
-     *
-     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
-     *
-     * @param jobId The ID of the job to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteOptimizationJob(String jobId) {
         // Generated convenience method for deleteOptimizationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns a list of candidates for an optimization job.
-     *
-     * List candidates produced by a job.
-     *
-     * @param jobId The optimization job id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OptimizationCandidate> listOptimizationCandidates(String jobId,
-        FoundryFeaturesOptInKeys foundryFeatures, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listOptimizationCandidates
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationCandidates(jobId, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, OptimizationCandidate>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(OptimizationCandidate.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**
@@ -3641,8 +3262,6 @@ public final class BetaAgentsAsyncClient {
      *
      * @param jobId The optimization job id.
      * @param candidateId The candidate id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3653,37 +3272,6 @@ public final class BetaAgentsAsyncClient {
      *
      * Get a single candidate's metadata, manifest, and promotion info on successful completion of {@link Mono}.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateMetadata> getOptimizationCandidate(String jobId, String candidateId,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateMetadata.class));
-    }
-
-    /**
-     * Get a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info on successful completion of {@link Mono}.
-     */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CandidateMetadata> getOptimizationCandidate(String jobId, String candidateId) {
         // Generated convenience method for getOptimizationCandidateWithResponse
@@ -3693,96 +3281,6 @@ public final class BetaAgentsAsyncClient {
     }
 
     /**
-     * Get candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateDeployConfig> getOptimizationCandidateConfig(String jobId, String candidateId,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateConfigWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateConfigWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateDeployConfig.class));
-    }
-
-    /**
-     * Get candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateDeployConfig> getOptimizationCandidateConfig(String jobId, String candidateId) {
-        // Generated convenience method for getOptimizationCandidateConfigWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationCandidateConfigWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateDeployConfig.class));
-    }
-
-    /**
-     * Get candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateResults> getOptimizationCandidateResults(String jobId, String candidateId,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateResultsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateResultsWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateResults.class));
-    }
-
-    /**
      * Get candidate evaluation results.
      *
      * Get full per-task evaluation results for a candidate.
@@ -3799,7 +3297,6 @@ public final class BetaAgentsAsyncClient {
      *
      * Get full per-task evaluation results for a candidate on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CandidateResults> getOptimizationCandidateResults(String jobId, String candidateId) {
         // Generated convenience method for getOptimizationCandidateResultsWithResponse
@@ -3809,98 +3306,6 @@ public final class BetaAgentsAsyncClient {
     }
 
     /**
-     * Get a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getOptimizationCandidateFile(String jobId, String candidateId, String path,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateFileWithResponse(jobId, candidateId, path, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getOptimizationCandidateFile(String jobId, String candidateId, String path) {
-        // Generated convenience method for getOptimizationCandidateFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationCandidateFileWithResponse(jobId, candidateId, path, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Promote a candidate.
-     *
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param candidateRequest Promotion details.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PromoteCandidateResult> promoteOptimizationCandidate(String jobId, String candidateId,
-        PromoteCandidateInput candidateRequest, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for promoteOptimizationCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResult.class));
-    }
-
-    /**
      * Promote a candidate.
      *
      * Promotes a candidate, recording the deployment timestamp and target agent version.
@@ -3916,7 +3321,6 @@ public final class BetaAgentsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PromoteCandidateResult> promoteOptimizationCandidate(String jobId, String candidateId,
         PromoteCandidateInput candidateRequest) {
@@ -3925,5 +3329,127 @@ public final class BetaAgentsAsyncClient {
         return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResult.class));
+    }
+
+    /**
+     * Returns a list of agent optimization jobs.
+     *
+     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param status Filter to jobs in this lifecycle state.
+     * @param agentName Filter to jobs targeting this agent name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OptimizationJob> listOptimizationJobs(Integer limit, PageOrder order, String after, String before,
+        JobStatus status, String agentName) {
+        // Generated convenience method for listOptimizationJobs
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (status != null) {
+            requestOptions.addQueryParam("status", status.toString(), false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationJobs(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, OptimizationJob>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Returns a list of candidates for an optimization job.
+     *
+     * List candidates produced by a job.
+     *
+     * @param jobId The optimization job id.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OptimizationCandidate> listOptimizationCandidates(String jobId, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listOptimizationCandidates
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationCandidates(jobId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, OptimizationCandidate>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(OptimizationCandidate.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
     }
 }

@@ -60,7 +60,7 @@ public final class PromoteCandidateResult implements JsonSerializable<PromoteCan
      * @param agentVersion the agentVersion value to set.
      */
     @Generated
-    private PromoteCandidateResult(String candidateId, String status, OffsetDateTime promotedAt, String agentName,
+    public PromoteCandidateResult(String candidateId, String status, OffsetDateTime promotedAt, String agentName,
         String agentVersion) {
         this.candidateId = candidateId;
         this.status = status;

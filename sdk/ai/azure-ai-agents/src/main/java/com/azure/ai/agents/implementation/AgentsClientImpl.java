@@ -5,6 +5,7 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -36,6 +37,20 @@ public final class AgentsClientImpl {
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
+     */
+    private final FoundryFeaturesOptInKeys foundryFeatures;
+
+    /**
+     * Gets A feature flag opt-in required when using preview operations or modifying persisted preview resources.
+     * 
+     * @return the foundryFeatures value.
+     */
+    public FoundryFeaturesOptInKeys getFoundryFeatures() {
+        return this.foundryFeatures;
     }
 
     /**
@@ -144,11 +159,14 @@ public final class AgentsClientImpl {
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param serviceVersion Service version.
      */
-    public AgentsClientImpl(String endpoint, AgentsServiceVersion serviceVersion) {
+    public AgentsClientImpl(String endpoint, FoundryFeaturesOptInKeys foundryFeatures,
+        AgentsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, foundryFeatures, serviceVersion);
     }
 
     /**
@@ -160,10 +178,13 @@ public final class AgentsClientImpl {
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param serviceVersion Service version.
      */
-    public AgentsClientImpl(HttpPipeline httpPipeline, String endpoint, AgentsServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    public AgentsClientImpl(HttpPipeline httpPipeline, String endpoint, FoundryFeaturesOptInKeys foundryFeatures,
+        AgentsServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, foundryFeatures, serviceVersion);
     }
 
     /**
@@ -176,13 +197,16 @@ public final class AgentsClientImpl {
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param serviceVersion Service version.
      */
     public AgentsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        AgentsServiceVersion serviceVersion) {
+        FoundryFeaturesOptInKeys foundryFeatures, AgentsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.foundryFeatures = foundryFeatures;
         this.serviceVersion = serviceVersion;
         this.betaAgents = new BetaAgentsImpl(this);
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);

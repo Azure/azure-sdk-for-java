@@ -5,6 +5,7 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -428,6 +429,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOptimizationJob(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
             RequestOptions requestOptions, Context context);
@@ -439,6 +441,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOptimizationJobSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
             RequestOptions requestOptions, Context context);
@@ -450,8 +453,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getOptimizationJob(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}")
         @ExpectedResponses({ 200, 202 })
@@ -460,8 +464,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getOptimizationJobSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs")
         @ExpectedResponses({ 200 })
@@ -470,6 +475,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listOptimizationJobs(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -480,6 +486,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listOptimizationJobsSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -490,8 +497,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelOptimizationJob(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/agent_optimization_jobs/{jobId}:cancel")
         @ExpectedResponses({ 200 })
@@ -500,8 +508,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelOptimizationJobSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/agent_optimization_jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -510,8 +519,8 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteOptimizationJob(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Delete("/agent_optimization_jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -520,8 +529,8 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteOptimizationJobSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates")
         @ExpectedResponses({ 200 })
@@ -530,8 +539,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listOptimizationCandidates(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates")
         @ExpectedResponses({ 200 })
@@ -540,8 +550,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listOptimizationCandidatesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}")
         @ExpectedResponses({ 200 })
@@ -550,9 +561,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getOptimizationCandidate(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}")
         @ExpectedResponses({ 200 })
@@ -561,9 +572,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getOptimizationCandidateSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/config")
         @ExpectedResponses({ 200 })
@@ -572,9 +583,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getOptimizationCandidateConfig(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/config")
         @ExpectedResponses({ 200 })
@@ -583,9 +594,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getOptimizationCandidateConfigSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/results")
         @ExpectedResponses({ 200 })
@@ -594,9 +605,9 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getOptimizationCandidateResults(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/results")
         @ExpectedResponses({ 200 })
@@ -605,7 +616,19 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getOptimizationCandidateResultsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getOptimizationCandidateFile(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("path") String path,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -615,21 +638,11 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOptimizationCandidateFile(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getOptimizationCandidateFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("path") String path,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
         @ExpectedResponses({ 200 })
@@ -638,10 +651,10 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> promoteOptimizationCandidate(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData candidateRequest,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData candidateRequest, RequestOptions requestOptions, Context context);
 
         @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
         @ExpectedResponses({ 200 })
@@ -650,10 +663,10 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> promoteOptimizationCandidateSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData candidateRequest,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData candidateRequest, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -2990,11 +3003,6 @@ public final class BetaAgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
      * absent, the server creates the job unconditionally.</td></tr>
      * </table>
@@ -3170,8 +3178,9 @@ public final class BetaAgentsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOptimizationJob(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.createOptimizationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+                this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, context));
     }
 
     /**
@@ -3182,11 +3191,6 @@ public final class BetaAgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
      * absent, the server creates the job unconditionally.</td></tr>
      * </table>
@@ -3360,7 +3364,7 @@ public final class BetaAgentsImpl {
     public Response<BinaryData> createOptimizationJobWithResponse(BinaryData inputs, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createOptimizationJobSync(this.client.getEndpoint(),
+        return service.createOptimizationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
             this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, Context.NONE);
     }
 
@@ -3368,17 +3372,6 @@ public final class BetaAgentsImpl {
      * Get info about an agent optimization job.
      * 
      * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3518,25 +3511,15 @@ public final class BetaAgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOptimizationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationJob(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getOptimizationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Get info about an agent optimization job.
      * 
      * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3676,7 +3659,7 @@ public final class BetaAgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOptimizationJobSync(this.client.getEndpoint(), jobId,
+        return service.getOptimizationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -3707,17 +3690,6 @@ public final class BetaAgentsImpl {
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3856,8 +3828,9 @@ public final class BetaAgentsImpl {
     private Mono<PagedResponse<BinaryData>> listOptimizationJobsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listOptimizationJobs(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(
+                context -> service.listOptimizationJobs(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+                    this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -3889,17 +3862,6 @@ public final class BetaAgentsImpl {
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4065,17 +4027,6 @@ public final class BetaAgentsImpl {
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4212,8 +4163,9 @@ public final class BetaAgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listOptimizationJobsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listOptimizationJobsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listOptimizationJobsSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -4245,17 +4197,6 @@ public final class BetaAgentsImpl {
      * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4398,17 +4339,6 @@ public final class BetaAgentsImpl {
      * Cancels an agent optimization job.
      * 
      * Request cancellation. Idempotent on terminal states.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4549,25 +4479,15 @@ public final class BetaAgentsImpl {
     public Mono<Response<BinaryData>> cancelOptimizationJobWithResponseAsync(String jobId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelOptimizationJob(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.cancelOptimizationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Cancels an agent optimization job.
      * 
      * Request cancellation. Idempotent on terminal states.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4706,7 +4626,7 @@ public final class BetaAgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelOptimizationJobSync(this.client.getEndpoint(), jobId,
+        return service.cancelOptimizationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -4722,17 +4642,6 @@ public final class BetaAgentsImpl {
      * state.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4744,8 +4653,9 @@ public final class BetaAgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteOptimizationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.deleteOptimizationJob(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.deleteOptimizationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+                this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -4760,17 +4670,6 @@ public final class BetaAgentsImpl {
      * state.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4782,7 +4681,7 @@ public final class BetaAgentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return service.deleteOptimizationJobSync(this.client.getEndpoint(), jobId,
+        return service.deleteOptimizationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
@@ -4810,17 +4709,6 @@ public final class BetaAgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4895,8 +4783,9 @@ public final class BetaAgentsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listOptimizationCandidates(this.client.getEndpoint(), jobId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listOptimizationCandidates(this.client.getEndpoint(),
+                this.client.getFoundryFeatures(), jobId, this.client.getServiceVersion().getVersion(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -4925,17 +4814,6 @@ public final class BetaAgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5033,17 +4911,6 @@ public final class BetaAgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5116,8 +4983,9 @@ public final class BetaAgentsImpl {
     private PagedResponse<BinaryData> listOptimizationCandidatesSinglePage(String jobId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listOptimizationCandidatesSync(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listOptimizationCandidatesSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -5146,17 +5014,6 @@ public final class BetaAgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5234,17 +5091,6 @@ public final class BetaAgentsImpl {
      * Get a candidate by id.
      * 
      * Get a single candidate's metadata, manifest, and promotion info.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5290,25 +5136,15 @@ public final class BetaAgentsImpl {
     public Mono<Response<BinaryData>> getOptimizationCandidateWithResponseAsync(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidate(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getOptimizationCandidate(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+                jobId, candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Get a candidate by id.
      * 
      * Get a single candidate's metadata, manifest, and promotion info.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5353,25 +5189,14 @@ public final class BetaAgentsImpl {
     public Response<BinaryData> getOptimizationCandidateWithResponse(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOptimizationCandidateSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getOptimizationCandidateSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Get candidate deploy config.
      * 
      * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5409,25 +5234,15 @@ public final class BetaAgentsImpl {
     public Mono<Response<BinaryData>> getOptimizationCandidateConfigWithResponseAsync(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidateConfig(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getOptimizationCandidateConfig(this.client.getEndpoint(),
+            this.client.getFoundryFeatures(), jobId, candidateId, this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, context));
     }
 
     /**
      * Get candidate deploy config.
      * 
      * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5465,25 +5280,14 @@ public final class BetaAgentsImpl {
     public Response<BinaryData> getOptimizationCandidateConfigWithResponse(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOptimizationCandidateConfigSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getOptimizationCandidateConfigSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+            jobId, candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Get candidate evaluation results.
      * 
      * Get full per-task evaluation results for a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5529,25 +5333,15 @@ public final class BetaAgentsImpl {
     public Mono<Response<BinaryData>> getOptimizationCandidateResultsWithResponseAsync(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidateResults(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getOptimizationCandidateResults(this.client.getEndpoint(),
+            this.client.getFoundryFeatures(), jobId, candidateId, this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, context));
     }
 
     /**
      * Get candidate evaluation results.
      * 
      * Get full per-task evaluation results for a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5592,25 +5386,14 @@ public final class BetaAgentsImpl {
     public Response<BinaryData> getOptimizationCandidateResultsWithResponse(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getOptimizationCandidateResultsSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getOptimizationCandidateResultsSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+            jobId, candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Get a candidate file.
      * 
      * Stream a specific file from the candidate's blob directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5636,25 +5419,15 @@ public final class BetaAgentsImpl {
     public Mono<Response<BinaryData>> getOptimizationCandidateFileWithResponseAsync(String jobId, String candidateId,
         String path, RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidateFile(this.client.getEndpoint(), jobId,
-            candidateId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getOptimizationCandidateFile(this.client.getEndpoint(),
+            this.client.getFoundryFeatures(), jobId, candidateId, path, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, context));
     }
 
     /**
      * Get a candidate file.
      * 
      * Stream a specific file from the candidate's blob directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5679,25 +5452,15 @@ public final class BetaAgentsImpl {
     public Response<BinaryData> getOptimizationCandidateFileWithResponse(String jobId, String candidateId, String path,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.getOptimizationCandidateFileSync(this.client.getEndpoint(), jobId, candidateId, path,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getOptimizationCandidateFileSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+            jobId, candidateId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Promote a candidate.
      * 
      * Promotes a candidate, recording the deployment timestamp and target agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -5739,26 +5502,15 @@ public final class BetaAgentsImpl {
         BinaryData candidateRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.promoteOptimizationCandidate(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), contentType, accept, candidateRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.promoteOptimizationCandidate(this.client.getEndpoint(),
+            this.client.getFoundryFeatures(), jobId, candidateId, this.client.getServiceVersion().getVersion(),
+            contentType, accept, candidateRequest, requestOptions, context));
     }
 
     /**
      * Promote a candidate.
      * 
      * Promotes a candidate, recording the deployment timestamp and target agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -5799,9 +5551,9 @@ public final class BetaAgentsImpl {
         BinaryData candidateRequest, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.promoteOptimizationCandidateSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), contentType, accept, candidateRequest, requestOptions,
-            Context.NONE);
+        return service.promoteOptimizationCandidateSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
+            jobId, candidateId, this.client.getServiceVersion().getVersion(), contentType, accept, candidateRequest,
+            requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

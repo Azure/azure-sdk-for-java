@@ -43,7 +43,7 @@ public final class CandidateFileInfo implements JsonSerializable<CandidateFileIn
      * @param sizeBytes the sizeBytes value to set.
      */
     @Generated
-    private CandidateFileInfo(String path, String type, long sizeBytes) {
+    public CandidateFileInfo(String path, String type, long sizeBytes) {
         this.path = path;
         this.type = type;
         this.sizeBytes = sizeBytes;

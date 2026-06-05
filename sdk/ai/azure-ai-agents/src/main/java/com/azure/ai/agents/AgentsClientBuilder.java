@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.AgentsClientImpl;
 import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
+import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -276,7 +277,7 @@ public final class AgentsClientBuilder
         AgentsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
         AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, localServiceVersion);
+            this.endpoint, this.foundryFeatures, localServiceVersion);
         return client;
     }
 
@@ -598,5 +599,23 @@ public final class AgentsClientBuilder
      */
     private BetaToolboxesClient buildBetaToolboxesClient() {
         return new BetaToolboxesClient(buildInnerClient().getBetaToolboxes());
+    }
+
+    /*
+     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
+     */
+    @Generated
+    private FoundryFeaturesOptInKeys foundryFeatures;
+
+    /**
+     * Sets A feature flag opt-in required when using preview operations or modifying persisted preview resources.
+     *
+     * @param foundryFeatures the foundryFeatures value.
+     * @return the AgentsClientBuilder.
+     */
+    @Generated
+    public AgentsClientBuilder foundryFeatures(FoundryFeaturesOptInKeys foundryFeatures) {
+        this.foundryFeatures = foundryFeatures;
+        return this;
     }
 }

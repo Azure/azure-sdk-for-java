@@ -37,7 +37,7 @@ public final class CandidateResults implements JsonSerializable<CandidateResults
      * @param results the results value to set.
      */
     @Generated
-    private CandidateResults(String candidateId, List<OptimizationTaskResult> results) {
+    public CandidateResults(String candidateId, List<OptimizationTaskResult> results) {
         this.candidateId = candidateId;
         this.results = results;
     }

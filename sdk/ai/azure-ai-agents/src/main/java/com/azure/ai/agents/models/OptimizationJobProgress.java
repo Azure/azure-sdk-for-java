@@ -118,7 +118,7 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
      * @param elapsedSeconds the elapsedSeconds value to set.
      */
     @Generated
-    private OptimizationJobProgress(int currentIteration, double bestScore, double elapsedSeconds) {
+    public OptimizationJobProgress(int currentIteration, double bestScore, double elapsedSeconds) {
         this.currentIteration = currentIteration;
         this.bestScore = bestScore;
         this.elapsedSeconds = elapsedSeconds;
