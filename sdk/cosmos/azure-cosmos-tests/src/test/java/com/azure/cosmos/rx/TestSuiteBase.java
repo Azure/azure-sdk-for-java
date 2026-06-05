@@ -90,6 +90,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
@@ -349,6 +350,15 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         collection.setPartitionKey(containerProperties.getPartitionKeyDefinition());
 
         return collection;
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void afterClassCloseDummyClients() {
+        // Closes any throw-away CosmosAsyncClient created by
+        // TestUtils.createDummyQueryFeedOperationState(..., AsyncDocumentClient).
+        // Without this, CosmosNettyLeakDetectorFactory reports them as leaks
+        // at @AfterClass.
+        TestUtils.closeDummyClients();
     }
 
     @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",

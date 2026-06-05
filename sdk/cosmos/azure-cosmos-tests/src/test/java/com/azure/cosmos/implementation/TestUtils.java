@@ -6,10 +6,24 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TestUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestUtils.class);
+
+    // Tracks CosmosAsyncClient instances created by the AsyncDocumentClient overload of
+    // createDummyQueryFeedOperationState below. Those callers historically passed an
+    // AsyncDocumentClient (no enclosing CosmosAsyncClient to reuse), forcing this helper
+    // to build its own CosmosAsyncClient that previously was never closed. The
+    // CosmosNettyLeakDetectorFactory flags such clients as leaks at @AfterClass.
+    // Test base classes call closeDummyClients() in @AfterClass to drain this list.
+    private static final List<CosmosAsyncClient> DUMMY_CLIENTS = new CopyOnWriteArrayList<>();
+
     private static final String DATABASES_PATH_SEGMENT = "dbs";
     private static final String COLLECTIONS_PATH_SEGMENT = "colls";
     private static final String DOCUMENTS_PATH_SEGMENT = "docs";
@@ -69,6 +83,7 @@ public class TestUtils {
             .key(client.getMasterKeyOrResourceToken())
             .endpoint(client.getServiceEndpoint().toString())
             .buildAsyncClient();
+        DUMMY_CLIENTS.add(cosmosClient);
         return new QueryFeedOperationState(
             cosmosClient,
             "SomeSpanName",
@@ -80,6 +95,24 @@ public class TestUtils {
             options,
             new CosmosPagedFluxOptions()
         );
+    }
+
+    /**
+     * Closes every {@link CosmosAsyncClient} created by the
+     * {@link #createDummyQueryFeedOperationState(ResourceType, OperationType, CosmosQueryRequestOptions, AsyncDocumentClient)}
+     * overload. Safe to call multiple times. Test base classes invoke this in
+     * {@code @AfterClass} so the leak detector does not flag these throw-away
+     * inner clients.
+     */
+    public static void closeDummyClients() {
+        for (CosmosAsyncClient client : DUMMY_CLIENTS) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                LOGGER.warn("Failed to close dummy CosmosAsyncClient created by TestUtils", e);
+            }
+        }
+        DUMMY_CLIENTS.clear();
     }
 
     public static QueryFeedOperationState createDummyQueryFeedOperationState(ResourceType resourceType,
