@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2026-06-05)
+## 1.0.0-beta.2 (Unreleased)
 
 - Please note, this package has been deprecated and will no longer be maintained after 2026-02-10. We encourage you to upgrade to the replacement package, azure-resourcemanager-artifactsigning, to continue receiving updates. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
