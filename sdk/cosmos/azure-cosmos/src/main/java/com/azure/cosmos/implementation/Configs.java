@@ -780,30 +780,59 @@ public class Configs {
     }
 
     public static int getHttp2PingIntervalInSeconds() {
-        String configValue = System.getProperty(
+        return parseIntConfigOrDefault(
             HTTP2_PING_INTERVAL_IN_SECONDS,
-            firstNonNull(
-                emptyToNull(System.getenv().get(HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE)),
-                String.valueOf(DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS)));
-        return Integer.parseInt(configValue);
+            HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE,
+            DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
     }
 
     public static int getHttp2PingTimeoutInSeconds() {
-        String configValue = System.getProperty(
+        return parseIntConfigOrDefault(
             HTTP2_PING_TIMEOUT_IN_SECONDS,
-            firstNonNull(
-                emptyToNull(System.getenv().get(HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE)),
-                String.valueOf(DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS)));
-        return Integer.parseInt(configValue);
+            HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE,
+            DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS);
     }
 
     public static int getHttp2PingFailureThreshold() {
-        String configValue = System.getProperty(
+        return parseIntConfigOrDefault(
             HTTP2_PING_FAILURE_THRESHOLD,
-            firstNonNull(
-                emptyToNull(System.getenv().get(HTTP2_PING_FAILURE_THRESHOLD_VARIABLE)),
-                String.valueOf(DEFAULT_HTTP2_PING_FAILURE_THRESHOLD)));
-        return Integer.parseInt(configValue);
+            HTTP2_PING_FAILURE_THRESHOLD_VARIABLE,
+            DEFAULT_HTTP2_PING_FAILURE_THRESHOLD);
+    }
+
+    /**
+     * Reads an int system property first, then the env variable, falling back to the supplied default
+     * on either absence or a non-numeric value. Logs WARN on malformed input so an operator typo in a
+     * value like {@code COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS=1s} cannot throw {@link NumberFormatException}
+     * from inside a per-connection reactor-netty {@code doOnConnected} callback and break the channel.
+     */
+    private static int parseIntConfigOrDefault(String systemPropertyKey, String envVariableKey, int defaultValue) {
+        String valueFromSystemProperty = System.getProperty(systemPropertyKey);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    systemPropertyKey);
+            }
+        }
+
+        String valueFromEnvVariable = System.getenv(envVariableKey);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromEnvVariable);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
+                    valueFromEnvVariable,
+                    envVariableKey,
+                    defaultValue);
+            }
+        }
+
+        return defaultValue;
     }
 
     public static Integer getPendingAcquireMaxCount() {
