@@ -2,6 +2,7 @@ parameters:
   # This is the flattened
   FlattenedDirectory: not-specified
   ShouldPublish: true
+  VerifyJarPublish: false
 
 steps:
   - ${{if eq(parameters.ShouldPublish, 'true')}}:
@@ -21,3 +22,128 @@ steps:
         Approvers: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
         ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
         MainPublisher: 'ESRPRELPACMANTEST'
+
+    - ${{ if eq(parameters.VerifyJarPublish, 'true') }}:
+      - task: PowerShell@2
+        displayName: 'Verify ESRP published package jars are downloadable'
+        inputs:
+          pwsh: true
+          targetType: inline
+          workingDirectory: $(Agent.BuildDirectory)
+          script: |
+            $ErrorActionPreference = 'Stop'
+            $PSNativeCommandUseErrorActionPreference = $false
+
+            $flattenedDirectory = (Resolve-Path '${{ parameters.FlattenedDirectory }}').Path
+            $workRoot = Join-Path (Get-Location) 'work'
+            $mavenWork = Join-Path $workRoot 'maven-work'
+            $metadataRepo = Join-Path $workRoot 'maven-metadata-repo'
+            $downloadRoot = Join-Path $workRoot 'jar-downloads'
+            $retrySeconds = 60
+            $maxAttempts = 10
+
+            function Get-MavenValue([string]$PomPath, [string]$Expression) {
+              Set-Location $mavenWork
+              $mvnArguments = @(
+                '--batch-mode',
+                '-q',
+                '--file',
+                $PomPath,
+                'help:evaluate',
+                "-Dmaven.repo.local=$metadataRepo",
+                "-Dexpression=$Expression",
+                '-DforceStdout'
+              )
+
+              [string[]]$output = & mvn @mvnArguments
+              if ($LASTEXITCODE -ne 0) {
+                throw "Failed to read $Expression from $PomPath."
+              }
+
+              return ($output | Where-Object { $_ -and $_.Trim() } | Select-Object -Last 1).Trim()
+            }
+
+            New-Item -Path $workRoot -ItemType Directory -Force | Out-Null
+            New-Item -Path $mavenWork -ItemType Directory -Force | Out-Null
+            if (Test-Path $metadataRepo) {
+              Remove-Item -Path $metadataRepo -Recurse -Force
+            }
+            New-Item -Path $metadataRepo -ItemType Directory -Force | Out-Null
+            if (Test-Path $downloadRoot) {
+              Remove-Item -Path $downloadRoot -Recurse -Force
+            }
+            New-Item -Path $downloadRoot -ItemType Directory -Force | Out-Null
+
+            $packages = @()
+            $pomFiles = Get-ChildItem -Path $flattenedDirectory -Filter *.pom -File | Sort-Object Name
+
+            foreach ($pomFile in $pomFiles) {
+              $groupId = Get-MavenValue $pomFile.FullName 'project.groupId'
+              $artifactId = Get-MavenValue $pomFile.FullName 'project.artifactId'
+              $version = Get-MavenValue $pomFile.FullName 'project.version'
+              $expectedFile = "$artifactId-$version.jar"
+
+              if (-not (Test-Path (Join-Path $flattenedDirectory $expectedFile))) {
+                Write-Host "  Skipping $artifactId-$version (JAR file not found)"
+                continue
+              }
+
+              $packages += [PSCustomObject]@{
+                Coordinate = "${groupId}:${artifactId}:${version}:jar"
+                ExpectedFile = $expectedFile
+              }
+            }
+
+            Write-Host "Found $($packages.Count) package jar(s) to verify."
+            foreach ($package in $packages) {
+              Write-Host "  $($package.Coordinate)"
+            }
+
+            $pending = @($packages)
+
+            for ($attempt = 1; $attempt -le $maxAttempts -and $pending.Count -gt 0; $attempt++) {
+              $failed = @()
+              $repoPath = Join-Path $workRoot "maven-repo-$attempt"
+              New-Item -Path $repoPath -ItemType Directory -Force | Out-Null
+
+              Write-Host "Attempt: $attempt"
+
+              foreach ($package in $pending) {
+                Write-Host "  Downloading $($package.Coordinate)..."
+                Set-Location $mavenWork
+                & mvn `
+                  --batch-mode `
+                  -q `
+                  org.apache.maven.plugins:maven-dependency-plugin:copy `
+                  -DremoteRepositories=central::default::https://repo.maven.apache.org/maven2 `
+                  "-Dmaven.repo.local=$repoPath" `
+                  "-Dartifact=$($package.Coordinate)" `
+                  "-DoutputDirectory=$downloadRoot" `
+                  -Dtransitive=false
+
+                $expectedPath = Join-Path $downloadRoot $package.ExpectedFile
+                if ($LASTEXITCODE -eq 0 -and (Test-Path $expectedPath)) {
+                  Write-Host "    Verified $($package.ExpectedFile)"
+                }
+                else {
+                  Write-Host "    Failed $($package.ExpectedFile)"
+                  $failed += $package
+                }
+              }
+
+              $pending = @($failed)
+              if ($pending.Count -gt 0 -and $attempt -lt $maxAttempts) {
+                Write-Host "Retrying $($pending.Count) package(s) in $retrySeconds seconds."
+                Start-Sleep -Seconds $retrySeconds
+              }
+            }
+
+            if ($pending.Count -gt 0) {
+              Write-Host "These package jars still failed:"
+              foreach ($package in $pending) {
+                Write-Host "  $($package.Coordinate)"
+              }
+              exit 1
+            }
+
+            Write-Host 'All package jars were verified published.'

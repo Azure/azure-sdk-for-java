@@ -20,6 +20,9 @@ parameters:
   - name: PublicFeedUrl
     type: string
     default: 'maven.org'
+  - name: VerifyJarPublish
+    type: boolean
+    default: true
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -237,6 +240,7 @@ stages:
                     - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
                       parameters:
                         FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
+                        VerifyJarPublish: ${{ parameters.VerifyJarPublish }}
 
         - job: PublishDevFeedPackage
           displayName: "Publish to Java Dev feed"
