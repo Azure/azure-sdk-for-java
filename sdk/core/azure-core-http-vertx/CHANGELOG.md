@@ -1,14 +1,15 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.5 (2026-06-05)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
+- Upgraded `vertx-codegen` from `4.5.26` to `4.5.27`.
+- Upgraded `vertx-core` from `4.5.26` to `4.5.27`.
 
 ## 1.1.4 (2026-04-28)
 
