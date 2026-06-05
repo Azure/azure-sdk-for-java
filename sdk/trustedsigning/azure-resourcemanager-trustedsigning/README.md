@@ -2,7 +2,7 @@
 
 **Deprecation Notice**
 
-Please note, this package has been deprecated and will no longer be maintained after Feb. 10, 2026. We encourage you to upgrade to the replacement package, azure-resourcemanager-artifactsigning, to continue receiving updates. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+Please note, this package has been deprecated and will no longer be maintained after 2026-02-10. We encourage you to upgrade to the replacement package, azure-resourcemanager-artifactsigning, to continue receiving updates. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 Azure Resource Manager Trusted Signing client library for Java.
 
@@ -36,7 +36,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-trustedsigning</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
