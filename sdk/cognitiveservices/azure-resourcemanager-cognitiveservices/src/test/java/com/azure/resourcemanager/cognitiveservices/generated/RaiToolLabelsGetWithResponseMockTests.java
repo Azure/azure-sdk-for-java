@@ -21,7 +21,7 @@ public final class RaiToolLabelsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"toolConnectionName\":\"nlmsoo\",\"accountScope\":{\"labelValues\":{\"yswcrptveajczx\":\"ecdh\",\"yuqh\":\"lgsrgkrfizrpywlp\",\"fuofixcnpcfykkp\":\"lmcskyk\"}},\"projectScopes\":[{\"project\":\"pawmpjprdp\",\"labelValues\":{\"wzlgzawkgy\":\"pcfpcfj\",\"zxkzrntmkct\":\"peyamnnidmdiaw\",\"hqodv\":\"huosgwqpsqaz\"}},{\"project\":\"gcnbhcbmjk\",\"labelValues\":{\"jmfmeftvhkm\":\"ibniynts\"}}]},\"etag\":\"gjrhs\",\"tags\":{\"fogxhcxnw\":\"gmjgrul\"},\"id\":\"pfdzxcouzfwofw\",\"name\":\"k\",\"type\":\"kzkdtzxsoednlwg\"}";
+            = "{\"properties\":{\"toolConnectionName\":\"apejovtkwx\",\"accountScope\":{\"labelValues\":{\"mjenvjeatea\":\"hnoyrzaaoeeh\",\"xoxdjxldnaryyi\":\"xc\",\"edoyqxlunkft\":\"zkdolrndwdbvxvza\"}},\"projectScopes\":[{\"project\":\"xqqxmyzkla\",\"labelValues\":{\"ohrvmz\":\"n\"}},{\"project\":\"qr\",\"labelValues\":{\"ivznllas\":\"a\"}},{\"project\":\"k\",\"labelValues\":{\"aihxjtgzgtaiywbq\":\"hjqjpv\",\"mhljqlxspm\":\"roigbsfsgsaenwld\",\"ryldsxeb\":\"jc\",\"hefr\":\"hsxrznmgsdaluyc\"}},{\"project\":\"hs\",\"labelValues\":{\"ludca\":\"erbgpxeb\",\"tnsewou\":\"tujraxdtpryjm\",\"s\":\"ly\"}}]},\"etag\":\"yljurkeposehqqyl\",\"tags\":{\"xerxxxoteehk\":\"twjwdsdlzm\",\"bap\":\"owgomvvhxowp\",\"mpspfeylq\":\"pxraqaw\"},\"id\":\"cvvuj\",\"name\":\"xayg\",\"type\":\"xrkgjn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,13 @@ public final class RaiToolLabelsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiToolLabel response = manager.raiToolLabels()
-            .getWithResponse("u", "jew", "ahwkxjjm", com.azure.core.util.Context.NONE)
+            .getWithResponse("fwjlof", "ekfsrm", "uklajvcfoc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nlmsoo", response.properties().toolConnectionName());
-        Assertions.assertEquals("ecdh", response.properties().accountScope().labelValues().get("yswcrptveajczx"));
-        Assertions.assertEquals("pawmpjprdp", response.properties().projectScopes().get(0).project());
-        Assertions.assertEquals("pcfpcfj",
-            response.properties().projectScopes().get(0).labelValues().get("wzlgzawkgy"));
-        Assertions.assertEquals("gmjgrul", response.tags().get("fogxhcxnw"));
+        Assertions.assertEquals("apejovtkwx", response.properties().toolConnectionName());
+        Assertions.assertEquals("hnoyrzaaoeeh", response.properties().accountScope().labelValues().get("mjenvjeatea"));
+        Assertions.assertEquals("xqqxmyzkla", response.properties().projectScopes().get(0).project());
+        Assertions.assertEquals("n", response.properties().projectScopes().get(0).labelValues().get("ohrvmz"));
+        Assertions.assertEquals("twjwdsdlzm", response.tags().get("xerxxxoteehk"));
     }
 }

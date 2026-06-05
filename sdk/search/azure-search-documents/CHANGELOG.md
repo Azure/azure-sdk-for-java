@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.0-beta.1 (Unreleased)
+## 12.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.1.0-beta.1 (2026-05-28)
+
+### Features Added
+
+- Added support for the `2026-05-01-Preview` service version.
+- Added new knowledge source types: `FabricDataAgentKnowledgeSource`, `FabricOntologyKnowledgeSource`, `FileKnowledgeSource`, `IndexedSharePointKnowledgeSource`, `IndexedSqlKnowledgeSource`, `McpServerKnowledgeSource`, `RemoteSharePointKnowledgeSource`, and `WorkIQKnowledgeSource`.
+- Added MCP server knowledge source types including `McpServerAuthentication`, `McpServerOutputParsing`, and `McpServerTool`.
+- Added knowledge base reference types: `KnowledgeBaseFabricDataAgentReference`, `KnowledgeBaseFabricOntologyReference`, `KnowledgeBaseFileReference`, `KnowledgeBaseIndexedSharePointReference`, `KnowledgeBaseIndexedSqlReference`, `KnowledgeBaseMcpServerReference`, `KnowledgeBaseRemoteSharePointReference`, and `KnowledgeBaseWorkIQReference`.
+- Added `FreshnessPolicy` model for knowledge source freshness configuration.
+- Added `ContentColumnMapping` and `EmbeddingColumnMapping` models.
+- Added `SharePointConnectorAppRegistration` for SharePoint connector authentication.
+- Added `PurviewSensitivityLabelInfo` model.
+- Added `WorkIQAttribution` model.
+- Added `AssetStore` model.
+- Added `failOnError`, `maxOutputDocuments`, and `enableImageServing` properties to knowledge source parameters.
+- Added knowledge source params subtypes: `FabricDataAgentKnowledgeSourceParams`, `FabricOntologyKnowledgeSourceParams`, `FileKnowledgeSourceParams`, `IndexedSharePointKnowledgeSourceParams`, `IndexedSqlKnowledgeSourceParams`, `McpServerKnowledgeSourceParams`, `RemoteSharePointKnowledgeSourceParams`, and `WorkIQKnowledgeSourceParams`.
+- Added `ImageServingStatistics` model for knowledge base image content retrieval.
+
+### Breaking Changes
+
+- Renamed `AIServices` to `AiServices`, including `getAIServices()`/`setAIServices()` to `getAiServices()`/`setAiServices()` on `KnowledgeSourceIngestionParameters`.
+- Renamed `getInputTokens()`/`getOutputTokens()` to `getInputTokensCount()`/`getOutputTokensCount()` on `KnowledgeBaseModelWebSummarizationActivityRecord`.
+- Changed `KnowledgeBaseRetrievalClient` and `KnowledgeBaseRetrievalAsyncClient` `retrieve()` and `retrieveWithResponse()` signatures — client is now scoped to a single knowledge base at construction; `knowledgeBaseName` parameter replaced with `KnowledgeBaseRetrievalOptions`.
+
+
 
 ## 12.0.0 (2026-04-10)
 

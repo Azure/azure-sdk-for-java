@@ -17,7 +17,7 @@ import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioTranscriptDone;
@@ -235,12 +235,12 @@ public class AgentV2Sample {
             // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
             VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
                 .endpoint(endpoint)
-                .serviceVersion(VoiceLiveServiceVersion.V2026_01_01_PREVIEW)
+                .serviceVersion(VoiceLiveServiceVersion.V2026_04_10)
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
             // Connect using AgentSessionConfig.
-            client.startSession(agentConfig)
+            client.startSession(agentConfig, null)
                 .flatMapMany(voiceLiveSession -> {
                     System.out.println("Connected to VoiceLive service");
                     this.audioProcessor = new AudioProcessor(voiceLiveSession);
@@ -313,7 +313,7 @@ public class AgentV2Sample {
             return session.sendEvent(sessionUpdate).then();
         }
 
-        private void handleEvent(SessionUpdate event) {
+        private void handleEvent(SessionServerEvent event) {
             ServerEventType eventType = event.getType();
 
             if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -477,7 +477,7 @@ public class AgentV2Sample {
 
                     // sendInputAudio returns a cold Mono - it must be subscribed for the
                     // audio to actually be sent over the WebSocket.
-                    session.sendInputAudio(audioData)
+                    session.sendInputAudio(BinaryData.fromBytes(audioData))
                         .subscribe(
                             noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
                             error -> System.err.println("Error sending audio: " + error.getMessage())

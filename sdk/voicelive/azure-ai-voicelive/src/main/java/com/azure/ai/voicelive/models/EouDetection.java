@@ -83,6 +83,8 @@ public class EouDetection implements JsonSerializable<EouDetection> {
                     return AzureSemanticEouDetectionEn.fromJson(readerToUse.reset());
                 } else if ("semantic_detection_v1_multilingual".equals(discriminatorValue)) {
                     return AzureSemanticEouDetectionMultilingual.fromJson(readerToUse.reset());
+                } else if ("smart_end_of_turn_detection".equals(discriminatorValue)) {
+                    return SmartEndOfTurnDetection.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

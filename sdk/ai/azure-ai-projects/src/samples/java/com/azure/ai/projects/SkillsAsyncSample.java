@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.SkillDetails;
+import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillInlineContent;
+import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Sample demonstrating CRUD operations on Skills using the asynchronous SkillsAsyncClient.
@@ -29,34 +28,31 @@ public class SkillsAsyncSample {
 
     public static void main(String[] args) {
         // Using block() to wait for the async operations to complete in the sample
-//        createSkill().block();
+//        createSkillVersion().block();
 //        getSkill().block();
 //        updateSkill().block();
 //        listSkills().blockLast();
 //        deleteSkill().block();
     }
 
-    public static Mono<SkillDetails> createSkill() {
-        // BEGIN:com.azure.ai.projects.SkillsAsyncSample.createSkill
+    public static Mono<SkillVersion> createSkillVersion() {
+        // BEGIN:com.azure.ai.projects.SkillsAsyncSample.createSkillVersion
 
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("domain", "support");
-
-        return skillsAsyncClient.createSkill(
-            "product-support-skill",
+        SkillInlineContent inlineContent = new SkillInlineContent(
             "Answers product support questions using company policy.",
-            "You help answer product support questions using company policy and product guidance.",
-            metadata
-        ).doOnNext(skill -> {
-            System.out.println("Created skill: " + skill.getName());
-            System.out.println("Skill ID: " + skill.getSkillId());
-            System.out.println("Blob present: " + skill.isBlobPresent());
-        });
+            "You help answer product support questions using company policy and product guidance."
+        );
 
-        // END:com.azure.ai.projects.SkillsAsyncSample.createSkill
+        return skillsAsyncClient.createSkillVersion("product-support-skill", inlineContent, true)
+            .doOnNext(skillVersion -> {
+                System.out.println("Created skill version: " + skillVersion.getName());
+                System.out.println("Version: " + skillVersion.getVersion());
+            });
+
+        // END:com.azure.ai.projects.SkillsAsyncSample.createSkillVersion
     }
 
-    public static Mono<SkillDetails> getSkill() {
+    public static Mono<Skill> getSkill() {
         // BEGIN:com.azure.ai.projects.SkillsAsyncSample.getSkill
 
         String skillName = "product-support-skill";
@@ -64,44 +60,34 @@ public class SkillsAsyncSample {
         return skillsAsyncClient.getSkill(skillName)
             .doOnNext(skill -> {
                 System.out.println("Skill name: " + skill.getName());
-                System.out.println("Skill ID: " + skill.getSkillId());
                 System.out.println("Description: " + skill.getDescription());
+                System.out.println("Default version: " + skill.getDefaultVersion());
             });
 
         // END:com.azure.ai.projects.SkillsAsyncSample.getSkill
     }
 
-    public static Mono<SkillDetails> updateSkill() {
+    public static Mono<Skill> updateSkill() {
         // BEGIN:com.azure.ai.projects.SkillsAsyncSample.updateSkill
 
         String skillName = "product-support-skill";
 
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("domain", "support");
-        metadata.put("status", "updated");
-
-        return skillsAsyncClient.updateSkill(
-            skillName,
-            "Updated description for the sample skill.",
-            null,
-            metadata
-        ).doOnNext(updated -> {
-            System.out.println("Updated skill: " + updated.getName());
-            System.out.println("Description: " + updated.getDescription());
-            System.out.println("Metadata: " + updated.getMetadata());
-        });
+        return skillsAsyncClient.updateSkill(skillName, "2")
+            .doOnNext(updated -> {
+                System.out.println("Updated skill: " + updated.getName());
+                System.out.println("Default version: " + updated.getDefaultVersion());
+            });
 
         // END:com.azure.ai.projects.SkillsAsyncSample.updateSkill
     }
 
-    public static Flux<SkillDetails> listSkills() {
+    public static Flux<Skill> listSkills() {
         // BEGIN:com.azure.ai.projects.SkillsAsyncSample.listSkills
 
         return skillsAsyncClient.listSkills()
             .doOnNext(skill -> {
                 System.out.println("Skill name: " + skill.getName());
-                System.out.println("Skill ID: " + skill.getSkillId());
-                System.out.println("Blob present: " + skill.isBlobPresent());
+                System.out.println("Description: " + skill.getDescription());
                 System.out.println("-------------------------------------------------");
             });
 

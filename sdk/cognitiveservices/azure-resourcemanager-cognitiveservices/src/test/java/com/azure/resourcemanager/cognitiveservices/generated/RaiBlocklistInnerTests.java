@@ -15,20 +15,20 @@ public final class RaiBlocklistInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"whccs\"},\"etag\":\"kaivwit\",\"tags\":{\"wem\":\"ywuggwoluhcz\",\"sbrgz\":\"ai\",\"ggicccnxqhue\":\"wmsweypqwd\"},\"id\":\"ktt\",\"name\":\"stvlzywemhzrnc\",\"type\":\"dtclusiypb\"}")
+            "{\"properties\":{\"description\":\"ibthostgktstvd\"},\"etag\":\"clzedqbcvh\",\"tags\":{\"lkxt\":\"plodqkdlwwqfbu\"},\"id\":\"jfsmlmbtxhwgfwsr\",\"name\":\"a\",\"type\":\"coezbrhubskh\"}")
             .toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("whccs", model.properties().description());
-        Assertions.assertEquals("ywuggwoluhcz", model.tags().get("wem"));
+        Assertions.assertEquals("ibthostgktstvd", model.properties().description());
+        Assertions.assertEquals("plodqkdlwwqfbu", model.tags().get("lkxt"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistInner model
-            = new RaiBlocklistInner().withProperties(new RaiBlocklistProperties().withDescription("whccs"))
-                .withTags(mapOf("wem", "ywuggwoluhcz", "sbrgz", "ai", "ggicccnxqhue", "wmsweypqwd"));
+            = new RaiBlocklistInner().withProperties(new RaiBlocklistProperties().withDescription("ibthostgktstvd"))
+                .withTags(mapOf("lkxt", "plodqkdlwwqfbu"));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistInner.class);
-        Assertions.assertEquals("whccs", model.properties().description());
-        Assertions.assertEquals("ywuggwoluhcz", model.tags().get("wem"));
+        Assertions.assertEquals("ibthostgktstvd", model.properties().description());
+        Assertions.assertEquals("plodqkdlwwqfbu", model.tags().get("lkxt"));
     }
 
     // Use "Map.of" if available

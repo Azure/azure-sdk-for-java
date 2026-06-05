@@ -269,7 +269,6 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return this;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptionsImpl allVersionsAndDeletes() {
 
         if (!this.startFromInternal.supportsFullFidelityRetention()) {

@@ -60,6 +60,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosItemIdentity;
 
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -1974,6 +1975,43 @@ public class ImplementationBridgeHelpers {
                 OperationType operationType,
                 ReadConsistencyStrategy desiredReadConsistencyStrategyOfOperation,
                 ReadConsistencyStrategy clientLevelReadConsistencyStrategy);
+        }
+    }
+
+    public static final class CosmosGlobalSecondaryIndexDefinitionHelper {
+        private static final AtomicReference<CosmosGlobalSecondaryIndexDefinitionAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosGlobalSecondaryIndexDefinitionClassLoaded = new AtomicBoolean(false);
+
+        private CosmosGlobalSecondaryIndexDefinitionHelper() {
+        }
+
+        public static void setCosmosGlobalSecondaryIndexDefinitionAccessor(
+            final CosmosGlobalSecondaryIndexDefinitionAccessor newAccessor) {
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosGlobalSecondaryIndexDefinitionAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosGlobalSecondaryIndexDefinitionAccessor...");
+                cosmosGlobalSecondaryIndexDefinitionClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosGlobalSecondaryIndexDefinitionAccessor getCosmosGlobalSecondaryIndexDefinitionAccessor() {
+            if (!cosmosGlobalSecondaryIndexDefinitionClassLoaded.get()) {
+                logger.debug("Initializing CosmosGlobalSecondaryIndexDefinitionAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosGlobalSecondaryIndexDefinitionAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosGlobalSecondaryIndexDefinitionAccessor is not initialized yet!");
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosGlobalSecondaryIndexDefinitionAccessor {
+            void setSourceCollectionRid(CosmosGlobalSecondaryIndexDefinition definition, String sourceCollectionRid);
         }
     }
 

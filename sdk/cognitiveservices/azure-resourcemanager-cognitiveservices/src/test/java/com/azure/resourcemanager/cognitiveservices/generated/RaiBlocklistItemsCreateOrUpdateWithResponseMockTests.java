@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pattern\":\"mkjmyitrchwudlxe\",\"isRegex\":true},\"etag\":\"pmnoejhqlf\",\"tags\":{\"oyrfgxk\":\"b\",\"a\":\"dpmypgfqvmtywh\",\"lfxampqc\":\"xpejpewpy\"},\"id\":\"g\",\"name\":\"uqxbpiatwfauje\",\"type\":\"qdtadrakgdd\"}";
+            = "{\"properties\":{\"pattern\":\"i\",\"isRegex\":false},\"etag\":\"uck\",\"tags\":{\"swt\":\"s\"},\"id\":\"qqcqikclsmal\",\"name\":\"sswoykdnona\",\"type\":\"xwmgzrujlqcwnyn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("jtv")
-            .withExistingRaiBlocklist("e", "jslkyozdsfzjue", "rhrhtsl")
-            .withTags(mapOf("ejgwe", "jqqwmtqsmoxsazu"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("xvgjbfi").withIsRegex(false))
+            .define("rxqwqnjxrd")
+            .withExistingRaiBlocklist("rrfijhgg", "bqbgamklilirwdv", "fhsdpzouhkt")
+            .withTags(mapOf("ljphraspifleimi", "mlx", "hfgsmd", "lmdbgic", "okljm", "juqbpx"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("t").withIsRegex(true))
             .create();
 
-        Assertions.assertEquals("mkjmyitrchwudlxe", response.properties().pattern());
-        Assertions.assertTrue(response.properties().isRegex());
-        Assertions.assertEquals("b", response.tags().get("oyrfgxk"));
+        Assertions.assertEquals("i", response.properties().pattern());
+        Assertions.assertFalse(response.properties().isRegex());
+        Assertions.assertEquals("s", response.tags().get("swt"));
     }
 
     // Use "Map.of" if available
