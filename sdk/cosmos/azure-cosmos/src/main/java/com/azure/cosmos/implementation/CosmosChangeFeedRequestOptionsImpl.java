@@ -109,7 +109,19 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.isSplitHandlingDisabled = source.isSplitHandlingDisabled;
         this.quotaInfoEnabled = source.quotaInfoEnabled;
         this.throughputControlGroupName = source.throughputControlGroupName;
-        this.customOptions = source.customOptions;
+        // Merge source's caller-supplied headers into this.customOptions WITHOUT clobbering
+        // headers the token-driven constructor already populated (e.g., FULL_FIDELITY mode
+        // adds CHANGE_FEED_WIRE_FORMAT_VERSION). Overwriting would drop those required
+        // mode-derived headers and produce inconsistent requests (token mode vs. source headers).
+        if (source.customOptions != null) {
+            if (this.customOptions == null) {
+                this.customOptions = new HashMap<>(source.customOptions);
+            } else {
+                for (Map.Entry<String, String> entry : source.customOptions.entrySet()) {
+                    this.customOptions.putIfAbsent(entry.getKey(), entry.getValue());
+                }
+            }
+        }
         this.operationContextAndListenerTuple = source.operationContextAndListenerTuple;
         this.thresholds = source.thresholds;
         this.excludeRegions = source.excludeRegions;

@@ -105,6 +105,66 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
             .isNotNull();
     }
 
+    @Test(groups = { "unit" })
+    public void fullFidelityWireFormatHeader_isPreserved_whenSourceHasNoCustomHeaders() {
+        // Reviewer-found bug: inheritNonContinuationFieldsFrom used to do
+        // `this.customOptions = source.customOptions`, which clobbered the
+        // CHANGE_FEED_WIRE_FORMAT_VERSION header set by the constructor when mode==FULL_FIDELITY.
+        // If the source's customOptions is null (typical for callers who only set high-level
+        // options), the resume would produce a FULL_FIDELITY request WITHOUT the required wire
+        // format header. The merge-don't-clobber fix preserves token-mode-derived headers.
+        CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRangeEpkImpl.forFullRange());
+
+        CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
+        pagedFluxOptions.setRequestContinuation(buildFullFidelityContinuationToken());
+
+        CosmosChangeFeedRequestOptions effective = ModelBridgeInternal
+            .getEffectiveChangeFeedRequestOptions(src, pagedFluxOptions);
+
+        java.util.Map<String, String> headers = ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .getHeaders(effective);
+
+        assertThat(headers)
+            .describedAs("token-derived FULL_FIDELITY wire format header must survive the rebuild")
+            .isNotNull()
+            .containsEntry(
+                HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
+                HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+    }
+
+    @Test(groups = { "unit" })
+    public void callerSuppliedCustomHeaders_areMergedWith_tokenDerivedHeaders() {
+        // Companion to the above: when the source HAS its own custom headers AND the token's
+        // mode triggers constructor-set headers, both must coexist after inherit. The merge
+        // semantics: token-mode headers win on key collision; source headers are added otherwise.
+        CosmosChangeFeedRequestOptions src = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRangeEpkImpl.forFullRange());
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .setHeader(src, "X-Caller-Header", "caller-value");
+
+        CosmosPagedFluxOptions pagedFluxOptions = new CosmosPagedFluxOptions();
+        pagedFluxOptions.setRequestContinuation(buildFullFidelityContinuationToken());
+
+        CosmosChangeFeedRequestOptions effective = ModelBridgeInternal
+            .getEffectiveChangeFeedRequestOptions(src, pagedFluxOptions);
+
+        java.util.Map<String, String> headers = ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .getHeaders(effective);
+
+        assertThat(headers)
+            .describedAs("both caller-supplied and token-mode-derived headers must be present")
+            .containsEntry("X-Caller-Header", "caller-value")
+            .containsEntry(
+                HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
+                HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+    }
+
     private static String buildContinuationToken() {
         // Build a real ChangeFeedState so we can serialize a valid (base64-encoded) continuation token.
         // We use the state's own toString() which round-trips through createForProcessingFromContinuation.
@@ -113,6 +173,16 @@ public class CosmosChangeFeedRequestOptionsWithPagedFluxOptionsTest {
             FeedRangeEpkImpl.forFullRange(),
             ChangeFeedMode.INCREMENTAL,
             ChangeFeedStartFromInternal.createFromBeginning(),
+            null);
+        return state.toString();
+    }
+
+    private static String buildFullFidelityContinuationToken() {
+        ChangeFeedStateV1 state = new ChangeFeedStateV1(
+            "someContainerRid",
+            FeedRangeEpkImpl.forFullRange(),
+            ChangeFeedMode.FULL_FIDELITY,
+            ChangeFeedStartFromInternal.createFromNow(),
             null);
         return state.toString();
     }
