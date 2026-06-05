@@ -6,6 +6,27 @@ parameters:
 
 steps:
   - ${{if eq(parameters.ShouldPublish, 'true')}}:
+
+    # TODO: REMOVE BEFORE MERGE
+    - task: PowerShell@2
+      displayName: 'Delete one package from flattened ESRP directory (test)'
+      condition: and(succeeded(), eq(variables['System.JobAttempt'], '1'))
+      inputs:
+        pwsh: true
+        targetType: inline
+        script: |
+          $flattenedDirectory = (Resolve-Path '${{ parameters.FlattenedDirectory }}').Path
+          $packagePom = Get-ChildItem -Path $flattenedDirectory -Filter *.pom -File | Sort-Object Name | Select-Object -First 1
+          $packagePrefix = $packagePom.BaseName
+          $packageFiles = Get-ChildItem -Path $flattenedDirectory -File | Where-Object { $_.Name -like "$packagePrefix*" }
+
+          Write-Host "Deleting package prefix: $packagePrefix"
+          foreach ($packageFile in $packageFiles) {
+            Write-Host "  Removing $($packageFile.Name)"
+          }
+
+          Remove-Item -Path $packageFiles.FullName -Force
+
     - task: EsrpRelease@9
       displayName: 'Publish to ESRP'
       inputs:
