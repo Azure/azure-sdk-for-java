@@ -14,7 +14,6 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
 public class ShareFileListRangesOptions {
     private ShareFileRange range;
     private ShareRequestConditions requestConditions;
-    private Integer maxResultsPerPage;
 
     /**
      * Creates a new instance of {@link ShareFileListRangesOptions}.
@@ -59,26 +58,6 @@ public class ShareFileListRangesOptions {
      */
     public ShareFileListRangesOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the maximum number of ranges to return per page.
-     *
-     * @return The maximum number of ranges to return per page.
-     */
-    public Integer getMaxResultsPerPage() {
-        return maxResultsPerPage;
-    }
-
-    /**
-     * Sets the maximum number of ranges to return per page.
-     *
-     * @param maxResultsPerPage The maximum number of ranges to return per page.
-     * @return The updated options.
-     */
-    public ShareFileListRangesOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
-        this.maxResultsPerPage = maxResultsPerPage;
         return this;
     }
 }
