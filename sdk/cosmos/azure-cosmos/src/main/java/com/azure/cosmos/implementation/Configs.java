@@ -164,8 +164,13 @@ public class Configs {
     private static final String HTTP2_PING_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS";
     private static final String HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_TIMEOUT_IN_SECONDS";
     // Consecutive PING failures (timeout without ACK) before closing the connection.
-    // Aligned with Rust SDK's http2_consecutive_failure_threshold = 5.
-    // With interval=1s and timeout=2s, worst-case detection = 5*(1+2) = ~15s.
+    // Peer HTTP/2 stacks (Hyper / .NET SocketsHttpHandler / Go net/http) typically close
+    // on the first PING-ACK timeout. Java's threshold of 5 is intentionally more tolerant
+    // to absorb transient WAN jitter; with interval=1s and timeout=2s, worst-case
+    // detection = 5*(1+2) = ~15s.
+    // Note: this is NOT the same dimension as Rust SDK's
+    // `http2_consecutive_failure_threshold` (which gates per-HTTP-request shard health,
+    // not per-PING-ACK timeouts).
     private static final int DEFAULT_HTTP2_PING_FAILURE_THRESHOLD = 5;
     private static final String HTTP2_PING_FAILURE_THRESHOLD = "COSMOS.HTTP2_PING_FAILURE_THRESHOLD";
     private static final String HTTP2_PING_FAILURE_THRESHOLD_VARIABLE = "COSMOS_HTTP2_PING_FAILURE_THRESHOLD";
