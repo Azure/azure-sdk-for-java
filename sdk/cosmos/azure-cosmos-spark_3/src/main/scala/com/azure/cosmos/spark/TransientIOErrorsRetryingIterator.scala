@@ -11,7 +11,7 @@ import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
 import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
-import scala.util.control.Breaks
+import scala.util.control.{Breaks, NonFatal}
 import scala.concurrent.{Await, ExecutionContext, Future}
 import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, OperationCancelledException, SparkBridgeImplementationInternal}
 
@@ -41,7 +41,8 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   val pageSize: Int,
   val pagePrefetchBufferSize: Int,
   val operationContextAndListener: Option[OperationContextAndListenerTuple],
-  val endLsn: Option[Long]
+  val endLsn: Option[Long],
+  val startLsn: Option[Long] = None
 ) extends BufferedIterator[TSparkRow] with BasicLoggingTrait with AutoCloseable {
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
@@ -177,6 +178,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           None
         }
       } else {
+        validateEofProgressOrThrow()
         Some(false)
       }
     }
@@ -234,6 +236,49 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         val nextLsn = SparkBridgeImplementationInternal.toLsn(node.lsn)
 
         nextLsn <= endLsn
+    }
+  }
+
+  private[this] def validateEofProgressOrThrow(): Unit = {
+    endLsn.foreach { targetEndLsn =>
+      val latestMinLsn = Option(lastContinuationToken.get())
+        .map(extractLatestMinLsnFromContinuation)
+
+      val isEofValid = latestMinLsn match {
+        case Some(observedLsn) => observedLsn >= targetEndLsn
+        case None => startLsn.contains(targetEndLsn)
+      }
+
+      if (!isEofValid) {
+        val observedLsnText = latestMinLsn.map(_.toString).getOrElse("no page consumed")
+        val message = s"Bounded change feed read reached EOF before planned endLsn. " +
+          s"startLsn: $startLsn, endLsn: $targetEndLsn, observed minLatestLsn: $observedLsnText, " +
+          s"totalChangesCnt: ${totalChangesCnt.get()}, Context: $operationContextString"
+
+        throw new OperationCancelledException(message, null)
+      }
+    }
+  }
+
+  private[this] def extractLatestMinLsnFromContinuation(continuationToken: String): Long = {
+    try {
+      val continuationTokens = SparkBridgeImplementationInternal
+        .extractContinuationTokensFromChangeFeedStateJson(continuationToken)
+
+      if (continuationTokens.nonEmpty) {
+        continuationTokens.map(_._2).min
+      } else {
+        SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationToken)
+      }
+    } catch {
+      case NonFatal(rangeEnumerationFailure) =>
+        try {
+          SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationToken)
+        } catch {
+          case NonFatal(fallbackFailure) =>
+            rangeEnumerationFailure.addSuppressed(fallbackFailure)
+            throw rangeEnumerationFailure
+        }
     }
   }
 

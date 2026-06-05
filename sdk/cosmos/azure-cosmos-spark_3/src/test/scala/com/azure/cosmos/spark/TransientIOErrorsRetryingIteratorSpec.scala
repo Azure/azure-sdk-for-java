@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.SparkRowItem
+import com.azure.cosmos.implementation.{OperationCancelledException, SparkRowItem}
 import com.azure.cosmos.models.{FeedResponse, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.UtilBridgeInternal
@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.publisher.Flux
 
 import java.time.Duration
+import java.util.Base64
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
@@ -180,6 +181,32 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     factoryCallCount.get shouldEqual 1
   }
 
+  "Bounded change feed reads" should
+    "not complete when the feed ends before the planned end LSN" in {
+
+    val endLsn = 20L
+    val lastReturnedLsn = 15L
+
+    val response = generateFeedResponse("ChangeFeed", 1, -1)
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      changeFeedContinuation(lastReturnedLsn),
+      response
+    )
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => UtilBridgeInternal.createCosmosPagedFlux(
+        _ => Flux.fromArray(Array(response))
+      ),
+      pageSize,
+      1,
+      None,
+      Some(endLsn)
+    )
+    iterator.maxRetryCount = 0
+
+    intercept[OperationCancelledException](iterator.hasNext)
+  }
+
   private val objectMapper = new ObjectMapper
 
   @throws[JsonProcessingException]
@@ -338,6 +365,37 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
         e.printStackTrace()
         null
     }
+  }
+
+  private def changeFeedContinuation(lsn: Long): String = {
+    val state =
+      s"""{
+         |  "V": 1,
+         |  "Rid": "testContainer",
+         |  "Mode": "INCREMENTAL",
+         |  "StartFrom": {
+         |    "Type": "BEGINNING"
+         |  },
+         |  "Continuation": {
+         |    "V": 1,
+         |    "Rid": "testContainer",
+         |    "Continuation": [
+         |      {
+         |        "token": "$lsn",
+         |        "range": {
+         |          "min": "",
+         |          "max": "FF"
+         |        }
+         |      }
+         |    ],
+         |    "Range": {
+         |      "min": "",
+         |      "max": "FF"
+         |    }
+         |  }
+         |}""".stripMargin
+
+    Base64.getEncoder.encodeToString(state.getBytes("UTF-8"))
   }
 
   private class DummyTransientCosmosException

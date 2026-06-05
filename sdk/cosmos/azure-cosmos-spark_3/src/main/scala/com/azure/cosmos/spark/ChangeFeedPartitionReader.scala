@@ -23,6 +23,7 @@ import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
 
 import java.util
+import scala.util.control.NonFatal
 
 private object ChangeFeedPartitionReader {
   val LsnPropertyName: String = LsnAttributeName
@@ -64,7 +65,7 @@ private case class ChangeFeedPartitionReader
   }
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-  log.logInfo(s"Reading from feed range ${partition.feedRange}, startLsn $getPartitionStartLsn, " +
+  log.logInfo(s"Reading from feed range ${partition.feedRange}, startLsn ${startLsn.map(_.toString).getOrElse("n/a")}, " +
     s"endLsn ${partition.endLsn} of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
@@ -184,19 +185,29 @@ private case class ChangeFeedPartitionReader
     }
   }
 
-  private def getPartitionStartLsn: Long = {
-    if (partition.continuationState.isDefined) {
-      SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
-    } else {
-      0
+  private def getPartitionStartLsn: Option[Long] = {
+    partition.continuationState.map { continuationState =>
+      try {
+        val continuationTokens = SparkBridgeImplementationInternal
+          .extractContinuationTokensFromChangeFeedStateJson(continuationState)
+
+        if (continuationTokens.nonEmpty) {
+          continuationTokens.minBy(_._2)._2
+        } else {
+          SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationState)
+        }
+      } catch {
+        case NonFatal(_) =>
+          SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(continuationState)
+      }
     }
   }
 
   private val changeFeedRequestOptions = {
 
-    val startLsn = getPartitionStartLsn
+    val requestStartLsn = startLsn.map(_.toString).getOrElse("n/a")
     log.logDebug(
-      s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
+      s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$requestStartLsn'")
 
     val options = CosmosChangeFeedRequestOptions
       .createForProcessingFromContinuation(this.partition.continuationState.get)
@@ -263,7 +274,8 @@ private case class ChangeFeedPartitionReader
       readConfig.maxItemCount,
       readConfig.prefetchBufferSize,
       operationContextAndListenerTuple,
-      this.partition.endLsn
+      this.partition.endLsn,
+      startLsn
     )
 
   override def next(): Boolean = {
@@ -299,11 +311,9 @@ private case class ChangeFeedPartitionReader
       case None =>
         // for change feed, we would only reach here before the first page got fetched
         // fallback to use the continuation token from the partition instead
-        Some(SparkBridgeImplementationInternal
-         .extractContinuationTokensFromChangeFeedStateJson(partition.continuationState.get)
-         .minBy(_._2)._2)
+        startLsn
     }
 
-    if (latestLsnOpt.isDefined) latestLsnOpt.get - startLsn else 0
+    latestLsnOpt.flatMap(latestLsn => startLsn.map(latestLsn - _)).getOrElse(0)
   }
 }
