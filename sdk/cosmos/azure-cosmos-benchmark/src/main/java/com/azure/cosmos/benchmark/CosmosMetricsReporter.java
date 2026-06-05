@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
@@ -31,13 +30,10 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Uploads all Micrometer metrics with full tag dimensions to a Cosmos DB container.
@@ -88,7 +84,6 @@ public class CosmosMetricsReporter {
     private final ScheduledExecutorService scheduler;
     private final boolean enabled;
     private final AtomicBoolean isStopped;
-    private final ConcurrentMap<Meter.Id, AtomicLong> lastValues;
 
     private CosmosMetricsReporter(
         MeterRegistry micrometerRegistry,
@@ -103,7 +98,6 @@ public class CosmosMetricsReporter {
         this.concurrency = concurrency;
         this.cpuReader = new CpuMemoryReader();
         this.isStopped = new AtomicBoolean(false);
-        this.lastValues = new ConcurrentHashMap<>();
 
         this.micrometerRegistry = micrometerRegistry;
         this.cosmosClient = new CosmosClientBuilder()
@@ -186,9 +180,8 @@ public class CosmosMetricsReporter {
     private void reportTimer(String timestamp, Timer timer, double cpuPercent) {
         if (timer.count() == 0) return;
 
-        Meter.Id id = timer.getId();
         ObjectNode doc = createBaseDoc(timestamp, timer, "timer", cpuPercent);
-        doc.put("Count", calculateRate(id, timer.count()));
+        doc.put("Count", timer.count());
 
         HistogramSnapshot snapshot = timer.takeSnapshot();
         doc.put("MeanMs", round(timer.mean(TimeUnit.MILLISECONDS)));
@@ -206,30 +199,11 @@ public class CosmosMetricsReporter {
         uploadDoc(doc);
     }
 
-    private long calculateRate(Meter.Id id, double currentValue) {
-        long current = (long) currentValue;
-        AtomicLong last = lastValues.computeIfAbsent(
-            id,
-            k -> new AtomicLong(current)
-        );
-
-        long previous = last.getAndSet(current);
-
-        if (previous > current) {
-            // Counter reset detected (e.g., due to app restart). Emit current value as rate.
-            return current;
-        } else {
-            return current - previous;
-        }
-    }
-
     private void reportCounter(String timestamp, Counter counter, double cpuPercent) {
         if (counter.count() == 0) return;
 
-
-        Meter.Id id = counter.getId();
         ObjectNode doc = createBaseDoc(timestamp, counter, "counter", cpuPercent);
-        doc.put("Count", calculateRate(id, counter.count()));
+        doc.put("Count", (long) counter.count());
         uploadDoc(doc);
     }
 
@@ -245,9 +219,8 @@ public class CosmosMetricsReporter {
     private void reportDistributionSummary(String timestamp, DistributionSummary summary, double cpuPercent) {
         if (summary.count() == 0) return;
 
-        Meter.Id id = summary.getId();
         ObjectNode doc = createBaseDoc(timestamp, summary, "distribution", cpuPercent);
-        doc.put("Count", calculateRate(id, summary.count()));
+        doc.put("Count", summary.count());
         doc.put("Mean", round(summary.mean()));
         doc.put("Max", round(summary.max()));
 
