@@ -3,13 +3,14 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.{OperationCancelledException, SparkRowItem}
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, OperationCancelledException, SparkRowItem}
 import com.azure.cosmos.models.{FeedResponse, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.UtilBridgeInternal
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.sql.Row
 import reactor.core.publisher.Flux
 
 import java.time.Duration
@@ -207,6 +208,189 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     intercept[OperationCancelledException](iterator.hasNext)
   }
 
+  "Bounded change feed reads" should
+    "complete cleanly when the final continuation reaches the planned end LSN" in {
+
+    // Validation matrix row #2: startLsn=10, endLsn=20, single-range continuation=20 -> complete.
+    val endLsn = 20L
+    val lastReturnedLsn = 20L
+
+    val response = generateFeedResponse("ChangeFeed", 1, -1)
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      changeFeedContinuation(lastReturnedLsn),
+      response
+    )
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => UtilBridgeInternal.createCosmosPagedFlux(
+        _ => Flux.fromArray(Array(response))
+      ),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(10L)
+    )
+    iterator.maxRetryCount = 0
+
+    iterator.hasNext shouldEqual false
+  }
+
+  "Bounded change feed reads" should
+    "complete cleanly when no page is consumed and startLsn already equals endLsn" in {
+
+    // Validation matrix row #3: startLsn=20, endLsn=20, empty flux -> complete.
+    val endLsn = 20L
+
+    val iterator = new TransientIOErrorsRetryingIterator[SparkRowItem](
+      _ => UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.empty()),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(endLsn)
+    )
+    iterator.maxRetryCount = 0
+
+    iterator.hasNext shouldEqual false
+  }
+
+  "Bounded change feed reads" should
+    "throw when no page is consumed and startLsn is below endLsn" in {
+
+    // Validation matrix row #4: startLsn=10, endLsn=20, empty flux -> throws.
+    val endLsn = 20L
+
+    val iterator = new TransientIOErrorsRetryingIterator[SparkRowItem](
+      _ => UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.empty()),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(10L)
+    )
+    iterator.maxRetryCount = 0
+
+    intercept[OperationCancelledException](iterator.hasNext)
+  }
+
+  "Bounded change feed reads" should
+    "throw when any range in a multi-range continuation lags behind the planned end LSN" in {
+
+    // Validation matrix row #5: continuation [20, 18] (min=18) < endLsn=20 -> throws.
+    val endLsn = 20L
+
+    val response = generateFeedResponse("ChangeFeed", 1, -1)
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      multiRangeChangeFeedContinuation(Seq(20L, 18L)),
+      response
+    )
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => UtilBridgeInternal.createCosmosPagedFlux(
+        _ => Flux.fromArray(Array(response))
+      ),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(10L)
+    )
+    iterator.maxRetryCount = 0
+
+    intercept[OperationCancelledException](iterator.hasNext)
+  }
+
+  "Unbounded change feed reads" should
+    "complete cleanly at EOF without any LSN progress validation" in {
+
+    // Validation matrix row #6: endLsn=None (unbounded), empty flux -> no throw.
+    // Guards against regression of validation kicking in for batch/unbounded mode.
+    val iterator = new TransientIOErrorsRetryingIterator[SparkRowItem](
+      _ => UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.empty()),
+      pageSize,
+      1,
+      None,
+      None,
+      None
+    )
+    iterator.maxRetryCount = 0
+
+    iterator.hasNext shouldEqual false
+  }
+
+  "Bounded change feed reads" should
+    "retry the bounded EOF failure up to maxRetryCount before propagating it" in {
+
+    // Validation matrix row #7: under-run EOF is treated as a transient (408) failure
+    // and re-subscribes the underlying flux factory until retries are exhausted.
+    val endLsn = 20L
+    val lastReturnedLsn = 15L
+    val maxRetryCount = 2
+    val factoryCallCount = new AtomicLong(0)
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => {
+        factoryCallCount.incrementAndGet()
+        val response = generateFeedResponse("ChangeFeed", 1, -1)
+        ModelBridgeInternal.setFeedResponseContinuationToken(
+          changeFeedContinuation(lastReturnedLsn),
+          response
+        )
+        UtilBridgeInternal.createCosmosPagedFlux(
+          _ => Flux.fromArray(Array(response))
+        )
+      },
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(10L)
+    )
+    iterator.maxRetryCount = maxRetryCount
+    iterator.maxRetryIntervalInMs = 1
+
+    intercept[OperationCancelledException](iterator.hasNext)
+
+    // 1 initial attempt + maxRetryCount retries
+    factoryCallCount.get shouldEqual (1 + maxRetryCount)
+  }
+
+  "Bounded change feed reads" should
+    "still suppress rows above endLsn while passing the EOF progress check at the boundary" in {
+
+    // Validation matrix row #8: page contains a row with _lsn > endLsn and the
+    // final continuation reaches endLsn exactly. validateNextLsn must continue to
+    // suppress the over-LSN row, and validateEofProgressOrThrow must accept the
+    // boundary continuation without throwing.
+    val endLsn = 20L
+    val rowAboveEndLsn = ChangeFeedSparkRowItem(Row.empty, None, "25")
+
+    val response: FeedResponse[ChangeFeedSparkRowItem] = ModelBridgeInternal
+      .createFeedResponse(
+        java.util.Collections.singletonList(rowAboveEndLsn),
+        new ConcurrentHashMap[String, String]
+      )
+    ModelBridgeInternal.setFeedResponseContinuationToken(
+      changeFeedContinuation(endLsn),
+      response
+    )
+
+    val iterator = new TransientIOErrorsRetryingIterator[ChangeFeedSparkRowItem](
+      _ => UtilBridgeInternal.createCosmosPagedFlux(
+        _ => Flux.fromArray(Array(response))
+      ),
+      pageSize,
+      1,
+      None,
+      Some(endLsn),
+      Some(10L)
+    )
+    iterator.maxRetryCount = 0
+
+    iterator.hasNext shouldEqual false
+  }
+
   private val objectMapper = new ObjectMapper
 
   @throws[JsonProcessingException]
@@ -387,6 +571,48 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
          |          "max": "FF"
          |        }
          |      }
+         |    ],
+         |    "Range": {
+         |      "min": "",
+         |      "max": "FF"
+         |    }
+         |  }
+         |}""".stripMargin
+
+    Base64.getEncoder.encodeToString(state.getBytes("UTF-8"))
+  }
+
+  private def multiRangeChangeFeedContinuation(lsns: Seq[Long]): String = {
+    // Splits the [""..."FF"] range into evenly-sized adjacent sub-ranges, one per supplied LSN.
+    // The boundaries are arbitrary hex strings; the iterator only inspects the per-range tokens.
+    require(lsns.nonEmpty, "lsns must contain at least one value")
+    val boundaries: Seq[String] = "" +:
+      (1 until lsns.size).map(i => f"${(0xFF * i) / lsns.size}%02X") :+
+      "FF"
+
+    val ranges = lsns.zipWithIndex.map { case (lsn, i) =>
+      s"""{
+         |  "token": "$lsn",
+         |  "range": {
+         |    "min": "${boundaries(i)}",
+         |    "max": "${boundaries(i + 1)}"
+         |  }
+         |}""".stripMargin
+    }.mkString(",\n")
+
+    val state =
+      s"""{
+         |  "V": 1,
+         |  "Rid": "testContainer",
+         |  "Mode": "INCREMENTAL",
+         |  "StartFrom": {
+         |    "Type": "BEGINNING"
+         |  },
+         |  "Continuation": {
+         |    "V": 1,
+         |    "Rid": "testContainer",
+         |    "Continuation": [
+         |      $ranges
          |    ],
          |    "Range": {
          |      "min": "",
