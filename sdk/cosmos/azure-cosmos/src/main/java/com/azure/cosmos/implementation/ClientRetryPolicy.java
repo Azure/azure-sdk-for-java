@@ -140,6 +140,18 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false, false);
                 }
             } else if (clientException != null &&
+                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED)) {
+                // HTTP/2 PING keepalive closed the channel after consecutive ACK timeouts.
+                // The remote gateway is NOT known to be unhealthy -- this is typically a local
+                // transport failure (NAT / LB idle reap of an otherwise-healthy connection).
+                // Reuse the gateway-timeout path: bounded read retry on the SAME endpoint (no
+                // markEndpointUnavailableFor* call inside shouldRetryOnGatewayTimeout), or
+                // noRetry for writes. This deliberately suppresses the cross-region failover
+                // that GATEWAY_ENDPOINT_UNAVAILABLE would trigger via refreshLocation +
+                // markEndpointUnavailableForRead/Write.
+                logger.info("HTTP/2 PING-driven connection close. Retrying without endpoint mark-down. ", e);
+                return shouldRetryOnGatewayTimeout(clientException);
+            } else if (clientException != null &&
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 

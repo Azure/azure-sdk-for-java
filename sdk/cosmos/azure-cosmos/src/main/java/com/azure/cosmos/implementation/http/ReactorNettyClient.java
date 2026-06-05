@@ -223,7 +223,34 @@ public class ReactorNettyClient implements HttpClient {
                             // Duplicate handler name is the only possible cause.
                         }
                     }
-                }));
+                }))
+                .doOnRequest((req, conn) -> {
+                    // Install a @Sharable head-of-pipeline rewrap handler on each H2
+                    // child-stream pipeline. When Http2PingHandler closes the parent
+                    // (TCP) channel after consecutive PING-ACK timeouts, the H2 multiplex
+                    // codec propagates channelInactive to every child stream; the rewrap
+                    // handler intercepts that and fires exceptionCaught with a typed
+                    // Http2PingTimeoutChannelClosedException so reactor-netty's
+                    // HttpClientOperations fails the response Mono with the typed
+                    // exception (instead of bare PrematureCloseException). The rest of the
+                    // stack maps that to GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED so
+                    // ClientRetryPolicy can suppress region mark-down.
+                    //
+                    // Gate on ch.parent() != null so this only runs on H2 child streams
+                    // (H1.1 connections have null parent and never need the rewrap).
+                    Channel ch = conn.channel();
+                    if (ch.parent() != null && ch.pipeline().get(Http2PingCloseRewrapHandler.HANDLER_NAME) == null) {
+                        try {
+                            ch.pipeline().addFirst(
+                                Http2PingCloseRewrapHandler.HANDLER_NAME,
+                                Http2PingCloseRewrapHandler.INSTANCE);
+                        } catch (IllegalArgumentException ignored) {
+                            // TOCTOU race: between the get()==null check above and addFirst(),
+                            // a concurrent doOnRequest may have installed the handler.
+                            // Duplicate handler name is the only possible cause.
+                        }
+                    }
+                });
         }
     }
 
@@ -292,7 +319,8 @@ public class ReactorNettyClient implements HttpClient {
      * @param restRequest the Rest request contains the body to be sent
      * @return a delegate upon invocation sets the request body in reactor-netty outbound object
      */
-    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(final HttpRequest restRequest) {
+    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
+        final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
             for (HttpHeader header : restRequest.headers()) {
                 reactorNettyRequest.header(header.name(), header.value());

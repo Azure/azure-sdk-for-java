@@ -114,19 +114,28 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     }
 
     /**
-     * Uses iptables to silently discard all traffic to the Cosmos DB gateway port,
-     * preventing PING ACKs from arriving. Verifies the handler detects the broken
-     * connection after consecutive PING failures and closes it. A subsequent request
-     * (after removing the iptables rule) uses a new connection.
+     * End-to-end H3 verification: a read request issued WHILE the connection is being
+     * blackholed (iptables DROP on the thin-client / regional-gateway port) is held in
+     * flight while {@link com.azure.cosmos.implementation.http.Http2PingHandler}
+     * closes the parent channel after consecutive PING ACK timeouts. The closed
+     * channel propagates a typed
+     * {@link com.azure.cosmos.implementation.http.Http2PingTimeoutChannelClosedException}
+     * to the in-flight child stream, which {@code RxGatewayStoreModel} stamps with
+     * {@code SubStatusCodes.GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED (10006)}. The
+     * test then asserts that {@code ClientRetryPolicy} retried the request and the
+     * eventual success landed on the SAME regional gateway endpoint, proving that
+     * the PING-driven close did NOT trigger {@code markEndpointUnavailableForRead}
+     * or cross-region failover.
      * <p>
-     * This test proves PINGs are actively flowing on idle connections -- without PINGs,
-     * iptables DROP would go undetected (channel.isActive() stays true, no GOAWAY arrives)
-     * and the test would time out.
+     * Without this fix, the same exception would have been classified as a generic
+     * {@code GATEWAY_ENDPOINT_UNAVAILABLE (10001)}, refresh-location would have run,
+     * the regional endpoint would have been marked down, and the retry would have
+     * either failed or landed on a different region depending on preferred-regions.
      * <p>
-     * Requires Docker with --cap-add=NET_ADMIN or Linux with sudo.
+     * Requires Docker with {@code --cap-add=NET_ADMIN} or Linux with sudo.
      */
     @Test(groups = {"manual-http-network-fault"}, timeOut = TEST_TIMEOUT)
-    public void connectionClosedOnPingTimeout() throws Exception {
+    public void inFlightReadRetriesInSameRegionAfterPingClose() throws Exception {
         // Short interval + timeout for fast detection
         System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "1");
         System.setProperty("COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS", "2");
@@ -137,6 +146,7 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         // Lifted out of the try so the finally-block cleanup can reach it whether or not
         // the iptables ADD ran -- finally needs the exact -D form of whatever -A we installed.
         String iptablesDelete = null;
+        Thread iptablesRemovalThread = null;
 
         try {
             safeClose(this.client);
@@ -158,7 +168,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
 
             // Warm-up read -- establish the H2 connection and capture diagnostics so we can
             // (a) prove H2 was actually negotiated, (b) discover the regional endpoint host
-            // for IP-scoped iptables targeting on the Compute / port-443 path.
+            // for IP-scoped iptables targeting on the Compute / port-443 path, and
+            // (c) capture the initial channel-id and endpoint host to compare against
+            // the recovery response.
             CosmosItemResponse<TestObject> warmup = this.cosmosAsyncContainer.readItem(
                 seedItem.getId(), new PartitionKey(seedItem.getId()), TestObject.class).block();
             assertThat(warmup).isNotNull();
@@ -173,8 +185,8 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 .contains("\"isHttp2\":true");
 
             String initialChannelId = extractParentChannelId(warmupDiag);
-            String regionalHost = extractEndpointHost(warmupDiag);
-            logger.info("Initial parentChannelId: {}, regionalHost: {}", initialChannelId, regionalHost);
+            String warmupEndpointHost = extractEndpointHost(warmupDiag);
+            logger.info("Warm-up: parentChannelId={}, endpointHost={}", initialChannelId, warmupEndpointHost);
 
             // iptables rule: port-only for thin-client (10250 is exclusive to thin-client traffic);
             // destination-IP + port for Compute (port 443 is shared with everything else in the JVM,
@@ -186,9 +198,9 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
                 iptablesDelete = String.format(
                     "%siptables -D OUTPUT -p tcp --dport %d -j DROP", SUDO, H2_PORT);
             } else {
-                String regionalIp = InetAddress.getByName(regionalHost).getHostAddress();
+                String regionalIp = InetAddress.getByName(warmupEndpointHost).getHostAddress();
                 logger.info("Resolved {} -> {} (Compute variant uses IP-scoped DROP)",
-                    regionalHost, regionalIp);
+                    warmupEndpointHost, regionalIp);
                 iptablesAdd = String.format(
                     "%siptables -A OUTPUT -p tcp -d %s --dport %d -j DROP",
                     SUDO, regionalIp, H2_PORT);
@@ -200,42 +212,114 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             logger.info("Installing iptables DROP rule: {}", iptablesAdd);
             execCommand(iptablesAdd);
 
-            // Wait for PING timeout with consecutive failure threshold=2 (test override):
-            // Round 1: 1s interval + 2s timeout = 3s (failure #1)
-            // Round 2: ~1s interval + 2s timeout = 3s (failure #2 >= threshold -> close)
-            // Total ~6s + buffer = 10s
-            logger.info("Waiting 10s for consecutive PING timeouts to close the connection...");
-            Thread.sleep(10_000);
+            // Schedule iptables removal in a background thread. The in-flight read below
+            // will block on this rule lifting; ClientRetryPolicy retries the failed
+            // PING-close attempt with bounded backoff (max 120 retries; see
+            // Configs.DEFAULT_CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT), and the first
+            // retry attempt that lands AFTER the rule is removed succeeds on a brand
+            // new TCP connection to the SAME regional gateway endpoint.
+            //
+            // 20s window picked to comfortably cover:
+            //   * 4s for Http2PingHandler to close channel-1 (interval=1s + timeout=2s
+            //     for each of the 2 PING failures)
+            //   * 2-3 retry attempts, each capped by netty CONNECT_TIMEOUT_MILLIS
+            //     (~5s for thin-client per ReactorNettyClient.send) when SYN-DROPped
+            final String iptablesDeleteRef = iptablesDelete;
+            iptablesRemovalThread = new Thread(() -> {
+                try {
+                    Thread.sleep(20_000);
+                    logger.info("Background thread removing iptables DROP rule: {}", iptablesDeleteRef);
+                    execCommand(iptablesDeleteRef);
+                } catch (Exception e) {
+                    logger.error("Failed to remove iptables in background thread", e);
+                }
+            }, "iptables-removal-thread");
+            iptablesRemovalThread.setDaemon(true);
+            iptablesRemovalThread.start();
 
-            // Remove iptables rule BEFORE attempting recovery read
-            logger.info("Removing iptables DROP rule: {}", iptablesDelete);
-            execCommand(iptablesDelete);
-            // Cleared -- finally-block no longer needs to delete it.
+            // Issue the read WHILE iptables DROP is active. Timeline:
+            //   t=0:    read sent on channel-1, DROPped by iptables on the wire
+            //   t=~4s:  Http2PingHandler detects 2 consecutive PING ACK timeouts
+            //           (interval=1s, timeout=2s, threshold=2) and closes channel-1
+            //   t=~4s:  Http2PingCloseRewrapHandler fires the typed exception on the
+            //           in-flight child stream; RxGatewayStoreModel stamps subStatus
+            //           10006 (GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED);
+            //           ClientRetryPolicy.shouldRetry routes via the H3 branch
+            //           (shouldRetryOnGatewayTimeout, NO endpoint mark-down)
+            //   t=4-20s: retry attempts open new TCP connections that SYN-DROP and
+            //           time out after ~5s each (thin-client CONNECT_TIMEOUT_MILLIS)
+            //   t=20s:  background thread removes iptables; next retry's SYN succeeds,
+            //           H2 negotiates, the read succeeds on channel-2 against the
+            //           SAME regional gateway endpoint
+            logger.info("Issuing readItem while iptables DROP is active...");
+            long startNanos = System.nanoTime();
+            CosmosItemResponse<TestObject> response = this.cosmosAsyncContainer.readItem(
+                seedItem.getId(), new PartitionKey(seedItem.getId()), TestObject.class).block();
+            long elapsedMs = (System.nanoTime() - startNanos) / 1_000_000;
+
+            // Wait for the iptables removal thread to finish (it should already be done)
+            iptablesRemovalThread.join(5_000);
+            // Background thread already removed the rule; clear so the finally-block doesn't retry.
             iptablesDelete = null;
 
-            // Small wait for network to stabilize
-            Thread.sleep(1_000);
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
 
-            // Recovery read -- should succeed on a NEW connection
-            String recoveryChannelId = readAndGetParentChannelId();
-            logger.info("Recovery parentChannelId: {}", recoveryChannelId);
+            CosmosDiagnostics recoveryDiag = response.getDiagnostics();
+            String recoveryDiagStr = recoveryDiag.toString();
+            String recoveryChannelId = extractParentChannelId(recoveryDiag);
+            String recoveryEndpointHost = extractEndpointHost(recoveryDiag);
 
-            logger.info("RESULT: thinClient={}, port={}, initial={}, recovery={}, DIFFERENT_CONNECTION={}",
-                THIN_CLIENT_ENABLED, H2_PORT, initialChannelId, recoveryChannelId,
+            logger.info("RESULT: elapsedMs={}, thinClient={}, port={}, "
+                    + "initialChannel={}, recoveryChannel={}, "
+                    + "warmupEndpoint={}, recoveryEndpoint={}, "
+                    + "SAME_REGION={}, DIFFERENT_CONNECTION={}",
+                elapsedMs, THIN_CLIENT_ENABLED, H2_PORT,
+                initialChannelId, recoveryChannelId,
+                warmupEndpointHost, recoveryEndpointHost,
+                warmupEndpointHost.equals(recoveryEndpointHost),
                 !initialChannelId.equals(recoveryChannelId));
+            logger.info("Recovery diagnostics: {}", recoveryDiagStr);
 
-            // The connection MUST be different -- the old one was closed by PING timeout
+            // Assertion 1: channel-1 was actually closed; recovery used a new TCP connection.
             assertThat(recoveryChannelId)
                 .as("After PING timeout (thinClient=%s, port=%d), the handler should have "
                     + "closed the connection. The recovery request must use a new connection.",
                     THIN_CLIENT_ENABLED, H2_PORT)
                 .isNotEqualTo(initialChannelId);
 
-            logger.info("PING timeout test passed: connection {} was closed, new connection {} established",
-                initialChannelId, recoveryChannelId);
+            // Assertion 2 (the H3 invariant we're proving): recovery landed on the SAME
+            // regional gateway. If ClientRetryPolicy had treated the PING-close as a
+            // regional outage, refreshLocation + markEndpointUnavailableForRead would
+            // have fired and the retry would have either failed (single-region account)
+            // or landed on a different region (multi-region account).
+            assertThat(recoveryEndpointHost)
+                .as("ClientRetryPolicy must NOT trigger a region failover for PING-driven "
+                    + "channel close. Recovery endpoint should match warm-up endpoint.")
+                .isEqualTo(warmupEndpointHost);
+
+            // Assertion 3: the H3 retry branch was actually exercised. Without this guard,
+            // a hypothetical scenario where the warm-up's connection survived and the
+            // in-flight read never failed (or fell through some other retry path) would
+            // silently pass. We require evidence in diagnostics that the PING-close
+            // sub-status code was stamped on at least one failed attempt.
+            assertThat(recoveryDiagStr)
+                .as("Diagnostics must record sub-status 10006 (GATEWAY_HTTP2_PING_TIMEOUT_"
+                    + "CHANNEL_CLOSED) on at least one failed attempt, proving "
+                    + "ClientRetryPolicy's H3 branch executed.")
+                .containsAnyOf("10006", "GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED",
+                    "Http2PingTimeoutChannelClosedException");
+
+            logger.info("H3 verified: PING-driven close was retried in-region without endpoint mark-down");
         } finally {
+            // Safety: if the background removal thread is still alive (didn't get to sleep
+            // through 20s, or the test interrupted early), interrupt it and let the
+            // captured -D form below handle cleanup synchronously.
+            if (iptablesRemovalThread != null && iptablesRemovalThread.isAlive()) {
+                iptablesRemovalThread.interrupt();
+            }
             // Safety: if we installed an iptables rule and didn't manage to remove it above
-            // (e.g., assertion failed before we reached the eager delete), best-effort
+            // (e.g., assertion failed before the background thread removed it), best-effort
             // remove it now. The exact -D form was captured when we built -A.
             if (iptablesDelete != null) {
                 try {
@@ -248,16 +332,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.HTTP2_PING_HEALTH_ENABLED");
             System.clearProperty("COSMOS.HTTP2_PING_FAILURE_THRESHOLD");
         }
-    }
-
-    private String readAndGetParentChannelId() throws JsonProcessingException {
-        CosmosItemResponse<TestObject> response = this.cosmosAsyncContainer.readItem(
-            seedItem.getId(), new PartitionKey(seedItem.getId()), TestObject.class).block();
-
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(200);
-
-        return extractParentChannelId(response.getDiagnostics());
     }
 
     /**
@@ -288,15 +362,25 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     }
 
     /**
-     * Mirrors {@code Http2ConnectionLifecycleTests#extractParentChannelId} -- parse
-     * the diagnostics JSON rather than substring-scan the toString() so a future change
-     * to JSON formatting can't silently break the test.
+     * Returns the parentChannelId of the FINAL (successful) attempt in the
+     * gatewayStatisticsList. We iterate from the end because the recovery
+     * response's diagnostics records every retry attempt: the PING-closed
+     * channel comes first (subStatus 10006), connection-timeout attempts in
+     * the middle have no parentChannelId at all (subStatus 10001), and the
+     * successful 200 attempt (which is the channel we want to compare against
+     * the warm-up channel) is last. For the warm-up response with a single
+     * gatewayStatistics entry, this is equivalent to picking the first.
+     * <p>
+     * Parses the diagnostics JSON rather than substring-scanning toString()
+     * so that a future change to JSON formatting can't silently break the
+     * test.
      */
     private String extractParentChannelId(CosmosDiagnostics diagnostics) throws JsonProcessingException {
         ObjectNode node = (ObjectNode) Utils.getSimpleObjectMapper().readTree(diagnostics.toString());
         JsonNode gwStats = node.get("gatewayStatisticsList");
         if (gwStats != null && gwStats.isArray()) {
-            for (JsonNode stat : gwStats) {
+            for (int i = gwStats.size() - 1; i >= 0; i--) {
+                JsonNode stat = gwStats.get(i);
                 if (stat.has("parentChannelId")) {
                     String id = stat.get("parentChannelId").asText();
                     if (id != null && !id.isEmpty() && !"null".equals(id)) {
