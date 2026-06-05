@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.AgentsClientImpl;
 import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
+import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -15,10 +16,14 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -43,9 +48,13 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import reactor.core.publisher.Mono;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -76,6 +85,36 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
+    private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
+
+    private static final String AGENT_PREVIEW_FEATURES = Stream
+        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
+            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString()))
+        .collect(Collectors.joining(","));
+
+    private static final String MEMORY_STORES_PREVIEW_FEATURES
+        = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
+
+    private static final String TOOLBOXES_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString();
+
+    private static final HttpPipelinePolicy FOUNDRY_FEATURES_POLICY = new HttpPipelinePolicy() {
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            if (CoreUtils.isNullOrEmpty(context.getHttpRequest().getHeaders().getValue(FOUNDRY_FEATURES))) {
+                String foundryFeatures = getFoundryFeatures(context.getHttpRequest().getUrl().getPath());
+                if (!CoreUtils.isNullOrEmpty(foundryFeatures)) {
+                    context.getHttpRequest().getHeaders().set(FOUNDRY_FEATURES, foundryFeatures);
+                }
+            }
+            return next.process();
+        }
+
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_CALL;
+        }
+    };
+
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -85,6 +124,21 @@ public final class AgentsClientBuilder
     @Generated
     public AgentsClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
+    }
+
+    /**
+     * Enables or disables preview feature headers for beta Agents, Memory Stores, and Toolboxes APIs.
+     *
+     * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
+     * supported preview requests.
+     * @return the AgentsClientBuilder.
+     */
+    public AgentsClientBuilder allowPreview(boolean allowPreview) {
+        this.pipelinePolicies.remove(FOUNDRY_FEATURES_POLICY);
+        if (allowPreview) {
+            this.pipelinePolicies.add(FOUNDRY_FEATURES_POLICY);
+        }
+        return this;
     }
 
     /*
@@ -487,6 +541,18 @@ public final class AgentsClientBuilder
         }
 
         /**
+         * Enables or disables preview feature headers for beta Agents, Memory Stores, and Toolboxes APIs.
+         *
+         * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
+         * supported preview requests.
+         * @return the BetaAgentsClientBuilder.
+         */
+        public BetaAgentsClientBuilder allowPreview(boolean allowPreview) {
+            AgentsClientBuilder.this.allowPreview(allowPreview);
+            return this;
+        }
+
+        /**
          * Builds an instance of BetaAgentsAsyncClient class.
          *
          * @return an instance of BetaAgentsAsyncClient.
@@ -599,6 +665,38 @@ public final class AgentsClientBuilder
      */
     private BetaToolboxesClient buildBetaToolboxesClient() {
         return new BetaToolboxesClient(buildInnerClient().getBetaToolboxes());
+    }
+
+    private static String getFoundryFeatures(String path) {
+        String serviceRouteRoot = getServiceRouteRoot(path);
+        if ("memory_stores".equals(serviceRouteRoot)) {
+            return MEMORY_STORES_PREVIEW_FEATURES;
+        } else if ("toolboxes".equals(serviceRouteRoot)) {
+            return TOOLBOXES_PREVIEW_FEATURES;
+        } else if ("agents".equals(serviceRouteRoot) || "agent_optimization_jobs".equals(serviceRouteRoot)) {
+            return AGENT_PREVIEW_FEATURES;
+        }
+        return null;
+    }
+
+    private static String getServiceRouteRoot(String path) {
+        if (CoreUtils.isNullOrEmpty(path)) {
+            return null;
+        }
+
+        String[] pathSegments = path.split("/");
+        for (int i = 0; i < pathSegments.length; i++) {
+            if ("projects".equals(pathSegments[i]) && i + 2 < pathSegments.length) {
+                return pathSegments[i + 2];
+            }
+        }
+
+        for (String pathSegment : pathSegments) {
+            if (!CoreUtils.isNullOrEmpty(pathSegment)) {
+                return pathSegment;
+            }
+        }
+        return null;
     }
 
     /*
