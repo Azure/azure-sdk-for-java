@@ -22,7 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Unit tests for {@link Http2PingHandler}.
  * <p>
- * Covers state transitions that do not require advancing time:
+ * Covers state transitions that do not require advancing real time -- the handler's
+ * timeout / threshold logic reads {@code System.nanoTime()}, so the tests sidestep
+ * the clock by pre-setting {@code pingOutstandingSinceNanos} (or
+ * {@code lastActivityNanos}) via reflection:
  * <ul>
  *   <li>PING ACK with matching payload resets the failure counter (RFC 9113 §6.7 payload echo).</li>
  *   <li>PING ACK with mismatched payload is ignored (late ACK after timeout cannot mask degradation).</li>
@@ -30,10 +33,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  *   <li>Constructor clamps non-positive interval / timeout / threshold to safe minimums.</li>
  *   <li>Runtime kill-switch toggle clears outstanding PING state (no spurious timeout on re-enable).</li>
  *   <li>{@code channelInactive} cancels the scheduled PING task (no leaked timer).</li>
+ *   <li>Failed PING write increments {@code consecutiveFailures} and closes the channel at threshold.</li>
+ *   <li>ACK timeout (outstanding PING aged past {@code pingTimeoutNanos}) increments
+ *       {@code consecutiveFailures} and closes the channel at threshold.</li>
  * </ul>
- * Time-based behaviors (interval-driven PING send, timeout-driven failure increment, threshold-driven
- * close) are exercised by the integration test {@code Http2PingKeepaliveTest} under Docker with real
- * network fault injection.
+ * The interval-driven scheduling itself (that {@code maybeSendPing} is fired by the
+ * event loop every {@code pingIntervalNanos}) is exercised by the integration test
+ * {@code Http2PingKeepaliveTest} under Docker with real network fault injection.
  */
 public class Http2PingHandlerTest {
 
@@ -221,6 +227,47 @@ public class Http2PingHandlerTest {
         channel.runPendingTasks();
 
         assertThat((int) getField(handler, "consecutiveFailures")).isEqualTo(threshold);
+        assertThat((Object) getField(handler, "pingTask")).isNull();
+        assertThat(channel.isOpen()).isFalse();
+
+        channel.finishAndReleaseAll();
+    }
+
+    @Test(groups = "unit")
+    public void ackTimeout_incrementsConsecutiveFailuresAndClosesAtThreshold() throws Exception {
+        // Reviewer-flagged invariant (PR #49095): the primary operational PING-failure
+        // path -- a PING was sent, no ACK arrived within pingTimeoutNanos, and after
+        // `failureThreshold` consecutive such timeouts the channel must be closed.
+        // Time is sidestepped by pre-setting pingOutstandingSinceNanos to a value
+        // older than pingTimeoutNanos so maybeSendPing enters the timeout branch on
+        // each invocation.
+        final int threshold = 2;
+        Http2PingHandler handler = new Http2PingHandler(1, 1, threshold); // interval=1s, timeout=1s
+        EmbeddedChannel channel = new EmbeddedChannel(handler);
+        ChannelHandlerContext ctx = channel.pipeline().context(handler);
+
+        long pastTimeout = System.nanoTime() - TimeUnit.SECONDS.toNanos(5);
+
+        // First tick: outstanding PING has aged past timeout -> failures=1, channel still open.
+        setField(handler, "pingsSent", 1);
+        setField(handler, "pingOutstandingSinceNanos", pastTimeout);
+        invokeMaybeSendPing(handler, ctx);
+        channel.runPendingTasks();
+
+        assertThat((int) getField(handler, "consecutiveFailures")).isEqualTo(1);
+        assertThat((long) getField(handler, "pingOutstandingSinceNanos")).isZero();
+        assertThat(channel.isOpen()).isTrue();
+        assertThat((Object) getField(handler, "pingTask")).isNotNull();
+
+        // Second tick: simulate another outstanding PING that has aged past timeout
+        // -> failures=threshold -> task cancelled, channel closed.
+        setField(handler, "pingsSent", 2);
+        setField(handler, "pingOutstandingSinceNanos", pastTimeout);
+        invokeMaybeSendPing(handler, ctx);
+        channel.runPendingTasks();
+
+        assertThat((int) getField(handler, "consecutiveFailures")).isEqualTo(threshold);
+        assertThat((long) getField(handler, "pingOutstandingSinceNanos")).isZero();
         assertThat((Object) getField(handler, "pingTask")).isNull();
         assertThat(channel.isOpen()).isFalse();
 

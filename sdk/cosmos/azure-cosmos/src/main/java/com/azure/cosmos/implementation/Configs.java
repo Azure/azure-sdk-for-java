@@ -154,7 +154,9 @@ public class Configs {
     private static final boolean DEFAULT_HTTP2_PING_HEALTH_ENABLED = true;
     private static final String HTTP2_PING_HEALTH_ENABLED = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
     private static final String HTTP2_PING_HEALTH_ENABLED_VARIABLE = "COSMOS_HTTP2_PING_HEALTH_ENABLED";
-    // Aligned with Rust SDK (hyper): interval=1s, timeout=2s. Dead connection detected within 3s.
+    // Aligned with Rust SDK (hyper): interval=1s, timeout=2s. A single missed PING round
+    // (~3s) marks one failure; the connection is closed after HTTP2_PING_FAILURE_THRESHOLD
+    // consecutive failures (see ~15s worst-case detection note below).
     private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 1;
     private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
     private static final String HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS";

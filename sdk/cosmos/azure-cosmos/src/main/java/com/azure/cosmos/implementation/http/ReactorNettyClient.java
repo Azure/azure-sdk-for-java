@@ -194,10 +194,16 @@ public class ReactorNettyClient implements HttpClient {
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     if (channelPipeline.get("reactor.left.httpCodec") != null
                         && channelPipeline.get("customHeaderCleaner") == null) {
-                        channelPipeline.addAfter(
-                            "reactor.left.httpCodec",
-                            "customHeaderCleaner",
-                            new Http2ResponseHeaderCleanerHandler());
+                        try {
+                            channelPipeline.addAfter(
+                                "reactor.left.httpCodec",
+                                "customHeaderCleaner",
+                                new Http2ResponseHeaderCleanerHandler());
+                        } catch (IllegalArgumentException ignored) {
+                            // TOCTOU race: between the get()==null check above and addAfter(),
+                            // a concurrent doOnConnected may have installed the handler.
+                            // Duplicate handler name is the only possible cause.
+                        }
                     }
 
                     // Install exception handler at the tail of the HTTP/2 parent (TCP)
