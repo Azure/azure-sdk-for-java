@@ -239,7 +239,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     endLsn.foreach { targetEndLsn =>
       val latestMinLsn = try {
         Option(lastContinuationToken.get())
-          .map(extractLatestMinLsnFromContinuation)
+          .map(SparkBridgeImplementationInternal.extractMinLatestLsnFromChangeFeedContinuationOrFallback)
       } catch {
         case NonFatal(parseFailure) =>
           val message = s"Continuation token parse failure - treating EOF as inconclusive. " +
@@ -268,15 +268,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
         // TODO: Consider moving bounded change-feed EOF validation into a dedicated decorator and short-circuiting
         // deterministic zero-progress retries once this policy is separated from transient I/O retry handling.
-        logWarning(message)
         logError(message, exception)
         throw exception
       }
     }
-  }
-
-  private[this] def extractLatestMinLsnFromContinuation(continuationToken: String): Long = {
-    SparkBridgeImplementationInternal.extractMinLatestLsnFromChangeFeedContinuationOrFallback(continuationToken)
   }
 
   private[this] def formatLsn(lsn: Option[Long]): String = {
