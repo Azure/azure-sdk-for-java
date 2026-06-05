@@ -93,7 +93,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return this.actualRequestOptions.getReadConsistencyStrategy();
     }
@@ -106,11 +105,13 @@ public final class CosmosChangeFeedRequestOptions {
      * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
      * is not SESSION then session token capturing also needs to be enabled by calling
      * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
+     * <p>Honored across Direct, Gateway V1 (compute gateway), and Gateway V2 (thin client proxy) connection modes.
+     * {@code GLOBAL_STRONG} is rejected client-side with a {@link com.azure.cosmos.CosmosException} (HTTP 400)
+     * when the account's default consistency is not {@link com.azure.cosmos.ConsistencyLevel#STRONG}. Such failures must NOT be retried.</p>
      *
      * @param readConsistencyStrategy the consistency level.
      * @return the request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
         return this;
@@ -513,7 +514,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return a {@link CosmosChangeFeedRequestOptions} instance with AllVersionsAndDeletes mode enabled
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions allVersionsAndDeletes() {
         this.actualRequestOptions.allVersionsAndDeletes();
         return this;

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
  */
 public final class BlobContainersCreateOrUpdateImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersPutImmutabilityPolicy.json
+     * x-ms-original-file: 2026-04-01/BlobContainersPutImmutabilityPolicy.json
      */
     /**
      * Sample code: CreateOrUpdateImmutabilityPolicy.
@@ -28,7 +28,7 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
+     * x-ms-original-file: 2026-04-01/BlobContainersPutImmutabilityPolicyAllowProtectedAppendWritesAll.json
      */
     /**
      * Sample code: CreateOrUpdateImmutabilityPolicyWithAllowProtectedAppendWritesAll.

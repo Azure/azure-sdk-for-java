@@ -57,8 +57,10 @@ class AadResourceServerConfiguration {
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), tenantId);
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
-                .restOperations(createRestTemplate(restTemplateBuilder))
-                .build();
+            .restOperations(createRestTemplate(restTemplateBuilder
+                .connectTimeout(aadAuthenticationProperties.getJwtConnectTimeout())
+                .readTimeout(aadAuthenticationProperties.getJwtReadTimeout())))
+            .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;

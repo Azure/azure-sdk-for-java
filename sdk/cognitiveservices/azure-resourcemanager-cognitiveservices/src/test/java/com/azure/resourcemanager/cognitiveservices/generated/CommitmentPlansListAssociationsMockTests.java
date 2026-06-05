@@ -22,7 +22,7 @@ public final class CommitmentPlansListAssociationsMockTests {
     @Test
     public void testListAssociations() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"accountId\":\"kmi\"},\"etag\":\"nnraclibbfqpspkl\",\"tags\":{\"kexzgpmnmabeddqi\":\"dgnhautw\",\"fpfqf\":\"wg\"},\"id\":\"vstclg\",\"name\":\"rvwerfwxbsmtb\",\"type\":\"jj\"}]}";
+            = "{\"value\":[{\"properties\":{\"accountId\":\"zix\"},\"etag\":\"hfnkvycqqqds\",\"tags\":{\"kfktltdds\":\"nquwzxhrptyodl\"},\"id\":\"jopnouhbqezk\",\"name\":\"xs\",\"type\":\"lu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class CommitmentPlansListAssociationsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommitmentPlanAccountAssociation> response
-            = manager.commitmentPlans().listAssociations("j", "mvpsimioyo", com.azure.core.util.Context.NONE);
+            = manager.commitmentPlans().listAssociations("s", "ik", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dgnhautw", response.iterator().next().tags().get("kexzgpmnmabeddqi"));
-        Assertions.assertEquals("kmi", response.iterator().next().accountId());
+        Assertions.assertEquals("nquwzxhrptyodl", response.iterator().next().tags().get("kfktltdds"));
+        Assertions.assertEquals("zix", response.iterator().next().accountId());
     }
 }

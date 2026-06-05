@@ -670,7 +670,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return deployment stack object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> whatIfWithResponseAsync(String managementGroupId,
@@ -690,7 +690,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return deployment stack object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> whatIfWithResponse(String managementGroupId, String deploymentStacksWhatIfResultName) {
@@ -708,7 +708,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return deployment stack object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> whatIfWithResponse(String managementGroupId, String deploymentStacksWhatIfResultName,
@@ -726,7 +726,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of deployment stack object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentStacksWhatIfResultInner>, DeploymentStacksWhatIfResultInner>
@@ -746,7 +746,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of deployment stack object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStacksWhatIfResultInner>, DeploymentStacksWhatIfResultInner>
@@ -765,7 +765,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of deployment stack object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentStacksWhatIfResultInner>, DeploymentStacksWhatIfResultInner>
@@ -784,7 +784,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return deployment stack object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentStacksWhatIfResultInner> whatIfAsync(String managementGroupId,
@@ -801,7 +801,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return deployment stack object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStacksWhatIfResultInner whatIf(String managementGroupId, String deploymentStacksWhatIfResultName) {
@@ -817,7 +817,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return deployment stack object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentStacksWhatIfResultInner whatIf(String managementGroupId, String deploymentStacksWhatIfResultName,

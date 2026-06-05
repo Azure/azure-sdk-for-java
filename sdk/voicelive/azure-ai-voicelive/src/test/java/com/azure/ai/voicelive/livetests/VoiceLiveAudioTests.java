@@ -15,6 +15,7 @@ import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -36,8 +37,7 @@ import java.util.stream.Stream;
 public class VoiceLiveAudioTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> audioParams() {
-        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -59,7 +59,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
                 .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
                 .setInputAudioFormat(InputAudioFormat.PCM16);
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -91,7 +91,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
 
             Thread.sleep(SETUP_DELAY_MS);
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
 
             boolean received = audioResponseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
@@ -108,8 +108,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> audioEnhancementsParams() {
-        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" }, API_VERSIONS);
     }
 
     @ParameterizedTest
@@ -133,7 +132,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
                     new AudioNoiseReduction(AudioNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION))
                 .setInputAudioEchoCancellation(new AudioEchoCancellation());
 
-            session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model, null).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
@@ -166,7 +165,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(BinaryData.fromBytes(audioData)).block(SEND_TIMEOUT);
 
             // Wait for events to be collected
             Thread.sleep(EVENT_TIMEOUT_SECONDS * 1000);
@@ -183,7 +182,6 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> echoCancellationParams() {
-        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-realtime", "gpt-4.1" }, API_VERSIONS);
     }
 }

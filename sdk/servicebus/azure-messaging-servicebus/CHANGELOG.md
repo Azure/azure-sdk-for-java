@@ -14,6 +14,15 @@
 
 ### Other Changes
 
+- Implemented support for the `com.microsoft:max-message-batch-size` AMQP vendor property in
+  `createMessageBatch`. The Service Bus service has advertised this property on sender links for some
+  time to communicate the broker-enforced batch size limit; the SDK now reads it and sizes batches
+  against this value, falling back to `max-message-size` when the property is absent. Previously the
+  batch path used `max-message-size` directly, which on Premium large-message entities (link advertises
+  up to 100 MB while the batch limit stays at 1 MB) caused the broker to reject oversized batches.
+  Single-message sends (`sendMessage`, `scheduleMessage`) continue using `max-message-size`.
+  ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
 ## 7.17.18 (2026-05-05)
 
 ### Other Changes

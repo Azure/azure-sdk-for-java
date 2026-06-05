@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * An agent implementing the A2A protocol.
@@ -138,6 +139,9 @@ public final class A2APreviewTool extends Tool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("base_url", this.baseUrl);
         jsonWriter.writeStringField("agent_card_path", this.agentCardPath);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
@@ -161,6 +165,13 @@ public final class A2APreviewTool extends Tool {
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedA2APreviewTool.type = ToolType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedA2APreviewTool.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedA2APreviewTool.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedA2APreviewTool.toolConfigs = toolConfigs;
                 } else if ("base_url".equals(fieldName)) {
                     deserializedA2APreviewTool.baseUrl = reader.getString();
                 } else if ("agent_card_path".equals(fieldName)) {
@@ -173,5 +184,95 @@ public final class A2APreviewTool extends Tool {
             }
             return deserializedA2APreviewTool;
         });
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the A2APreviewTool object itself.
+     */
+    @Generated
+    public A2APreviewTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the A2APreviewTool object itself.
+     */
+    @Generated
+    public A2APreviewTool setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /*
+     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the A2APreviewTool object itself.
+     */
+    @Generated
+    public A2APreviewTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
+        return this;
     }
 }

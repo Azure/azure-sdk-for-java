@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
      */
     /**
      * Sample code: StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.
@@ -81,7 +81,7 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetBlobInventoryPolicy.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountSetBlobInventoryPolicy.
@@ -132,7 +132,7 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
      */
     /**
      * Sample code: StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.

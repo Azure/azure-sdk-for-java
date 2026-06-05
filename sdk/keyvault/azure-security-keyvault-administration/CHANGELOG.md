@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.0-beta.1 (Unreleased)
+## 4.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.8.0 (2026-05-27)
+
+### Features Added
+
+- Added support for service version `2025-07-01`
 
 ## 4.7.7 (2026-05-05)
 

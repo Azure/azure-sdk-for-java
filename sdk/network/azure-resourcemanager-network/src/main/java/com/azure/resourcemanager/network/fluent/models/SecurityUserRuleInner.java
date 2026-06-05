@@ -38,19 +38,14 @@ public final class SecurityUserRuleInner extends ChildResource {
     private String etag;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of SecurityUserRuleInner class.
@@ -87,7 +82,7 @@ public final class SecurityUserRuleInner extends ChildResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -97,7 +92,7 @@ public final class SecurityUserRuleInner extends ChildResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -107,13 +102,12 @@ public final class SecurityUserRuleInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
+     * {@inheritDoc}
      */
     @Override
-    public String id() {
-        return this.id;
+    public SecurityUserRuleInner withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
@@ -313,6 +307,7 @@ public final class SecurityUserRuleInner extends ChildResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -333,14 +328,14 @@ public final class SecurityUserRuleInner extends ChildResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedSecurityUserRuleInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedSecurityUserRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSecurityUserRuleInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedSecurityUserRuleInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSecurityUserRuleInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedSecurityUserRuleInner.innerProperties
                         = SecurityUserRulePropertiesFormat.fromJson(reader);

@@ -704,7 +704,7 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
 
     /**
      * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @return the minimumTlsVersion value.
      */
@@ -714,7 +714,7 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
 
     /**
      * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountCreateParameters object itself.

@@ -165,6 +165,38 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          TestName: 'Cosmos_Live_Test_GSI'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_gsi
+              Path: sdk/cosmos/live-gsi-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.2(1|5)/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(gsi-pipeline-uri) -DACCOUNT_KEY=$(gsi-pipeline-key)'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
           TestName: 'Spring_Data_Cosmos_Integration'
           CloudConfig:
             Public:

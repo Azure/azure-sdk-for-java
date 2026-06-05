@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class SignalDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SignalDefinitions_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_Delete.json
      */
     /**
      * Sample code: SignalDefinitions_Delete.
@@ -17,6 +17,6 @@ public final class SignalDefinitionsDeleteSamples {
      * @param manager Entry point to CloudHealthManager.
      */
     public static void signalDefinitionsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.signalDefinitions().deleteWithResponse("rgopenapi", "model1", "sig", com.azure.core.util.Context.NONE);
+        manager.signalDefinitions().delete("rgopenapi", "model1", "sig", com.azure.core.util.Context.NONE);
     }
 }

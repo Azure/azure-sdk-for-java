@@ -22,7 +22,7 @@ public final class NetworkSecurityPerimeterConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"swyiljpibkgxyxy\",\"provisioningIssues\":[{\"name\":\"eddobmcnltm\",\"properties\":{\"issueType\":\"kujsqycmm\",\"severity\":\"fablqg\",\"description\":\"bmwhrialiwr\",\"suggestedResourceIds\":[\"nwplrr\",\"phctsbbibticu\"],\"suggestedAccessRules\":[{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"spbfsfeqbbewfc\",\"perimeterGuid\":\"fpyyxmzrmtm\",\"location\":\"ituweyyj\"},\"resourceAssociation\":{\"name\":\"ybwfuppoxprcmv\",\"accessMode\":\"ujx\"},\"profile\":{\"name\":\"kmoxrezsv\",\"accessRulesVersion\":6520382603838578706,\"accessRules\":[{\"name\":\"jmoywlunpipcwybs\",\"properties\":{}}],\"diagnosticSettingsVersion\":8348412099353887657,\"enabledLogCategories\":[\"tpf\"]}},\"id\":\"aebwfwhxorpwa\",\"name\":\"tzwugexojfccy\",\"type\":\"h\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"tncmspsanmam\",\"provisioningIssues\":[{\"name\":\"qiqmlfvhlq\",\"properties\":{\"issueType\":\"kqj\",\"severity\":\"pt\",\"description\":\"ipuugkwdrqmr\",\"suggestedResourceIds\":[\"uuonjkkxukguehvv\",\"xjoegcjojlleuidp\",\"tonvhgnhtmeplhb\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"mumm\",\"perimeterGuid\":\"vavucg\",\"location\":\"ua\"},\"resourceAssociation\":{\"name\":\"mnuf\",\"accessMode\":\"rchxwwuzdmhvwl\"},\"profile\":{\"name\":\"jmxmlitqdsj\",\"accessRulesVersion\":6151759119341942171,\"accessRules\":[{\"name\":\"otyxbrii\",\"properties\":{}},{\"name\":\"ndslvrqoemwsie\",\"properties\":{}}],\"diagnosticSettingsVersion\":4191387151624254142,\"enabledLogCategories\":[\"mqfyde\",\"tmfx\",\"kd\",\"g\"]}},\"id\":\"namkuuyiuyu\",\"name\":\"fi\",\"type\":\"lxicwgpthdcf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,18 +31,18 @@ public final class NetworkSecurityPerimeterConfigurationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<NetworkSecurityPerimeterConfiguration> response
-            = manager.networkSecurityPerimeterConfigurations().list("e", "xq", com.azure.core.util.Context.NONE);
+        PagedIterable<NetworkSecurityPerimeterConfiguration> response = manager.networkSecurityPerimeterConfigurations()
+            .list("cd", "rnrnjrcufmbgacnr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eddobmcnltm",
+        Assertions.assertEquals("qiqmlfvhlq",
             response.iterator().next().properties().provisioningIssues().get(0).name());
-        Assertions.assertEquals("kujsqycmm",
+        Assertions.assertEquals("kqj",
             response.iterator().next().properties().provisioningIssues().get(0).properties().issueType());
-        Assertions.assertEquals("fablqg",
+        Assertions.assertEquals("pt",
             response.iterator().next().properties().provisioningIssues().get(0).properties().severity());
-        Assertions.assertEquals("bmwhrialiwr",
+        Assertions.assertEquals("ipuugkwdrqmr",
             response.iterator().next().properties().provisioningIssues().get(0).properties().description());
-        Assertions.assertEquals("nwplrr",
+        Assertions.assertEquals("uuonjkkxukguehvv",
             response.iterator()
                 .next()
                 .properties()
@@ -51,21 +51,21 @@ public final class NetworkSecurityPerimeterConfigurationsListMockTests {
                 .properties()
                 .suggestedResourceIds()
                 .get(0));
-        Assertions.assertEquals("spbfsfeqbbewfc",
-            response.iterator().next().properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("fpyyxmzrmtm",
+        Assertions.assertEquals("mumm", response.iterator().next().properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("vavucg",
             response.iterator().next().properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("ituweyyj",
-            response.iterator().next().properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("ybwfuppoxprcmv", response.iterator().next().properties().resourceAssociation().name());
-        Assertions.assertEquals("ujx", response.iterator().next().properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("kmoxrezsv", response.iterator().next().properties().profile().name());
-        Assertions.assertEquals(6520382603838578706L,
+        Assertions.assertEquals("ua", response.iterator().next().properties().networkSecurityPerimeter().location());
+        Assertions.assertEquals("mnuf", response.iterator().next().properties().resourceAssociation().name());
+        Assertions.assertEquals("rchxwwuzdmhvwl",
+            response.iterator().next().properties().resourceAssociation().accessMode());
+        Assertions.assertEquals("jmxmlitqdsj", response.iterator().next().properties().profile().name());
+        Assertions.assertEquals(6151759119341942171L,
             response.iterator().next().properties().profile().accessRulesVersion());
-        Assertions.assertEquals("jmoywlunpipcwybs",
+        Assertions.assertEquals("otyxbrii",
             response.iterator().next().properties().profile().accessRules().get(0).name());
-        Assertions.assertEquals(8348412099353887657L,
+        Assertions.assertEquals(4191387151624254142L,
             response.iterator().next().properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("tpf", response.iterator().next().properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("mqfyde",
+            response.iterator().next().properties().profile().enabledLogCategories().get(0));
     }
 }

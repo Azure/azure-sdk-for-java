@@ -12,8 +12,8 @@ public final class CapabilityListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilityListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"publisher\":\"sqe\",\"targetType\":\"agdfmglzlh\",\"description\":\"rifkwm\",\"parametersSchema\":\"ktsizntocipaou\",\"urn\":\"psqucmpoyf\"},\"id\":\"fogknygjofjdde\",\"name\":\"s\",\"type\":\"deupewnwrei\"},{\"properties\":{\"publisher\":\"yflusarhmofc\",\"targetType\":\"smy\",\"description\":\"kdtmlxhekuk\",\"parametersSchema\":\"txukcdmp\",\"urn\":\"cryuan\"},\"id\":\"uxzdxtay\",\"name\":\"lhmwhfpmrqobm\",\"type\":\"u\"}],\"nextLink\":\"nryrtihf\"}")
+            "{\"value\":[{\"properties\":{\"publisher\":\"rifkwm\",\"targetType\":\"ktsizntocipaou\",\"description\":\"psqucmpoyf\",\"parametersSchema\":\"fogknygjofjdde\",\"urn\":\"rd\",\"provisioningState\":\"Failed\"},\"id\":\"wnw\",\"name\":\"eitjz\",\"type\":\"flusarhmof\"},{\"properties\":{\"publisher\":\"smy\",\"targetType\":\"kdtmlxhekuk\",\"description\":\"txukcdmp\",\"parametersSchema\":\"cryuan\",\"urn\":\"uxzdxtay\",\"provisioningState\":\"Succeeded\"},\"id\":\"whfpmrqobmtu\",\"name\":\"knryrtihfxtij\",\"type\":\"pzvgnwzsymglzufc\"}],\"nextLink\":\"kohdbiha\"}")
             .toObject(CapabilityListResult.class);
-        Assertions.assertEquals("nryrtihf", model.nextLink());
+        Assertions.assertEquals("kohdbiha", model.nextLink());
     }
 }

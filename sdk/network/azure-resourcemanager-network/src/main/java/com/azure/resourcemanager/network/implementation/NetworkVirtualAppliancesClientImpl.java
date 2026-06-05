@@ -1165,7 +1165,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -1210,7 +1211,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -1252,7 +1254,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1274,7 +1277,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1299,7 +1303,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1322,7 +1327,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1344,7 +1350,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1366,7 +1373,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
@@ -1385,7 +1393,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
@@ -1407,7 +1416,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkVirtualApplianceInstanceIdsInner> restartAsync(String resourceGroupName,
@@ -1425,7 +1435,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceInstanceIdsInner restart(String resourceGroupName,
@@ -1445,7 +1455,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceInstanceIdsInner restart(String resourceGroupName, String networkVirtualApplianceName,
@@ -1464,7 +1474,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName,
@@ -1509,7 +1520,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName,
@@ -1551,7 +1563,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1573,7 +1586,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1598,7 +1612,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1621,7 +1636,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1643,7 +1659,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of specifies a list of virtual machine instance IDs from the Network
+     * Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkVirtualApplianceInstanceIdsInner>, NetworkVirtualApplianceInstanceIdsInner>
@@ -1665,7 +1682,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkVirtualApplianceInstanceIdsInner> reimageAsync(String resourceGroupName,
@@ -1684,7 +1702,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkVirtualApplianceInstanceIdsInner> reimageAsync(String resourceGroupName,
@@ -1706,7 +1725,8 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkVirtualApplianceInstanceIdsInner> reimageAsync(String resourceGroupName,
@@ -1724,7 +1744,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceInstanceIdsInner reimage(String resourceGroupName,
@@ -1744,7 +1764,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return specifies a list of virtual machine instance IDs from the Network Virtual Appliance VM instances.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceInstanceIdsInner reimage(String resourceGroupName, String networkVirtualApplianceName,

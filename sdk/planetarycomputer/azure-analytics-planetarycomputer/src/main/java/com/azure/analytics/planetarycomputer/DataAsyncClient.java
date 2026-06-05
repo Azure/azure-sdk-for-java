@@ -9,24 +9,16 @@ import com.azure.analytics.planetarycomputer.implementation.models.RegisterMosai
 import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.ClassMapLegendResponse;
 import com.azure.analytics.planetarycomputer.models.ColorMapNames;
-import com.azure.analytics.planetarycomputer.models.CropGeoJsonContentType;
 import com.azure.analytics.planetarycomputer.models.CropGeoJsonOptions;
-import com.azure.analytics.planetarycomputer.models.CropGeoJsonWithDimensionsContentType;
 import com.azure.analytics.planetarycomputer.models.Feature;
 import com.azure.analytics.planetarycomputer.models.GetAssetStatisticsOptions;
 import com.azure.analytics.planetarycomputer.models.GetGeoJsonStatisticsOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicTileOptions;
 import com.azure.analytics.planetarycomputer.models.GetMosaicWmtsCapabilitiesOptions;
-import com.azure.analytics.planetarycomputer.models.GetMosaicsTileContentType;
-import com.azure.analytics.planetarycomputer.models.GetPartContentType;
 import com.azure.analytics.planetarycomputer.models.GetPartOptions;
-import com.azure.analytics.planetarycomputer.models.GetPartWithDimensionsContentType;
-import com.azure.analytics.planetarycomputer.models.GetPreviewContentType;
 import com.azure.analytics.planetarycomputer.models.GetPreviewOptions;
-import com.azure.analytics.planetarycomputer.models.GetPreviewWithFormatContentType;
 import com.azure.analytics.planetarycomputer.models.GetStatisticsOptions;
-import com.azure.analytics.planetarycomputer.models.GetTileContentType;
 import com.azure.analytics.planetarycomputer.models.GetTileJsonOptions;
 import com.azure.analytics.planetarycomputer.models.GetTileOptions;
 import com.azure.analytics.planetarycomputer.models.GetWmtsCapabilitiesOptions;
@@ -452,8 +444,6 @@ public final class DataAsyncClient {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -465,9 +455,8 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cropGeoJsonWithResponse(String collectionId, String itemId, String format,
-        String accept, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.cropGeoJsonWithResponseAsync(collectionId, itemId, format, accept, body,
-            requestOptions);
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.cropGeoJsonWithResponseAsync(collectionId, itemId, format, body, requestOptions);
     }
 
     /**
@@ -561,8 +550,6 @@ public final class DataAsyncClient {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param body Request GeoJson body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -574,9 +561,9 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cropGeoJsonWithDimensionsWithResponse(String collectionId, String itemId,
-        int width, int height, String format, String accept, BinaryData body, RequestOptions requestOptions) {
+        int width, int height, String format, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.cropGeoJsonWithDimensionsWithResponseAsync(collectionId, itemId, width, height,
-            format, accept, body, requestOptions);
+            format, body, requestOptions);
     }
 
     /**
@@ -957,8 +944,6 @@ public final class DataAsyncClient {
      * @param maxx Bounding box max X.
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -969,8 +954,8 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPartWithResponse(String collectionId, String itemId, double minx, double miny,
-        double maxx, double maxy, String format, String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getPartWithResponseAsync(collectionId, itemId, minx, miny, maxx, maxy, format, accept,
+        double maxx, double maxy, String format, RequestOptions requestOptions) {
+        return this.serviceClient.getPartWithResponseAsync(collectionId, itemId, minx, miny, maxx, maxy, format,
             requestOptions);
     }
 
@@ -1051,8 +1036,6 @@ public final class DataAsyncClient {
      * @param width Width in pixels for the output image.
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1063,10 +1046,9 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPartWithDimensionsWithResponse(String collectionId, String itemId, double minx,
-        double miny, double maxx, double maxy, int width, int height, String format, String accept,
-        RequestOptions requestOptions) {
+        double miny, double maxx, double maxy, int width, int height, String format, RequestOptions requestOptions) {
         return this.serviceClient.getPartWithDimensionsWithResponseAsync(collectionId, itemId, minx, miny, maxx, maxy,
-            width, height, format, accept, requestOptions);
+            width, height, format, requestOptions);
     }
 
     /**
@@ -1200,8 +1182,6 @@ public final class DataAsyncClient {
      * 
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1211,9 +1191,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getPreviewWithResponse(String collectionId, String itemId, String accept,
+    public Mono<Response<BinaryData>> getPreviewWithResponse(String collectionId, String itemId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getPreviewWithResponseAsync(collectionId, itemId, accept, requestOptions);
+        return this.serviceClient.getPreviewWithResponseAsync(collectionId, itemId, requestOptions);
     }
 
     /**
@@ -1287,8 +1267,6 @@ public final class DataAsyncClient {
      * @param collectionId STAC Collection Identifier.
      * @param itemId STAC Item Identifier.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1299,9 +1277,8 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPreviewWithFormatWithResponse(String collectionId, String itemId,
-        String format, String accept, RequestOptions requestOptions) {
-        return this.serviceClient.getPreviewWithFormatWithResponseAsync(collectionId, itemId, format, accept,
-            requestOptions);
+        String format, RequestOptions requestOptions) {
+        return this.serviceClient.getPreviewWithFormatWithResponseAsync(collectionId, itemId, format, requestOptions);
     }
 
     /**
@@ -1683,8 +1660,6 @@ public final class DataAsyncClient {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1695,9 +1670,9 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTileWithResponse(String collectionId, String itemId, String tileMatrixSetId,
-        double z, double x, double y, double scale, String format, String accept, RequestOptions requestOptions) {
+        double z, double x, double y, double scale, String format, RequestOptions requestOptions) {
         return this.serviceClient.getTileWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x, y, scale,
-            format, accept, requestOptions);
+            format, requestOptions);
     }
 
     /**
@@ -2548,8 +2523,6 @@ public final class DataAsyncClient {
      * MatrixWidth-1 for the selected TileMatrix.
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
-     * @param accept The accept parameter. Allowed values: "image/png", "image/jpeg", "image/jpg", "image/webp",
-     * "image/jp2", "image/tiff; application=geotiff", "application/x-binary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2560,9 +2533,9 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMosaicsTileWithResponse(String searchId, String tileMatrixSetId, double z,
-        double x, double y, double scale, String format, String accept, RequestOptions requestOptions) {
+        double x, double y, double scale, String format, RequestOptions requestOptions) {
         return this.serviceClient.getMosaicsTileWithResponseAsync(searchId, tileMatrixSetId, z, x, y, scale, format,
-            accept, requestOptions);
+            requestOptions);
     }
 
     /**
@@ -2851,7 +2824,6 @@ public final class DataAsyncClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for GeoJSON cropping including asset selection, terrain algorithms, and visual rendering.
      * @param body Request GeoJson body.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2863,7 +2835,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropGeoJson(String collectionId, String itemId, String format, CropGeoJsonOptions options,
-        Feature body, CropGeoJsonContentType accept) {
+        Feature body) {
         // Generated convenience method for cropGeoJsonWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -2938,8 +2910,8 @@ public final class DataAsyncClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return cropGeoJsonWithResponse(collectionId, itemId, format, accept.toString(), BinaryData.fromObject(body),
-            requestOptions).flatMap(FluxUtil::toMono);
+        return cropGeoJsonWithResponse(collectionId, itemId, format, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2954,7 +2926,6 @@ public final class DataAsyncClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for GeoJSON cropping including asset selection, terrain algorithms, and visual rendering.
      * @param body Request GeoJson body.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2966,7 +2937,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropGeoJsonWithDimensions(String collectionId, String itemId, int width, int height,
-        String format, CropGeoJsonOptions options, Feature body, CropGeoJsonWithDimensionsContentType accept) {
+        String format, CropGeoJsonOptions options, Feature body) {
         // Generated convenience method for cropGeoJsonWithDimensionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3041,7 +3012,7 @@ public final class DataAsyncClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return cropGeoJsonWithDimensionsWithResponse(collectionId, itemId, width, height, format, accept.toString(),
+        return cropGeoJsonWithDimensionsWithResponse(collectionId, itemId, width, height, format,
             BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -3261,7 +3232,6 @@ public final class DataAsyncClient {
      * @param maxy Bounding box max Y.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for part generation including asset selection, terrain algorithms, and visual rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3273,7 +3243,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getPart(String collectionId, String itemId, double minx, double miny, double maxx,
-        double maxy, String format, GetPartOptions options, GetPartContentType accept) {
+        double maxy, String format, GetPartOptions options) {
         // Generated convenience method for getPartWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3352,8 +3322,8 @@ public final class DataAsyncClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getPartWithResponse(collectionId, itemId, minx, miny, maxx, maxy, format, accept.toString(),
-            requestOptions).flatMap(FluxUtil::toMono);
+        return getPartWithResponse(collectionId, itemId, minx, miny, maxx, maxy, format, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3371,7 +3341,6 @@ public final class DataAsyncClient {
      * @param height Height in pixels for the output image.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for part generation including asset selection, terrain algorithms, and visual rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3383,8 +3352,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getPartWithDimensions(String collectionId, String itemId, double minx, double miny,
-        double maxx, double maxy, int width, int height, String format, GetPartOptions options,
-        GetPartWithDimensionsContentType accept) {
+        double maxx, double maxy, int width, int height, String format, GetPartOptions options) {
         // Generated convenience method for getPartWithDimensionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3464,7 +3432,7 @@ public final class DataAsyncClient {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
         return getPartWithDimensionsWithResponse(collectionId, itemId, minx, miny, maxx, maxy, width, height, format,
-            accept.toString(), requestOptions).flatMap(FluxUtil::toMono);
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3570,7 +3538,6 @@ public final class DataAsyncClient {
      * @param itemId STAC Item Identifier.
      * @param options Options for preview generation including asset selection, terrain algorithms, and visual
      * rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3581,8 +3548,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getPreview(String collectionId, String itemId, GetPreviewOptions options,
-        GetPreviewContentType accept) {
+    public Mono<BinaryData> getPreview(String collectionId, String itemId, GetPreviewOptions options) {
         // Generated convenience method for getPreviewWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3665,8 +3631,7 @@ public final class DataAsyncClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getPreviewWithResponse(collectionId, itemId, accept.toString(), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getPreviewWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3679,7 +3644,6 @@ public final class DataAsyncClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for preview generation including asset selection, terrain algorithms, and visual
      * rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3691,7 +3655,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getPreviewWithFormat(String collectionId, String itemId, String format,
-        GetPreviewOptions options, GetPreviewWithFormatContentType accept) {
+        GetPreviewOptions options) {
         // Generated convenience method for getPreviewWithFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -3774,8 +3738,7 @@ public final class DataAsyncClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getPreviewWithFormatWithResponse(collectionId, itemId, format, accept.toString(), requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getPreviewWithFormatWithResponse(collectionId, itemId, format, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4047,7 +4010,6 @@ public final class DataAsyncClient {
      * @param scale Numeric scale factor for the tile. Higher values produce larger tiles.
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for tile generation including asset selection, terrain algorithms, and visual rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4059,7 +4021,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getTile(String collectionId, String itemId, String tileMatrixSetId, double z, double x,
-        double y, double scale, String format, GetTileOptions options, GetTileContentType accept) {
+        double y, double scale, String format, GetTileOptions options) {
         // Generated convenience method for getTileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -4142,8 +4104,8 @@ public final class DataAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getTileWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format, accept.toString(),
-            requestOptions).flatMap(FluxUtil::toMono);
+        return getTileWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4933,7 +4895,6 @@ public final class DataAsyncClient {
      * @param format Output format for the tile or image (e.g., png, jpeg, webp).
      * @param options Options for mosaic tile generation including asset selection, terrain algorithms, and visual
      * rendering.
-     * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4945,7 +4906,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getMosaicsTile(String searchId, String tileMatrixSetId, double z, double x, double y,
-        double scale, String format, GetMosaicTileOptions options, GetMosaicsTileContentType accept) {
+        double scale, String format, GetMosaicTileOptions options) {
         // Generated convenience method for getMosaicsTileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         List<String> assets = options.getAssets();
@@ -5044,8 +5005,8 @@ public final class DataAsyncClient {
         if (returnMask != null) {
             requestOptions.addQueryParam("return_mask", String.valueOf(returnMask), false);
         }
-        return getMosaicsTileWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format, accept.toString(),
-            requestOptions).flatMap(FluxUtil::toMono);
+        return getMosaicsTileWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**

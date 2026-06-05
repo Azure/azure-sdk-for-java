@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -26,12 +27,23 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cloudhealth.fluent.EntitiesClient;
+import com.azure.resourcemanager.cloudhealth.fluent.models.EntityHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.SignalHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.EntityListResult;
+import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
+import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
+import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -88,7 +100,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EntityInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
@@ -98,7 +110,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<EntityInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
@@ -107,9 +119,9 @@ public final class EntitiesClientImpl implements EntitiesClient {
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
@@ -117,10 +129,10 @@ public final class EntitiesClientImpl implements EntitiesClient {
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
             Context context);
@@ -143,6 +155,68 @@ public final class EntitiesClientImpl implements EntitiesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("timestamp") OffsetDateTime timestamp,
             @PathParam("healthModelName") String healthModelName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EntityHistoryResponseInner>> getHistory(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EntityHistoryRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EntityHistoryResponseInner> getHistorySync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EntityHistoryRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SignalHistoryResponseInner>> getSignalHistory(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SignalHistoryRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<SignalHistoryResponseInner> getSignalHistorySync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SignalHistoryRequest body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/ingestHealthReport")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> ingestHealthReport(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") HealthReportRequest body,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/ingestHealthReport")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> ingestHealthReportSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("healthModelName") String healthModelName, @PathParam("entityName") String entityName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") HealthReportRequest body,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -250,7 +324,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EntityInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String healthModelName, String entityName, EntityInner resource) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -271,13 +345,16 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity (aka node) of a health model on successful completion of {@link Mono}.
+     * @return an entity (aka node) of a health model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EntityInner> createOrUpdateAsync(String resourceGroupName, String healthModelName, String entityName,
-        EntityInner resource) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, healthModelName, entityName, resource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, EntityInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept,
+            resource, Context.NONE);
     }
 
     /**
@@ -294,7 +371,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @return an entity (aka node) of a health model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EntityInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String entityName, EntityInner resource, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -313,13 +390,114 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an entity (aka node) of a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<EntityInner>, EntityInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String healthModelName, String entityName, EntityInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, healthModelName, entityName, resource);
+        return this.client.<EntityInner, EntityInner>getLroResult(mono, this.client.getHttpPipeline(),
+            EntityInner.class, EntityInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an entity (aka node) of a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<EntityInner>, EntityInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String entityName, EntityInner resource) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, healthModelName, entityName, resource);
+        return this.client.<EntityInner, EntityInner>getLroResult(response, EntityInner.class, EntityInner.class,
+            Context.NONE);
+    }
+
+    /**
+     * Create a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an entity (aka node) of a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<EntityInner>, EntityInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String entityName, EntityInner resource, Context context) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, healthModelName, entityName, resource, context);
+        return this.client.<EntityInner, EntityInner>getLroResult(response, EntityInner.class, EntityInner.class,
+            context);
+    }
+
+    /**
+     * Create a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity (aka node) of a health model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<EntityInner> createOrUpdateAsync(String resourceGroupName, String healthModelName, String entityName,
+        EntityInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, healthModelName, entityName, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an entity (aka node) of a health model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EntityInner createOrUpdate(String resourceGroupName, String healthModelName, String entityName,
         EntityInner resource) {
-        return createOrUpdateWithResponse(resourceGroupName, healthModelName, entityName, resource, Context.NONE)
-            .getValue();
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, entityName, resource).getFinalResult();
+    }
+
+    /**
+     * Create a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity (aka node) of a health model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntityInner createOrUpdate(String resourceGroupName, String healthModelName, String entityName,
+        EntityInner resource, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, entityName, resource, context).getFinalResult();
     }
 
     /**
@@ -334,7 +512,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
         String entityName) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -351,11 +529,13 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String healthModelName, String entityName) {
-        return deleteWithResponseAsync(resourceGroupName, healthModelName, entityName).flatMap(ignored -> Mono.empty());
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
+        String entityName) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, Context.NONE);
     }
 
     /**
@@ -368,10 +548,10 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String entityName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName, String entityName,
         Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, context);
@@ -386,10 +566,99 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String healthModelName,
+        String entityName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, healthModelName, entityName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String entityName) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, healthModelName, entityName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Delete a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String entityName, Context context) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, healthModelName, entityName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Delete a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String healthModelName, String entityName) {
+        return beginDeleteAsync(resourceGroupName, healthModelName, entityName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String entityName) {
-        deleteWithResponse(resourceGroupName, healthModelName, entityName, Context.NONE);
+        beginDelete(resourceGroupName, healthModelName, entityName).getFinalResult();
+    }
+
+    /**
+     * Delete a Entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String healthModelName, String entityName, Context context) {
+        beginDelete(resourceGroupName, healthModelName, entityName, context).getFinalResult();
     }
 
     /**
@@ -536,6 +805,257 @@ public final class EntitiesClientImpl implements EntitiesClient {
         return new PagedIterable<>(
             () -> listByHealthModelSinglePage(resourceGroupName, healthModelName, timestamp, context),
             nextLink -> listByHealthModelNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<EntityHistoryResponseInner>> getHistoryWithResponseAsync(String resourceGroupName,
+        String healthModelName, String entityName, EntityHistoryRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getHistory(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<EntityHistoryResponseInner> getHistoryAsync(String resourceGroupName, String healthModelName,
+        String entityName, EntityHistoryRequest body) {
+        return getHistoryWithResponseAsync(resourceGroupName, healthModelName, entityName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EntityHistoryResponseInner> getHistoryWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, EntityHistoryRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getHistorySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept, body,
+            context);
+    }
+
+    /**
+     * Retrieve the health state transition history for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing entity health state transitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntityHistoryResponseInner getHistory(String resourceGroupName, String healthModelName, String entityName,
+        EntityHistoryRequest body) {
+        return getHistoryWithResponse(resourceGroupName, healthModelName, entityName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SignalHistoryResponseInner>> getSignalHistoryWithResponseAsync(String resourceGroupName,
+        String healthModelName, String entityName, SignalHistoryRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getSignalHistory(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SignalHistoryResponseInner> getSignalHistoryAsync(String resourceGroupName, String healthModelName,
+        String entityName, SignalHistoryRequest body) {
+        return getSignalHistoryWithResponseAsync(resourceGroupName, healthModelName, entityName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SignalHistoryResponseInner> getSignalHistoryWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, SignalHistoryRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.getSignalHistorySync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, accept, body,
+            context);
+    }
+
+    /**
+     * Retrieve the time series history for a signal on an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing signal history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignalHistoryResponseInner getSignalHistory(String resourceGroupName, String healthModelName,
+        String entityName, SignalHistoryRequest body) {
+        return getSignalHistoryWithResponse(resourceGroupName, healthModelName, entityName, body, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> ingestHealthReportWithResponseAsync(String resourceGroupName, String healthModelName,
+        String entityName, HealthReportRequest body) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.ingestHealthReport(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, body,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> ingestHealthReportAsync(String resourceGroupName, String healthModelName, String entityName,
+        HealthReportRequest body) {
+        return ingestHealthReportWithResponseAsync(resourceGroupName, healthModelName, entityName, body)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> ingestHealthReportWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, HealthReportRequest body, Context context) {
+        final String contentType = "application/json";
+        return service.ingestHealthReportSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, entityName, contentType, body,
+            context);
+    }
+
+    /**
+     * Ingest a health report for a specific signal on an entity (the entity must already exist).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void ingestHealthReport(String resourceGroupName, String healthModelName, String entityName,
+        HealthReportRequest body) {
+        ingestHealthReportWithResponse(resourceGroupName, healthModelName, entityName, body, Context.NONE);
     }
 
     /**
