@@ -101,6 +101,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -2551,7 +2552,7 @@ public class ShareFileClient {
             ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
 
-            java.util.List<ShareFileRange> shareFileRangeList = response.getValue()
+            List<ShareFileRange> shareFileRangeList = response.getValue()
                 .getRanges()
                 .stream()
                 .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
