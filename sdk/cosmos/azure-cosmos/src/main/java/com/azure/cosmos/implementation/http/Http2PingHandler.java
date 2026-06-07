@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Manual HTTP/2 PING keepalive handler installed on the parent (TCP) channel.
@@ -62,6 +63,27 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     public static final AttributeKey<Boolean> PING_TIMEOUT_CLOSED =
         AttributeKey.valueOf("cosmos.http2PingTimeoutClosed");
 
+    /**
+     * Parent-channel attribute holding the {@link System#nanoTime()} of the most recent
+     * inbound H2 stream read (HEADERS/DATA), as observed by
+     * {@link Http2PingCloseRewrapHandler#channelReadComplete} on each H2 child stream.
+     * <p>
+     * Why this exists: {@link io.netty.handler.codec.http2.Http2MultiplexHandler} dispatches H2 stream frames to
+     * child channels, so request/response read traffic never surfaces on the parent
+     * pipeline's {@link #channelRead}. Without this signal, {@link #lastReadActivityNanos}
+     * only observes PING ACKs / SETTINGS / GOAWAY on the parent, which means a
+     * connection serving thousands of QPS would still look "idle" to the PING handler
+     * and be PINGed unnecessarily on every interval -- adding measurable latency
+     * overhead under load.
+     * <p>
+     * The attribute is initialized in {@link #handlerAdded} and updated via
+     * {@code accumulateAndGet(now, Math::max)} so writes are monotonic. The PING
+     * handler reads it via {@link #effectiveLastReadActivityNanos(ChannelHandlerContext)}
+     * to compute idleness as {@code max(parent-pipeline reads, child-stream reads)}.
+     */
+    static final AttributeKey<AtomicLong> LAST_CHILD_STREAM_READ_ACTIVITY_NANOS =
+        AttributeKey.valueOf("cosmos.http2LastChildStreamReadActivityNanos");
+
     private final long pingIntervalNanos;
     private final long pingTimeoutNanos;
     private final int failureThreshold;
@@ -70,12 +92,28 @@ public class Http2PingHandler extends ChannelDuplexHandler {
     // (handlerAdded, channelRead, scheduled task, writeAndFlush listener), so no
     // synchronization or volatile is needed.
     //
-    // nanoTime of the last connection-level activity (inbound frame or PING send).
-    // Note: H2 stream frames (HEADERS/DATA -- i.e. actual HTTP responses) are
-    // dispatched by Http2MultiplexHandler to child channels and never surface on
-    // the parent pipeline, so this does NOT track request/response traffic; it
-    // tracks PING ACKs, SETTINGS, GOAWAY, and our own PING sends.
-    private long lastActivityNanos;
+    // nanoTime of the last PARENT-PIPELINE inbound read (PING ACK, SETTINGS,
+    // GOAWAY). Writes (including our own PING sends) are intentionally NOT
+    // counted here: the purpose of the PING is to detect a peer that has stopped
+    // responding, so only inbound frames are positive evidence of liveness.
+    //
+    // H2 stream frames (HEADERS/DATA -- actual HTTP request/response payloads)
+    // are dispatched by Http2MultiplexHandler to child channels and never surface
+    // here; child-stream reads are tracked separately via the
+    // LAST_CHILD_STREAM_READ_ACTIVITY_NANOS parent-channel attribute (written by
+    // Http2PingCloseRewrapHandler.channelReadComplete on each child). Read-idleness
+    // is computed as max(this, child-attribute) via effectiveLastReadActivityNanos()
+    // so a saturated parent that's serving thousands of QPS on child streams is
+    // correctly recognized as "not read-idle".
+    private long lastReadActivityNanos;
+
+    // nanoTime when we most recently SENT a PING (0 = never). Used as a throttle
+    // in maybeSendPing so a PING send failure (which clears
+    // pingOutstandingSinceNanos in the writeAndFlush listener) does not race the
+    // next 500ms tick into a rapid-fire PING storm. Kept separate from
+    // lastReadActivityNanos so the "did the peer respond?" signal stays pure.
+    private long lastPingSendNanos;
+
     private long pingOutstandingSinceNanos;  // nanoTime when PING was sent; 0 = no outstanding PING
     private int consecutiveFailures;         // incremented on timeout, reset on ACK
     private int pingsSent;
@@ -90,11 +128,19 @@ public class Http2PingHandler extends ChannelDuplexHandler {
         this.pingIntervalNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingIntervalSeconds));
         this.pingTimeoutNanos = TimeUnit.SECONDS.toNanos(Math.max(1, pingTimeoutSeconds));
         this.failureThreshold = Math.max(1, failureThreshold);
-        this.lastActivityNanos = System.nanoTime();
+        this.lastReadActivityNanos = System.nanoTime();
     }
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
+        // Seed the child-stream read-activity attribute on the parent channel so
+        // the child-side rewrap handler can update it via accumulateAndGet without
+        // having to null-check on every frame. setIfAbsent is a no-op if a prior
+        // handler (e.g. a re-install after handlerRemoved) already created it.
+        ctx.channel()
+            .attr(LAST_CHILD_STREAM_READ_ACTIVITY_NANOS)
+            .setIfAbsent(new AtomicLong(System.nanoTime()));
+
         // Schedule periodic check -- runs on the channel's event loop (single-threaded, no sync needed)
         // Check at interval/2 (min 500ms) to bound worst-case PING send delay to ~1.5× interval.
         long checkIntervalMs = Math.max(500, TimeUnit.NANOSECONDS.toMillis(pingIntervalNanos) / 2);
@@ -124,7 +170,9 @@ public class Http2PingHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        lastActivityNanos = System.nanoTime();
+        // Parent-pipeline inbound frame (PING ACK, SETTINGS, GOAWAY). Counts as
+        // read activity: it is positive evidence the peer is alive and responding.
+        lastReadActivityNanos = System.nanoTime();
         if (msg instanceof Http2PingFrame) {
             Http2PingFrame ping = (Http2PingFrame) msg;
             // RFC 9113 §6.7: PING ACK echoes the 8-byte payload we sent.
@@ -163,6 +211,22 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             return;
         }
 
+        // If a previous PING is still outstanding but actual child-stream reads
+        // have flowed AFTER the PING was sent, the connection is demonstrably
+        // healthy -- the ACK frame itself may have been dropped (e.g. middlebox
+        // filtering PING ACKs, load balancer rebalancing) but the H2 codec is
+        // still delivering application data. Clear the outstanding state to
+        // avoid charging a spurious failure (and eventually a spurious close)
+        // against a connection that is actively serving requests.
+        if (pingOutstandingSinceNanos != 0) {
+            long effective = effectiveLastReadActivityNanos(ctx);
+            if (effective > pingOutstandingSinceNanos) {
+                pingOutstandingSinceNanos = 0;
+                consecutiveFailures = 0;
+                return;
+            }
+        }
+
         // If a previous PING is still outstanding, check whether it has timed out
         if (pingOutstandingSinceNanos != 0) {
             long waitingNanos = System.nanoTime() - pingOutstandingSinceNanos;
@@ -189,10 +253,20 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             return;
         }
 
-        long idleNanos = System.nanoTime() - lastActivityNanos;
+        // Idleness anchor: latest moment we either heard from the peer (read) or
+        // probed it ourselves (own PING). Including lastPingSendNanos prevents a
+        // PING send FAILURE (which clears pingOutstandingSinceNanos in the
+        // writeAndFlush listener) from racing the next 500ms tick into a
+        // rapid-fire PING storm. lastPingSendNanos is intentionally excluded from
+        // effectiveLastReadActivityNanos() so the "did the peer respond?" signal
+        // used by the outstanding-PING early-return above stays pure.
+        long now = System.nanoTime();
+        long idleAnchor = Math.max(effectiveLastReadActivityNanos(ctx), lastPingSendNanos);
+        long idleNanos = now - idleAnchor;
         if (idleNanos >= pingIntervalNanos) {
             int count = ++pingsSent;
-            pingOutstandingSinceNanos = System.nanoTime();
+            pingOutstandingSinceNanos = now;
+            lastPingSendNanos = now;
             ctx.writeAndFlush(new DefaultHttp2PingFrame(count))
                 .addListener(f -> {
                     if (f.isSuccess()) {
@@ -221,8 +295,6 @@ public class Http2PingHandler extends ChannelDuplexHandler {
                         }
                     }
                 });
-            // Reset activity timestamp so we don't send another PING immediately
-            lastActivityNanos = System.nanoTime();
         }
     }
 
@@ -231,6 +303,33 @@ public class Http2PingHandler extends ChannelDuplexHandler {
             pingTask.cancel(false);
             pingTask = null;
         }
+    }
+
+    /**
+     * Returns the effective last-READ-activity timestamp for idleness and the
+     * outstanding-PING early-return check. This is the max of
+     * (a) {@link #lastReadActivityNanos} (parent-pipeline inbound frames: PING ACK,
+     *     SETTINGS, GOAWAY) and
+     * (b) the {@link #LAST_CHILD_STREAM_READ_ACTIVITY_NANOS} parent-channel attribute
+     *     value (inbound H2 stream reads -- HEADERS/DATA -- observed by
+     *     {@link Http2PingCloseRewrapHandler#channelReadComplete} on child streams).
+     * <p>
+     * Read-only: writes (our own PING sends) are deliberately NOT included here
+     * because the purpose of the PING is to detect a peer that has stopped
+     * responding -- only inbound frames are positive evidence of liveness. The
+     * separate {@link #lastPingSendNanos} field tracks our own probes for the
+     * send-throttle in {@link #maybeSendPing}; it is combined with this value
+     * there but not here.
+     * <p>
+     * The attribute should never be null in practice (it is seeded in
+     * {@link #handlerAdded}), but defensive null-handling is cheap and avoids an NPE
+     * if the channel was somehow torn down between attribute seeding and the
+     * scheduled task firing.
+     */
+    private long effectiveLastReadActivityNanos(ChannelHandlerContext ctx) {
+        AtomicLong childReadActivity = ctx.channel().attr(LAST_CHILD_STREAM_READ_ACTIVITY_NANOS).get();
+        long childNanos = childReadActivity != null ? childReadActivity.get() : 0L;
+        return Math.max(lastReadActivityNanos, childNanos);
     }
 
     /**
