@@ -3,6 +3,7 @@ import tempfile
 import unittest
 
 from generate import update_revapi_skip
+from utils import is_first_release
 
 POM_WITH_REVAPI_TRUE = """\
 <project>
@@ -78,6 +79,59 @@ class TestUpdateRevapiSkip(unittest.TestCase):
         result = self._write_and_update(POM_WITHOUT_REVAPI, beta=False)
         self.assertNotIn("revapi.skip", result)
         self.assertEqual(result, POM_WITHOUT_REVAPI)
+
+
+class TestIsFirstRelease(unittest.TestCase):
+
+    GROUP = "com.azure.resourcemanager"
+    MODULE = "azure-resourcemanager-foo"
+
+    def _make_sdk_root(self, version_file_content):
+        sdk_root = tempfile.mkdtemp()
+        versioning_dir = os.path.join(sdk_root, "eng", "versioning")
+        os.makedirs(versioning_dir, exist_ok=True)
+        if version_file_content is not None:
+            with open(os.path.join(versioning_dir, "version_client.txt"), "w") as f:
+                f.write(version_file_content)
+        return sdk_root
+
+    def test_entry_missing_returns_true(self):
+        content = (
+            "# comment line\n"
+            "com.azure.resourcemanager:azure-resourcemanager-other;1.2.0;1.2.0\n"
+        )
+        sdk_root = self._make_sdk_root(content)
+        self.assertTrue(is_first_release(sdk_root, self.GROUP, self.MODULE))
+
+    def test_entry_with_default_versions_returns_true(self):
+        content = (
+            "com.azure.resourcemanager:azure-resourcemanager-foo;1.0.0-beta.1;1.0.0-beta.1\n"
+        )
+        sdk_root = self._make_sdk_root(content)
+        self.assertTrue(is_first_release(sdk_root, self.GROUP, self.MODULE))
+
+    def test_entry_with_published_stable_returns_false(self):
+        content = (
+            "com.azure.resourcemanager:azure-resourcemanager-foo;1.2.0;1.3.0-beta.1\n"
+        )
+        sdk_root = self._make_sdk_root(content)
+        self.assertFalse(is_first_release(sdk_root, self.GROUP, self.MODULE))
+
+    def test_entry_with_bumped_beta_returns_false(self):
+        content = (
+            "com.azure.resourcemanager:azure-resourcemanager-foo;1.0.0-beta.2;1.0.0-beta.2\n"
+        )
+        sdk_root = self._make_sdk_root(content)
+        self.assertFalse(is_first_release(sdk_root, self.GROUP, self.MODULE))
+
+    def test_malformed_entry_returns_false(self):
+        content = "com.azure.resourcemanager:azure-resourcemanager-foo;1.0.0-beta.1\n"
+        sdk_root = self._make_sdk_root(content)
+        self.assertFalse(is_first_release(sdk_root, self.GROUP, self.MODULE))
+
+    def test_missing_file_returns_false(self):
+        sdk_root = self._make_sdk_root(None)
+        self.assertFalse(is_first_release(sdk_root, self.GROUP, self.MODULE))
 
 
 if __name__ == "__main__":
