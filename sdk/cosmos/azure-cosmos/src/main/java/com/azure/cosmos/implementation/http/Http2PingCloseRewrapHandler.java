@@ -8,7 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * Per-request HTTP/2 child-stream handler that translates a parent-TCP-channel close
+ * Per-child-stream HTTP/2 handler that translates a parent-TCP-channel close
  * driven by {@link Http2PingHandler} into a typed {@link Http2PingTimeoutChannelClosedException}.
  * <p>
  * Installed at the head of each H2 child-stream pipeline by
