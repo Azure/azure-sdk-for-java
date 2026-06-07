@@ -223,8 +223,7 @@ public class ReactorNettyClient implements HttpClient {
                             // Duplicate handler name is the only possible cause.
                         }
                     }
-                }))
-                .doOnRequest((req, conn) -> {
+
                     // Install a @Sharable head-of-pipeline rewrap handler on each H2
                     // child-stream pipeline. When Http2PingHandler closes the parent
                     // (TCP) channel after consecutive PING-ACK timeouts or PING-send
@@ -237,21 +236,31 @@ public class ReactorNettyClient implements HttpClient {
                     // stack maps that to GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED so
                     // ClientRetryPolicy can suppress region mark-down.
                     //
+                    // doOnConnected fires once per child stream channel (the existing
+                    // customHeaderCleaner install above relies on the same contract), so
+                    // this install is amortized to one-time per stream rather than
+                    // per-request -- avoids the operator-wrap + per-request pipeline
+                    // walk that the prior .doOnRequest()-based install paid on every
+                    // HTTP call.
+                    //
                     // Gate on ch.parent() != null so this only runs on H2 child streams
-                    // (H1.1 connections have null parent and never need the rewrap).
-                    Channel ch = conn.channel();
-                    if (ch.parent() != null && ch.pipeline().get(Http2PingCloseRewrapHandler.HANDLER_NAME) == null) {
+                    // (the parent TCP channel uses Http2ParentChannelExceptionHandler
+                    // installed above; H1.1 connections never enter this branch since
+                    // the entire enclosing block is guarded by isH2Enabled).
+                    Channel ch = connection.channel();
+                    if (ch.parent() != null
+                        && channelPipeline.get(Http2PingCloseRewrapHandler.HANDLER_NAME) == null) {
                         try {
-                            ch.pipeline().addFirst(
+                            channelPipeline.addFirst(
                                 Http2PingCloseRewrapHandler.HANDLER_NAME,
                                 Http2PingCloseRewrapHandler.INSTANCE);
                         } catch (IllegalArgumentException ignored) {
                             // TOCTOU race: between the get()==null check above and addFirst(),
-                            // a concurrent doOnRequest may have installed the handler.
+                            // a concurrent doOnConnected may have installed the handler.
                             // Duplicate handler name is the only possible cause.
                         }
                     }
-                });
+                }));
         }
     }
 
