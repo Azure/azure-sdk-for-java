@@ -247,8 +247,20 @@ public class ReactorNettyClient implements HttpClient {
                     // (the parent TCP channel uses Http2ParentChannelExceptionHandler
                     // installed above; H1.1 connections never enter this branch since
                     // the entire enclosing block is guarded by isH2Enabled).
+                    //
+                    // Also gate on Http2PingHandler.isPingHealthEffectivelyEnabled: the
+                    // rewrap handler exists only to translate channelInactive into a typed
+                    // Http2PingTimeoutChannelClosedException when the PING sender closes
+                    // the parent channel after consecutive PING-ACK timeouts. If the PING
+                    // sender is disabled (via COSMOS.HTTP2_PING_HEALTH_ENABLED=false or the
+                    // user-agent feature flag), the rewrap handler has no signal to translate
+                    // -- installing it would add per-child-stream pipeline-add cost and an
+                    // extra pipeline hop for every inbound frame without any behavioral
+                    // benefit. The gate consolidates the install lifecycle with the rest of
+                    // the PING-health feature so the kill-switch is a true revert-to-baseline.
                     Channel ch = connection.channel();
                     if (ch.parent() != null
+                        && Http2PingHandler.isPingHealthEffectivelyEnabled(http2Cfg)
                         && channelPipeline.get(Http2PingCloseRewrapHandler.HANDLER_NAME) == null) {
                         try {
                             channelPipeline.addFirst(
