@@ -7,6 +7,8 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Per-request HTTP/2 child-stream handler that translates a parent-TCP-channel close
  * driven by {@link Http2PingHandler} into a typed {@link Http2PingTimeoutChannelClosedException}.
@@ -39,6 +41,46 @@ final class Http2PingCloseRewrapHandler extends ChannelInboundHandlerAdapter {
     static final Http2PingCloseRewrapHandler INSTANCE = new Http2PingCloseRewrapHandler();
 
     private Http2PingCloseRewrapHandler() {}
+
+    /**
+     * Records inbound H2 stream reads on the parent channel so the PING handler
+     * can recognize a busy connection as non-idle and skip the PING send.
+     * <p>
+     * {@code channelReadComplete} fires at the end of each inbound read cycle on
+     * the child channel -- so this method stamps the parent attribute exactly once
+     * per batch of HEADERS/DATA frames demuxed by {@link io.netty.handler.codec.http2.Http2MultiplexHandler},
+     * not once per frame. Under normal load this is plenty of granularity to
+     * suppress unnecessary PINGs without becoming a hot-path allocator.
+     * <p>
+     * Edge cases:
+     * <ul>
+     *   <li><b>Backpressure / autoRead off</b>: {@link io.netty.handler.codec.http2.Http2MultiplexHandler} may
+     *       buffer frames in the child's inbound queue and defer dispatch. In that
+     *       case {@code channelReadComplete} may fire later than the wire-arrival
+     *       time, but it WILL fire when the read cycle ends. Worst case: one benign
+     *       extra PING during the brief buffering window.</li>
+     *   <li><b>Non-H2 channels</b>: this handler is only installed on H2 child
+     *       streams (where {@code ch.parent() != null}), so the parent reference
+     *       above is non-null in normal operation. Defensive null-check kept for
+     *       safety if the install topology ever changes.</li>
+     * </ul>
+     * Uses {@code accumulateAndGet(now, Math::max)} so concurrent updates from
+     * sibling child streams remain monotonic (in practice child streams sharing a
+     * parent run on the same event loop, so contention is nil; the monotonic
+     * semantics document intent and future-proof against multi-event-loop
+     * scenarios).
+     */
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        Channel parent = ctx.channel().parent();
+        if (parent != null) {
+            AtomicLong holder = parent.attr(Http2PingHandler.LAST_CHILD_STREAM_READ_ACTIVITY_NANOS).get();
+            if (holder != null) {
+                holder.accumulateAndGet(System.nanoTime(), Math::max);
+            }
+        }
+        super.channelReadComplete(ctx);
+    }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {

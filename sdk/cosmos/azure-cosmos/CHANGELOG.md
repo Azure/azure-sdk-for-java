@@ -12,6 +12,7 @@
 #### Bugs Fixed
 * Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
 * Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
+* Fixed HTTP/2 PING keepalive handler (introduced in [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)) so it observes child-stream HEADERS/DATA reads via `Http2PingCloseRewrapHandler.channelReadComplete`, preventing spurious PINGs (and spurious closes) on connections actively serving requests through `Http2MultiplexHandler`.
 
 #### Other Changes
 * Added HTTP/2 PING keepalive (default ON) for Gateway service endpoints to detect silently-broken connections. - See [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)
