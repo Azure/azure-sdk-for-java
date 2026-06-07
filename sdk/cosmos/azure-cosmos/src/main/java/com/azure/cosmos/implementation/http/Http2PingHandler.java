@@ -52,7 +52,8 @@ public class Http2PingHandler extends ChannelDuplexHandler {
      * <p>
      * Consumed by {@link Http2PingCloseRewrapHandler}, a {@code @Sharable} handler
      * installed at the head of each H2 child-stream pipeline by {@code
-     * ReactorNettyClient.doOnRequest(...)}. When the parent channel closes with this
+     * ReactorNettyClient}'s {@code .observe(...)} hook on {@code STREAM_CONFIGURED}. When
+     * the parent channel closes with this
      * attribute set, the rewrap handler fires {@code exceptionCaught} with a typed
      * {@link Http2PingTimeoutChannelClosedException} so the in-flight request's
      * response {@code Mono} fails with the typed exception (instead of a bare

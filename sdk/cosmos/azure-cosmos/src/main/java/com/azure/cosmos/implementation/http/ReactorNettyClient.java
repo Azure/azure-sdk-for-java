@@ -224,55 +224,60 @@ public class ReactorNettyClient implements HttpClient {
                         }
                     }
 
+                }))
+                .observe((connection, state) -> {
                     // Install a @Sharable head-of-pipeline rewrap handler on each H2
-                    // child-stream pipeline. When Http2PingHandler closes the parent
-                    // (TCP) channel after consecutive PING-ACK timeouts or PING-send
-                    // failures, the H2 multiplex codec propagates channelInactive to
-                    // every child stream; the rewrap handler intercepts that and fires
-                    // exceptionCaught with a typed
-                    // Http2PingTimeoutChannelClosedException so reactor-netty's
-                    // HttpClientOperations fails the response Mono with the typed
-                    // exception (instead of bare PrematureCloseException). The rest of the
-                    // stack maps that to GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED so
-                    // ClientRetryPolicy can suppress region mark-down.
+                    // child-stream pipeline. STREAM_CONFIGURED is the per-child-stream
+                    // lifecycle event reactor-netty fires once when a stream is opened, so
+                    // connection.channel() here is the child stream (its parent is the
+                    // parent TCP channel). doOnConnected cannot be used for this install:
+                    // it fires only on the parent TCP channel (State.CONFIGURED) and never
+                    // on a child stream, so a ch.parent() != null gate inside doOnConnected
+                    // would never be satisfied and the handler would never install.
                     //
-                    // doOnConnected fires once per child stream channel (the existing
-                    // customHeaderCleaner install above relies on the same contract), so
-                    // this install is amortized to one-time per stream rather than
-                    // per-request -- avoids the operator-wrap + per-request pipeline
-                    // walk that the prior .doOnRequest()-based install paid on every
-                    // HTTP call.
+                    // The rewrap MUST live on the child stream pipeline, not the parent.
+                    // When Http2PingHandler closes the parent (TCP) channel after
+                    // consecutive PING-ACK timeouts or PING-send failures, the H2 multiplex
+                    // codec propagates channelInactive to each child stream independently.
+                    // Child streams are separate Netty Channels, so that close does not
+                    // surface on the parent pipeline -- reactor-netty's per-stream
+                    // HttpClientOperations turns the child channelInactive into a bare
+                    // PrematureCloseException. This head-of-child-pipeline handler
+                    // intercepts channelInactive first and fires exceptionCaught with a
+                    // typed Http2PingTimeoutChannelClosedException before HttpClientOperations
+                    // observes the close, so the response Mono fails with the typed
+                    // exception. The rest of the stack maps that to
+                    // GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED so ClientRetryPolicy can
+                    // suppress region mark-down.
                     //
-                    // Gate on ch.parent() != null so this only runs on H2 child streams
-                    // (the parent TCP channel uses Http2ParentChannelExceptionHandler
-                    // installed above; H1.1 connections never enter this branch since
-                    // the entire enclosing block is guarded by isH2Enabled).
-                    //
-                    // Also gate on Http2PingHandler.isPingHealthEffectivelyEnabled: the
-                    // rewrap handler exists only to translate channelInactive into a typed
-                    // Http2PingTimeoutChannelClosedException when the PING sender closes
-                    // the parent channel after consecutive PING-ACK timeouts. If the PING
-                    // sender is disabled (via COSMOS.HTTP2_PING_HEALTH_ENABLED=false or the
-                    // user-agent feature flag), the rewrap handler has no signal to translate
-                    // -- installing it would add per-child-stream pipeline-add cost and an
-                    // extra pipeline hop for every inbound frame without any behavioral
-                    // benefit. The gate consolidates the install lifecycle with the rest of
-                    // the PING-health feature so the kill-switch is a true revert-to-baseline.
-                    Channel ch = connection.channel();
-                    if (ch.parent() != null
-                        && Http2PingHandler.isPingHealthEffectivelyEnabled(http2Cfg)
-                        && channelPipeline.get(Http2PingCloseRewrapHandler.HANDLER_NAME) == null) {
-                        try {
-                            channelPipeline.addFirst(
-                                Http2PingCloseRewrapHandler.HANDLER_NAME,
-                                Http2PingCloseRewrapHandler.INSTANCE);
-                        } catch (IllegalArgumentException ignored) {
-                            // TOCTOU race: between the get()==null check above and addFirst(),
-                            // a concurrent doOnConnected may have installed the handler.
-                            // Duplicate handler name is the only possible cause.
+                    // Gate on Http2PingHandler.isPingHealthEffectivelyEnabled: the rewrap
+                    // handler only has a signal to translate while the PING sender is active.
+                    // If PING-health is disabled (via COSMOS.HTTP2_PING_HEALTH_ENABLED=false
+                    // or the user-agent feature flag), skip the install so the kill-switch is
+                    // a true revert-to-baseline with no extra per-stream pipeline hop. This
+                    // gate is evaluated once per stream at install time; toggling the
+                    // kill-switch on at runtime only affects streams configured afterwards.
+                    // Streams are single-use, so behavior converges within one stream lifetime.
+                    if (state == HttpClientState.STREAM_CONFIGURED
+                        && Http2PingHandler.isPingHealthEffectivelyEnabled(http2Cfg)) {
+                        Channel ch = connection.channel();
+                        ChannelPipeline childPipeline = ch.pipeline();
+                        // STREAM_CONFIGURED implies a child stream, so ch.parent() is the
+                        // parent TCP channel; the null-check is defensive.
+                        if (ch.parent() != null
+                            && childPipeline.get(Http2PingCloseRewrapHandler.HANDLER_NAME) == null) {
+                            try {
+                                childPipeline.addFirst(
+                                    Http2PingCloseRewrapHandler.HANDLER_NAME,
+                                    Http2PingCloseRewrapHandler.INSTANCE);
+                            } catch (IllegalArgumentException ignored) {
+                                // Benign duplicate install: another install path may have
+                                // added the handler between the get()==null check above and
+                                // addFirst(). A duplicate handler name is the only cause.
+                            }
                         }
                     }
-                }));
+                });
         }
     }
 
