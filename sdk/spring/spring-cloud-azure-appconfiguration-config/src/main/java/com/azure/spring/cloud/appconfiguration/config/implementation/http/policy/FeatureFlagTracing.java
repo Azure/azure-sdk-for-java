@@ -71,19 +71,17 @@ public class FeatureFlagTracing {
     }
 
     /**
-     * Sets whether telemetry is used.
-     * @param usesTelemetry whether telemetry is used
+     * Marks telemetry as used.
      */
-    public void setUsesTelemetry(Boolean usesTelemetry) {
-        this.usesTelemetry = usesTelemetry;
+    public void setUsesTelemetry() {
+        this.usesTelemetry = true;
     }
 
     /**
-     * Sets whether seed is used.
-     * @param usesSeed whether seed is used
+     * Marks seed as used.
      */
-    public void setUsesSeed(Boolean usesSeed) {
-        this.usesSeed = usesSeed;
+    public void setUsesSeed() {
+        this.usesSeed = true;
     }
 
     /**

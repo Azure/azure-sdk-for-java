@@ -161,7 +161,7 @@ public class AppConfigurationReplicaClientsBuilder {
         if (configStore.isLoadBalancingEnabled()) {
             Collections.shuffle(clients);
             for (AppConfigurationReplicaClient client : clients) {
-                client.getTracingInfo().setUsesLoadBalancing(true);
+                client.getTracingInfo().setUsesLoadBalancing();
             }
         }
 

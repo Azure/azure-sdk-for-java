@@ -67,7 +67,7 @@ public class TracingInfoTest {
     public void loadBalancingTracingTest() {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
-        tracingInfo.setUsesLoadBalancing(true);
+        tracingInfo.setUsesLoadBalancing();
         String value = tracingInfo.getValue(false, false, null);
         assertTrue(value.contains("Features=LB"));
     }
@@ -142,7 +142,7 @@ public class TracingInfoTest {
     public void multipleFeaturesTracingTest() {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
-        tracingInfo.setUsesLoadBalancing(true);
+        tracingInfo.setUsesLoadBalancing();
         tracingInfo.updateAiConfigurationTracing("application/json; profile=\"https://azconfig.io/mime-profiles/ai\"");
         String value = tracingInfo.getValue(false, false, null);
         assertTrue(value.contains("Features=LB+AI"));
@@ -152,7 +152,7 @@ public class TracingInfoTest {
     public void failoverTracingTest() {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
-        tracingInfo.setFailoverRequest(true);
+        tracingInfo.setFailoverRequest();
         String value = tracingInfo.getValue(false, false, null);
         assertTrue(value.contains("Failover"));
     }
@@ -172,8 +172,8 @@ public class TracingInfoTest {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
         FeatureFlagTracing ffTracing = new FeatureFlagTracing();
-        ffTracing.setUsesTelemetry(true);
-        ffTracing.setUsesSeed(true);
+        ffTracing.setUsesTelemetry();
+        ffTracing.setUsesSeed();
         String value = tracingInfo.getValue(false, false, ffTracing);
         assertTrue(value.contains("FFFeatures=Seed+Telemetry"));
     }
@@ -182,12 +182,12 @@ public class TracingInfoTest {
     public void fullCorrelationContextTest() {
         Configuration configuration = getConfiguration("false");
         TracingInfo tracingInfo = new TracingInfo(true, 2, configuration);
-        tracingInfo.setUsesLoadBalancing(true);
-        tracingInfo.setFailoverRequest(true);
+        tracingInfo.setUsesLoadBalancing();
+        tracingInfo.setFailoverRequest();
 
         FeatureFlagTracing ffTracing = new FeatureFlagTracing();
         ffTracing.updateFeatureFilterTelemetry("Targeting");
-        ffTracing.setUsesTelemetry(true);
+        ffTracing.setUsesTelemetry();
         ffTracing.updateMaxVariants(3);
 
         String value = tracingInfo.getValue(false, true, ffTracing);

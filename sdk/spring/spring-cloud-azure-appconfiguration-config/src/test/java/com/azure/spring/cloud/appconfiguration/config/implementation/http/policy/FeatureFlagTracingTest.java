@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
 public class FeatureFlagTracingTest {
@@ -174,7 +173,7 @@ public class FeatureFlagTracingTest {
         FeatureFlagTracing tracing = new FeatureFlagTracing();
         assertEquals("", tracing.createFFFeaturesString());
 
-        tracing.setUsesTelemetry(true);
+        tracing.setUsesTelemetry();
         assertEquals("Telemetry", tracing.createFFFeaturesString());
 
         tracing.resetFeatureFilterTelemetry();
@@ -186,7 +185,7 @@ public class FeatureFlagTracingTest {
         FeatureFlagTracing tracing = new FeatureFlagTracing();
         assertEquals("", tracing.createFFFeaturesString());
 
-        tracing.setUsesSeed(true);
+        tracing.setUsesSeed();
         assertEquals("Seed", tracing.createFFFeaturesString());
 
         tracing.resetFeatureFilterTelemetry();
@@ -196,8 +195,8 @@ public class FeatureFlagTracingTest {
     @Test
     public void usesSeedAndTelemetry() {
         FeatureFlagTracing tracing = new FeatureFlagTracing();
-        tracing.setUsesSeed(true);
-        tracing.setUsesTelemetry(true);
+        tracing.setUsesSeed();
+        tracing.setUsesTelemetry();
         assertEquals("Seed+Telemetry", tracing.createFFFeaturesString());
 
         tracing.resetFeatureFilterTelemetry();

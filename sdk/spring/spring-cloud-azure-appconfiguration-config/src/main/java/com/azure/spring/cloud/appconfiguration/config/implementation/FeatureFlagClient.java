@@ -216,14 +216,14 @@ class FeatureFlagClient {
             if (telemetryNode != null && !telemetryNode.isEmpty()) {
                 JsonNode enabledNode = telemetryNode.get("enabled");
                 if (enabledNode != null && enabledNode.asBoolean()) {
-                    tracing.setUsesTelemetry(true);
+                    tracing.setUsesTelemetry();
                 }
             }
 
             // Check for allocation seed
             JsonNode allocationNode = node.get("allocation");
             if (allocationNode != null && allocationNode.has("seed")) {
-                tracing.setUsesSeed(true);
+                tracing.setUsesSeed();
             }
 
             // Track max variants

@@ -45,19 +45,17 @@ public class TracingInfo {
     }
 
     /**
-     * Sets whether load balancing is enabled.
-     * @param usesLoadBalancing whether load balancing is enabled
+     * Marks load balancing as enabled.
      */
-    public void setUsesLoadBalancing(boolean usesLoadBalancing) {
-        this.usesLoadBalancing = usesLoadBalancing;
+    public void setUsesLoadBalancing() {
+        this.usesLoadBalancing = true;
     }
 
     /**
-     * Sets whether this is a failover request.
-     * @param isFailoverRequest whether this is a failover request
+     * Marks the next request as a failover request.
      */
-    public void setFailoverRequest(boolean isFailoverRequest) {
-        this.isFailoverRequest = isFailoverRequest;
+    public void setFailoverRequest() {
+        this.isFailoverRequest = true;
     }
 
     /**
