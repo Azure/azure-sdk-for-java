@@ -91,6 +91,9 @@ class FeatureFlagClient {
         List<String> labels = Arrays.asList(labelFilter);
         Collections.reverse(labels);
 
+        // Context is immutable, the returned instance is the one carrying the tracing data to the pipeline policy.
+        Context featureFlagContext = context.addData("FeatureFlagTracing", tracing);
+
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
 
@@ -98,9 +101,7 @@ class FeatureFlagClient {
                 settingSelector.setTagsFilter(tagsFilter);
             }
 
-            context.addData("FeatureFlagTracing", tracing);
-
-            WatchedConfigurationSettings features = replicaClient.listFeatureFlags(settingSelector, context);
+            WatchedConfigurationSettings features = replicaClient.listFeatureFlags(settingSelector, featureFlagContext);
             loadedFeatureFlags.add(proccessFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
@@ -202,6 +203,34 @@ class FeatureFlagClient {
     private void updateTelemetry(FeatureFlagConfigurationSetting featureFlag) {
         for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
             tracing.updateFeatureFilterTelemetry(filter.getName());
+        }
+
+        // Track telemetry and seed usage from the feature flag value
+        try {
+            JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(featureFlag.getValue());
+
+            // Check for telemetry enabled
+            JsonNode telemetryNode = node.get(TELEMETRY);
+            if (telemetryNode != null && !telemetryNode.isEmpty()) {
+                JsonNode enabledNode = telemetryNode.get("enabled");
+                if (enabledNode != null && enabledNode.asBoolean()) {
+                    tracing.setUsesTelemetry();
+                }
+            }
+
+            // Check for allocation seed
+            JsonNode allocationNode = node.get("allocation");
+            if (allocationNode != null && allocationNode.has("seed")) {
+                tracing.setUsesSeed();
+            }
+
+            // Track max variants
+            JsonNode variantsNode = node.get("variants");
+            if (variantsNode != null && variantsNode.isArray()) {
+                tracing.updateMaxVariants(variantsNode.size());
+            }
+        } catch (JsonProcessingException e) {
+            LOGGER.warn("Error parsing feature flag telemetry for key: {}", featureFlag.getKey(), e);
         }
     }
 
