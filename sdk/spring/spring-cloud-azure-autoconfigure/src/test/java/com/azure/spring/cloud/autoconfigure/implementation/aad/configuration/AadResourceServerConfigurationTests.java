@@ -4,10 +4,14 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jose.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
+import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -88,6 +92,22 @@ class AadResourceServerConfigurationTests {
     }
 
     @Test
+    void testJwtDecoderCacheDefaultValues() {
+        resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwkSetCacheLifespan()).isEqualTo(Duration.ofMinutes(5));
+                assertThat(properties.getJwkSetCacheRefreshTime()).isEqualTo(Duration.ofMinutes(5));
+
+                JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                verifyJwtDecoderCacheDurations(jwtDecoder,
+                    Duration.ofMinutes(5).toMillis(),
+                    Duration.ofMinutes(5).toMillis());
+            });
+    }
+
+    @Test
     void testJwtDecoderTimeoutCustomValues() {
         resourceServerContextRunner()
             .withPropertyValues(
@@ -104,6 +124,25 @@ class AadResourceServerConfigurationTests {
                 assertThat(jwtDecoder).isExactlyInstanceOf(NimbusJwtDecoder.class);
                 // Verify the configured timeouts are applied to the RestTemplate used by the JwtDecoder
                 verifyJwtDecoderRestTemplateTimeouts(jwtDecoder, 2000, 3000);
+            });
+    }
+
+    @Test
+    void testJwtDecoderCacheCustomValues() {
+        resourceServerContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.jwk-set-cache-lifespan=12m",
+                "spring.cloud.azure.active-directory.jwk-set-cache-refresh-time=34s")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertThat(properties.getJwkSetCacheLifespan()).isEqualTo(Duration.ofMinutes(12));
+                assertThat(properties.getJwkSetCacheRefreshTime()).isEqualTo(Duration.ofSeconds(34));
+
+                JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
+                verifyJwtDecoderCacheDurations(jwtDecoder,
+                    Duration.ofMinutes(12).toMillis(),
+                    Duration.ofSeconds(34).toMillis());
             });
     }
 
@@ -406,38 +445,21 @@ class AadResourceServerConfigurationTests {
     }
 
     /**
-     * Verifies that the RestTemplate used by the NimbusJwtDecoder for JWK retrieval
-     * has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
+     * Verifies that the NimbusJwtDecoder uses the expected JWK retrieval path and that the RestTemplate
+     * backing it has the expected connect and read timeouts applied to its ClientHttpRequestFactory.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("deprecation")
     private static void verifyJwtDecoderRestTemplateTimeouts(JwtDecoder jwtDecoder,
                                                              int expectedConnectTimeoutMs,
                                                              int expectedReadTimeoutMs) {
-        // NimbusJwtDecoder -> jwtProcessor (DefaultJWTProcessor)
-        Object jwtProcessor = ReflectionTestUtils.getField(jwtDecoder, "jwtProcessor");
-        assertThat(jwtProcessor).isInstanceOf(com.nimbusds.jwt.proc.DefaultJWTProcessor.class);
-
-        // DefaultJWTProcessor -> JWSKeySelector (JWSVerificationKeySelector)
-        com.nimbusds.jose.proc.JWSKeySelector<?> keySelector =
-            ((com.nimbusds.jwt.proc.DefaultJWTProcessor<?>) jwtProcessor).getJWSKeySelector();
-        assertThat(keySelector).isInstanceOf(com.nimbusds.jose.proc.JWSVerificationKeySelector.class);
-
-        // JWSVerificationKeySelector -> JWKSource (JWKSetBasedJWKSource)
-        com.nimbusds.jose.jwk.source.JWKSource<?> jwkSource =
-            ((com.nimbusds.jose.proc.JWSVerificationKeySelector<?>) keySelector).getJWKSource();
-        assertThat(jwkSource).isInstanceOf(com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource.class);
-
-        // JWKSetBasedJWKSource -> JWKSetSource (CachingJWKSetSource -> JWKSetSourceWrapper -> actual source)
-        Object jwkSetSource =
-            ((com.nimbusds.jose.jwk.source.JWKSetBasedJWKSource<?>) jwkSource).getJWKSetSource();
-
-        // Unwrap JWKSetSourceWrapper chain to find the source with restOperations
-        while (jwkSetSource instanceof com.nimbusds.jose.jwk.source.JWKSetSourceWrapper<?> wrapper) {
-            jwkSetSource = wrapper.getSource();
+        RemoteJWKSet<?> remoteJwkSet = getRemoteJwkSet(jwtDecoder);
+        Object resourceRetriever = getFieldIfExists(remoteJwkSet, "resourceRetriever");
+        if (resourceRetriever == null) {
+            resourceRetriever = getFieldIfExists(remoteJwkSet, "jwkSetRetriever");
         }
+        assertThat(resourceRetriever).isInstanceOf(RestOperationsResourceRetriever.class);
 
-        // actual source -> restOperations (RestTemplate)
-        Object restOperations = ReflectionTestUtils.getField(jwkSetSource, "restOperations");
+        Object restOperations = ReflectionTestUtils.getField(resourceRetriever, "restOperations");
         assertThat(restOperations).isInstanceOf(org.springframework.web.client.RestTemplate.class);
 
         // RestTemplate -> ClientHttpRequestFactory
@@ -447,9 +469,51 @@ class AadResourceServerConfigurationTests {
         // Verify timeouts on the request factory (may be stored as Duration or int)
         Object connectTimeoutValue = ReflectionTestUtils.getField(requestFactory, "connectTimeout");
         Object readTimeoutValue = ReflectionTestUtils.getField(requestFactory, "readTimeout");
-        int connectTimeout = connectTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) connectTimeoutValue;
-        int readTimeout = readTimeoutValue instanceof java.time.Duration d ? (int) d.toMillis() : (int) readTimeoutValue;
+        int connectTimeout = connectTimeoutValue instanceof Duration d ? (int) d.toMillis() : (int) connectTimeoutValue;
+        int readTimeout = readTimeoutValue instanceof Duration d ? (int) d.toMillis() : (int) readTimeoutValue;
         assertThat(connectTimeout).isEqualTo(expectedConnectTimeoutMs);
         assertThat(readTimeout).isEqualTo(expectedReadTimeoutMs);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void verifyJwtDecoderCacheDurations(JwtDecoder jwtDecoder,
+                                                       long expectedCacheLifespanMs,
+                                                       long expectedCacheRefreshTimeMs) {
+        JWKSetCache jwkSetCache = getRemoteJwkSet(jwtDecoder).getJWKSetCache();
+        assertThat(jwkSetCache).isInstanceOf(DefaultJWKSetCache.class);
+
+        DefaultJWKSetCache defaultJwkSetCache = (DefaultJWKSetCache) jwkSetCache;
+        assertThat(defaultJwkSetCache.getLifespan(java.util.concurrent.TimeUnit.MILLISECONDS))
+            .isEqualTo(expectedCacheLifespanMs);
+        assertThat(defaultJwkSetCache.getRefreshTime(java.util.concurrent.TimeUnit.MILLISECONDS))
+            .isEqualTo(expectedCacheRefreshTimeMs);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static RemoteJWKSet<?> getRemoteJwkSet(JwtDecoder jwtDecoder) {
+        Object jwkSource = getJwkSource(jwtDecoder);
+        assertThat(jwkSource).isInstanceOf(RemoteJWKSet.class);
+        return (RemoteJWKSet<?>) jwkSource;
+    }
+
+    private static Object getJwkSource(JwtDecoder jwtDecoder) {
+        Object jwtProcessor = ReflectionTestUtils.getField(jwtDecoder, "jwtProcessor");
+        assertThat(jwtProcessor).isInstanceOf(com.nimbusds.jwt.proc.DefaultJWTProcessor.class);
+
+        com.nimbusds.jose.proc.JWSKeySelector<?> keySelector =
+            ((com.nimbusds.jwt.proc.DefaultJWTProcessor<?>) jwtProcessor).getJWSKeySelector();
+        assertThat(keySelector).isInstanceOf(com.nimbusds.jose.proc.JWSVerificationKeySelector.class);
+
+        com.nimbusds.jose.jwk.source.JWKSource<?> jwkSource =
+            ((com.nimbusds.jose.proc.JWSVerificationKeySelector<?>) keySelector).getJWKSource();
+        return jwkSource;
+    }
+
+    private static Object getFieldIfExists(Object target, String name) {
+        try {
+            return ReflectionTestUtils.getField(target, name);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
     }
 }
