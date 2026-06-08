@@ -1002,15 +1002,4 @@ public final class AIProjectClientBuilder
             return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
         }
     }
-
-    /**
-     * Sets A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     *
-     * @param foundryFeatures the foundryFeatures value.
-     * @return the AIProjectClientBuilder.
-     */
-    private AIProjectClientBuilder foundryFeatures(FoundryFeaturesOptInKeys foundryFeatures) {
-        this.foundryFeatures = foundryFeatures;
-        return this;
-    }
 }

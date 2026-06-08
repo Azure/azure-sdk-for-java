@@ -49,7 +49,7 @@ public final class EvaluationRulesAsyncClient {
      *
      * Retrieves the specified evaluation rule and its configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -112,7 +112,7 @@ public final class EvaluationRulesAsyncClient {
      *
      * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -133,9 +133,9 @@ public final class EvaluationRulesAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -189,7 +189,7 @@ public final class EvaluationRulesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -284,6 +284,7 @@ public final class EvaluationRulesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return evaluation rule model on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EvaluationRule> createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule) {
         // Generated convenience method for createOrUpdateEvaluationRuleWithResponse

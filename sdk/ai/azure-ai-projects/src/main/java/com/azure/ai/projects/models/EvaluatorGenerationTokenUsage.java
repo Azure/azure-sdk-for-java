@@ -43,7 +43,7 @@ public final class EvaluatorGenerationTokenUsage implements JsonSerializable<Eva
      * @param totalTokens the totalTokens value to set.
      */
     @Generated
-    public EvaluatorGenerationTokenUsage(long inputTokens, long outputTokens, long totalTokens) {
+    private EvaluatorGenerationTokenUsage(long inputTokens, long outputTokens, long totalTokens) {
         this.inputTokens = inputTokens;
         this.outputTokens = outputTokens;
         this.totalTokens = totalTokens;

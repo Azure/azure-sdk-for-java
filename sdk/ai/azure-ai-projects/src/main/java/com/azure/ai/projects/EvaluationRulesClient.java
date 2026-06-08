@@ -263,7 +263,9 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * Create or update an evaluation rule.
+     * Create or update an evaluation rule
+     *
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      *
      * @param id Unique identifier for the evaluation rule.
      * @param evaluationRule Evaluation rule resource.
@@ -275,6 +277,7 @@ public final class EvaluationRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return evaluation rule model.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule) {
         // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
