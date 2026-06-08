@@ -9,8 +9,7 @@ metadata:
     # becomes under-utilized. Otherwise long-running scenarios that happen to
     # share a node with quickly-finishing ones get drained ~10 min after the
     # node's utilization drops below the autoscaler's threshold, terminating
-    # the test mid-flight and showing up as Error in the Storage Stress
-    # Dashboard. See Storage Stress Dashboard "Error" remediation notes.
+    # the test mid-flight and showing up as Error in the Storage Stress Dashboard.
     cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
 spec:
   nodeSelector:
