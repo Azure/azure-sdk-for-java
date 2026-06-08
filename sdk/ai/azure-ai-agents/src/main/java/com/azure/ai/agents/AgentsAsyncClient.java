@@ -155,16 +155,6 @@ public final class AgentsAsyncClient {
      * Create an agent version
      *
      * Creates a new version for the specified agent and returns the created version resource.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -488,16 +478,6 @@ public final class AgentsAsyncClient {
      * Create an agent
      *
      * Creates a new agent or a new version of an existing agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -654,16 +634,6 @@ public final class AgentsAsyncClient {
      *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1915,7 +1885,6 @@ public final class AgentsAsyncClient {
     Mono<AgentDetails> createAgent(CreateAgentOptions options) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        AgentDefinitionOptInKeys foundryFeatures = options.getFoundryFeatures();
         CreateAgentRequest createAgentRequestObj
             = new CreateAgentRequest(options.getAgentName(), options.getDefinition()).setMetadata(options.getMetadata())
                 .setDescription(options.getDescription())
@@ -1923,103 +1892,8 @@ public final class AgentsAsyncClient {
                 .setAgentEndpoint(options.getAgentEndpoint())
                 .setAgentCard(options.getAgentCard());
         BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         return createAgentWithResponse(createAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Update an agent
-     *
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @param blueprintReference The blueprint reference for the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description,
-        AgentBlueprintReference blueprintReference) {
-        // Generated convenience method for updateAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition).setMetadata(metadata)
-            .setDescription(description)
-            .setBlueprintReference(blueprintReference);
-        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Create an agent version
-     *
-     * Creates a new version for the specified agent and returns the created version resource.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @param blueprintReference The blueprint reference for the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description,
-        AgentBlueprintReference blueprintReference) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest createAgentVersionRequestObj
-            = new CreateAgentVersionRequest(definition).setMetadata(metadata)
-                .setDescription(description)
-                .setBlueprintReference(blueprintReference);
-        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
     }
 
     /**
@@ -2227,5 +2101,43 @@ public final class AgentsAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Update an agent
+     *
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @param blueprintReference The blueprint reference for the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
+        String description, AgentBlueprintReference blueprintReference) {
+        // Generated convenience method for updateAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition).setMetadata(metadata)
+            .setDescription(description)
+            .setBlueprintReference(blueprintReference);
+        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
+        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 }

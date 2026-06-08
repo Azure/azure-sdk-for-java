@@ -87,10 +87,10 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createToolboxVersion(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createToolboxVersionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createToolboxVersionRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -99,10 +99,10 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createToolboxVersionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createToolboxVersionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createToolboxVersionRequest, RequestOptions requestOptions,
+            Context context);
 
         @Get("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
@@ -111,8 +111,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getToolbox(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
@@ -121,8 +121,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getToolboxSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes")
         @ExpectedResponses({ 200 })
@@ -131,8 +131,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listToolboxes(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes")
         @ExpectedResponses({ 200 })
@@ -141,8 +141,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listToolboxesSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -151,9 +151,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listToolboxVersions(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -162,9 +161,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listToolboxVersionsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -174,8 +172,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getToolboxVersion(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -185,8 +183,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getToolboxVersionSync(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
@@ -195,10 +193,9 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateToolbox(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateToolboxRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/toolboxes/{name}")
         @ExpectedResponses({ 200 })
@@ -207,10 +204,9 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateToolboxSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateToolboxRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateToolboxRequest,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/toolboxes/{name}")
         @ExpectedResponses({ 204 })
@@ -219,8 +215,7 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteToolbox(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Delete("/toolboxes/{name}")
         @ExpectedResponses({ 204 })
@@ -229,8 +224,7 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteToolboxSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Delete("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
@@ -240,8 +234,7 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteToolboxVersion(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Delete("/toolboxes/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
@@ -250,8 +243,8 @@ public final class BetaToolboxesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteToolboxVersionSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @PathParam("version") String version, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -330,12 +323,11 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createToolboxVersionWithResponseAsync(String name,
         BinaryData createToolboxVersionRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createToolboxVersion(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept,
-            createToolboxVersionRequest, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, createToolboxVersionRequest,
+            requestOptions, context));
     }
 
     /**
@@ -414,10 +406,9 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createToolboxVersionWithResponse(String name, BinaryData createToolboxVersionRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createToolboxVersionSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.createToolboxVersionSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, createToolboxVersionRequest,
             requestOptions, Context.NONE);
     }
@@ -449,9 +440,8 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getToolboxWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getToolbox(this.client.getEndpoint(), name, foundryFeatures,
+        return FluxUtil.withContext(context -> service.getToolbox(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -481,10 +471,9 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getToolboxWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        return service.getToolboxSync(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getToolboxSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -533,10 +522,9 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listToolboxesSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listToolboxes(this.client.getEndpoint(), foundryFeatures,
+            .withContext(context -> service.listToolboxes(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -635,9 +623,8 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listToolboxesSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listToolboxesSync(this.client.getEndpoint(), foundryFeatures,
+        Response<BinaryData> res = service.listToolboxesSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -759,10 +746,9 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listToolboxVersionsSinglePageAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listToolboxVersions(this.client.getEndpoint(), name, foundryFeatures,
+            .withContext(context -> service.listToolboxVersions(this.client.getEndpoint(), name,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -903,9 +889,8 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listToolboxVersionsSinglePage(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listToolboxVersionsSync(this.client.getEndpoint(), name, foundryFeatures,
+        Response<BinaryData> res = service.listToolboxVersionsSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -1028,10 +1013,9 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getToolboxVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getToolboxVersion(this.client.getEndpoint(), name, version,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1082,9 +1066,8 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getToolboxVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String accept = "application/json";
-        return service.getToolboxVersionSync(this.client.getEndpoint(), name, version, foundryFeatures,
+        return service.getToolboxVersionSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1127,10 +1110,9 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateToolboxWithResponseAsync(String name, BinaryData updateToolboxRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateToolbox(this.client.getEndpoint(), name, foundryFeatures,
+        return FluxUtil.withContext(context -> service.updateToolbox(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest, requestOptions,
             context));
     }
@@ -1173,12 +1155,10 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateToolboxWithResponse(String name, BinaryData updateToolboxRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateToolboxSync(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, updateToolboxRequest, requestOptions,
-            Context.NONE);
+        return service.updateToolboxSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            contentType, accept, updateToolboxRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1196,8 +1176,7 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteToolboxWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
-        return FluxUtil.withContext(context -> service.deleteToolbox(this.client.getEndpoint(), name, foundryFeatures,
+        return FluxUtil.withContext(context -> service.deleteToolbox(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
@@ -1216,9 +1195,8 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteToolboxWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
-        return service.deleteToolboxSync(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+        return service.deleteToolboxSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1238,9 +1216,8 @@ public final class BetaToolboxesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteToolboxVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
         return FluxUtil.withContext(context -> service.deleteToolboxVersion(this.client.getEndpoint(), name, version,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -1259,8 +1236,7 @@ public final class BetaToolboxesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteToolboxVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        final String foundryFeatures = "Toolboxes=V1Preview";
-        return service.deleteToolboxVersionSync(this.client.getEndpoint(), name, version, foundryFeatures,
+        return service.deleteToolboxVersionSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 

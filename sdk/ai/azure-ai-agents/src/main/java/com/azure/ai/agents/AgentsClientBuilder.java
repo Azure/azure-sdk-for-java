@@ -330,7 +330,7 @@ public final class AgentsClientBuilder
         AgentsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
         AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, this.foundryFeatures, localServiceVersion);
+            this.endpoint, localServiceVersion);
         return client;
     }
 
@@ -690,23 +690,5 @@ public final class AgentsClientBuilder
      */
     private BetaToolboxesClient buildBetaToolboxesClient() {
         return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
-    }
-
-    /*
-     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     */
-    @Generated
-    private FoundryFeaturesOptInKeys foundryFeatures;
-
-    /**
-     * Sets A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     *
-     * @param foundryFeatures the foundryFeatures value.
-     * @return the AgentsClientBuilder.
-     */
-    @Generated
-    public AgentsClientBuilder foundryFeatures(FoundryFeaturesOptInKeys foundryFeatures) {
-        this.foundryFeatures = foundryFeatures;
-        return this;
     }
 }

@@ -93,10 +93,9 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createMemoryStore(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData createMemoryStoreRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryStoreRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/memory_stores")
         @ExpectedResponses({ 200 })
@@ -105,10 +104,9 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createMemoryStoreSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData createMemoryStoreRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryStoreRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/memory_stores/{name}")
         @ExpectedResponses({ 200 })
@@ -117,10 +115,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateMemoryStore(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoryStoreRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMemoryStoreRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/memory_stores/{name}")
         @ExpectedResponses({ 200 })
@@ -129,10 +127,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateMemoryStoreSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoryStoreRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMemoryStoreRequest, RequestOptions requestOptions,
+            Context context);
 
         @Get("/memory_stores/{name}")
         @ExpectedResponses({ 200 })
@@ -141,9 +139,8 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMemoryStore(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/memory_stores/{name}")
         @ExpectedResponses({ 200 })
@@ -151,8 +148,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getMemoryStoreSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Response<BinaryData> getMemoryStoreSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -163,8 +159,8 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMemoryStores(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/memory_stores")
         @ExpectedResponses({ 200 })
@@ -173,8 +169,8 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listMemoryStoresSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/memory_stores/{name}")
         @ExpectedResponses({ 200 })
@@ -183,9 +179,8 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalDeleteMemoryStore(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/memory_stores/{name}")
         @ExpectedResponses({ 200 })
@@ -194,9 +189,8 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalDeleteMemoryStoreSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/memory_stores/{name}:search_memories")
         @ExpectedResponses({ 200 })
@@ -205,10 +199,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalSearchMemories(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData searchMemoriesRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData searchMemoriesRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/memory_stores/{name}:search_memories")
         @ExpectedResponses({ 200 })
@@ -217,10 +211,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalSearchMemoriesSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData searchMemoriesRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData searchMemoriesRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/memory_stores/{name}:update_memories")
         @ExpectedResponses({ 202 })
@@ -229,10 +223,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalUpdateMemories(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoriesRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMemoriesRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/memory_stores/{name}:update_memories")
         @ExpectedResponses({ 202 })
@@ -241,10 +235,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalUpdateMemoriesSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateMemoriesRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData updateMemoriesRequest, RequestOptions requestOptions,
+            Context context);
 
         @Get("/memory_stores/{name}/updates/{update_id}")
         @ExpectedResponses({ 200 })
@@ -253,9 +247,9 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getUpdateResult(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @PathParam("update_id") String updateId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @PathParam("update_id") String updateId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/memory_stores/{name}/updates/{update_id}")
         @ExpectedResponses({ 200 })
@@ -263,8 +257,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getUpdateResultSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Response<BinaryData> getUpdateResultSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @PathParam("update_id") String updateId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -275,10 +268,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalDeleteScope(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData deleteScopeRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData deleteScopeRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/memory_stores/{name}:delete_scope")
         @ExpectedResponses({ 200 })
@@ -287,10 +280,10 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalDeleteScopeSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData deleteScopeRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData deleteScopeRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/memory_stores/{name}/items")
         @ExpectedResponses({ 200 })
@@ -298,8 +291,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createMemory(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Mono<Response<BinaryData>> createMemory(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryRequest,
             RequestOptions requestOptions, Context context);
@@ -310,8 +302,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createMemorySync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Response<BinaryData> createMemorySync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createMemoryRequest,
             RequestOptions requestOptions, Context context);
@@ -322,8 +313,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateMemory(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Mono<Response<BinaryData>> updateMemory(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData updateMemoryRequest, RequestOptions requestOptions,
@@ -335,8 +325,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateMemorySync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Response<BinaryData> updateMemorySync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData updateMemoryRequest, RequestOptions requestOptions,
@@ -348,8 +337,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getMemory(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Mono<Response<BinaryData>> getMemory(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -359,8 +347,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getMemorySync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Response<BinaryData> getMemorySync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -370,8 +357,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMemories(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Mono<Response<BinaryData>> listMemories(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData listMemoriesRequest, RequestOptions requestOptions,
             Context context);
@@ -382,8 +368,7 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listMemoriesSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
+        Response<BinaryData> listMemoriesSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData listMemoriesRequest, RequestOptions requestOptions,
             Context context);
@@ -395,9 +380,9 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalDeleteMemory(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @PathParam("memory_id") String memoryId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/memory_stores/{name}/items/{memory_id}")
         @ExpectedResponses({ 200 })
@@ -406,9 +391,9 @@ public final class BetaMemoryStoresImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalDeleteMemorySync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("name") String name,
-            @PathParam("memory_id") String memoryId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @PathParam("memory_id") String memoryId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -465,10 +450,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createMemoryStoreWithResponseAsync(BinaryData createMemoryStoreRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createMemoryStore(this.client.getEndpoint(), foundryFeatures,
+        return FluxUtil.withContext(context -> service.createMemoryStore(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), contentType, accept, createMemoryStoreRequest, requestOptions,
             context));
     }
@@ -526,12 +510,10 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createMemoryStoreWithResponse(BinaryData createMemoryStoreRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createMemoryStoreSync(this.client.getEndpoint(), foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, createMemoryStoreRequest, requestOptions,
-            Context.NONE);
+        return service.createMemoryStoreSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, createMemoryStoreRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -585,12 +567,11 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMemoryStoreWithResponseAsync(String name,
         BinaryData updateMemoryStoreRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMemoryStore(this.client.getEndpoint(), foundryFeatures,
-            name, this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryStoreRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateMemoryStore(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryStoreRequest, requestOptions,
+            context));
     }
 
     /**
@@ -643,10 +624,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateMemoryStoreWithResponse(String name, BinaryData updateMemoryStoreRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateMemoryStoreSync(this.client.getEndpoint(), foundryFeatures, name,
+        return service.updateMemoryStoreSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryStoreRequest, requestOptions,
             Context.NONE);
     }
@@ -689,9 +669,8 @@ public final class BetaMemoryStoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMemoryStoreWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getMemoryStore(this.client.getEndpoint(), foundryFeatures, name,
+        return FluxUtil.withContext(context -> service.getMemoryStore(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -732,10 +711,9 @@ public final class BetaMemoryStoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.getMemoryStoreSync(this.client.getEndpoint(), foundryFeatures, name,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getMemoryStoreSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -793,10 +771,9 @@ public final class BetaMemoryStoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listMemoryStoresSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listMemoryStores(this.client.getEndpoint(), foundryFeatures,
+            .withContext(context -> service.listMemoryStores(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -913,9 +890,8 @@ public final class BetaMemoryStoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listMemoryStoresSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listMemoryStoresSync(this.client.getEndpoint(), foundryFeatures,
+        Response<BinaryData> res = service.listMemoryStoresSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -1005,10 +981,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> internalDeleteMemoryStoreWithResponseAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalDeleteMemoryStore(this.client.getEndpoint(),
-            foundryFeatures, name, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalDeleteMemoryStore(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1037,9 +1012,8 @@ public final class BetaMemoryStoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> internalDeleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.internalDeleteMemoryStoreSync(this.client.getEndpoint(), foundryFeatures, name,
+        return service.internalDeleteMemoryStoreSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1109,12 +1083,11 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> internalSearchMemoriesWithResponseAsync(String name,
         BinaryData searchMemoriesRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalSearchMemories(this.client.getEndpoint(),
-            foundryFeatures, name, this.client.getServiceVersion().getVersion(), contentType, accept,
-            searchMemoriesRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalSearchMemories(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, searchMemoriesRequest, requestOptions,
+            context));
     }
 
     /**
@@ -1183,10 +1156,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> internalSearchMemoriesWithResponse(String name, BinaryData searchMemoriesRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.internalSearchMemoriesSync(this.client.getEndpoint(), foundryFeatures, name,
+        return service.internalSearchMemoriesSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, searchMemoriesRequest, requestOptions,
             Context.NONE);
     }
@@ -1277,12 +1249,11 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> internalUpdateMemoriesWithResponseAsync(String name,
         BinaryData updateMemoriesRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalUpdateMemories(this.client.getEndpoint(),
-            foundryFeatures, name, this.client.getServiceVersion().getVersion(), contentType, accept,
-            updateMemoriesRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalUpdateMemories(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoriesRequest, requestOptions,
+            context));
     }
 
     /**
@@ -1370,10 +1341,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> internalUpdateMemoriesWithResponse(String name, BinaryData updateMemoriesRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.internalUpdateMemoriesSync(this.client.getEndpoint(), foundryFeatures, name,
+        return service.internalUpdateMemoriesSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoriesRequest, requestOptions,
             Context.NONE);
     }
@@ -1845,10 +1815,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateResultWithResponseAsync(String name, String updateId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getUpdateResult(this.client.getEndpoint(), foundryFeatures, name,
-            updateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getUpdateResult(this.client.getEndpoint(), name, updateId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1922,9 +1891,8 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateResultWithResponse(String name, String updateId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.getUpdateResultSync(this.client.getEndpoint(), foundryFeatures, name, updateId,
+        return service.getUpdateResultSync(this.client.getEndpoint(), name, updateId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1968,11 +1936,10 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> internalDeleteScopeWithResponseAsync(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalDeleteScope(this.client.getEndpoint(), foundryFeatures,
-            name, this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest, requestOptions,
+        return FluxUtil.withContext(context -> service.internalDeleteScope(this.client.getEndpoint(), name,
+            this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest, requestOptions,
             context));
     }
 
@@ -2015,10 +1982,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> internalDeleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.internalDeleteScopeSync(this.client.getEndpoint(), foundryFeatures, name,
+        return service.internalDeleteScopeSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, deleteScopeRequest, requestOptions,
             Context.NONE);
     }
@@ -2066,10 +2032,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createMemoryWithResponseAsync(String name, BinaryData createMemoryRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createMemory(this.client.getEndpoint(), foundryFeatures, name,
+        return FluxUtil.withContext(context -> service.createMemory(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, createMemoryRequest, requestOptions,
             context));
     }
@@ -2117,12 +2082,10 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createMemoryWithResponse(String name, BinaryData createMemoryRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createMemorySync(this.client.getEndpoint(), foundryFeatures, name,
-            this.client.getServiceVersion().getVersion(), contentType, accept, createMemoryRequest, requestOptions,
-            Context.NONE);
+        return service.createMemorySync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            contentType, accept, createMemoryRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -2167,12 +2130,11 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMemoryWithResponseAsync(String name, String memoryId,
         BinaryData updateMemoryRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMemory(this.client.getEndpoint(), foundryFeatures, name,
-            memoryId, this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryRequest,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateMemory(this.client.getEndpoint(), name, memoryId,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryRequest, requestOptions,
+            context));
     }
 
     /**
@@ -2217,10 +2179,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateMemoryWithResponse(String name, String memoryId, BinaryData updateMemoryRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
+        return service.updateMemorySync(this.client.getEndpoint(), name, memoryId,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateMemoryRequest, requestOptions,
             Context.NONE);
     }
@@ -2258,10 +2219,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMemoryWithResponseAsync(String name, String memoryId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getMemory(this.client.getEndpoint(), foundryFeatures, name,
-            memoryId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getMemory(this.client.getEndpoint(), name, memoryId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2295,9 +2255,8 @@ public final class BetaMemoryStoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.getMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
+        return service.getMemorySync(this.client.getEndpoint(), name, memoryId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -2364,10 +2323,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listMemoriesSinglePageAsync(String name, BinaryData listMemoriesRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listMemories(this.client.getEndpoint(), foundryFeatures, name,
+            .withContext(context -> service.listMemories(this.client.getEndpoint(), name,
                 this.client.getServiceVersion().getVersion(), accept, listMemoriesRequest, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -2500,9 +2458,8 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listMemoriesSinglePage(String name, BinaryData listMemoriesRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listMemoriesSync(this.client.getEndpoint(), foundryFeatures, name,
+        Response<BinaryData> res = service.listMemoriesSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, listMemoriesRequest, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -2602,10 +2559,9 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> internalDeleteMemoryWithResponseAsync(String name, String memoryId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.internalDeleteMemory(this.client.getEndpoint(), foundryFeatures,
-            name, memoryId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.internalDeleteMemory(this.client.getEndpoint(), name, memoryId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2636,9 +2592,8 @@ public final class BetaMemoryStoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> internalDeleteMemoryWithResponse(String name, String memoryId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "MemoryStores=V1Preview";
         final String accept = "application/json";
-        return service.internalDeleteMemorySync(this.client.getEndpoint(), foundryFeatures, name, memoryId,
+        return service.internalDeleteMemorySync(this.client.getEndpoint(), name, memoryId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
