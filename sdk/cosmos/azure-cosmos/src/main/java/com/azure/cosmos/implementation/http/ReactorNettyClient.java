@@ -11,6 +11,7 @@ import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http2.Http2MultiplexHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.util.ReferenceCountUtil;
@@ -43,7 +44,7 @@ import java.util.function.BiFunction;
  * HttpClient that is implemented using reactor-netty.
  */
 public class ReactorNettyClient implements HttpClient {
-    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
+    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor() {
         return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
     }
 
@@ -141,7 +142,38 @@ public class ReactorNettyClient implements HttpClient {
                                            .validateHeaders(true));
 
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
-        if (httpCfgAccessor().isEffectivelyEnabled(http2Cfg)) {
+
+        boolean isH2Enabled = http2CfgAccessor().isEffectivelyEnabled(http2Cfg);
+
+        if (isH2Enabled) {
+            this.httpClient = this.httpClient.doOnConnected(connection -> {
+                // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
+                // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
+                // For H2, doOnConnected fires on the parent TCP channel when the connection
+                // is first established (State.CONFIGURED). Child stream channels emit
+                // STREAM_CONFIGURED, which does not trigger this callback. The parent-
+                // resolution and installIfAbsent guard below are defensive -- they correctly
+                // handle both parent and child channels if the reactor-netty contract
+                // ever changes.
+                //
+                // Gating is consolidated in Http2PingHandler.isPingHealthEffectivelyEnabled so
+                // the transport install site and the user-agent feature flag cannot drift.
+                // The handler also re-checks the kill-switch per tick so toggling it at
+                // runtime immediately stops/resumes PINGing on already-installed connections.
+                if (Http2PingHandler.isPingHealthEffectivelyEnabled(http2Cfg)) {
+                    // Resolve to the parent (TCP) channel -- defensive in case reactor-netty
+                    // ever invokes this callback for a child stream channel.
+                    Channel ch = connection.channel();
+                    Channel parent = ch.parent() != null ? ch.parent() : ch;
+                    if (parent.pipeline().get(Http2MultiplexHandler.class) != null) {
+                        Http2PingHandler.installIfAbsent(parent,
+                            Configs.getHttp2PingIntervalInSeconds(),
+                            Configs.getHttp2PingTimeoutInSeconds(),
+                            Configs.getHttp2PingFailureThreshold());
+                    }
+                }
+            });
+
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -153,18 +185,25 @@ public class ReactorNettyClient implements HttpClient {
                 .http2Settings(settings -> settings
                     .initialWindowSize(1024 * 1024) // 1MB initial window size
                     .maxFrameSize(64 * 1024)        // 64KB max frame size
-                    .maxConcurrentStreams(httpCfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
+                    .maxConcurrentStreams(http2CfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
                     // java.lang.IllegalArgumentException: a header value contains prohibited character 0x20 at index 0 for 'x-ms-serviceversion', there is whitespace in the front of the value.
                     // validateHeaders(false) does not work for http2
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
-                    if (channelPipeline.get("reactor.left.httpCodec") != null) {
-                        channelPipeline.addAfter(
-                            "reactor.left.httpCodec",
-                            "customHeaderCleaner",
-                            new Http2ResponseHeaderCleanerHandler());
+                    if (channelPipeline.get("reactor.left.httpCodec") != null
+                        && channelPipeline.get("customHeaderCleaner") == null) {
+                        try {
+                            channelPipeline.addAfter(
+                                "reactor.left.httpCodec",
+                                "customHeaderCleaner",
+                                new Http2ResponseHeaderCleanerHandler());
+                        } catch (IllegalArgumentException ignored) {
+                            // TOCTOU race: between the get()==null check above and addAfter(),
+                            // a concurrent doOnConnected may have installed the handler.
+                            // Duplicate handler name is the only possible cause.
+                        }
                     }
 
                     // Install exception handler at the tail of the HTTP/2 parent (TCP)
@@ -184,7 +223,35 @@ public class ReactorNettyClient implements HttpClient {
                             // Duplicate handler name is the only possible cause.
                         }
                     }
-                }));
+                }))
+                .doOnRequest((req, conn) -> {
+                    // Install a @Sharable head-of-pipeline rewrap handler on each H2
+                    // child-stream pipeline. When Http2PingHandler closes the parent
+                    // (TCP) channel after consecutive PING-ACK timeouts or PING-send
+                    // failures, the H2 multiplex codec propagates channelInactive to
+                    // every child stream; the rewrap handler intercepts that and fires
+                    // exceptionCaught with a typed
+                    // Http2PingTimeoutChannelClosedException so reactor-netty's
+                    // HttpClientOperations fails the response Mono with the typed
+                    // exception (instead of bare PrematureCloseException). The rest of the
+                    // stack maps that to GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED so
+                    // ClientRetryPolicy can suppress region mark-down.
+                    //
+                    // Gate on ch.parent() != null so this only runs on H2 child streams
+                    // (H1.1 connections have null parent and never need the rewrap).
+                    Channel ch = conn.channel();
+                    if (ch.parent() != null && ch.pipeline().get(Http2PingCloseRewrapHandler.HANDLER_NAME) == null) {
+                        try {
+                            ch.pipeline().addFirst(
+                                Http2PingCloseRewrapHandler.HANDLER_NAME,
+                                Http2PingCloseRewrapHandler.INSTANCE);
+                        } catch (IllegalArgumentException ignored) {
+                            // TOCTOU race: between the get()==null check above and addFirst(),
+                            // a concurrent doOnRequest may have installed the handler.
+                            // Duplicate handler name is the only possible cause.
+                        }
+                    }
+                });
         }
     }
 
@@ -253,7 +320,8 @@ public class ReactorNettyClient implements HttpClient {
      * @param restRequest the Rest request contains the body to be sent
      * @return a delegate upon invocation sets the request body in reactor-netty outbound object
      */
-    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(final HttpRequest restRequest) {
+    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
+        final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
             for (HttpHeader header : restRequest.headers()) {
                 reactorNettyRequest.header(header.name(), header.value());
