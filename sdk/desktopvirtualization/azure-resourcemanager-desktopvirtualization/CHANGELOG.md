@@ -76,8 +76,8 @@
 #### `models.OperationProperties` was modified
 
 * `OperationProperties()` was changed to private access
-* `validate()` was removed
 * `withServiceSpecification(models.ServiceSpecification)` was removed
+* `validate()` was removed
 
 #### `models.AppAttachPackagePatchProperties` was modified
 
@@ -93,9 +93,9 @@
 
 #### `models.DesktopPatch` was modified
 
-* `withTags(java.util.Map)` was removed
 * `tags()` was removed
 * `validate()` was removed
+* `withTags(java.util.Map)` was removed
 
 #### `models.PrivateEndpoint` was modified
 
@@ -119,28 +119,28 @@
 
 #### `models.ResourceModelWithAllowedPropertySetPlan` was modified
 
-* `validate()` was removed
-* `withVersion(java.lang.String)` was removed
+* `withPromotionCode(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
 * `withProduct(java.lang.String)` was removed
-* `withPromotionCode(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
 * `withPublisher(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.ApplicationGroup` was modified
 
-* `friendlyName()` was removed
-* `workspaceArmPath()` was removed
 * `applicationGroupType()` was removed
-* `description()` was removed
-* `hostPoolArmPath()` was removed
 * `showInFeed()` was removed
-* `objectId()` was removed
+* `workspaceArmPath()` was removed
 * `cloudPcResource()` was removed
+* `friendlyName()` was removed
+* `hostPoolArmPath()` was removed
+* `description()` was removed
+* `objectId()` was removed
 
 #### `models.HostPool` was modified
 
-* `listRegistrationTokensWithResponse(com.azure.core.util.Context)` was removed
 * `models.RegistrationTokenList listRegistrationTokens()` -> `com.azure.core.http.rest.PagedIterable listRegistrationTokens()`
+* `listRegistrationTokensWithResponse(com.azure.core.util.Context)` was removed
 
 #### `models.HostPoolPatch` was modified
 
@@ -156,11 +156,11 @@
 #### `models.ResourceProviderOperationDisplay` was modified
 
 * `ResourceProviderOperationDisplay()` was changed to private access
-* `withResource(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
 * `validate()` was removed
-* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 
 #### `models.SessionHostHealthCheckFailureDetails` was modified
 
@@ -174,19 +174,19 @@
 #### `models.PrivateEndpointConnection` was modified
 
 * `PrivateEndpointConnection()` was changed to private access
-* `privateEndpoint()` was removed
-* `validate()` was removed
-* `withPrivateEndpoint(models.PrivateEndpoint)` was removed
 * `privateLinkServiceConnectionState()` was removed
-* `provisioningState()` was removed
 * `withPrivateLinkServiceConnectionState(models.PrivateLinkServiceConnectionState)` was removed
 * `groupIds()` was removed
+* `validate()` was removed
+* `withPrivateEndpoint(models.PrivateEndpoint)` was removed
+* `privateEndpoint()` was removed
+* `provisioningState()` was removed
 
 #### `models.AppAttachPackages` was modified
 
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `deleteByResourceGroup(java.lang.String,java.lang.String)` was removed
 * `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByResourceGroup(java.lang.String,java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
 
 #### `models.AgentUpdateProperties` was modified
 
@@ -230,11 +230,11 @@
 
 #### `models.ApplicationGroup$Definition` was modified
 
-* `withDescription(java.lang.String)` was removed
-* `withApplicationGroupType(models.ApplicationGroupType)` was removed
 * `withShowInFeed(java.lang.Boolean)` was removed
-* `withHostPoolArmPath(java.lang.String)` was removed
+* `withApplicationGroupType(models.ApplicationGroupType)` was removed
+* `withDescription(java.lang.String)` was removed
 * `withFriendlyName(java.lang.String)` was removed
+* `withHostPoolArmPath(java.lang.String)` was removed
 
 #### `models.ApplicationGroupPatch` was modified
 
@@ -258,33 +258,33 @@
 
 #### `models.ExpandMsixImage` was modified
 
+* `packageName()` was removed
+* `version()` was removed
+* `packageDependencies()` was removed
+* `imagePath()` was removed
+* `lastUpdated()` was removed
 * `isRegularRegistration()` was removed
+* `packageFullName()` was removed
+* `certificateName()` was removed
+* `isActive()` was removed
+* `certificateExpiry()` was removed
+* `packageRelativePath()` was removed
+* `displayName()` was removed
+* `packageAlias()` was removed
 * `packageFamilyName()` was removed
 * `packageApplications()` was removed
-* `lastUpdated()` was removed
-* `packageAlias()` was removed
-* `packageRelativePath()` was removed
-* `certificateExpiry()` was removed
-* `version()` was removed
-* `imagePath()` was removed
-* `certificateName()` was removed
-* `packageFullName()` was removed
-* `packageDependencies()` was removed
-* `isActive()` was removed
-* `displayName()` was removed
-* `packageName()` was removed
 
 #### `models.ServiceSpecification` was modified
 
 * `ServiceSpecification()` was changed to private access
-* `withLogSpecifications(java.util.List)` was removed
 * `validate()` was removed
+* `withLogSpecifications(java.util.List)` was removed
 
 #### `models.SessionHosts` was modified
 
-* `list(java.lang.String,java.lang.String,java.lang.Integer,java.lang.Boolean,java.lang.Integer,com.azure.core.util.Context)` was removed
 * `update(java.lang.String,java.lang.String,java.lang.String)` was removed
 * `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,models.SessionHostPatch,com.azure.core.util.Context)` was removed
+* `list(java.lang.String,java.lang.String,java.lang.Integer,java.lang.Boolean,java.lang.Integer,com.azure.core.util.Context)` was removed
 
 #### `models.Time` was modified
 
@@ -310,27 +310,27 @@
 
 #### `models.ApplicationPatch` was modified
 
-* `validate()` was removed
 * `tags()` was removed
+* `validate()` was removed
 * `withTags(java.util.Map)` was removed
 
 #### `models.RegistrationTokenMinimal` was modified
 
 * `RegistrationTokenMinimal()` was removed
-* `withToken(java.lang.String)` was removed
-* `toJson(com.azure.json.JsonWriter)` was removed
+* `java.lang.String token()` -> `java.lang.String token()`
+* `validate()` was removed
 * `withExpirationTime(java.time.OffsetDateTime)` was removed
 * `java.time.OffsetDateTime expirationTime()` -> `java.time.OffsetDateTime expirationTime()`
 * `fromJson(com.azure.json.JsonReader)` was removed
-* `validate()` was removed
-* `java.lang.String token()` -> `java.lang.String token()`
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `withToken(java.lang.String)` was removed
 
 #### `models.ResourceModelWithAllowedPropertySetSku` was modified
 
+* `withCapacity(java.lang.Integer)` was removed
+* `withFamily(java.lang.String)` was removed
 * `withTier(models.SkuTier)` was removed
 * `validate()` was removed
-* `withFamily(java.lang.String)` was removed
-* `withCapacity(java.lang.Integer)` was removed
 * `withSize(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
 
@@ -500,8 +500,8 @@
 
 #### `models.ScalingPlanPooledSchedule$Definition` was modified
 
-* `withCreateDelete(models.CreateDeleteProperties)` was added
 * `withScalingMethod(models.ScalingMethodType)` was added
+* `withCreateDelete(models.CreateDeleteProperties)` was added
 
 #### `models.ScalingPlanPooledSchedule$Update` was modified
 
@@ -511,11 +511,11 @@
 #### `models.HostPool$Update` was modified
 
 * `withPublicUDP(models.PublicUDP)` was added
-* `withAllowRDPShortPathWithPrivateLink(models.AllowRDPShortPathWithPrivateLink)` was added
-* `withManagedPrivateUDP(models.ManagedPrivateUDP)` was added
-* `withDirectUDP(models.DirectUDP)` was added
 * `withRelayUDP(models.RelayUDP)` was added
+* `withManagedPrivateUDP(models.ManagedPrivateUDP)` was added
+* `withAllowRDPShortPathWithPrivateLink(models.AllowRDPShortPathWithPrivateLink)` was added
 * `withConditionalRdpProperty(java.lang.String)` was added
+* `withDirectUDP(models.DirectUDP)` was added
 * `withIdentity(models.ResourceModelWithAllowedPropertySetIdentity)` was added
 
 #### `models.AppAttachPackagePatch` was modified
@@ -525,8 +525,8 @@
 
 #### `models.AppAttachPackagePatchProperties` was modified
 
-* `withPackageLookbackUrl(java.lang.String)` was added
 * `withCustomData(java.lang.String)` was added
+* `withPackageLookbackUrl(java.lang.String)` was added
 * `customData()` was added
 * `packageLookbackUrl()` was added
 
@@ -537,18 +537,18 @@
 
 #### `models.ScalingSchedule` was modified
 
+* `withCreateDelete(models.CreateDeleteProperties)` was added
 * `scalingMethod()` was added
 * `createDelete()` was added
 * `withScalingMethod(models.ScalingMethodType)` was added
-* `withCreateDelete(models.CreateDeleteProperties)` was added
 
 #### `models.ResourceModelWithAllowedPropertySetPlan` was modified
 
-* `name()` was added
 * `publisher()` was added
-* `product()` was added
-* `promotionCode()` was added
 * `version()` was added
+* `promotionCode()` was added
+* `name()` was added
+* `product()` was added
 
 #### `models.ApplicationGroup` was modified
 
@@ -556,63 +556,63 @@
 
 #### `models.HostPool` was modified
 
-* `managementType()` was added
-* `publicUDP()` was added
-* `directUDP()` was added
-* `relayUDP()` was added
-* `managedPrivateUDP()` was added
-* `listRegistrationTokens(com.azure.core.util.Context)` was added
-* `allowRDPShortPathWithPrivateLink()` was added
-* `deploymentScope()` was added
 * `oboTenantId()` was added
+* `listRegistrationTokens(com.azure.core.util.Context)` was added
+* `publicUDP()` was added
+* `deploymentScope()` was added
+* `managedPrivateUDP()` was added
+* `allowRDPShortPathWithPrivateLink()` was added
 * `conditionalRdpProperty()` was added
+* `relayUDP()` was added
+* `managementType()` was added
+* `directUDP()` was added
 
 #### `models.HostPoolPatch` was modified
 
+* `withManagedPrivateUDP(models.ManagedPrivateUDP)` was added
+* `allowRDPShortPathWithPrivateLink()` was added
 * `managedPrivateUDP()` was added
-* `withConditionalRdpProperty(java.lang.String)` was added
+* `directUDP()` was added
+* `withIdentity(models.ResourceModelWithAllowedPropertySetIdentity)` was added
+* `withPublicUDP(models.PublicUDP)` was added
 * `withDirectUDP(models.DirectUDP)` was added
 * `withRelayUDP(models.RelayUDP)` was added
-* `identity()` was added
 * `relayUDP()` was added
 * `withAllowRDPShortPathWithPrivateLink(models.AllowRDPShortPathWithPrivateLink)` was added
-* `withIdentity(models.ResourceModelWithAllowedPropertySetIdentity)` was added
+* `withConditionalRdpProperty(java.lang.String)` was added
+* `identity()` was added
 * `publicUDP()` was added
-* `allowRDPShortPathWithPrivateLink()` was added
-* `withPublicUDP(models.PublicUDP)` was added
-* `withManagedPrivateUDP(models.ManagedPrivateUDP)` was added
-* `directUDP()` was added
 * `conditionalRdpProperty()` was added
 
 #### `models.PrivateEndpointConnections` was modified
 
-* `updateByHostPoolWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionWithSystemDataInner,com.azure.core.util.Context)` was added
-* `updateByWorkspace(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionWithSystemDataInner)` was added
-* `updateByHostPool(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionWithSystemDataInner)` was added
 * `updateByWorkspaceWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionWithSystemDataInner,com.azure.core.util.Context)` was added
+* `updateByWorkspace(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionWithSystemDataInner)` was added
+* `updateByHostPoolWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionWithSystemDataInner,com.azure.core.util.Context)` was added
+* `updateByHostPool(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionWithSystemDataInner)` was added
 
 #### `models.HostPoolProperties` was modified
 
-* `conditionalRdpProperty()` was added
-* `publicUDP()` was added
 * `relayUDP()` was added
-* `managementType()` was added
-* `allowRDPShortPathWithPrivateLink()` was added
 * `managedPrivateUDP()` was added
-* `deploymentScope()` was added
+* `allowRDPShortPathWithPrivateLink()` was added
 * `directUDP()` was added
 * `oboTenantId()` was added
+* `deploymentScope()` was added
+* `conditionalRdpProperty()` was added
+* `publicUDP()` was added
+* `managementType()` was added
 
 #### `DesktopVirtualizationManager` was modified
 
-* `sessionHostManagementProvisioningStatuses()` was added
-* `sessionHostManagementUpdateStatuses()` was added
-* `initiateSessionHostUpdates()` was added
-* `controlSessionHostProvisionings()` was added
 * `controlSessionHostUpdates()` was added
 * `sessionHostConfigurations()` was added
+* `sessionHostManagementProvisioningStatuses()` was added
 * `activeSessionHostConfigurations()` was added
+* `initiateSessionHostUpdates()` was added
 * `sessionHostManagements()` was added
+* `sessionHostManagementUpdateStatuses()` was added
+* `controlSessionHostProvisionings()` was added
 
 #### `models.PrivateEndpointConnection` was modified
 
@@ -625,8 +625,8 @@
 #### `models.AppAttachPackages` was modified
 
 * `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
-* `delete(java.lang.String,java.lang.String)` was added
 * `deleteWithResponse(java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String)` was added
 
 #### `models.AppAttachPackage$Update` was modified
 
@@ -634,22 +634,22 @@
 
 #### `models.AppAttachPackageProperties` was modified
 
+* `withPackageOwnerName(java.lang.String)` was added
 * `customData()` was added
 * `withCustomData(java.lang.String)` was added
-* `packageLookbackUrl()` was added
-* `withPackageOwnerName(java.lang.String)` was added
-* `deploymentScope()` was added
-* `withDeploymentScope(models.DeploymentScope)` was added
 * `packageOwnerName()` was added
 * `withPackageLookbackUrl(java.lang.String)` was added
+* `packageLookbackUrl()` was added
+* `withDeploymentScope(models.DeploymentScope)` was added
+* `deploymentScope()` was added
 
 #### `models.ScalingPlanPooledSchedulePatch` was modified
 
-* `withScalingMethod(models.ScalingMethodType)` was added
 * `createDelete()` was added
 * `withCreateDelete(models.CreateDeleteProperties)` was added
-* `scalingMethod()` was added
 * `namePropertiesName()` was added
+* `scalingMethod()` was added
+* `withScalingMethod(models.ScalingMethodType)` was added
 
 #### `models.ApplicationGroup$Definition` was modified
 
@@ -662,36 +662,36 @@
 #### `models.HostPool$Definition` was modified
 
 * `withDeploymentScope(models.DeploymentScope)` was added
-* `withManagedPrivateUDP(models.ManagedPrivateUDP)` was added
-* `withPublicUDP(models.PublicUDP)` was added
-* `withRelayUDP(models.RelayUDP)` was added
-* `withDirectUDP(models.DirectUDP)` was added
-* `withAllowRDPShortPathWithPrivateLink(models.AllowRDPShortPathWithPrivateLink)` was added
-* `withManagementType(models.ManagementType)` was added
-* `withConditionalRdpProperty(java.lang.String)` was added
 * `withOboTenantId(java.lang.String)` was added
+* `withDirectUDP(models.DirectUDP)` was added
+* `withRelayUDP(models.RelayUDP)` was added
+* `withConditionalRdpProperty(java.lang.String)` was added
+* `withPublicUDP(models.PublicUDP)` was added
+* `withManagedPrivateUDP(models.ManagedPrivateUDP)` was added
+* `withManagementType(models.ManagementType)` was added
+* `withAllowRDPShortPathWithPrivateLink(models.AllowRDPShortPathWithPrivateLink)` was added
 
 #### `models.ScalingPlanPooledSchedule` was modified
 
 * `scalingMethod()` was added
-* `namePropertiesName()` was added
 * `createDelete()` was added
+* `namePropertiesName()` was added
 
 #### `models.SessionHost` was modified
 
 * `lastSessionHostUpdateTime()` was added
-* `sessionHostConfiguration()` was added
-* `refresh(com.azure.core.util.Context)` was added
-* `disconnectedSessions()` was added
-* `retryProvisioning()` was added
-* `update()` was added
-* `resourceGroupName()` was added
+* `refresh()` was added
 * `listSingleSessionHostRegistrationTokens(models.ScopedRegistrationTokenProperties,com.azure.core.util.Context)` was added
+* `pendingSessions()` was added
+* `retryProvisioning()` was added
+* `refresh(com.azure.core.util.Context)` was added
 * `retryProvisioningWithResponse(com.azure.core.util.Context)` was added
+* `disconnectedSessions()` was added
+* `sessionHostConfiguration()` was added
+* `resourceGroupName()` was added
+* `update()` was added
 * `listSingleSessionHostRegistrationTokens(models.ScopedRegistrationTokenProperties)` was added
 * `activeSessions()` was added
-* `refresh()` was added
-* `pendingSessions()` was added
 
 #### `models.ExpandMsixImage` was modified
 
@@ -699,22 +699,22 @@
 
 #### `models.SessionHosts` was modified
 
-* `getById(java.lang.String)` was added
-* `deleteById(java.lang.String)` was added
 * `listSingleSessionHostRegistrationTokens(java.lang.String,java.lang.String,java.lang.String,models.ScopedRegistrationTokenProperties,com.azure.core.util.Context)` was added
 * `define(java.lang.String)` was added
-* `list(java.lang.String,java.lang.String,java.lang.Integer,java.lang.Boolean,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
 * `listSingleSessionHostRegistrationTokens(java.lang.String,java.lang.String,java.lang.String,models.ScopedRegistrationTokenProperties)` was added
+* `deleteById(java.lang.String)` was added
+* `list(java.lang.String,java.lang.String,java.lang.Integer,java.lang.Boolean,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `retryProvisioningWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `retryProvisioning(java.lang.String,java.lang.String,java.lang.String)` was added
 * `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `retryProvisioningWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.ResourceModelWithAllowedPropertySetIdentity` was modified
 
-* `withType(models.ManagedServiceIdentityType)` was added
 * `userAssignedIdentities()` was added
 * `type()` was added
+* `withType(models.ManagedServiceIdentityType)` was added
 * `withUserAssignedIdentities(java.util.Map)` was added
 
 #### `models.HostPools` was modified
@@ -732,11 +732,11 @@
 
 #### `models.ResourceModelWithAllowedPropertySetSku` was modified
 
-* `name()` was added
-* `size()` was added
-* `family()` was added
-* `tier()` was added
 * `capacity()` was added
+* `size()` was added
+* `tier()` was added
+* `family()` was added
+* `name()` was added
 
 ## 1.2.0 (2024-09-25)
 
