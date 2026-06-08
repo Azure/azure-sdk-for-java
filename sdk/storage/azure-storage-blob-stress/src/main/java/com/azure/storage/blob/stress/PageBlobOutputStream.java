@@ -34,7 +34,6 @@ public class PageBlobOutputStream extends PageBlobScenarioBase<StorageStressOpti
         // page-write requests per op (plus scenario-level retry-from-scratch on
         // failure). Default per-tier mapping based on options.getSize() (1 KB or
         // 10 KB) gives a far-too-aggressive 5 s timeout. Force the 30 s tier.
-        // See stress-logs-ibrandes/run4-validation.md.
         super(options, 50L * 1024L * 1024L);
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();

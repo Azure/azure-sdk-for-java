@@ -162,6 +162,15 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
                 .logExceptionAsError(new IllegalArgumentException("'dst' is read-only and cannot be written to."));
         }
 
+        // ReadableByteChannel/SeekableByteChannel contract: if dst.remaining() == 0 (e.g. dst = ByteBuffer.allocate(0)
+        // or a previously-filled buffer with position() == limit()), the channel must make no attempt to read and must
+        // return 0 -- NOT -1 -- even when the underlying resource has already reached end-of-stream. Without this
+        // short-circuit, the cached-EOF fast-path below would return -1 in violation of the contract, and the
+        // not-yet-EOF path would issue a wasted refillReadBuffer() service round-trip only to ultimately return 0.
+        if (!dst.hasRemaining()) {
+            return 0;
+        }
+
         if (buffer.remaining() == 0) {
             // If the channel has already advanced to (or beyond) the cached end of the resource, avoid issuing an
             // additional service round-trip just to discover EOF. The behavior's resourceLength is populated up-front

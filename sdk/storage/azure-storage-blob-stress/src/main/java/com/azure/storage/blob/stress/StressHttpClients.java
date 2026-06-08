@@ -17,10 +17,7 @@ import java.time.Duration;
  * writeTimeout}). Under fault injection, scenarios whose single logical operation
  * issues many HTTP requests (e.g. chunked 50&nbsp;MB uploads/downloads) cross a per-op
  * fault probability of &gt;50%, so the median operation time becomes dominated by the
- * 60&nbsp;s timeout firing rather than the real payload-transfer time. See
- * {@code stress-logs-ibrandes/perfRuntimeCatch-uncompiled-storage-stress-storage-blob/operation-duration-analysis.md}
- * for the full analysis and the
- * {@code stress-logs-ibrandes/nofault-baseline.md} for the validated tier table.</p>
+ * 60&nbsp;s timeout firing rather than the real payload-transfer time.</p>
  *
  * <p>All three Netty timeouts (response, read, write) are set to the same per-tier
  * value:</p>
@@ -35,23 +32,11 @@ import java.time.Duration;
  *       catches upload faults that stall the request body mid-stream.</li>
  * </ul>
  *
- * <table>
- *   <caption>Per-tier I/O timeouts</caption>
- *   <tr><th>Effective payload size</th><th>Real median (no fault)</th><th>Timeout</th></tr>
- *   <tr><td>&le; 1&nbsp;MB</td><td>22&ndash;80&nbsp;ms</td><td>5&nbsp;s</td></tr>
- *   <tr><td>&le; 25&nbsp;MB</td><td>55&nbsp;ms&ndash;361&nbsp;ms</td><td>10&nbsp;s</td></tr>
- *   <tr><td>&le; 50&nbsp;MB</td><td>0.6&ndash;5&nbsp;s</td><td>30&nbsp;s</td></tr>
- *   <tr><td>&gt; 50&nbsp;MB</td><td>n/a</td><td>60&nbsp;s (SDK default)</td></tr>
- * </table>
- *
  * <p>Note that scenarios whose single logical iteration issues many small writes
  * (e.g. {@code AppendBlobOutputStream}, {@code PageBlobOutputStream}, or stream-based
  * uploads) should pass a deliberately larger {@code effectivePayloadBytes} than their
  * {@code --size} CLI argument suggests, because each op's wall-clock cost includes
- * many requests plus the scenario-level retry-from-scratch behavior. The
- * 2026-06-04 18:15 UTC stress run validated that for such scenarios a 5&nbsp;s
- * timeout is too aggressive even with a 1&nbsp;KB blob &mdash; see
- * {@code stress-logs-ibrandes/run4-validation.md}.</p>
+ * many requests plus the scenario-level retry-from-scratch behavior.</p>
  */
 public final class StressHttpClients {
 
