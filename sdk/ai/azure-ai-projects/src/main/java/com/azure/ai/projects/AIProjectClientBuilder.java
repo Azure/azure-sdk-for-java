@@ -153,10 +153,12 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Enables or disables preview feature headers for beta APIs and evaluation rules.
+     * Enables or disables preview feature headers for non-beta preview APIs.
+     * <p>
+     * Beta clients always add their required {@code Foundry-Features} header.
      *
      * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
-     * supported preview requests.
+     * supported non-beta preview requests.
      * @return the AIProjectClientBuilder.
      */
     public AIProjectClientBuilder allowPreview(boolean allowPreview) {
@@ -359,6 +361,15 @@ public final class AIProjectClientBuilder
     }
 
     private AIProjectClientImpl buildInnerClient(String previewFeatures) {
+        HttpPipelinePolicy foundryFeaturesPolicy = allowPreview ? addFoundryFeaturesPolicy(previewFeatures) : null;
+        try {
+            return buildInnerClient();
+        } finally {
+            removeFoundryFeaturesPolicy(foundryFeaturesPolicy);
+        }
+    }
+
+    private AIProjectClientImpl buildBetaInnerClient(String previewFeatures) {
         HttpPipelinePolicy foundryFeaturesPolicy = addFoundryFeaturesPolicy(previewFeatures);
         try {
             return buildInnerClient();
@@ -413,7 +424,7 @@ public final class AIProjectClientBuilder
     }
 
     private HttpPipeline createHttpPipelineWithPreview(String previewFeatures) {
-        HttpPipelinePolicy foundryFeaturesPolicy = addFoundryFeaturesPolicy(previewFeatures);
+        HttpPipelinePolicy foundryFeaturesPolicy = allowPreview ? addFoundryFeaturesPolicy(previewFeatures) : null;
         try {
             return createHttpPipeline();
         } finally {
@@ -422,7 +433,7 @@ public final class AIProjectClientBuilder
     }
 
     private HttpPipelinePolicy addFoundryFeaturesPolicy(String previewFeatures) {
-        if (!allowPreview || CoreUtils.isNullOrEmpty(previewFeatures)) {
+        if (CoreUtils.isNullOrEmpty(previewFeatures)) {
             return null;
         }
         HttpPipelinePolicy foundryFeaturesPolicy = createFoundryFeaturesPolicy(previewFeatures);
@@ -630,7 +641,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaModelsAsyncClient.
      */
     private BetaModelsAsyncClient buildBetaModelsAsyncClient() {
-        return new BetaModelsAsyncClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
+        return new BetaModelsAsyncClient(buildBetaInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
     }
 
     /**
@@ -639,7 +650,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaRedTeamsAsyncClient.
      */
     private BetaRedTeamsAsyncClient buildBetaRedTeamsAsyncClient() {
-        return new BetaRedTeamsAsyncClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
+        return new BetaRedTeamsAsyncClient(buildBetaInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
     }
 
     /**
@@ -649,7 +660,7 @@ public final class AIProjectClientBuilder
      */
     private BetaEvaluationTaxonomiesAsyncClient buildBetaEvaluationTaxonomiesAsyncClient() {
         return new BetaEvaluationTaxonomiesAsyncClient(
-            buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
+            buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
     }
 
     /**
@@ -658,7 +669,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaEvaluatorsAsyncClient.
      */
     private BetaEvaluatorsAsyncClient buildBetaEvaluatorsAsyncClient() {
-        return new BetaEvaluatorsAsyncClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
+        return new BetaEvaluatorsAsyncClient(buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
     }
 
     /**
@@ -667,7 +678,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaInsightsAsyncClient.
      */
     private BetaInsightsAsyncClient buildBetaInsightsAsyncClient() {
-        return new BetaInsightsAsyncClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
+        return new BetaInsightsAsyncClient(buildBetaInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
     }
 
     /**
@@ -676,7 +687,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaSchedulesAsyncClient.
      */
     private BetaSchedulesAsyncClient buildBetaSchedulesAsyncClient() {
-        return new BetaSchedulesAsyncClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
+        return new BetaSchedulesAsyncClient(buildBetaInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
     }
 
     /**
@@ -685,7 +696,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaRoutinesAsyncClient.
      */
     private BetaRoutinesAsyncClient buildBetaRoutinesAsyncClient() {
-        return new BetaRoutinesAsyncClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
+        return new BetaRoutinesAsyncClient(buildBetaInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
     }
 
     /**
@@ -694,7 +705,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaSkillsAsyncClient.
      */
     private BetaSkillsAsyncClient buildBetaSkillsAsyncClient() {
-        return new BetaSkillsAsyncClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+        return new BetaSkillsAsyncClient(buildBetaInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
     }
 
     /**
@@ -703,7 +714,8 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaDatasetsAsyncClient.
      */
     private BetaDatasetsAsyncClient buildBetaDatasetsAsyncClient() {
-        return new BetaDatasetsAsyncClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+        return new BetaDatasetsAsyncClient(
+            buildBetaInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
     }
 
     /**
@@ -712,7 +724,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaModelsClient.
      */
     private BetaModelsClient buildBetaModelsClient() {
-        return new BetaModelsClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
+        return new BetaModelsClient(buildBetaInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
     }
 
     /**
@@ -721,7 +733,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaRedTeamsClient.
      */
     private BetaRedTeamsClient buildBetaRedTeamsClient() {
-        return new BetaRedTeamsClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
+        return new BetaRedTeamsClient(buildBetaInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
     }
 
     /**
@@ -731,7 +743,7 @@ public final class AIProjectClientBuilder
      */
     private BetaEvaluationTaxonomiesClient buildBetaEvaluationTaxonomiesClient() {
         return new BetaEvaluationTaxonomiesClient(
-            buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
+            buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
     }
 
     /**
@@ -740,7 +752,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaEvaluatorsClient.
      */
     private BetaEvaluatorsClient buildBetaEvaluatorsClient() {
-        return new BetaEvaluatorsClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
+        return new BetaEvaluatorsClient(buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
     }
 
     /**
@@ -749,7 +761,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaInsightsClient.
      */
     private BetaInsightsClient buildBetaInsightsClient() {
-        return new BetaInsightsClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
+        return new BetaInsightsClient(buildBetaInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
     }
 
     /**
@@ -758,7 +770,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaSchedulesClient.
      */
     private BetaSchedulesClient buildBetaSchedulesClient() {
-        return new BetaSchedulesClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
+        return new BetaSchedulesClient(buildBetaInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
     }
 
     /**
@@ -767,7 +779,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaRoutinesClient.
      */
     private BetaRoutinesClient buildBetaRoutinesClient() {
-        return new BetaRoutinesClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
+        return new BetaRoutinesClient(buildBetaInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
     }
 
     /**
@@ -776,7 +788,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaSkillsClient.
      */
     private BetaSkillsClient buildBetaSkillsClient() {
-        return new BetaSkillsClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+        return new BetaSkillsClient(buildBetaInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
     }
 
     /**
@@ -785,7 +797,7 @@ public final class AIProjectClientBuilder
      * @return an instance of BetaDatasetsClient.
      */
     private BetaDatasetsClient buildBetaDatasetsClient() {
-        return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+        return new BetaDatasetsClient(buildBetaInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
     }
 
     /**
@@ -826,24 +838,12 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Enables or disables preview feature headers for beta APIs and evaluation rules.
-         *
-         * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
-         * supported preview requests.
-         * @return the BetaAIProjectClientBuilder.
-         */
-        public BetaAIProjectClientBuilder allowPreview(boolean allowPreview) {
-            AIProjectClientBuilder.this.allowPreview(allowPreview);
-            return this;
-        }
-
-        /**
          * Builds an instance of BetaModelsAsyncClient class.
          *
          * @return an instance of BetaModelsAsyncClient.
          */
         public BetaModelsAsyncClient buildBetaModelsAsyncClient() {
-            return new BetaModelsAsyncClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
+            return new BetaModelsAsyncClient(buildBetaInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
         }
 
         /**
@@ -852,7 +852,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaRedTeamsAsyncClient.
          */
         public BetaRedTeamsAsyncClient buildBetaRedTeamsAsyncClient() {
-            return new BetaRedTeamsAsyncClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
+            return new BetaRedTeamsAsyncClient(buildBetaInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
         }
 
         /**
@@ -862,7 +862,7 @@ public final class AIProjectClientBuilder
          */
         public BetaEvaluationTaxonomiesAsyncClient buildBetaEvaluationTaxonomiesAsyncClient() {
             return new BetaEvaluationTaxonomiesAsyncClient(
-                buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
+                buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
         }
 
         /**
@@ -871,7 +871,8 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaEvaluatorsAsyncClient.
          */
         public BetaEvaluatorsAsyncClient buildBetaEvaluatorsAsyncClient() {
-            return new BetaEvaluatorsAsyncClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
+            return new BetaEvaluatorsAsyncClient(
+                buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
         }
 
         /**
@@ -880,7 +881,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaInsightsAsyncClient.
          */
         public BetaInsightsAsyncClient buildBetaInsightsAsyncClient() {
-            return new BetaInsightsAsyncClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
+            return new BetaInsightsAsyncClient(buildBetaInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
         }
 
         /**
@@ -889,7 +890,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaSchedulesAsyncClient.
          */
         public BetaSchedulesAsyncClient buildBetaSchedulesAsyncClient() {
-            return new BetaSchedulesAsyncClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
+            return new BetaSchedulesAsyncClient(buildBetaInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
         }
 
         /**
@@ -898,7 +899,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaRoutinesAsyncClient.
          */
         public BetaRoutinesAsyncClient buildBetaRoutinesAsyncClient() {
-            return new BetaRoutinesAsyncClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
+            return new BetaRoutinesAsyncClient(buildBetaInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
         }
 
         /**
@@ -907,7 +908,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaSkillsAsyncClient.
          */
         public BetaSkillsAsyncClient buildBetaSkillsAsyncClient() {
-            return new BetaSkillsAsyncClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+            return new BetaSkillsAsyncClient(buildBetaInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
         }
 
         /**
@@ -917,7 +918,7 @@ public final class AIProjectClientBuilder
          */
         public BetaDatasetsAsyncClient buildBetaDatasetsAsyncClient() {
             return new BetaDatasetsAsyncClient(
-                buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+                buildBetaInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
         }
 
         /**
@@ -926,7 +927,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaModelsClient.
          */
         public BetaModelsClient buildBetaModelsClient() {
-            return new BetaModelsClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
+            return new BetaModelsClient(buildBetaInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
         }
 
         /**
@@ -935,7 +936,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaRedTeamsClient.
          */
         public BetaRedTeamsClient buildBetaRedTeamsClient() {
-            return new BetaRedTeamsClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
+            return new BetaRedTeamsClient(buildBetaInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
         }
 
         /**
@@ -945,7 +946,7 @@ public final class AIProjectClientBuilder
          */
         public BetaEvaluationTaxonomiesClient buildBetaEvaluationTaxonomiesClient() {
             return new BetaEvaluationTaxonomiesClient(
-                buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
+                buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
         }
 
         /**
@@ -954,7 +955,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaEvaluatorsClient.
          */
         public BetaEvaluatorsClient buildBetaEvaluatorsClient() {
-            return new BetaEvaluatorsClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
+            return new BetaEvaluatorsClient(buildBetaInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
         }
 
         /**
@@ -963,7 +964,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaInsightsClient.
          */
         public BetaInsightsClient buildBetaInsightsClient() {
-            return new BetaInsightsClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
+            return new BetaInsightsClient(buildBetaInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
         }
 
         /**
@@ -972,7 +973,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaSchedulesClient.
          */
         public BetaSchedulesClient buildBetaSchedulesClient() {
-            return new BetaSchedulesClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
+            return new BetaSchedulesClient(buildBetaInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
         }
 
         /**
@@ -981,7 +982,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaRoutinesClient.
          */
         public BetaRoutinesClient buildBetaRoutinesClient() {
-            return new BetaRoutinesClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
+            return new BetaRoutinesClient(buildBetaInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
         }
 
         /**
@@ -990,7 +991,7 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaSkillsClient.
          */
         public BetaSkillsClient buildBetaSkillsClient() {
-            return new BetaSkillsClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+            return new BetaSkillsClient(buildBetaInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
         }
 
         /**
@@ -999,7 +1000,8 @@ public final class AIProjectClientBuilder
          * @return an instance of BetaDatasetsClient.
          */
         public BetaDatasetsClient buildBetaDatasetsClient() {
-            return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+            return new BetaDatasetsClient(
+                buildBetaInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
         }
     }
 }

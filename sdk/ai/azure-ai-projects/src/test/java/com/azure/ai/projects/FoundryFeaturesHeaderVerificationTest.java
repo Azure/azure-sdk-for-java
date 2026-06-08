@@ -68,6 +68,59 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
+    public void betaClientsAddAreaSpecificHeadersByDefault() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+
+        builder.beta().buildBetaModelsClient().getModelVersionWithResponse("model", "1", new RequestOptions());
+        assertEquals("Models=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta().buildBetaRedTeamsClient().getRedTeamWithResponse("red-team", new RequestOptions());
+        assertEquals("RedTeams=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaEvaluationTaxonomiesClient()
+            .getEvaluationTaxonomyWithResponse("taxonomy", new RequestOptions());
+        assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaEvaluatorsClient()
+            .getEvaluatorVersionWithResponse("evaluator", "1", new RequestOptions());
+        assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta().buildBetaInsightsClient().getInsightWithResponse("insight", new RequestOptions());
+        assertEquals("Insights=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta().buildBetaSchedulesClient().getScheduleWithResponse("schedule", new RequestOptions());
+        assertEquals("Schedules=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta().buildBetaRoutinesClient().getRoutineWithResponse("routine", new RequestOptions());
+        assertEquals("Routines=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
+        assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
+
+        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
+    }
+
+    @Test
+    public void betaHeaderDoesNotLeakToGaClientBuiltFromSameBuilder() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+
+        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
+
+        // Beta clients temporarily add their required Foundry-Features policy while their pipeline is being built.
+        // The policy must not remain on the reusable builder, otherwise a later non-beta client built from the same
+        // builder would silently inherit a beta opt-in header despite allowPreview defaulting to false for GA clients.
+        builder.buildEvaluationRulesClient()
+            .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+    }
+
+    @Test
     public void allowPreviewDoesNotOverrideExplicitHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         String explicitHeader = "Insights=V1Preview";
@@ -82,13 +135,12 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
-    public void allowPreviewFalseDoesNotAddHeader() {
+    public void allowPreviewFalseDoesNotAddGaHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
 
         createBuilder(httpClient).allowPreview(false)
-            .beta()
-            .buildBetaDatasetsClient()
-            .getGenerationJobWithResponse("job", new RequestOptions());
+            .buildEvaluationRulesClient()
+            .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
 
         assertNull(foundryFeatures(httpClient));
     }
