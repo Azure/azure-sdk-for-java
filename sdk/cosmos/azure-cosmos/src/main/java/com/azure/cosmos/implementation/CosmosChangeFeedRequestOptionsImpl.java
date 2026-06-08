@@ -82,6 +82,58 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.endLSN = toBeCloned.endLSN;
     }
 
+    /**
+     * Inherits all non-token-encoded fields from {@code source} onto this instance, preserving the
+     * caller-supplied configuration when this instance was freshly built from a continuation token.
+     *
+     * <p>The four fields encoded in the continuation token itself ({@code continuationState},
+     * {@code feedRangeInternal}, {@code mode}, {@code startFromInternal}) are intentionally NOT
+     * copied — they describe "where to resume from" and must come from the token, not the caller's
+     * pre-resume options. Every other field IS copied so the caller's configuration (endLSN,
+     * customSerializer, excludeRegions, read-consistency strategy, throughput-control group,
+     * diagnostic thresholds, etc.) survives the {@code byPage(savedContinuation)} round-trip.
+     *
+     * <p>Maintenance contract: when a new field is added to this class, decide whether the
+     * continuation token encodes it. If not (the common case for caller-supplied configuration),
+     * propagate it here.
+     */
+    public void inheritNonContinuationFieldsFrom(CosmosChangeFeedRequestOptionsImpl source) {
+        // continuationState, feedRangeInternal, mode, startFromInternal:
+        // intentionally NOT copied (encoded in the continuation token itself).
+        // collectionRid IS preserved: it lives on the impl but is not embedded in the
+        // continuation token (the token's separate containerRid lives on ChangeFeedStateV1).
+        // The rest-of-SDK clone path (RxDocumentClientImpl.queryDocumentChangeFeedFromPagedFluxInternal
+        // -> accessor.clone -> copy ctor) preserves collectionRid; we match that here.
+        this.maxItemCount = source.maxItemCount;
+        this.maxPrefetchPageCount = source.maxPrefetchPageCount;
+        this.isSplitHandlingDisabled = source.isSplitHandlingDisabled;
+        this.quotaInfoEnabled = source.quotaInfoEnabled;
+        this.throughputControlGroupName = source.throughputControlGroupName;
+        // Merge source's caller-supplied headers into this.customOptions WITHOUT clobbering
+        // headers the token-driven constructor already populated (e.g., FULL_FIDELITY mode
+        // adds CHANGE_FEED_WIRE_FORMAT_VERSION). Overwriting would drop those required
+        // mode-derived headers and produce inconsistent requests (token mode vs. source headers).
+        if (source.customOptions != null) {
+            if (this.customOptions == null) {
+                this.customOptions = new HashMap<>(source.customOptions);
+            } else {
+                for (Map.Entry<String, String> entry : source.customOptions.entrySet()) {
+                    this.customOptions.putIfAbsent(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        this.operationContextAndListenerTuple = source.operationContextAndListenerTuple;
+        this.thresholds = source.thresholds;
+        this.excludeRegions = source.excludeRegions;
+        this.customSerializer = source.customSerializer;
+        this.partitionKeyDefinition = source.partitionKeyDefinition;
+        this.collectionRid = source.collectionRid;
+        this.keywordIdentifiers = source.keywordIdentifiers;
+        this.completeAfterAllCurrentChangesRetrieved = source.completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = source.endLSN;
+        this.readConsistencyStrategy = source.readConsistencyStrategy;
+    }
+
     public CosmosChangeFeedRequestOptionsImpl(
         FeedRangeInternal feedRange,
         ChangeFeedStartFromInternal startFromInternal,
