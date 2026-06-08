@@ -168,12 +168,6 @@ When possible, refer to the Azure SDK for Java Design Guidelines for specific ex
     - Instructions on how to verify the changes.
     - Any additional context or information that reviewers should be aware of.
 
-## PR Review Guidelines
-
-When reviewing a pull request, in addition to the general behavior rules above, apply the following SDK-specific checks and leave a review comment when any of them is violated:
-
-- **First SDK release should be a Beta (management-plane only).** Per the [Azure SDK Beta releases and stable graduation policy](https://azure.github.io/azure-sdk/policies_releases.html#beta-releases-and-stable-graduation), the first public release of a management-plane client library (Maven group `com.azure.resourcemanager`) should be a Beta and remain available for at least one month to allow community feedback. Detect a first release by checking whether the PR **adds a new entry** for the library in `eng/versioning/version_client.txt` (i.e. the `com.azure.resourcemanager:{module};stable;current` line did not exist on the base branch and is introduced by this PR); the value of the current version column alone is not a reliable signal because already-released packages can also legitimately carry a `-beta.N` current version. When the PR adds a new entry but sets the version to a stable (non-`-beta`) value such as `1.0.0`, leave a review comment asking the author to either change the version back to `1.0.0-beta.1`, or — if an exception to the GA CloudLifecycle SDK KPIs is required — follow [Request an exception for Azure SDKs](https://eng.ms/docs/products/azure-developer-experience/onboard/request-exception) (submitted in CloudLifecycle) and link the approved exception in the PR.
-
 ## Release Process
 
 - Version numbers follow [Semantic Versioning](https://semver.org/)
