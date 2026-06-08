@@ -571,11 +571,7 @@ public class ConsistencyWriter {
                         && responses.stream().allMatch(r -> r.isThrottledException)) {
                         logger.info("ConsistencyWriter: waitForWriteBarrierAsync - All contacted replicas returned "
                             + "429 Too Many Requests for this attempt. Continuing retries.");
-                        if (this.enableBarrierEarlyYieldOn429) {
-                            lastAttemptWasThrottled.set(true);
-                        } else {
-                            lastAttemptWasThrottled.set(false);
-                        }
+                        lastAttemptWasThrottled.set(this.enableBarrierEarlyYieldOn429);
                     } else {
                         lastAttemptWasThrottled.set(false);
                     }

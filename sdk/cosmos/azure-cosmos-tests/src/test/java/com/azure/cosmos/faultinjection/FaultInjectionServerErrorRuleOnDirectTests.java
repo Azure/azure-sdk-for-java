@@ -62,6 +62,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTestBase {
     private static final int TIMEOUT = 60000;
@@ -2062,8 +2063,10 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             TestObject newItem = TestObject.create();
             try {
                 container.createItem(newItem).block();
-                // If we get here, the barrier was met before throttle exhaustion (possible if
-                // GCLSN catches up between retries). That's acceptable — skip the assertion.
+                // The barrier HEAD requests are throttled for all retries and GCLSN is forced below
+                // LSN on every write, so the barrier can never be met — the write must fail.
+                fail("Expected createItem to fail with 408 (SERVER_WRITE_BARRIER_THROTTLED) due to "
+                    + "barrier throttle exhaustion, but it succeeded.");
             } catch (Exception e) {
                 // Validate: the write barrier failed due to throttle exhaustion and surfaced as a
                 // 408 (RequestTimeout) with the SERVER_WRITE_BARRIER_THROTTLED (21013) substatus.
@@ -2074,6 +2077,91 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                     .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
                 assertThat(cosmosException.getSubStatusCode())
                     .isEqualTo(HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
+            }
+
+        } finally {
+            barrierThrottleRule.disable();
+            safeClose(newClient);
+            System.clearProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429");
+        }
+    }
+
+    @Test(groups = {"multi-region-strong"}, timeOut = 2 * TIMEOUT)
+    public void faultInjection_writeBarrierThrottled_flagDisabled_doesNotEarlyYield() throws JsonProcessingException {
+        // Validates the default behavior when COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429 is NOT set.
+        // With the flag off, throttled write barrier requests must NOT surface as the new
+        // 408 / SERVER_WRITE_BARRIER_THROTTLED (21013) early-yield path. The legacy behavior
+        // (barrier-not-met -> Gone/retry) is preserved instead.
+
+        if (this.databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel() != ConsistencyLevel.STRONG) {
+            throw new SkipException("Test only applicable to STRONG consistency level.");
+        }
+
+        if (this.accountLevelReadRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account for write barriers to be triggered.");
+        }
+
+        CosmosAsyncClient newClient = null;
+        String faultInjectionRuleId = "barrier-429-write-flagoff-" + UUID.randomUUID();
+        FaultInjectionRule barrierThrottleRule =
+            new FaultInjectionRuleBuilder(faultInjectionRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.HEAD_COLLECTION)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                        .times(100) // Enough to exhaust all barrier retries
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        // Ensure the flag is not set for this test (default disabled).
+        System.clearProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429");
+        try {
+            newClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                newClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
+
+            TestObject testItem = TestObject.create();
+            container.createItem(testItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(barrierThrottleRule)).block();
+
+            // Force barrier requests by making GCLSN < LSN (simulate replication lag)
+            CosmosInterceptorHelper.registerTransportClientInterceptor(
+                newClient,
+                (request, storeResponse) -> {
+                    if (request.getResourceType() == ResourceType.Document
+                        && request.getOperationType() == OperationType.Create) {
+                        storeResponse.setGCLSN(storeResponse.getLSN() - 2L);
+                    }
+                    return storeResponse;
+                }
+            );
+
+            TestObject newItem = TestObject.create();
+            try {
+                container.createItem(newItem).block();
+                // With the flag off the legacy path may eventually surface a failure or succeed;
+                // either way the key assertion is that the 21013 early-yield substatus is NOT used.
+            } catch (Exception e) {
+                if (e instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException) e;
+                    assertThat(cosmosException.getSubStatusCode())
+                        .as("Flag-off path must not produce the SERVER_WRITE_BARRIER_THROTTLED early-yield substatus")
+                        .isNotEqualTo(HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
+                }
             }
 
         } finally {
