@@ -1,8 +1,30 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
 
 ### Other Changes
+
+## 2.54.0-beta.1 (2026-05-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-04-01-preview`.
+
+## 2.53.8 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
 
 ## 2.53.7 (2026-03-30)
 

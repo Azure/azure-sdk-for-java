@@ -119,6 +119,7 @@ public class HttpConstants {
         public static final String REQUEST_VALIDATION_FAILURE = "x-ms-request-validation-failure";
 
         public static final String WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH = "x-ms-write-request-trigger-refresh";
+        public static final String NO_RETRY_449 = "x-ms-noretry-449";
 
         // Quota Info
         public static final String MAX_RESOURCE_QUOTA = "x-ms-resource-quota";
@@ -300,6 +301,9 @@ public class HttpConstants {
 
         // Region affinity headers
         public static final String HUB_REGION_PROCESSING_ONLY = "x-ms-cosmos-hub-region-processing-only";
+
+        // Workload ID header for Azure Monitor metrics attribution
+        public static final String WORKLOAD_ID = "x-ms-cosmos-workload-id";
     }
 
     public static class A_IMHeaderValues {
@@ -308,15 +312,24 @@ public class HttpConstants {
     }
 
     public static class SDKSupportedCapabilities {
-        private static final long NONE = 0; // 0
-        private static final long PARTITION_MERGE = 1; // 1 << 0
-
-        private static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 2; // 1 << 1
+        // Visible for testing
+        static final long NONE = 0L;
+        static final long PARTITION_MERGE = 1L << 0;
+        static final long CHANGE_FEED_WITH_START_TIME_POST_MERGE = 1L << 1;
+        static final long THROUGHPUT_BUCKETING = 1L << 2;
+        // Signals the backend that the SDK can safely handle unrecognized RNTBD transport tokens.
+        // Required for N-Region Synchronous Commit, where the backend returns new response tokens
+        // (e.g., GlobalNRegionCommittedGLSN) that older SDK versions would not recognize.
+        static final long IGNORE_UNKNOWN_RNTBD_TOKENS = 1L << 3;
+        static final long CHANGE_FEED_TOKEN_WITH_GCN = 1L << 4;
 
         public static final String SUPPORTED_CAPABILITIES;
         public static final String SUPPORTED_CAPABILITIES_NONE;
         static {
-            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE | CHANGE_FEED_WITH_START_TIME_POST_MERGE);
+            SUPPORTED_CAPABILITIES = String.valueOf(
+                PARTITION_MERGE
+                    | CHANGE_FEED_WITH_START_TIME_POST_MERGE
+                    | IGNORE_UNKNOWN_RNTBD_TOKENS);
             SUPPORTED_CAPABILITIES_NONE = String.valueOf(NONE);
         }
     }
@@ -444,6 +457,13 @@ public class HttpConstants {
 
         // Client generated request rate too large exception
         public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
+
+        // Client generated gateway network error: HTTP/2 PING keepalive detected a dead
+        // connection (consecutive PING ACK timeouts crossed the failure threshold) and
+        // closed the channel. This is a LOCAL transport failure, NOT a regional outage --
+        // ClientRetryPolicy uses this to skip the endpoint mark-down / cross-region
+        // failover that GATEWAY_ENDPOINT_UNAVAILABLE would trigger.
+        public static final int GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED = 10006;
 
         public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
 

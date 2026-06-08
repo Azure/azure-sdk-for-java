@@ -1,13 +1,47 @@
 # Release History
-## 7.3.0-beta.1 (Unreleased)
+## 7.4.0-beta.1 (Unreleased)
 
 ### Spring Cloud Azure Autoconfigure
 
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Features Added
+
+#### Breaking Changes
+
 #### Bugs Fixed
 
+- Fixed the missing bean name in `@ConditionalOnMissingBean` for `LettuceClientConfigurationBuilderCustomizer` ([#49290](https://github.com/Azure/azure-sdk-for-java/issues/49290)).
+- Fixed the AAD and B2C resource server JWT decoder not honoring the `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, and `spring.cloud.azure.active-directory.b2c.jwt-read-timeout` configuration properties ([#49329](https://github.com/Azure/azure-sdk-for-java/pull/49329)).
+- Fixed AAD resource server JWK retrieval not honoring the `spring.cloud.azure.active-directory.jwk-set-cache-lifespan` and `spring.cloud.azure.active-directory.jwk-set-cache-refresh-time` configuration properties ([#42159](https://github.com/Azure/azure-sdk-for-java/issues/42159)).
+
+#### Other Changes
+
+## 6.4.0 (2026-06-01)
+- This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0-2025.0.2. (Note: 2025.0.x (x>2) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.7.
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+
+- AAD resource server now requires `spring.cloud.azure.active-directory.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted and will cause application startup to fail with an `IllegalArgumentException`. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+- `AadAuthenticationFilter` now enables explicit audience validation by default. The filter will verify that the JWT's `aud` (audience) claim matches either `spring.cloud.azure.active-directory.credential.client-id` or `spring.cloud.azure.active-directory.app-id-uri`. Tokens issued for other applications will be rejected with `BadJWTException`. This prevents cross-application token reuse and aligns with OAuth2/OIDC security best practices. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+- B2C resource server now requires `spring.cloud.azure.active-directory.b2c.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted. In addition, default token validation is hardened to enforce tenant-bound `tid`, stricter `aud` validation, and B2C-only trusted issuers. ([#49252](https://github.com/Azure/azure-sdk-for-java/pull/49252))
+- Event Hubs auto-configuration now identifies the root `EventHubClientBuilder` by bean name (`springCloudAzureEventHubsClientBuilder`) instead of by type. To override the auto-configured root builder (and have shared `EventHubConsumerClient`/`EventHubProducerClient` use your bean), register the bean under the name `springCloudAzureEventHubsClientBuilder`. A user-supplied `EventHubClientBuilder` bean under a different name will no longer suppress the auto-configured root builder and will not be wired into the shared clients. ([#49245](https://github.com/Azure/azure-sdk-for-java/issues/49245))
+
+#### Bugs Fixed
+- Fixed a bug where the sub-level `event-hub-name` property under `spring.cloud.azure.eventhubs.consumer` or `spring.cloud.azure.eventhubs.producer` was ignored when the base-level `spring.cloud.azure.eventhubs.event-hub-name` was also configured, causing the produced clients to connect to the base event hub instead of the overridden one. [#43593](https://github.com/Azure/azure-sdk-for-java/issues/43593)
+- Fixed Event Hubs autoconfiguration where a dedicated `EventHubClientBuilder` registered by `consumer`-only or `producer`-only sub-level overrides (`connection-string` / `namespace` / `event-hub-name`) suppressed the root builder and got injected into the opposite shared section, causing the shared client to target the other section's event hub. The root builder is now registered under bean name `springCloudAzureEventHubsClientBuilder` with a name-based `@ConditionalOnMissingBean`, and the shared consumer/producer sections gate on and inject that specific bean via `@Qualifier`. ([#49245](https://github.com/Azure/azure-sdk-for-java/issues/49245))
 - Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
+- Fixed Service Bus autoconfiguration for dedicated producer, consumer, and processor connection details so applications can initialize with only sub-level Service Bus `namespace` or `connection-string` settings and no top-level Service Bus connection configuration. ([#49257](https://github.com/Azure/azure-sdk-for-java/pull/49257))
 
 ### Spring Cloud Azure Stream Binder Service Bus
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
@@ -19,6 +53,119 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
   failures. [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
 - Add support for injecting a custom `RetryTemplate` from Spring context for advanced retry scenarios.
   [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
+
+### Spring Cloud Azure Service
+
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Features Added
+
+- Support `AzurePipelinesCredential` in Azure Event Hubs for Kafka passwordless connection ([#49108](https://github.com/Azure/azure-sdk-for-java/pull/49108)). It only takes effect when all the following 4 environment variables exist at runtime:
+    - `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID`
+    - `AZURESUBSCRIPTION_CLIENT_ID`
+    - `AZURESUBSCRIPTION_TENANT_ID`
+    - `SYSTEM_ACCESSTOKEN`
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#640-2026-06-01) for more details.
+
+## 7.3.0 (2026-05-27)
+- This release is compatible with Spring Boot 4.0.0-4.0.6. (Note: 4.0.x (x>6) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0-2025.1.1. (Note: 2025.1.x (x>1) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+- Upgrade `azure-sdk-bom` to 1.3.7.
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+
+- AAD resource server now requires `spring.cloud.azure.active-directory.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted and will cause application startup to fail with an `IllegalArgumentException`. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+- `AadAuthenticationFilter` now enables explicit audience validation by default. The filter will verify that the JWT's `aud` (audience) claim matches either `spring.cloud.azure.active-directory.credential.client-id` or `spring.cloud.azure.active-directory.app-id-uri`. Tokens issued for other applications will be rejected with `BadJWTException`. This prevents cross-application token reuse and aligns with OAuth2/OIDC security best practices. ([#49033](https://github.com/Azure/azure-sdk-for-java/pull/49033))
+- B2C resource server now requires `spring.cloud.azure.active-directory.b2c.profile.tenant-id` to be set to a specific (non-reserved) tenant ID. Empty string, `common`, `organizations`, and `consumers` are no longer accepted. In addition, default token validation is hardened to enforce tenant-bound `tid`, stricter `aud` validation, and B2C-only trusted issuers. ([#49252](https://github.com/Azure/azure-sdk-for-java/pull/49252))
+- Event Hubs auto-configuration now identifies the root `EventHubClientBuilder` by bean name (`springCloudAzureEventHubsClientBuilder`) instead of by type. To override the auto-configured root builder (and have shared `EventHubConsumerClient`/`EventHubProducerClient` use your bean), register the bean under the name `springCloudAzureEventHubsClientBuilder`. A user-supplied `EventHubClientBuilder` bean under a different name will no longer suppress the auto-configured root builder and will not be wired into the shared clients. ([#49245](https://github.com/Azure/azure-sdk-for-java/issues/49245))
+
+#### Bugs Fixed
+
+- Fixed a bug where the sub-level `event-hub-name` property under `spring.cloud.azure.eventhubs.consumer` or `spring.cloud.azure.eventhubs.producer` was ignored when the base-level `spring.cloud.azure.eventhubs.event-hub-name` was also configured, causing the produced clients to connect to the base event hub instead of the overridden one. [#43593](https://github.com/Azure/azure-sdk-for-java/issues/43593)
+- Fixed Event Hubs autoconfiguration where a dedicated `EventHubClientBuilder` registered by `consumer`-only or `producer`-only sub-level overrides (`connection-string` / `namespace` / `event-hub-name`) suppressed the root builder and got injected into the opposite shared section, causing the shared client to target the other section's event hub. The root builder is now registered under bean name `springCloudAzureEventHubsClientBuilder` with a name-based `@ConditionalOnMissingBean`, and the shared consumer/producer sections gate on and inject that specific bean via `@Qualifier`. ([#49245](https://github.com/Azure/azure-sdk-for-java/issues/49245))
+- Fixed JDBC/Azure Database and Redis passwordless connection scope defaulting using the wrong `azure.scopes` value for Azure China and Azure US Government when `spring.cloud.azure.profile.cloud-type` is set to `azure_china` or `azure_us_government`. The scopes are now correctly derived from the merged cloud type. ([#47096](https://github.com/Azure/azure-sdk-for-java/issues/47096))
+- Fixed Service Bus autoconfiguration for dedicated producer, consumer, and processor connection details so applications can initialize with only sub-level Service Bus `namespace` or `connection-string` settings and no top-level Service Bus connection configuration. ([#49257](https://github.com/Azure/azure-sdk-for-java/pull/49257))
+
+### Spring Cloud Azure Stream Binder Service Bus
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Features Added
+
+- Add support for Spring Cloud Stream consumer retry properties (`maxAttempts`, `backOffInitialInterval`,
+  `backOffMaxInterval`, `backOffMultiplier`) to enable retry with exponential backoff for message processing
+  failures. [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
+- Add support for injecting a custom `RetryTemplate` from Spring context for advanced retry scenarios.
+  [#47135](https://github.com/Azure/azure-sdk-for-java/issues/47135).
+
+### Spring Cloud Azure Service
+
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Features Added
+
+- Support `AzurePipelinesCredential` in Azure Event Hubs for Kafka passwordless connection ([#49108](https://github.com/Azure/azure-sdk-for-java/pull/49108)). It only takes effect when all the following 4 environment variables exist at runtime:
+  - `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID`
+  - `AZURESUBSCRIPTION_CLIENT_ID`
+  - `AZURESUBSCRIPTION_TENANT_ID`
+  - `SYSTEM_ACCESSTOKEN`
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#730-2026-05-27) for more details.
+
+## 6.3.0 (2026-04-29)
+- This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0-2025.0.2. (Note: 2025.0.x (x>2) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.6.
+
+### Spring Cloud Azure Autoconfigure
+
+#### Bugs Fixed
+
+- Fixed `KeyVaultJcaProvider` being registered as the highest-priority JCA security provider, which overrides standard JCA services (`KeyManagerFactory.SunX509`, `Signature` algorithms) and breaks mTLS with standard keystores (JKS, PKCS12). The provider is now added at the end of the provider list, allowing JCA's delayed provider selection to route `KeyVaultPrivateKey` signing operations to the KeyVault implementations without interfering with standard SSL/TLS operations. [#48183](https://github.com/Azure/azure-sdk-for-java/issues/48183)
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Features Added
+
+- Added support for filtering configuration settings and feature flags by tags. Tags can be configured via `spring.cloud.azure.appconfiguration.stores[0].selects[0].tags-filter` for key-value settings and `spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].tags-filter` for feature flags. The value is a list of `tag=value` pairs (e.g., `["env=prod", "team=backend"]`) combined with AND logic. [#47985](https://github.com/Azure/azure-sdk-for-java/pull/47985)
+- Added `startup-timeout` configuration option that enables automatic retry with backoff when transient failures occur during application startup. The provider will continue retrying until the timeout expires (default: 100 seconds). [#47857](https://github.com/Azure/azure-sdk-for-java/pull/47857).
+
+#### Bugs Fixed
+
+- Fixed a bug where ';' was ignored in JSON content type checking. [#48448](https://github.com/Azure/azure-sdk-for-java/pull/48448)
+- Fixed an issue where feature flag–based refresh did not work when load balancing was enabled with a single configuration store. Feature flag refresh now uses the same load-balanced client selection as configuration refresh, including the single-store scenario. [#48121](https://github.com/Azure/azure-sdk-for-java/pull/48121)
+- Fixed YAML configuration binding for `label-filter` by adding standard no-arg getter methods to `AppConfigurationKeyValueSelector` and `FeatureFlagKeyValueSelector`, enabling proper type resolution by Spring Boot's `@ConfigurationProperties` binder. [#47985](https://github.com/Azure/azure-sdk-for-java/pull/47985)
+- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. [#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587)
+
+### Spring Messaging Azure Service Bus
+
+This section includes changes in `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+
+- Fixed `DefaultServiceBusNamespaceProcessorFactory` not removing closed/disposed `ServiceBusProcessorClient` instances from its internal cache, causing subsequent `createProcessor()` calls to return stale, non-functional processors. [#48030](https://github.com/Azure/azure-sdk-for-java/issues/48030)
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#630-2026-04-29) for more details.
 
 ## 7.2.0 (2026-04-17)
 - This release is compatible with Spring Boot 4.0.0-4.0.5. (Note: 4.0.x (x>5) should be supported, but they aren't tested with this release.)

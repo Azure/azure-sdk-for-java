@@ -4,11 +4,23 @@
 
 ### Features Added
 
+- Added `checkConfigurationSettings` method to `ConfigurationClient` and `ConfigurationAsyncClient` that performs HEAD requests to efficiently check if configuration settings have changed by comparing page-level ETags without retrieving the full response body.
+- Added `description` property to `ConfigurationSetting` and `ConfigurationSnapshot`, along with corresponding `DESCRIPTION` values on `SettingFields` and `SnapshotFields`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.9.2 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
 ## 1.9.1 (2026-01-29)
 

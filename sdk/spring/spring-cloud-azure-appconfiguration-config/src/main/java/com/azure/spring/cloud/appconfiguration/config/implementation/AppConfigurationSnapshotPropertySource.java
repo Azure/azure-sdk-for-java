@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-
 import java.util.List;
 
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
@@ -13,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
@@ -45,6 +44,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
     public void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException {
+        replicaClient.getTracingInfo().resetAiConfigurationTracing();
         List<ConfigurationSetting> settings = replicaClient.listSettingSnapshot(snapshotName, context);
         
         for (ConfigurationSetting setting : settings) {
@@ -64,7 +64,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         }
 
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
-        featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
+        featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
     @Override

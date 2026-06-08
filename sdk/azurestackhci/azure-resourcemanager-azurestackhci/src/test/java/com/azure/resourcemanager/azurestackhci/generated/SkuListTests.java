@@ -12,16 +12,15 @@ public final class SkuListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"ckywymxga\",\"publisherId\":\"jkdtfoh\",\"offerId\":\"ogzvk\",\"content\":\"rsiwdyjqur\",\"contentVersion\":\"crraueekcsu\",\"skuMappings\":[{\"catalogPlanId\":\"ddacbcbgydlqidy\",\"marketplaceSkuId\":\"hmptyrilkfbn\",\"marketplaceSkuVersions\":[\"xvztpbnfnqtxj\",\"omals\",\"bnfddep\",\"dwq\"]}]},\"id\":\"sfzygleexahv\",\"name\":\"ywhsbrcarycs\",\"type\":\"j\"}],\"nextLink\":\"voaqajuvehzptdmk\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"bjkdtfohf\",\"publisherId\":\"gzvkiwrsiwdyj\",\"offerId\":\"rykcrraueekcsue\",\"content\":\"gdda\",\"contentVersion\":\"cbgydlqi\",\"skuMappings\":[{\"catalogPlanId\":\"hmptyrilkfbn\",\"marketplaceSkuId\":\"qxvztpbnfnqtxjt\",\"marketplaceSkuVersions\":[\"lswbnf\",\"depld\"]},{\"catalogPlanId\":\"jnsfzygleexahvmy\",\"marketplaceSkuId\":\"sbrcary\",\"marketplaceSkuVersions\":[\"j\",\"yvoaqajuvehzp\",\"dmkrrb\",\"mpfu\"]},{\"catalogPlanId\":\"be\",\"marketplaceSkuId\":\"ybpmf\",\"marketplaceSkuVersions\":[\"nunmpzkrv\",\"yifkdschlzvf\"]},{\"catalogPlanId\":\"tnkjjwgcwnphb\",\"marketplaceSkuId\":\"fyrtogmhmjp\",\"marketplaceSkuVersions\":[\"dfpdqwtygevg\"]}]},\"id\":\"sehar\",\"name\":\"ifvqnr\",\"type\":\"tmbpjp\"},{\"properties\":{\"provisioningState\":\"wjhrsidqpxlbtpa\",\"publisherId\":\"tngatwmykyu\",\"offerId\":\"ym\",\"content\":\"mfjhpycvjqdvdwkq\",\"contentVersion\":\"drlefgnaavuag\",\"skuMappings\":[{\"catalogPlanId\":\"aou\",\"marketplaceSkuId\":\"pdctuhspfefyi\",\"marketplaceSkuVersions\":[\"yeuyldph\",\"tybkcgs\"]},{\"catalogPlanId\":\"h\",\"marketplaceSkuId\":\"lnm\",\"marketplaceSkuVersions\":[\"efxexlf\",\"i\",\"txtjrrlkmds\",\"jhhxdlajf\"]},{\"catalogPlanId\":\"cxscvslxlh\",\"marketplaceSkuId\":\"vkrmukmyjmkx\",\"marketplaceSkuVersions\":[\"csl\",\"jfkqidn\"]}]},\"id\":\"o\",\"name\":\"xjhqxcsqhtkb\",\"type\":\"nqlrng\"},{\"properties\":{\"provisioningState\":\"biipsnawwlqkznx\",\"publisherId\":\"llxricc\",\"offerId\":\"wmuqqoajxeiygle\",\"content\":\"wvaexhdctr\",\"contentVersion\":\"qnkbrupobehdm\",\"skuMappings\":[{\"catalogPlanId\":\"cvumepjpbi\",\"marketplaceSkuId\":\"zpphepif\",\"marketplaceSkuVersions\":[\"eqir\",\"cjclykcgxv\",\"pjlvczuoda\",\"punettepdjxq\"]},{\"catalogPlanId\":\"koynuiylpckae\",\"marketplaceSkuId\":\"edveskwxegqp\",\"marketplaceSkuVersions\":[\"fn\",\"hctmjtsgh\"]}]},\"id\":\"c\",\"name\":\"cp\",\"type\":\"arpzeqacdldtzm\"}],\"nextLink\":\"pefcpcz\"}")
             .toObject(SkuList.class);
-        Assertions.assertEquals("jkdtfoh", model.value().get(0).publisherId());
-        Assertions.assertEquals("ogzvk", model.value().get(0).offerId());
-        Assertions.assertEquals("rsiwdyjqur", model.value().get(0).content());
-        Assertions.assertEquals("crraueekcsu", model.value().get(0).contentVersion());
-        Assertions.assertEquals("ddacbcbgydlqidy", model.value().get(0).skuMappings().get(0).catalogPlanId());
-        Assertions.assertEquals("hmptyrilkfbn", model.value().get(0).skuMappings().get(0).marketplaceSkuId());
-        Assertions.assertEquals("xvztpbnfnqtxj",
-            model.value().get(0).skuMappings().get(0).marketplaceSkuVersions().get(0));
-        Assertions.assertEquals("voaqajuvehzptdmk", model.nextLink());
+        Assertions.assertEquals("gzvkiwrsiwdyj", model.value().get(0).publisherId());
+        Assertions.assertEquals("rykcrraueekcsue", model.value().get(0).offerId());
+        Assertions.assertEquals("gdda", model.value().get(0).content());
+        Assertions.assertEquals("cbgydlqi", model.value().get(0).contentVersion());
+        Assertions.assertEquals("hmptyrilkfbn", model.value().get(0).skuMappings().get(0).catalogPlanId());
+        Assertions.assertEquals("qxvztpbnfnqtxjt", model.value().get(0).skuMappings().get(0).marketplaceSkuId());
+        Assertions.assertEquals("lswbnf", model.value().get(0).skuMappings().get(0).marketplaceSkuVersions().get(0));
+        Assertions.assertEquals("pefcpcz", model.nextLink());
     }
 }

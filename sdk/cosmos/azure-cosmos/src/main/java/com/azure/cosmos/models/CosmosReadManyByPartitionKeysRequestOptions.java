@@ -10,10 +10,11 @@ import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosReadManyByPartitionKeysRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.util.Beta;
+import com.azure.cosmos.implementation.Utils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -141,18 +142,19 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return this.actualRequestOptions.getReadConsistencyStrategy();
     }
 
     /**
      * Sets the read consistency strategy required for the request.
+     * <p>Honored across Direct, Gateway V1 (compute gateway), and Gateway V2 (thin client proxy) connection modes.
+     * {@code GLOBAL_STRONG} is rejected client-side with a {@link com.azure.cosmos.CosmosException} (HTTP 400)
+     * when the account's default consistency is not {@link com.azure.cosmos.ConsistencyLevel#STRONG}. Such failures must NOT be retried.</p>
      *
      * @param readConsistencyStrategy the read consistency strategy.
      * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosReadManyByPartitionKeysRequestOptions setReadConsistencyStrategy(
         ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
@@ -400,6 +402,44 @@ public final class CosmosReadManyByPartitionKeysRequestOptions {
      */
     public Set<String> getKeywordIdentifiers() {
         return this.actualRequestOptions.getKeywordIdentifiers();
+    }
+
+    /**
+     * Sets additional headers to be included with this specific request.
+     * <p>
+     * The {@link CosmosAdditionalHeaderName} class defines exactly which headers are supported.
+     * This allows per-request header customization, such as setting a workload ID
+     * that overrides the client-level default set via
+     * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.
+     * <p>
+     * If the same header is also set at the client level, the request-level value
+     * takes precedence.
+     * <p>
+     * <b>Note:</b> This method uses additive (merge) semantics — headers from multiple
+     * calls are merged into the existing set. Passing {@code null} or an empty map does
+     * <i>not</i> clear previously set headers. To reset headers, create a new options instance.
+     *
+     * @param additionalHeaders map of {@link CosmosAdditionalHeaderName} to value
+     * @return the {@link CosmosReadManyByPartitionKeysRequestOptions} for fluent chaining.
+     * @throws IllegalArgumentException if the workload-id value is not a valid integer
+     */
+    public CosmosReadManyByPartitionKeysRequestOptions setAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        Utils.validateAdditionalHeaders(additionalHeaders);
+        if (additionalHeaders != null) {
+            for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
+                this.actualRequestOptions.setHeader(entry.getKey().getHeaderName(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Gets the additional headers configured on this request options instance.
+     *
+     * @return unmodifiable map of additional headers, or {@code null} if none are set
+     */
+    public Map<CosmosAdditionalHeaderName, String> getAdditionalHeaders() {
+        return Utils.toAdditionalHeaders(this.actualRequestOptions.getHeaders());
     }
 
     CosmosQueryRequestOptionsBase<?> getImpl() {

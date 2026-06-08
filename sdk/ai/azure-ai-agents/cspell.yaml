@@ -3,4 +3,5 @@ import:
 overrides:
   - filename: "**/sdk/ai/azure-ai-agents/*"
     words:
+    - dedup
     - gitmcp

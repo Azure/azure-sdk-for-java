@@ -266,7 +266,9 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("contentExtractionMode",
             this.contentExtractionMode == null ? null : this.contentExtractionMode.toString());
-        jsonWriter.writeJsonField("aiServices", this.aIServices);
+        jsonWriter.writeJsonField("aiServices", this.aiServices);
+        jsonWriter.writeJsonField("assetStore", this.assetStore);
+        jsonWriter.writeJsonField("freshnessPolicy", this.freshnessPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -310,7 +312,11 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                     deserializedKnowledgeSourceIngestionParameters.contentExtractionMode
                         = KnowledgeSourceContentExtractionMode.fromString(reader.getString());
                 } else if ("aiServices".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.aIServices = AIServices.fromJson(reader);
+                    deserializedKnowledgeSourceIngestionParameters.aiServices = AiServices.fromJson(reader);
+                } else if ("assetStore".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.assetStore = AssetStore.fromJson(reader);
+                } else if ("freshnessPolicy".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.freshnessPolicy = FreshnessPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -320,30 +326,86 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     }
 
     /*
-     * Optional AI Services configuration for content processing.
+     * Optional asset store configuration for storing extracted assets such as images.
      */
     @Generated
-    private AIServices aIServices;
+    private AssetStore assetStore;
+
+    /*
+     * Optional freshness policy for biasing retrieval toward newer documents.
+     */
+    @Generated
+    private FreshnessPolicy freshnessPolicy;
 
     /**
-     * Get the aIServices property: Optional AI Services configuration for content processing.
+     * Get the assetStore property: Optional asset store configuration for storing extracted assets such as images.
      *
-     * @return the aIServices value.
+     * @return the assetStore value.
      */
     @Generated
-    public AIServices getAIServices() {
-        return this.aIServices;
+    public AssetStore getAssetStore() {
+        return this.assetStore;
     }
 
     /**
-     * Set the aIServices property: Optional AI Services configuration for content processing.
+     * Set the assetStore property: Optional asset store configuration for storing extracted assets such as images.
      *
-     * @param aIServices the aIServices value to set.
+     * @param assetStore the assetStore value to set.
      * @return the KnowledgeSourceIngestionParameters object itself.
      */
     @Generated
-    public KnowledgeSourceIngestionParameters setAIServices(AIServices aIServices) {
-        this.aIServices = aIServices;
+    public KnowledgeSourceIngestionParameters setAssetStore(AssetStore assetStore) {
+        this.assetStore = assetStore;
+        return this;
+    }
+
+    /**
+     * Get the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
+     *
+     * @return the freshnessPolicy value.
+     */
+    @Generated
+    public FreshnessPolicy getFreshnessPolicy() {
+        return this.freshnessPolicy;
+    }
+
+    /**
+     * Set the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
+     *
+     * @param freshnessPolicy the freshnessPolicy value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setFreshnessPolicy(FreshnessPolicy freshnessPolicy) {
+        this.freshnessPolicy = freshnessPolicy;
+        return this;
+    }
+
+    /*
+     * Optional AI Services configuration for content processing.
+     */
+    @Generated
+    private AiServices aiServices;
+
+    /**
+     * Get the aiServices property: Optional AI Services configuration for content processing.
+     *
+     * @return the aiServices value.
+     */
+    @Generated
+    public AiServices getAiServices() {
+        return this.aiServices;
+    }
+
+    /**
+     * Set the aiServices property: Optional AI Services configuration for content processing.
+     *
+     * @param aiServices the aiServices value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setAiServices(AiServices aiServices) {
+        this.aiServices = aiServices;
         return this;
     }
 }

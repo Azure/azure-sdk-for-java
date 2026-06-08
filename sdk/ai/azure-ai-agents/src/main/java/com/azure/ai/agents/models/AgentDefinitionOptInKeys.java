@@ -16,7 +16,22 @@ public enum AgentDefinitionOptInKeys {
     /**
      * Enum value WorkflowAgents=V1Preview.
      */
-    WORKFLOW_AGENTS_V1_PREVIEW("WorkflowAgents=V1Preview");
+    WORKFLOW_AGENTS_V1_PREVIEW("WorkflowAgents=V1Preview"),
+
+    /**
+     * Enum value AgentEndpoints=V1Preview.
+     */
+    AGENT_ENDPOINT_V1_PREVIEW("AgentEndpoints=V1Preview"),
+
+    /**
+     * Enum value CodeAgents=V1Preview.
+     */
+    CODE_AGENTS_V1_PREVIEW("CodeAgents=V1Preview"),
+
+    /**
+     * Enum value ExternalAgents=V1Preview.
+     */
+    EXTERNAL_AGENTS_V1_PREVIEW("ExternalAgents=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.

@@ -45,13 +45,12 @@ public final class RelationshipsImpl implements Relationships {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String relationshipName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, healthModelName, relationshipName, context);
-    }
-
     public void delete(String resourceGroupName, String healthModelName, String relationshipName) {
         this.serviceClient().delete(resourceGroupName, healthModelName, relationshipName);
+    }
+
+    public void delete(String resourceGroupName, String healthModelName, String relationshipName, Context context) {
+        this.serviceClient().delete(resourceGroupName, healthModelName, relationshipName, context);
     }
 
     public PagedIterable<Relationship> listByHealthModel(String resourceGroupName, String healthModelName) {
@@ -121,10 +120,10 @@ public final class RelationshipsImpl implements Relationships {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, healthModelName, relationshipName, Context.NONE);
+        this.delete(resourceGroupName, healthModelName, relationshipName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -140,7 +139,7 @@ public final class RelationshipsImpl implements Relationships {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'relationships'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, healthModelName, relationshipName, context);
+        this.delete(resourceGroupName, healthModelName, relationshipName, context);
     }
 
     private RelationshipsClient serviceClient() {

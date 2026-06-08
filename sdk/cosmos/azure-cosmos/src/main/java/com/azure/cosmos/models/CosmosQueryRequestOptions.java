@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
@@ -13,7 +14,6 @@ import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.List;
@@ -68,7 +68,6 @@ public class CosmosQueryRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return this.actualRequestOptions.getReadConsistencyStrategy();
     }
@@ -98,11 +97,13 @@ public class CosmosQueryRequestOptions {
      * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
      * NOTE: The `setConsistencyLevel` value specified is ignored when `setReadConsistencyStrategy` is used unless
      * `DEFAULT` is specified.
+     * <p>Honored across Direct, Gateway V1 (compute gateway), and Gateway V2 (thin client proxy) connection modes.
+     * {@code GLOBAL_STRONG} is rejected client-side with a {@link com.azure.cosmos.CosmosException} (HTTP 400)
+     * when the account's default consistency is not {@link com.azure.cosmos.ConsistencyLevel#STRONG}. Such failures must NOT be retried.</p>
      *
      * @param readConsistencyStrategy the consistency level.
      * @return the CosmosQueryRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
         return this;
@@ -257,6 +258,56 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions setExcludedRegions(List<String> excludeRegions) {
         this.actualRequestOptions.setExcludedRegions(excludeRegions);
+        return this;
+    }
+
+    /**
+     * Sets additional headers to be included with this specific request.
+     * <p>
+     * The {@link CosmosAdditionalHeaderName} class defines exactly which headers are supported.
+     * This allows per-request header customization, such as setting a workload ID
+     * that overrides the client-level default set via
+     * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.
+     * <p>
+     * If the same header is also set at the client level, the request-level value
+     * takes precedence.
+     * <p>
+     * <b>Note:</b> This method uses additive (merge) semantics — headers from multiple
+     * calls are merged into the existing set. Passing {@code null} or an empty map does
+     * <i>not</i> clear previously set headers. To reset headers, create a new options instance.
+     *
+     * @param additionalHeaders map of {@link CosmosAdditionalHeaderName} to value
+     * @return the CosmosQueryRequestOptions.
+     * @throws IllegalArgumentException if the workload-id value is not a valid integer
+     */
+    public CosmosQueryRequestOptions setAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        Utils.validateAdditionalHeaders(additionalHeaders);
+        if (additionalHeaders != null) {
+            for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
+                this.actualRequestOptions.setHeader(entry.getKey().getHeaderName(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Gets the additional headers configured on this request options instance.
+     *
+     * @return unmodifiable map of additional headers, or {@code null} if none are set
+     */
+    public Map<CosmosAdditionalHeaderName, String> getAdditionalHeaders() {
+        return Utils.toAdditionalHeaders(this.actualRequestOptions.getHeaders());
+    }
+
+    /**
+     * Sets a header to be included with this specific request.
+     *
+     * @param name  the header name
+     * @param value the header value
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setHeader(String name, String value) {
+        this.actualRequestOptions.setHeader(name, value);
         return this;
     }
 

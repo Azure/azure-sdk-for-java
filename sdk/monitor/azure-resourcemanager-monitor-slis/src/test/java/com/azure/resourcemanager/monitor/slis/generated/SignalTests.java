@@ -22,7 +22,7 @@ public final class SignalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Signal model = BinaryData.fromString(
-            "{\"signalSources\":[{\"signalSourceId\":\"jhtxfvgxbfsmxne\",\"sourceAmwAccountManagedIdentity\":\"mpvecxgodebfqk\",\"sourceAmwAccountResourceId\":\"rbmpukgri\",\"metricNamespace\":\"flz\",\"metricName\":\"fbxzpuzycisp\",\"filters\":[{\"dimensionName\":\"ahmgkbrp\",\"scalarFunction\":\"min\",\"samplingType\":\"avg\",\"operator\":\"startswith\",\"value\":\"nuqqkpikadrgvt\"},{\"dimensionName\":\"gnbuy\",\"scalarFunction\":\"avg\",\"samplingType\":\"max\",\"operator\":\"contains\",\"value\":\"mebf\"},{\"dimensionName\":\"arbu\",\"scalarFunction\":\"sum\",\"samplingType\":\"min\",\"operator\":\"!contains\",\"value\":\"azzmhjrunmpxt\"}],\"spatialAggregation\":{\"type\":\"Sum\",\"dimensions\":[\"hrbnlankxmyskpbh\"]},\"temporalAggregation\":{\"type\":\"Sum\",\"windowSizeMinutes\":1326044907}},{\"signalSourceId\":\"kcxywnyt\",\"sourceAmwAccountManagedIdentity\":\"rsyn\",\"sourceAmwAccountResourceId\":\"qidybyx\",\"metricNamespace\":\"zfcl\",\"metricName\":\"aaxdbabphlwrq\",\"filters\":[{\"dimensionName\":\"tsthsucocm\",\"scalarFunction\":\"sum\",\"samplingType\":\"max\",\"operator\":\"!=\",\"value\":\"t\"}],\"spatialAggregation\":{\"type\":\"Count\",\"dimensions\":[\"wrqpue\"]},\"temporalAggregation\":{\"type\":\"Max\",\"windowSizeMinutes\":1618897040}}],\"signalFormula\":\"ywbiexzfeyueax\"}")
+            "{\"signalSources\":[{\"signalSourceId\":\"jhtxfvgxbfsmxne\",\"sourceAmwAccountManagedIdentity\":\"mpvecxgodebfqk\",\"sourceAmwAccountResourceId\":\"rbmpukgri\",\"metricNamespace\":\"flz\",\"metricName\":\"fbxzpuzycisp\",\"filters\":[{\"dimensionName\":\"ahmgkbrp\",\"scalarFunction\":\"min\",\"samplingType\":\"Count\",\"operator\":\"startswith\",\"value\":\"nuqqkpikadrgvt\"},{\"dimensionName\":\"gnbuy\",\"scalarFunction\":\"avg\",\"samplingType\":\"Count\",\"operator\":\"contains\",\"value\":\"mebf\"},{\"dimensionName\":\"arbu\",\"scalarFunction\":\"sum\",\"samplingType\":\"Min\",\"operator\":\"notcontains\",\"value\":\"azzmhjrunmpxt\"}],\"spatialAggregation\":{\"type\":\"Sum\",\"dimensions\":[\"hrbnlankxmyskpbh\"]},\"temporalAggregation\":{\"type\":\"Sum\",\"windowSizeMinutes\":1326044907}},{\"signalSourceId\":\"kcxywnyt\",\"sourceAmwAccountManagedIdentity\":\"rsyn\",\"sourceAmwAccountResourceId\":\"qidybyx\",\"metricNamespace\":\"zfcl\",\"metricName\":\"aaxdbabphlwrq\",\"filters\":[{\"dimensionName\":\"tsthsucocm\",\"scalarFunction\":\"sum\",\"samplingType\":\"Average\",\"operator\":\"ne\",\"value\":\"t\"}],\"spatialAggregation\":{\"type\":\"Count\",\"dimensions\":[\"wrqpue\"]},\"temporalAggregation\":{\"type\":\"Max\",\"windowSizeMinutes\":1618897040}}],\"signalFormula\":\"ywbiexzfeyueax\"}")
             .toObject(Signal.class);
         Assertions.assertEquals("jhtxfvgxbfsmxne", model.signalSources().get(0).signalSourceId());
         Assertions.assertEquals("mpvecxgodebfqk", model.signalSources().get(0).sourceAmwAccountManagedIdentity());
@@ -31,7 +31,7 @@ public final class SignalTests {
         Assertions.assertEquals("fbxzpuzycisp", model.signalSources().get(0).metricName());
         Assertions.assertEquals("ahmgkbrp", model.signalSources().get(0).filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.MIN, model.signalSources().get(0).filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.AVG, model.signalSources().get(0).filters().get(0).samplingType());
+        Assertions.assertEquals(SamplingType.COUNT, model.signalSources().get(0).filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.STARTS_WITH,
             model.signalSources().get(0).filters().get(0).operator());
         Assertions.assertEquals("nuqqkpikadrgvt", model.signalSources().get(0).filters().get(0).value());
@@ -54,12 +54,12 @@ public final class SignalTests {
                 .withFilters(Arrays.asList(
                     new Condition().withDimensionName("ahmgkbrp")
                         .withScalarFunction(ScalarFunction.MIN)
-                        .withSamplingType(SamplingType.AVG)
+                        .withSamplingType(SamplingType.COUNT)
                         .withOperator(ConditionOperator.STARTS_WITH)
                         .withValue("nuqqkpikadrgvt"),
                     new Condition().withDimensionName("gnbuy")
                         .withScalarFunction(ScalarFunction.AVG)
-                        .withSamplingType(SamplingType.MAX)
+                        .withSamplingType(SamplingType.COUNT)
                         .withOperator(ConditionOperator.CONTAINS)
                         .withValue("mebf"),
                     new Condition().withDimensionName("arbu")
@@ -78,7 +78,7 @@ public final class SignalTests {
                 .withMetricName("aaxdbabphlwrq")
                 .withFilters(Arrays.asList(new Condition().withDimensionName("tsthsucocm")
                     .withScalarFunction(ScalarFunction.SUM)
-                    .withSamplingType(SamplingType.MAX)
+                    .withSamplingType(SamplingType.AVERAGE)
                     .withOperator(ConditionOperator.NOT_EQUAL)
                     .withValue("t")))
                 .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.COUNT)
@@ -94,7 +94,7 @@ public final class SignalTests {
         Assertions.assertEquals("fbxzpuzycisp", model.signalSources().get(0).metricName());
         Assertions.assertEquals("ahmgkbrp", model.signalSources().get(0).filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.MIN, model.signalSources().get(0).filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.AVG, model.signalSources().get(0).filters().get(0).samplingType());
+        Assertions.assertEquals(SamplingType.COUNT, model.signalSources().get(0).filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.STARTS_WITH,
             model.signalSources().get(0).filters().get(0).operator());
         Assertions.assertEquals("nuqqkpikadrgvt", model.signalSources().get(0).filters().get(0).value());

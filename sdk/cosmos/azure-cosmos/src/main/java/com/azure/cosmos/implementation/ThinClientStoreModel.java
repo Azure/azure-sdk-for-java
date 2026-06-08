@@ -51,7 +51,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         ConsistencyLevel defaultConsistencyLevel,
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
-        HttpClient httpClient) {
+        HttpClient httpClient,
+        Map<String, String> additionalHeaders) {
         super(
             clientContext,
             sessionContainer,
@@ -60,7 +61,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
-            ApiType.SQL);
+            ApiType.SQL,
+            additionalHeaders);
 
         String userAgent = userAgentContainer != null
             ? userAgentContainer.getUserAgent()
@@ -74,6 +76,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
         return super.processMessage(request);
+    }
+
+    @Override
+    protected void applyGatewayRetryWithHeaders(RxDocumentServiceRequest request) {
+        // ThinClient does not use the Gateway V1 server-side 449 retry loop.
     }
 
     @Override

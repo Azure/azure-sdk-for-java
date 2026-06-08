@@ -14,16 +14,16 @@ public final class HciEdgeDeviceJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceJob model = BinaryData.fromString(
-            "{\"kind\":\"HCI\",\"properties\":{\"jobType\":\"HciEdgeDeviceJobProperties\",\"deploymentMode\":\"Deploy\",\"provisioningState\":\"Creating\",\"jobId\":\"ndbnwieh\",\"startTimeUtc\":\"2021-06-15T06:42:17Z\",\"endTimeUtc\":\"2021-06-22T19:10:38Z\",\"status\":\"NotSpecified\"},\"id\":\"ubwefqs\",\"name\":\"ap\",\"type\":\"qtferrqwexjkmf\"}")
+            "{\"kind\":\"HCI\",\"properties\":{\"jobType\":\"HciEdgeDeviceJobProperties\",\"deploymentMode\":\"Validate\",\"provisioningState\":\"Canceled\",\"jobId\":\"vyl\",\"startTimeUtc\":\"2021-08-24T01:27:04Z\",\"endTimeUtc\":\"2021-01-10T05:31:28Z\",\"status\":\"ValidationInProgress\"},\"id\":\"mncsttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}")
             .toObject(HciEdgeDeviceJob.class);
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.properties().deploymentMode());
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.properties().deploymentMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HciEdgeDeviceJob model = new HciEdgeDeviceJob()
-            .withProperties(new HciEdgeDeviceJobProperties().withDeploymentMode(DeploymentMode.DEPLOY));
+            .withProperties(new HciEdgeDeviceJobProperties().withDeploymentMode(DeploymentMode.VALIDATE));
         model = BinaryData.fromObject(model).toObject(HciEdgeDeviceJob.class);
-        Assertions.assertEquals(DeploymentMode.DEPLOY, model.properties().deploymentMode());
+        Assertions.assertEquals(DeploymentMode.VALIDATE, model.properties().deploymentMode());
     }
 }

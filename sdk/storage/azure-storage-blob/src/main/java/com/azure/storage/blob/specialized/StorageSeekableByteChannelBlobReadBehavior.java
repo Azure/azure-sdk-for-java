@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
 import java.io.IOException;
@@ -75,7 +76,7 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
             BlobDownloadResponse response
                 = client.downloadStreamWithResponse(dstStream, new BlobRange(sourceOffset, (long) dst.remaining()),
-                    null /*downloadRetryOptions*/, requestConditions, false, null, null);
+                    new DownloadRetryOptions(), requestConditions, false, null, null);
             resourceLength = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (BlobStorageException e) {

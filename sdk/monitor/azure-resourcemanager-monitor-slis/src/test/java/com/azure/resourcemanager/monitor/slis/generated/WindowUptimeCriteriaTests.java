@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions;
 public final class WindowUptimeCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WindowUptimeCriteria model = BinaryData.fromString("{\"target\":69.3418872608996,\"comparator\":\"<\"}")
+        WindowUptimeCriteria model = BinaryData.fromString("{\"target\":69.3418872608996,\"comparator\":\"lt\"}")
             .toObject(WindowUptimeCriteria.class);
         Assertions.assertEquals(69.3418872608996, model.target());
         Assertions.assertEquals(WindowUptimeCriteriaComparator.LESS_THAN, model.comparator());

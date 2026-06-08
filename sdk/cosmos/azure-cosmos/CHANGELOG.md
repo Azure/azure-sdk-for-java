@@ -1,15 +1,38 @@
 ## Release History
 
-### 4.80.0-beta.1 (Unreleased)
+### 4.81.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for creating Global Secondary Index (GSI) containers via `CosmosContainerProperties.setGlobalSecondaryIndexDefinition()` / `getGlobalSecondaryIndexDefinition()`, the new `CosmosGlobalSecondaryIndexDefinition` model, and the `CosmosGlobalSecondaryIndexBuildStatus` enum returned by `getStatus()`. - See [PR 48480](https://github.com/Azure/azure-sdk-for-java/pull/48480)
+* Promoted the Full Fidelity Change Feed (AllVersionsAndDeletes) APIs to GA - See [PR 49283](https://github.com/Azure/azure-sdk-for-java/pull/49283)
+* Enabled `ReadConsistencyStrategy` for Gateway V1 (compute gateway) and Gateway V2 (thin client proxy). Previously only supported in Direct mode. - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
+* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
+* Fixed silent drift in `CosmosChangeFeedRequestOptions` when resuming from a continuation token via `byPage(savedContinuation)`. Previously only `maxPrefetchPageCount` and `throughputControlGroupName` were inherited onto the rebuilt impl; `endLSN`, `customSerializer`, `excludeRegions`, `readConsistencyStrategy`, `completeAfterAllCurrentChangesRetrieved`, and other caller-supplied configuration were silently dropped. All non-token-encoded fields are now propagated. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+
+#### Other Changes
+* Added HTTP/2 PING keepalive (default ON) for Gateway service endpoints to detect silently-broken connections. - See [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)
+* Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)
+* Promoted the `ReadConsistencyStrategy` and `Http2ConnectionConfig` related `@Beta` APIs to GA. - See [PR 49345](https://github.com/Azure/azure-sdk-for-java/pull/49345)
+* Fixed a sporadic `NullPointerException` in `JsonSerializable.getWithMapping` triggered by concurrent first-time calls to `DatabaseAccount.getConsistencyPolicy()` and its sibling lazy getters (`getReplicationPolicy`, `getSystemReplicationPolicy`, `getQueryEngineConfiguration`). The fix makes `JsonSerializable.propertyBag` `final`, closing an unsafe-publication race in the lazy-initialisation pattern. - See [Issue 49256](https://github.com/Azure/azure-sdk-for-java/issues/49256) and [PR #49258](https://github.com/Azure/azure-sdk-for-java/pull/49258)
+* Changed 449 (`Retry With`) retries in Gateway V1 and Gateway V2 to be consistently orchestrated client-side. - See [PR 49332](https://github.com/Azure/azure-sdk-for-java/pull/49332)
+* Added client-side fast-fail validation for `ReadConsistencyStrategy.GLOBAL_STRONG`: requests that specify `GLOBAL_STRONG` against an account whose default consistency is not `STRONG` are now rejected client-side with a `BadRequestException` (HTTP 400). - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
+
+### 4.80.0 (2026-05-01)
+
+#### Features Added
+* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
+* Added `additionalHeaders` support to allow setting additional headers (e.g., `x-ms-cosmos-workload-id`) that are sent with every request. - See [PR 48128](https://github.com/Azure/azure-sdk-for-java/pull/48128) 
+* Added `IGNORE_UNKNOWN_RNTBD_TOKENS` SDK capability flag and propagated SDK supported capabilities to barrier requests, enabling N-Region Synchronous Commit to function correctly with backends that return new RNTBD response tokens. - See [PR 48965](https://github.com/Azure/azure-sdk-for-java/pull/48965)
 * Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
 * Added new `readManyByPartitionKeys` API on `CosmosAsyncContainer` / `CosmosContainer` to bulk-query all documents matching a list of partition key values with better efficiency than issuing individual queries. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 * Added `CosmosReadManyByPartitionKeysRequestOptions` - a dedicated request-options type for `readManyByPartitionKeys` that exposes `setContinuationToken(String)` for resuming previous invocations and `setMaxConcurrentBatchPrefetch(int)` to bound per-call prefetch parallelism. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
 * Added `CosmosReadManyByPartitionKeysRequestOptions.setMaxBatchSize(Integer)` to set the max. number of partition keys used for a single batch. See [PR 48930](https://github.com/Azure/azure-sdk-for-java/pull/48930)
 * Added `getCustomItemSerializer()` to `CosmosRequestContext` and `setCustomItemSerializer(CosmosItemSerializer)` to `CosmosRequestOptions` to allow overriding the custom item serializer via operation policies. - See [PR 48963](https://github.com/Azure/azure-sdk-for-java/pull/48963)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Fixed `readMany` and `readAllItems` returning incorrect results on containers whose partition key path is nested (e.g. `/address/city`) due to malformed selector generation. - See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
@@ -20,8 +43,6 @@
 * Fixed a `ClientTelemetry` static initialization failure when IMDS access is disabled, preventing `NoClassDefFoundError` during Cosmos client creation in non-Azure environments. - See [PR 48888](https://github.com/Azure/azure-sdk-for-java/pull/48888)
 * Fixed an issue where Netty could log "An exceptionCaught() event was fired, and it reached at the tail of the pipeline" on HTTP/2 connections when the server resets idle TCP connections by adding an exception handler on the HTTP/2 parent channel to handle these connection-level exceptions more appropriately. - See [PR 48890](https://github.com/Azure/azure-sdk-for-java/pull/48890)
 * Fixed an issue where `CustomItemSerializer` configured on `CosmosClientBuilder` was not honored for response deserialization in `CosmosAsyncContainer.upsertItem` when no request-level serializer was set. - See [PR 48962](https://github.com/Azure/azure-sdk-for-java/pull/48962)
-
-#### Other Changes
 
 ### 4.79.1 (2026-04-06)
 
