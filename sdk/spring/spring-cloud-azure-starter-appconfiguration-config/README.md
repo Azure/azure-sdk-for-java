@@ -56,20 +56,21 @@ Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores | List of configuration stores from which to load configuration properties | Yes | Empty List
 spring.cloud.azure.appconfiguration.enabled | Whether to enable spring-cloud-azure-appconfiguration-config or not | No | true
-spring.cloud.azure.appconfiguration.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. | No | null
-spring.cloud.azure.appconfiguration.startup-timeout | Maximum time to retry loading configuration during application startup when transient failures occur. | No | 100s
+spring.cloud.azure.appconfiguration.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. Must be at least 1 second when set. | No | null
+spring.cloud.azure.appconfiguration.startup-timeout | Maximum time to retry loading configuration during application startup when transient failures occur. Must be between 30 and 600 seconds. | No | 100s
 
 `spring.cloud.azure.appconfiguration.stores` is a list of stores, where each store follows the following format:
 
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].enabled | Whether the store will be loaded. Requires either `spring.config.import= optional:azureAppConfiguration` or another config store to be loaded. | No | true
-spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether to throw a `RuntimeException` or not when failing to read from App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
 spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pattern used to indicate which configuration(s) will be loaded.  | No | /application/*
-spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `${spring.profiles.active}` or if null `\0`
+spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. When unset, the active Spring profiles are used as labels; if no profiles are active, only configurations with no label are loaded. | No | null (resolved to `${spring.profiles.active}` or `\0`)
+spring.cloud.azure.appconfiguration.stores[0].selects[0].tags-filter | List of tag-based filters in the form `tagName=tagValue`. When multiple entries are provided they are combined using AND logic. | No | null
 spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name | The snapshot name used to indicate which configuration(s) will be loaded. | No | null
 spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix[0] | The prefix that will be trimmed from the key when the configuration is loaded. | No | null, unless using key-filter, then it is the key-filter
-spring.cloud.azure.appconfiguration.stores[0].replicaDiscoveryEnabled | Enables periodic checking if new replicas of the store have been created. And found stores will be added to the bottom of the list of endpoints used in cases where the store can't be reached. | No | true
+spring.cloud.azure.appconfiguration.stores[0].replica-discovery-enabled | Enables periodic checking if new replicas of the store have been created. And found stores will be added to the bottom of the list of endpoints used in cases where the store can't be reached. | No | true
+spring.cloud.azure.appconfiguration.stores[0].load-balancing-enabled | Distributes requests across the configured endpoints rather than always preferring the highest-priority endpoint that is currently reachable. | No | false
 
 Configuration Store Authentication
 
@@ -92,9 +93,9 @@ spring.cloud.azure.appconfiguration.stores[0].connection-strings | When the conn
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].monitoring.enabled | Whether the configurations and feature flags will be re-loaded if a change is detected.  | No | false
-spring.cloud.azure.appconfiguration.stores[0].monitoring.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. | No | 30s
-spring.cloud.azure.appconfiguration.stores[0].monitoring.feature-flag-refresh-interval | Amount of time, of type Duration, feature flags are stored before a check can occur. | No | 30s
-spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].key | A key that is watched for change via etag. If a change is detected on the key then a refresh of all configurations will be triggered. | Yes (If monitoring enabled) | null
+spring.cloud.azure.appconfiguration.stores[0].monitoring.refresh-interval | Amount of time, of type Duration, configurations are stored before a check can occur. Must be at least 1 second. | No | 30s
+spring.cloud.azure.appconfiguration.stores[0].monitoring.feature-flag-refresh-interval | Amount of time, of type Duration, feature flags are stored before a check can occur. Must be at least 1 second. | No | 30s
+spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].key | A key that is watched for change via etag. If a change is detected on the key then a refresh of all configurations will be triggered. When no triggers are configured, collection-level monitoring is used instead. | No | null
 spring.cloud.azure.appconfiguration.stores[0].monitoring.triggers[0].label | The label of the key that is being watched for etag changes. | No | \0
 
 These properties enable push-based notifications for configuration changes. But this method of refresh is no-longer recommended, but is currently still supported.
@@ -111,8 +112,9 @@ spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secon
 Name | Description | Required | Default
 ---|---|---|---
 spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled | Whether feature flags are loaded from the config store.  | No | false
-spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].key-filter | The key pattern used to indicate which feature flags will be loaded. | No | \0
-spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].label-filter | The label used to indicate which feature flags will be loaded. | No | \0
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].key-filter | The key suffix appended after the `.appconfig.featureflag/` prefix to filter which feature flags are loaded. | No | "" (all feature flags)
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].label-filter | The label used to indicate which feature flags will be loaded. When unset, the active Spring profiles are used as labels; if no profiles are active, only feature flags with no label are loaded. | No | null (resolved to `${spring.profiles.active}` or `\0`)
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].tags-filter | List of tag-based filters in the form `tagName=tagValue`. When multiple entries are provided they are combined using AND logic. | No | null
 
 ### Basic usage
 
@@ -305,10 +307,10 @@ management.endpoints.web.exposure.include= appconfiguration-refresh, appconfigur
 In addition a required query parameter has been added for security. No token name or value is set by default, but setting one is required in order to use the endpoints. It is suggested you set up your token value in Key Vault and add it to your store through a key vault reference. The values should be:
 
 ```properties
-/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.primary-token.name=[primary-token-name]
-/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.primary-token.secret=[primary-token-secret]
-/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.secondary-token.name=[secondary-token-name]
-/application/spring.cloud.appconfiguration.stores[0].monitoring.push-notification.secondary-token.secret=[secondary-token-secret]
+/application/spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.primary-token.name=[primary-token-name]
+/application/spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.primary-token.secret=[primary-token-secret]
+/application/spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secondary-token.name=[secondary-token-name]
+/application/spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secondary-token.secret=[secondary-token-secret]
 ```
 
 To setup the webhook open your app store and open the events tab. Select "+ Event Subscription". Set the name of your Event and select the Endpoint type of Web Hook. Select "Select an endpoint". Enter your endpoint and connection information, it should look like:
@@ -320,14 +322,6 @@ Your application will need to be up and running with token-name and token-secret
 Note: This validation only happens on the creation/modification of the endpoint.
 
 It is also highly recommended that filters are setup as otherwise a refresh will be triggered after every key creation and modification.
-
-#### Failfast
-
-Failfast feature decides whether throw RuntimeException or not when exception happens. If an exception does occur when false the store is skipped. Any store skipped on startup will be automatically skipped on Refresh. By default, failfast is enabled, it can be disabled with below configuration:
-
-```properties
-spring.cloud.azure.appconfiguration.stores[0].fail-fast=false
-```
 
 #### Placeholders in App Configuration
 
@@ -352,15 +346,16 @@ Follow the below steps to enable accessing App Configuration with managed identi
 
 1. Configure application.properties(or .yaml) in the Spring Boot application.
 
-The configuration store endpoint must be configured when `connection-string` is empty. When using a User Assigned Id the value `spring.cloud.azure.appconfiguration.managed-identity.client-id=[client-id]` must be set.
+The configuration store endpoint must be configured when `connection-string` is empty. When using a user-assigned managed identity, set the client id via the standard Spring Cloud Azure credential properties (`spring.cloud.azure.credential.client-id` for all Azure services, or `spring.cloud.azure.appconfiguration.credential.client-id` to scope it to App Configuration).
 
-##### application.application
+##### application.properties
 
-```application
+```properties
 spring.cloud.azure.appconfiguration.stores[0].endpoint=[config-store-endpoint]
 
-#If Using User Assigned Identity
-spring.cloud.azure.appconfiguration.managed-identity.client-id=[client-id]
+# If using a user-assigned managed identity
+spring.cloud.azure.appconfiguration.credential.managed-identity-enabled=true
+spring.cloud.azure.appconfiguration.credential.client-id=[client-id]
 ```
 
 #### Client Builder Customization
