@@ -4,10 +4,10 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingScheduleDaysOfWeekItem;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 import java.util.Arrays;
@@ -38,8 +38,9 @@ public final class ScalingPlansUpdateSamples {
             .withTimeZone("Central Standard Time")
             .withExclusionTag("value")
             .withSchedules(Arrays.asList(new ScalingSchedule().withName("schedule1")
-                .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                    DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
+                .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.MONDAY,
+                    ScalingScheduleDaysOfWeekItem.TUESDAY, ScalingScheduleDaysOfWeekItem.WEDNESDAY,
+                    ScalingScheduleDaysOfWeekItem.THURSDAY, ScalingScheduleDaysOfWeekItem.FRIDAY))
                 .withRampUpStartTime(new Time().withHour(6).withMinute(0))
                 .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
                 .withRampUpMinimumHostsPct(20)

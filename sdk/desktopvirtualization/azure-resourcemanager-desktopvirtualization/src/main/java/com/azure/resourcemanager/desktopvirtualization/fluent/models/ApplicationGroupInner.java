@@ -10,7 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
+import com.azure.resourcemanager.desktopvirtualization.models.DeploymentScope;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetSku;
@@ -25,7 +26,7 @@ public final class ApplicationGroupInner extends Resource {
     /*
      * Detailed properties for ApplicationGroup
      */
-    private ApplicationGroupProperties properties;
+    private ApplicationGroupProperties innerProperties = new ApplicationGroupProperties();
 
     /*
      * The managed service identities assigned to this resource.
@@ -91,23 +92,12 @@ public final class ApplicationGroupInner extends Resource {
     }
 
     /**
-     * Get the properties property: Detailed properties for ApplicationGroup.
+     * Get the innerProperties property: Detailed properties for ApplicationGroup.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public ApplicationGroupProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Detailed properties for ApplicationGroup.
-     * 
-     * @param properties the properties value to set.
-     * @return the ApplicationGroupInner object itself.
-     */
-    public ApplicationGroupInner withProperties(ApplicationGroupProperties properties) {
-        this.properties = properties;
-        return this;
+    private ApplicationGroupProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -288,6 +278,180 @@ public final class ApplicationGroupInner extends Resource {
     }
 
     /**
+     * Get the objectId property: ObjectId of ApplicationGroup. (internal use).
+     * 
+     * @return the objectId value.
+     */
+    public String objectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().objectId();
+    }
+
+    /**
+     * Get the description property: Description of ApplicationGroup.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of ApplicationGroup.
+     * 
+     * @param description the description value to set.
+     * @return the ApplicationGroupInner object itself.
+     */
+    public ApplicationGroupInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of ApplicationGroup.
+     * 
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Set the friendlyName property: Friendly name of ApplicationGroup.
+     * 
+     * @param friendlyName the friendlyName value to set.
+     * @return the ApplicationGroupInner object itself.
+     */
+    public ApplicationGroupInner withFriendlyName(String friendlyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
+        return this;
+    }
+
+    /**
+     * Get the hostPoolArmPath property: HostPool arm path of ApplicationGroup.
+     * 
+     * @return the hostPoolArmPath value.
+     */
+    public String hostPoolArmPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostPoolArmPath();
+    }
+
+    /**
+     * Set the hostPoolArmPath property: HostPool arm path of ApplicationGroup.
+     * 
+     * @param hostPoolArmPath the hostPoolArmPath value to set.
+     * @return the ApplicationGroupInner object itself.
+     */
+    public ApplicationGroupInner withHostPoolArmPath(String hostPoolArmPath) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupProperties();
+        }
+        this.innerProperties().withHostPoolArmPath(hostPoolArmPath);
+        return this;
+    }
+
+    /**
+     * Get the workspaceArmPath property: Workspace arm path of ApplicationGroup.
+     * 
+     * @return the workspaceArmPath value.
+     */
+    public String workspaceArmPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceArmPath();
+    }
+
+    /**
+     * Get the applicationGroupType property: Resource Type of ApplicationGroup.
+     * 
+     * @return the applicationGroupType value.
+     */
+    public ApplicationGroupType applicationGroupType() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationGroupType();
+    }
+
+    /**
+     * Set the applicationGroupType property: Resource Type of ApplicationGroup.
+     * 
+     * @param applicationGroupType the applicationGroupType value to set.
+     * @return the ApplicationGroupInner object itself.
+     */
+    public ApplicationGroupInner withApplicationGroupType(ApplicationGroupType applicationGroupType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupProperties();
+        }
+        this.innerProperties().withApplicationGroupType(applicationGroupType);
+        return this;
+    }
+
+    /**
+     * Get the cloudPcResource property: Is cloud pc resource.
+     * 
+     * @return the cloudPcResource value.
+     */
+    public Boolean cloudPcResource() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudPcResource();
+    }
+
+    /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     * 
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().showInFeed();
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     * 
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupInner object itself.
+     */
+    public ApplicationGroupInner withShowInFeed(Boolean showInFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupProperties();
+        }
+        this.innerProperties().withShowInFeed(showInFeed);
+        return this;
+    }
+
+    /**
+     * Get the oboTenantId property: Tenant that the resource is being requested on behalf of.
+     * 
+     * @return the oboTenantId value.
+     */
+    public String oboTenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().oboTenantId();
+    }
+
+    /**
+     * Set the oboTenantId property: Tenant that the resource is being requested on behalf of.
+     * 
+     * @param oboTenantId the oboTenantId value to set.
+     * @return the ApplicationGroupInner object itself.
+     */
+    public ApplicationGroupInner withOboTenantId(String oboTenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupProperties();
+        }
+        this.innerProperties().withOboTenantId(oboTenantId);
+        return this;
+    }
+
+    /**
+     * Get the deploymentScope property: DeploymentScope type for ApplicationGroup.
+     * 
+     * @return the deploymentScope value.
+     */
+    public DeploymentScope deploymentScope() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentScope();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -295,7 +459,7 @@ public final class ApplicationGroupInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeStringField("managedBy", this.managedBy);
@@ -332,7 +496,7 @@ public final class ApplicationGroupInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedApplicationGroupInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedApplicationGroupInner.properties = ApplicationGroupProperties.fromJson(reader);
+                    deserializedApplicationGroupInner.innerProperties = ApplicationGroupProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedApplicationGroupInner.identity
                         = ResourceModelWithAllowedPropertySetIdentity.fromJson(reader);

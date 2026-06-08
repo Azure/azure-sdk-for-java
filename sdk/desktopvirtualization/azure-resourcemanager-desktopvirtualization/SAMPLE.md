@@ -474,7 +474,6 @@ public final class AppAttachPackageInfoImportMethodSamples {
 ### ApplicationGroups_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
 import java.util.HashMap;
 import java.util.Map;
@@ -497,14 +496,14 @@ public final class ApplicationGroupsCreateOrUpdateSamples {
             .define("applicationGroup1")
             .withRegion("centralus")
             .withExistingResourceGroup("resourceGroup1")
-            .withProperties(new ApplicationGroupProperties().withDescription("des1")
-                .withFriendlyName("friendly")
-                .withHostPoolArmPath(
-                    "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
-                .withApplicationGroupType(ApplicationGroupType.REMOTE_APP)
-                .withShowInFeed(true)
-                .withOboTenantId("CD48BF6F-60D9-44CD-AB66-039D89C2E995"))
+            .withHostPoolArmPath(
+                "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
+            .withApplicationGroupType(ApplicationGroupType.REMOTE_APP)
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withDescription("des1")
+            .withFriendlyName("friendly")
+            .withShowInFeed(true)
+            .withOboTenantId("CD48BF6F-60D9-44CD-AB66-039D89C2E995")
             .create();
     }
 
@@ -2107,10 +2106,10 @@ public final class ScalingPlanPooledSchedulesUpdateSamples {
 ### ScalingPlans_Create
 
 ```java
-import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingScheduleDaysOfWeekItem;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 import java.util.Arrays;
@@ -2142,8 +2141,9 @@ public final class ScalingPlansCreateSamples {
             .withHostPoolType(ScalingHostPoolType.POOLED)
             .withExclusionTag("value")
             .withSchedules(Arrays.asList(new ScalingSchedule().withName("schedule1")
-                .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                    DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
+                .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.MONDAY,
+                    ScalingScheduleDaysOfWeekItem.TUESDAY, ScalingScheduleDaysOfWeekItem.WEDNESDAY,
+                    ScalingScheduleDaysOfWeekItem.THURSDAY, ScalingScheduleDaysOfWeekItem.FRIDAY))
                 .withRampUpStartTime(new Time().withHour(6).withMinute(0))
                 .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
                 .withRampUpMinimumHostsPct(20)
@@ -2295,10 +2295,10 @@ public final class ScalingPlansListByResourceGroupSamples {
 ### ScalingPlans_Update
 
 ```java
-import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingScheduleDaysOfWeekItem;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 import java.util.Arrays;
@@ -2329,8 +2329,9 @@ public final class ScalingPlansUpdateSamples {
             .withTimeZone("Central Standard Time")
             .withExclusionTag("value")
             .withSchedules(Arrays.asList(new ScalingSchedule().withName("schedule1")
-                .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                    DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
+                .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.MONDAY,
+                    ScalingScheduleDaysOfWeekItem.TUESDAY, ScalingScheduleDaysOfWeekItem.WEDNESDAY,
+                    ScalingScheduleDaysOfWeekItem.THURSDAY, ScalingScheduleDaysOfWeekItem.FRIDAY))
                 .withRampUpStartTime(new Time().withHour(6).withMinute(0))
                 .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
                 .withRampUpMinimumHostsPct(20)

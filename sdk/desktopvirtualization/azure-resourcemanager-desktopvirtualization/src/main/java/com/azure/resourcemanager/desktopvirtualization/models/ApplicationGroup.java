@@ -50,13 +50,6 @@ public interface ApplicationGroup {
     Map<String, String> tags();
 
     /**
-     * Gets the properties property: Detailed properties for ApplicationGroup.
-     * 
-     * @return the properties value.
-     */
-    ApplicationGroupProperties properties();
-
-    /**
      * Gets the identity property: The managed service identities assigned to this resource.
      * 
      * @return the identity value.
@@ -113,6 +106,76 @@ public interface ApplicationGroup {
     SystemData systemData();
 
     /**
+     * Gets the objectId property: ObjectId of ApplicationGroup. (internal use).
+     * 
+     * @return the objectId value.
+     */
+    String objectId();
+
+    /**
+     * Gets the description property: Description of ApplicationGroup.
+     * 
+     * @return the description value.
+     */
+    String description();
+
+    /**
+     * Gets the friendlyName property: Friendly name of ApplicationGroup.
+     * 
+     * @return the friendlyName value.
+     */
+    String friendlyName();
+
+    /**
+     * Gets the hostPoolArmPath property: HostPool arm path of ApplicationGroup.
+     * 
+     * @return the hostPoolArmPath value.
+     */
+    String hostPoolArmPath();
+
+    /**
+     * Gets the workspaceArmPath property: Workspace arm path of ApplicationGroup.
+     * 
+     * @return the workspaceArmPath value.
+     */
+    String workspaceArmPath();
+
+    /**
+     * Gets the applicationGroupType property: Resource Type of ApplicationGroup.
+     * 
+     * @return the applicationGroupType value.
+     */
+    ApplicationGroupType applicationGroupType();
+
+    /**
+     * Gets the cloudPcResource property: Is cloud pc resource.
+     * 
+     * @return the cloudPcResource value.
+     */
+    Boolean cloudPcResource();
+
+    /**
+     * Gets the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     * 
+     * @return the showInFeed value.
+     */
+    Boolean showInFeed();
+
+    /**
+     * Gets the oboTenantId property: Tenant that the resource is being requested on behalf of.
+     * 
+     * @return the oboTenantId value.
+     */
+    String oboTenantId();
+
+    /**
+     * Gets the deploymentScope property: DeploymentScope type for ApplicationGroup.
+     * 
+     * @return the deploymentScope value.
+     */
+    DeploymentScope deploymentScope();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -143,8 +206,9 @@ public interface ApplicationGroup {
     /**
      * The entirety of the ApplicationGroup definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithHostPoolArmPath, DefinitionStages.WithApplicationGroupType, DefinitionStages.WithCreate {
     }
 
     /**
@@ -188,29 +252,43 @@ public interface ApplicationGroup {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithProperties withExistingResourceGroup(String resourceGroupName);
+            WithHostPoolArmPath withExistingResourceGroup(String resourceGroupName);
         }
 
         /**
-         * The stage of the ApplicationGroup definition allowing to specify properties.
+         * The stage of the ApplicationGroup definition allowing to specify hostPoolArmPath.
          */
-        interface WithProperties {
+        interface WithHostPoolArmPath {
             /**
-             * Specifies the properties property: Detailed properties for ApplicationGroup.
+             * Specifies the hostPoolArmPath property: HostPool arm path of ApplicationGroup..
              * 
-             * @param properties Detailed properties for ApplicationGroup.
+             * @param hostPoolArmPath HostPool arm path of ApplicationGroup.
              * @return the next definition stage.
              */
-            WithCreate withProperties(ApplicationGroupProperties properties);
+            WithApplicationGroupType withHostPoolArmPath(String hostPoolArmPath);
+        }
+
+        /**
+         * The stage of the ApplicationGroup definition allowing to specify applicationGroupType.
+         */
+        interface WithApplicationGroupType {
+            /**
+             * Specifies the applicationGroupType property: Resource Type of ApplicationGroup..
+             * 
+             * @param applicationGroupType Resource Type of ApplicationGroup.
+             * @return the next definition stage.
+             */
+            WithCreate withApplicationGroupType(ApplicationGroupType applicationGroupType);
         }
 
         /**
          * The stage of the ApplicationGroup definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithKind,
-            DefinitionStages.WithManagedBy, DefinitionStages.WithPlan, DefinitionStages.WithSku {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithKind, DefinitionStages.WithManagedBy, DefinitionStages.WithPlan,
+            DefinitionStages.WithSku, DefinitionStages.WithDescription, DefinitionStages.WithFriendlyName,
+            DefinitionStages.WithShowInFeed, DefinitionStages.WithOboTenantId {
             /**
              * Executes the create request.
              * 
@@ -312,6 +390,59 @@ public interface ApplicationGroup {
              * @return the next definition stage.
              */
             WithCreate withSku(ResourceModelWithAllowedPropertySetSku sku);
+        }
+
+        /**
+         * The stage of the ApplicationGroup definition allowing to specify description.
+         */
+        interface WithDescription {
+            /**
+             * Specifies the description property: Description of ApplicationGroup..
+             * 
+             * @param description Description of ApplicationGroup.
+             * @return the next definition stage.
+             */
+            WithCreate withDescription(String description);
+        }
+
+        /**
+         * The stage of the ApplicationGroup definition allowing to specify friendlyName.
+         */
+        interface WithFriendlyName {
+            /**
+             * Specifies the friendlyName property: Friendly name of ApplicationGroup..
+             * 
+             * @param friendlyName Friendly name of ApplicationGroup.
+             * @return the next definition stage.
+             */
+            WithCreate withFriendlyName(String friendlyName);
+        }
+
+        /**
+         * The stage of the ApplicationGroup definition allowing to specify showInFeed.
+         */
+        interface WithShowInFeed {
+            /**
+             * Specifies the showInFeed property: Boolean representing whether the applicationGroup is show in the
+             * feed..
+             * 
+             * @param showInFeed Boolean representing whether the applicationGroup is show in the feed.
+             * @return the next definition stage.
+             */
+            WithCreate withShowInFeed(Boolean showInFeed);
+        }
+
+        /**
+         * The stage of the ApplicationGroup definition allowing to specify oboTenantId.
+         */
+        interface WithOboTenantId {
+            /**
+             * Specifies the oboTenantId property: Tenant that the resource is being requested on behalf of..
+             * 
+             * @param oboTenantId Tenant that the resource is being requested on behalf of.
+             * @return the next definition stage.
+             */
+            WithCreate withOboTenantId(String oboTenantId);
         }
     }
 

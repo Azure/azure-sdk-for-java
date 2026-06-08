@@ -6,9 +6,9 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.desktopvirtualization.models.CreateDeleteProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingMethodType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingScheduleDaysOfWeekItem;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.StopHostsWhen;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -22,7 +22,7 @@ public final class ScalingScheduleTests {
             "{\"name\":\"ahhxvrh\",\"daysOfWeek\":[\"Monday\",\"Monday\",\"Monday\",\"Friday\"],\"scalingMethod\":\"CreateDeletePowerManage\",\"createDelete\":{\"rampUpMaximumHostPoolSize\":2038816187,\"rampUpMinimumHostPoolSize\":1806327837,\"rampDownMaximumHostPoolSize\":665016103,\"rampDownMinimumHostPoolSize\":1926831328},\"rampUpStartTime\":{\"hour\":1227202155,\"minute\":757221546},\"rampUpLoadBalancingAlgorithm\":\"DepthFirst\",\"rampUpMinimumHostsPct\":318834407,\"rampUpCapacityThresholdPct\":649615996,\"peakStartTime\":{\"hour\":1485711526,\"minute\":1615725858},\"peakLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownStartTime\":{\"hour\":1490533084,\"minute\":1889807539},\"rampDownLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownMinimumHostsPct\":1040551397,\"rampDownCapacityThresholdPct\":1159016951,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroActiveSessions\",\"rampDownWaitTimeMinutes\":528928075,\"rampDownNotificationMessage\":\"hwhbotzingamv\",\"offPeakStartTime\":{\"hour\":313573135,\"minute\":104730978},\"offPeakLoadBalancingAlgorithm\":\"BreadthFirst\"}")
             .toObject(ScalingSchedule.class);
         Assertions.assertEquals("ahhxvrh", model.name());
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.MONDAY, model.daysOfWeek().get(0));
         Assertions.assertEquals(ScalingMethodType.CREATE_DELETE_POWER_MANAGE, model.scalingMethod());
         Assertions.assertEquals(2038816187, model.createDelete().rampUpMaximumHostPoolSize());
         Assertions.assertEquals(1806327837, model.createDelete().rampUpMinimumHostPoolSize());
@@ -53,7 +53,8 @@ public final class ScalingScheduleTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScalingSchedule model = new ScalingSchedule().withName("ahhxvrh")
-            .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.MONDAY, DayOfWeek.MONDAY, DayOfWeek.FRIDAY))
+            .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.MONDAY, ScalingScheduleDaysOfWeekItem.MONDAY,
+                ScalingScheduleDaysOfWeekItem.MONDAY, ScalingScheduleDaysOfWeekItem.FRIDAY))
             .withScalingMethod(ScalingMethodType.CREATE_DELETE_POWER_MANAGE)
             .withCreateDelete(new CreateDeleteProperties().withRampUpMaximumHostPoolSize(2038816187)
                 .withRampUpMinimumHostPoolSize(1806327837)
@@ -77,7 +78,7 @@ public final class ScalingScheduleTests {
             .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST);
         model = BinaryData.fromObject(model).toObject(ScalingSchedule.class);
         Assertions.assertEquals("ahhxvrh", model.name());
-        Assertions.assertEquals(DayOfWeek.MONDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.MONDAY, model.daysOfWeek().get(0));
         Assertions.assertEquals(ScalingMethodType.CREATE_DELETE_POWER_MANAGE, model.scalingMethod());
         Assertions.assertEquals(2038816187, model.createDelete().rampUpMaximumHostPoolSize());
         Assertions.assertEquals(1806327837, model.createDelete().rampUpMinimumHostPoolSize());

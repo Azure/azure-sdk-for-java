@@ -25,7 +25,7 @@ public final class ScalingSchedule implements JsonSerializable<ScalingSchedule> 
     /*
      * Set of days of the week on which this schedule is active.
      */
-    private List<DayOfWeek> daysOfWeek;
+    private List<ScalingScheduleDaysOfWeekItem> daysOfWeek;
 
     /*
      * The desired scaling method to be used to scale the hosts in the assigned host pool.
@@ -148,7 +148,7 @@ public final class ScalingSchedule implements JsonSerializable<ScalingSchedule> 
      * 
      * @return the daysOfWeek value.
      */
-    public List<DayOfWeek> daysOfWeek() {
+    public List<ScalingScheduleDaysOfWeekItem> daysOfWeek() {
         return this.daysOfWeek;
     }
 
@@ -158,7 +158,7 @@ public final class ScalingSchedule implements JsonSerializable<ScalingSchedule> 
      * @param daysOfWeek the daysOfWeek value to set.
      * @return the ScalingSchedule object itself.
      */
-    public ScalingSchedule withDaysOfWeek(List<DayOfWeek> daysOfWeek) {
+    public ScalingSchedule withDaysOfWeek(List<ScalingScheduleDaysOfWeekItem> daysOfWeek) {
         this.daysOfWeek = daysOfWeek;
         return this;
     }
@@ -584,7 +584,8 @@ public final class ScalingSchedule implements JsonSerializable<ScalingSchedule> 
                 if ("name".equals(fieldName)) {
                     deserializedScalingSchedule.name = reader.getString();
                 } else if ("daysOfWeek".equals(fieldName)) {
-                    List<DayOfWeek> daysOfWeek = reader.readArray(reader1 -> DayOfWeek.fromString(reader1.getString()));
+                    List<ScalingScheduleDaysOfWeekItem> daysOfWeek
+                        = reader.readArray(reader1 -> ScalingScheduleDaysOfWeekItem.fromString(reader1.getString()));
                     deserializedScalingSchedule.daysOfWeek = daysOfWeek;
                 } else if ("scalingMethod".equals(fieldName)) {
                     deserializedScalingSchedule.scalingMethod = ScalingMethodType.fromString(reader.getString());

@@ -7,11 +7,11 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.CreateDeleteProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingMethodType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
+import com.azure.resourcemanager.desktopvirtualization.models.ScalingScheduleDaysOfWeekItem;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.StopHostsWhen;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -30,7 +30,7 @@ public final class ScalingPlanPropertiesTests {
         Assertions.assertEquals(ScalingHostPoolType.PERSONAL, model.hostPoolType());
         Assertions.assertEquals("imejzanl", model.exclusionTag());
         Assertions.assertEquals("av", model.schedules().get(0).name());
-        Assertions.assertEquals(DayOfWeek.FRIDAY, model.schedules().get(0).daysOfWeek().get(0));
+        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.FRIDAY, model.schedules().get(0).daysOfWeek().get(0));
         Assertions.assertEquals(ScalingMethodType.CREATE_DELETE_POWER_MANAGE, model.schedules().get(0).scalingMethod());
         Assertions.assertEquals(1961298292, model.schedules().get(0).createDelete().rampUpMaximumHostPoolSize());
         Assertions.assertEquals(485732763, model.schedules().get(0).createDelete().rampUpMinimumHostPoolSize());
@@ -72,7 +72,8 @@ public final class ScalingPlanPropertiesTests {
             .withHostPoolType(ScalingHostPoolType.PERSONAL)
             .withExclusionTag("imejzanl")
             .withSchedules(Arrays.asList(new ScalingSchedule().withName("av")
-                .withDaysOfWeek(Arrays.asList(DayOfWeek.FRIDAY, DayOfWeek.WEDNESDAY))
+                .withDaysOfWeek(
+                    Arrays.asList(ScalingScheduleDaysOfWeekItem.FRIDAY, ScalingScheduleDaysOfWeekItem.WEDNESDAY))
                 .withScalingMethod(ScalingMethodType.CREATE_DELETE_POWER_MANAGE)
                 .withCreateDelete(new CreateDeleteProperties().withRampUpMaximumHostPoolSize(1961298292)
                     .withRampUpMinimumHostPoolSize(485732763)
@@ -106,7 +107,7 @@ public final class ScalingPlanPropertiesTests {
         Assertions.assertEquals(ScalingHostPoolType.PERSONAL, model.hostPoolType());
         Assertions.assertEquals("imejzanl", model.exclusionTag());
         Assertions.assertEquals("av", model.schedules().get(0).name());
-        Assertions.assertEquals(DayOfWeek.FRIDAY, model.schedules().get(0).daysOfWeek().get(0));
+        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.FRIDAY, model.schedules().get(0).daysOfWeek().get(0));
         Assertions.assertEquals(ScalingMethodType.CREATE_DELETE_POWER_MANAGE, model.schedules().get(0).scalingMethod());
         Assertions.assertEquals(1961298292, model.schedules().get(0).createDelete().rampUpMaximumHostPoolSize());
         Assertions.assertEquals(485732763, model.schedules().get(0).createDelete().rampUpMinimumHostPoolSize());
