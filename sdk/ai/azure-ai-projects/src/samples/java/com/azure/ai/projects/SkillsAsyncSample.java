@@ -100,7 +100,6 @@ public class SkillsAsyncSample {
 
         String skillName = "product-support-skill";
 
-        skillsAsyncClient.internalDeleteSkillVersionWithResponse()
         return skillsAsyncClient.deleteSkill(skillName)
             .doOnSuccess(unused -> System.out.println("Deleted skill: " + skillName));
 

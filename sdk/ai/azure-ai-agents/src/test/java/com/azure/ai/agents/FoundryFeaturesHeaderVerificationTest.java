@@ -3,8 +3,8 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;

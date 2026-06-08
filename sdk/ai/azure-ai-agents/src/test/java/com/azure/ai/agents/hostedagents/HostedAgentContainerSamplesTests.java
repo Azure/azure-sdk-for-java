@@ -9,7 +9,6 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.AgentSessionResource;
@@ -67,19 +66,17 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
             AgentSessionResource session = resources.getSession();
 
-            AgentSessionResource fetched = betaAgentsClient.getSession(agentName, session.getAgentSessionId(),
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+            AgentSessionResource fetched = betaAgentsClient.getSession(agentName, session.getAgentSessionId(), null);
             Assertions.assertNotNull(fetched);
             Assertions.assertEquals(session.getAgentSessionId(), fetched.getAgentSessionId());
 
-            PagedIterable<AgentSessionResource> sessions = betaAgentsClient.listSessions(agentName,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null, null);
+            PagedIterable<AgentSessionResource> sessions
+                = betaAgentsClient.listSessions(agentName, null, null, null, null, null);
             Assertions.assertTrue(
                 sessions.stream().anyMatch(item -> session.getAgentSessionId().equals(item.getAgentSessionId())));
 
             try {
-                betaAgentsClient.deleteSession(agentName, session.getAgentSessionId(),
-                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+                betaAgentsClient.deleteSession(agentName, session.getAgentSessionId(), null);
             } catch (ResourceNotFoundException ignored) {
                 // The session may already be deleted by the service.
             }
@@ -103,26 +100,22 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             String sessionId = resources.getSession().getAgentSessionId();
 
             betaAgentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                BinaryData.fromString("Sample session file 1."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW,
-                null);
+                BinaryData.fromString("Sample session file 1."), null);
             betaAgentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                BinaryData.fromString("Sample session file 2."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW,
-                null);
+                BinaryData.fromString("Sample session file 2."), null);
 
-            PagedIterable<SessionDirectoryEntry> files = betaAgentsClient.listSessionFiles(agentName, sessionId,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, "/remote", null, null, null, null, null);
+            PagedIterable<SessionDirectoryEntry> files
+                = betaAgentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null, null);
             Assertions
                 .assertTrue(files.stream().map(SessionDirectoryEntry::getName).anyMatch("data_file1.txt"::equals));
 
-            BinaryData downloaded = betaAgentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+            BinaryData downloaded
+                = betaAgentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, null);
             String fileContent = new String(downloaded.toBytes(), StandardCharsets.UTF_8);
             Assertions.assertEquals("Sample session file 1.", fileContent);
 
-            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
-            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
+            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false, null);
+            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false, null);
         } finally {
             HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
         }
@@ -199,8 +192,8 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
                 new FixedRatioVersionSelectionRule(100).setAgentVersion(resources.getAgent().getVersion()))))
             .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
 
-        betaAgentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig),
-            AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW);
+        betaAgentsClient.updateAgentDetails(agentName,
+            new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
     }
 
     private String getRequiredConfiguration(String name) {

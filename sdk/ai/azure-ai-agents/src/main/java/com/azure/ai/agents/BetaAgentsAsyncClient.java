@@ -10,6 +10,24 @@ import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
 import com.azure.ai.agents.models.*;
+import com.azure.ai.agents.models.AgentDetails;
+import com.azure.ai.agents.models.AgentSessionResource;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CandidateDeployConfig;
+import com.azure.ai.agents.models.CandidateMetadata;
+import com.azure.ai.agents.models.CandidateResults;
+import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
+import com.azure.ai.agents.models.JobStatus;
+import com.azure.ai.agents.models.OptimizationCandidate;
+import com.azure.ai.agents.models.OptimizationJob;
+import com.azure.ai.agents.models.OptimizationJobInputs;
+import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.agents.models.PromoteCandidateInput;
+import com.azure.ai.agents.models.PromoteCandidateResult;
+import com.azure.ai.agents.models.SessionDirectoryEntry;
+import com.azure.ai.agents.models.SessionFileWriteResult;
+import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -59,7 +77,7 @@ public final class BetaAgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -168,7 +186,7 @@ public final class BetaAgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -275,7 +293,7 @@ public final class BetaAgentsAsyncClient {
      *
      * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -317,9 +335,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -426,7 +444,7 @@ public final class BetaAgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -504,7 +522,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -540,7 +558,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -551,9 +569,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -599,7 +617,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -718,7 +736,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -779,7 +797,7 @@ public final class BetaAgentsAsyncClient {
      * The stream remains open until the client disconnects or the server
      * terminates the connection. Clients should handle reconnection as needed.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -824,15 +842,15 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -876,7 +894,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -937,7 +955,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1018,7 +1036,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1046,9 +1064,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1196,7 +1214,7 @@ public final class BetaAgentsAsyncClient {
      * Retrieves the specified agent optimization job.
      * Returns 202 while the job is in progress and 200 after it reaches a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1367,7 +1385,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1511,7 +1529,7 @@ public final class BetaAgentsAsyncClient {
      * Requests cancellation of the specified agent optimization job.
      * The operation remains idempotent after the job reaches a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1705,7 +1723,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1783,7 +1801,7 @@ public final class BetaAgentsAsyncClient {
      *
      * Retrieves metadata, manifest information, and promotion details for the specified candidate.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1836,7 +1854,7 @@ public final class BetaAgentsAsyncClient {
      * Retrieves the deploy configuration JSON for the specified candidate.
      * Clients can use it to compose `agents.create_version(...)` requests.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1882,7 +1900,7 @@ public final class BetaAgentsAsyncClient {
      *
      * Retrieves full per-task evaluation results for the specified candidate.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1934,7 +1952,7 @@ public final class BetaAgentsAsyncClient {
      *
      * Streams the specified file from the candidate's blob directory.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -1967,7 +1985,7 @@ public final class BetaAgentsAsyncClient {
      *
      * Promotes the specified candidate and records the deployment timestamp and target agent version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1976,9 +1994,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

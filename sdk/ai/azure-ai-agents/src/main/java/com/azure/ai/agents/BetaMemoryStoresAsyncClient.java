@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.BetaMemoryStoresImpl;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.models.CreateMemoryRequest;
 import com.azure.ai.agents.implementation.models.CreateMemoryStoreRequest;
 import com.azure.ai.agents.implementation.models.ListMemoriesRequest;
@@ -29,17 +30,17 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.*;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.openai.models.responses.ResponseInputItem;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -67,7 +68,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Creates a memory store resource with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -82,9 +83,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -125,7 +126,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Updates the specified memory store with the supplied configuration changes.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -136,9 +137,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -180,7 +181,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the specified memory store and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -242,7 +243,7 @@ public final class BetaMemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -280,7 +281,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes the specified memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -306,11 +307,29 @@ public final class BetaMemoryStoresAsyncClient {
     }
 
     /**
+     * Delete a memory store.
+     *
+     * @param name The name of the memory store to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the memory store is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteMemoryStore(String name) {
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteMemoryStoreWithResponse(name, requestOptions).then();
+    }
+
+    /**
      * Search memories
      *
      * Searches the specified memory store for memories relevant to the provided conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -325,9 +344,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -381,7 +400,7 @@ public final class BetaMemoryStoresAsyncClient {
      * Starts an update that writes conversation memories into the specified memory store.
      * The operation returns a long-running status location for polling the update result.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -394,9 +413,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -465,11 +484,58 @@ public final class BetaMemoryStoresAsyncClient {
     }
 
     /**
+     * Update memory store with conversation memories.
+     *
+     * @param name The name of the memory store to update.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @param items Conversation items from which to extract memories (OpenAI SDK type).
+     * @param previousUpdateId The unique ID of the previous update request, enabling incremental memory updates from
+     * where the last operation left off.
+     * @param updateDelayInSeconds Timeout period before processing the memory update in seconds.
+     * If a new update request is received during this period, it will cancel the current request and reset the timeout.
+     * Set to 0 to immediately trigger the update without delay.
+     * Defaults to 300 (5 minutes).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of provides the status of a memory store update operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+        String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelayInSeconds) {
+        // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
+        List<BinaryData> inputItems = OpenAIJsonHelper.toBinaryDataList(items);
+        return beginInternalUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelayInSeconds);
+    }
+
+    /**
+     * Update memory store with conversation memories.
+     *
+     * @param name The name of the memory store to update.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of provides the status of a memory store update operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+        String scope) {
+        return beginInternalUpdateMemories(name, scope);
+    }
+
+    /**
      * Get an update result
      *
      * Retrieves the status and result of a memory store update operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -541,11 +607,29 @@ public final class BetaMemoryStoresAsyncClient {
     }
 
     /**
-     * Delete memories by scope
+     * Delete all memories associated with a specific scope from a memory store.
      *
-     * Deletes all memories in the specified memory store that are associated with the provided scope.
+     * @param name The name of the memory store.
+     * @param scope The namespace that logically groups and isolates memories to delete, such as a user ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the memories are deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteScope(String name, String scope) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData deleteScopeRequest = BinaryData.fromObject(Collections.singletonMap("scope", scope));
+        return deleteScopeWithResponse(name, deleteScopeRequest, requestOptions).then();
+    }
+
+    /**
+     * Delete all memories associated with a specific scope from a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -553,9 +637,52 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     name: String (Required)
+     *     scope: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param deleteScopeRequest The deleteScopeRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+        RequestOptions requestOptions) {
+        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Delete memories by scope
+     *
+     * Deletes all memories in the specified memory store that are associated with the provided scope.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
      * <pre>
      * {@code
      * {
@@ -589,7 +716,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Creates a memory item in the specified memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -599,9 +726,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -636,7 +763,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Updates the specified memory item in the memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -644,9 +771,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -682,7 +809,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -741,7 +868,7 @@ public final class BetaMemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -749,9 +876,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -785,7 +912,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -811,6 +938,34 @@ public final class BetaMemoryStoresAsyncClient {
     Mono<Response<BinaryData>> internalDeleteMemoryWithResponse(String name, String memoryId,
         RequestOptions requestOptions) {
         return this.serviceClient.internalDeleteMemoryWithResponseAsync(name, memoryId, requestOptions);
+    }
+
+    /**
+     * Delete a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteMemoryStoreWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -1091,6 +1246,31 @@ public final class BetaMemoryStoresAsyncClient {
         BinaryData searchMemoriesRequest = BinaryData.fromObject(searchMemoriesRequestObj);
         return internalSearchMemoriesWithResponse(name, searchMemoriesRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreSearchResponse.class));
+    }
+
+    /**
+     * Search for relevant memories from a memory store based on conversation context.
+     *
+     * @param name The name of the memory store to search.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @param items Items for which to search for relevant memories.
+     * @param previousSearchId The unique ID of the previous search request, enabling incremental memory search from
+     * where the last operation left off.
+     * @param options Memory search options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return memory search response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MemoryStoreSearchResponse> searchMemories(String name, String scope, List<ResponseInputItem> items,
+        String previousSearchId, MemorySearchOptions options) {
+        // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
+        List<BinaryData> inputItems = OpenAIJsonHelper.toBinaryDataList(items);
+        return internalSearchMemories(name, scope, inputItems, previousSearchId, options);
     }
 
     /**

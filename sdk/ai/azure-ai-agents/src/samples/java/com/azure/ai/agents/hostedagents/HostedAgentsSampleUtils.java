@@ -16,6 +16,7 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseOutputItem;
@@ -48,7 +49,7 @@ final class HostedAgentsSampleUtils {
         waitForAgentVersionActive(agentsClient, agentName, agent.getVersion());
 
         AgentSessionResource session = betaAgentsClient.createSessionWithResponse(agentName,
-            BinaryData.fromObject(createSessionRequest(agent.getVersion())), foundryFeaturesRequestOptions()).getValue()
+            BinaryData.fromObject(createSessionRequest(agent.getVersion())), new RequestOptions()).getValue()
             .toObject(AgentSessionResource.class);
         System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(), session.getStatus());
 
@@ -60,7 +61,7 @@ final class HostedAgentsSampleUtils {
         return createHostedAgentVersionAsync(agentsAsyncClient, agentName, image)
             .flatMap(agent -> waitForAgentVersionActiveAsync(agentsAsyncClient, agentName, agent.getVersion())
                 .then(betaAgentsAsyncClient.createSessionWithResponse(agentName,
-                    BinaryData.fromObject(createSessionRequest(agent.getVersion())), foundryFeaturesRequestOptions())
+                    BinaryData.fromObject(createSessionRequest(agent.getVersion())), new RequestOptions())
                     .map(response -> response.getValue().toObject(AgentSessionResource.class)))
                 .map(session -> {
                     System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(),

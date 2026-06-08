@@ -26,6 +26,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.Objects;
@@ -57,7 +58,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Retrieves the specified skill and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -110,7 +111,7 @@ public final class BetaSkillsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -142,7 +143,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Modifies the specified skill's configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -150,9 +151,9 @@ public final class BetaSkillsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -187,7 +188,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Removes the specified skill and its associated versions.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -217,7 +218,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Creates a new version of a skill. If the skill does not exist, it will be created.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -237,9 +238,9 @@ public final class BetaSkillsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -274,7 +275,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Creates a new version of a skill from uploaded files via multipart form data.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -331,7 +332,7 @@ public final class BetaSkillsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -364,7 +365,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Retrieves the specified version of a skill by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -399,7 +400,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Downloads the zip content for the default version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -425,7 +426,7 @@ public final class BetaSkillsAsyncClient {
      *
      * Downloads the zip content for a specific version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -449,11 +450,58 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Deletes a skill.
+     *
+     * @param skillName The unique name of the skill.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the skill is successfully deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSkill(String skillName) {
+        // Generated convenience method for deleteSkillWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteSkillWithResponse(skillName, requestOptions).then();
+    }
+
+    /**
+     * Deletes a skill.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The unique name of the skill.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted skill along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSkillWithResponse(String name, RequestOptions requestOptions) {
+        return internalDeleteSkillWithResponse(name, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
      * Delete a specific version of a skill
      *
      * Removes the specified version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
