@@ -1,6 +1,6 @@
 # Release History
 
-## 1.58.1 (2026-06-05)
+## 1.58.1 (2026-06-08)
 
 ### Other Changes
 
