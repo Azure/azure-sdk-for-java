@@ -427,7 +427,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createOptimizationJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
             RequestOptions requestOptions, Context context);
@@ -438,7 +438,7 @@ public final class BetaAgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createOptimizationJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
             RequestOptions requestOptions, Context context);
@@ -3027,10 +3027,11 @@ public final class BetaAgentsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData inputs, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOptimizationJobWithResponseAsync(BinaryData inputs,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.createOptimizationJob(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, context));
     }
 
@@ -3213,11 +3214,11 @@ public final class BetaAgentsImpl {
      * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData inputs, RequestOptions requestOptions) {
+    public Response<BinaryData> createOptimizationJobWithResponse(BinaryData inputs, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), contentType,
-            accept, inputs, requestOptions, Context.NONE);
+        return service.createOptimizationJobSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, Context.NONE);
     }
 
     /**
