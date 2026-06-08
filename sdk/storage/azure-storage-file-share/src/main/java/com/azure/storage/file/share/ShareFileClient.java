@@ -2624,21 +2624,18 @@ public class ShareFileClient {
         ShareRequestConditions finalRequestConditions = finalOptions.getRequestConditions() == null
             ? new ShareRequestConditions()
             : finalOptions.getRequestConditions();
-        try {
-            BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> retriever = (marker, pageSize) -> {
-                ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
-                    = listRangesWithResponse(finalOptions.getRange(), finalRequestConditions, null, null, marker,
-                        pageSize, timeout, finalContext);
 
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    toShareFileRangeItems(response.getValue(), false), response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders());
-            };
+        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> retriever = (marker, pageSize) -> {
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
+                = listRangesWithResponse(finalOptions.getRange(), finalRequestConditions, null, null, marker,
+                    pageSize, timeout, finalContext);
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                toShareFileRangeItems(response.getValue(), false), response.getValue().getNextMarker(),
+                response.getDeserializedHeaders());
+        };
 
             return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
     }
 
     /**
@@ -2755,21 +2752,19 @@ public class ShareFileClient {
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
-        try {
-            BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> retriever = (marker, pageSize) -> {
-                ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
-                    = listRangesWithResponse(options.getRange(), finalRequestConditions, options.getPreviousSnapshot(),
-                        options.isRenameIncluded(), marker, pageSize, timeout, finalContext);
 
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    toShareFileRangeItems(response.getValue(), true), response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders());
-            };
+        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> retriever = (marker, pageSize) -> {
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
+                = listRangesWithResponse(options.getRange(), finalRequestConditions, options.getPreviousSnapshot(),
+                    options.isRenameIncluded(), marker, pageSize, timeout, finalContext);
 
-            return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                toShareFileRangeItems(response.getValue(), true), response.getValue().getNextMarker(),
+                response.getDeserializedHeaders());
+        };
+
+        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
+
     }
 
     private static java.util.List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
