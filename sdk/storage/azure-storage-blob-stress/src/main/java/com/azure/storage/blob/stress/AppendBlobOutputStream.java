@@ -27,7 +27,13 @@ public class AppendBlobOutputStream extends BlobScenarioBase<StorageStressOption
     private final BlobAsyncClient tempSetupBlobClient;
 
     public AppendBlobOutputStream(StorageStressOptions options) {
-        super(options);
+        // Each logical op writes the blob through many small appendBlock requests
+        // plus scenario-level retry-from-scratch on failure. The 2026-06-04
+        // 18:15 UTC stress run showed that the default per-tier mapping based on
+        // options.getSize() (1 KB or 10 KB) gives a far-too-aggressive 5 s
+        // timeout for this scenario. Force the 30 s tier instead. See
+        // stress-logs-ibrandes/run4-validation.md.
+        super(options, 50L * 1024L * 1024L);
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();
 

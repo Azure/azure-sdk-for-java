@@ -38,6 +38,26 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     private Instant startTime;
 
     public PageBlobScenarioBase(TOptions options) {
+        this(options, options.getSize());
+    }
+
+    /**
+     * Secondary constructor that lets a subclass override the payload size used to
+     * pick a per-tier I/O timeout (see {@link StressHttpClients}). Useful for
+     * scenarios whose single logical iteration issues many HTTP requests &mdash;
+     * e.g. {@code PageBlobOutputStream}, where {@code options.getSize()} is the
+     * total blob size but each op writes the blob in many 512&nbsp;B page chunks
+     * plus scenario-level retry-from-scratch on failure. Passing a deliberately
+     * larger value moves the scenario into a longer-timeout tier.
+     *
+     * @param options                         scenario options.
+     * @param effectivePayloadBytesForTimeout payload size used by
+     *                                        {@link StressHttpClients#buildHttpClient(long)}
+     *                                        to choose the tier. Pass
+     *                                        {@code options.getSize()} for the
+     *                                        default behavior.
+     */
+    protected PageBlobScenarioBase(TOptions options, long effectivePayloadBytesForTimeout) {
         super(options);
 
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -46,6 +66,7 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
             .credential(defaultAzureCredential)
             .endpoint(endpoint)
+            .httpClient(StressHttpClients.buildHttpClient(effectivePayloadBytesForTimeout))
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
