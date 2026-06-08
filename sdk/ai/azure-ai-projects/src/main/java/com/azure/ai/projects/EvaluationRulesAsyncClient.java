@@ -45,7 +45,9 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -75,7 +77,10 @@ public final class EvaluationRulesAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation rule along with {@link Response} on successful completion of {@link Mono}.
+     * @return an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -84,7 +89,9 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     *
+     * Removes the specified evaluation rule from the project.
      *
      * @param id Unique identifier for the evaluation rule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -101,7 +108,9 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * Create or update an evaluation rule.
+     * Create or update an evaluation rule
+     *
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -176,7 +185,10 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     *
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -224,7 +236,9 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration.
      *
      * @param id Unique identifier for the evaluation rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,7 +247,9 @@ public final class EvaluationRulesAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an evaluation rule on successful completion of {@link Mono}.
+     * @return an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -245,7 +261,9 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     *
+     * Removes the specified evaluation rule from the project.
      *
      * @param id Unique identifier for the evaluation rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -287,7 +305,10 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     *
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -317,7 +338,10 @@ public final class EvaluationRulesAsyncClient {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     *
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      *
      * @param actionType Filter by the type of evaluation rule.
      * @param agentName Filter by the agent name.

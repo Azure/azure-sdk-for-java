@@ -183,7 +183,9 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -213,7 +215,10 @@ public final class EvaluationRulesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation rule along with {@link Response} on successful completion of {@link Mono}.
+     * @return an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEvaluationRuleWithResponseAsync(String id, RequestOptions requestOptions) {
@@ -223,7 +228,9 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -253,7 +260,9 @@ public final class EvaluationRulesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation rule along with {@link Response}.
+     * @return an evaluation rule
+     * 
+     * Retrieves the specified evaluation rule and its configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEvaluationRuleWithResponse(String id, RequestOptions requestOptions) {
@@ -263,7 +272,9 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     * 
+     * Removes the specified evaluation rule from the project.
      * 
      * @param id Unique identifier for the evaluation rule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -280,7 +291,9 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     * 
+     * Removes the specified evaluation rule from the project.
      * 
      * @param id Unique identifier for the evaluation rule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -297,7 +310,9 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * Create or update an evaluation rule.
+     * Create or update an evaluation rule
+     * 
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -375,7 +390,9 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * Create or update an evaluation rule.
+     * Create or update an evaluation rule
+     * 
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -453,7 +470,10 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -506,7 +526,10 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -557,7 +580,10 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -608,7 +634,10 @@ public final class EvaluationRulesImpl {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     * 
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -659,6 +688,8 @@ public final class EvaluationRulesImpl {
     }
 
     /**
+     * List evaluation rules
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -704,6 +735,8 @@ public final class EvaluationRulesImpl {
     }
 
     /**
+     * List evaluation rules
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

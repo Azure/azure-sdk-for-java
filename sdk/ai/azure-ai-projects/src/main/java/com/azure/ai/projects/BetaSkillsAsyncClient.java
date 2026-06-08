@@ -54,7 +54,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Retrieves a skill.
+     * Retrieve a skill
+     *
+     * Retrieves the specified skill and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -85,7 +87,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Returns the list of all skills.
+     * List skills
+     *
+     * Returns the skills available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -135,7 +139,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Update a skill.
+     * Update a skill
+     *
+     * Modifies the specified skill's configuration.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -206,7 +212,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Retrieves a skill.
+     * Retrieve a skill
+     *
+     * Retrieves the specified skill and its current configuration.
      *
      * @param name The unique name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +235,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Returns the list of all skills.
+     * List skills
+     *
+     * Returns the skills available in the current project.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -280,7 +290,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Returns the list of all skills.
+     * List skills
+     *
+     * Returns the skills available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -329,6 +341,8 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Create a new version of a skill
+     *
      * Creates a new version of a skill. If the skill does not exist, it will be created.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -384,6 +398,8 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Create a skill version from uploaded files
+     *
      * Creates a new version of a skill from uploaded files via multipart form data.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -419,7 +435,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * List all versions of a skill.
+     * List skill versions
+     *
+     * Returns the available versions for the specified skill.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -470,7 +488,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Retrieve a specific version of a skill.
+     * Retrieve a specific version of a skill
+     *
+     * Retrieves the specified version of a skill by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -503,7 +523,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Download the zip content for the default version of a skill.
+     * Download the zip content for the default version of a skill
+     *
+     * Downloads the zip content for the default version of a skill.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -527,7 +549,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Download the zip content for a specific version of a skill.
+     * Download the zip content for a specific version of a skill
+     *
+     * Downloads the zip content for a specific version of a skill.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -553,7 +577,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Delete a specific version of a skill.
+     * Delete a specific version of a skill
+     *
+     * Removes the specified version of a skill.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -584,7 +610,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Update a skill.
+     * Update a skill
+     *
+     * Modifies the specified skill's configuration.
      *
      * @param name The name of the skill to update.
      * @param defaultVersion The version identifier that the skill should point to. When set, the skill's default
@@ -609,6 +637,8 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Create a new version of a skill
+     *
      * Creates a new version of a skill. If the skill does not exist, it will be created.
      *
      * @param name The name of the skill. If the skill does not exist, it will be created.
@@ -636,6 +666,8 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Create a new version of a skill
+     *
      * Creates a new version of a skill. If the skill does not exist, it will be created.
      *
      * @param name The name of the skill. If the skill does not exist, it will be created.
@@ -659,6 +691,8 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
+     * Create a skill version from uploaded files
+     *
      * Creates a new version of a skill from uploaded files via multipart form data.
      *
      * @param name The name of the skill.
@@ -690,7 +724,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * List all versions of a skill.
+     * List skill versions
+     *
+     * Returns the available versions for the specified skill.
      *
      * @param name The name of the skill to list versions for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -745,7 +781,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * List all versions of a skill.
+     * List skill versions
+     *
+     * Returns the available versions for the specified skill.
      *
      * @param name The name of the skill to list versions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -777,7 +815,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Retrieve a specific version of a skill.
+     * Retrieve a specific version of a skill
+     *
+     * Retrieves the specified version of a skill by name and version identifier.
      *
      * @param name The name of the skill.
      * @param version The version identifier to retrieve.
@@ -799,7 +839,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Download the zip content for the default version of a skill.
+     * Download the zip content for the default version of a skill
+     *
+     * Downloads the zip content for the default version of a skill.
      *
      * @param name The name of the skill.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,7 +861,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Download the zip content for a specific version of a skill.
+     * Download the zip content for a specific version of a skill
+     *
+     * Downloads the zip content for a specific version of a skill.
      *
      * @param name The name of the skill.
      * @param version The version to download content for.
@@ -891,7 +935,9 @@ public final class BetaSkillsAsyncClient {
     }
 
     /**
-     * Deletes a skill.
+     * Delete a skill
+     *
+     * Removes the specified skill and its associated versions.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>

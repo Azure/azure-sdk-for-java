@@ -250,7 +250,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Create or update a routine.
+     * Create or update a routine
+     * 
+     * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -324,7 +326,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Create or update a routine.
+     * Create or update a routine
+     * 
+     * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -397,7 +401,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Retrieve a routine.
+     * Get a routine
+     * 
+     * Retrieves the specified routine and its current configuration.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -437,8 +443,10 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a routine definition returned by the service along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a routine
+     * 
+     * Retrieves the specified routine and its current configuration along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRoutineWithResponseAsync(String routineName, RequestOptions requestOptions) {
@@ -448,7 +456,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Retrieve a routine.
+     * Get a routine
+     * 
+     * Retrieves the specified routine and its current configuration.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -488,7 +498,9 @@ public final class BetaRoutinesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a routine definition returned by the service along with {@link Response}.
+     * @return a routine
+     * 
+     * Retrieves the specified routine and its current configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRoutineWithResponse(String routineName, RequestOptions requestOptions) {
@@ -498,7 +510,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Enable a routine.
+     * Enable a routine
+     * 
+     * Enables the specified routine so it can be dispatched.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -550,7 +564,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Enable a routine.
+     * Enable a routine
+     * 
+     * Enables the specified routine so it can be dispatched.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -600,7 +616,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Disable a routine.
+     * Disable a routine
+     * 
+     * Disables the specified routine so it no longer runs.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -652,7 +670,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Disable a routine.
+     * Disable a routine
+     * 
+     * Disables the specified routine so it no longer runs.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -702,7 +722,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List routines.
+     * List routines
+     * 
+     * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -768,7 +790,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List routines.
+     * List routines
+     * 
+     * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -828,7 +852,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List routines.
+     * List routines
+     * 
+     * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -892,7 +918,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List routines.
+     * List routines
+     * 
+     * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -952,7 +980,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Delete a routine.
+     * Delete a routine
+     * 
+     * Deletes the specified routine.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -980,7 +1010,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Delete a routine.
+     * Delete a routine
+     * 
+     * Deletes the specified routine.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -1008,7 +1040,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List prior runs for a routine.
+     * List prior runs for a routine
+     * 
+     * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1087,7 +1121,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List prior runs for a routine.
+     * List prior runs for a routine
+     * 
+     * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1159,7 +1195,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List prior runs for a routine.
+     * List prior runs for a routine
+     * 
+     * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1235,7 +1273,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * List prior runs for a routine.
+     * List prior runs for a routine
+     * 
+     * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1307,7 +1347,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Queue an asynchronous routine dispatch.
+     * Queue an asynchronous routine dispatch
+     * 
+     * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -1364,7 +1406,9 @@ public final class BetaRoutinesImpl {
     }
 
     /**
-     * Queue an asynchronous routine dispatch.
+     * Queue an asynchronous routine dispatch
+     * 
+     * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>

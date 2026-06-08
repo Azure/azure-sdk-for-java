@@ -55,7 +55,7 @@ public final class BetaDatasetsImpl {
 
     /**
      * Initializes an instance of BetaDatasetsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BetaDatasetsImpl(AIProjectClientImpl client) {
@@ -66,7 +66,7 @@ public final class BetaDatasetsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AIProjectsServiceVersion getServiceVersion() {
@@ -192,11 +192,11 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Get info about a data generation job.
-     *
-     * Gets the details of a data generation job by its ID.
+     * Get a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -260,17 +260,17 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about a data generation job.
-     *
-     * Gets the details of a data generation job by its ID along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGenerationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
@@ -281,11 +281,11 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Get info about a data generation job.
-     *
-     * Gets the details of a data generation job by its ID.
+     * Get a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -349,16 +349,16 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about a data generation job.
-     *
-     * Gets the details of a data generation job by its ID along with {@link Response}.
+     * @return a data generation job
+     * 
+     * Retrieves the specified data generation job and its current status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
@@ -368,8 +368,8 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Returns a list of data generation jobs
-     *
+     * List data generation jobs
+     * 
      * Returns a list of data generation jobs.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -392,7 +392,7 @@ public final class BetaDatasetsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -456,7 +456,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -477,8 +477,8 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Returns a list of data generation jobs
-     *
+     * List data generation jobs
+     * 
      * Returns a list of data generation jobs.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -501,7 +501,7 @@ public final class BetaDatasetsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -565,7 +565,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -579,8 +579,8 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Returns a list of data generation jobs
-     *
+     * List data generation jobs
+     * 
      * Returns a list of data generation jobs.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -603,7 +603,7 @@ public final class BetaDatasetsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -667,7 +667,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -686,8 +686,8 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Returns a list of data generation jobs
-     *
+     * List data generation jobs
+     * 
      * Returns a list of data generation jobs.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -710,7 +710,7 @@ public final class BetaDatasetsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -774,7 +774,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -788,7 +788,9 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Creates a data generation job.
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -798,7 +800,7 @@ public final class BetaDatasetsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -862,9 +864,9 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -928,7 +930,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -948,7 +950,9 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Creates a data generation job.
+     * Create a data generation job
+     * 
+     * Submits a new data generation job for asynchronous execution.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -958,7 +962,7 @@ public final class BetaDatasetsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1022,9 +1026,9 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1088,7 +1092,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1106,11 +1110,11 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Cancels a data generation job.
-     *
-     * Cancels a data generation job by its ID.
+     * Cancel a data generation job
+     * 
+     * Cancels the specified data generation job if it is still in progress.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1174,7 +1178,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1193,11 +1197,11 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Cancels a data generation job.
-     *
-     * Cancels a data generation job by its ID.
+     * Cancel a data generation job
+     * 
+     * Cancels the specified data generation job if it is still in progress.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1261,7 +1265,7 @@ public final class BetaDatasetsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1278,10 +1282,10 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Deletes a data generation job.
-     *
-     * Deletes a data generation job by its ID.
-     *
+     * Delete a data generation job
+     * 
+     * Removes the specified data generation job and its associated output.
+     * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1298,10 +1302,10 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * Deletes a data generation job.
-     *
-     * Deletes a data generation job by its ID.
-     *
+     * Delete a data generation job
+     * 
+     * Removes the specified data generation job and its associated output.
+     * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

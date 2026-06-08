@@ -46,7 +46,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Create or update a routine.
+     * Create or update a routine
+     *
+     * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -59,7 +61,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -76,9 +78,9 @@ public final class BetaRoutinesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -117,7 +119,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Retrieve a routine.
+     * Get a routine
+     *
+     * Retrieves the specified routine and its current configuration.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -130,7 +134,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -157,7 +161,9 @@ public final class BetaRoutinesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a routine definition returned by the service along with {@link Response}.
+     * @return a routine
+     *
+     * Retrieves the specified routine and its current configuration along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -166,7 +172,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Enable a routine.
+     * Enable a routine
+     *
+     * Enables the specified routine so it can be dispatched.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -179,7 +187,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -215,7 +223,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Disable a routine.
+     * Disable a routine
+     *
+     * Disables the specified routine so it no longer runs.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -228,7 +238,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -264,7 +274,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * List routines.
+     * List routines
+     *
+     * Returns the routines available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -290,7 +302,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -325,7 +337,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Delete a routine.
+     * Delete a routine
+     *
+     * Deletes the specified routine.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -353,7 +367,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * List prior runs for a routine.
+     * List prior runs for a routine
+     *
+     * Returns prior runs recorded for the specified routine.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -381,7 +397,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -539,7 +555,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Create or update a routine.
+     * Create or update a routine
+     *
+     * Creates a new routine or replaces an existing routine with the supplied definition.
      *
      * @param routineName The unique name of the routine.
      * @param description A human-readable description of the routine.
@@ -571,7 +589,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Create or update a routine.
+     * Create or update a routine
+     *
+     * Creates a new routine or replaces an existing routine with the supplied definition.
      *
      * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -670,7 +690,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Queue an asynchronous routine dispatch.
+     * Queue an asynchronous routine dispatch
+     *
+     * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -683,7 +705,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -693,9 +715,9 @@ public final class BetaRoutinesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -723,7 +745,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Queue an asynchronous routine dispatch.
+     * Queue an asynchronous routine dispatch
+     *
+     * Queues an asynchronous dispatch for the specified routine.
      *
      * @param routineName The unique name of the routine.
      * @param payload A direct action-input override sent downstream when testing a routine.
@@ -748,7 +772,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Queue an asynchronous routine dispatch.
+     * Queue an asynchronous routine dispatch
+     *
+     * Queues an asynchronous dispatch for the specified routine.
      *
      * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

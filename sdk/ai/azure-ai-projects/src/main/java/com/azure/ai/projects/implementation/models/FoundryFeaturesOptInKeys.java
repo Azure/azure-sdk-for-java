@@ -74,7 +74,7 @@ public enum FoundryFeaturesOptInKeys {
 
     /**
      * Parses a serialized value to a FoundryFeaturesOptInKeys instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FoundryFeaturesOptInKeys object, or null if unable to parse.
      */

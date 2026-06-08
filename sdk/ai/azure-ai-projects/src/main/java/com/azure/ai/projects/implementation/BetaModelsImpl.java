@@ -312,6 +312,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -384,6 +386,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -452,6 +456,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -521,6 +527,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -589,6 +597,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -659,6 +669,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -726,6 +738,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -794,6 +808,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -861,8 +877,9 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Get the specific version of the ModelVersion. The service returns 404 Not Found error if the ModelVersion does
-     * not exist.
+     * Get a model version
+     * 
+     * Retrieves the specified model version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -919,8 +936,10 @@ public final class BetaModelsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the ModelVersion along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a model version
+     * 
+     * Retrieves the specified model version, returning 404 if it does not exist along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getModelVersionWithResponseAsync(String name, String version,
@@ -933,8 +952,9 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Get the specific version of the ModelVersion. The service returns 404 Not Found error if the ModelVersion does
-     * not exist.
+     * Get a model version
+     * 
+     * Retrieves the specified model version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -991,7 +1011,9 @@ public final class BetaModelsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the ModelVersion along with {@link Response}.
+     * @return a model version
+     * 
+     * Retrieves the specified model version, returning 404 if it does not exist along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getModelVersionWithResponse(String name, String version,
@@ -1003,6 +1025,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * Delete a model version
+     * 
      * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
      * successfully or if the ModelVersion does not exist.
      * 
@@ -1024,6 +1048,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * Delete a model version
+     * 
      * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
      * successfully or if the ModelVersion does not exist.
      * 
@@ -1044,6 +1070,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * Update a model version
+     * 
      * Update an existing ModelVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -1129,6 +1157,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * Update a model version
+     * 
      * Update an existing ModelVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -1213,8 +1243,10 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
-     * for polling.
+     * Create a model version async
+     * 
+     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a location header
+     * for polling the operation status.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1297,8 +1329,10 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
-     * for polling.
+     * Create a model version async
+     * 
+     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a location header
+     * for polling the operation status.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1381,7 +1415,9 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Start or retrieve a pending upload for a model version.
+     * Start a pending upload
+     * 
+     * Initiates a new pending upload or retrieves an existing one for the specified model version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1437,7 +1473,9 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Start or retrieve a pending upload for a model version.
+     * Start a pending upload
+     * 
+     * Initiates a new pending upload or retrieves an existing one for the specified model version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1492,7 +1530,9 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Get credentials for a model version asset.
+     * Get model asset credentials
+     * 
+     * Retrieves temporary credentials for accessing the storage backing the specified model version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1528,8 +1568,10 @@ public final class BetaModelsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return credentials for a model version asset along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return model asset credentials
+     * 
+     * Retrieves temporary credentials for accessing the storage backing the specified model version along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getModelCredentialsWithResponseAsync(String name, String version,
@@ -1543,7 +1585,9 @@ public final class BetaModelsImpl {
     }
 
     /**
-     * Get credentials for a model version asset.
+     * Get model asset credentials
+     * 
+     * Retrieves temporary credentials for accessing the storage backing the specified model version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1579,7 +1623,10 @@ public final class BetaModelsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return credentials for a model version asset along with {@link Response}.
+     * @return model asset credentials
+     * 
+     * Retrieves temporary credentials for accessing the storage backing the specified model version along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getModelCredentialsWithResponse(String name, String version,
@@ -1592,6 +1639,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1664,6 +1713,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1733,6 +1784,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1805,6 +1858,8 @@ public final class BetaModelsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

@@ -40,7 +40,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Delete a schedule.
+     * Delete a schedule
+     *
+     * Deletes the specified schedule resource.
      *
      * @param id Identifier of the schedule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -57,7 +59,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Get a schedule by id.
+     * Get a schedule
+     *
+     * Retrieves the specified schedule resource.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -96,7 +100,9 @@ public final class BetaSchedulesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a schedule by id along with {@link Response}.
+     * @return a schedule
+     *
+     * Retrieves the specified schedule resource along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -105,7 +111,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * List all schedules.
+     * List schedules
+     *
+     * Returns schedules that match the supplied type and enabled filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -161,7 +169,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Create or update operation template.
+     * Create or update a schedule
+     *
+     * Creates a new schedule or updates an existing schedule with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -243,7 +253,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Get a schedule run by id.
+     * Get a schedule run
+     *
+     * Retrieves the specified run for a schedule.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -268,7 +280,9 @@ public final class BetaSchedulesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a schedule run by id along with {@link Response}.
+     * @return a schedule run
+     *
+     * Retrieves the specified run for a schedule along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -278,7 +292,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * List all schedule runs.
+     * List schedule runs
+     *
+     * Returns schedule runs that match the supplied filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -320,7 +336,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Delete a schedule.
+     * Delete a schedule
+     *
+     * Deletes the specified schedule resource.
      *
      * @param id Identifier of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,7 +357,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Get a schedule by id.
+     * Get a schedule
+     *
+     * Retrieves the specified schedule resource.
      *
      * @param id Identifier of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,7 +368,9 @@ public final class BetaSchedulesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule by id.
+     * @return a schedule
+     *
+     * Retrieves the specified schedule resource.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -359,7 +381,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * List all schedules.
+     * List schedules
+     *
+     * Returns schedules that match the supplied type and enabled filters.
      *
      * @param type Filter by the type of schedule.
      * @param enabled Filter by the enabled status.
@@ -387,7 +411,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * List all schedules.
+     * List schedules
+     *
+     * Returns schedules that match the supplied type and enabled filters.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -406,7 +432,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Create or update operation template.
+     * Create or update a schedule
+     *
+     * Creates a new schedule or updates an existing schedule with the supplied definition.
      *
      * @param id Identifier of the schedule.
      * @param resource The resource instance.
@@ -428,7 +456,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * Get a schedule run by id.
+     * Get a schedule run
+     *
+     * Retrieves the specified run for a schedule.
      *
      * @param scheduleId The unique identifier of the schedule.
      * @param runId The unique identifier of the schedule run.
@@ -438,7 +468,9 @@ public final class BetaSchedulesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule run by id.
+     * @return a schedule run
+     *
+     * Retrieves the specified run for a schedule.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -449,7 +481,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * List all schedule runs.
+     * List schedule runs
+     *
+     * Returns schedule runs that match the supplied filters.
      *
      * @param id Identifier of the schedule.
      * @param type Filter by the type of schedule.
@@ -478,7 +512,9 @@ public final class BetaSchedulesClient {
     }
 
     /**
-     * List all schedule runs.
+     * List schedule runs
+     *
+     * Returns schedule runs that match the supplied filters.
      *
      * @param id Identifier of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

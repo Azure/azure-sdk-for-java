@@ -32,7 +32,7 @@ public final class AIProjectClientImpl {
      * If you only have one Project in your Foundry Hub, or to target the default Project
      * in your Hub, use the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -46,7 +46,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     *
+     * 
      * @return the foundryFeatures value.
      */
     public FoundryFeaturesOptInKeys getFoundryFeatures() {
@@ -60,7 +60,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AIProjectsServiceVersion getServiceVersion() {
@@ -74,7 +74,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -88,7 +88,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -102,7 +102,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaModelsImpl object to access its operations.
-     *
+     * 
      * @return the BetaModelsImpl object.
      */
     public BetaModelsImpl getBetaModels() {
@@ -116,7 +116,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaRedTeamsImpl object to access its operations.
-     *
+     * 
      * @return the BetaRedTeamsImpl object.
      */
     public BetaRedTeamsImpl getBetaRedTeams() {
@@ -130,7 +130,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaEvaluationTaxonomiesImpl object to access its operations.
-     *
+     * 
      * @return the BetaEvaluationTaxonomiesImpl object.
      */
     public BetaEvaluationTaxonomiesImpl getBetaEvaluationTaxonomies() {
@@ -144,7 +144,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaEvaluatorsImpl object to access its operations.
-     *
+     * 
      * @return the BetaEvaluatorsImpl object.
      */
     public BetaEvaluatorsImpl getBetaEvaluators() {
@@ -158,7 +158,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaInsightsImpl object to access its operations.
-     *
+     * 
      * @return the BetaInsightsImpl object.
      */
     public BetaInsightsImpl getBetaInsights() {
@@ -172,7 +172,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaSchedulesImpl object to access its operations.
-     *
+     * 
      * @return the BetaSchedulesImpl object.
      */
     public BetaSchedulesImpl getBetaSchedules() {
@@ -186,7 +186,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaRoutinesImpl object to access its operations.
-     *
+     * 
      * @return the BetaRoutinesImpl object.
      */
     public BetaRoutinesImpl getBetaRoutines() {
@@ -200,7 +200,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaSkillsImpl object to access its operations.
-     *
+     * 
      * @return the BetaSkillsImpl object.
      */
     public BetaSkillsImpl getBetaSkills() {
@@ -214,7 +214,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the BetaDatasetsImpl object to access its operations.
-     *
+     * 
      * @return the BetaDatasetsImpl object.
      */
     public BetaDatasetsImpl getBetaDatasets() {
@@ -228,7 +228,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the ConnectionsImpl object to access its operations.
-     *
+     * 
      * @return the ConnectionsImpl object.
      */
     public ConnectionsImpl getConnections() {
@@ -242,7 +242,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the DatasetsImpl object to access its operations.
-     *
+     * 
      * @return the DatasetsImpl object.
      */
     public DatasetsImpl getDatasets() {
@@ -256,7 +256,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the IndexesImpl object to access its operations.
-     *
+     * 
      * @return the IndexesImpl object.
      */
     public IndexesImpl getIndexes() {
@@ -270,7 +270,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the DeploymentsImpl object to access its operations.
-     *
+     * 
      * @return the DeploymentsImpl object.
      */
     public DeploymentsImpl getDeployments() {
@@ -284,7 +284,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Gets the EvaluationRulesImpl object to access its operations.
-     *
+     * 
      * @return the EvaluationRulesImpl object.
      */
     public EvaluationRulesImpl getEvaluationRules() {
@@ -293,7 +293,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Initializes an instance of AIProjectClient client.
-     *
+     * 
      * @param endpoint Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
      * If you only have one Project in your Foundry Hub, or to target the default Project
@@ -311,7 +311,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Initializes an instance of AIProjectClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Foundry Project endpoint in the form
      * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
@@ -329,7 +329,7 @@ public final class AIProjectClientImpl {
 
     /**
      * Initializes an instance of AIProjectClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Foundry Project endpoint in the form

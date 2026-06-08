@@ -40,9 +40,9 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Get info about a data generation job.
+     * Get a data generation job
      *
-     * Gets the details of a data generation job by its ID.
+     * Retrieves the specified data generation job and its current status.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -115,9 +115,9 @@ public final class BetaDatasetsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about a data generation job.
+     * @return a data generation job
      *
-     * Gets the details of a data generation job by its ID along with {@link Response}.
+     * Retrieves the specified data generation job and its current status along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -126,7 +126,7 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Returns a list of data generation jobs
+     * List data generation jobs
      *
      * Returns a list of data generation jobs.
      * <p><strong>Query Parameters</strong></p>
@@ -229,7 +229,9 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Creates a data generation job.
+     * Create a data generation job
+     *
+     * Submits a new data generation job for asynchronous execution.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -385,9 +387,9 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Cancels a data generation job.
+     * Cancel a data generation job
      *
-     * Cancels a data generation job by its ID.
+     * Cancels the specified data generation job if it is still in progress.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -469,9 +471,9 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Deletes a data generation job.
+     * Delete a data generation job
      *
-     * Deletes a data generation job by its ID.
+     * Removes the specified data generation job and its associated output.
      *
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -511,7 +513,7 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Returns a list of data generation jobs
+     * List data generation jobs
      *
      * Returns a list of data generation jobs.
      *
@@ -532,7 +534,9 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Creates a data generation job.
+     * Create a data generation job
+     *
+     * Submits a new data generation job for asynchronous execution.
      *
      * @param job The job to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +598,7 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Returns a list of data generation jobs
+     * List data generation jobs
      *
      * Returns a list of data generation jobs.
      *
@@ -639,7 +643,9 @@ public final class BetaDatasetsClient {
     }
 
     /**
-     * Creates a data generation job.
+     * Create a data generation job
+     *
+     * Submits a new data generation job for asynchronous execution.
      *
      * @param job The job to create.
      * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job

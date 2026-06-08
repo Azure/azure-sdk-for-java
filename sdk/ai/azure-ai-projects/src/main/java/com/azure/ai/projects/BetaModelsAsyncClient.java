@@ -51,6 +51,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -116,6 +118,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -180,8 +184,9 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Get the specific version of the ModelVersion. The service returns 404 Not Found error if the ModelVersion does
-     * not exist.
+     * Get a model version
+     *
+     * Retrieves the specified model version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -238,8 +243,10 @@ public final class BetaModelsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the ModelVersion along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a model version
+     *
+     * Retrieves the specified model version, returning 404 if it does not exist along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -249,6 +256,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * Delete a model version
+     *
      * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
      * successfully or if the ModelVersion does not exist.
      *
@@ -269,6 +278,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * Update a model version
+     *
      * Update an existing ModelVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -351,7 +362,9 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Start or retrieve a pending upload for a model version.
+     * Start a pending upload
+     *
+     * Initiates a new pending upload or retrieves an existing one for the specified model version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -404,7 +417,9 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Get credentials for a model version asset.
+     * Get model asset credentials
+     *
+     * Retrieves temporary credentials for accessing the storage backing the specified model version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -440,8 +455,10 @@ public final class BetaModelsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return credentials for a model version asset along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return model asset credentials
+     *
+     * Retrieves temporary credentials for accessing the storage backing the specified model version along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -452,6 +469,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given ModelVersion.
      *
      * @param name The name of the resource.
@@ -484,6 +503,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each ModelVersion.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -514,8 +535,9 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Get the specific version of the ModelVersion. The service returns 404 Not Found error if the ModelVersion does
-     * not exist.
+     * Get a model version
+     *
+     * Retrieves the specified model version, returning 404 if it does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the ModelVersion to retrieve.
@@ -525,7 +547,10 @@ public final class BetaModelsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the ModelVersion on successful completion of {@link Mono}.
+     * @return a model version
+     *
+     * Retrieves the specified model version, returning 404 if it does not exist on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -537,6 +562,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * Delete a model version
+     *
      * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
      * successfully or if the ModelVersion does not exist.
      *
@@ -559,8 +586,10 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
-     * for polling.
+     * Create a model version async
+     *
+     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a location header
+     * for polling the operation status.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -639,8 +668,10 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a Location header
-     * for polling.
+     * Create a model version async
+     *
+     * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a location header
+     * for polling the operation status.
      *
      * @param name Name of the model.
      * @param version Version of the model.
@@ -664,6 +695,8 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
+     * Update a model version
+     *
      * Update an existing ModelVersion with the given version id.
      *
      * @param name The name of the resource.
@@ -696,7 +729,9 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Start or retrieve a pending upload for a model version.
+     * Start a pending upload
+     *
+     * Initiates a new pending upload or retrieves an existing one for the specified model version.
      *
      * @param name Name of the model.
      * @param version Version of the model.
@@ -721,7 +756,9 @@ public final class BetaModelsAsyncClient {
     }
 
     /**
-     * Get credentials for a model version asset.
+     * Get model asset credentials
+     *
+     * Retrieves temporary credentials for accessing the storage backing the specified model version.
      *
      * @param name Name of the model.
      * @param version Version of the model.
@@ -732,7 +769,10 @@ public final class BetaModelsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return credentials for a model version asset on successful completion of {@link Mono}.
+     * @return model asset credentials
+     *
+     * Retrieves temporary credentials for accessing the storage backing the specified model version on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

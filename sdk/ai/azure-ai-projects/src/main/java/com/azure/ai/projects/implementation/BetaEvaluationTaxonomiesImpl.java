@@ -214,7 +214,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * Get an evaluation run by name.
+     * Get an evaluation taxonomy
+     * 
+     * Retrieves the specified evaluation taxonomy.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -265,7 +267,9 @@ public final class BetaEvaluationTaxonomiesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation run by name along with {@link Response} on successful completion of {@link Mono}.
+     * @return an evaluation taxonomy
+     * 
+     * Retrieves the specified evaluation taxonomy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEvaluationTaxonomyWithResponseAsync(String name,
@@ -277,7 +281,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * Get an evaluation run by name.
+     * Get an evaluation taxonomy
+     * 
+     * Retrieves the specified evaluation taxonomy.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -328,7 +334,9 @@ public final class BetaEvaluationTaxonomiesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation run by name along with {@link Response}.
+     * @return an evaluation taxonomy
+     * 
+     * Retrieves the specified evaluation taxonomy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEvaluationTaxonomyWithResponse(String name, RequestOptions requestOptions) {
@@ -339,7 +347,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * List evaluation taxonomies.
+     * List evaluation taxonomies
+     * 
+     * Returns the evaluation taxonomies available in the project, optionally filtered by input name or input type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -412,7 +422,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * List evaluation taxonomies.
+     * List evaluation taxonomies
+     * 
+     * Returns the evaluation taxonomies available in the project, optionally filtered by input name or input type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -482,7 +494,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * List evaluation taxonomies.
+     * List evaluation taxonomies
+     * 
+     * Returns the evaluation taxonomies available in the project, optionally filtered by input name or input type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -553,7 +567,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * List evaluation taxonomies.
+     * List evaluation taxonomies
+     * 
+     * Returns the evaluation taxonomies available in the project, optionally filtered by input name or input type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -623,7 +639,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * Delete an evaluation taxonomy by name.
+     * Delete an evaluation taxonomy
+     * 
+     * Removes the specified evaluation taxonomy from the project.
      * 
      * @param name The name of the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -641,7 +659,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * Delete an evaluation taxonomy by name.
+     * Delete an evaluation taxonomy
+     * 
+     * Removes the specified evaluation taxonomy from the project.
      * 
      * @param name The name of the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -659,7 +679,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * Create an evaluation taxonomy.
+     * Create an evaluation taxonomy
+     * 
+     * Creates or replaces the specified evaluation taxonomy with the provided definition.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -769,7 +791,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
-     * Create an evaluation taxonomy.
+     * Create an evaluation taxonomy
+     * 
+     * Creates or replaces the specified evaluation taxonomy with the provided definition.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -879,6 +903,8 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
+     * Update an evaluation taxonomy
+     * 
      * Update an evaluation taxonomy.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -989,6 +1015,8 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
+     * Update an evaluation taxonomy
+     * 
      * Update an evaluation taxonomy.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -1099,6 +1127,8 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
+     * List evaluation taxonomies
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1166,6 +1196,8 @@ public final class BetaEvaluationTaxonomiesImpl {
     }
 
     /**
+     * List evaluation taxonomies
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

@@ -401,7 +401,6 @@ public final class AgentsClientBuilder
         if (!allowPreview || CoreUtils.isNullOrEmpty(previewFeatures)) {
             return null;
         }
-
         HttpPipelinePolicy foundryFeaturesPolicy = createFoundryFeaturesPolicy(previewFeatures);
         this.pipelinePolicies.add(0, foundryFeaturesPolicy);
         return foundryFeaturesPolicy;

@@ -166,7 +166,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * Generate Insights.
+     * Generate insights
+     * 
+     * Generates an insights report from the provided evaluation configuration.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -258,7 +260,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * Generate Insights.
+     * Generate insights
+     * 
+     * Generates an insights report from the provided evaluation configuration.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -348,7 +352,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * Get a specific insight by Id.
+     * Get an insight
+     * 
+     * Retrieves the specified insight report and its results.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -396,7 +402,10 @@ public final class BetaInsightsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific insight by Id along with {@link Response} on successful completion of {@link Mono}.
+     * @return an insight
+     * 
+     * Retrieves the specified insight report and its results along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getInsightWithResponseAsync(String id, RequestOptions requestOptions) {
@@ -406,7 +415,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * Get a specific insight by Id.
+     * Get an insight
+     * 
+     * Retrieves the specified insight report and its results.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -454,7 +465,9 @@ public final class BetaInsightsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific insight by Id along with {@link Response}.
+     * @return an insight
+     * 
+     * Retrieves the specified insight report and its results along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getInsightWithResponse(String id, RequestOptions requestOptions) {
@@ -464,7 +477,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * List all insights in reverse chronological order (newest first).
+     * List insights
+     * 
+     * Returns insights in reverse chronological order, with the most recent entries first.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -530,7 +545,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * List all insights in reverse chronological order (newest first).
+     * List insights
+     * 
+     * Returns insights in reverse chronological order, with the most recent entries first.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -594,7 +611,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * List all insights in reverse chronological order (newest first).
+     * List insights
+     * 
+     * Returns insights in reverse chronological order, with the most recent entries first.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -658,7 +677,9 @@ public final class BetaInsightsImpl {
     }
 
     /**
-     * List all insights in reverse chronological order (newest first).
+     * List insights
+     * 
+     * Returns insights in reverse chronological order, with the most recent entries first.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -722,6 +743,8 @@ public final class BetaInsightsImpl {
     }
 
     /**
+     * List insights
+     * 
      * Get the next page of items.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -776,6 +799,8 @@ public final class BetaInsightsImpl {
     }
 
     /**
+     * List insights
+     * 
      * Get the next page of items.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">

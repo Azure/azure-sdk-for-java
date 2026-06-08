@@ -38,7 +38,9 @@ public final class BetaRedTeamsClient {
     }
 
     /**
-     * Get a redteam by name.
+     * Get a redteam
+     *
+     * Retrieves the specified redteam and its configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -75,7 +77,9 @@ public final class BetaRedTeamsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a redteam by name along with {@link Response}.
+     * @return a redteam
+     *
+     * Retrieves the specified redteam and its configuration along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -84,7 +88,9 @@ public final class BetaRedTeamsClient {
     }
 
     /**
-     * List a redteam by name.
+     * List redteams
+     *
+     * Returns the redteams available in the current project.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -129,7 +135,9 @@ public final class BetaRedTeamsClient {
     }
 
     /**
-     * Creates a redteam run.
+     * Create a redteam run
+     *
+     * Submits a new redteam run for execution with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -205,7 +213,9 @@ public final class BetaRedTeamsClient {
     }
 
     /**
-     * Get a redteam by name.
+     * Get a redteam
+     *
+     * Retrieves the specified redteam and its configuration.
      *
      * @param name Identifier of the red team run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +224,9 @@ public final class BetaRedTeamsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a redteam by name.
+     * @return a redteam
+     *
+     * Retrieves the specified redteam and its configuration.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -225,7 +237,9 @@ public final class BetaRedTeamsClient {
     }
 
     /**
-     * List a redteam by name.
+     * List redteams
+     *
+     * Returns the redteams available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -244,7 +258,9 @@ public final class BetaRedTeamsClient {
     }
 
     /**
-     * Creates a redteam run.
+     * Create a redteam run
+     *
+     * Submits a new redteam run for execution with the provided configuration.
      *
      * @param redTeam Redteam to be run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

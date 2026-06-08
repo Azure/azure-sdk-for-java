@@ -44,7 +44,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * Get an evaluation run by name.
+     * Get an evaluation taxonomy
+     *
+     * Retrieves the specified evaluation taxonomy.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -95,7 +97,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation run by name along with {@link Response} on successful completion of {@link Mono}.
+     * @return an evaluation taxonomy
+     *
+     * Retrieves the specified evaluation taxonomy along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -104,7 +108,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * List evaluation taxonomies.
+     * List evaluation taxonomies
+     *
+     * Returns the evaluation taxonomies available in the project, optionally filtered by input name or input type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -171,7 +177,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * Delete an evaluation taxonomy by name.
+     * Delete an evaluation taxonomy
+     *
+     * Removes the specified evaluation taxonomy from the project.
      *
      * @param name The name of the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -188,7 +196,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * Create an evaluation taxonomy.
+     * Create an evaluation taxonomy
+     *
+     * Creates or replaces the specified evaluation taxonomy with the provided definition.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -294,6 +304,8 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
+     * Update an evaluation taxonomy
+     *
      * Update an evaluation taxonomy.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -400,7 +412,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * Get an evaluation run by name.
+     * Get an evaluation taxonomy
+     *
+     * Retrieves the specified evaluation taxonomy.
      *
      * @param name The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -409,7 +423,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an evaluation run by name on successful completion of {@link Mono}.
+     * @return an evaluation taxonomy
+     *
+     * Retrieves the specified evaluation taxonomy on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -421,7 +437,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * List evaluation taxonomies.
+     * List evaluation taxonomies
+     *
+     * Returns the evaluation taxonomies available in the project, optionally filtered by input name or input type.
      *
      * @param inputName Filter by the evaluation input name.
      * @param inputType Filter by taxonomy input type.
@@ -460,7 +478,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * List evaluation taxonomies.
+     * List evaluation taxonomies
+     *
+     * Returns the evaluation taxonomies available in the project, optionally filtered by input name or input type.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -490,7 +510,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * Delete an evaluation taxonomy by name.
+     * Delete an evaluation taxonomy
+     *
+     * Removes the specified evaluation taxonomy from the project.
      *
      * @param name The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,7 +532,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
-     * Create an evaluation taxonomy.
+     * Create an evaluation taxonomy
+     *
+     * Creates or replaces the specified evaluation taxonomy with the provided definition.
      *
      * @param name The name of the evaluation taxonomy.
      * @param taxonomy The evaluation taxonomy.
@@ -533,6 +557,8 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     }
 
     /**
+     * Update an evaluation taxonomy
+     *
      * Update an evaluation taxonomy.
      *
      * @param name The name of the evaluation taxonomy.

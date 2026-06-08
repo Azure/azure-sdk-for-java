@@ -46,7 +46,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * List all versions of the given evaluator.
+     * List evaluator versions
+     *
+     * Returns the available versions for the specified evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -58,7 +60,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -69,6 +71,9 @@ public final class BetaEvaluatorsClient {
      *     evaluator_type: String(builtin/custom) (Required)
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
+     *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -127,7 +132,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * List the latest version of each evaluator.
+     * List latest evaluator versions
+     *
+     * Lists the latest version of each evaluator.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -139,7 +146,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -150,6 +157,9 @@ public final class BetaEvaluatorsClient {
      *     evaluator_type: String(builtin/custom) (Required)
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
+     *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -207,10 +217,11 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Get the specific version of the EvaluatorVersion. The service returns 404 Not Found error if the EvaluatorVersion
-     * does not exist.
-     * <p><strong>Response Body Schema</strong></p>
+     * Get an evaluator version
      *
+     * Retrieves the specified evaluator version, returning 404 if it does not exist.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>
      * {@code
      * {
@@ -221,6 +232,9 @@ public final class BetaEvaluatorsClient {
      *     evaluator_type: String(builtin/custom) (Required)
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
+     *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -271,7 +285,9 @@ public final class BetaEvaluatorsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the EvaluatorVersion along with {@link Response}.
+     * @return an evaluator version
+     *
+     * Retrieves the specified evaluator version, returning 404 if it does not exist along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -281,8 +297,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Delete the specific version of the EvaluatorVersion. The service returns 204 No Content if the EvaluatorVersion
-     * was deleted successfully or if the EvaluatorVersion does not exist.
+     * Delete an evaluator version
+     *
+     * Removes the specified evaluator version. Returns 204 whether the version existed or not.
      *
      * @param name The name of the resource.
      * @param version The version of the EvaluatorVersion to delete.
@@ -301,9 +318,11 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Create a new EvaluatorVersion with auto incremented version id.
-     * <p><strong>Request Body Schema</strong></p>
+     * Create an evaluator version
      *
+     * Creates a new evaluator version with an auto-incremented version identifier.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>
      * {@code
      * {
@@ -314,6 +333,9 @@ public final class BetaEvaluatorsClient {
      *     evaluator_type: String(builtin/custom) (Required)
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
+     *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -356,9 +378,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -369,6 +391,9 @@ public final class BetaEvaluatorsClient {
      *     evaluator_type: String(builtin/custom) (Required)
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
+     *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -429,9 +454,11 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Update an existing EvaluatorVersion with the given version id.
-     * <p><strong>Request Body Schema</strong></p>
+     * Update an evaluator version
      *
+     * Updates the specified evaluator version in place.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>
      * {@code
      * {
@@ -442,6 +469,9 @@ public final class BetaEvaluatorsClient {
      *     evaluator_type: String(builtin/custom) (Required)
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
+     *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -484,9 +514,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -497,6 +527,9 @@ public final class BetaEvaluatorsClient {
      *     evaluator_type: String(builtin/custom) (Required)
      *     categories (Required): [
      *         String(quality/safety/agents) (Required)
+     *     ]
+     *     supported_evaluation_levels (Optional): [
+     *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
      *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -558,7 +591,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * List all versions of the given evaluator.
+     * List evaluator versions
+     *
+     * Returns the available versions for the specified evaluator.
      *
      * @param name The name of the resource.
      * @param type Filter evaluators by type. Possible values: 'all', 'custom', 'builtin'.
@@ -589,7 +624,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * List all versions of the given evaluator.
+     * List evaluator versions
+     *
+     * Returns the available versions for the specified evaluator.
      *
      * @param name The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,7 +647,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * List the latest version of each evaluator.
+     * List latest evaluator versions
+     *
+     * Lists the latest version of each evaluator.
      *
      * @param type Filter evaluators by type. Possible values: 'all', 'custom', 'builtin'.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
@@ -639,7 +678,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * List the latest version of each evaluator.
+     * List latest evaluator versions
+     *
+     * Lists the latest version of each evaluator.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -658,8 +699,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Get the specific version of the EvaluatorVersion. The service returns 404 Not Found error if the EvaluatorVersion
-     * does not exist.
+     * Get an evaluator version
+     *
+     * Retrieves the specified evaluator version, returning 404 if it does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the EvaluatorVersion to retrieve.
@@ -669,7 +711,9 @@ public final class BetaEvaluatorsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the EvaluatorVersion.
+     * @return an evaluator version
+     *
+     * Retrieves the specified evaluator version, returning 404 if it does not exist.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -681,8 +725,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Delete the specific version of the EvaluatorVersion. The service returns 204 No Content if the EvaluatorVersion
-     * was deleted successfully or if the EvaluatorVersion does not exist.
+     * Delete an evaluator version
+     *
+     * Removes the specified evaluator version. Returns 204 whether the version existed or not.
      *
      * @param name The name of the resource.
      * @param version The version of the EvaluatorVersion to delete.
@@ -702,7 +747,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Create a new EvaluatorVersion with auto incremented version id.
+     * Create an evaluator version
+     *
+     * Creates a new evaluator version with an auto-incremented version identifier.
      *
      * @param name The name of the resource.
      * @param evaluatorVersion The evaluatorVersion parameter.
@@ -725,7 +772,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Update an existing EvaluatorVersion with the given version id.
+     * Update an evaluator version
+     *
+     * Updates the specified evaluator version in place.
      *
      * @param name The name of the resource.
      * @param version The version of the EvaluatorVersion to update.
@@ -748,7 +797,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Start a new or get an existing pending upload of an evaluator for a specific version.
+     * Start a pending upload
+     *
+     * Initiates a new pending upload or retrieves an existing one for the specified evaluator version.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -761,7 +812,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -771,9 +822,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -810,7 +861,9 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     * Get evaluator credentials
+     *
+     * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -823,7 +876,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -831,9 +884,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -857,8 +910,10 @@ public final class BetaEvaluatorsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with an Evaluator version along with
-     * {@link Response}.
+     * @return evaluator credentials
+     *
+     * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version along
+     * with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -891,7 +946,7 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Creates an evaluator generation job.
+     * Create an evaluator generation job
      *
      * Creates an evaluator generation job. The service generates rubric-based evaluator
      * definitions from the provided source materials asynchronously.
@@ -909,7 +964,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -933,6 +988,9 @@ public final class BetaEvaluatorsClient {
      *         evaluator_type: String(builtin/custom) (Required)
      *         categories (Required): [
      *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
      *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -999,9 +1057,9 @@ public final class BetaEvaluatorsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1025,6 +1083,9 @@ public final class BetaEvaluatorsClient {
      *         evaluator_type: String(builtin/custom) (Required)
      *         categories (Required): [
      *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
      *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -1109,7 +1170,7 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Get info about an evaluator generation job.
+     * Get an evaluator generation job
      *
      * Gets the details of an evaluator generation job by its ID.
      * <p><strong>Header Parameters</strong></p>
@@ -1124,7 +1185,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1148,6 +1209,9 @@ public final class BetaEvaluatorsClient {
      *         evaluator_type: String(builtin/custom) (Required)
      *         categories (Required): [
      *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
      *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -1221,7 +1285,7 @@ public final class BetaEvaluatorsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about an evaluator generation job.
+     * @return an evaluator generation job
      *
      * Gets the details of an evaluator generation job by its ID along with {@link Response}.
      */
@@ -1232,7 +1296,12 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Returns a list of evaluator generation jobs.
+     * List evaluator generation jobs
+     *
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1265,7 +1334,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1289,6 +1358,9 @@ public final class BetaEvaluatorsClient {
      *         evaluator_type: String(builtin/custom) (Required)
      *         categories (Required): [
      *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
      *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -1370,7 +1442,7 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
-     * Cancels an evaluator generation job.
+     * Cancel an evaluator generation job
      *
      * Cancels an evaluator generation job by its ID.
      * <p><strong>Header Parameters</strong></p>
@@ -1385,7 +1457,7 @@ public final class BetaEvaluatorsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1409,6 +1481,9 @@ public final class BetaEvaluatorsClient {
      *         evaluator_type: String(builtin/custom) (Required)
      *         categories (Required): [
      *             String(quality/safety/agents) (Required)
+     *         ]
+     *         supported_evaluation_levels (Optional): [
+     *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
      *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
@@ -1492,6 +1567,8 @@ public final class BetaEvaluatorsClient {
     }
 
     /**
+     * Delete an evaluator generation job
+     *
      * Deletes an evaluator generation job by its ID. Deletes the job record only;
      * the generated evaluator (if any) is preserved.
      * <p><strong>Header Parameters</strong></p>
