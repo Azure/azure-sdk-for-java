@@ -221,8 +221,8 @@ public class ModelHelper {
         getSystemPropertiesResponse(final ResponseBase<PathsGetPropertiesHeaders, Void> response) {
         PathsGetPropertiesHeaders headers = response.getDeserializedHeaders();
 
-        OffsetDateTime creationTime = headers.getXMsCreationTime();
-        OffsetDateTime lastModified = headers.getLastModified();
+        OffsetDateTime createdOn = headers.getXMsCreationTime();
+        OffsetDateTime lastModifiedOn = headers.getLastModified();
         String eTag = headers.getETag();
         Long fileSize = headers.getContentLength();
         Boolean isDirectory = Objects.equals(headers.getXMsResourceType(), "directory");
@@ -236,7 +236,7 @@ public class ModelHelper {
         String permissions = headers.getXMsPermissions();
         PathPermissions parsedPermissions = permissions != null ? PathPermissions.parseSymbolic(permissions) : null;
 
-        return AccessorUtility.create(creationTime, lastModified, eTag, fileSize, isDirectory, isServerEncrypted,
+        return AccessorUtility.create(createdOn, lastModifiedOn, eTag, fileSize, isDirectory, isServerEncrypted,
             encryptionKeySha256, expiresOn, encryptionScope, encryptionContext, owner, group, parsedPermissions);
     }
 

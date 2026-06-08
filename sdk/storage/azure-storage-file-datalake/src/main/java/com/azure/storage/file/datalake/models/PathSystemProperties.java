@@ -11,8 +11,8 @@ import java.time.OffsetDateTime;
  * This class contains the response information returned from the service when getting system assigned path properties.
  */
 public final class PathSystemProperties {
-    private final OffsetDateTime creationTime;
-    private final OffsetDateTime lastModified;
+    private final OffsetDateTime createdOn;
+    private final OffsetDateTime lastModifiedOn;
     private final String eTag;
     private final Long fileSize;
     private final Boolean isDirectory;
@@ -33,8 +33,8 @@ public final class PathSystemProperties {
      * Default constructor
      */
     public PathSystemProperties() {
-        this.creationTime = null;
-        this.lastModified = null;
+        this.createdOn = null;
+        this.lastModifiedOn = null;
         this.eTag = null;
         this.fileSize = null;
         this.isDirectory = null;
@@ -50,8 +50,8 @@ public final class PathSystemProperties {
 
     /**
      * Constructs a {@link PathSystemProperties}
-     * @param creationTime The creation time of the path.
-     * @param lastModified The last modified time of the path.
+     * @param createdOn The creation time of the path.
+     * @param lastModifiedOn The last modified time of the path.
      * @param eTag The eTag of the path.
      * @param fileSize Size of the resource.
      * @param isDirectory A flag indicating if the path is a directory.
@@ -64,11 +64,11 @@ public final class PathSystemProperties {
      * @param group The group of the path.
      * @param permissions The {@link PathPermissions}
      */
-    PathSystemProperties(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag, Long fileSize,
+    PathSystemProperties(OffsetDateTime createdOn, OffsetDateTime lastModifiedOn, String eTag, Long fileSize,
         Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256, OffsetDateTime expiresOn,
         String encryptionScope, String encryptionContext, String owner, String group, PathPermissions permissions) {
-        this.creationTime = creationTime;
-        this.lastModified = lastModified;
+        this.createdOn = createdOn;
+        this.lastModifiedOn = lastModifiedOn;
         this.eTag = eTag;
         this.fileSize = fileSize;
         this.isDirectory = isDirectory;
@@ -87,8 +87,8 @@ public final class PathSystemProperties {
      *
      * @return The creation time of the path.
      */
-    public OffsetDateTime getCreationTime() {
-        return creationTime;
+    public OffsetDateTime getCreatedOn() {
+        return createdOn;
     }
 
     /**
@@ -96,8 +96,8 @@ public final class PathSystemProperties {
      *
      * @return The last modified time of the path.
      */
-    public OffsetDateTime getLastModified() {
-        return lastModified;
+    public OffsetDateTime getLastModifiedOn() {
+        return lastModifiedOn;
     }
 
     /**

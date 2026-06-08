@@ -112,8 +112,8 @@ public final class AccessorUtility {
         /**
          * Creates a new instance of {@link PathSystemProperties}.
          *
-         * @param creationTime The creation time of the path.
-         * @param lastModified The last modified time of the path.
+         * @param createdOn The creation time of the path.
+         * @param lastModifiedOn The last modified time of the path.
          * @param eTag The eTag of the path.
          * @param fileSize Size of the resource.
          * @param isDirectory A flag indicating if the path is a directory.
@@ -128,7 +128,7 @@ public final class AccessorUtility {
          *
          * @return A new instance of {@link PathSystemProperties}.
          */
-        PathSystemProperties create(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag,
+        PathSystemProperties create(OffsetDateTime createdOn, OffsetDateTime lastModifiedOn, String eTag,
             Long fileSize, Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256,
             OffsetDateTime expiresOn, String encryptionScope, String encryptionContext, String owner, String group,
             PathPermissions permissions);
@@ -146,8 +146,8 @@ public final class AccessorUtility {
     /**
      * Returns the accessor for {@link PathSystemProperties}.
      *
-     * @param creationTime The creation time of the path.
-     * @param lastModified The last modified time of the path.
+     * @param createdOn The creation time of the path.
+     * @param lastModifiedOn The last modified time of the path.
      * @param eTag The eTag of the path.
      * @param fileSize Size of the resource.
      * @param isDirectory A flag indicating if the path is a directory.
@@ -162,7 +162,7 @@ public final class AccessorUtility {
      *
      * @return the {@link PathSystemPropertiesAccessor}.
      */
-    public static PathSystemProperties create(OffsetDateTime creationTime, OffsetDateTime lastModified, String eTag,
+    public static PathSystemProperties create(OffsetDateTime createdOn, OffsetDateTime lastModifiedOn, String eTag,
         Long fileSize, Boolean isDirectory, Boolean isServerEncrypted, String encryptionKeySha256,
         OffsetDateTime expiresOn, String encryptionScope, String encryptionContext, String owner, String group,
         PathPermissions permissions) {
@@ -170,7 +170,7 @@ public final class AccessorUtility {
             new PathSystemProperties();
         }
         assert pathSystemPropertiesAccessor != null;
-        return pathSystemPropertiesAccessor.create(creationTime, lastModified, eTag, fileSize, isDirectory,
+        return pathSystemPropertiesAccessor.create(createdOn, lastModifiedOn, eTag, fileSize, isDirectory,
             isServerEncrypted, encryptionKeySha256, expiresOn, encryptionScope, encryptionContext, owner, group,
             permissions);
     }

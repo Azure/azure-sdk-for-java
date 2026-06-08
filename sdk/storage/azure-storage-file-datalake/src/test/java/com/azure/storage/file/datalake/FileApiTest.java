@@ -3579,8 +3579,8 @@ public class FileApiTest extends DataLakeTestBase {
 
         // should be present in the response
         assertEquals(200, response.getStatusCode());
-        assertNotNull(value.getCreationTime());
-        assertNotNull(value.getLastModified());
+        assertNotNull(value.getCreatedOn());
+        assertNotNull(value.getLastModifiedOn());
         assertNotNull(value.getETag());
         assertEquals(0, value.getFileSize());
         assertFalse(value.isDirectory());
