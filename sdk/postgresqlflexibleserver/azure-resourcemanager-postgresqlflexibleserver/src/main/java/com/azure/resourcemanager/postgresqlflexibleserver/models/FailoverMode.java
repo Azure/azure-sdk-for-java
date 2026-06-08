@@ -12,22 +12,25 @@ import java.util.Collection;
  */
 public final class FailoverMode extends ExpandableStringEnum<FailoverMode> {
     /**
-     * Static value PlannedFailover for FailoverMode.
+     * Trigger a failover from primary to standby without killing the primary database process first. This is a graceful
+     * failover that attempts to preserve data consistency.
      */
     public static final FailoverMode PLANNED_FAILOVER = fromString("PlannedFailover");
 
     /**
-     * Static value ForcedFailover for FailoverMode.
+     * Terminate the primary database process first, then triggers the failover. This is more aggressive and used when
+     * the primary is unresponsive or in an unhealthy state.
      */
     public static final FailoverMode FORCED_FAILOVER = fromString("ForcedFailover");
 
     /**
-     * Static value PlannedSwitchover for FailoverMode.
+     * Similar to 'PlannedFailover' but prefers a switch over operation where roles are swapped between primary and
+     * standby.
      */
     public static final FailoverMode PLANNED_SWITCHOVER = fromString("PlannedSwitchover");
 
     /**
-     * Static value ForcedSwitchover for FailoverMode.
+     * Terminate the primary database process first, and then triggers a switch over with role swapping.
      */
     public static final FailoverMode FORCED_SWITCHOVER = fromString("ForcedSwitchover");
 
