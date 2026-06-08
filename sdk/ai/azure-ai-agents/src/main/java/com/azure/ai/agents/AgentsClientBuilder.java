@@ -6,6 +6,8 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.AgentsClientImpl;
 import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
+import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -14,10 +16,14 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -42,9 +48,13 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import reactor.core.publisher.Mono;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -75,6 +85,38 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
+    private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
+
+    private static final String AGENT_PREVIEW_FEATURES = Stream
+        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
+            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString()))
+        .collect(Collectors.joining(","));
+
+    private static final String MEMORY_STORES_PREVIEW_FEATURES
+        = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
+
+    private static final String TOOLBOXES_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString();
+
+    private boolean allowPreview;
+
+    private static HttpPipelinePolicy createFoundryFeaturesPolicy(String foundryFeatures) {
+        return new HttpPipelinePolicy() {
+
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                if (CoreUtils.isNullOrEmpty(context.getHttpRequest().getHeaders().getValue(FOUNDRY_FEATURES))) {
+                    context.getHttpRequest().getHeaders().set(FOUNDRY_FEATURES, foundryFeatures);
+                }
+                return next.process();
+            }
+
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL;
+            }
+        };
+    }
+
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -84,6 +126,18 @@ public final class AgentsClientBuilder
     @Generated
     public AgentsClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
+    }
+
+    /**
+     * Enables or disables preview feature headers for beta Agents, Memory Stores, and Toolboxes APIs.
+     *
+     * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
+     * supported preview requests.
+     * @return the AgentsClientBuilder.
+     */
+    public AgentsClientBuilder allowPreview(boolean allowPreview) {
+        this.allowPreview = allowPreview;
+        return this;
     }
 
     /*
@@ -280,6 +334,15 @@ public final class AgentsClientBuilder
         return client;
     }
 
+    private AgentsClientImpl buildInnerClient(String previewFeatures) {
+        HttpPipelinePolicy foundryFeaturesPolicy = addFoundryFeaturesPolicy(previewFeatures);
+        try {
+            return buildInnerClient();
+        } finally {
+            removeFoundryFeaturesPolicy(foundryFeaturesPolicy);
+        }
+    }
+
     @Generated
     private void validateClient() {
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
@@ -323,6 +386,30 @@ public final class AgentsClientBuilder
             .clientOptions(localClientOptions)
             .build();
         return httpPipeline;
+    }
+
+    private HttpPipeline createHttpPipelineWithPreview(String previewFeatures) {
+        HttpPipelinePolicy foundryFeaturesPolicy = addFoundryFeaturesPolicy(previewFeatures);
+        try {
+            return createHttpPipeline();
+        } finally {
+            removeFoundryFeaturesPolicy(foundryFeaturesPolicy);
+        }
+    }
+
+    private HttpPipelinePolicy addFoundryFeaturesPolicy(String previewFeatures) {
+        if (!allowPreview || CoreUtils.isNullOrEmpty(previewFeatures)) {
+            return null;
+        }
+        HttpPipelinePolicy foundryFeaturesPolicy = createFoundryFeaturesPolicy(previewFeatures);
+        this.pipelinePolicies.add(0, foundryFeaturesPolicy);
+        return foundryFeaturesPolicy;
+    }
+
+    private void removeFoundryFeaturesPolicy(HttpPipelinePolicy foundryFeaturesPolicy) {
+        if (foundryFeaturesPolicy != null) {
+            this.pipelinePolicies.remove(foundryFeaturesPolicy);
+        }
     }
 
     /**
@@ -372,8 +459,8 @@ public final class AgentsClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         return getOpenAIClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(
+                HttpClientHelper.mapToOpenAIHttpClient(createHttpPipelineWithPreview(AGENT_PREVIEW_FEATURES))));
     }
 
     /**
@@ -401,8 +488,8 @@ public final class AgentsClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         return getOpenAIAsyncClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(
+                HttpClientHelper.mapToOpenAIHttpClient(createHttpPipelineWithPreview(AGENT_PREVIEW_FEATURES))));
     }
 
     private String getDefaultBaseUrl() {
@@ -442,9 +529,8 @@ public final class AgentsClientBuilder
      *
      * @return an instance of AgentsAsyncClient.
      */
-    @Generated
     public AgentsAsyncClient buildAgentsAsyncClient() {
-        return new AgentsAsyncClient(buildInnerClient().getAgents());
+        return new AgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getAgents());
     }
 
     /**
@@ -452,29 +538,104 @@ public final class AgentsClientBuilder
      *
      * @return an instance of AgentsClient.
      */
-    @Generated
     public AgentsClient buildAgentsClient() {
-        return new AgentsClient(buildInnerClient().getAgents());
+        return new AgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getAgents());
     }
 
     /**
-     * Builds an instance of BetaMemoryStoresAsyncClient class.
+     * A builder for creating a new instance of the beta AgentsClient type.
      *
-     * @return an instance of BetaMemoryStoresAsyncClient.
+     * @return a builder for creating a new instance of the beta AgentsClient type.
      */
-    @Generated
-    public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
-        return new BetaMemoryStoresAsyncClient(buildInnerClient().getBetaMemoryStores());
+    public BetaAgentsClientBuilder beta() {
+        return new BetaAgentsClientBuilder();
     }
 
     /**
-     * Builds an instance of BetaToolboxesAsyncClient class.
-     *
-     * @return an instance of BetaToolboxesAsyncClient.
+     * A builder for creating a new instance of the beta AgentsClient type.
      */
-    @Generated
-    public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-        return new BetaToolboxesAsyncClient(buildInnerClient().getBetaToolboxes());
+    @ServiceClientBuilder(
+        serviceClients = {
+            BetaAgentsClient.class,
+            BetaMemoryStoresClient.class,
+            BetaToolboxesClient.class,
+            BetaAgentsAsyncClient.class,
+            BetaMemoryStoresAsyncClient.class,
+            BetaToolboxesAsyncClient.class })
+    public final class BetaAgentsClientBuilder {
+
+        /**
+         * Creates a new instance of BetaAgentsClientBuilder.
+         */
+        public BetaAgentsClientBuilder() {
+        }
+
+        /**
+         * Enables or disables preview feature headers for beta Agents, Memory Stores, and Toolboxes APIs.
+         *
+         * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
+         * supported preview requests.
+         * @return the BetaAgentsClientBuilder.
+         */
+        public BetaAgentsClientBuilder allowPreview(boolean allowPreview) {
+            AgentsClientBuilder.this.allowPreview(allowPreview);
+            return this;
+        }
+
+        /**
+         * Builds an instance of BetaAgentsAsyncClient class.
+         *
+         * @return an instance of BetaAgentsAsyncClient.
+         */
+        public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
+            return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        }
+
+        /**
+         * Builds an instance of BetaMemoryStoresAsyncClient class.
+         *
+         * @return an instance of BetaMemoryStoresAsyncClient.
+         */
+        public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
+            return new BetaMemoryStoresAsyncClient(
+                buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        }
+
+        /**
+         * Builds an instance of BetaToolboxesAsyncClient class.
+         *
+         * @return an instance of BetaToolboxesAsyncClient.
+         */
+        public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
+            return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+        }
+
+        /**
+         * Builds an instance of BetaAgentsClient class.
+         *
+         * @return an instance of BetaAgentsClient.
+         */
+        public BetaAgentsClient buildBetaAgentsClient() {
+            return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        }
+
+        /**
+         * Builds an instance of BetaMemoryStoresClient class.
+         *
+         * @return an instance of BetaMemoryStoresClient.
+         */
+        public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
+            return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        }
+
+        /**
+         * Builds an instance of BetaToolboxesClient class.
+         *
+         * @return an instance of BetaToolboxesClient.
+         */
+        public BetaToolboxesClient buildBetaToolboxesClient() {
+            return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+        }
     }
 
     /**
@@ -482,29 +643,26 @@ public final class AgentsClientBuilder
      *
      * @return an instance of BetaAgentsAsyncClient.
      */
-    @Generated
-    public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-        return new BetaAgentsAsyncClient(buildInnerClient().getBetaAgents());
+    private BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
+        return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
     }
 
     /**
-     * Builds an instance of BetaMemoryStoresClient class.
+     * Builds an instance of BetaMemoryStoresAsyncClient class.
      *
-     * @return an instance of BetaMemoryStoresClient.
+     * @return an instance of BetaMemoryStoresAsyncClient.
      */
-    @Generated
-    public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
-        return new BetaMemoryStoresClient(buildInnerClient().getBetaMemoryStores());
+    private BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
+        return new BetaMemoryStoresAsyncClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
     }
 
     /**
-     * Builds an instance of BetaToolboxesClient class.
+     * Builds an instance of BetaToolboxesAsyncClient class.
      *
-     * @return an instance of BetaToolboxesClient.
+     * @return an instance of BetaToolboxesAsyncClient.
      */
-    @Generated
-    public BetaToolboxesClient buildBetaToolboxesClient() {
-        return new BetaToolboxesClient(buildInnerClient().getBetaToolboxes());
+    private BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
+        return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
     }
 
     /**
@@ -512,8 +670,25 @@ public final class AgentsClientBuilder
      *
      * @return an instance of BetaAgentsClient.
      */
-    @Generated
-    public BetaAgentsClient buildBetaAgentsClient() {
-        return new BetaAgentsClient(buildInnerClient().getBetaAgents());
+    private BetaAgentsClient buildBetaAgentsClient() {
+        return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+    }
+
+    /**
+     * Builds an instance of BetaMemoryStoresClient class.
+     *
+     * @return an instance of BetaMemoryStoresClient.
+     */
+    private BetaMemoryStoresClient buildBetaMemoryStoresClient() {
+        return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+    }
+
+    /**
+     * Builds an instance of BetaToolboxesClient class.
+     *
+     * @return an instance of BetaToolboxesClient.
+     */
+    private BetaToolboxesClient buildBetaToolboxesClient() {
+        return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
     }
 }
