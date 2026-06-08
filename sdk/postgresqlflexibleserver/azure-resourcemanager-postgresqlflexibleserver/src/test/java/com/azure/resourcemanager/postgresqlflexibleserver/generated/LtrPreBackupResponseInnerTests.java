@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LtrPreBackupResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LtrPreBackupResponseInner model = BinaryData.fromString("{\"properties\":{\"numberOfContainers\":219737114}}")
+        LtrPreBackupResponseInner model = BinaryData.fromString("{\"properties\":{\"numberOfContainers\":262275374}}")
             .toObject(LtrPreBackupResponseInner.class);
-        Assertions.assertEquals(219737114, model.numberOfContainers());
+        Assertions.assertEquals(262275374, model.numberOfContainers());
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationListFi
  */
 public final class MigrationsListByTargetServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsListByTargetServer.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsListByTargetServer.json
      */
     /**
      * Sample code: List all migrations of a target flexible server.
