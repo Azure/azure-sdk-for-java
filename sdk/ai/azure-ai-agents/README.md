@@ -57,11 +57,11 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. Also includes hosted-agent sessions, code package operations and preview agent optimization operations.
+- `AgentsClient` / `AgentsAsyncClient`: Perform generally available operations related to agents, such as creating, retrieving, updating, and deleting agents.
+- `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent operations, including hosted-agent sessions, session files, code package operations, and preview agent optimization operations.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
-- `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
-- `ToolboxesClient` / `ToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions. This operation group requires the `Toolboxes=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
-- `AgentSessionFilesClient` / `AgentSessionFilesAsyncClient` **(preview)**: Work with files in an agent session, including uploading, downloading, listing, and deleting session files.
+- `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
+- `BetaToolboxesClient` / `BetaToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions. This operation group requires the `Toolboxes=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -75,18 +75,18 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
 // Agents sub-clients
 AgentsClient agentsClient = builder.buildAgentsClient();
 AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+// Beta Agents sub-clients (preview).
+BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
+BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 // Responses sub-clients.
 ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 // Memory Stores sub-clients (preview).
-MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
-MemoryStoresAsyncClient memoryStoresAsyncClient = builder.buildMemoryStoresAsyncClient();
-//Toolboxes sub-clients (preview).
-ToolboxesClient toolboxesClient = builder.buildToolboxesClient();
-ToolboxesAsyncClient toolboxesAsyncClient = builder.buildToolboxesAsyncClient();
-// Agent Session Files sub-clients (preview).
-AgentSessionFilesClient agentSessionFilesClient = builder.buildAgentSessionFilesClient();
-AgentSessionFilesAsyncClient agentSessionFilesAsyncClient = builder.buildAgentSessionFilesAsyncClient();
+BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
+BetaMemoryStoresAsyncClient memoryStoresAsyncClient = builder.beta().buildBetaMemoryStoresAsyncClient();
+// Toolboxes sub-clients (preview).
+BetaToolboxesClient toolboxesClient = builder.beta().buildBetaToolboxesClient();
+BetaToolboxesAsyncClient toolboxesAsyncClient = builder.beta().buildBetaToolboxesAsyncClient();
 ```
 
 The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be built directly from the `AgentsClientBuilder`. Use it to access conversation operations and other OpenAI services:
@@ -139,7 +139,7 @@ Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK 
 - **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `AGENT_ENDPOINT_V1_PREVIEW`, `CODE_AGENTS_V1_PREVIEW`, `EXTERNAL_AGENTS_V1_PREVIEW`.
 - **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `ROUTINES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`, `DATA_GENERATION_JOBS_V1_PREVIEW`, `MODELS_V1_PREVIEW`, `AGENTS_OPTIMIZATION_V1_PREVIEW`.
 
-> **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request. The `ToolboxesClient` automatically sets the `Toolboxes=V1Preview` opt-in flag on every request. Agent optimization methods accept `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW`; code-based hosted agents and external agents use the corresponding `AgentDefinitionOptInKeys` values.
+> **Note:** The `BetaMemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request. The `BetaToolboxesClient` automatically sets the `Toolboxes=V1Preview` opt-in flag on every request. Agent optimization methods accept `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW`; code-based hosted agents and external agents use the corresponding `AgentDefinitionOptInKeys` values.
 
 ```java
 // OpenAI SDK ResponseService accessed from ResponsesClient
@@ -153,20 +153,20 @@ ConversationService conversationService = openAIClient.conversations();
 
 ### Preview hosted-agent capabilities
 
-Hosted-agent previews are exposed on `AgentsClient` and `AgentsAsyncClient`. The following capabilities require the corresponding opt-in flag when you create or modify preview resources:
+Hosted-agent previews are exposed on `BetaAgentsClient` and `BetaAgentsAsyncClient`. The following capabilities require the corresponding opt-in flag when you create or modify preview resources:
 
 | Capability | APIs and models | Opt-in flag |
 |---|---|---|
 | Code-based hosted agents | `createAgentVersionFromCode`, `updateAgentFromCode`, `downloadAgentCode`, `CodeConfiguration`, `CodeDependencyResolution` | `AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW` |
 | External agents | `ExternalAgentDefinition`, `AgentKind.EXTERNAL` | `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW` |
-| Agent endpoints and sessions | `AgentEndpointConfig`, `createSession`, `listSessions`, `stopSession`, `AgentSessionFilesClient` | `AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW` |
+| Agent endpoints and sessions | `AgentEndpointConfig`, `createSession`, `listSessions`, `stopSession`, session-file methods | `AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW` |
 | Agent optimization | `createOptimizationJob`, `listOptimizationJobs`, `listOptimizationCandidates`, `promoteOptimizationCandidate` | `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW` |
 
 For code-based hosted agents, `CodeConfiguration.getContentSha256()` returns the service-computed SHA-256 hash of the uploaded code package. Session APIs that need per-user isolation can use overloads that accept `userIsolationKey`, or set the `x-ms-user-isolation-key` header through `RequestOptions`. To delete hosted agents or agent versions that still have active sessions, add the `force=true` query parameter through `RequestOptions` when calling the corresponding `deleteAgentWithResponse` or `deleteAgentVersionWithResponse` method.
 
 ### Memory item management
 
-`MemoryStoresClient` and `MemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`.
+`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`.
 
 ### Using OpenAI's official library
 
@@ -617,7 +617,7 @@ See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure
 
 #### Toolbox Tools
 
-Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`.
+Toolbox tools are defined in toolbox versions and managed through `BetaToolboxesClient` / `BetaToolboxesAsyncClient`.
 
 ##### **Toolbox Search (Preview)**
 
@@ -722,7 +722,7 @@ The synchronous session log method returns `IterableStream<SessionLogEvent>`, wh
 
 ```java com.azure.ai.agents.session_logs_sync
 IterableStream<SessionLogEvent> sessionLogs =
-    agentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
+    betaAgentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
 
 int logsRead = 0;
 for (SessionLogEvent event : sessionLogs) {
@@ -740,7 +740,7 @@ for (SessionLogEvent event : sessionLogs) {
 The asynchronous session log method returns `Flux<SessionLogEvent>`, integrating naturally with Reactor pipelines:
 
 ```java com.azure.ai.agents.session_logs_async
-agentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
+betaAgentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
     .take(100)
     .doOnNext(event -> System.out.printf("[%s] %s%n", event.getEvent(), event.getData()))
     .blockLast();

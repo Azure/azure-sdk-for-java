@@ -4,7 +4,12 @@
 
 ### Features Added
 
+- Added protocol-style `listOptimizationCandidates(String, com.azure.core.http.rest.RequestOptions)` overloads on `AgentsClient` and `AgentsAsyncClient` for listing raw optimization candidate pages as `BinaryData`.
+
 ### Breaking Changes
+
+- Preview operation groups now use beta-prefixed clients built through `AgentsClientBuilder.beta()`: `MemoryStoresClient` / `MemoryStoresAsyncClient` renamed to `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient`, `ToolboxesClient` / `ToolboxesAsyncClient` renamed to `BetaToolboxesClient` / `BetaToolboxesAsyncClient`, and preview agent/session operations moved to `BetaAgentsClient` / `BetaAgentsAsyncClient`. `AgentSessionFilesClient` / `AgentSessionFilesAsyncClient` were removed; use the session-file methods on `BetaAgentsClient` / `BetaAgentsAsyncClient` instead.
+- `listOptimizationCandidates` on `AgentsClient` and `AgentsAsyncClient` now returns paged optimization candidates (`PagedIterable<OptimizationCandidate>` / `PagedFlux<OptimizationCandidate>`) instead of `OptimizationCandidatePagedResult` / `Mono<OptimizationCandidatePagedResult>`. The `OptimizationCandidatePagedResult` model was removed. The protocol methods where adjusted accordingly.
 
 ### Bugs Fixed
 

@@ -4,7 +4,7 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesAsyncClient;
+import com.azure.ai.agents.BetaToolboxesAsyncClient;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
@@ -35,10 +35,10 @@ public class ToolboxesAsyncSample {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String toolboxName = "toolbox-with-mcp-tool-java";
 
-        ToolboxesAsyncClient toolboxesAsyncClient = new AgentsClientBuilder()
+        BetaToolboxesAsyncClient toolboxesAsyncClient = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .buildToolboxesAsyncClient();
+            .beta().buildBetaToolboxesAsyncClient();
 
         List<Tool> toolsWithMcpApprovalNever = Collections.singletonList(
             new McpTool("api_specs")
@@ -82,7 +82,7 @@ public class ToolboxesAsyncSample {
     }
 
     private static Mono<ToolboxVersionDetails> printFetchedDefaultToolboxVersion(
-        ToolboxesAsyncClient toolboxesAsyncClient, ToolboxDetails updated) {
+        BetaToolboxesAsyncClient toolboxesAsyncClient, ToolboxDetails updated) {
         System.out.printf("Updated toolbox: %s default version is now %s%n", updated.getName(),
             updated.getDefaultVersion());
 

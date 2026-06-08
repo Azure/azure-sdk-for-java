@@ -43,7 +43,7 @@ public class SessionLogSyncTest extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     @Disabled
     public void validatesSessionLogStream(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        AgentsClient client = getAgentsSyncClient(httpClient, serviceVersion);
+        BetaAgentsClient client = getClientBuilder(httpClient, serviceVersion).beta().buildBetaAgentsClient();
         RequestOptions featureOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
             AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
 
@@ -80,7 +80,7 @@ public class SessionLogSyncTest extends ClientTestBase {
         }
     }
 
-    private ScheduledFuture<?> scheduleSessionDelete(AgentsClient client, ScheduledExecutorService executor) {
+    private ScheduledFuture<?> scheduleSessionDelete(BetaAgentsClient client, ScheduledExecutorService executor) {
         return executor.schedule(() -> {
             if (getTestMode() != TestMode.PLAYBACK) {
                 deleteSession(client);
@@ -88,7 +88,7 @@ public class SessionLogSyncTest extends ClientTestBase {
         }, 20, TimeUnit.SECONDS);
     }
 
-    private static void deleteSession(AgentsClient client) {
+    private static void deleteSession(BetaAgentsClient client) {
         try {
             client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
         } catch (RuntimeException ignored) {
