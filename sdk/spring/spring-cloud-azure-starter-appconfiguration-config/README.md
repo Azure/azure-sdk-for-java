@@ -21,7 +21,7 @@ This starter packages the `spring-cloud-azure-appconfiguration-config-web` and `
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>spring-cloud-azure-starter-appconfiguration-config</artifactId>
-    <version>7.3.0</version>
+    <version>7.4.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -66,8 +66,8 @@ By default when connecting to Azure App Configuration, if no credential is provi
 
 Name | Description | Required | Default
 ---|---|---|---
-spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an App Configuration store is specified, a managed identity or a token credential provided via a `ConfigurationClientCustomizer` bean will be used to connect to the App Configuration service. An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
-spring.cloud.azure.appconfiguration.stores[0].endpoints | When multiple replica endpoints of an App Configuration store are specified, a managed identity or a token credential provided via a `ConfigurationClientCustomizer` bean will be used to connect to the App Configuration service. Replica endpoints should be listed in priority order of connection. An `IllegalArgumentException` will be thrown if multiple authentication methods are provided. | Conditional | null
+spring.cloud.azure.appconfiguration.stores[0].endpoint | When the endpoint of an App Configuration store is specified, the provider authenticates using Spring Cloud Azure credential configuration (for example, `spring.cloud.azure.(appconfiguration.)credential.*`). If no credential is configured, it falls back to `DefaultAzureCredential`. You can also provide a `ConfigurationClientCustomizer` bean to customize the underlying `ConfigurationClientBuilder` (including overriding credentials). An `IllegalArgumentException` will be thrown if the endpoint and connection-string are specified at the same time. | Conditional | null
+spring.cloud.azure.appconfiguration.stores[0].endpoints | When multiple replica endpoints of an App Configuration store are specified, the provider uses the same authentication rules as `endpoint` (Spring Cloud Azure credential configuration with fallback to `DefaultAzureCredential`), and you can customize the builders via a `ConfigurationClientCustomizer` bean. Replica endpoints should be listed in priority order of connection. An `IllegalArgumentException` will be thrown if multiple authentication methods are provided. | Conditional | null
 
 Additionally, you can connect to Azure App Configuration using a connection string. But this method is not recommended.
 
