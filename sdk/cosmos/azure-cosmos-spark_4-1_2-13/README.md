@@ -200,11 +200,8 @@ to use the same version of Scala that Spark was compiled for.
 | 4.43.1    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         | TBD                       |
 | 4.43.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         | TBD                       |
 
-Note: Spark 4.1 requires Scala 2.13 and Java 17 or higher. When using the Scala API, it is necessary for applications
+Note: Spark 4.0 requires Scala 2.13 and Java 17 or higher. When using the Scala API, it is necessary for applications
 to use Scala 2.13 that Spark 4.1 was compiled for.
-
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/sql-api-introduction
 
 ### Download
 
