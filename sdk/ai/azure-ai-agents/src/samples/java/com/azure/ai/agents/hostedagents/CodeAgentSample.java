@@ -6,7 +6,6 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaAgentsClient;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
@@ -49,8 +48,7 @@ public class CodeAgentSample {
             AgentVersionDetails version = betaAgentsClient.createAgentVersionFromCode(
                 agentName,
                 codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
-                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
 
             System.out.printf("Created code-based agent: %s%n", version.getName());
             CodeAgentSampleUtils.printLatestVersion(version);
@@ -59,8 +57,7 @@ public class CodeAgentSample {
 
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 
-            BinaryData downloadedCode = betaAgentsClient.downloadAgentCode(agentName,
-                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null);
+            BinaryData downloadedCode = betaAgentsClient.downloadAgentCode(agentName,null);
             Path downloadPath = Files.createTempFile(agentName + "-", ".zip");
             Files.write(downloadPath, downloadedCode.toBytes());
             System.out.println("Downloaded code package path: " + downloadPath);
@@ -72,8 +69,7 @@ public class CodeAgentSample {
             AgentVersionDetails newVersion = betaAgentsClient.createAgentVersionFromCode(
                 agentName,
                 codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
-                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
 
             System.out.printf("Created code-based agent version: %s%n", newVersion.getVersion());
             CodeAgentSampleUtils.printLatestVersion(newVersion);

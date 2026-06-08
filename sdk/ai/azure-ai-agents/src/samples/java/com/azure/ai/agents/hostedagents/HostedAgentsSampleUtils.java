@@ -7,7 +7,6 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.BetaAgentsClient;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentProtocol;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -17,8 +16,6 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseOutputItem;
@@ -41,8 +38,6 @@ final class HostedAgentsSampleUtils {
 
     private static final int MAX_POLL_ATTEMPTS = 60;
     private static final Duration POLL_INTERVAL = Duration.ofSeconds(10);
-    private static final String FOUNDRY_FEATURES_HEADER_VALUE = AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW
-        + "," + AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW;
 
     private HostedAgentsSampleUtils() {
     }
@@ -82,8 +77,7 @@ final class HostedAgentsSampleUtils {
 
         if (resources.getSession() != null) {
             try {
-                betaAgentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId(),
-                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+                betaAgentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId(),null);
                 System.out.printf("Session with id: %s deleted.%n", resources.getSession().getAgentSessionId());
             } catch (ResourceNotFoundException ignored) {
                 // The sample may have already deleted the session.
@@ -109,8 +103,7 @@ final class HostedAgentsSampleUtils {
         Mono<Void> deleteSession = Mono.empty();
         if (resources.getSession() != null) {
             String sessionId = resources.getSession().getAgentSessionId();
-            deleteSession = betaAgentsAsyncClient.deleteSession(agentName, sessionId,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
+            deleteSession = betaAgentsAsyncClient.deleteSession(agentName, sessionId,null)
                 .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n", sessionId))
                 .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty());
         }
@@ -172,8 +165,7 @@ final class HostedAgentsSampleUtils {
             .setMetadata(sampleMetadata())
             .setDescription("Hosted agent sample created by the Azure AI Agents Java SDK.");
 
-        AgentVersionDetails agent = agentsClient.createAgentVersionWithResponse(agentName, BinaryData.fromObject(input),
-            foundryFeaturesRequestOptions()).getValue().toObject(AgentVersionDetails.class);
+        AgentVersionDetails agent = agentsClient.createAgentVersion(agentName, input);
         System.out.printf("Agent created (name: %s, version: %s)%n", agent.getName(), agent.getVersion());
         return agent;
     }
@@ -184,9 +176,7 @@ final class HostedAgentsSampleUtils {
             .setMetadata(sampleMetadata())
             .setDescription("Hosted agent sample created by the Azure AI Agents Java SDK.");
 
-        return agentsAsyncClient.createAgentVersionWithResponse(agentName, BinaryData.fromObject(input),
-            foundryFeaturesRequestOptions())
-            .map(response -> response.getValue().toObject(AgentVersionDetails.class))
+        return agentsAsyncClient.createAgentVersion(agentName,input)
             .doOnNext(agent -> System.out.printf("Agent created (name: %s, version: %s)%n", agent.getName(),
                 agent.getVersion()));
     }
@@ -236,11 +226,6 @@ final class HostedAgentsSampleUtils {
             .next()
             .switchIfEmpty(Mono.error(new RuntimeException(
                 "Timed out waiting for agent version to become active: " + agentVersion)));
-    }
-
-    private static RequestOptions foundryFeaturesRequestOptions() {
-        return new RequestOptions()
-            .setHeader(HttpHeaderName.fromString("Foundry-Features"), FOUNDRY_FEATURES_HEADER_VALUE);
     }
 
     private static Map<String, Object> createSessionRequest(String agentVersion) {

@@ -7,7 +7,6 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -48,35 +47,29 @@ public class SessionFilesSample {
             String sessionId = resources.getSession().getAgentSessionId();
 
             betaAgentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                BinaryData.fromString("Sample session file 1."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW,
-                null);
+                BinaryData.fromString("Sample session file 1."), null);
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_1);
 
             betaAgentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                BinaryData.fromString("Sample session file 2."), AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW,
-                null);
+                BinaryData.fromString("Sample session file 2."), null);
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_2);
 
             System.out.println("Listing session files for the session at path '/remote'...");
-            for (SessionDirectoryEntry entry : betaAgentsClient.listSessionFiles(agentName, sessionId,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, "/remote", null, null, null, null, null)) {
+            for (SessionDirectoryEntry entry : betaAgentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null, null)) {
                 System.out.printf("  - name=%s, size=%d, isDirectory=%s%n", entry.getName(), entry.getSize(),
                     entry.isDirectory());
             }
 
             System.out.printf("Downloading and printing content from '%s'%n", REMOTE_FILE_PATH_1);
-            BinaryData downloaded = betaAgentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+            BinaryData downloaded = betaAgentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, null);
             String fileContent = new String(downloaded.toBytes(), StandardCharsets.UTF_8);
             System.out.printf("Session file content (%s):%n%s%n", REMOTE_FILE_PATH_1, fileContent);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_1);
-            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
+            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,false, null);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_2);
-            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, false, null);
+            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false, null);
         } finally {
             HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
         }

@@ -7,7 +7,6 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
@@ -57,8 +56,7 @@ public class AgentEndpointSample {
                 .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
 
             betaAgentsClient.updateAgentDetails(agentName,
-                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig),
-                AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW);
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
             System.out.printf("Agent endpoint configured for agent: %s%n", agentName);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);

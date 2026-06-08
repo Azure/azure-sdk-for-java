@@ -7,7 +7,6 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
@@ -64,8 +63,7 @@ public class SessionLogStreamAsyncSample {
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
                 return betaAgentsAsyncClient.updateAgentDetails(agentName,
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig),
-                    AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW)
+                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
                     .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
                         updated.getName()))
                     .then(Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()

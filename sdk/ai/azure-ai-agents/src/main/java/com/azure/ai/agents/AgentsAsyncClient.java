@@ -14,7 +14,6 @@ import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -58,7 +57,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -158,7 +157,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -178,9 +177,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -307,7 +306,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -481,7 +480,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -537,9 +536,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -637,7 +636,7 @@ public final class AgentsAsyncClient {
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -657,9 +656,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -795,7 +794,7 @@ public final class AgentsAsyncClient {
      *
      * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -811,9 +810,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -913,7 +912,7 @@ public final class AgentsAsyncClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -928,9 +927,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1030,7 +1029,7 @@ public final class AgentsAsyncClient {
      *
      * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1045,9 +1044,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1284,7 +1283,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1508,7 +1507,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1677,7 +1676,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1799,7 +1798,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1840,7 +1839,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1899,40 +1898,6 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
-     * {@link SessionLogEvent} values.
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId) {
-        RequestOptions requestOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
-            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
-        return getSessionLogStream(agentName, agentVersion, sessionId, requestOptions);
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
-     * {@link SessionLogEvent} values.
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
-        RequestOptions requestOptions) {
-        return SessionLogStreamHelper
-            .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer()));
-    }
-
-    /**
      * Create a new agent version.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
@@ -1940,8 +1905,6 @@ public final class AgentsAsyncClient {
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
      * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -1959,15 +1922,12 @@ public final class AgentsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
+        Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
@@ -1980,7 +1940,6 @@ public final class AgentsAsyncClient {
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * @param createAgentVersionInput The request body for creating an agent version, which includes the agent
      * definition and optional metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1992,14 +1951,12 @@ public final class AgentsAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinitionOptInKeys foundryFeatures,
+    public Mono<AgentVersionDetails> createAgentVersion(String agentName,
         CreateAgentVersionInput createAgentVersionInput) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
+
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
