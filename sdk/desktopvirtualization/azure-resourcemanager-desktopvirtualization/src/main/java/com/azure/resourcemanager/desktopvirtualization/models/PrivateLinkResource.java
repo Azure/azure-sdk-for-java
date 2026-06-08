@@ -6,6 +6,7 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.PrivateLinkResourceInner;
+import java.util.List;
 
 /**
  * An immutable client-side representation of PrivateLinkResource.
@@ -33,18 +34,32 @@ public interface PrivateLinkResource {
     String type();
 
     /**
-     * Gets the properties property: Resource properties.
-     * 
-     * @return the properties value.
-     */
-    PrivateLinkResourceProperties properties();
-
-    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the groupId property: The private link resource group id.
+     * 
+     * @return the groupId value.
+     */
+    String groupId();
+
+    /**
+     * Gets the requiredMembers property: The private link resource required member names.
+     * 
+     * @return the requiredMembers value.
+     */
+    List<String> requiredMembers();
+
+    /**
+     * Gets the requiredZoneNames property: The private link resource Private link DNS zone name.
+     * 
+     * @return the requiredZoneNames value.
+     */
+    List<String> requiredZoneNames();
 
     /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.PrivateLinkResourceInner object.

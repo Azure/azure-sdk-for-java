@@ -14,7 +14,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.ScopedRegistration
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostHealthCheckReport;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatch;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.Status;
 import com.azure.resourcemanager.desktopvirtualization.models.UpdateState;
 import java.time.OffsetDateTime;
@@ -257,27 +256,41 @@ public final class SessionHostImpl implements SessionHost, SessionHost.Definitio
     }
 
     public SessionHostImpl withAllowNewSession(Boolean allowNewSession) {
-        this.innerModel().withAllowNewSession(allowNewSession);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAllowNewSession(allowNewSession);
+            return this;
+        } else {
+            this.updateSessionHost.withAllowNewSession(allowNewSession);
+            return this;
+        }
     }
 
     public SessionHostImpl withAssignedUser(String assignedUser) {
-        this.innerModel().withAssignedUser(assignedUser);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAssignedUser(assignedUser);
+            return this;
+        } else {
+            this.updateSessionHost.withAssignedUser(assignedUser);
+            return this;
+        }
     }
 
     public SessionHostImpl withFriendlyName(String friendlyName) {
-        this.innerModel().withFriendlyName(friendlyName);
-        return this;
-    }
-
-    public SessionHostImpl withProperties(SessionHostPatchProperties properties) {
-        this.updateSessionHost.withProperties(properties);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withFriendlyName(friendlyName);
+            return this;
+        } else {
+            this.updateSessionHost.withFriendlyName(friendlyName);
+            return this;
+        }
     }
 
     public SessionHostImpl withForce(Boolean force) {
         this.updateForce = force;
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanPooledSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.CreateDeleteProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingMethodType;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.StopHostsWhen;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;

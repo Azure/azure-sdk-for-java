@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanPooledSchedulePatchProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * ScalingPlanPooledSchedule properties that can be patched.
@@ -20,7 +22,7 @@ public final class ScalingPlanPooledSchedulePatch extends ProxyResource {
     /*
      * Detailed properties for ScalingPlanPooledSchedule
      */
-    private ScalingPlanPooledSchedulePatchProperties properties;
+    private ScalingPlanPooledSchedulePatchProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -49,23 +51,12 @@ public final class ScalingPlanPooledSchedulePatch extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Detailed properties for ScalingPlanPooledSchedule.
+     * Get the innerProperties property: Detailed properties for ScalingPlanPooledSchedule.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public ScalingPlanPooledSchedulePatchProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Detailed properties for ScalingPlanPooledSchedule.
-     * 
-     * @param properties the properties value to set.
-     * @return the ScalingPlanPooledSchedulePatch object itself.
-     */
-    public ScalingPlanPooledSchedulePatch withProperties(ScalingPlanPooledSchedulePatchProperties properties) {
-        this.properties = properties;
-        return this;
+    private ScalingPlanPooledSchedulePatchProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -108,12 +99,466 @@ public final class ScalingPlanPooledSchedulePatch extends ProxyResource {
     }
 
     /**
+     * Get the name property: Name of the ScalingPlanPooledSchedule.
+     * 
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
+    }
+
+    /**
+     * Get the daysOfWeek property: Set of days of the week on which this schedule is active.
+     * 
+     * @return the daysOfWeek value.
+     */
+    public List<DayOfWeek> daysOfWeek() {
+        return this.innerProperties() == null ? null : this.innerProperties().daysOfWeek();
+    }
+
+    /**
+     * Set the daysOfWeek property: Set of days of the week on which this schedule is active.
+     * 
+     * @param daysOfWeek the daysOfWeek value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withDaysOfWeek(List<DayOfWeek> daysOfWeek) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withDaysOfWeek(daysOfWeek);
+        return this;
+    }
+
+    /**
+     * Get the scalingMethod property: The desired scaling method to be used to scale the hosts in the assigned host
+     * pool.
+     * 
+     * @return the scalingMethod value.
+     */
+    public ScalingMethodType scalingMethod() {
+        return this.innerProperties() == null ? null : this.innerProperties().scalingMethod();
+    }
+
+    /**
+     * Set the scalingMethod property: The desired scaling method to be used to scale the hosts in the assigned host
+     * pool.
+     * 
+     * @param scalingMethod the scalingMethod value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withScalingMethod(ScalingMethodType scalingMethod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withScalingMethod(scalingMethod);
+        return this;
+    }
+
+    /**
+     * Get the createDelete property: The properties that control how Scaling will manage the size of the hostpool by
+     * creating and deleting hosts.
+     * 
+     * @return the createDelete value.
+     */
+    public CreateDeleteProperties createDelete() {
+        return this.innerProperties() == null ? null : this.innerProperties().createDelete();
+    }
+
+    /**
+     * Set the createDelete property: The properties that control how Scaling will manage the size of the hostpool by
+     * creating and deleting hosts.
+     * 
+     * @param createDelete the createDelete value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withCreateDelete(CreateDeleteProperties createDelete) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withCreateDelete(createDelete);
+        return this;
+    }
+
+    /**
+     * Get the rampUpStartTime property: Starting time for ramp up period.
+     * 
+     * @return the rampUpStartTime value.
+     */
+    public Time rampUpStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampUpStartTime();
+    }
+
+    /**
+     * Set the rampUpStartTime property: Starting time for ramp up period.
+     * 
+     * @param rampUpStartTime the rampUpStartTime value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampUpStartTime(Time rampUpStartTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampUpStartTime(rampUpStartTime);
+        return this;
+    }
+
+    /**
+     * Get the rampUpLoadBalancingAlgorithm property: Load balancing algorithm for ramp up period.
+     * 
+     * @return the rampUpLoadBalancingAlgorithm value.
+     */
+    public SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampUpLoadBalancingAlgorithm();
+    }
+
+    /**
+     * Set the rampUpLoadBalancingAlgorithm property: Load balancing algorithm for ramp up period.
+     * 
+     * @param rampUpLoadBalancingAlgorithm the rampUpLoadBalancingAlgorithm value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch
+        withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampUpLoadBalancingAlgorithm(rampUpLoadBalancingAlgorithm);
+        return this;
+    }
+
+    /**
+     * Get the rampUpMinimumHostsPct property: Minimum host percentage for ramp up period.
+     * 
+     * @return the rampUpMinimumHostsPct value.
+     */
+    public Integer rampUpMinimumHostsPct() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampUpMinimumHostsPct();
+    }
+
+    /**
+     * Set the rampUpMinimumHostsPct property: Minimum host percentage for ramp up period.
+     * 
+     * @param rampUpMinimumHostsPct the rampUpMinimumHostsPct value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampUpMinimumHostsPct(Integer rampUpMinimumHostsPct) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampUpMinimumHostsPct(rampUpMinimumHostsPct);
+        return this;
+    }
+
+    /**
+     * Get the rampUpCapacityThresholdPct property: Capacity threshold for ramp up period.
+     * 
+     * @return the rampUpCapacityThresholdPct value.
+     */
+    public Integer rampUpCapacityThresholdPct() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampUpCapacityThresholdPct();
+    }
+
+    /**
+     * Set the rampUpCapacityThresholdPct property: Capacity threshold for ramp up period.
+     * 
+     * @param rampUpCapacityThresholdPct the rampUpCapacityThresholdPct value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampUpCapacityThresholdPct(Integer rampUpCapacityThresholdPct) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampUpCapacityThresholdPct(rampUpCapacityThresholdPct);
+        return this;
+    }
+
+    /**
+     * Get the peakStartTime property: Starting time for peak period.
+     * 
+     * @return the peakStartTime value.
+     */
+    public Time peakStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().peakStartTime();
+    }
+
+    /**
+     * Set the peakStartTime property: Starting time for peak period.
+     * 
+     * @param peakStartTime the peakStartTime value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withPeakStartTime(Time peakStartTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withPeakStartTime(peakStartTime);
+        return this;
+    }
+
+    /**
+     * Get the peakLoadBalancingAlgorithm property: Load balancing algorithm for peak period.
+     * 
+     * @return the peakLoadBalancingAlgorithm value.
+     */
+    public SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm() {
+        return this.innerProperties() == null ? null : this.innerProperties().peakLoadBalancingAlgorithm();
+    }
+
+    /**
+     * Set the peakLoadBalancingAlgorithm property: Load balancing algorithm for peak period.
+     * 
+     * @param peakLoadBalancingAlgorithm the peakLoadBalancingAlgorithm value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch
+        withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withPeakLoadBalancingAlgorithm(peakLoadBalancingAlgorithm);
+        return this;
+    }
+
+    /**
+     * Get the rampDownStartTime property: Starting time for ramp down period.
+     * 
+     * @return the rampDownStartTime value.
+     */
+    public Time rampDownStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownStartTime();
+    }
+
+    /**
+     * Set the rampDownStartTime property: Starting time for ramp down period.
+     * 
+     * @param rampDownStartTime the rampDownStartTime value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampDownStartTime(Time rampDownStartTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownStartTime(rampDownStartTime);
+        return this;
+    }
+
+    /**
+     * Get the rampDownLoadBalancingAlgorithm property: Load balancing algorithm for ramp down period.
+     * 
+     * @return the rampDownLoadBalancingAlgorithm value.
+     */
+    public SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownLoadBalancingAlgorithm();
+    }
+
+    /**
+     * Set the rampDownLoadBalancingAlgorithm property: Load balancing algorithm for ramp down period.
+     * 
+     * @param rampDownLoadBalancingAlgorithm the rampDownLoadBalancingAlgorithm value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch
+        withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownLoadBalancingAlgorithm(rampDownLoadBalancingAlgorithm);
+        return this;
+    }
+
+    /**
+     * Get the rampDownMinimumHostsPct property: Minimum host percentage for ramp down period.
+     * 
+     * @return the rampDownMinimumHostsPct value.
+     */
+    public Integer rampDownMinimumHostsPct() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownMinimumHostsPct();
+    }
+
+    /**
+     * Set the rampDownMinimumHostsPct property: Minimum host percentage for ramp down period.
+     * 
+     * @param rampDownMinimumHostsPct the rampDownMinimumHostsPct value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampDownMinimumHostsPct(Integer rampDownMinimumHostsPct) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownMinimumHostsPct(rampDownMinimumHostsPct);
+        return this;
+    }
+
+    /**
+     * Get the rampDownCapacityThresholdPct property: Capacity threshold for ramp down period.
+     * 
+     * @return the rampDownCapacityThresholdPct value.
+     */
+    public Integer rampDownCapacityThresholdPct() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownCapacityThresholdPct();
+    }
+
+    /**
+     * Set the rampDownCapacityThresholdPct property: Capacity threshold for ramp down period.
+     * 
+     * @param rampDownCapacityThresholdPct the rampDownCapacityThresholdPct value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampDownCapacityThresholdPct(Integer rampDownCapacityThresholdPct) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownCapacityThresholdPct(rampDownCapacityThresholdPct);
+        return this;
+    }
+
+    /**
+     * Get the rampDownForceLogoffUsers property: Should users be logged off forcefully from hosts.
+     * 
+     * @return the rampDownForceLogoffUsers value.
+     */
+    public Boolean rampDownForceLogoffUsers() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownForceLogoffUsers();
+    }
+
+    /**
+     * Set the rampDownForceLogoffUsers property: Should users be logged off forcefully from hosts.
+     * 
+     * @param rampDownForceLogoffUsers the rampDownForceLogoffUsers value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampDownForceLogoffUsers(Boolean rampDownForceLogoffUsers) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownForceLogoffUsers(rampDownForceLogoffUsers);
+        return this;
+    }
+
+    /**
+     * Get the rampDownStopHostsWhen property: Specifies when to stop hosts during ramp down period.
+     * 
+     * @return the rampDownStopHostsWhen value.
+     */
+    public StopHostsWhen rampDownStopHostsWhen() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownStopHostsWhen();
+    }
+
+    /**
+     * Set the rampDownStopHostsWhen property: Specifies when to stop hosts during ramp down period.
+     * 
+     * @param rampDownStopHostsWhen the rampDownStopHostsWhen value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampDownStopHostsWhen(StopHostsWhen rampDownStopHostsWhen) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownStopHostsWhen(rampDownStopHostsWhen);
+        return this;
+    }
+
+    /**
+     * Get the rampDownWaitTimeMinutes property: Number of minutes to wait to stop hosts during ramp down period.
+     * 
+     * @return the rampDownWaitTimeMinutes value.
+     */
+    public Integer rampDownWaitTimeMinutes() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownWaitTimeMinutes();
+    }
+
+    /**
+     * Set the rampDownWaitTimeMinutes property: Number of minutes to wait to stop hosts during ramp down period.
+     * 
+     * @param rampDownWaitTimeMinutes the rampDownWaitTimeMinutes value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampDownWaitTimeMinutes(Integer rampDownWaitTimeMinutes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownWaitTimeMinutes(rampDownWaitTimeMinutes);
+        return this;
+    }
+
+    /**
+     * Get the rampDownNotificationMessage property: Notification message for users during ramp down period.
+     * 
+     * @return the rampDownNotificationMessage value.
+     */
+    public String rampDownNotificationMessage() {
+        return this.innerProperties() == null ? null : this.innerProperties().rampDownNotificationMessage();
+    }
+
+    /**
+     * Set the rampDownNotificationMessage property: Notification message for users during ramp down period.
+     * 
+     * @param rampDownNotificationMessage the rampDownNotificationMessage value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withRampDownNotificationMessage(String rampDownNotificationMessage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withRampDownNotificationMessage(rampDownNotificationMessage);
+        return this;
+    }
+
+    /**
+     * Get the offPeakStartTime property: Starting time for off-peak period.
+     * 
+     * @return the offPeakStartTime value.
+     */
+    public Time offPeakStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().offPeakStartTime();
+    }
+
+    /**
+     * Set the offPeakStartTime property: Starting time for off-peak period.
+     * 
+     * @param offPeakStartTime the offPeakStartTime value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch withOffPeakStartTime(Time offPeakStartTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withOffPeakStartTime(offPeakStartTime);
+        return this;
+    }
+
+    /**
+     * Get the offPeakLoadBalancingAlgorithm property: Load balancing algorithm for off-peak period.
+     * 
+     * @return the offPeakLoadBalancingAlgorithm value.
+     */
+    public SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm() {
+        return this.innerProperties() == null ? null : this.innerProperties().offPeakLoadBalancingAlgorithm();
+    }
+
+    /**
+     * Set the offPeakLoadBalancingAlgorithm property: Load balancing algorithm for off-peak period.
+     * 
+     * @param offPeakLoadBalancingAlgorithm the offPeakLoadBalancingAlgorithm value to set.
+     * @return the ScalingPlanPooledSchedulePatch object itself.
+     */
+    public ScalingPlanPooledSchedulePatch
+        withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPooledSchedulePatchProperties();
+        }
+        this.innerProperties().withOffPeakLoadBalancingAlgorithm(offPeakLoadBalancingAlgorithm);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,7 +586,7 @@ public final class ScalingPlanPooledSchedulePatch extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedScalingPlanPooledSchedulePatch.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedScalingPlanPooledSchedulePatch.properties
+                    deserializedScalingPlanPooledSchedulePatch.innerProperties
                         = ScalingPlanPooledSchedulePatchProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedScalingPlanPooledSchedulePatch.systemData = SystemData.fromJson(reader);

@@ -346,7 +346,8 @@ public interface MsixPackage {
     /**
      * The template for MsixPackage update.
      */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update
+        extends UpdateStages.WithIsActive, UpdateStages.WithIsRegularRegistration, UpdateStages.WithDisplayName {
         /**
          * Executes the update request.
          * 
@@ -368,16 +369,42 @@ public interface MsixPackage {
      */
     interface UpdateStages {
         /**
-         * The stage of the MsixPackage update allowing to specify properties.
+         * The stage of the MsixPackage update allowing to specify isActive.
          */
-        interface WithProperties {
+        interface WithIsActive {
             /**
-             * Specifies the properties property: Detailed properties for MSIX Package.
+             * Specifies the isActive property: Set a version of the package to be active across hostpool..
              * 
-             * @param properties Detailed properties for MSIX Package.
+             * @param isActive Set a version of the package to be active across hostpool.
              * @return the next definition stage.
              */
-            Update withProperties(MsixPackagePatchProperties properties);
+            Update withIsActive(Boolean isActive);
+        }
+
+        /**
+         * The stage of the MsixPackage update allowing to specify isRegularRegistration.
+         */
+        interface WithIsRegularRegistration {
+            /**
+             * Specifies the isRegularRegistration property: Set Registration mode. Regular or Delayed..
+             * 
+             * @param isRegularRegistration Set Registration mode. Regular or Delayed.
+             * @return the next definition stage.
+             */
+            Update withIsRegularRegistration(Boolean isRegularRegistration);
+        }
+
+        /**
+         * The stage of the MsixPackage update allowing to specify displayName.
+         */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: Display name for MSIX Package..
+             * 
+             * @param displayName Display name for MSIX Package.
+             * @return the next definition stage.
+             */
+            Update withDisplayName(String displayName);
         }
     }
 

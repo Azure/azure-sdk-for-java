@@ -11,7 +11,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.MsixPackage;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatch;
-import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatchProperties;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -204,8 +203,13 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
     }
 
     public MsixPackageImpl withDisplayName(String displayName) {
-        this.innerModel().withDisplayName(displayName);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateMsixPackage.withDisplayName(displayName);
+            return this;
+        }
     }
 
     public MsixPackageImpl withPackageRelativePath(String packageRelativePath) {
@@ -214,13 +218,23 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
     }
 
     public MsixPackageImpl withIsRegularRegistration(Boolean isRegularRegistration) {
-        this.innerModel().withIsRegularRegistration(isRegularRegistration);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIsRegularRegistration(isRegularRegistration);
+            return this;
+        } else {
+            this.updateMsixPackage.withIsRegularRegistration(isRegularRegistration);
+            return this;
+        }
     }
 
     public MsixPackageImpl withIsActive(Boolean isActive) {
-        this.innerModel().withIsActive(isActive);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIsActive(isActive);
+            return this;
+        } else {
+            this.updateMsixPackage.withIsActive(isActive);
+            return this;
+        }
     }
 
     public MsixPackageImpl withPackageDependencies(List<MsixPackageDependencies> packageDependencies) {
@@ -243,8 +257,7 @@ public final class MsixPackageImpl implements MsixPackage, MsixPackage.Definitio
         return this;
     }
 
-    public MsixPackageImpl withProperties(MsixPackagePatchProperties properties) {
-        this.updateMsixPackage.withProperties(properties);
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

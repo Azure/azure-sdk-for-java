@@ -6,7 +6,6 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedule;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 import java.util.Arrays;
@@ -30,15 +29,14 @@ public final class ScalingPlanPooledSchedulesUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ScalingPlanPooledSchedulePatchProperties()
-                .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                    DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
-                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                .withRampUpCapacityThresholdPct(80)
-                .withPeakStartTime(new Time().withHour(8).withMinute(0))
-                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                .withRampDownMinimumHostsPct(20)
-                .withRampDownWaitTimeMinutes(30))
+            .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY))
+            .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+            .withRampUpCapacityThresholdPct(80)
+            .withPeakStartTime(new Time().withHour(8).withMinute(0))
+            .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+            .withRampDownMinimumHostsPct(20)
+            .withRampDownWaitTimeMinutes(30)
             .apply();
     }
 }

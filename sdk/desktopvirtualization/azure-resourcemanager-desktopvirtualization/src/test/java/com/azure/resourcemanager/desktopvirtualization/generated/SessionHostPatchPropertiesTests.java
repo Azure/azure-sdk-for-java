@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatchProperties;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.SessionHostPatchProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class SessionHostPatchPropertiesTests {

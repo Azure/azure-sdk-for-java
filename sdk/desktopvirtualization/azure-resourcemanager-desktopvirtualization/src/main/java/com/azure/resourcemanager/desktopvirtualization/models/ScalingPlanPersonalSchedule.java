@@ -703,7 +703,19 @@ public interface ScalingPlanPersonalSchedule {
     /**
      * The template for ScalingPlanPersonalSchedule update.
      */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithDaysOfWeek, UpdateStages.WithRampUpStartTime,
+        UpdateStages.WithRampUpAutoStartHosts, UpdateStages.WithRampUpStartVMOnConnect,
+        UpdateStages.WithRampUpActionOnDisconnect, UpdateStages.WithRampUpMinutesToWaitOnDisconnect,
+        UpdateStages.WithRampUpActionOnLogoff, UpdateStages.WithRampUpMinutesToWaitOnLogoff,
+        UpdateStages.WithPeakStartTime, UpdateStages.WithPeakStartVMOnConnect, UpdateStages.WithPeakActionOnDisconnect,
+        UpdateStages.WithPeakMinutesToWaitOnDisconnect, UpdateStages.WithPeakActionOnLogoff,
+        UpdateStages.WithPeakMinutesToWaitOnLogoff, UpdateStages.WithRampDownStartTime,
+        UpdateStages.WithRampDownStartVMOnConnect, UpdateStages.WithRampDownActionOnDisconnect,
+        UpdateStages.WithRampDownMinutesToWaitOnDisconnect, UpdateStages.WithRampDownActionOnLogoff,
+        UpdateStages.WithRampDownMinutesToWaitOnLogoff, UpdateStages.WithOffPeakStartTime,
+        UpdateStages.WithOffPeakStartVMOnConnect, UpdateStages.WithOffPeakActionOnDisconnect,
+        UpdateStages.WithOffPeakMinutesToWaitOnDisconnect, UpdateStages.WithOffPeakActionOnLogoff,
+        UpdateStages.WithOffPeakMinutesToWaitOnLogoff {
         /**
          * Executes the update request.
          * 
@@ -725,16 +737,376 @@ public interface ScalingPlanPersonalSchedule {
      */
     interface UpdateStages {
         /**
-         * The stage of the ScalingPlanPersonalSchedule update allowing to specify properties.
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify daysOfWeek.
          */
-        interface WithProperties {
+        interface WithDaysOfWeek {
             /**
-             * Specifies the properties property: Detailed properties for ScalingPlanPersonalSchedule.
+             * Specifies the daysOfWeek property: Set of days of the week on which this schedule is active..
              * 
-             * @param properties Detailed properties for ScalingPlanPersonalSchedule.
+             * @param daysOfWeek Set of days of the week on which this schedule is active.
              * @return the next definition stage.
              */
-            Update withProperties(ScalingPlanPersonalSchedulePatchProperties properties);
+            Update withDaysOfWeek(List<DayOfWeek> daysOfWeek);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampUpStartTime.
+         */
+        interface WithRampUpStartTime {
+            /**
+             * Specifies the rampUpStartTime property: Starting time for ramp up period..
+             * 
+             * @param rampUpStartTime Starting time for ramp up period.
+             * @return the next definition stage.
+             */
+            Update withRampUpStartTime(Time rampUpStartTime);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampUpAutoStartHosts.
+         */
+        interface WithRampUpAutoStartHosts {
+            /**
+             * Specifies the rampUpAutoStartHosts property: The desired startup behavior during the ramp up period for
+             * personal vms in the hostpool..
+             * 
+             * @param rampUpAutoStartHosts The desired startup behavior during the ramp up period for personal vms in
+             * the hostpool.
+             * @return the next definition stage.
+             */
+            Update withRampUpAutoStartHosts(StartupBehavior rampUpAutoStartHosts);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampUpStartVMOnConnect.
+         */
+        interface WithRampUpStartVMOnConnect {
+            /**
+             * Specifies the rampUpStartVMOnConnect property: The desired configuration of Start VM On Connect for the
+             * hostpool during the ramp up phase. If this is disabled, session hosts must be turned on using
+             * rampUpAutoStartHosts or by turning them on manually..
+             * 
+             * @param rampUpStartVMOnConnect The desired configuration of Start VM On Connect for the hostpool during
+             * the ramp up phase. If this is disabled, session hosts must be turned on using rampUpAutoStartHosts or by
+             * turning them on manually.
+             * @return the next definition stage.
+             */
+            Update withRampUpStartVMOnConnect(SetStartVMOnConnect rampUpStartVMOnConnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampUpActionOnDisconnect.
+         */
+        interface WithRampUpActionOnDisconnect {
+            /**
+             * Specifies the rampUpActionOnDisconnect property: Action to be taken after a user disconnect during the
+             * ramp up period..
+             * 
+             * @param rampUpActionOnDisconnect Action to be taken after a user disconnect during the ramp up period.
+             * @return the next definition stage.
+             */
+            Update withRampUpActionOnDisconnect(SessionHandlingOperation rampUpActionOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampUpMinutesToWaitOnDisconnect.
+         */
+        interface WithRampUpMinutesToWaitOnDisconnect {
+            /**
+             * Specifies the rampUpMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the
+             * desired session handling action when a user disconnects during the ramp up period..
+             * 
+             * @param rampUpMinutesToWaitOnDisconnect The time in minutes to wait before performing the desired session
+             * handling action when a user disconnects during the ramp up period.
+             * @return the next definition stage.
+             */
+            Update withRampUpMinutesToWaitOnDisconnect(Integer rampUpMinutesToWaitOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampUpActionOnLogoff.
+         */
+        interface WithRampUpActionOnLogoff {
+            /**
+             * Specifies the rampUpActionOnLogoff property: Action to be taken after a logoff during the ramp up
+             * period..
+             * 
+             * @param rampUpActionOnLogoff Action to be taken after a logoff during the ramp up period.
+             * @return the next definition stage.
+             */
+            Update withRampUpActionOnLogoff(SessionHandlingOperation rampUpActionOnLogoff);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampUpMinutesToWaitOnLogoff.
+         */
+        interface WithRampUpMinutesToWaitOnLogoff {
+            /**
+             * Specifies the rampUpMinutesToWaitOnLogoff property: The time in minutes to wait before performing the
+             * desired session handling action when a user logs off during the ramp up period..
+             * 
+             * @param rampUpMinutesToWaitOnLogoff The time in minutes to wait before performing the desired session
+             * handling action when a user logs off during the ramp up period.
+             * @return the next definition stage.
+             */
+            Update withRampUpMinutesToWaitOnLogoff(Integer rampUpMinutesToWaitOnLogoff);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify peakStartTime.
+         */
+        interface WithPeakStartTime {
+            /**
+             * Specifies the peakStartTime property: Starting time for peak period..
+             * 
+             * @param peakStartTime Starting time for peak period.
+             * @return the next definition stage.
+             */
+            Update withPeakStartTime(Time peakStartTime);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify peakStartVMOnConnect.
+         */
+        interface WithPeakStartVMOnConnect {
+            /**
+             * Specifies the peakStartVMOnConnect property: The desired configuration of Start VM On Connect for the
+             * hostpool during the peak phase..
+             * 
+             * @param peakStartVMOnConnect The desired configuration of Start VM On Connect for the hostpool during the
+             * peak phase.
+             * @return the next definition stage.
+             */
+            Update withPeakStartVMOnConnect(SetStartVMOnConnect peakStartVMOnConnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify peakActionOnDisconnect.
+         */
+        interface WithPeakActionOnDisconnect {
+            /**
+             * Specifies the peakActionOnDisconnect property: Action to be taken after a user disconnect during the peak
+             * period..
+             * 
+             * @param peakActionOnDisconnect Action to be taken after a user disconnect during the peak period.
+             * @return the next definition stage.
+             */
+            Update withPeakActionOnDisconnect(SessionHandlingOperation peakActionOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify peakMinutesToWaitOnDisconnect.
+         */
+        interface WithPeakMinutesToWaitOnDisconnect {
+            /**
+             * Specifies the peakMinutesToWaitOnDisconnect property: The time in minutes to wait before performing the
+             * desired session handling action when a user disconnects during the peak period..
+             * 
+             * @param peakMinutesToWaitOnDisconnect The time in minutes to wait before performing the desired session
+             * handling action when a user disconnects during the peak period.
+             * @return the next definition stage.
+             */
+            Update withPeakMinutesToWaitOnDisconnect(Integer peakMinutesToWaitOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify peakActionOnLogoff.
+         */
+        interface WithPeakActionOnLogoff {
+            /**
+             * Specifies the peakActionOnLogoff property: Action to be taken after a logoff during the peak period..
+             * 
+             * @param peakActionOnLogoff Action to be taken after a logoff during the peak period.
+             * @return the next definition stage.
+             */
+            Update withPeakActionOnLogoff(SessionHandlingOperation peakActionOnLogoff);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify peakMinutesToWaitOnLogoff.
+         */
+        interface WithPeakMinutesToWaitOnLogoff {
+            /**
+             * Specifies the peakMinutesToWaitOnLogoff property: The time in minutes to wait before performing the
+             * desired session handling action when a user logs off during the peak period..
+             * 
+             * @param peakMinutesToWaitOnLogoff The time in minutes to wait before performing the desired session
+             * handling action when a user logs off during the peak period.
+             * @return the next definition stage.
+             */
+            Update withPeakMinutesToWaitOnLogoff(Integer peakMinutesToWaitOnLogoff);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampDownStartTime.
+         */
+        interface WithRampDownStartTime {
+            /**
+             * Specifies the rampDownStartTime property: Starting time for ramp down period..
+             * 
+             * @param rampDownStartTime Starting time for ramp down period.
+             * @return the next definition stage.
+             */
+            Update withRampDownStartTime(Time rampDownStartTime);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampDownStartVMOnConnect.
+         */
+        interface WithRampDownStartVMOnConnect {
+            /**
+             * Specifies the rampDownStartVMOnConnect property: The desired configuration of Start VM On Connect for the
+             * hostpool during the ramp down phase..
+             * 
+             * @param rampDownStartVMOnConnect The desired configuration of Start VM On Connect for the hostpool during
+             * the ramp down phase.
+             * @return the next definition stage.
+             */
+            Update withRampDownStartVMOnConnect(SetStartVMOnConnect rampDownStartVMOnConnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampDownActionOnDisconnect.
+         */
+        interface WithRampDownActionOnDisconnect {
+            /**
+             * Specifies the rampDownActionOnDisconnect property: Action to be taken after a user disconnect during the
+             * ramp down period..
+             * 
+             * @param rampDownActionOnDisconnect Action to be taken after a user disconnect during the ramp down period.
+             * @return the next definition stage.
+             */
+            Update withRampDownActionOnDisconnect(SessionHandlingOperation rampDownActionOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampDownMinutesToWaitOnDisconnect.
+         */
+        interface WithRampDownMinutesToWaitOnDisconnect {
+            /**
+             * Specifies the rampDownMinutesToWaitOnDisconnect property: The time in minutes to wait before performing
+             * the desired session handling action when a user disconnects during the ramp down period..
+             * 
+             * @param rampDownMinutesToWaitOnDisconnect The time in minutes to wait before performing the desired
+             * session handling action when a user disconnects during the ramp down period.
+             * @return the next definition stage.
+             */
+            Update withRampDownMinutesToWaitOnDisconnect(Integer rampDownMinutesToWaitOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampDownActionOnLogoff.
+         */
+        interface WithRampDownActionOnLogoff {
+            /**
+             * Specifies the rampDownActionOnLogoff property: Action to be taken after a logoff during the ramp down
+             * period..
+             * 
+             * @param rampDownActionOnLogoff Action to be taken after a logoff during the ramp down period.
+             * @return the next definition stage.
+             */
+            Update withRampDownActionOnLogoff(SessionHandlingOperation rampDownActionOnLogoff);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify rampDownMinutesToWaitOnLogoff.
+         */
+        interface WithRampDownMinutesToWaitOnLogoff {
+            /**
+             * Specifies the rampDownMinutesToWaitOnLogoff property: The time in minutes to wait before performing the
+             * desired session handling action when a user logs off during the ramp down period..
+             * 
+             * @param rampDownMinutesToWaitOnLogoff The time in minutes to wait before performing the desired session
+             * handling action when a user logs off during the ramp down period.
+             * @return the next definition stage.
+             */
+            Update withRampDownMinutesToWaitOnLogoff(Integer rampDownMinutesToWaitOnLogoff);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify offPeakStartTime.
+         */
+        interface WithOffPeakStartTime {
+            /**
+             * Specifies the offPeakStartTime property: Starting time for off-peak period..
+             * 
+             * @param offPeakStartTime Starting time for off-peak period.
+             * @return the next definition stage.
+             */
+            Update withOffPeakStartTime(Time offPeakStartTime);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify offPeakStartVMOnConnect.
+         */
+        interface WithOffPeakStartVMOnConnect {
+            /**
+             * Specifies the offPeakStartVMOnConnect property: The desired configuration of Start VM On Connect for the
+             * hostpool during the off-peak phase..
+             * 
+             * @param offPeakStartVMOnConnect The desired configuration of Start VM On Connect for the hostpool during
+             * the off-peak phase.
+             * @return the next definition stage.
+             */
+            Update withOffPeakStartVMOnConnect(SetStartVMOnConnect offPeakStartVMOnConnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify offPeakActionOnDisconnect.
+         */
+        interface WithOffPeakActionOnDisconnect {
+            /**
+             * Specifies the offPeakActionOnDisconnect property: Action to be taken after a user disconnect during the
+             * off-peak period..
+             * 
+             * @param offPeakActionOnDisconnect Action to be taken after a user disconnect during the off-peak period.
+             * @return the next definition stage.
+             */
+            Update withOffPeakActionOnDisconnect(SessionHandlingOperation offPeakActionOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify offPeakMinutesToWaitOnDisconnect.
+         */
+        interface WithOffPeakMinutesToWaitOnDisconnect {
+            /**
+             * Specifies the offPeakMinutesToWaitOnDisconnect property: The time in minutes to wait before performing
+             * the desired session handling action when a user disconnects during the off-peak period..
+             * 
+             * @param offPeakMinutesToWaitOnDisconnect The time in minutes to wait before performing the desired session
+             * handling action when a user disconnects during the off-peak period.
+             * @return the next definition stage.
+             */
+            Update withOffPeakMinutesToWaitOnDisconnect(Integer offPeakMinutesToWaitOnDisconnect);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify offPeakActionOnLogoff.
+         */
+        interface WithOffPeakActionOnLogoff {
+            /**
+             * Specifies the offPeakActionOnLogoff property: Action to be taken after a logoff during the off-peak
+             * period..
+             * 
+             * @param offPeakActionOnLogoff Action to be taken after a logoff during the off-peak period.
+             * @return the next definition stage.
+             */
+            Update withOffPeakActionOnLogoff(SessionHandlingOperation offPeakActionOnLogoff);
+        }
+
+        /**
+         * The stage of the ScalingPlanPersonalSchedule update allowing to specify offPeakMinutesToWaitOnLogoff.
+         */
+        interface WithOffPeakMinutesToWaitOnLogoff {
+            /**
+             * Specifies the offPeakMinutesToWaitOnLogoff property: The time in minutes to wait before performing the
+             * desired session handling action when a user logs off during the off-peak period..
+             * 
+             * @param offPeakMinutesToWaitOnLogoff The time in minutes to wait before performing the desired session
+             * handling action when a user logs off during the off-peak period.
+             * @return the next definition stage.
+             */
+            Update withOffPeakMinutesToWaitOnLogoff(Integer offPeakMinutesToWaitOnLogoff);
         }
     }
 

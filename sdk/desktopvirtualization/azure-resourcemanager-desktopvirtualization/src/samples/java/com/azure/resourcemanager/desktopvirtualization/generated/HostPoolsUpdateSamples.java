@@ -9,7 +9,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.AllowRDPShortPathW
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.DirectUDP;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPool;
-import com.azure.resourcemanager.desktopvirtualization.models.HostPoolPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.MaintenanceWindowPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ManagedPrivateUDP;
@@ -44,33 +43,33 @@ public final class HostPoolsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(
-                new HostPoolPatchProperties().withFriendlyName("friendly")
-                    .withDescription("des1")
-                    .withMaxSessionLimit(999999)
-                    .withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType.AUTOMATIC)
-                    .withLoadBalancerType(LoadBalancerType.BREADTH_FIRST)
-                    .withRegistrationInfo(new RegistrationInfoPatch()
-                        .withExpirationTime(OffsetDateTime.parse("2020-10-01T15:01:54.9571247Z"))
-                        .withRegistrationTokenOperation(RegistrationTokenOperation.UPDATE))
-                    .withVmTemplate("{json:json}")
-                    .withSsoadfsAuthority("https://adfs")
-                    .withSsoClientId("client")
-                    .withSsoClientSecretKeyVaultPath("fakeTokenPlaceholder")
-                    .withSsoSecretType(SsoSecretType.SHARED_KEY)
-                    .withStartVMOnConnect(false)
-                    .withAgentUpdate(new AgentUpdatePatchProperties().withType(SessionHostComponentUpdateType.SCHEDULED)
-                        .withUseSessionHostLocalTime(false)
-                        .withMaintenanceWindowTimeZone("Alaskan Standard Time")
-                        .withMaintenanceWindows(Arrays.asList(
-                            new MaintenanceWindowPatchProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
-                            new MaintenanceWindowPatchProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
-                    .withManagedPrivateUDP(ManagedPrivateUDP.ENABLED)
-                    .withDirectUDP(DirectUDP.ENABLED)
-                    .withPublicUDP(PublicUDP.ENABLED)
-                    .withRelayUDP(RelayUDP.ENABLED)
-                    .withAllowRDPShortPathWithPrivateLink(AllowRDPShortPathWithPrivateLink.ENABLED)
-                    .withConditionalRdpProperty("drivestoredirect:s:*:AuthContext:c1"))
+            .withFriendlyName("friendly")
+            .withDescription("des1")
+            .withMaxSessionLimit(999999)
+            .withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType.AUTOMATIC)
+            .withLoadBalancerType(LoadBalancerType.BREADTH_FIRST)
+            .withRegistrationInfo(
+                new RegistrationInfoPatch().withExpirationTime(OffsetDateTime.parse("2020-10-01T15:01:54.9571247Z"))
+                    .withRegistrationTokenOperation(RegistrationTokenOperation.UPDATE))
+            .withVmTemplate("{json:json}")
+            .withSsoadfsAuthority("https://adfs")
+            .withSsoClientId("client")
+            .withSsoClientSecretKeyVaultPath("https://keyvault/secret")
+            .withSsoSecretType(SsoSecretType.SHARED_KEY)
+            .withStartVMOnConnect(false)
+            .withAgentUpdate(
+                new AgentUpdatePatchProperties().withType(SessionHostComponentUpdateType.SCHEDULED)
+                    .withUseSessionHostLocalTime(false)
+                    .withMaintenanceWindowTimeZone("Alaskan Standard Time")
+                    .withMaintenanceWindows(Arrays.asList(
+                        new MaintenanceWindowPatchProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
+                        new MaintenanceWindowPatchProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
+            .withManagedPrivateUDP(ManagedPrivateUDP.ENABLED)
+            .withDirectUDP(DirectUDP.ENABLED)
+            .withPublicUDP(PublicUDP.ENABLED)
+            .withRelayUDP(RelayUDP.ENABLED)
+            .withAllowRDPShortPathWithPrivateLink(AllowRDPShortPathWithPrivateLink.ENABLED)
+            .withConditionalRdpProperty("drivestoredirect:s:*:AuthContext:c1")
             .apply();
     }
 

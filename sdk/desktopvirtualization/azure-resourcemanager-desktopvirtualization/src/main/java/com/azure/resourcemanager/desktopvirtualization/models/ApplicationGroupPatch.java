@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationGroupPatchProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public final class ApplicationGroupPatch extends ProxyResource {
     /*
      * ApplicationGroup properties that can be patched.
      */
-    private ApplicationGroupPatchProperties properties;
+    private ApplicationGroupPatchProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -75,23 +76,12 @@ public final class ApplicationGroupPatch extends ProxyResource {
     }
 
     /**
-     * Get the properties property: ApplicationGroup properties that can be patched.
+     * Get the innerProperties property: ApplicationGroup properties that can be patched.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public ApplicationGroupPatchProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: ApplicationGroup properties that can be patched.
-     * 
-     * @param properties the properties value to set.
-     * @return the ApplicationGroupPatch object itself.
-     */
-    public ApplicationGroupPatch withProperties(ApplicationGroupPatchProperties properties) {
-        this.properties = properties;
-        return this;
+    private ApplicationGroupPatchProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -134,13 +124,82 @@ public final class ApplicationGroupPatch extends ProxyResource {
     }
 
     /**
+     * Get the description property: Description of ApplicationGroup.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of ApplicationGroup.
+     * 
+     * @param description the description value to set.
+     * @return the ApplicationGroupPatch object itself.
+     */
+    public ApplicationGroupPatch withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupPatchProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of ApplicationGroup.
+     * 
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Set the friendlyName property: Friendly name of ApplicationGroup.
+     * 
+     * @param friendlyName the friendlyName value to set.
+     * @return the ApplicationGroupPatch object itself.
+     */
+    public ApplicationGroupPatch withFriendlyName(String friendlyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupPatchProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
+        return this;
+    }
+
+    /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     * 
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().showInFeed();
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     * 
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupPatch object itself.
+     */
+    public ApplicationGroupPatch withShowInFeed(Boolean showInFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupPatchProperties();
+        }
+        this.innerProperties().withShowInFeed(showInFeed);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -170,7 +229,8 @@ public final class ApplicationGroupPatch extends ProxyResource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedApplicationGroupPatch.tags = tags;
                 } else if ("properties".equals(fieldName)) {
-                    deserializedApplicationGroupPatch.properties = ApplicationGroupPatchProperties.fromJson(reader);
+                    deserializedApplicationGroupPatch.innerProperties
+                        = ApplicationGroupPatchProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedApplicationGroupPatch.systemData = SystemData.fromJson(reader);
                 } else {

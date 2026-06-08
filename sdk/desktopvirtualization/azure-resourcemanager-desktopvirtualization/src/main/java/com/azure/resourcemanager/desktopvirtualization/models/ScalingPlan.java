@@ -455,7 +455,9 @@ public interface ScalingPlan {
     /**
      * The template for ScalingPlan update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithDescription, UpdateStages.WithFriendlyName,
+        UpdateStages.WithTimeZone, UpdateStages.WithExclusionTag, UpdateStages.WithSchedules,
+        UpdateStages.WithHostPoolReferences {
         /**
          * Executes the update request.
          * 
@@ -490,16 +492,81 @@ public interface ScalingPlan {
         }
 
         /**
-         * The stage of the ScalingPlan update allowing to specify properties.
+         * The stage of the ScalingPlan update allowing to specify description.
          */
-        interface WithProperties {
+        interface WithDescription {
             /**
-             * Specifies the properties property: Detailed properties for scaling plan.
+             * Specifies the description property: Description of scaling plan..
              * 
-             * @param properties Detailed properties for scaling plan.
+             * @param description Description of scaling plan.
              * @return the next definition stage.
              */
-            Update withProperties(ScalingPlanPatchProperties properties);
+            Update withDescription(String description);
+        }
+
+        /**
+         * The stage of the ScalingPlan update allowing to specify friendlyName.
+         */
+        interface WithFriendlyName {
+            /**
+             * Specifies the friendlyName property: User friendly name of scaling plan..
+             * 
+             * @param friendlyName User friendly name of scaling plan.
+             * @return the next definition stage.
+             */
+            Update withFriendlyName(String friendlyName);
+        }
+
+        /**
+         * The stage of the ScalingPlan update allowing to specify timeZone.
+         */
+        interface WithTimeZone {
+            /**
+             * Specifies the timeZone property: Timezone of the scaling plan..
+             * 
+             * @param timeZone Timezone of the scaling plan.
+             * @return the next definition stage.
+             */
+            Update withTimeZone(String timeZone);
+        }
+
+        /**
+         * The stage of the ScalingPlan update allowing to specify exclusionTag.
+         */
+        interface WithExclusionTag {
+            /**
+             * Specifies the exclusionTag property: Exclusion tag for scaling plan..
+             * 
+             * @param exclusionTag Exclusion tag for scaling plan.
+             * @return the next definition stage.
+             */
+            Update withExclusionTag(String exclusionTag);
+        }
+
+        /**
+         * The stage of the ScalingPlan update allowing to specify schedules.
+         */
+        interface WithSchedules {
+            /**
+             * Specifies the schedules property: List of ScalingSchedule definitions..
+             * 
+             * @param schedules List of ScalingSchedule definitions.
+             * @return the next definition stage.
+             */
+            Update withSchedules(List<ScalingSchedule> schedules);
+        }
+
+        /**
+         * The stage of the ScalingPlan update allowing to specify hostPoolReferences.
+         */
+        interface WithHostPoolReferences {
+            /**
+             * Specifies the hostPoolReferences property: List of ScalingHostPoolReference definitions..
+             * 
+             * @param hostPoolReferences List of ScalingHostPoolReference definitions.
+             * @return the next definition stage.
+             */
+            Update withHostPoolReferences(List<ScalingHostPoolReference> hostPoolReferences);
         }
     }
 

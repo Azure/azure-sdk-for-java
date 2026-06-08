@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageInfoProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.DeploymentScope;
 import com.azure.resourcemanager.desktopvirtualization.models.FailHealthCheckOnStagingFailure;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
@@ -30,34 +31,35 @@ public final class AppAttachPackageCreateOrUpdateSamples {
             .define("msixpackagefullname")
             .withRegion("southcentralus")
             .withExistingResourceGroup("resourceGroup1")
-            .withImage(new AppAttachPackageInfoProperties().withPackageAlias("msixpackagealias")
-                .withImagePath("imagepath")
-                .withPackageName("MsixPackageName")
-                .withPackageFamilyName("MsixPackage_FamilyName")
-                .withPackageFullName("MsixPackage_FullName")
-                .withDisplayName("displayname")
-                .withPackageRelativePath("packagerelativepath")
-                .withIsRegularRegistration(false)
-                .withIsActive(false)
-                .withPackageDependencies(
-                    Arrays.asList(new MsixPackageDependencies().withDependencyName("MsixPackage_Dependency_Name")
-                        .withPublisher("MsixPackage_Dependency_Publisher")
-                        .withMinVersion("packageDep_version")))
-                .withVersion("packageversion")
-                .withLastUpdated(OffsetDateTime.parse("2008-09-22T14:01:54.9571247Z"))
-                .withPackageApplications(Arrays.asList(new MsixPackageApplications().withAppId("AppId")
-                    .withDescription("PackageApplicationDescription")
-                    .withAppUserModelId("AppUserModelId")
-                    .withFriendlyName("FriendlyName")
-                    .withIconImageName("Iconimagename")
-                    .withRawIcon("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())
-                    .withRawPng("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())))
-                .withCertificateName("certName")
-                .withCertificateExpiry(OffsetDateTime.parse("2023-01-02T17:18:19.1234567Z")))
-            .withHostPoolReferences(Arrays.asList())
-            .withKeyVaultUrl("")
-            .withFailHealthCheckOnStagingFailure(FailHealthCheckOnStagingFailure.NEEDS_ASSISTANCE)
-            .withDeploymentScope(DeploymentScope.GEOGRAPHICAL)
+            .withProperties(new AppAttachPackageProperties()
+                .withImage(new AppAttachPackageInfoProperties().withPackageAlias("msixpackagealias")
+                    .withImagePath("imagepath")
+                    .withPackageName("MsixPackageName")
+                    .withPackageFamilyName("MsixPackage_FamilyName")
+                    .withPackageFullName("MsixPackage_FullName")
+                    .withDisplayName("displayname")
+                    .withPackageRelativePath("packagerelativepath")
+                    .withIsRegularRegistration(false)
+                    .withIsActive(false)
+                    .withPackageDependencies(
+                        Arrays.asList(new MsixPackageDependencies().withDependencyName("MsixPackage_Dependency_Name")
+                            .withPublisher("MsixPackage_Dependency_Publisher")
+                            .withMinVersion("packageDep_version")))
+                    .withVersion("packageversion")
+                    .withLastUpdated(OffsetDateTime.parse("2008-09-22T14:01:54.9571247Z"))
+                    .withPackageApplications(Arrays.asList(new MsixPackageApplications().withAppId("AppId")
+                        .withDescription("PackageApplicationDescription")
+                        .withAppUserModelId("AppUserModelId")
+                        .withFriendlyName("FriendlyName")
+                        .withIconImageName("Iconimagename")
+                        .withRawIcon("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())
+                        .withRawPng("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())))
+                    .withCertificateName("certName")
+                    .withCertificateExpiry(OffsetDateTime.parse("2023-01-02T17:18:19.1234567Z")))
+                .withHostPoolReferences(Arrays.asList())
+                .withKeyVaultUrl("fakeTokenPlaceholder")
+                .withFailHealthCheckOnStagingFailure(FailHealthCheckOnStagingFailure.NEEDS_ASSISTANCE)
+                .withDeploymentScope(DeploymentScope.GEOGRAPHICAL))
             .create();
     }
 }

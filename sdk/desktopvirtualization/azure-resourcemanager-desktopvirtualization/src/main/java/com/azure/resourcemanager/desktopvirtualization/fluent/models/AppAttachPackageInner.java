@@ -10,12 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageInfoProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.DeploymentScope;
-import com.azure.resourcemanager.desktopvirtualization.models.FailHealthCheckOnStagingFailure;
-import com.azure.resourcemanager.desktopvirtualization.models.ProvisioningState;
+import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageProperties;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +22,7 @@ public final class AppAttachPackageInner extends Resource {
     /*
      * Detailed properties for App Attach Package
      */
-    private AppAttachPackageProperties innerProperties = new AppAttachPackageProperties();
+    private AppAttachPackageProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -55,12 +51,23 @@ public final class AppAttachPackageInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Detailed properties for App Attach Package.
+     * Get the properties property: Detailed properties for App Attach Package.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private AppAttachPackageProperties innerProperties() {
-        return this.innerProperties;
+    public AppAttachPackageProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Detailed properties for App Attach Package.
+     * 
+     * @param properties the properties value to set.
+     * @return the AppAttachPackageInner object itself.
+     */
+    public AppAttachPackageInner withProperties(AppAttachPackageProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -121,204 +128,6 @@ public final class AppAttachPackageInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the App Attach Package.
-     * 
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the image property: Detailed properties for App Attach Package.
-     * 
-     * @return the image value.
-     */
-    public AppAttachPackageInfoProperties image() {
-        return this.innerProperties() == null ? null : this.innerProperties().image();
-    }
-
-    /**
-     * Set the image property: Detailed properties for App Attach Package.
-     * 
-     * @param image the image value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner withImage(AppAttachPackageInfoProperties image) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withImage(image);
-        return this;
-    }
-
-    /**
-     * Get the hostPoolReferences property: List of Hostpool resource Ids.
-     * 
-     * @return the hostPoolReferences value.
-     */
-    public List<String> hostPoolReferences() {
-        return this.innerProperties() == null ? null : this.innerProperties().hostPoolReferences();
-    }
-
-    /**
-     * Set the hostPoolReferences property: List of Hostpool resource Ids.
-     * 
-     * @param hostPoolReferences the hostPoolReferences value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner withHostPoolReferences(List<String> hostPoolReferences) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withHostPoolReferences(hostPoolReferences);
-        return this;
-    }
-
-    /**
-     * Get the keyVaultUrl property: URL path to certificate name located in keyVault.
-     * 
-     * @return the keyVaultUrl value.
-     */
-    public String keyVaultUrl() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyVaultUrl();
-    }
-
-    /**
-     * Set the keyVaultUrl property: URL path to certificate name located in keyVault.
-     * 
-     * @param keyVaultUrl the keyVaultUrl value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner withKeyVaultUrl(String keyVaultUrl) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withKeyVaultUrl(keyVaultUrl);
-        return this;
-    }
-
-    /**
-     * Get the failHealthCheckOnStagingFailure property: Parameter indicating how the health check should behave if this
-     * package fails staging.
-     * 
-     * @return the failHealthCheckOnStagingFailure value.
-     */
-    public FailHealthCheckOnStagingFailure failHealthCheckOnStagingFailure() {
-        return this.innerProperties() == null ? null : this.innerProperties().failHealthCheckOnStagingFailure();
-    }
-
-    /**
-     * Set the failHealthCheckOnStagingFailure property: Parameter indicating how the health check should behave if this
-     * package fails staging.
-     * 
-     * @param failHealthCheckOnStagingFailure the failHealthCheckOnStagingFailure value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner
-        withFailHealthCheckOnStagingFailure(FailHealthCheckOnStagingFailure failHealthCheckOnStagingFailure) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withFailHealthCheckOnStagingFailure(failHealthCheckOnStagingFailure);
-        return this;
-    }
-
-    /**
-     * Get the packageOwnerName property: Specific name of package owner, is "AppAttach" for native app attach packages.
-     * 
-     * @return the packageOwnerName value.
-     */
-    public String packageOwnerName() {
-        return this.innerProperties() == null ? null : this.innerProperties().packageOwnerName();
-    }
-
-    /**
-     * Set the packageOwnerName property: Specific name of package owner, is "AppAttach" for native app attach packages.
-     * 
-     * @param packageOwnerName the packageOwnerName value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner withPackageOwnerName(String packageOwnerName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withPackageOwnerName(packageOwnerName);
-        return this;
-    }
-
-    /**
-     * Get the packageLookbackUrl property: Lookback url to third party control plane, is null for native app attach
-     * packages.
-     * 
-     * @return the packageLookbackUrl value.
-     */
-    public String packageLookbackUrl() {
-        return this.innerProperties() == null ? null : this.innerProperties().packageLookbackUrl();
-    }
-
-    /**
-     * Set the packageLookbackUrl property: Lookback url to third party control plane, is null for native app attach
-     * packages.
-     * 
-     * @param packageLookbackUrl the packageLookbackUrl value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner withPackageLookbackUrl(String packageLookbackUrl) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withPackageLookbackUrl(packageLookbackUrl);
-        return this;
-    }
-
-    /**
-     * Get the customData property: Field that can be populated with custom data and filtered on in list GET calls.
-     * 
-     * @return the customData value.
-     */
-    public String customData() {
-        return this.innerProperties() == null ? null : this.innerProperties().customData();
-    }
-
-    /**
-     * Set the customData property: Field that can be populated with custom data and filtered on in list GET calls.
-     * 
-     * @param customData the customData value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner withCustomData(String customData) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withCustomData(customData);
-        return this;
-    }
-
-    /**
-     * Get the deploymentScope property: DeploymentScope type for AppAttachPackage.
-     * 
-     * @return the deploymentScope value.
-     */
-    public DeploymentScope deploymentScope() {
-        return this.innerProperties() == null ? null : this.innerProperties().deploymentScope();
-    }
-
-    /**
-     * Set the deploymentScope property: DeploymentScope type for AppAttachPackage.
-     * 
-     * @param deploymentScope the deploymentScope value to set.
-     * @return the AppAttachPackageInner object itself.
-     */
-    public AppAttachPackageInner withDeploymentScope(DeploymentScope deploymentScope) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppAttachPackageProperties();
-        }
-        this.innerProperties().withDeploymentScope(deploymentScope);
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -326,7 +135,7 @@ public final class AppAttachPackageInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -358,7 +167,7 @@ public final class AppAttachPackageInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAppAttachPackageInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedAppAttachPackageInner.innerProperties = AppAttachPackageProperties.fromJson(reader);
+                    deserializedAppAttachPackageInner.properties = AppAttachPackageProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedAppAttachPackageInner.systemData = SystemData.fromJson(reader);
                 } else {

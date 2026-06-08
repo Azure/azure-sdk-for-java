@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.Application;
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
 
@@ -27,15 +26,15 @@ public final class ApplicationsUpdateSamples {
             .getWithResponse("resourceGroup1", "applicationGroup1", "application1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ApplicationPatchProperties().withDescription("des1")
-                .withFriendlyName("friendly")
-                .withFilePath("path")
-                .withCommandLineSetting(CommandLineSetting.ALLOW)
-                .withCommandLineArguments("arguments")
-                .withShowInPortal(true)
-                .withIconPath("icon")
-                .withIconIndex(1)
-                .withApplicationType(RemoteApplicationType.IN_BUILT))
+            .withDescription("des1")
+            .withFriendlyName("friendly")
+            .withFilePath("path")
+            .withCommandLineSetting(CommandLineSetting.ALLOW)
+            .withCommandLineArguments("arguments")
+            .withShowInPortal(true)
+            .withIconPath("icon")
+            .withIconIndex(1)
+            .withApplicationType(RemoteApplicationType.IN_BUILT)
             .apply();
     }
 }

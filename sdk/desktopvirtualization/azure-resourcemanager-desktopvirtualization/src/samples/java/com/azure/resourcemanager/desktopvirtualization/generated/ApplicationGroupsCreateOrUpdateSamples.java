@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
+import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,14 +27,14 @@ public final class ApplicationGroupsCreateOrUpdateSamples {
             .define("applicationGroup1")
             .withRegion("centralus")
             .withExistingResourceGroup("resourceGroup1")
-            .withHostPoolArmPath(
-                "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
-            .withApplicationGroupType(ApplicationGroupType.REMOTE_APP)
+            .withProperties(new ApplicationGroupProperties().withDescription("des1")
+                .withFriendlyName("friendly")
+                .withHostPoolArmPath(
+                    "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
+                .withApplicationGroupType(ApplicationGroupType.REMOTE_APP)
+                .withShowInFeed(true)
+                .withOboTenantId("CD48BF6F-60D9-44CD-AB66-039D89C2E995"))
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withDescription("des1")
-            .withFriendlyName("friendly")
-            .withShowInFeed(true)
-            .withOboTenantId("CD48BF6F-60D9-44CD-AB66-039D89C2E995")
             .create();
     }
 

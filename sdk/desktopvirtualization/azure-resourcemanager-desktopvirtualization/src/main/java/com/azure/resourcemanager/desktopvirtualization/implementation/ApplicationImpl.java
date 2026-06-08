@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.desktopvirtualization.models.Application;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationPatch;
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
 
@@ -189,62 +188,116 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public ApplicationImpl withCommandLineSetting(CommandLineSetting commandLineSetting) {
-        this.innerModel().withCommandLineSetting(commandLineSetting);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCommandLineSetting(commandLineSetting);
+            return this;
+        } else {
+            this.updateApplication.withCommandLineSetting(commandLineSetting);
+            return this;
+        }
     }
 
     public ApplicationImpl withDescription(String description) {
-        this.innerModel().withDescription(description);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withDescription(description);
+            return this;
+        } else {
+            this.updateApplication.withDescription(description);
+            return this;
+        }
     }
 
     public ApplicationImpl withFriendlyName(String friendlyName) {
-        this.innerModel().withFriendlyName(friendlyName);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withFriendlyName(friendlyName);
+            return this;
+        } else {
+            this.updateApplication.withFriendlyName(friendlyName);
+            return this;
+        }
     }
 
     public ApplicationImpl withFilePath(String filePath) {
-        this.innerModel().withFilePath(filePath);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withFilePath(filePath);
+            return this;
+        } else {
+            this.updateApplication.withFilePath(filePath);
+            return this;
+        }
     }
 
     public ApplicationImpl withMsixPackageFamilyName(String msixPackageFamilyName) {
-        this.innerModel().withMsixPackageFamilyName(msixPackageFamilyName);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withMsixPackageFamilyName(msixPackageFamilyName);
+            return this;
+        } else {
+            this.updateApplication.withMsixPackageFamilyName(msixPackageFamilyName);
+            return this;
+        }
     }
 
     public ApplicationImpl withMsixPackageApplicationId(String msixPackageApplicationId) {
-        this.innerModel().withMsixPackageApplicationId(msixPackageApplicationId);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withMsixPackageApplicationId(msixPackageApplicationId);
+            return this;
+        } else {
+            this.updateApplication.withMsixPackageApplicationId(msixPackageApplicationId);
+            return this;
+        }
     }
 
     public ApplicationImpl withApplicationType(RemoteApplicationType applicationType) {
-        this.innerModel().withApplicationType(applicationType);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withApplicationType(applicationType);
+            return this;
+        } else {
+            this.updateApplication.withApplicationType(applicationType);
+            return this;
+        }
     }
 
     public ApplicationImpl withCommandLineArguments(String commandLineArguments) {
-        this.innerModel().withCommandLineArguments(commandLineArguments);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCommandLineArguments(commandLineArguments);
+            return this;
+        } else {
+            this.updateApplication.withCommandLineArguments(commandLineArguments);
+            return this;
+        }
     }
 
     public ApplicationImpl withShowInPortal(Boolean showInPortal) {
-        this.innerModel().withShowInPortal(showInPortal);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withShowInPortal(showInPortal);
+            return this;
+        } else {
+            this.updateApplication.withShowInPortal(showInPortal);
+            return this;
+        }
     }
 
     public ApplicationImpl withIconPath(String iconPath) {
-        this.innerModel().withIconPath(iconPath);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIconPath(iconPath);
+            return this;
+        } else {
+            this.updateApplication.withIconPath(iconPath);
+            return this;
+        }
     }
 
     public ApplicationImpl withIconIndex(Integer iconIndex) {
-        this.innerModel().withIconIndex(iconIndex);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIconIndex(iconIndex);
+            return this;
+        } else {
+            this.updateApplication.withIconIndex(iconIndex);
+            return this;
+        }
     }
 
-    public ApplicationImpl withProperties(ApplicationPatchProperties properties) {
-        this.updateApplication.withProperties(properties);
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

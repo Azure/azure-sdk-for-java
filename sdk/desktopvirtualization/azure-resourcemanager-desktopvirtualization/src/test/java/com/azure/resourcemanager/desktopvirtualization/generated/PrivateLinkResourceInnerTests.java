@@ -14,6 +14,6 @@ public final class PrivateLinkResourceInnerTests {
         PrivateLinkResourceInner model = BinaryData.fromString(
             "{\"properties\":{\"groupId\":\"i\",\"requiredMembers\":[\"pdtii\",\"q\",\"d\",\"oaxoruzfgsqu\"],\"requiredZoneNames\":[\"rxxle\",\"tramxjez\"]},\"id\":\"wnwxuqlcvyd\",\"name\":\"patdooaojkniodko\",\"type\":\"ebwnujhe\"}")
             .toObject(PrivateLinkResourceInner.class);
-        Assertions.assertEquals("rxxle", model.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("rxxle", model.requiredZoneNames().get(0));
     }
 }

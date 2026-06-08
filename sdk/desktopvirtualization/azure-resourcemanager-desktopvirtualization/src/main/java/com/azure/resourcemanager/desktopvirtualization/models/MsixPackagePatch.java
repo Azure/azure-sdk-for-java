@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackagePatchProperties;
 import java.io.IOException;
 
 /**
@@ -20,7 +21,7 @@ public final class MsixPackagePatch extends ProxyResource {
     /*
      * Detailed properties for MSIX Package
      */
-    private MsixPackagePatchProperties properties;
+    private MsixPackagePatchProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -49,23 +50,12 @@ public final class MsixPackagePatch extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Detailed properties for MSIX Package.
+     * Get the innerProperties property: Detailed properties for MSIX Package.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public MsixPackagePatchProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Detailed properties for MSIX Package.
-     * 
-     * @param properties the properties value to set.
-     * @return the MsixPackagePatch object itself.
-     */
-    public MsixPackagePatch withProperties(MsixPackagePatchProperties properties) {
-        this.properties = properties;
-        return this;
+    private MsixPackagePatchProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -108,12 +98,81 @@ public final class MsixPackagePatch extends ProxyResource {
     }
 
     /**
+     * Get the isActive property: Set a version of the package to be active across hostpool.
+     * 
+     * @return the isActive value.
+     */
+    public Boolean isActive() {
+        return this.innerProperties() == null ? null : this.innerProperties().isActive();
+    }
+
+    /**
+     * Set the isActive property: Set a version of the package to be active across hostpool.
+     * 
+     * @param isActive the isActive value to set.
+     * @return the MsixPackagePatch object itself.
+     */
+    public MsixPackagePatch withIsActive(Boolean isActive) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MsixPackagePatchProperties();
+        }
+        this.innerProperties().withIsActive(isActive);
+        return this;
+    }
+
+    /**
+     * Get the isRegularRegistration property: Set Registration mode. Regular or Delayed.
+     * 
+     * @return the isRegularRegistration value.
+     */
+    public Boolean isRegularRegistration() {
+        return this.innerProperties() == null ? null : this.innerProperties().isRegularRegistration();
+    }
+
+    /**
+     * Set the isRegularRegistration property: Set Registration mode. Regular or Delayed.
+     * 
+     * @param isRegularRegistration the isRegularRegistration value to set.
+     * @return the MsixPackagePatch object itself.
+     */
+    public MsixPackagePatch withIsRegularRegistration(Boolean isRegularRegistration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MsixPackagePatchProperties();
+        }
+        this.innerProperties().withIsRegularRegistration(isRegularRegistration);
+        return this;
+    }
+
+    /**
+     * Get the displayName property: Display name for MSIX Package.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: Display name for MSIX Package.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the MsixPackagePatch object itself.
+     */
+    public MsixPackagePatch withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MsixPackagePatchProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -140,7 +199,7 @@ public final class MsixPackagePatch extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedMsixPackagePatch.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedMsixPackagePatch.properties = MsixPackagePatchProperties.fromJson(reader);
+                    deserializedMsixPackagePatch.innerProperties = MsixPackagePatchProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedMsixPackagePatch.systemData = SystemData.fromJson(reader);
                 } else {

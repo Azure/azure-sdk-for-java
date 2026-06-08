@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanPersonalSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOperation;
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.StartupBehavior;

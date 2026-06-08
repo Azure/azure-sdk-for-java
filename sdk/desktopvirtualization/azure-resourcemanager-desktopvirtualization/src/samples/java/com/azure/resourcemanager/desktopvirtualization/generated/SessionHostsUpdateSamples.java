@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatchProperties;
 
 /**
  * Samples for SessionHosts Update.
@@ -26,9 +25,9 @@ public final class SessionHostsUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new SessionHostPatchProperties().withAllowNewSession(true)
-                .withAssignedUser("user1@microsoft.com")
-                .withFriendlyName("friendly"))
+            .withAllowNewSession(true)
+            .withAssignedUser("user1@microsoft.com")
+            .withFriendlyName("friendly")
             .withForce(true)
             .apply();
     }

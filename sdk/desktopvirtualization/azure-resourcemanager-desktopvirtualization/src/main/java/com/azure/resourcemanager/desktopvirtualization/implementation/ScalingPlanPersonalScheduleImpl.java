@@ -10,7 +10,6 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlan
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedule;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedulePatch;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOperation;
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.StartupBehavior;
@@ -248,143 +247,272 @@ public final class ScalingPlanPersonalScheduleImpl
     }
 
     public ScalingPlanPersonalScheduleImpl withDaysOfWeek(List<DayOfWeek> daysOfWeek) {
-        this.innerModel().withDaysOfWeek(daysOfWeek);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withDaysOfWeek(daysOfWeek);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withDaysOfWeek(daysOfWeek);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampUpStartTime(Time rampUpStartTime) {
-        this.innerModel().withRampUpStartTime(rampUpStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpStartTime(rampUpStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpStartTime(rampUpStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampUpAutoStartHosts(StartupBehavior rampUpAutoStartHosts) {
-        this.innerModel().withRampUpAutoStartHosts(rampUpAutoStartHosts);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpAutoStartHosts(rampUpAutoStartHosts);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpAutoStartHosts(rampUpAutoStartHosts);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampUpStartVMOnConnect(SetStartVMOnConnect rampUpStartVMOnConnect) {
-        this.innerModel().withRampUpStartVMOnConnect(rampUpStartVMOnConnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpStartVMOnConnect(rampUpStartVMOnConnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpStartVMOnConnect(rampUpStartVMOnConnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl
         withRampUpActionOnDisconnect(SessionHandlingOperation rampUpActionOnDisconnect) {
-        this.innerModel().withRampUpActionOnDisconnect(rampUpActionOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpActionOnDisconnect(rampUpActionOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpActionOnDisconnect(rampUpActionOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl
         withRampUpMinutesToWaitOnDisconnect(Integer rampUpMinutesToWaitOnDisconnect) {
-        this.innerModel().withRampUpMinutesToWaitOnDisconnect(rampUpMinutesToWaitOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpMinutesToWaitOnDisconnect(rampUpMinutesToWaitOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpMinutesToWaitOnDisconnect(rampUpMinutesToWaitOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampUpActionOnLogoff(SessionHandlingOperation rampUpActionOnLogoff) {
-        this.innerModel().withRampUpActionOnLogoff(rampUpActionOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpActionOnLogoff(rampUpActionOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpActionOnLogoff(rampUpActionOnLogoff);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampUpMinutesToWaitOnLogoff(Integer rampUpMinutesToWaitOnLogoff) {
-        this.innerModel().withRampUpMinutesToWaitOnLogoff(rampUpMinutesToWaitOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpMinutesToWaitOnLogoff(rampUpMinutesToWaitOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpMinutesToWaitOnLogoff(rampUpMinutesToWaitOnLogoff);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withPeakStartTime(Time peakStartTime) {
-        this.innerModel().withPeakStartTime(peakStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakStartTime(peakStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakStartTime(peakStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withPeakStartVMOnConnect(SetStartVMOnConnect peakStartVMOnConnect) {
-        this.innerModel().withPeakStartVMOnConnect(peakStartVMOnConnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakStartVMOnConnect(peakStartVMOnConnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakStartVMOnConnect(peakStartVMOnConnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withPeakActionOnDisconnect(SessionHandlingOperation peakActionOnDisconnect) {
-        this.innerModel().withPeakActionOnDisconnect(peakActionOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakActionOnDisconnect(peakActionOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakActionOnDisconnect(peakActionOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withPeakMinutesToWaitOnDisconnect(Integer peakMinutesToWaitOnDisconnect) {
-        this.innerModel().withPeakMinutesToWaitOnDisconnect(peakMinutesToWaitOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakMinutesToWaitOnDisconnect(peakMinutesToWaitOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakMinutesToWaitOnDisconnect(peakMinutesToWaitOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withPeakActionOnLogoff(SessionHandlingOperation peakActionOnLogoff) {
-        this.innerModel().withPeakActionOnLogoff(peakActionOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakActionOnLogoff(peakActionOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakActionOnLogoff(peakActionOnLogoff);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withPeakMinutesToWaitOnLogoff(Integer peakMinutesToWaitOnLogoff) {
-        this.innerModel().withPeakMinutesToWaitOnLogoff(peakMinutesToWaitOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakMinutesToWaitOnLogoff(peakMinutesToWaitOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakMinutesToWaitOnLogoff(peakMinutesToWaitOnLogoff);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampDownStartTime(Time rampDownStartTime) {
-        this.innerModel().withRampDownStartTime(rampDownStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownStartTime(rampDownStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownStartTime(rampDownStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampDownStartVMOnConnect(SetStartVMOnConnect rampDownStartVMOnConnect) {
-        this.innerModel().withRampDownStartVMOnConnect(rampDownStartVMOnConnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownStartVMOnConnect(rampDownStartVMOnConnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownStartVMOnConnect(rampDownStartVMOnConnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl
         withRampDownActionOnDisconnect(SessionHandlingOperation rampDownActionOnDisconnect) {
-        this.innerModel().withRampDownActionOnDisconnect(rampDownActionOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownActionOnDisconnect(rampDownActionOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownActionOnDisconnect(rampDownActionOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl
         withRampDownMinutesToWaitOnDisconnect(Integer rampDownMinutesToWaitOnDisconnect) {
-        this.innerModel().withRampDownMinutesToWaitOnDisconnect(rampDownMinutesToWaitOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownMinutesToWaitOnDisconnect(rampDownMinutesToWaitOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownMinutesToWaitOnDisconnect(rampDownMinutesToWaitOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampDownActionOnLogoff(SessionHandlingOperation rampDownActionOnLogoff) {
-        this.innerModel().withRampDownActionOnLogoff(rampDownActionOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownActionOnLogoff(rampDownActionOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownActionOnLogoff(rampDownActionOnLogoff);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withRampDownMinutesToWaitOnLogoff(Integer rampDownMinutesToWaitOnLogoff) {
-        this.innerModel().withRampDownMinutesToWaitOnLogoff(rampDownMinutesToWaitOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownMinutesToWaitOnLogoff(rampDownMinutesToWaitOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownMinutesToWaitOnLogoff(rampDownMinutesToWaitOnLogoff);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withOffPeakStartTime(Time offPeakStartTime) {
-        this.innerModel().withOffPeakStartTime(offPeakStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakStartTime(offPeakStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakStartTime(offPeakStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withOffPeakStartVMOnConnect(SetStartVMOnConnect offPeakStartVMOnConnect) {
-        this.innerModel().withOffPeakStartVMOnConnect(offPeakStartVMOnConnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakStartVMOnConnect(offPeakStartVMOnConnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakStartVMOnConnect(offPeakStartVMOnConnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl
         withOffPeakActionOnDisconnect(SessionHandlingOperation offPeakActionOnDisconnect) {
-        this.innerModel().withOffPeakActionOnDisconnect(offPeakActionOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakActionOnDisconnect(offPeakActionOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakActionOnDisconnect(offPeakActionOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl
         withOffPeakMinutesToWaitOnDisconnect(Integer offPeakMinutesToWaitOnDisconnect) {
-        this.innerModel().withOffPeakMinutesToWaitOnDisconnect(offPeakMinutesToWaitOnDisconnect);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakMinutesToWaitOnDisconnect(offPeakMinutesToWaitOnDisconnect);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakMinutesToWaitOnDisconnect(offPeakMinutesToWaitOnDisconnect);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withOffPeakActionOnLogoff(SessionHandlingOperation offPeakActionOnLogoff) {
-        this.innerModel().withOffPeakActionOnLogoff(offPeakActionOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakActionOnLogoff(offPeakActionOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakActionOnLogoff(offPeakActionOnLogoff);
+            return this;
+        }
     }
 
     public ScalingPlanPersonalScheduleImpl withOffPeakMinutesToWaitOnLogoff(Integer offPeakMinutesToWaitOnLogoff) {
-        this.innerModel().withOffPeakMinutesToWaitOnLogoff(offPeakMinutesToWaitOnLogoff);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakMinutesToWaitOnLogoff(offPeakMinutesToWaitOnLogoff);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakMinutesToWaitOnLogoff(offPeakMinutesToWaitOnLogoff);
+            return this;
+        }
     }
 
-    public ScalingPlanPersonalScheduleImpl withProperties(ScalingPlanPersonalSchedulePatchProperties properties) {
-        this.updateScalingPlanSchedule.withProperties(properties);
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

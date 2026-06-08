@@ -9,7 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanPatchProperties;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ public final class ScalingPlanPatch implements JsonSerializable<ScalingPlanPatch
     /*
      * Detailed properties for scaling plan
      */
-    private ScalingPlanPatchProperties properties;
+    private ScalingPlanPatchProperties innerProperties;
 
     /**
      * Creates an instance of ScalingPlanPatch class.
@@ -54,22 +56,149 @@ public final class ScalingPlanPatch implements JsonSerializable<ScalingPlanPatch
     }
 
     /**
-     * Get the properties property: Detailed properties for scaling plan.
+     * Get the innerProperties property: Detailed properties for scaling plan.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public ScalingPlanPatchProperties properties() {
-        return this.properties;
+    private ScalingPlanPatchProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the properties property: Detailed properties for scaling plan.
+     * Get the description property: Description of scaling plan.
      * 
-     * @param properties the properties value to set.
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of scaling plan.
+     * 
+     * @param description the description value to set.
      * @return the ScalingPlanPatch object itself.
      */
-    public ScalingPlanPatch withProperties(ScalingPlanPatchProperties properties) {
-        this.properties = properties;
+    public ScalingPlanPatch withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPatchProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: User friendly name of scaling plan.
+     * 
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Set the friendlyName property: User friendly name of scaling plan.
+     * 
+     * @param friendlyName the friendlyName value to set.
+     * @return the ScalingPlanPatch object itself.
+     */
+    public ScalingPlanPatch withFriendlyName(String friendlyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPatchProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
+        return this;
+    }
+
+    /**
+     * Get the timeZone property: Timezone of the scaling plan.
+     * 
+     * @return the timeZone value.
+     */
+    public String timeZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeZone();
+    }
+
+    /**
+     * Set the timeZone property: Timezone of the scaling plan.
+     * 
+     * @param timeZone the timeZone value to set.
+     * @return the ScalingPlanPatch object itself.
+     */
+    public ScalingPlanPatch withTimeZone(String timeZone) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPatchProperties();
+        }
+        this.innerProperties().withTimeZone(timeZone);
+        return this;
+    }
+
+    /**
+     * Get the exclusionTag property: Exclusion tag for scaling plan.
+     * 
+     * @return the exclusionTag value.
+     */
+    public String exclusionTag() {
+        return this.innerProperties() == null ? null : this.innerProperties().exclusionTag();
+    }
+
+    /**
+     * Set the exclusionTag property: Exclusion tag for scaling plan.
+     * 
+     * @param exclusionTag the exclusionTag value to set.
+     * @return the ScalingPlanPatch object itself.
+     */
+    public ScalingPlanPatch withExclusionTag(String exclusionTag) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPatchProperties();
+        }
+        this.innerProperties().withExclusionTag(exclusionTag);
+        return this;
+    }
+
+    /**
+     * Get the schedules property: List of ScalingSchedule definitions.
+     * 
+     * @return the schedules value.
+     */
+    public List<ScalingSchedule> schedules() {
+        return this.innerProperties() == null ? null : this.innerProperties().schedules();
+    }
+
+    /**
+     * Set the schedules property: List of ScalingSchedule definitions.
+     * 
+     * @param schedules the schedules value to set.
+     * @return the ScalingPlanPatch object itself.
+     */
+    public ScalingPlanPatch withSchedules(List<ScalingSchedule> schedules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPatchProperties();
+        }
+        this.innerProperties().withSchedules(schedules);
+        return this;
+    }
+
+    /**
+     * Get the hostPoolReferences property: List of ScalingHostPoolReference definitions.
+     * 
+     * @return the hostPoolReferences value.
+     */
+    public List<ScalingHostPoolReference> hostPoolReferences() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostPoolReferences();
+    }
+
+    /**
+     * Set the hostPoolReferences property: List of ScalingHostPoolReference definitions.
+     * 
+     * @param hostPoolReferences the hostPoolReferences value to set.
+     * @return the ScalingPlanPatch object itself.
+     */
+    public ScalingPlanPatch withHostPoolReferences(List<ScalingHostPoolReference> hostPoolReferences) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScalingPlanPatchProperties();
+        }
+        this.innerProperties().withHostPoolReferences(hostPoolReferences);
         return this;
     }
 
@@ -80,7 +209,7 @@ public final class ScalingPlanPatch implements JsonSerializable<ScalingPlanPatch
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,7 +232,7 @@ public final class ScalingPlanPatch implements JsonSerializable<ScalingPlanPatch
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedScalingPlanPatch.tags = tags;
                 } else if ("properties".equals(fieldName)) {
-                    deserializedScalingPlanPatch.properties = ScalingPlanPatchProperties.fromJson(reader);
+                    deserializedScalingPlanPatch.innerProperties = ScalingPlanPatchProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

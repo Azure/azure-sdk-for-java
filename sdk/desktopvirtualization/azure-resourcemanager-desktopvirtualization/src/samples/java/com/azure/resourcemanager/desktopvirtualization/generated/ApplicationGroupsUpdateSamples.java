@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroup;
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupPatchProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,9 +27,9 @@ public final class ApplicationGroupsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(new ApplicationGroupPatchProperties().withDescription("des1")
-                .withFriendlyName("friendly")
-                .withShowInFeed(true))
+            .withDescription("des1")
+            .withFriendlyName("friendly")
+            .withShowInFeed(true)
             .apply();
     }
 

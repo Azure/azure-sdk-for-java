@@ -34,6 +34,6 @@ public final class PrivateLinkResourcesListByHostPoolMockTests {
         PagedIterable<PrivateLinkResource> response = manager.privateLinkResources()
             .listByHostPool("bkjbz", "ensvkzykjtj", 1399130585, true, 1535678701, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kjzwfbcyayk", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("kjzwfbcyayk", response.iterator().next().requiredZoneNames().get(0));
     }
 }

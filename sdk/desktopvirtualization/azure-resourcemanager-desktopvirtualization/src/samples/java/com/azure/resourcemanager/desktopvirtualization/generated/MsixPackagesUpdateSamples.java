@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackage;
-import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatchProperties;
 
 /**
  * Samples for MsixPackages Update.
@@ -24,10 +23,6 @@ public final class MsixPackagesUpdateSamples {
         MsixPackage resource = manager.msixPackages()
             .getWithResponse("resourceGroup1", "hostpool1", "msixpackagefullname", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update()
-            .withProperties(new MsixPackagePatchProperties().withIsActive(true)
-                .withIsRegularRegistration(false)
-                .withDisplayName("displayname"))
-            .apply();
+        resource.update().withIsActive(true).withIsRegularRegistration(false).withDisplayName("displayname").apply();
     }
 }

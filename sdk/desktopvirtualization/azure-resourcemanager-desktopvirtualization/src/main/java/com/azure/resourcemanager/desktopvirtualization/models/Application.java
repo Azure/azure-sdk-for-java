@@ -370,7 +370,10 @@ public interface Application {
     /**
      * The template for Application update.
      */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithDescription, UpdateStages.WithFriendlyName, UpdateStages.WithFilePath,
+        UpdateStages.WithCommandLineSetting, UpdateStages.WithCommandLineArguments, UpdateStages.WithShowInPortal,
+        UpdateStages.WithIconPath, UpdateStages.WithIconIndex, UpdateStages.WithMsixPackageFamilyName,
+        UpdateStages.WithMsixPackageApplicationId, UpdateStages.WithApplicationType {
         /**
          * Executes the update request.
          * 
@@ -392,16 +395,152 @@ public interface Application {
      */
     interface UpdateStages {
         /**
-         * The stage of the Application update allowing to specify properties.
+         * The stage of the Application update allowing to specify description.
          */
-        interface WithProperties {
+        interface WithDescription {
             /**
-             * Specifies the properties property: Detailed properties for Application.
+             * Specifies the description property: Description of Application..
              * 
-             * @param properties Detailed properties for Application.
+             * @param description Description of Application.
              * @return the next definition stage.
              */
-            Update withProperties(ApplicationPatchProperties properties);
+            Update withDescription(String description);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify friendlyName.
+         */
+        interface WithFriendlyName {
+            /**
+             * Specifies the friendlyName property: Friendly name of Application..
+             * 
+             * @param friendlyName Friendly name of Application.
+             * @return the next definition stage.
+             */
+            Update withFriendlyName(String friendlyName);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify filePath.
+         */
+        interface WithFilePath {
+            /**
+             * Specifies the filePath property: Specifies a path for the executable file for the application..
+             * 
+             * @param filePath Specifies a path for the executable file for the application.
+             * @return the next definition stage.
+             */
+            Update withFilePath(String filePath);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify commandLineSetting.
+         */
+        interface WithCommandLineSetting {
+            /**
+             * Specifies the commandLineSetting property: Specifies whether this published application can be launched
+             * with command line arguments provided by the client, command line arguments specified at publish time, or
+             * no command line arguments at all..
+             * 
+             * @param commandLineSetting Specifies whether this published application can be launched with command line
+             * arguments provided by the client, command line arguments specified at publish time, or no command line
+             * arguments at all.
+             * @return the next definition stage.
+             */
+            Update withCommandLineSetting(CommandLineSetting commandLineSetting);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify commandLineArguments.
+         */
+        interface WithCommandLineArguments {
+            /**
+             * Specifies the commandLineArguments property: Command Line Arguments for Application..
+             * 
+             * @param commandLineArguments Command Line Arguments for Application.
+             * @return the next definition stage.
+             */
+            Update withCommandLineArguments(String commandLineArguments);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify showInPortal.
+         */
+        interface WithShowInPortal {
+            /**
+             * Specifies the showInPortal property: Specifies whether to show the RemoteApp program in the RD Web Access
+             * server..
+             * 
+             * @param showInPortal Specifies whether to show the RemoteApp program in the RD Web Access server.
+             * @return the next definition stage.
+             */
+            Update withShowInPortal(Boolean showInPortal);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify iconPath.
+         */
+        interface WithIconPath {
+            /**
+             * Specifies the iconPath property: Path to icon..
+             * 
+             * @param iconPath Path to icon.
+             * @return the next definition stage.
+             */
+            Update withIconPath(String iconPath);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify iconIndex.
+         */
+        interface WithIconIndex {
+            /**
+             * Specifies the iconIndex property: Index of the icon..
+             * 
+             * @param iconIndex Index of the icon.
+             * @return the next definition stage.
+             */
+            Update withIconIndex(Integer iconIndex);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify msixPackageFamilyName.
+         */
+        interface WithMsixPackageFamilyName {
+            /**
+             * Specifies the msixPackageFamilyName property: Specifies the package family name for MSIX applications.
+             * 
+             * @param msixPackageFamilyName Specifies the package family name for MSIX applications.
+             * @return the next definition stage.
+             */
+            Update withMsixPackageFamilyName(String msixPackageFamilyName);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify msixPackageApplicationId.
+         */
+        interface WithMsixPackageApplicationId {
+            /**
+             * Specifies the msixPackageApplicationId property: Specifies the package application Id for MSIX
+             * applications.
+             * 
+             * @param msixPackageApplicationId Specifies the package application Id for MSIX applications.
+             * @return the next definition stage.
+             */
+            Update withMsixPackageApplicationId(String msixPackageApplicationId);
+        }
+
+        /**
+         * The stage of the Application update allowing to specify applicationType.
+         */
+        interface WithApplicationType {
+            /**
+             * Specifies the applicationType property: Resource Type of Application..
+             * 
+             * @param applicationType Resource Type of Application.
+             * @return the next definition stage.
+             */
+            Update withApplicationType(RemoteApplicationType applicationType);
         }
     }
 

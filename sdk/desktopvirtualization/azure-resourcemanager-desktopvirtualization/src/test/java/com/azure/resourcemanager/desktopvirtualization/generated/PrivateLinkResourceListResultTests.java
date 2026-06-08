@@ -14,7 +14,7 @@ public final class PrivateLinkResourceListResultTests {
         PrivateLinkResourceListResult model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"groupId\":\"aanozjosphyoulpj\",\"requiredMembers\":[\"ag\"],\"requiredZoneNames\":[\"imjwosyt\",\"itc\"]},\"id\":\"fcktqumiekke\",\"name\":\"zikhl\",\"type\":\"fjhdg\"},{\"properties\":{\"groupId\":\"ebdunyg\",\"requiredMembers\":[\"idb\",\"fatpxllrxcyjmoa\",\"su\",\"arm\"],\"requiredZoneNames\":[\"mjsjqb\",\"hhyxxrw\"]},\"id\":\"co\",\"name\":\"uhpkxkgymar\",\"type\":\"qnajxqugj\"},{\"properties\":{\"groupId\":\"cubeddgssofw\",\"requiredMembers\":[\"qal\",\"rmnjijpx\",\"cqqudf\",\"byxbaaabjy\"],\"requiredZoneNames\":[\"ffimrzrtuzqogsex\",\"evfdnwnwm\",\"wzsyyceuzs\",\"i\"]},\"id\":\"ud\",\"name\":\"frxtrthzvaytdwk\",\"type\":\"brqubp\"}],\"nextLink\":\"h\"}")
             .toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("imjwosyt", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("imjwosyt", model.value().get(0).requiredZoneNames().get(0));
         Assertions.assertEquals("h", model.nextLink());
     }
 }

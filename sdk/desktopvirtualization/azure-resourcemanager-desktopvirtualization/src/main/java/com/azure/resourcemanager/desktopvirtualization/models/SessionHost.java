@@ -316,7 +316,8 @@ public interface SessionHost {
     /**
      * The template for SessionHost update.
      */
-    interface Update extends UpdateStages.WithProperties, UpdateStages.WithForce {
+    interface Update extends UpdateStages.WithAllowNewSession, UpdateStages.WithAssignedUser,
+        UpdateStages.WithFriendlyName, UpdateStages.WithForce {
         /**
          * Executes the update request.
          * 
@@ -338,16 +339,42 @@ public interface SessionHost {
      */
     interface UpdateStages {
         /**
-         * The stage of the SessionHost update allowing to specify properties.
+         * The stage of the SessionHost update allowing to specify allowNewSession.
          */
-        interface WithProperties {
+        interface WithAllowNewSession {
             /**
-             * Specifies the properties property: Detailed properties for SessionHost.
+             * Specifies the allowNewSession property: Allow a new session..
              * 
-             * @param properties Detailed properties for SessionHost.
+             * @param allowNewSession Allow a new session.
              * @return the next definition stage.
              */
-            Update withProperties(SessionHostPatchProperties properties);
+            Update withAllowNewSession(Boolean allowNewSession);
+        }
+
+        /**
+         * The stage of the SessionHost update allowing to specify assignedUser.
+         */
+        interface WithAssignedUser {
+            /**
+             * Specifies the assignedUser property: User assigned to SessionHost..
+             * 
+             * @param assignedUser User assigned to SessionHost.
+             * @return the next definition stage.
+             */
+            Update withAssignedUser(String assignedUser);
+        }
+
+        /**
+         * The stage of the SessionHost update allowing to specify friendlyName.
+         */
+        interface WithFriendlyName {
+            /**
+             * Specifies the friendlyName property: Friendly name of SessionHost.
+             * 
+             * @param friendlyName Friendly name of SessionHost.
+             * @return the next definition stage.
+             */
+            Update withFriendlyName(String friendlyName);
         }
 
         /**

@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.SessionHostPatchProperties;
 import java.io.IOException;
 
 /**
@@ -20,7 +21,7 @@ public final class SessionHostPatch extends ProxyResource {
     /*
      * Detailed properties for SessionHost
      */
-    private SessionHostPatchProperties properties;
+    private SessionHostPatchProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -49,23 +50,12 @@ public final class SessionHostPatch extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Detailed properties for SessionHost.
+     * Get the innerProperties property: Detailed properties for SessionHost.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public SessionHostPatchProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Detailed properties for SessionHost.
-     * 
-     * @param properties the properties value to set.
-     * @return the SessionHostPatch object itself.
-     */
-    public SessionHostPatch withProperties(SessionHostPatchProperties properties) {
-        this.properties = properties;
-        return this;
+    private SessionHostPatchProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -108,12 +98,81 @@ public final class SessionHostPatch extends ProxyResource {
     }
 
     /**
+     * Get the allowNewSession property: Allow a new session.
+     * 
+     * @return the allowNewSession value.
+     */
+    public Boolean allowNewSession() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowNewSession();
+    }
+
+    /**
+     * Set the allowNewSession property: Allow a new session.
+     * 
+     * @param allowNewSession the allowNewSession value to set.
+     * @return the SessionHostPatch object itself.
+     */
+    public SessionHostPatch withAllowNewSession(Boolean allowNewSession) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SessionHostPatchProperties();
+        }
+        this.innerProperties().withAllowNewSession(allowNewSession);
+        return this;
+    }
+
+    /**
+     * Get the assignedUser property: User assigned to SessionHost.
+     * 
+     * @return the assignedUser value.
+     */
+    public String assignedUser() {
+        return this.innerProperties() == null ? null : this.innerProperties().assignedUser();
+    }
+
+    /**
+     * Set the assignedUser property: User assigned to SessionHost.
+     * 
+     * @param assignedUser the assignedUser value to set.
+     * @return the SessionHostPatch object itself.
+     */
+    public SessionHostPatch withAssignedUser(String assignedUser) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SessionHostPatchProperties();
+        }
+        this.innerProperties().withAssignedUser(assignedUser);
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of SessionHost.
+     * 
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Set the friendlyName property: Friendly name of SessionHost.
+     * 
+     * @param friendlyName the friendlyName value to set.
+     * @return the SessionHostPatch object itself.
+     */
+    public SessionHostPatch withFriendlyName(String friendlyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SessionHostPatchProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -140,7 +199,7 @@ public final class SessionHostPatch extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedSessionHostPatch.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedSessionHostPatch.properties = SessionHostPatchProperties.fromJson(reader);
+                    deserializedSessionHostPatch.innerProperties = SessionHostPatchProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSessionHostPatch.systemData = SystemData.fromJson(reader);
                 } else {

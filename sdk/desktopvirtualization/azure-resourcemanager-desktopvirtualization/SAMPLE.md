@@ -226,6 +226,7 @@ public final class ActiveSessionHostConfigurationsListByHostPoolSamples {
 
 ```java
 import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageInfoProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.DeploymentScope;
 import com.azure.resourcemanager.desktopvirtualization.models.FailHealthCheckOnStagingFailure;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
@@ -251,34 +252,35 @@ public final class AppAttachPackageCreateOrUpdateSamples {
             .define("msixpackagefullname")
             .withRegion("southcentralus")
             .withExistingResourceGroup("resourceGroup1")
-            .withImage(new AppAttachPackageInfoProperties().withPackageAlias("msixpackagealias")
-                .withImagePath("imagepath")
-                .withPackageName("MsixPackageName")
-                .withPackageFamilyName("MsixPackage_FamilyName")
-                .withPackageFullName("MsixPackage_FullName")
-                .withDisplayName("displayname")
-                .withPackageRelativePath("packagerelativepath")
-                .withIsRegularRegistration(false)
-                .withIsActive(false)
-                .withPackageDependencies(
-                    Arrays.asList(new MsixPackageDependencies().withDependencyName("MsixPackage_Dependency_Name")
-                        .withPublisher("MsixPackage_Dependency_Publisher")
-                        .withMinVersion("packageDep_version")))
-                .withVersion("packageversion")
-                .withLastUpdated(OffsetDateTime.parse("2008-09-22T14:01:54.9571247Z"))
-                .withPackageApplications(Arrays.asList(new MsixPackageApplications().withAppId("AppId")
-                    .withDescription("PackageApplicationDescription")
-                    .withAppUserModelId("AppUserModelId")
-                    .withFriendlyName("FriendlyName")
-                    .withIconImageName("Iconimagename")
-                    .withRawIcon("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())
-                    .withRawPng("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())))
-                .withCertificateName("certName")
-                .withCertificateExpiry(OffsetDateTime.parse("2023-01-02T17:18:19.1234567Z")))
-            .withHostPoolReferences(Arrays.asList())
-            .withKeyVaultUrl("")
-            .withFailHealthCheckOnStagingFailure(FailHealthCheckOnStagingFailure.NEEDS_ASSISTANCE)
-            .withDeploymentScope(DeploymentScope.GEOGRAPHICAL)
+            .withProperties(new AppAttachPackageProperties()
+                .withImage(new AppAttachPackageInfoProperties().withPackageAlias("msixpackagealias")
+                    .withImagePath("imagepath")
+                    .withPackageName("MsixPackageName")
+                    .withPackageFamilyName("MsixPackage_FamilyName")
+                    .withPackageFullName("MsixPackage_FullName")
+                    .withDisplayName("displayname")
+                    .withPackageRelativePath("packagerelativepath")
+                    .withIsRegularRegistration(false)
+                    .withIsActive(false)
+                    .withPackageDependencies(
+                        Arrays.asList(new MsixPackageDependencies().withDependencyName("MsixPackage_Dependency_Name")
+                            .withPublisher("MsixPackage_Dependency_Publisher")
+                            .withMinVersion("packageDep_version")))
+                    .withVersion("packageversion")
+                    .withLastUpdated(OffsetDateTime.parse("2008-09-22T14:01:54.9571247Z"))
+                    .withPackageApplications(Arrays.asList(new MsixPackageApplications().withAppId("AppId")
+                        .withDescription("PackageApplicationDescription")
+                        .withAppUserModelId("AppUserModelId")
+                        .withFriendlyName("FriendlyName")
+                        .withIconImageName("Iconimagename")
+                        .withRawIcon("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())
+                        .withRawPng("VGhpcyBpcyBhIHN0cmluZyB0byBoYXNo".getBytes())))
+                    .withCertificateName("certName")
+                    .withCertificateExpiry(OffsetDateTime.parse("2023-01-02T17:18:19.1234567Z")))
+                .withHostPoolReferences(Arrays.asList())
+                .withKeyVaultUrl("fakeTokenPlaceholder")
+                .withFailHealthCheckOnStagingFailure(FailHealthCheckOnStagingFailure.NEEDS_ASSISTANCE)
+                .withDeploymentScope(DeploymentScope.GEOGRAPHICAL))
             .create();
     }
 }
@@ -472,6 +474,7 @@ public final class AppAttachPackageInfoImportMethodSamples {
 ### ApplicationGroups_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
 import java.util.HashMap;
 import java.util.Map;
@@ -494,14 +497,14 @@ public final class ApplicationGroupsCreateOrUpdateSamples {
             .define("applicationGroup1")
             .withRegion("centralus")
             .withExistingResourceGroup("resourceGroup1")
-            .withHostPoolArmPath(
-                "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
-            .withApplicationGroupType(ApplicationGroupType.REMOTE_APP)
+            .withProperties(new ApplicationGroupProperties().withDescription("des1")
+                .withFriendlyName("friendly")
+                .withHostPoolArmPath(
+                    "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
+                .withApplicationGroupType(ApplicationGroupType.REMOTE_APP)
+                .withShowInFeed(true)
+                .withOboTenantId("CD48BF6F-60D9-44CD-AB66-039D89C2E995"))
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withDescription("des1")
-            .withFriendlyName("friendly")
-            .withShowInFeed(true)
-            .withOboTenantId("CD48BF6F-60D9-44CD-AB66-039D89C2E995")
             .create();
     }
 
@@ -615,7 +618,6 @@ public final class ApplicationGroupsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroup;
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupPatchProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -638,9 +640,9 @@ public final class ApplicationGroupsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(new ApplicationGroupPatchProperties().withDescription("des1")
-                .withFriendlyName("friendly")
-                .withShowInFeed(true))
+            .withDescription("des1")
+            .withFriendlyName("friendly")
+            .withShowInFeed(true)
             .apply();
     }
 
@@ -767,7 +769,6 @@ public final class ApplicationsListSamples {
 
 ```java
 import com.azure.resourcemanager.desktopvirtualization.models.Application;
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
 
@@ -789,15 +790,15 @@ public final class ApplicationsUpdateSamples {
             .getWithResponse("resourceGroup1", "applicationGroup1", "application1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ApplicationPatchProperties().withDescription("des1")
-                .withFriendlyName("friendly")
-                .withFilePath("path")
-                .withCommandLineSetting(CommandLineSetting.ALLOW)
-                .withCommandLineArguments("arguments")
-                .withShowInPortal(true)
-                .withIconPath("icon")
-                .withIconIndex(1)
-                .withApplicationType(RemoteApplicationType.IN_BUILT))
+            .withDescription("des1")
+            .withFriendlyName("friendly")
+            .withFilePath("path")
+            .withCommandLineSetting(CommandLineSetting.ALLOW)
+            .withCommandLineArguments("arguments")
+            .withShowInPortal(true)
+            .withIconPath("icon")
+            .withIconIndex(1)
+            .withApplicationType(RemoteApplicationType.IN_BUILT)
             .apply();
     }
 }
@@ -1168,7 +1169,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.AllowRDPShortPathW
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.DirectUDP;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPool;
-import com.azure.resourcemanager.desktopvirtualization.models.HostPoolPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.MaintenanceWindowPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ManagedPrivateUDP;
@@ -1203,33 +1203,33 @@ public final class HostPoolsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(
-                new HostPoolPatchProperties().withFriendlyName("friendly")
-                    .withDescription("des1")
-                    .withMaxSessionLimit(999999)
-                    .withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType.AUTOMATIC)
-                    .withLoadBalancerType(LoadBalancerType.BREADTH_FIRST)
-                    .withRegistrationInfo(new RegistrationInfoPatch()
-                        .withExpirationTime(OffsetDateTime.parse("2020-10-01T15:01:54.9571247Z"))
-                        .withRegistrationTokenOperation(RegistrationTokenOperation.UPDATE))
-                    .withVmTemplate("{json:json}")
-                    .withSsoadfsAuthority("https://adfs")
-                    .withSsoClientId("client")
-                    .withSsoClientSecretKeyVaultPath("fakeTokenPlaceholder")
-                    .withSsoSecretType(SsoSecretType.SHARED_KEY)
-                    .withStartVMOnConnect(false)
-                    .withAgentUpdate(new AgentUpdatePatchProperties().withType(SessionHostComponentUpdateType.SCHEDULED)
-                        .withUseSessionHostLocalTime(false)
-                        .withMaintenanceWindowTimeZone("Alaskan Standard Time")
-                        .withMaintenanceWindows(Arrays.asList(
-                            new MaintenanceWindowPatchProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
-                            new MaintenanceWindowPatchProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
-                    .withManagedPrivateUDP(ManagedPrivateUDP.ENABLED)
-                    .withDirectUDP(DirectUDP.ENABLED)
-                    .withPublicUDP(PublicUDP.ENABLED)
-                    .withRelayUDP(RelayUDP.ENABLED)
-                    .withAllowRDPShortPathWithPrivateLink(AllowRDPShortPathWithPrivateLink.ENABLED)
-                    .withConditionalRdpProperty("drivestoredirect:s:*:AuthContext:c1"))
+            .withFriendlyName("friendly")
+            .withDescription("des1")
+            .withMaxSessionLimit(999999)
+            .withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType.AUTOMATIC)
+            .withLoadBalancerType(LoadBalancerType.BREADTH_FIRST)
+            .withRegistrationInfo(
+                new RegistrationInfoPatch().withExpirationTime(OffsetDateTime.parse("2020-10-01T15:01:54.9571247Z"))
+                    .withRegistrationTokenOperation(RegistrationTokenOperation.UPDATE))
+            .withVmTemplate("{json:json}")
+            .withSsoadfsAuthority("https://adfs")
+            .withSsoClientId("client")
+            .withSsoClientSecretKeyVaultPath("https://keyvault/secret")
+            .withSsoSecretType(SsoSecretType.SHARED_KEY)
+            .withStartVMOnConnect(false)
+            .withAgentUpdate(
+                new AgentUpdatePatchProperties().withType(SessionHostComponentUpdateType.SCHEDULED)
+                    .withUseSessionHostLocalTime(false)
+                    .withMaintenanceWindowTimeZone("Alaskan Standard Time")
+                    .withMaintenanceWindows(Arrays.asList(
+                        new MaintenanceWindowPatchProperties().withHour(7).withDayOfWeek(DayOfWeek.FRIDAY),
+                        new MaintenanceWindowPatchProperties().withHour(8).withDayOfWeek(DayOfWeek.SATURDAY))))
+            .withManagedPrivateUDP(ManagedPrivateUDP.ENABLED)
+            .withDirectUDP(DirectUDP.ENABLED)
+            .withPublicUDP(PublicUDP.ENABLED)
+            .withRelayUDP(RelayUDP.ENABLED)
+            .withAllowRDPShortPathWithPrivateLink(AllowRDPShortPathWithPrivateLink.ENABLED)
+            .withConditionalRdpProperty("drivestoredirect:s:*:AuthContext:c1")
             .apply();
     }
 
@@ -1430,7 +1430,6 @@ public final class MsixPackagesListSamples {
 
 ```java
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackage;
-import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatchProperties;
 
 /**
  * Samples for MsixPackages Update.
@@ -1449,11 +1448,7 @@ public final class MsixPackagesUpdateSamples {
         MsixPackage resource = manager.msixPackages()
             .getWithResponse("resourceGroup1", "hostpool1", "msixpackagefullname", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update()
-            .withProperties(new MsixPackagePatchProperties().withIsActive(true)
-                .withIsRegularRegistration(false)
-                .withDisplayName("displayname"))
-            .apply();
+        resource.update().withIsActive(true).withIsRegularRegistration(false).withDisplayName("displayname").apply();
     }
 }
 ```
@@ -1868,7 +1863,6 @@ public final class ScalingPlanPersonalSchedulesListSamples {
 
 ```java
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedule;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOperation;
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -1892,23 +1886,22 @@ public final class ScalingPlanPersonalSchedulesUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(
-                new ScalingPlanPersonalSchedulePatchProperties().withPeakStartTime(new Time().withHour(8).withMinute(0))
-                    .withPeakActionOnDisconnect(SessionHandlingOperation.NONE)
-                    .withPeakMinutesToWaitOnDisconnect(10)
-                    .withPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                    .withPeakMinutesToWaitOnLogoff(10)
-                    .withRampDownStartTime(new Time().withHour(18).withMinute(0))
-                    .withRampDownActionOnDisconnect(SessionHandlingOperation.NONE)
-                    .withRampDownMinutesToWaitOnDisconnect(10)
-                    .withRampDownActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                    .withRampDownMinutesToWaitOnLogoff(10)
-                    .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
-                    .withOffPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
-                    .withOffPeakActionOnDisconnect(SessionHandlingOperation.NONE)
-                    .withOffPeakMinutesToWaitOnDisconnect(10)
-                    .withOffPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                    .withOffPeakMinutesToWaitOnLogoff(10))
+            .withPeakStartTime(new Time().withHour(8).withMinute(0))
+            .withPeakActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withPeakMinutesToWaitOnDisconnect(10)
+            .withPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+            .withPeakMinutesToWaitOnLogoff(10)
+            .withRampDownStartTime(new Time().withHour(18).withMinute(0))
+            .withRampDownActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withRampDownMinutesToWaitOnDisconnect(10)
+            .withRampDownActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+            .withRampDownMinutesToWaitOnLogoff(10)
+            .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
+            .withOffPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
+            .withOffPeakActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withOffPeakMinutesToWaitOnDisconnect(10)
+            .withOffPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+            .withOffPeakMinutesToWaitOnLogoff(10)
             .apply();
     }
 }
@@ -2075,7 +2068,6 @@ public final class ScalingPlanPooledSchedulesListSamples {
 ```java
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedule;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 import java.util.Arrays;
@@ -2099,15 +2091,14 @@ public final class ScalingPlanPooledSchedulesUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new ScalingPlanPooledSchedulePatchProperties()
-                .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                    DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
-                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                .withRampUpCapacityThresholdPct(80)
-                .withPeakStartTime(new Time().withHour(8).withMinute(0))
-                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                .withRampDownMinimumHostsPct(20)
-                .withRampDownWaitTimeMinutes(30))
+            .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY))
+            .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+            .withRampUpCapacityThresholdPct(80)
+            .withPeakStartTime(new Time().withHour(8).withMinute(0))
+            .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+            .withRampDownMinimumHostsPct(20)
+            .withRampDownWaitTimeMinutes(30)
             .apply();
     }
 }
@@ -2307,7 +2298,6 @@ public final class ScalingPlansListByResourceGroupSamples {
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlan;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -2334,31 +2324,31 @@ public final class ScalingPlansUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(new ScalingPlanPatchProperties().withDescription("Description of Scaling Plan")
-                .withFriendlyName("Scaling Plan 1")
-                .withTimeZone("Central Standard Time")
-                .withExclusionTag("value")
-                .withSchedules(Arrays.asList(new ScalingSchedule().withName("schedule1")
-                    .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
-                    .withRampUpStartTime(new Time().withHour(6).withMinute(0))
-                    .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                    .withRampUpMinimumHostsPct(20)
-                    .withRampUpCapacityThresholdPct(80)
-                    .withPeakStartTime(new Time().withHour(8).withMinute(0))
-                    .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                    .withRampDownStartTime(new Time().withHour(18).withMinute(0))
-                    .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                    .withRampDownMinimumHostsPct(20)
-                    .withRampDownCapacityThresholdPct(50)
-                    .withRampDownForceLogoffUsers(true)
-                    .withRampDownWaitTimeMinutes(30)
-                    .withRampDownNotificationMessage("message")
-                    .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
-                    .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)))
-                .withHostPoolReferences(Arrays.asList(new ScalingHostPoolReference().withHostPoolArmPath(
-                    "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
-                    .withScalingPlanEnabled(true))))
+            .withDescription("Description of Scaling Plan")
+            .withFriendlyName("Scaling Plan 1")
+            .withTimeZone("Central Standard Time")
+            .withExclusionTag("value")
+            .withSchedules(Arrays.asList(new ScalingSchedule().withName("schedule1")
+                .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+                    DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
+                .withRampUpStartTime(new Time().withHour(6).withMinute(0))
+                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                .withRampUpMinimumHostsPct(20)
+                .withRampUpCapacityThresholdPct(80)
+                .withPeakStartTime(new Time().withHour(8).withMinute(0))
+                .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+                .withRampDownStartTime(new Time().withHour(18).withMinute(0))
+                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                .withRampDownMinimumHostsPct(20)
+                .withRampDownCapacityThresholdPct(50)
+                .withRampDownForceLogoffUsers(true)
+                .withRampDownWaitTimeMinutes(30)
+                .withRampDownNotificationMessage("message")
+                .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
+                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)))
+            .withHostPoolReferences(Arrays.asList(new ScalingHostPoolReference().withHostPoolArmPath(
+                "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
+                .withScalingPlanEnabled(true)))
             .apply();
     }
 
@@ -2922,7 +2912,6 @@ public final class SessionHostsRetryProvisioningSamples {
 
 ```java
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatchProperties;
 
 /**
  * Samples for SessionHosts Update.
@@ -2943,9 +2932,9 @@ public final class SessionHostsUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new SessionHostPatchProperties().withAllowNewSession(true)
-                .withAssignedUser("user1@microsoft.com")
-                .withFriendlyName("friendly"))
+            .withAllowNewSession(true)
+            .withAssignedUser("user1@microsoft.com")
+            .withFriendlyName("friendly")
             .withForce(true)
             .apply();
     }

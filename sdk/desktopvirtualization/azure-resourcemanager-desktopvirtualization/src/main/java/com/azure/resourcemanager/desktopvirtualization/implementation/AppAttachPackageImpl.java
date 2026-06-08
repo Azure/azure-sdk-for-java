@@ -9,14 +9,10 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.AppAttachPackageInner;
 import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackage;
-import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageInfoProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackagePatch;
 import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackagePatchProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.DeploymentScope;
-import com.azure.resourcemanager.desktopvirtualization.models.FailHealthCheckOnStagingFailure;
-import com.azure.resourcemanager.desktopvirtualization.models.ProvisioningState;
+import com.azure.resourcemanager.desktopvirtualization.models.AppAttachPackageProperties;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class AppAttachPackageImpl
@@ -50,49 +46,12 @@ public final class AppAttachPackageImpl
         }
     }
 
+    public AppAttachPackageProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public AppAttachPackageInfoProperties image() {
-        return this.innerModel().image();
-    }
-
-    public List<String> hostPoolReferences() {
-        List<String> inner = this.innerModel().hostPoolReferences();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public String keyVaultUrl() {
-        return this.innerModel().keyVaultUrl();
-    }
-
-    public FailHealthCheckOnStagingFailure failHealthCheckOnStagingFailure() {
-        return this.innerModel().failHealthCheckOnStagingFailure();
-    }
-
-    public String packageOwnerName() {
-        return this.innerModel().packageOwnerName();
-    }
-
-    public String packageLookbackUrl() {
-        return this.innerModel().packageLookbackUrl();
-    }
-
-    public String customData() {
-        return this.innerModel().customData();
-    }
-
-    public DeploymentScope deploymentScope() {
-        return this.innerModel().deploymentScope();
     }
 
     public Region region() {
@@ -204,6 +163,11 @@ public final class AppAttachPackageImpl
         return this;
     }
 
+    public AppAttachPackageImpl withProperties(AppAttachPackageProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
     public AppAttachPackageImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -212,47 +176,6 @@ public final class AppAttachPackageImpl
             this.updateAppAttachPackagePatch.withTags(tags);
             return this;
         }
-    }
-
-    public AppAttachPackageImpl withImage(AppAttachPackageInfoProperties image) {
-        this.innerModel().withImage(image);
-        return this;
-    }
-
-    public AppAttachPackageImpl withHostPoolReferences(List<String> hostPoolReferences) {
-        this.innerModel().withHostPoolReferences(hostPoolReferences);
-        return this;
-    }
-
-    public AppAttachPackageImpl withKeyVaultUrl(String keyVaultUrl) {
-        this.innerModel().withKeyVaultUrl(keyVaultUrl);
-        return this;
-    }
-
-    public AppAttachPackageImpl
-        withFailHealthCheckOnStagingFailure(FailHealthCheckOnStagingFailure failHealthCheckOnStagingFailure) {
-        this.innerModel().withFailHealthCheckOnStagingFailure(failHealthCheckOnStagingFailure);
-        return this;
-    }
-
-    public AppAttachPackageImpl withPackageOwnerName(String packageOwnerName) {
-        this.innerModel().withPackageOwnerName(packageOwnerName);
-        return this;
-    }
-
-    public AppAttachPackageImpl withPackageLookbackUrl(String packageLookbackUrl) {
-        this.innerModel().withPackageLookbackUrl(packageLookbackUrl);
-        return this;
-    }
-
-    public AppAttachPackageImpl withCustomData(String customData) {
-        this.innerModel().withCustomData(customData);
-        return this;
-    }
-
-    public AppAttachPackageImpl withDeploymentScope(DeploymentScope deploymentScope) {
-        this.innerModel().withDeploymentScope(deploymentScope);
-        return this;
     }
 
     public AppAttachPackageImpl withProperties(AppAttachPackagePatchProperties properties) {

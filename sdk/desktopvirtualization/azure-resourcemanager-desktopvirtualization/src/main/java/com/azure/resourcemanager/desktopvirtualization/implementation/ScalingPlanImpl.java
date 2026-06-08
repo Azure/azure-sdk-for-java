@@ -15,7 +15,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolRef
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPatch;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
 import java.util.Collections;
 import java.util.List;
@@ -231,8 +230,13 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlanImpl withTimeZone(String timeZone) {
-        this.innerModel().withTimeZone(timeZone);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTimeZone(timeZone);
+            return this;
+        } else {
+            this.updateScalingPlan.withTimeZone(timeZone);
+            return this;
+        }
     }
 
     public ScalingPlanImpl withTags(Map<String, String> tags) {
@@ -271,13 +275,23 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlanImpl withDescription(String description) {
-        this.innerModel().withDescription(description);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withDescription(description);
+            return this;
+        } else {
+            this.updateScalingPlan.withDescription(description);
+            return this;
+        }
     }
 
     public ScalingPlanImpl withFriendlyName(String friendlyName) {
-        this.innerModel().withFriendlyName(friendlyName);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withFriendlyName(friendlyName);
+            return this;
+        } else {
+            this.updateScalingPlan.withFriendlyName(friendlyName);
+            return this;
+        }
     }
 
     public ScalingPlanImpl withHostPoolType(ScalingHostPoolType hostPoolType) {
@@ -286,23 +300,33 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlanImpl withExclusionTag(String exclusionTag) {
-        this.innerModel().withExclusionTag(exclusionTag);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withExclusionTag(exclusionTag);
+            return this;
+        } else {
+            this.updateScalingPlan.withExclusionTag(exclusionTag);
+            return this;
+        }
     }
 
     public ScalingPlanImpl withSchedules(List<ScalingSchedule> schedules) {
-        this.innerModel().withSchedules(schedules);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSchedules(schedules);
+            return this;
+        } else {
+            this.updateScalingPlan.withSchedules(schedules);
+            return this;
+        }
     }
 
     public ScalingPlanImpl withHostPoolReferences(List<ScalingHostPoolReference> hostPoolReferences) {
-        this.innerModel().withHostPoolReferences(hostPoolReferences);
-        return this;
-    }
-
-    public ScalingPlanImpl withProperties(ScalingPlanPatchProperties properties) {
-        this.updateScalingPlan.withProperties(properties);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withHostPoolReferences(hostPoolReferences);
+            return this;
+        } else {
+            this.updateScalingPlan.withHostPoolReferences(hostPoolReferences);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

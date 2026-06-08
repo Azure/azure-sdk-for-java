@@ -12,7 +12,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingMethodType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedule;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatch;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.StopHostsWhen;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -225,106 +224,200 @@ public final class ScalingPlanPooledScheduleImpl
     }
 
     public ScalingPlanPooledScheduleImpl withDaysOfWeek(List<DayOfWeek> daysOfWeek) {
-        this.innerModel().withDaysOfWeek(daysOfWeek);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withDaysOfWeek(daysOfWeek);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withDaysOfWeek(daysOfWeek);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withScalingMethod(ScalingMethodType scalingMethod) {
-        this.innerModel().withScalingMethod(scalingMethod);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withScalingMethod(scalingMethod);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withScalingMethod(scalingMethod);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withCreateDelete(CreateDeleteProperties createDelete) {
-        this.innerModel().withCreateDelete(createDelete);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCreateDelete(createDelete);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withCreateDelete(createDelete);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampUpStartTime(Time rampUpStartTime) {
-        this.innerModel().withRampUpStartTime(rampUpStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpStartTime(rampUpStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpStartTime(rampUpStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl
         withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm) {
-        this.innerModel().withRampUpLoadBalancingAlgorithm(rampUpLoadBalancingAlgorithm);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpLoadBalancingAlgorithm(rampUpLoadBalancingAlgorithm);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpLoadBalancingAlgorithm(rampUpLoadBalancingAlgorithm);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampUpMinimumHostsPct(Integer rampUpMinimumHostsPct) {
-        this.innerModel().withRampUpMinimumHostsPct(rampUpMinimumHostsPct);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpMinimumHostsPct(rampUpMinimumHostsPct);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpMinimumHostsPct(rampUpMinimumHostsPct);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampUpCapacityThresholdPct(Integer rampUpCapacityThresholdPct) {
-        this.innerModel().withRampUpCapacityThresholdPct(rampUpCapacityThresholdPct);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampUpCapacityThresholdPct(rampUpCapacityThresholdPct);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampUpCapacityThresholdPct(rampUpCapacityThresholdPct);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withPeakStartTime(Time peakStartTime) {
-        this.innerModel().withPeakStartTime(peakStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakStartTime(peakStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakStartTime(peakStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl
         withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm) {
-        this.innerModel().withPeakLoadBalancingAlgorithm(peakLoadBalancingAlgorithm);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withPeakLoadBalancingAlgorithm(peakLoadBalancingAlgorithm);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withPeakLoadBalancingAlgorithm(peakLoadBalancingAlgorithm);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampDownStartTime(Time rampDownStartTime) {
-        this.innerModel().withRampDownStartTime(rampDownStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownStartTime(rampDownStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownStartTime(rampDownStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl
         withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm) {
-        this.innerModel().withRampDownLoadBalancingAlgorithm(rampDownLoadBalancingAlgorithm);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownLoadBalancingAlgorithm(rampDownLoadBalancingAlgorithm);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownLoadBalancingAlgorithm(rampDownLoadBalancingAlgorithm);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampDownMinimumHostsPct(Integer rampDownMinimumHostsPct) {
-        this.innerModel().withRampDownMinimumHostsPct(rampDownMinimumHostsPct);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownMinimumHostsPct(rampDownMinimumHostsPct);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownMinimumHostsPct(rampDownMinimumHostsPct);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampDownCapacityThresholdPct(Integer rampDownCapacityThresholdPct) {
-        this.innerModel().withRampDownCapacityThresholdPct(rampDownCapacityThresholdPct);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownCapacityThresholdPct(rampDownCapacityThresholdPct);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownCapacityThresholdPct(rampDownCapacityThresholdPct);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampDownForceLogoffUsers(Boolean rampDownForceLogoffUsers) {
-        this.innerModel().withRampDownForceLogoffUsers(rampDownForceLogoffUsers);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownForceLogoffUsers(rampDownForceLogoffUsers);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownForceLogoffUsers(rampDownForceLogoffUsers);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampDownStopHostsWhen(StopHostsWhen rampDownStopHostsWhen) {
-        this.innerModel().withRampDownStopHostsWhen(rampDownStopHostsWhen);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownStopHostsWhen(rampDownStopHostsWhen);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownStopHostsWhen(rampDownStopHostsWhen);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampDownWaitTimeMinutes(Integer rampDownWaitTimeMinutes) {
-        this.innerModel().withRampDownWaitTimeMinutes(rampDownWaitTimeMinutes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownWaitTimeMinutes(rampDownWaitTimeMinutes);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownWaitTimeMinutes(rampDownWaitTimeMinutes);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withRampDownNotificationMessage(String rampDownNotificationMessage) {
-        this.innerModel().withRampDownNotificationMessage(rampDownNotificationMessage);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRampDownNotificationMessage(rampDownNotificationMessage);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withRampDownNotificationMessage(rampDownNotificationMessage);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl withOffPeakStartTime(Time offPeakStartTime) {
-        this.innerModel().withOffPeakStartTime(offPeakStartTime);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakStartTime(offPeakStartTime);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakStartTime(offPeakStartTime);
+            return this;
+        }
     }
 
     public ScalingPlanPooledScheduleImpl
         withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm) {
-        this.innerModel().withOffPeakLoadBalancingAlgorithm(offPeakLoadBalancingAlgorithm);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withOffPeakLoadBalancingAlgorithm(offPeakLoadBalancingAlgorithm);
+            return this;
+        } else {
+            this.updateScalingPlanSchedule.withOffPeakLoadBalancingAlgorithm(offPeakLoadBalancingAlgorithm);
+            return this;
+        }
     }
 
-    public ScalingPlanPooledScheduleImpl withProperties(ScalingPlanPooledSchedulePatchProperties properties) {
-        this.updateScalingPlanSchedule.withProperties(properties);
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

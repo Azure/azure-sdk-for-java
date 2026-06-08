@@ -9,7 +9,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.CreateDeleteProper
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingMethodType;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatch;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.StopHostsWhen;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -22,42 +21,38 @@ public final class ScalingPlanPooledSchedulePatchTests {
         ScalingPlanPooledSchedulePatch model = BinaryData.fromString(
             "{\"properties\":{\"name\":\"lzo\",\"daysOfWeek\":[\"Wednesday\"],\"scalingMethod\":\"PowerManage\",\"createDelete\":{\"rampUpMaximumHostPoolSize\":1500212037,\"rampUpMinimumHostPoolSize\":1889500647,\"rampDownMaximumHostPoolSize\":2130318282,\"rampDownMinimumHostPoolSize\":120965041},\"rampUpStartTime\":{\"hour\":1293168350,\"minute\":1814498181},\"rampUpLoadBalancingAlgorithm\":\"DepthFirst\",\"rampUpMinimumHostsPct\":2136201648,\"rampUpCapacityThresholdPct\":1242659668,\"peakStartTime\":{\"hour\":1204887332,\"minute\":1233581087},\"peakLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownStartTime\":{\"hour\":976674781,\"minute\":1970936135},\"rampDownLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownMinimumHostsPct\":698820955,\"rampDownCapacityThresholdPct\":1225103578,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroSessions\",\"rampDownWaitTimeMinutes\":703676332,\"rampDownNotificationMessage\":\"yhyhsgzfczb\",\"offPeakStartTime\":{\"hour\":778841365,\"minute\":1580629361},\"offPeakLoadBalancingAlgorithm\":\"BreadthFirst\"},\"id\":\"glqgleoh\",\"name\":\"betnluankrrfxee\",\"type\":\"btijvacvbm\"}")
             .toObject(ScalingPlanPooledSchedulePatch.class);
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.properties().daysOfWeek().get(0));
-        Assertions.assertEquals(ScalingMethodType.POWER_MANAGE, model.properties().scalingMethod());
-        Assertions.assertEquals(1500212037, model.properties().createDelete().rampUpMaximumHostPoolSize());
-        Assertions.assertEquals(1889500647, model.properties().createDelete().rampUpMinimumHostPoolSize());
-        Assertions.assertEquals(2130318282, model.properties().createDelete().rampDownMaximumHostPoolSize());
-        Assertions.assertEquals(120965041, model.properties().createDelete().rampDownMinimumHostPoolSize());
-        Assertions.assertEquals(1293168350, model.properties().rampUpStartTime().hour());
-        Assertions.assertEquals(1814498181, model.properties().rampUpStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
-            model.properties().rampUpLoadBalancingAlgorithm());
-        Assertions.assertEquals(2136201648, model.properties().rampUpMinimumHostsPct());
-        Assertions.assertEquals(1242659668, model.properties().rampUpCapacityThresholdPct());
-        Assertions.assertEquals(1204887332, model.properties().peakStartTime().hour());
-        Assertions.assertEquals(1233581087, model.properties().peakStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-            model.properties().peakLoadBalancingAlgorithm());
-        Assertions.assertEquals(976674781, model.properties().rampDownStartTime().hour());
-        Assertions.assertEquals(1970936135, model.properties().rampDownStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
-            model.properties().rampDownLoadBalancingAlgorithm());
-        Assertions.assertEquals(698820955, model.properties().rampDownMinimumHostsPct());
-        Assertions.assertEquals(1225103578, model.properties().rampDownCapacityThresholdPct());
-        Assertions.assertFalse(model.properties().rampDownForceLogoffUsers());
-        Assertions.assertEquals(StopHostsWhen.ZERO_SESSIONS, model.properties().rampDownStopHostsWhen());
-        Assertions.assertEquals(703676332, model.properties().rampDownWaitTimeMinutes());
-        Assertions.assertEquals("yhyhsgzfczb", model.properties().rampDownNotificationMessage());
-        Assertions.assertEquals(778841365, model.properties().offPeakStartTime().hour());
-        Assertions.assertEquals(1580629361, model.properties().offPeakStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-            model.properties().offPeakLoadBalancingAlgorithm());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(ScalingMethodType.POWER_MANAGE, model.scalingMethod());
+        Assertions.assertEquals(1500212037, model.createDelete().rampUpMaximumHostPoolSize());
+        Assertions.assertEquals(1889500647, model.createDelete().rampUpMinimumHostPoolSize());
+        Assertions.assertEquals(2130318282, model.createDelete().rampDownMaximumHostPoolSize());
+        Assertions.assertEquals(120965041, model.createDelete().rampDownMinimumHostPoolSize());
+        Assertions.assertEquals(1293168350, model.rampUpStartTime().hour());
+        Assertions.assertEquals(1814498181, model.rampUpStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, model.rampUpLoadBalancingAlgorithm());
+        Assertions.assertEquals(2136201648, model.rampUpMinimumHostsPct());
+        Assertions.assertEquals(1242659668, model.rampUpCapacityThresholdPct());
+        Assertions.assertEquals(1204887332, model.peakStartTime().hour());
+        Assertions.assertEquals(1233581087, model.peakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST, model.peakLoadBalancingAlgorithm());
+        Assertions.assertEquals(976674781, model.rampDownStartTime().hour());
+        Assertions.assertEquals(1970936135, model.rampDownStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, model.rampDownLoadBalancingAlgorithm());
+        Assertions.assertEquals(698820955, model.rampDownMinimumHostsPct());
+        Assertions.assertEquals(1225103578, model.rampDownCapacityThresholdPct());
+        Assertions.assertFalse(model.rampDownForceLogoffUsers());
+        Assertions.assertEquals(StopHostsWhen.ZERO_SESSIONS, model.rampDownStopHostsWhen());
+        Assertions.assertEquals(703676332, model.rampDownWaitTimeMinutes());
+        Assertions.assertEquals("yhyhsgzfczb", model.rampDownNotificationMessage());
+        Assertions.assertEquals(778841365, model.offPeakStartTime().hour());
+        Assertions.assertEquals(1580629361, model.offPeakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST, model.offPeakLoadBalancingAlgorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScalingPlanPooledSchedulePatch model = new ScalingPlanPooledSchedulePatch().withProperties(
-            new ScalingPlanPooledSchedulePatchProperties().withDaysOfWeek(Arrays.asList(DayOfWeek.WEDNESDAY))
+        ScalingPlanPooledSchedulePatch model
+            = new ScalingPlanPooledSchedulePatch().withDaysOfWeek(Arrays.asList(DayOfWeek.WEDNESDAY))
                 .withScalingMethod(ScalingMethodType.POWER_MANAGE)
                 .withCreateDelete(new CreateDeleteProperties().withRampUpMaximumHostPoolSize(1500212037)
                     .withRampUpMinimumHostPoolSize(1889500647)
@@ -78,37 +73,33 @@ public final class ScalingPlanPooledSchedulePatchTests {
                 .withRampDownWaitTimeMinutes(703676332)
                 .withRampDownNotificationMessage("yhyhsgzfczb")
                 .withOffPeakStartTime(new Time().withHour(778841365).withMinute(1580629361))
-                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST));
+                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST);
         model = BinaryData.fromObject(model).toObject(ScalingPlanPooledSchedulePatch.class);
-        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.properties().daysOfWeek().get(0));
-        Assertions.assertEquals(ScalingMethodType.POWER_MANAGE, model.properties().scalingMethod());
-        Assertions.assertEquals(1500212037, model.properties().createDelete().rampUpMaximumHostPoolSize());
-        Assertions.assertEquals(1889500647, model.properties().createDelete().rampUpMinimumHostPoolSize());
-        Assertions.assertEquals(2130318282, model.properties().createDelete().rampDownMaximumHostPoolSize());
-        Assertions.assertEquals(120965041, model.properties().createDelete().rampDownMinimumHostPoolSize());
-        Assertions.assertEquals(1293168350, model.properties().rampUpStartTime().hour());
-        Assertions.assertEquals(1814498181, model.properties().rampUpStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
-            model.properties().rampUpLoadBalancingAlgorithm());
-        Assertions.assertEquals(2136201648, model.properties().rampUpMinimumHostsPct());
-        Assertions.assertEquals(1242659668, model.properties().rampUpCapacityThresholdPct());
-        Assertions.assertEquals(1204887332, model.properties().peakStartTime().hour());
-        Assertions.assertEquals(1233581087, model.properties().peakStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-            model.properties().peakLoadBalancingAlgorithm());
-        Assertions.assertEquals(976674781, model.properties().rampDownStartTime().hour());
-        Assertions.assertEquals(1970936135, model.properties().rampDownStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
-            model.properties().rampDownLoadBalancingAlgorithm());
-        Assertions.assertEquals(698820955, model.properties().rampDownMinimumHostsPct());
-        Assertions.assertEquals(1225103578, model.properties().rampDownCapacityThresholdPct());
-        Assertions.assertFalse(model.properties().rampDownForceLogoffUsers());
-        Assertions.assertEquals(StopHostsWhen.ZERO_SESSIONS, model.properties().rampDownStopHostsWhen());
-        Assertions.assertEquals(703676332, model.properties().rampDownWaitTimeMinutes());
-        Assertions.assertEquals("yhyhsgzfczb", model.properties().rampDownNotificationMessage());
-        Assertions.assertEquals(778841365, model.properties().offPeakStartTime().hour());
-        Assertions.assertEquals(1580629361, model.properties().offPeakStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-            model.properties().offPeakLoadBalancingAlgorithm());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.daysOfWeek().get(0));
+        Assertions.assertEquals(ScalingMethodType.POWER_MANAGE, model.scalingMethod());
+        Assertions.assertEquals(1500212037, model.createDelete().rampUpMaximumHostPoolSize());
+        Assertions.assertEquals(1889500647, model.createDelete().rampUpMinimumHostPoolSize());
+        Assertions.assertEquals(2130318282, model.createDelete().rampDownMaximumHostPoolSize());
+        Assertions.assertEquals(120965041, model.createDelete().rampDownMinimumHostPoolSize());
+        Assertions.assertEquals(1293168350, model.rampUpStartTime().hour());
+        Assertions.assertEquals(1814498181, model.rampUpStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, model.rampUpLoadBalancingAlgorithm());
+        Assertions.assertEquals(2136201648, model.rampUpMinimumHostsPct());
+        Assertions.assertEquals(1242659668, model.rampUpCapacityThresholdPct());
+        Assertions.assertEquals(1204887332, model.peakStartTime().hour());
+        Assertions.assertEquals(1233581087, model.peakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST, model.peakLoadBalancingAlgorithm());
+        Assertions.assertEquals(976674781, model.rampDownStartTime().hour());
+        Assertions.assertEquals(1970936135, model.rampDownStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, model.rampDownLoadBalancingAlgorithm());
+        Assertions.assertEquals(698820955, model.rampDownMinimumHostsPct());
+        Assertions.assertEquals(1225103578, model.rampDownCapacityThresholdPct());
+        Assertions.assertFalse(model.rampDownForceLogoffUsers());
+        Assertions.assertEquals(StopHostsWhen.ZERO_SESSIONS, model.rampDownStopHostsWhen());
+        Assertions.assertEquals(703676332, model.rampDownWaitTimeMinutes());
+        Assertions.assertEquals("yhyhsgzfczb", model.rampDownNotificationMessage());
+        Assertions.assertEquals(778841365, model.offPeakStartTime().hour());
+        Assertions.assertEquals(1580629361, model.offPeakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST, model.offPeakLoadBalancingAlgorithm());
     }
 }

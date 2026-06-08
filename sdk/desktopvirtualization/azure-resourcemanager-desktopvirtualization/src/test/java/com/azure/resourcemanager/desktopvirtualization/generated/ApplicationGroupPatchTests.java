@@ -6,7 +6,6 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupPatch;
-import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupPatchProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -18,22 +17,22 @@ public final class ApplicationGroupPatchTests {
             "{\"tags\":{\"kphywpnvjto\":\"cnjbkcnxdhbt\"},\"properties\":{\"description\":\"rmclfplphoxu\",\"friendlyName\":\"rpabg\",\"showInFeed\":false},\"id\":\"bjtazqugxywpmu\",\"name\":\"ef\",\"type\":\"zwfqkqujidsuyon\"}")
             .toObject(ApplicationGroupPatch.class);
         Assertions.assertEquals("cnjbkcnxdhbt", model.tags().get("kphywpnvjto"));
-        Assertions.assertEquals("rmclfplphoxu", model.properties().description());
-        Assertions.assertEquals("rpabg", model.properties().friendlyName());
-        Assertions.assertFalse(model.properties().showInFeed());
+        Assertions.assertEquals("rmclfplphoxu", model.description());
+        Assertions.assertEquals("rpabg", model.friendlyName());
+        Assertions.assertFalse(model.showInFeed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationGroupPatch model = new ApplicationGroupPatch().withTags(mapOf("kphywpnvjto", "cnjbkcnxdhbt"))
-            .withProperties(new ApplicationGroupPatchProperties().withDescription("rmclfplphoxu")
-                .withFriendlyName("rpabg")
-                .withShowInFeed(false));
+            .withDescription("rmclfplphoxu")
+            .withFriendlyName("rpabg")
+            .withShowInFeed(false);
         model = BinaryData.fromObject(model).toObject(ApplicationGroupPatch.class);
         Assertions.assertEquals("cnjbkcnxdhbt", model.tags().get("kphywpnvjto"));
-        Assertions.assertEquals("rmclfplphoxu", model.properties().description());
-        Assertions.assertEquals("rpabg", model.properties().friendlyName());
-        Assertions.assertFalse(model.properties().showInFeed());
+        Assertions.assertEquals("rmclfplphoxu", model.description());
+        Assertions.assertEquals("rpabg", model.friendlyName());
+        Assertions.assertFalse(model.showInFeed());
     }
 
     // Use "Map.of" if available

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlan;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -34,31 +33,31 @@ public final class ScalingPlansUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(new ScalingPlanPatchProperties().withDescription("Description of Scaling Plan")
-                .withFriendlyName("Scaling Plan 1")
-                .withTimeZone("Central Standard Time")
-                .withExclusionTag("value")
-                .withSchedules(Arrays.asList(new ScalingSchedule().withName("schedule1")
-                    .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
-                        DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
-                    .withRampUpStartTime(new Time().withHour(6).withMinute(0))
-                    .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                    .withRampUpMinimumHostsPct(20)
-                    .withRampUpCapacityThresholdPct(80)
-                    .withPeakStartTime(new Time().withHour(8).withMinute(0))
-                    .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                    .withRampDownStartTime(new Time().withHour(18).withMinute(0))
-                    .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                    .withRampDownMinimumHostsPct(20)
-                    .withRampDownCapacityThresholdPct(50)
-                    .withRampDownForceLogoffUsers(true)
-                    .withRampDownWaitTimeMinutes(30)
-                    .withRampDownNotificationMessage("message")
-                    .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
-                    .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)))
-                .withHostPoolReferences(Arrays.asList(new ScalingHostPoolReference().withHostPoolArmPath(
-                    "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
-                    .withScalingPlanEnabled(true))))
+            .withDescription("Description of Scaling Plan")
+            .withFriendlyName("Scaling Plan 1")
+            .withTimeZone("Central Standard Time")
+            .withExclusionTag("value")
+            .withSchedules(Arrays.asList(new ScalingSchedule().withName("schedule1")
+                .withDaysOfWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY,
+                    DayOfWeek.THURSDAY, DayOfWeek.FRIDAY))
+                .withRampUpStartTime(new Time().withHour(6).withMinute(0))
+                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                .withRampUpMinimumHostsPct(20)
+                .withRampUpCapacityThresholdPct(80)
+                .withPeakStartTime(new Time().withHour(8).withMinute(0))
+                .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+                .withRampDownStartTime(new Time().withHour(18).withMinute(0))
+                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                .withRampDownMinimumHostsPct(20)
+                .withRampDownCapacityThresholdPct(50)
+                .withRampDownForceLogoffUsers(true)
+                .withRampDownWaitTimeMinutes(30)
+                .withRampDownNotificationMessage("message")
+                .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
+                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)))
+            .withHostPoolReferences(Arrays.asList(new ScalingHostPoolReference().withHostPoolArmPath(
+                "/subscriptions/daefabc0-95b4-48b3-b645-8a753a63c4fa/resourceGroups/resourceGroup1/providers/Microsoft.DesktopVirtualization/hostPools/hostPool1")
+                .withScalingPlanEnabled(true)))
             .apply();
     }
 

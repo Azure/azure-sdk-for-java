@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.desktopvirtualization.fluent.models.ApplicationGroupProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
 import org.junit.jupiter.api.Assertions;
 

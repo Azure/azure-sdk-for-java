@@ -6,7 +6,6 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatch;
-import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatchProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class MsixPackagePatchTests {
@@ -15,20 +14,19 @@ public final class MsixPackagePatchTests {
         MsixPackagePatch model = BinaryData.fromString(
             "{\"properties\":{\"isActive\":true,\"isRegularRegistration\":false,\"displayName\":\"bgsxgnxfyqonmpq\"},\"id\":\"wdofdbxiqx\",\"name\":\"iiqbi\",\"type\":\"htmwwinh\"}")
             .toObject(MsixPackagePatch.class);
-        Assertions.assertTrue(model.properties().isActive());
-        Assertions.assertFalse(model.properties().isRegularRegistration());
-        Assertions.assertEquals("bgsxgnxfyqonmpq", model.properties().displayName());
+        Assertions.assertTrue(model.isActive());
+        Assertions.assertFalse(model.isRegularRegistration());
+        Assertions.assertEquals("bgsxgnxfyqonmpq", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MsixPackagePatch model
-            = new MsixPackagePatch().withProperties(new MsixPackagePatchProperties().withIsActive(true)
-                .withIsRegularRegistration(false)
-                .withDisplayName("bgsxgnxfyqonmpq"));
+        MsixPackagePatch model = new MsixPackagePatch().withIsActive(true)
+            .withIsRegularRegistration(false)
+            .withDisplayName("bgsxgnxfyqonmpq");
         model = BinaryData.fromObject(model).toObject(MsixPackagePatch.class);
-        Assertions.assertTrue(model.properties().isActive());
-        Assertions.assertFalse(model.properties().isRegularRegistration());
-        Assertions.assertEquals("bgsxgnxfyqonmpq", model.properties().displayName());
+        Assertions.assertTrue(model.isActive());
+        Assertions.assertFalse(model.isRegularRegistration());
+        Assertions.assertEquals("bgsxgnxfyqonmpq", model.displayName());
     }
 }

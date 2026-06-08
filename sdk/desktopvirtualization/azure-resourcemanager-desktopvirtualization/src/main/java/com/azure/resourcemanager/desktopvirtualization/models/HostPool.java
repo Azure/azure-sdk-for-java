@@ -978,7 +978,15 @@ public interface HostPool {
     /**
      * The template for HostPool update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithFriendlyName,
+        UpdateStages.WithDescription, UpdateStages.WithCustomRdpProperty, UpdateStages.WithMaxSessionLimit,
+        UpdateStages.WithPersonalDesktopAssignmentType, UpdateStages.WithLoadBalancerType, UpdateStages.WithRing,
+        UpdateStages.WithValidationEnvironment, UpdateStages.WithRegistrationInfo, UpdateStages.WithVmTemplate,
+        UpdateStages.WithSsoadfsAuthority, UpdateStages.WithSsoClientId, UpdateStages.WithSsoClientSecretKeyVaultPath,
+        UpdateStages.WithSsoSecretType, UpdateStages.WithPreferredAppGroupType, UpdateStages.WithStartVMOnConnect,
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithAgentUpdate, UpdateStages.WithManagedPrivateUDP,
+        UpdateStages.WithDirectUDP, UpdateStages.WithPublicUDP, UpdateStages.WithRelayUDP,
+        UpdateStages.WithAllowRDPShortPathWithPrivateLink, UpdateStages.WithConditionalRdpProperty {
         /**
          * Executes the update request.
          * 
@@ -1013,19 +1021,6 @@ public interface HostPool {
         }
 
         /**
-         * The stage of the HostPool update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: HostPool properties that can be patched..
-             * 
-             * @param properties HostPool properties that can be patched.
-             * @return the next definition stage.
-             */
-            Update withProperties(HostPoolPatchProperties properties);
-        }
-
-        /**
          * The stage of the HostPool update allowing to specify identity.
          */
         interface WithIdentity {
@@ -1036,6 +1031,357 @@ public interface HostPool {
              * @return the next definition stage.
              */
             Update withIdentity(ResourceModelWithAllowedPropertySetIdentity identity);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify friendlyName.
+         */
+        interface WithFriendlyName {
+            /**
+             * Specifies the friendlyName property: Friendly name of HostPool..
+             * 
+             * @param friendlyName Friendly name of HostPool.
+             * @return the next definition stage.
+             */
+            Update withFriendlyName(String friendlyName);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify description.
+         */
+        interface WithDescription {
+            /**
+             * Specifies the description property: Description of HostPool..
+             * 
+             * @param description Description of HostPool.
+             * @return the next definition stage.
+             */
+            Update withDescription(String description);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify customRdpProperty.
+         */
+        interface WithCustomRdpProperty {
+            /**
+             * Specifies the customRdpProperty property: Custom rdp property of HostPool..
+             * 
+             * @param customRdpProperty Custom rdp property of HostPool.
+             * @return the next definition stage.
+             */
+            Update withCustomRdpProperty(String customRdpProperty);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify maxSessionLimit.
+         */
+        interface WithMaxSessionLimit {
+            /**
+             * Specifies the maxSessionLimit property: The max session limit of HostPool..
+             * 
+             * @param maxSessionLimit The max session limit of HostPool.
+             * @return the next definition stage.
+             */
+            Update withMaxSessionLimit(Integer maxSessionLimit);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify personalDesktopAssignmentType.
+         */
+        interface WithPersonalDesktopAssignmentType {
+            /**
+             * Specifies the personalDesktopAssignmentType property: PersonalDesktopAssignment type for HostPool..
+             * 
+             * @param personalDesktopAssignmentType PersonalDesktopAssignment type for HostPool.
+             * @return the next definition stage.
+             */
+            Update withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType personalDesktopAssignmentType);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify loadBalancerType.
+         */
+        interface WithLoadBalancerType {
+            /**
+             * Specifies the loadBalancerType property: The type of the load balancer..
+             * 
+             * @param loadBalancerType The type of the load balancer.
+             * @return the next definition stage.
+             */
+            Update withLoadBalancerType(LoadBalancerType loadBalancerType);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify ring.
+         */
+        interface WithRing {
+            /**
+             * Specifies the ring property: The ring number of HostPool..
+             * 
+             * @param ring The ring number of HostPool.
+             * @return the next definition stage.
+             */
+            Update withRing(Integer ring);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify validationEnvironment.
+         */
+        interface WithValidationEnvironment {
+            /**
+             * Specifies the validationEnvironment property: Is validation environment..
+             * 
+             * @param validationEnvironment Is validation environment.
+             * @return the next definition stage.
+             */
+            Update withValidationEnvironment(Boolean validationEnvironment);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify registrationInfo.
+         */
+        interface WithRegistrationInfo {
+            /**
+             * Specifies the registrationInfo property: The registration info of HostPool..
+             * 
+             * @param registrationInfo The registration info of HostPool.
+             * @return the next definition stage.
+             */
+            Update withRegistrationInfo(RegistrationInfoPatch registrationInfo);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify vmTemplate.
+         */
+        interface WithVmTemplate {
+            /**
+             * Specifies the vmTemplate property: VM template for sessionhosts configuration within hostpool..
+             * 
+             * @param vmTemplate VM template for sessionhosts configuration within hostpool.
+             * @return the next definition stage.
+             */
+            Update withVmTemplate(String vmTemplate);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify ssoadfsAuthority.
+         */
+        interface WithSsoadfsAuthority {
+            /**
+             * Specifies the ssoadfsAuthority property: URL to customer ADFS server for signing WVD SSO certificates..
+             * 
+             * @param ssoadfsAuthority URL to customer ADFS server for signing WVD SSO certificates.
+             * @return the next definition stage.
+             */
+            Update withSsoadfsAuthority(String ssoadfsAuthority);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify ssoClientId.
+         */
+        interface WithSsoClientId {
+            /**
+             * Specifies the ssoClientId property: ClientId for the registered Relying Party used to issue WVD SSO
+             * certificates..
+             * 
+             * @param ssoClientId ClientId for the registered Relying Party used to issue WVD SSO certificates.
+             * @return the next definition stage.
+             */
+            Update withSsoClientId(String ssoClientId);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify ssoClientSecretKeyVaultPath.
+         */
+        interface WithSsoClientSecretKeyVaultPath {
+            /**
+             * Specifies the ssoClientSecretKeyVaultPath property: Path to Azure KeyVault storing the secret used for
+             * communication to ADFS..
+             * 
+             * @param ssoClientSecretKeyVaultPath Path to Azure KeyVault storing the secret used for communication to
+             * ADFS.
+             * @return the next definition stage.
+             */
+            Update withSsoClientSecretKeyVaultPath(String ssoClientSecretKeyVaultPath);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify ssoSecretType.
+         */
+        interface WithSsoSecretType {
+            /**
+             * Specifies the ssoSecretType property: The type of single sign on Secret Type..
+             * 
+             * @param ssoSecretType The type of single sign on Secret Type.
+             * @return the next definition stage.
+             */
+            Update withSsoSecretType(SsoSecretType ssoSecretType);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify preferredAppGroupType.
+         */
+        interface WithPreferredAppGroupType {
+            /**
+             * Specifies the preferredAppGroupType property: The type of preferred application group type, default to
+             * Desktop Application Group.
+             * 
+             * @param preferredAppGroupType The type of preferred application group type, default to Desktop Application
+             * Group.
+             * @return the next definition stage.
+             */
+            Update withPreferredAppGroupType(PreferredAppGroupType preferredAppGroupType);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify startVMOnConnect.
+         */
+        interface WithStartVMOnConnect {
+            /**
+             * Specifies the startVMOnConnect property: The flag to turn on/off StartVMOnConnect feature..
+             * 
+             * @param startVMOnConnect The flag to turn on/off StartVMOnConnect feature.
+             * @return the next definition stage.
+             */
+            Update withStartVMOnConnect(Boolean startVMOnConnect);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Enabled to allow this resource to be access from the public
+             * network.
+             * 
+             * @param publicNetworkAccess Enabled to allow this resource to be access from the public network.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify agentUpdate.
+         */
+        interface WithAgentUpdate {
+            /**
+             * Specifies the agentUpdate property: The session host configuration for updating agent, monitoring agent,
+             * and stack component..
+             * 
+             * @param agentUpdate The session host configuration for updating agent, monitoring agent, and stack
+             * component.
+             * @return the next definition stage.
+             */
+            Update withAgentUpdate(AgentUpdatePatchProperties agentUpdate);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify managedPrivateUDP.
+         */
+        interface WithManagedPrivateUDP {
+            /**
+             * Specifies the managedPrivateUDP property: Default: AVD-wide settings are used to determine connection
+             * availability, Enabled: UDP will attempt this connection type when making connections. This means that
+             * this connection is possible, but is not guaranteed, as there are other factors that may prevent this
+             * connection type, Disabled: UDP will not attempt this connection type when making connections.
+             * 
+             * @param managedPrivateUDP Default: AVD-wide settings are used to determine connection availability,
+             * Enabled: UDP will attempt this connection type when making connections. This means that this connection
+             * is possible, but is not guaranteed, as there are other factors that may prevent this connection type,
+             * Disabled: UDP will not attempt this connection type when making connections.
+             * @return the next definition stage.
+             */
+            Update withManagedPrivateUDP(ManagedPrivateUDP managedPrivateUDP);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify directUDP.
+         */
+        interface WithDirectUDP {
+            /**
+             * Specifies the directUDP property: Default: AVD-wide settings are used to determine connection
+             * availability, Enabled: UDP will attempt this connection type when making connections. This means that
+             * this connection is possible, but is not guaranteed, as there are other factors that may prevent this
+             * connection type, Disabled: UDP will not attempt this connection type when making connections.
+             * 
+             * @param directUDP Default: AVD-wide settings are used to determine connection availability, Enabled: UDP
+             * will attempt this connection type when making connections. This means that this connection is possible,
+             * but is not guaranteed, as there are other factors that may prevent this connection type, Disabled: UDP
+             * will not attempt this connection type when making connections.
+             * @return the next definition stage.
+             */
+            Update withDirectUDP(DirectUDP directUDP);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify publicUDP.
+         */
+        interface WithPublicUDP {
+            /**
+             * Specifies the publicUDP property: Default: AVD-wide settings are used to determine connection
+             * availability, Enabled: UDP will attempt this connection type when making connections. This means that
+             * this connection is possible, but is not guaranteed, as there are other factors that may prevent this
+             * connection type, Disabled: UDP will not attempt this connection type when making connections.
+             * 
+             * @param publicUDP Default: AVD-wide settings are used to determine connection availability, Enabled: UDP
+             * will attempt this connection type when making connections. This means that this connection is possible,
+             * but is not guaranteed, as there are other factors that may prevent this connection type, Disabled: UDP
+             * will not attempt this connection type when making connections.
+             * @return the next definition stage.
+             */
+            Update withPublicUDP(PublicUDP publicUDP);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify relayUDP.
+         */
+        interface WithRelayUDP {
+            /**
+             * Specifies the relayUDP property: Default: AVD-wide settings are used to determine connection
+             * availability, Enabled: UDP will attempt this connection type when making connections. This means that
+             * this connection is possible, but is not guaranteed, as there are other factors that may prevent this
+             * connection type, Disabled: UDP will not attempt this connection type when making connections.
+             * 
+             * @param relayUDP Default: AVD-wide settings are used to determine connection availability, Enabled: UDP
+             * will attempt this connection type when making connections. This means that this connection is possible,
+             * but is not guaranteed, as there are other factors that may prevent this connection type, Disabled: UDP
+             * will not attempt this connection type when making connections.
+             * @return the next definition stage.
+             */
+            Update withRelayUDP(RelayUDP relayUDP);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify allowRDPShortPathWithPrivateLink.
+         */
+        interface WithAllowRDPShortPathWithPrivateLink {
+            /**
+             * Specifies the allowRDPShortPathWithPrivateLink property: Controls if the use of RDPShortPath transport is
+             * allowed, possibly bypassing Private Link routes..
+             * 
+             * @param allowRDPShortPathWithPrivateLink Controls if the use of RDPShortPath transport is allowed,
+             * possibly bypassing Private Link routes.
+             * @return the next definition stage.
+             */
+            Update
+                withAllowRDPShortPathWithPrivateLink(AllowRDPShortPathWithPrivateLink allowRDPShortPathWithPrivateLink);
+        }
+
+        /**
+         * The stage of the HostPool update allowing to specify conditionalRdpProperty.
+         */
+        interface WithConditionalRdpProperty {
+            /**
+             * Specifies the conditionalRdpProperty property: The conditional RDP properties of the host pool,
+             * serialized as a string in the format of
+             * `&lt;rdpPropertyName&gt;:&lt;type&gt;:&lt;value&gt;:&lt;conditionType&gt;:&lt;conditionValue&gt;`..
+             * 
+             * @param conditionalRdpProperty The conditional RDP properties of the host pool, serialized as a string in
+             * the format of
+             * `&lt;rdpPropertyName&gt;:&lt;type&gt;:&lt;value&gt;:&lt;conditionType&gt;:&lt;conditionValue&gt;`.
+             * @return the next definition stage.
+             */
+            Update withConditionalRdpProperty(String conditionalRdpProperty);
         }
     }
 

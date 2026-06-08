@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedule;
-import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPersonalSchedulePatchProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOperation;
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
@@ -29,23 +28,22 @@ public final class ScalingPlanPersonalSchedulesUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(
-                new ScalingPlanPersonalSchedulePatchProperties().withPeakStartTime(new Time().withHour(8).withMinute(0))
-                    .withPeakActionOnDisconnect(SessionHandlingOperation.NONE)
-                    .withPeakMinutesToWaitOnDisconnect(10)
-                    .withPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                    .withPeakMinutesToWaitOnLogoff(10)
-                    .withRampDownStartTime(new Time().withHour(18).withMinute(0))
-                    .withRampDownActionOnDisconnect(SessionHandlingOperation.NONE)
-                    .withRampDownMinutesToWaitOnDisconnect(10)
-                    .withRampDownActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                    .withRampDownMinutesToWaitOnLogoff(10)
-                    .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
-                    .withOffPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
-                    .withOffPeakActionOnDisconnect(SessionHandlingOperation.NONE)
-                    .withOffPeakMinutesToWaitOnDisconnect(10)
-                    .withOffPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
-                    .withOffPeakMinutesToWaitOnLogoff(10))
+            .withPeakStartTime(new Time().withHour(8).withMinute(0))
+            .withPeakActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withPeakMinutesToWaitOnDisconnect(10)
+            .withPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+            .withPeakMinutesToWaitOnLogoff(10)
+            .withRampDownStartTime(new Time().withHour(18).withMinute(0))
+            .withRampDownActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withRampDownMinutesToWaitOnDisconnect(10)
+            .withRampDownActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+            .withRampDownMinutesToWaitOnLogoff(10)
+            .withOffPeakStartTime(new Time().withHour(20).withMinute(0))
+            .withOffPeakStartVMOnConnect(SetStartVMOnConnect.DISABLE)
+            .withOffPeakActionOnDisconnect(SessionHandlingOperation.NONE)
+            .withOffPeakMinutesToWaitOnDisconnect(10)
+            .withOffPeakActionOnLogoff(SessionHandlingOperation.DEALLOCATE)
+            .withOffPeakMinutesToWaitOnLogoff(10)
             .apply();
     }
 }

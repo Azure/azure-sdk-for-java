@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.AppAttachPackageInner;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,77 +50,18 @@ public interface AppAttachPackage {
     Map<String, String> tags();
 
     /**
+     * Gets the properties property: Detailed properties for App Attach Package.
+     * 
+     * @return the properties value.
+     */
+    AppAttachPackageProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the provisioningState property: The provisioning state of the App Attach Package.
-     * 
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
-     * Gets the image property: Detailed properties for App Attach Package.
-     * 
-     * @return the image value.
-     */
-    AppAttachPackageInfoProperties image();
-
-    /**
-     * Gets the hostPoolReferences property: List of Hostpool resource Ids.
-     * 
-     * @return the hostPoolReferences value.
-     */
-    List<String> hostPoolReferences();
-
-    /**
-     * Gets the keyVaultUrl property: URL path to certificate name located in keyVault.
-     * 
-     * @return the keyVaultUrl value.
-     */
-    String keyVaultUrl();
-
-    /**
-     * Gets the failHealthCheckOnStagingFailure property: Parameter indicating how the health check should behave if
-     * this package fails staging.
-     * 
-     * @return the failHealthCheckOnStagingFailure value.
-     */
-    FailHealthCheckOnStagingFailure failHealthCheckOnStagingFailure();
-
-    /**
-     * Gets the packageOwnerName property: Specific name of package owner, is "AppAttach" for native app attach
-     * packages.
-     * 
-     * @return the packageOwnerName value.
-     */
-    String packageOwnerName();
-
-    /**
-     * Gets the packageLookbackUrl property: Lookback url to third party control plane, is null for native app attach
-     * packages.
-     * 
-     * @return the packageLookbackUrl value.
-     */
-    String packageLookbackUrl();
-
-    /**
-     * Gets the customData property: Field that can be populated with custom data and filtered on in list GET calls.
-     * 
-     * @return the customData value.
-     */
-    String customData();
-
-    /**
-     * Gets the deploymentScope property: DeploymentScope type for AppAttachPackage.
-     * 
-     * @return the deploymentScope value.
-     */
-    DeploymentScope deploymentScope();
 
     /**
      * Gets the region of the resource.
@@ -155,7 +95,7 @@ public interface AppAttachPackage {
      * The entirety of the AppAttachPackage definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -199,18 +139,27 @@ public interface AppAttachPackage {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithProperties withExistingResourceGroup(String resourceGroupName);
+        }
+
+        /**
+         * The stage of the AppAttachPackage definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Detailed properties for App Attach Package.
+             * 
+             * @param properties Detailed properties for App Attach Package.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(AppAttachPackageProperties properties);
         }
 
         /**
          * The stage of the AppAttachPackage definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithImage, DefinitionStages.WithHostPoolReferences,
-            DefinitionStages.WithKeyVaultUrl, DefinitionStages.WithFailHealthCheckOnStagingFailure,
-            DefinitionStages.WithPackageOwnerName, DefinitionStages.WithPackageLookbackUrl,
-            DefinitionStages.WithCustomData, DefinitionStages.WithDeploymentScope {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              * 
@@ -238,117 +187,6 @@ public interface AppAttachPackage {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify image.
-         */
-        interface WithImage {
-            /**
-             * Specifies the image property: Detailed properties for App Attach Package.
-             * 
-             * @param image Detailed properties for App Attach Package.
-             * @return the next definition stage.
-             */
-            WithCreate withImage(AppAttachPackageInfoProperties image);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify hostPoolReferences.
-         */
-        interface WithHostPoolReferences {
-            /**
-             * Specifies the hostPoolReferences property: List of Hostpool resource Ids..
-             * 
-             * @param hostPoolReferences List of Hostpool resource Ids.
-             * @return the next definition stage.
-             */
-            WithCreate withHostPoolReferences(List<String> hostPoolReferences);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify keyVaultUrl.
-         */
-        interface WithKeyVaultUrl {
-            /**
-             * Specifies the keyVaultUrl property: URL path to certificate name located in keyVault.
-             * 
-             * @param keyVaultUrl URL path to certificate name located in keyVault.
-             * @return the next definition stage.
-             */
-            WithCreate withKeyVaultUrl(String keyVaultUrl);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify failHealthCheckOnStagingFailure.
-         */
-        interface WithFailHealthCheckOnStagingFailure {
-            /**
-             * Specifies the failHealthCheckOnStagingFailure property: Parameter indicating how the health check should
-             * behave if this package fails staging.
-             * 
-             * @param failHealthCheckOnStagingFailure Parameter indicating how the health check should behave if this
-             * package fails staging.
-             * @return the next definition stage.
-             */
-            WithCreate
-                withFailHealthCheckOnStagingFailure(FailHealthCheckOnStagingFailure failHealthCheckOnStagingFailure);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify packageOwnerName.
-         */
-        interface WithPackageOwnerName {
-            /**
-             * Specifies the packageOwnerName property: Specific name of package owner, is "AppAttach" for native app
-             * attach packages.
-             * 
-             * @param packageOwnerName Specific name of package owner, is "AppAttach" for native app attach packages.
-             * @return the next definition stage.
-             */
-            WithCreate withPackageOwnerName(String packageOwnerName);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify packageLookbackUrl.
-         */
-        interface WithPackageLookbackUrl {
-            /**
-             * Specifies the packageLookbackUrl property: Lookback url to third party control plane, is null for native
-             * app attach packages.
-             * 
-             * @param packageLookbackUrl Lookback url to third party control plane, is null for native app attach
-             * packages.
-             * @return the next definition stage.
-             */
-            WithCreate withPackageLookbackUrl(String packageLookbackUrl);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify customData.
-         */
-        interface WithCustomData {
-            /**
-             * Specifies the customData property: Field that can be populated with custom data and filtered on in list
-             * GET calls.
-             * 
-             * @param customData Field that can be populated with custom data and filtered on in list GET calls.
-             * @return the next definition stage.
-             */
-            WithCreate withCustomData(String customData);
-        }
-
-        /**
-         * The stage of the AppAttachPackage definition allowing to specify deploymentScope.
-         */
-        interface WithDeploymentScope {
-            /**
-             * Specifies the deploymentScope property: DeploymentScope type for AppAttachPackage..
-             * 
-             * @param deploymentScope DeploymentScope type for AppAttachPackage.
-             * @return the next definition stage.
-             */
-            WithCreate withDeploymentScope(DeploymentScope deploymentScope);
         }
     }
 

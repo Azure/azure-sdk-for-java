@@ -10,8 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkResourceProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A private link resource.
@@ -21,7 +21,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    private PrivateLinkResourceProperties properties;
+    private PrivateLinkResourceProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -50,12 +50,12 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Resource properties.
+     * Get the innerProperties property: Resource properties.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public PrivateLinkResourceProperties properties() {
-        return this.properties;
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -98,12 +98,39 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the groupId property: The private link resource group id.
+     * 
+     * @return the groupId value.
+     */
+    public String groupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
+    }
+
+    /**
+     * Get the requiredMembers property: The private link resource required member names.
+     * 
+     * @return the requiredMembers value.
+     */
+    public List<String> requiredMembers() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
+    }
+
+    /**
+     * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
+     * 
+     * @return the requiredZoneNames value.
+     */
+    public List<String> requiredZoneNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,7 +157,8 @@ public final class PrivateLinkResourceInner extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedPrivateLinkResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedPrivateLinkResourceInner.properties = PrivateLinkResourceProperties.fromJson(reader);
+                    deserializedPrivateLinkResourceInner.innerProperties
+                        = PrivateLinkResourceProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedPrivateLinkResourceInner.systemData = SystemData.fromJson(reader);
                 } else {

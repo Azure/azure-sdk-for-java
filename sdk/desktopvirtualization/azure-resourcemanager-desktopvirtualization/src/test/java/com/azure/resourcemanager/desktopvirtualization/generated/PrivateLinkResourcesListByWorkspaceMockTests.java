@@ -35,6 +35,6 @@ public final class PrivateLinkResourcesListByWorkspaceMockTests {
             .listByWorkspace("qiqyhgfsetzlexbs", "ledynojpz", 1537365328, false, 1263064497,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("irrhv", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("irrhv", response.iterator().next().requiredZoneNames().get(0));
     }
 }

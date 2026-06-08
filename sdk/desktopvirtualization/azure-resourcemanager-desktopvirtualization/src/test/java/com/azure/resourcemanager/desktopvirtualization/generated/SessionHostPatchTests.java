@@ -6,7 +6,6 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatch;
-import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatchProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class SessionHostPatchTests {
@@ -15,20 +14,19 @@ public final class SessionHostPatchTests {
         SessionHostPatch model = BinaryData.fromString(
             "{\"properties\":{\"allowNewSession\":false,\"assignedUser\":\"wpijrajci\",\"friendlyName\":\"mghfcfiwrxgkne\"},\"id\":\"yinzqodfvpgs\",\"name\":\"oxgsgbpfgzdjtx\",\"type\":\"zflbqvg\"}")
             .toObject(SessionHostPatch.class);
-        Assertions.assertFalse(model.properties().allowNewSession());
-        Assertions.assertEquals("wpijrajci", model.properties().assignedUser());
-        Assertions.assertEquals("mghfcfiwrxgkne", model.properties().friendlyName());
+        Assertions.assertFalse(model.allowNewSession());
+        Assertions.assertEquals("wpijrajci", model.assignedUser());
+        Assertions.assertEquals("mghfcfiwrxgkne", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SessionHostPatch model
-            = new SessionHostPatch().withProperties(new SessionHostPatchProperties().withAllowNewSession(false)
-                .withAssignedUser("wpijrajci")
-                .withFriendlyName("mghfcfiwrxgkne"));
+        SessionHostPatch model = new SessionHostPatch().withAllowNewSession(false)
+            .withAssignedUser("wpijrajci")
+            .withFriendlyName("mghfcfiwrxgkne");
         model = BinaryData.fromObject(model).toObject(SessionHostPatch.class);
-        Assertions.assertFalse(model.properties().allowNewSession());
-        Assertions.assertEquals("wpijrajci", model.properties().assignedUser());
-        Assertions.assertEquals("mghfcfiwrxgkne", model.properties().friendlyName());
+        Assertions.assertFalse(model.allowNewSession());
+        Assertions.assertEquals("wpijrajci", model.assignedUser());
+        Assertions.assertEquals("mghfcfiwrxgkne", model.friendlyName());
     }
 }
