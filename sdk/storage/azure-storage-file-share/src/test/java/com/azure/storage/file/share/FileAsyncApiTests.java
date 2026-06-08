@@ -1788,15 +1788,16 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void listAllRangesDiffPopulatedAndCleared(@TempDir Path tempDir) throws IOException {
         int rangeLength = Constants.KB;
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
-        ShareFileRange rangeToClear = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange initialPopulatedRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
         ShareFileRange populatedRange = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
-        ClearRange clearedRange = FileShareTestHelper.clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
+        ClearRange clearedSubrange
+            = FileShareTestHelper.clearRangeFromOffsetAndLength(initialPopulatedRange.getStart(), 512);
 
         StepVerifier.create(primaryFileAsyncClient.create(Constants.MB)
-            .then(uploadRangeFromFile(uploadFilePath, rangeToClear))
+            .then(uploadRangeFromFile(uploadFilePath, initialPopulatedRange))
             .then(shareAsyncClient.createSnapshot())
             .flatMap(previousSnapshot -> uploadRangeFromFile(uploadFilePath, populatedRange)
-                .then(primaryFileAsyncClient.clearRangeWithResponse(512, clearedRange.getStart()))
+                .then(primaryFileAsyncClient.clearRangeWithResponse(512, clearedSubrange.getStart()))
                 .then(shareAsyncClient.createSnapshot())
                 .flatMap(snapshot -> {
                     ShareFileAsyncClient snapshotFileClient
@@ -1814,7 +1815,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertEquals(1, populated.size());
                 FileShareTestHelper.assertFileRangeItemEquals(populatedRange, populated.get(0));
                 assertEquals(1, cleared.size());
-                FileShareTestHelper.assertClearRangeItemEquals(clearedRange, cleared.get(0));
+                FileShareTestHelper.assertClearRangeItemEquals(clearedSubrange, cleared.get(0));
             })
             .verifyComplete();
     }
@@ -1824,19 +1825,20 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void listAllRangesDiffPagedByPage(@TempDir Path tempDir) throws IOException {
         int rangeLength = Constants.KB;
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
-        ShareFileRange rangeToClear = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange initialPopulatedRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
         ShareFileRange firstPopulatedRange
             = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
         ShareFileRange secondPopulatedRange
             = FileShareTestHelper.rangeFromOffsetAndLength(5L * Constants.KB, rangeLength);
-        ClearRange clearedRange = FileShareTestHelper.clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
+        ClearRange clearedSubrange
+            = FileShareTestHelper.clearRangeFromOffsetAndLength(initialPopulatedRange.getStart(), 512);
 
         StepVerifier.create(primaryFileAsyncClient.create(Constants.MB)
-            .then(uploadRangeFromFile(uploadFilePath, rangeToClear))
+            .then(uploadRangeFromFile(uploadFilePath, initialPopulatedRange))
             .then(shareAsyncClient.createSnapshot())
             .flatMap(previousSnapshot -> uploadRangeFromFile(uploadFilePath, firstPopulatedRange)
                 .then(uploadRangeFromFile(uploadFilePath, secondPopulatedRange))
-                .then(primaryFileAsyncClient.clearRangeWithResponse(512, clearedRange.getStart()))
+                .then(primaryFileAsyncClient.clearRangeWithResponse(512, clearedSubrange.getStart()))
                 .then(shareAsyncClient.createSnapshot())
                 .flatMap(snapshot -> {
                     ShareFileAsyncClient snapshotFileClient
@@ -1864,7 +1866,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 FileShareTestHelper.assertFileRangeItemEquals(firstPopulatedRange, populated.get(0));
                 FileShareTestHelper.assertFileRangeItemEquals(secondPopulatedRange, populated.get(1));
                 assertEquals(1, cleared.size());
-                FileShareTestHelper.assertClearRangeItemEquals(clearedRange, cleared.get(0));
+                FileShareTestHelper.assertClearRangeItemEquals(clearedSubrange, cleared.get(0));
             })
             .verifyComplete();
     }

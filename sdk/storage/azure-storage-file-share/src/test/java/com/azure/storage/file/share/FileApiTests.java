@@ -116,7 +116,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -2469,20 +2468,21 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listAllRangesDiffPopulatedAndCleared(@TempDir Path tempDir) throws IOException {
+    public void listAllRangesDiff(@TempDir Path tempDir) throws IOException {
         int rangeLength = Constants.KB;
         primaryFileClient.create(Constants.MB);
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
 
-        ShareFileRange rangeToClear = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
-        uploadRangeFromFile(uploadFilePath, rangeToClear);
+        ShareFileRange initialPopulatedRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        uploadRangeFromFile(uploadFilePath, initialPopulatedRange);
 
         ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
 
         ShareFileRange populatedRange = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
-        ClearRange clearedRange = FileShareTestHelper.clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
+        ClearRange clearedSubrange
+            = FileShareTestHelper.clearRangeFromOffsetAndLength(initialPopulatedRange.getStart(), 512);
         uploadRangeFromFile(uploadFilePath, populatedRange);
-        primaryFileClient.clearRangeWithResponse(512, clearedRange.getStart(), null, null);
+        primaryFileClient.clearRangeWithResponse(512, clearedSubrange.getStart(), null, null);
 
         ShareSnapshotInfo snapshot = shareClient.createSnapshot();
         ShareFileClient snapshotFileClient
@@ -2499,7 +2499,7 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(1, populated.size());
         FileShareTestHelper.assertFileRangeItemEquals(populatedRange, populated.get(0));
         assertEquals(1, cleared.size());
-        FileShareTestHelper.assertClearRangeItemEquals(clearedRange, cleared.get(0));
+        FileShareTestHelper.assertClearRangeItemEquals(clearedSubrange, cleared.get(0));
     }
 
     @Test
@@ -2509,8 +2509,8 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(Constants.MB);
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
 
-        ShareFileRange rangeToClear = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
-        uploadRangeFromFile(uploadFilePath, rangeToClear);
+        ShareFileRange initialPopulatedRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        uploadRangeFromFile(uploadFilePath, initialPopulatedRange);
 
         ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
 
@@ -2518,10 +2518,11 @@ class FileApiTests extends FileShareTestBase {
             = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
         ShareFileRange secondPopulatedRange
             = FileShareTestHelper.rangeFromOffsetAndLength(5L * Constants.KB, rangeLength);
-        ClearRange clearedRange = FileShareTestHelper.clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
+        ClearRange clearedSubrange
+            = FileShareTestHelper.clearRangeFromOffsetAndLength(initialPopulatedRange.getStart(), 512);
         uploadRangeFromFile(uploadFilePath, firstPopulatedRange);
         uploadRangeFromFile(uploadFilePath, secondPopulatedRange);
-        primaryFileClient.clearRangeWithResponse(512, clearedRange.getStart(), null, null);
+        primaryFileClient.clearRangeWithResponse(512, clearedSubrange.getStart(), null, null);
 
         ShareSnapshotInfo snapshot = shareClient.createSnapshot();
         ShareFileClient snapshotFileClient
@@ -2547,7 +2548,7 @@ class FileApiTests extends FileShareTestBase {
         FileShareTestHelper.assertFileRangeItemEquals(firstPopulatedRange, populated.get(0));
         FileShareTestHelper.assertFileRangeItemEquals(secondPopulatedRange, populated.get(1));
         assertEquals(1, cleared.size());
-        FileShareTestHelper.assertClearRangeItemEquals(clearedRange, cleared.get(0));
+        FileShareTestHelper.assertClearRangeItemEquals(clearedSubrange, cleared.get(0));
     }
 
     @Test
