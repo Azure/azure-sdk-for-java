@@ -49,17 +49,6 @@ public final class BetaRoutinesClient {
      * Create or update a routine
      *
      * Creates a new routine or replaces an existing routine with the supplied definition.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -122,17 +111,6 @@ public final class BetaRoutinesClient {
      * Get a routine
      *
      * Retrieves the specified routine and its current configuration.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -175,17 +153,6 @@ public final class BetaRoutinesClient {
      * Enable a routine
      *
      * Enables the specified routine so it can be dispatched.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -226,17 +193,6 @@ public final class BetaRoutinesClient {
      * Disable a routine
      *
      * Disables the specified routine so it no longer runs.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -290,17 +246,6 @@ public final class BetaRoutinesClient {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -340,17 +285,6 @@ public final class BetaRoutinesClient {
      * Delete a routine
      *
      * Deletes the specified routine.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -385,17 +319,6 @@ public final class BetaRoutinesClient {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -442,7 +365,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Retrieve a routine.
+     * Get a routine
+     *
+     * Retrieves the specified routine and its current configuration.
      *
      * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,8 +376,11 @@ public final class BetaRoutinesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a routine definition returned by the service.
+     * @return a routine
+     *
+     * Retrieves the specified routine and its current configuration.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Routine getRoutine(String routineName) {
         // Generated convenience method for getRoutineWithResponse
@@ -461,7 +389,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Enable a routine.
+     * Enable a routine
+     *
+     * Enables the specified routine so it can be dispatched.
      *
      * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,6 +402,7 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Routine enableRoutine(String routineName) {
         // Generated convenience method for enableRoutineWithResponse
@@ -480,7 +411,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Disable a routine.
+     * Disable a routine
+     *
+     * Disables the specified routine so it no longer runs.
      *
      * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -491,6 +424,7 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a routine definition returned by the service.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Routine disableRoutine(String routineName) {
         // Generated convenience method for disableRoutineWithResponse
@@ -499,7 +433,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * List routines.
+     * List routines
+     *
+     * Returns the routines available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -508,6 +444,7 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Routine> listRoutines() {
         // Generated convenience method for listRoutines
@@ -517,7 +454,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * Delete a routine.
+     * Delete a routine
+     *
+     * Deletes the specified routine.
      *
      * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -527,6 +466,7 @@ public final class BetaRoutinesClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRoutine(String routineName) {
         // Generated convenience method for deleteRoutineWithResponse
@@ -535,7 +475,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * List prior runs for a routine.
+     * List prior runs for a routine
+     *
+     * Returns prior runs recorded for the specified routine.
      *
      * @param routineName The unique name of the routine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -546,6 +488,7 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutineRun> listRoutineRuns(String routineName) {
         // Generated convenience method for listRoutineRuns
@@ -614,7 +557,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * List routines.
+     * List routines
+     *
+     * Returns the routines available in the current project.
      *
      * @param limit The maximum number of routines to return.
      * @param after An opaque cursor returned as last_id by the previous list response.
@@ -628,6 +573,7 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Routine> listRoutines(Integer limit, String after, String before, String order) {
         // Generated convenience method for listRoutines
@@ -649,7 +595,9 @@ public final class BetaRoutinesClient {
     }
 
     /**
-     * List prior runs for a routine.
+     * List prior runs for a routine
+     *
+     * Returns prior runs recorded for the specified routine.
      *
      * @param routineName The unique name of the routine.
      * @param filter An optional MLflow search-runs filter expression applied within the routine's experiment.
@@ -665,6 +613,7 @@ public final class BetaRoutinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutineRun> listRoutineRuns(String routineName, String filter, Integer limit, String after,
         String before, String order) {
@@ -693,17 +642,6 @@ public final class BetaRoutinesClient {
      * Queue an asynchronous routine dispatch
      *
      * Queues an asynchronous dispatch for the specified routine.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>

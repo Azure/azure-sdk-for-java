@@ -354,7 +354,7 @@ public final class AIProjectClientBuilder
         AIProjectsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AIProjectsServiceVersion.getLatest();
         AIProjectClientImpl client = new AIProjectClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, this.foundryFeatures, localServiceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
@@ -1002,12 +1002,6 @@ public final class AIProjectClientBuilder
             return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
         }
     }
-
-    /*
-     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     */
-    @Generated
-    private FoundryFeaturesOptInKeys foundryFeatures;
 
     /**
      * Sets A feature flag opt-in required when using preview operations or modifying persisted preview resources.

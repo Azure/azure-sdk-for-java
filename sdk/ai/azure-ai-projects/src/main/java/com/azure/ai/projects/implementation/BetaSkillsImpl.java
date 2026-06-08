@@ -86,8 +86,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkill(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}")
         @ExpectedResponses({ 200 })
@@ -96,8 +96,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skills")
         @ExpectedResponses({ 200 })
@@ -106,8 +106,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSkills(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skills")
         @ExpectedResponses({ 200 })
@@ -116,8 +116,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSkillsSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/skills/{name}")
         @ExpectedResponses({ 200 })
@@ -126,10 +126,9 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateSkill(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateSkillRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateSkillRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/skills/{name}")
         @ExpectedResponses({ 200 })
@@ -138,10 +137,9 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSkillSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateSkillRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData updateSkillRequest,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/skills/{name}")
         @ExpectedResponses({ 200 })
@@ -150,9 +148,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalDeleteSkill(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/skills/{name}")
         @ExpectedResponses({ 200 })
@@ -161,9 +158,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalDeleteSkillSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/skills/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -172,10 +168,10 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSkillVersion(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createSkillVersionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createSkillVersionRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/skills/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -184,10 +180,10 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSkillVersionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createSkillVersionRequest,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData createSkillVersionRequest, RequestOptions requestOptions,
+            Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/skills/{name}/versions")
@@ -198,9 +194,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSkillVersionFromFiles(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData content,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData content, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/skills/{name}/versions")
@@ -211,9 +206,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSkillVersionFromFilesSync(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData content,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData content, RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -222,9 +216,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSkillVersions(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -233,9 +226,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSkillVersionsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -245,8 +237,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkillVersion(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -255,9 +247,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillVersionSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @PathParam("version") String version, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/content")
         @ExpectedResponses({ 200 })
@@ -266,9 +257,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkillContent(@HostParam("endpoint") String endpoint,
-            @PathParam("name") String name, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/content")
         @ExpectedResponses({ 200 })
@@ -277,8 +267,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillContentSync(@HostParam("endpoint") String endpoint, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/versions/{version}/content")
         @ExpectedResponses({ 200 })
@@ -288,8 +278,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkillVersionContent(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skills/{name}/versions/{version}/content")
         @ExpectedResponses({ 200 })
@@ -299,8 +289,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillVersionContentSync(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/skills/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -310,8 +300,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> internalDeleteSkillVersion(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/skills/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -321,8 +311,8 @@ public final class BetaSkillsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> internalDeleteSkillVersionSync(@HostParam("endpoint") String endpoint,
             @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -354,9 +344,8 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSkillWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSkill(this.client.getEndpoint(), name, foundryFeatures,
+        return FluxUtil.withContext(context -> service.getSkill(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -389,10 +378,9 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.getSkillSync(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return service.getSkillSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -444,10 +432,9 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSkillsSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSkills(this.client.getEndpoint(), foundryFeatures,
+            .withContext(context -> service.listSkills(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -552,9 +539,8 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSkillsSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSkillsSync(this.client.getEndpoint(), foundryFeatures,
+        Response<BinaryData> res = service.listSkillsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -652,10 +638,9 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateSkillWithResponseAsync(String name, BinaryData updateSkillRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateSkill(this.client.getEndpoint(), name, foundryFeatures,
+        return FluxUtil.withContext(context -> service.updateSkill(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, updateSkillRequest, requestOptions,
             context));
     }
@@ -701,12 +686,10 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateSkillWithResponse(String name, BinaryData updateSkillRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSkillSync(this.client.getEndpoint(), name, foundryFeatures,
-            this.client.getServiceVersion().getVersion(), contentType, accept, updateSkillRequest, requestOptions,
-            Context.NONE);
+        return service.updateSkillSync(this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(),
+            contentType, accept, updateSkillRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -735,10 +718,9 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> internalDeleteSkillWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.internalDeleteSkill(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -767,9 +749,8 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> internalDeleteSkillWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.internalDeleteSkillSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.internalDeleteSkillSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -826,12 +807,11 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createSkillVersionWithResponseAsync(String name,
         BinaryData createSkillVersionRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createSkillVersion(this.client.getEndpoint(), name,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), contentType, accept,
-            createSkillVersionRequest, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, createSkillVersionRequest,
+            requestOptions, context));
     }
 
     /**
@@ -887,10 +867,9 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createSkillVersionWithResponse(String name, BinaryData createSkillVersionRequest,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createSkillVersionSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.createSkillVersionSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), contentType, accept, createSkillVersionRequest,
             requestOptions, Context.NONE);
     }
@@ -927,11 +906,9 @@ public final class BetaSkillsImpl {
     public Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseAsync(String name, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createSkillVersionFromFiles(this.client.getEndpoint(), name,
-            contentType, foundryFeatures, this.client.getServiceVersion().getVersion(), accept, content, requestOptions,
-            context));
+            contentType, this.client.getServiceVersion().getVersion(), accept, content, requestOptions, context));
     }
 
     /**
@@ -966,9 +943,8 @@ public final class BetaSkillsImpl {
     public Response<BinaryData> createSkillVersionFromFilesWithResponse(String name, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.createSkillVersionFromFilesSync(this.client.getEndpoint(), name, contentType, foundryFeatures,
+        return service.createSkillVersionFromFilesSync(this.client.getEndpoint(), name, contentType,
             this.client.getServiceVersion().getVersion(), accept, content, requestOptions, Context.NONE);
     }
 
@@ -1023,10 +999,9 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSkillVersionsSinglePageAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSkillVersions(this.client.getEndpoint(), name, foundryFeatures,
+            .withContext(context -> service.listSkillVersions(this.client.getEndpoint(), name,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -1133,9 +1108,8 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSkillVersionsSinglePage(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSkillVersionsSync(this.client.getEndpoint(), name, foundryFeatures,
+        Response<BinaryData> res = service.listSkillVersionsSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -1224,10 +1198,9 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSkillVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSkillVersion(this.client.getEndpoint(), name, version,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1261,9 +1234,8 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.getSkillVersionSync(this.client.getEndpoint(), name, version, foundryFeatures,
+        return service.getSkillVersionSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1289,9 +1261,8 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSkillContentWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/zip";
-        return FluxUtil.withContext(context -> service.getSkillContent(this.client.getEndpoint(), name, foundryFeatures,
+        return FluxUtil.withContext(context -> service.getSkillContent(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
@@ -1317,9 +1288,8 @@ public final class BetaSkillsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillContentWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/zip";
-        return service.getSkillContentSync(this.client.getEndpoint(), name, foundryFeatures,
+        return service.getSkillContentSync(this.client.getEndpoint(), name,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1347,10 +1317,9 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSkillVersionContentWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/zip";
         return FluxUtil.withContext(context -> service.getSkillVersionContent(this.client.getEndpoint(), name, version,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1377,9 +1346,8 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillVersionContentWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/zip";
-        return service.getSkillVersionContentSync(this.client.getEndpoint(), name, version, foundryFeatures,
+        return service.getSkillVersionContentSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1412,10 +1380,9 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> internalDeleteSkillVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.internalDeleteSkillVersion(this.client.getEndpoint(), name,
-            version, foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            version, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1447,9 +1414,8 @@ public final class BetaSkillsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> internalDeleteSkillVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Skills=V1Preview";
         final String accept = "application/json";
-        return service.internalDeleteSkillVersionSync(this.client.getEndpoint(), name, version, foundryFeatures,
+        return service.internalDeleteSkillVersionSync(this.client.getEndpoint(), name, version,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

@@ -86,8 +86,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSchedule(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/schedules/{id}")
         @ExpectedResponses({ 204 })
@@ -96,8 +96,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteScheduleSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id, RequestOptions requestOptions,
+            Context context);
 
         @Get("/schedules/{id}")
         @ExpectedResponses({ 200 })
@@ -107,8 +107,7 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}")
         @ExpectedResponses({ 200 })
@@ -118,8 +117,7 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/schedules")
         @ExpectedResponses({ 200 })
@@ -128,8 +126,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSchedules(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules")
         @ExpectedResponses({ 200 })
@@ -138,8 +136,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSchedulesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/schedules/{id}")
         @ExpectedResponses({ 200, 201 })
@@ -149,9 +147,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
 
         @Put("/schedules/{id}")
         @ExpectedResponses({ 200, 201 })
@@ -161,9 +158,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData resource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{schedule_id}/runs/{run_id}")
         @ExpectedResponses({ 200 })
@@ -173,8 +169,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getScheduleRun(@HostParam("endpoint") String endpoint,
             @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{schedule_id}/runs/{run_id}")
         @ExpectedResponses({ 200 })
@@ -184,8 +180,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getScheduleRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}/runs")
         @ExpectedResponses({ 200 })
@@ -195,8 +191,7 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listScheduleRuns(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}/runs")
         @ExpectedResponses({ 200 })
@@ -206,8 +201,7 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listScheduleRunsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -216,8 +210,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSchedulesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -226,8 +220,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSchedulesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -236,8 +230,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listScheduleRunsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -246,8 +240,8 @@ public final class BetaSchedulesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listScheduleRunsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -265,9 +259,8 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteScheduleWithResponseAsync(String id, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         return FluxUtil.withContext(context -> service.deleteSchedule(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, foundryFeatures, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, requestOptions, context));
     }
 
     /**
@@ -285,9 +278,8 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteScheduleWithResponse(String id, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         return service.deleteScheduleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            foundryFeatures, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -338,10 +330,9 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getScheduleWithResponseAsync(String id, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSchedule(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, accept, requestOptions, context));
     }
 
     /**
@@ -392,10 +383,9 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getScheduleWithResponse(String id, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return service.getScheduleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            foundryFeatures, accept, requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -453,11 +443,10 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSchedulesSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSchedules(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -577,10 +566,9 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSchedulesSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listSchedulesSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -726,12 +714,10 @@ public final class BetaSchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateScheduleWithResponseAsync(String id, BinaryData resource,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateSchedule(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, foundryFeatures, contentType, accept, resource,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, contentType, accept, resource, requestOptions, context));
     }
 
     /**
@@ -814,12 +800,11 @@ public final class BetaSchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateScheduleWithResponse(String id, BinaryData resource,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateScheduleSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, foundryFeatures, contentType, accept, resource,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), id, contentType, accept, resource, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -857,10 +842,9 @@ public final class BetaSchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getScheduleRunWithResponseAsync(String scheduleId, String runId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getScheduleRun(this.client.getEndpoint(), scheduleId, runId,
-            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -898,9 +882,8 @@ public final class BetaSchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getScheduleRunWithResponse(String scheduleId, String runId,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        return service.getScheduleRunSync(this.client.getEndpoint(), scheduleId, runId, foundryFeatures,
+        return service.getScheduleRunSync(this.client.getEndpoint(), scheduleId, runId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -945,11 +928,10 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listScheduleRunsSinglePageAsync(String id, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listScheduleRuns(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), id, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1041,10 +1023,9 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listScheduleRunsSinglePage(String id, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listScheduleRunsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), id, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1144,11 +1125,9 @@ public final class BetaSchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listSchedulesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listSchedulesNext(nextLink, this.client.getEndpoint(), foundryFeatures,
-                accept, requestOptions, context))
+        return FluxUtil.withContext(
+            context -> service.listSchedulesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1199,10 +1178,9 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listSchedulesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSchedulesNextSync(nextLink, this.client.getEndpoint(), foundryFeatures,
-            accept, requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listSchedulesNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1240,11 +1218,10 @@ public final class BetaSchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listScheduleRunsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listScheduleRunsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
-                accept, requestOptions, context))
+            .withContext(context -> service.listScheduleRunsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1280,10 +1257,9 @@ public final class BetaSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listScheduleRunsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String foundryFeatures = "Schedules=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listScheduleRunsNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listScheduleRunsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

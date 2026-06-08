@@ -88,8 +88,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEvaluatorVersions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluators/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -99,8 +98,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEvaluatorVersionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluators")
         @ExpectedResponses({ 200 })
@@ -109,8 +107,8 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestEvaluatorVersions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/evaluators")
         @ExpectedResponses({ 200 })
@@ -119,8 +117,8 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestEvaluatorVersionsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -130,8 +128,8 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -141,8 +139,8 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
@@ -152,8 +150,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Delete("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 204 })
@@ -163,8 +160,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Post("/evaluators/{name}/versions")
         @ExpectedResponses({ 201 })
@@ -174,9 +170,8 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
 
         @Post("/evaluators/{name}/versions")
         @ExpectedResponses({ 201 })
@@ -186,9 +181,8 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
 
         @Patch("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -198,9 +192,9 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateEvaluatorVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/evaluators/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -210,9 +204,9 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateEvaluatorVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
+            RequestOptions requestOptions, Context context);
 
         @Post("/evaluators/{name}/versions/{version}/startPendingUpload")
         @ExpectedResponses({ 200 })
@@ -372,8 +366,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEvaluatorVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -383,8 +376,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEvaluatorVersionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -394,8 +386,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestEvaluatorVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -405,8 +396,7 @@ public final class BetaEvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestEvaluatorVersionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -493,11 +483,10 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEvaluatorVersionsSinglePageAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listEvaluatorVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -673,10 +662,9 @@ public final class BetaEvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEvaluatorVersionsSinglePage(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listEvaluatorVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -852,11 +840,10 @@ public final class BetaEvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestEvaluatorVersionsSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLatestEvaluatorVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1030,10 +1017,9 @@ public final class BetaEvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestEvaluatorVersionsSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listLatestEvaluatorVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1203,11 +1189,9 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEvaluatorVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, accept, requestOptions,
-            context));
+            this.client.getServiceVersion().getVersion(), name, version, accept, requestOptions, context));
     }
 
     /**
@@ -1286,10 +1270,9 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEvaluatorVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return service.getEvaluatorVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            name, foundryFeatures, version, accept, requestOptions, Context.NONE);
+            name, version, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1309,9 +1292,8 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEvaluatorVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         return FluxUtil.withContext(context -> service.deleteEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, requestOptions, context));
     }
 
     /**
@@ -1331,9 +1313,8 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEvaluatorVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         return service.deleteEvaluatorVersionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, version, requestOptions, Context.NONE);
     }
 
     /**
@@ -1468,12 +1449,11 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createEvaluatorVersionWithResponseAsync(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, contentType, accept, evaluatorVersion,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, evaluatorVersion, requestOptions,
+            context));
     }
 
     /**
@@ -1608,12 +1588,11 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createEvaluatorVersionWithResponse(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createEvaluatorVersionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, contentType, accept, evaluatorVersion,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, evaluatorVersion, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1749,12 +1728,11 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateEvaluatorVersionWithResponseAsync(String name, String version,
         BinaryData evaluatorVersion, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateEvaluatorVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, contentType, accept,
-            evaluatorVersion, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, evaluatorVersion,
+            requestOptions, context));
     }
 
     /**
@@ -1890,29 +1868,17 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateEvaluatorVersionWithResponse(String name, String version,
         BinaryData evaluatorVersion, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateEvaluatorVersionSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, contentType, accept,
-            evaluatorVersion, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, evaluatorVersion,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Start a pending upload
      * 
      * Initiates a new pending upload or retrieves an existing one for the specified evaluator version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1970,17 +1936,6 @@ public final class BetaEvaluatorsImpl {
      * Start a pending upload
      * 
      * Initiates a new pending upload or retrieves an existing one for the specified evaluator version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2037,17 +1992,6 @@ public final class BetaEvaluatorsImpl {
      * Get evaluator credentials
      * 
      * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2102,17 +2046,6 @@ public final class BetaEvaluatorsImpl {
      * Get evaluator credentials
      * 
      * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2172,11 +2105,6 @@ public final class BetaEvaluatorsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
      * absent, the server creates the job unconditionally.</td></tr>
      * </table>
@@ -2398,11 +2326,6 @@ public final class BetaEvaluatorsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
      * absent, the server creates the job unconditionally.</td></tr>
      * </table>
@@ -2619,17 +2542,6 @@ public final class BetaEvaluatorsImpl {
      * Get an evaluator generation job
      * 
      * Gets the details of an evaluator generation job by its ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2748,17 +2660,6 @@ public final class BetaEvaluatorsImpl {
      * Get an evaluator generation job
      * 
      * Gets the details of an evaluator generation job by its ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2898,17 +2799,6 @@ public final class BetaEvaluatorsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3049,17 +2939,6 @@ public final class BetaEvaluatorsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3194,17 +3073,6 @@ public final class BetaEvaluatorsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3343,17 +3211,6 @@ public final class BetaEvaluatorsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3465,17 +3322,6 @@ public final class BetaEvaluatorsImpl {
      * Cancel an evaluator generation job
      * 
      * Cancels an evaluator generation job by its ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3592,17 +3438,6 @@ public final class BetaEvaluatorsImpl {
      * Cancel an evaluator generation job
      * 
      * Cancels an evaluator generation job by its ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3719,17 +3554,6 @@ public final class BetaEvaluatorsImpl {
      * 
      * Deletes an evaluator generation job by its ID. Deletes the job record only;
      * the generated evaluator (if any) is preserved.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3751,17 +3575,6 @@ public final class BetaEvaluatorsImpl {
      * 
      * Deletes an evaluator generation job by its ID. Deletes the job record only;
      * the generated evaluator (if any) is preserved.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3851,11 +3664,10 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEvaluatorVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listEvaluatorVersionsNext(nextLink, this.client.getEndpoint(),
-                foundryFeatures, accept, requestOptions, context))
+            .withContext(context -> service.listEvaluatorVersionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -3933,10 +3745,9 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEvaluatorVersionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -4015,11 +3826,10 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestEvaluatorVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listLatestEvaluatorVersionsNext(nextLink, this.client.getEndpoint(),
-                foundryFeatures, accept, requestOptions, context))
+            .withContext(context -> service.listLatestEvaluatorVersionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -4097,10 +3907,9 @@ public final class BetaEvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestEvaluatorVersionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listLatestEvaluatorVersionsNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

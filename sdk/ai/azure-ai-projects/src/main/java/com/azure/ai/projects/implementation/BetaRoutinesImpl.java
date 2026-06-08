@@ -253,17 +253,6 @@ public final class BetaRoutinesImpl {
      * Create or update a routine
      * 
      * Creates a new routine or replaces an existing routine with the supplied definition.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -329,17 +318,6 @@ public final class BetaRoutinesImpl {
      * Create or update a routine
      * 
      * Creates a new routine or replaces an existing routine with the supplied definition.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -404,17 +382,6 @@ public final class BetaRoutinesImpl {
      * Get a routine
      * 
      * Retrieves the specified routine and its current configuration.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -459,17 +426,6 @@ public final class BetaRoutinesImpl {
      * Get a routine
      * 
      * Retrieves the specified routine and its current configuration.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -513,17 +469,6 @@ public final class BetaRoutinesImpl {
      * Enable a routine
      * 
      * Enables the specified routine so it can be dispatched.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -567,17 +512,6 @@ public final class BetaRoutinesImpl {
      * Enable a routine
      * 
      * Enables the specified routine so it can be dispatched.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -619,17 +553,6 @@ public final class BetaRoutinesImpl {
      * Disable a routine
      * 
      * Disables the specified routine so it no longer runs.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -673,17 +596,6 @@ public final class BetaRoutinesImpl {
      * Disable a routine
      * 
      * Disables the specified routine so it no longer runs.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -738,17 +650,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -806,17 +707,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -868,17 +758,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -934,17 +813,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -983,17 +851,6 @@ public final class BetaRoutinesImpl {
      * Delete a routine
      * 
      * Deletes the specified routine.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1013,17 +870,6 @@ public final class BetaRoutinesImpl {
      * Delete a routine
      * 
      * Deletes the specified routine.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param routineName The unique name of the routine.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1058,17 +904,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1139,17 +974,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1213,17 +1037,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1291,17 +1104,6 @@ public final class BetaRoutinesImpl {
      * desc.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1350,17 +1152,6 @@ public final class BetaRoutinesImpl {
      * Queue an asynchronous routine dispatch
      * 
      * Queues an asynchronous dispatch for the specified routine.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1409,17 +1200,6 @@ public final class BetaRoutinesImpl {
      * Queue an asynchronous routine dispatch
      * 
      * Queues an asynchronous dispatch for the specified routine.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>

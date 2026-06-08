@@ -46,11 +46,6 @@ public final class BetaInsightsClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
      * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
      * HTTP-date</td></tr>
@@ -126,17 +121,6 @@ public final class BetaInsightsClient {
      * the response. Defaults to false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -192,17 +176,6 @@ public final class BetaInsightsClient {
      * the response. Defaults to false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -239,7 +212,9 @@ public final class BetaInsightsClient {
     }
 
     /**
-     * Generate Insights.
+     * Generate insights
+     *
+     * Generates an insights report from the provided evaluation configuration.
      *
      * @param insight Complete evaluation configuration including data source, evaluators, and result settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,6 +225,7 @@ public final class BetaInsightsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body for cluster insights.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Insight generateInsight(Insight insight) {
         // Generated convenience method for generateInsightWithResponse
@@ -259,7 +235,9 @@ public final class BetaInsightsClient {
     }
 
     /**
-     * Get a specific insight by Id.
+     * Get an insight
+     *
+     * Retrieves the specified insight report and its results.
      *
      * @param id The unique identifier for the insights report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,8 +246,11 @@ public final class BetaInsightsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific insight by Id.
+     * @return an insight
+     *
+     * Retrieves the specified insight report and its results.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Insight getInsight(String id) {
         // Generated convenience method for getInsightWithResponse
@@ -278,7 +259,9 @@ public final class BetaInsightsClient {
     }
 
     /**
-     * List all insights in reverse chronological order (newest first).
+     * List insights
+     *
+     * Returns insights in reverse chronological order, with the most recent entries first.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -287,6 +270,7 @@ public final class BetaInsightsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Insight> listInsights() {
         // Generated convenience method for listInsights
@@ -296,7 +280,9 @@ public final class BetaInsightsClient {
     }
 
     /**
-     * Get a specific insight by Id.
+     * Get an insight
+     *
+     * Retrieves the specified insight report and its results.
      *
      * @param id The unique identifier for the insights report.
      * @param includeCoordinates Whether to include coordinates for visualization in the response. Defaults to false.
@@ -306,8 +292,11 @@ public final class BetaInsightsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific insight by Id.
+     * @return an insight
+     *
+     * Retrieves the specified insight report and its results.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Insight getInsight(String id, Boolean includeCoordinates) {
         // Generated convenience method for getInsightWithResponse
@@ -319,7 +308,9 @@ public final class BetaInsightsClient {
     }
 
     /**
-     * List all insights in reverse chronological order (newest first).
+     * List insights
+     *
+     * Returns insights in reverse chronological order, with the most recent entries first.
      *
      * @param type Filter by the type of analysis.
      * @param evalId Filter by the evaluation ID.
@@ -334,6 +325,7 @@ public final class BetaInsightsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Insight> listInsights(InsightType type, String evalId, String runId, String agentName,
         Boolean includeCoordinates) {

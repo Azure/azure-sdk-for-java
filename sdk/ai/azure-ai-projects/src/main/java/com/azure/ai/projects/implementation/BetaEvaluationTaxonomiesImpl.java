@@ -88,8 +88,7 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEvaluationTaxonomy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 200 })
@@ -99,8 +98,7 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getEvaluationTaxonomySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluationtaxonomies")
         @ExpectedResponses({ 200 })
@@ -109,8 +107,8 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEvaluationTaxonomies(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/evaluationtaxonomies")
         @ExpectedResponses({ 200 })
@@ -119,8 +117,8 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEvaluationTaxonomiesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 204 })
@@ -129,8 +127,8 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteEvaluationTaxonomy(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 204 })
@@ -139,8 +137,8 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteEvaluationTaxonomySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name, RequestOptions requestOptions,
+            Context context);
 
         @Put("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 200, 201 })
@@ -149,10 +147,9 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createEvaluationTaxonomy(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData taxonomy,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData taxonomy, RequestOptions requestOptions, Context context);
 
         @Put("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 200, 201 })
@@ -161,10 +158,9 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createEvaluationTaxonomySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData taxonomy,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData taxonomy, RequestOptions requestOptions, Context context);
 
         @Patch("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 200 })
@@ -173,10 +169,9 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateEvaluationTaxonomy(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData taxonomy,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData taxonomy, RequestOptions requestOptions, Context context);
 
         @Patch("/evaluationtaxonomies/{name}")
         @ExpectedResponses({ 200 })
@@ -185,10 +180,9 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateEvaluationTaxonomySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData taxonomy,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData taxonomy, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -198,8 +192,7 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEvaluationTaxonomiesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -209,8 +202,7 @@ public final class BetaEvaluationTaxonomiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEvaluationTaxonomiesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -274,10 +266,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEvaluationTaxonomyWithResponseAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getEvaluationTaxonomy(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -340,10 +331,9 @@ public final class BetaEvaluationTaxonomiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEvaluationTaxonomyWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return service.getEvaluationTaxonomySync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -412,11 +402,10 @@ public final class BetaEvaluationTaxonomiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEvaluationTaxonomiesSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listEvaluationTaxonomies(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -558,10 +547,9 @@ public final class BetaEvaluationTaxonomiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEvaluationTaxonomiesSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listEvaluationTaxonomiesSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -653,9 +641,8 @@ public final class BetaEvaluationTaxonomiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEvaluationTaxonomyWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         return FluxUtil.withContext(context -> service.deleteEvaluationTaxonomy(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -673,9 +660,8 @@ public final class BetaEvaluationTaxonomiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEvaluationTaxonomyWithResponse(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         return service.deleteEvaluationTaxonomySync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, requestOptions, Context.NONE);
     }
 
     /**
@@ -782,12 +768,11 @@ public final class BetaEvaluationTaxonomiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createEvaluationTaxonomyWithResponseAsync(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createEvaluationTaxonomy(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, contentType, accept, taxonomy,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, taxonomy, requestOptions,
+            context));
     }
 
     /**
@@ -894,12 +879,11 @@ public final class BetaEvaluationTaxonomiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createEvaluationTaxonomyWithResponse(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createEvaluationTaxonomySync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, contentType, accept, taxonomy,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, taxonomy, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1006,12 +990,11 @@ public final class BetaEvaluationTaxonomiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateEvaluationTaxonomyWithResponseAsync(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateEvaluationTaxonomy(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, contentType, accept, taxonomy,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, taxonomy, requestOptions,
+            context));
     }
 
     /**
@@ -1118,12 +1101,11 @@ public final class BetaEvaluationTaxonomiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateEvaluationTaxonomyWithResponse(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateEvaluationTaxonomySync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, contentType, accept, taxonomy,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, contentType, accept, taxonomy, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1186,11 +1168,10 @@ public final class BetaEvaluationTaxonomiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEvaluationTaxonomiesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listEvaluationTaxonomiesNext(nextLink, this.client.getEndpoint(),
-                foundryFeatures, accept, requestOptions, context))
+            .withContext(context -> service.listEvaluationTaxonomiesNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1254,10 +1235,9 @@ public final class BetaEvaluationTaxonomiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEvaluationTaxonomiesNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listEvaluationTaxonomiesNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listEvaluationTaxonomiesNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

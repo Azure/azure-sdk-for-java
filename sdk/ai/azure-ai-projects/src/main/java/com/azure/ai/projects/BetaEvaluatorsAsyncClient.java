@@ -855,17 +855,6 @@ public final class BetaEvaluatorsAsyncClient {
      * Start a pending upload
      *
      * Initiates a new pending upload or retrieves an existing one for the specified evaluator version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -921,17 +910,6 @@ public final class BetaEvaluatorsAsyncClient {
      * Get evaluator credentials
      *
      * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -980,7 +958,9 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Start a new or get an existing pending upload of an evaluator for a specific version.
+     * Start a pending upload
+     *
+     * Initiates a new pending upload or retrieves an existing one for the specified evaluator version.
      *
      * @param name The name parameter.
      * @param version The specific version id of the EvaluatorVersion to operate on.
@@ -993,6 +973,7 @@ public final class BetaEvaluatorsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the response for a pending upload request on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PendingUploadResponse> startPendingUpload(String name, String version,
         PendingUploadRequest pendingUploadRequest) {
@@ -1012,11 +993,6 @@ public final class BetaEvaluatorsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
      * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
      * absent, the server creates the job unconditionally.</td></tr>
      * </table>
@@ -1231,17 +1207,6 @@ public final class BetaEvaluatorsAsyncClient {
      * Get an evaluator generation job
      *
      * Gets the details of an evaluator generation job by its ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1382,17 +1347,6 @@ public final class BetaEvaluatorsAsyncClient {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1505,17 +1459,6 @@ public final class BetaEvaluatorsAsyncClient {
      * Cancel an evaluator generation job
      *
      * Cancels an evaluator generation job by its ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1632,17 +1575,6 @@ public final class BetaEvaluatorsAsyncClient {
      *
      * Deletes an evaluator generation job by its ID. Deletes the job record only;
      * the generated evaluator (if any) is preserved.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1659,7 +1591,7 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Creates an evaluator generation job.
+     * Create an evaluator generation job
      *
      * Creates an evaluator generation job. The service generates rubric-based evaluator
      * definitions from the provided source materials asynchronously.
@@ -1676,6 +1608,7 @@ public final class BetaEvaluatorsAsyncClient {
      * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EvaluatorGenerationJob> createEvaluatorGenerationJob(EvaluatorGenerationJob job, String operationId) {
         // Generated convenience method for createEvaluatorGenerationJobWithResponse
@@ -1689,7 +1622,7 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Creates an evaluator generation job.
+     * Create an evaluator generation job
      *
      * Creates an evaluator generation job. The service generates rubric-based evaluator
      * definitions from the provided source materials asynchronously.
@@ -1704,6 +1637,7 @@ public final class BetaEvaluatorsAsyncClient {
      * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EvaluatorGenerationJob> createEvaluatorGenerationJob(EvaluatorGenerationJob job) {
         // Generated convenience method for createEvaluatorGenerationJobWithResponse
@@ -1714,7 +1648,7 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Get info about an evaluator generation job.
+     * Get an evaluator generation job
      *
      * Gets the details of an evaluator generation job by its ID.
      *
@@ -1725,10 +1659,11 @@ public final class BetaEvaluatorsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return info about an evaluator generation job.
+     * @return an evaluator generation job
      *
      * Gets the details of an evaluator generation job by its ID on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EvaluatorGenerationJob> getEvaluatorGenerationJob(String jobId) {
         // Generated convenience method for getEvaluatorGenerationJobWithResponse
@@ -1738,7 +1673,12 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Returns a list of evaluator generation jobs.
+     * List evaluator generation jobs
+     *
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -1758,6 +1698,7 @@ public final class BetaEvaluatorsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EvaluatorGenerationJob> listEvaluatorGenerationJobs(Integer limit, PageOrder order, String after,
         String before) {
@@ -1792,7 +1733,12 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Returns a list of evaluator generation jobs.
+     * List evaluator generation jobs
+     *
+     * Returns a list of evaluator generation jobs. The List API has up to a few
+     * seconds of propagation delay, so a recently created job may not appear
+     * immediately; use the Get evaluator generation job API with the job ID to
+     * retrieve a specific job without delay.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1801,6 +1747,7 @@ public final class BetaEvaluatorsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EvaluatorGenerationJob> listEvaluatorGenerationJobs() {
         // Generated convenience method for listEvaluatorGenerationJobs
@@ -1822,7 +1769,7 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Cancels an evaluator generation job.
+     * Cancel an evaluator generation job
      *
      * Cancels an evaluator generation job by its ID.
      *
@@ -1836,6 +1783,7 @@ public final class BetaEvaluatorsAsyncClient {
      * @return evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions
      * from source materials on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EvaluatorGenerationJob> cancelEvaluatorGenerationJob(String jobId) {
         // Generated convenience method for cancelEvaluatorGenerationJobWithResponse
@@ -1845,6 +1793,8 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
+     * Delete an evaluator generation job
+     *
      * Deletes an evaluator generation job by its ID. Deletes the job record only;
      * the generated evaluator (if any) is preserved.
      *
@@ -1857,6 +1807,7 @@ public final class BetaEvaluatorsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEvaluatorGenerationJob(String jobId) {
         // Generated convenience method for deleteEvaluatorGenerationJobWithResponse
@@ -1865,7 +1816,9 @@ public final class BetaEvaluatorsAsyncClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with an Evaluator version.
+     * Get evaluator credentials
+     *
+     * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version.
      *
      * @param name The name parameter.
      * @param version The specific version id of the EvaluatorVersion to operate on.
@@ -1876,9 +1829,12 @@ public final class BetaEvaluatorsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS credential to access the storage account associated with an Evaluator version on successful
-     * completion of {@link Mono}.
+     * @return evaluator credentials
+     *
+     * Retrieves SAS credentials for accessing the storage account associated with the specified evaluator version on
+     * successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetCredential> getCredentials(String name, String version,
         EvaluatorCredentialInput credentialRequest) {

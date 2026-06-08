@@ -5,7 +5,6 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.AIProjectsServiceVersion;
-import com.azure.ai.projects.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -87,9 +86,8 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getGenerationJob(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/data_generation_jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -98,9 +96,8 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getGenerationJobSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/data_generation_jobs")
         @ExpectedResponses({ 200 })
@@ -109,7 +106,6 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listGenerationJobs(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -120,7 +116,6 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listGenerationJobsSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -131,7 +126,6 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createGenerationJob(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
@@ -143,7 +137,6 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createGenerationJobSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
             RequestOptions requestOptions, Context context);
@@ -155,9 +148,8 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelGenerationJob(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/data_generation_jobs/{jobId}:cancel")
         @ExpectedResponses({ 200 })
@@ -166,9 +158,8 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelGenerationJobSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/data_generation_jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -177,8 +168,8 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteGenerationJob(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
-            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/data_generation_jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -186,8 +177,7 @@ public final class BetaDatasetsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteGenerationJobSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") FoundryFeaturesOptInKeys foundryFeatures, @PathParam("jobId") String jobId,
+        Response<Void> deleteGenerationJobSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
             @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
     }
 
@@ -275,9 +265,8 @@ public final class BetaDatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGenerationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getGenerationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -363,7 +352,7 @@ public final class BetaDatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getGenerationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+        return service.getGenerationJobSync(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -469,9 +458,8 @@ public final class BetaDatasetsImpl {
     private Mono<PagedResponse<BinaryData>> listGenerationJobsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listGenerationJobs(this.client.getEndpoint(), this.client.getFoundryFeatures(),
-                    this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listGenerationJobs(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -678,9 +666,8 @@ public final class BetaDatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listGenerationJobsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listGenerationJobsSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listGenerationJobsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -944,9 +931,8 @@ public final class BetaDatasetsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createGenerationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(),
-                this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createGenerationJob(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
     }
 
     /**
@@ -1105,8 +1091,8 @@ public final class BetaDatasetsImpl {
     public Response<BinaryData> createGenerationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createGenerationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, Context.NONE);
+        return service.createGenerationJobSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, job, requestOptions, Context.NONE);
     }
 
     /**
@@ -1191,9 +1177,8 @@ public final class BetaDatasetsImpl {
     public Mono<Response<BinaryData>> cancelGenerationJobWithResponseAsync(String jobId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.cancelGenerationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.cancelGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1277,7 +1262,7 @@ public final class BetaDatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelGenerationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+        return service.cancelGenerationJobSync(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -1296,9 +1281,8 @@ public final class BetaDatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGenerationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        return FluxUtil.withContext(
-            context -> service.deleteGenerationJob(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
-                this.client.getServiceVersion().getVersion(), requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteGenerationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -1316,7 +1300,7 @@ public final class BetaDatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGenerationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return service.deleteGenerationJobSync(this.client.getEndpoint(), this.client.getFoundryFeatures(), jobId,
+        return service.deleteGenerationJobSync(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 

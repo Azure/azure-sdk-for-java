@@ -88,8 +88,7 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listModelVersions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/models/{name}/versions")
         @ExpectedResponses({ 200 })
@@ -99,8 +98,7 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listModelVersionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/models")
         @ExpectedResponses({ 200 })
@@ -109,8 +107,8 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestModelVersions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/models")
         @ExpectedResponses({ 200 })
@@ -119,8 +117,8 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestModelVersionsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/models/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -130,8 +128,8 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getModelVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("/models/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -141,8 +139,8 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getModelVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/models/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -152,8 +150,7 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteModelVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Delete("/models/{name}/versions/{version}")
         @ExpectedResponses({ 200 })
@@ -163,8 +160,7 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteModelVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
-            RequestOptions requestOptions, Context context);
+            @PathParam("version") String version, RequestOptions requestOptions, Context context);
 
         @Patch("/models/{name}/versions/{version}")
         @ExpectedResponses({ 200, 201 })
@@ -175,7 +171,7 @@ public final class BetaModelsImpl {
         Mono<Response<BinaryData>> updateModelVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData modelVersionUpdate, RequestOptions requestOptions,
             Context context);
 
@@ -188,7 +184,7 @@ public final class BetaModelsImpl {
         Response<BinaryData> updateModelVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData modelVersionUpdate, RequestOptions requestOptions,
             Context context);
 
@@ -199,10 +195,10 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createModelVersionAsync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData modelVersion, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData modelVersion,
+            RequestOptions requestOptions, Context context);
 
         @Post("/models/{name}/versions/{version}/createAsync")
         @ExpectedResponses({ 202 })
@@ -211,10 +207,10 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createModelVersionAsyncSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData modelVersion, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData modelVersion,
+            RequestOptions requestOptions, Context context);
 
         @Post("/models/{name}/versions/{version}/startPendingUpload")
         @ExpectedResponses({ 200 })
@@ -223,11 +219,10 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> startModelPendingUpload(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData pendingUploadRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData pendingUploadRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/models/{name}/versions/{version}/startPendingUpload")
         @ExpectedResponses({ 200 })
@@ -236,11 +231,10 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> startModelPendingUploadSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData pendingUploadRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData pendingUploadRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/models/{name}/versions/{version}/credentials")
         @ExpectedResponses({ 200 })
@@ -249,11 +243,10 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getModelCredentials(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData credentialRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData credentialRequest,
+            RequestOptions requestOptions, Context context);
 
         @Post("/models/{name}/versions/{version}/credentials")
         @ExpectedResponses({ 200 })
@@ -262,11 +255,10 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getModelCredentialsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @PathParam("name") String name, @PathParam("version") String version,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData credentialRequest, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @PathParam("version") String version, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData credentialRequest,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -275,8 +267,8 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listModelVersionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -285,8 +277,8 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listModelVersionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -296,8 +288,7 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestModelVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -307,8 +298,7 @@ public final class BetaModelsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestModelVersionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -376,11 +366,10 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listModelVersionsSinglePageAsync(String name,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listModelVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -518,10 +507,9 @@ public final class BetaModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listModelVersionsSinglePage(String name, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listModelVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -659,11 +647,10 @@ public final class BetaModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestModelVersionsSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLatestModelVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -799,10 +786,9 @@ public final class BetaModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestModelVersionsSinglePage(RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listLatestModelVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -944,11 +930,9 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getModelVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getModelVersion(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, foundryFeatures, version, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getModelVersion(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, version, accept, requestOptions, context));
     }
 
     /**
@@ -1018,10 +1002,9 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getModelVersionWithResponse(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return service.getModelVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            name, foundryFeatures, version, accept, requestOptions, Context.NONE);
+            name, version, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1042,9 +1025,8 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         return FluxUtil.withContext(context -> service.deleteModelVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, requestOptions, context));
     }
 
     /**
@@ -1064,9 +1046,8 @@ public final class BetaModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         return service.deleteModelVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            name, foundryFeatures, version, requestOptions, Context.NONE);
+            name, version, requestOptions, Context.NONE);
     }
 
     /**
@@ -1149,11 +1130,10 @@ public final class BetaModelsImpl {
     public Mono<Response<BinaryData>> updateModelVersionWithResponseAsync(String name, String version,
         BinaryData modelVersionUpdate, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateModelVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, contentType, version, foundryFeatures, accept,
-            modelVersionUpdate, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, modelVersionUpdate,
+            requestOptions, context));
     }
 
     /**
@@ -1236,10 +1216,9 @@ public final class BetaModelsImpl {
     public Response<BinaryData> updateModelVersionWithResponse(String name, String version,
         BinaryData modelVersionUpdate, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return service.updateModelVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            name, contentType, version, foundryFeatures, accept, modelVersionUpdate, requestOptions, Context.NONE);
+            name, contentType, version, accept, modelVersionUpdate, requestOptions, Context.NONE);
     }
 
     /**
@@ -1320,12 +1299,11 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createModelVersionAsyncWithResponseAsync(String name, String version,
         BinaryData modelVersion, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createModelVersionAsync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
-            modelVersion, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, modelVersion,
+            requestOptions, context));
     }
 
     /**
@@ -1406,12 +1384,11 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createModelVersionAsyncWithResponse(String name, String version,
         BinaryData modelVersion, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createModelVersionAsyncSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
-            modelVersion, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, modelVersion,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1464,12 +1441,11 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> startModelPendingUploadWithResponseAsync(String name, String version,
         BinaryData pendingUploadRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.startModelPendingUpload(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
-            pendingUploadRequest, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, pendingUploadRequest,
+            requestOptions, context));
     }
 
     /**
@@ -1521,12 +1497,11 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> startModelPendingUploadWithResponse(String name, String version,
         BinaryData pendingUploadRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.startModelPendingUploadSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
-            pendingUploadRequest, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, pendingUploadRequest,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1576,12 +1551,11 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getModelCredentialsWithResponseAsync(String name, String version,
         BinaryData credentialRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getModelCredentials(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryFeatures, name, version, contentType, accept,
-            credentialRequest, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, version, contentType, accept, credentialRequest,
+            requestOptions, context));
     }
 
     /**
@@ -1631,11 +1605,10 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getModelCredentialsWithResponse(String name, String version,
         BinaryData credentialRequest, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.getModelCredentialsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            foundryFeatures, name, version, contentType, accept, credentialRequest, requestOptions, Context.NONE);
+            name, version, contentType, accept, credentialRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1703,11 +1676,10 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listModelVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listModelVersionsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
-                accept, requestOptions, context))
+            .withContext(context -> service.listModelVersionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1775,10 +1747,9 @@ public final class BetaModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listModelVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listModelVersionsNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listModelVersionsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -1848,11 +1819,10 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestModelVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listLatestModelVersionsNext(nextLink, this.client.getEndpoint(),
-                foundryFeatures, accept, requestOptions, context))
+            .withContext(context -> service.listLatestModelVersionsNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1921,10 +1891,9 @@ public final class BetaModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestModelVersionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryFeatures = "Models=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listLatestModelVersionsNextSync(nextLink, this.client.getEndpoint(),
-            foundryFeatures, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listLatestModelVersionsNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
