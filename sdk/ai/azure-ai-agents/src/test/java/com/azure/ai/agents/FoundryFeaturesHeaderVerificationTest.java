@@ -58,6 +58,37 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
+    public void betaClientsAddAreaSpecificHeadersByDefault() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AgentsClientBuilder builder = createBuilder(httpClient);
+
+        builder.beta().buildBetaAgentsClient().getSessionWithResponse("agent", "session", new RequestOptions());
+        assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
+
+        builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
+        assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.beta().buildBetaToolboxesClient().getToolboxWithResponse("toolbox", new RequestOptions());
+        assertEquals(FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+    }
+
+    @Test
+    public void betaHeaderDoesNotLeakToGaClientBuiltFromSameBuilder() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AgentsClientBuilder builder = createBuilder(httpClient);
+
+        builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
+        assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        // Beta clients temporarily add their required Foundry-Features policy while their pipeline is being built.
+        // The policy must not remain on the reusable builder, otherwise a later GA client built from the same builder
+        // would silently inherit a beta opt-in header despite allowPreview defaulting to false for GA clients.
+        builder.buildAgentsClient()
+            .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+    }
+
+    @Test
     public void allowPreviewDoesNotOverrideExplicitHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         String explicitHeader = FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString();
@@ -72,13 +103,12 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
-    public void allowPreviewFalseDoesNotAddAgentHeader() {
+    public void allowPreviewFalseDoesNotAddGaAgentHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
 
         createBuilder(httpClient).allowPreview(false)
-            .beta()
-            .buildBetaAgentsClient()
-            .getSessionWithResponse("agent", "session", new RequestOptions());
+            .buildAgentsClient()
+            .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
 
         assertNull(foundryFeatures(httpClient));
     }

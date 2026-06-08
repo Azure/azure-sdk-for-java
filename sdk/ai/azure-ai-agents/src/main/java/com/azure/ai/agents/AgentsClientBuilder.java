@@ -129,10 +129,12 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Enables or disables preview feature headers for beta Agents, Memory Stores, and Toolboxes APIs.
+     * Enables or disables preview feature headers for non-beta preview APIs.
+     * <p>
+     * Beta clients always add their required {@code Foundry-Features} header.
      *
      * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
-     * supported preview requests.
+     * supported non-beta preview requests.
      * @return the AgentsClientBuilder.
      */
     public AgentsClientBuilder allowPreview(boolean allowPreview) {
@@ -335,6 +337,15 @@ public final class AgentsClientBuilder
     }
 
     private AgentsClientImpl buildInnerClient(String previewFeatures) {
+        HttpPipelinePolicy foundryFeaturesPolicy = allowPreview ? addFoundryFeaturesPolicy(previewFeatures) : null;
+        try {
+            return buildInnerClient();
+        } finally {
+            removeFoundryFeaturesPolicy(foundryFeaturesPolicy);
+        }
+    }
+
+    private AgentsClientImpl buildBetaInnerClient(String previewFeatures) {
         HttpPipelinePolicy foundryFeaturesPolicy = addFoundryFeaturesPolicy(previewFeatures);
         try {
             return buildInnerClient();
@@ -389,7 +400,7 @@ public final class AgentsClientBuilder
     }
 
     private HttpPipeline createHttpPipelineWithPreview(String previewFeatures) {
-        HttpPipelinePolicy foundryFeaturesPolicy = addFoundryFeaturesPolicy(previewFeatures);
+        HttpPipelinePolicy foundryFeaturesPolicy = allowPreview ? addFoundryFeaturesPolicy(previewFeatures) : null;
         try {
             return createHttpPipeline();
         } finally {
@@ -398,7 +409,7 @@ public final class AgentsClientBuilder
     }
 
     private HttpPipelinePolicy addFoundryFeaturesPolicy(String previewFeatures) {
-        if (!allowPreview || CoreUtils.isNullOrEmpty(previewFeatures)) {
+        if (CoreUtils.isNullOrEmpty(previewFeatures)) {
             return null;
         }
         HttpPipelinePolicy foundryFeaturesPolicy = createFoundryFeaturesPolicy(previewFeatures);
@@ -567,19 +578,7 @@ public final class AgentsClientBuilder
         /**
          * Creates a new instance of BetaAgentsClientBuilder.
          */
-        public BetaAgentsClientBuilder() {
-        }
-
-        /**
-         * Enables or disables preview feature headers for beta Agents, Memory Stores, and Toolboxes APIs.
-         *
-         * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
-         * supported preview requests.
-         * @return the BetaAgentsClientBuilder.
-         */
-        public BetaAgentsClientBuilder allowPreview(boolean allowPreview) {
-            AgentsClientBuilder.this.allowPreview(allowPreview);
-            return this;
+        private BetaAgentsClientBuilder() {
         }
 
         /**
@@ -588,7 +587,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaAgentsAsyncClient.
          */
         public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-            return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+            return new BetaAgentsAsyncClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
 
         /**
@@ -598,7 +597,7 @@ public final class AgentsClientBuilder
          */
         public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
             return new BetaMemoryStoresAsyncClient(
-                buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+                buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
 
         /**
@@ -607,7 +606,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaToolboxesAsyncClient.
          */
         public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-            return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+            return new BetaToolboxesAsyncClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
 
         /**
@@ -616,7 +615,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaAgentsClient.
          */
         public BetaAgentsClient buildBetaAgentsClient() {
-            return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+            return new BetaAgentsClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
 
         /**
@@ -625,7 +624,8 @@ public final class AgentsClientBuilder
          * @return an instance of BetaMemoryStoresClient.
          */
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
-            return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+            return new BetaMemoryStoresClient(
+                buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
 
         /**
@@ -634,7 +634,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaToolboxesClient.
          */
         public BetaToolboxesClient buildBetaToolboxesClient() {
-            return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+            return new BetaToolboxesClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
     }
 
@@ -644,7 +644,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaAgentsAsyncClient.
      */
     private BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-        return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        return new BetaAgentsAsyncClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
     }
 
     /**
@@ -653,7 +653,8 @@ public final class AgentsClientBuilder
      * @return an instance of BetaMemoryStoresAsyncClient.
      */
     private BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
-        return new BetaMemoryStoresAsyncClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        return new BetaMemoryStoresAsyncClient(
+            buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
     }
 
     /**
@@ -662,7 +663,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaToolboxesAsyncClient.
      */
     private BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-        return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+        return new BetaToolboxesAsyncClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
     }
 
     /**
@@ -671,7 +672,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaAgentsClient.
      */
     private BetaAgentsClient buildBetaAgentsClient() {
-        return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        return new BetaAgentsClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
     }
 
     /**
@@ -680,7 +681,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaMemoryStoresClient.
      */
     private BetaMemoryStoresClient buildBetaMemoryStoresClient() {
-        return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        return new BetaMemoryStoresClient(buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
     }
 
     /**
@@ -689,6 +690,6 @@ public final class AgentsClientBuilder
      * @return an instance of BetaToolboxesClient.
      */
     private BetaToolboxesClient buildBetaToolboxesClient() {
-        return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+        return new BetaToolboxesClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
     }
 }
