@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedNamespacesGetSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ManagedNamespacesGet.json
+     * x-ms-original-file: 2026-04-01/ManagedNamespacesGet.json
      */
     /**
      * Sample code: Get Managed Namespace.
