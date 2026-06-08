@@ -185,7 +185,7 @@ public class ReactorNettyClient implements HttpClient {
                 .http2Settings(settings -> settings
                     .initialWindowSize(1024 * 1024) // 1MB initial window size
                     .maxFrameSize(Configs.getHttp2MaxFrameSizeInBytes())   // 64KB default; overridable via COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB / COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB (clamped to [64KB, 16383KB])
-                    .maxConcurrentStreams(httpCfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
+                    .maxConcurrentStreams(http2CfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnConnected((connection -> {
                     // The response header clean up pipeline is being added due to an error getting when calling gateway:
