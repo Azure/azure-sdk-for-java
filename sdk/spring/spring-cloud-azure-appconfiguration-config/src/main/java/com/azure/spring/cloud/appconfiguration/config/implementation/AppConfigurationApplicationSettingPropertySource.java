@@ -22,8 +22,8 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -47,7 +47,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     protected List<ConfigurationSetting> featureFlagsList = new ArrayList<>();
 
-    private final String SNAPSHOT_REF_CONTENT_TYPE = "application/json; profile=\"https://azconfig.io/mime-profiles/snapshot-ref\"; charset=utf-8";
+    private static final String SNAPSHOT_REF_CONTENT_TYPE = "application/json; profile=\"https://azconfig.io/mime-profiles/snapshot-ref\"; charset=utf-8";
 
     protected final FeatureFlagClient featureFlagClient;
 
