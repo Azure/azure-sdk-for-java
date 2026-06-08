@@ -12,21 +12,21 @@ public final class GalleryImageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryImageList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"author\":\"rrghxjbdhqxvcxgf\",\"createdDate\":\"2021-06-30T13:21:57Z\",\"description\":\"ofbshr\",\"imageReference\":{\"offer\":\"buswdvzyy\",\"publisher\":\"cnunvjsr\",\"sku\":\"f\",\"osType\":\"nopqgikyzirtx\",\"version\":\"uxzejntpsew\"},\"icon\":\"oi\",\"enabled\":false,\"planId\":\"rydxtqm\",\"isPlanAuthorized\":false},\"tags\":{\"yaomtb\":\"rgguf\",\"pjbi\":\"hhavgrvkffovjz\"},\"location\":\"jmfxumvf\",\"id\":\"uyovw\",\"name\":\"nbkfezzxscy\",\"type\":\"wzdgirujbzbo\"},{\"properties\":{\"author\":\"zzbtdcqvpniyujvi\",\"createdDate\":\"2021-03-20T12:04:05Z\",\"description\":\"shfssnrbgyef\",\"imageReference\":{\"offer\":\"sgaojfmwncot\",\"publisher\":\"fhir\",\"sku\":\"ymoxoftpipiwyczu\",\"osType\":\"a\",\"version\":\"qjlihhyuspska\"},\"icon\":\"vlmfwdgzxulucv\",\"enabled\":true,\"planId\":\"sreuzvxurisjnh\",\"isPlanAuthorized\":false},\"tags\":{\"zgxmr\":\"fq\",\"upauut\":\"ublwpcesutrg\"},\"location\":\"oqh\",\"id\":\"ejqgw\",\"name\":\"pnfqntcyp\",\"type\":\"xjvfoimwksl\"}],\"nextLink\":\"cizjxvydfceacvl\"}")
+            "{\"value\":[{\"properties\":{\"author\":\"swdvzyybycnun\",\"createdDate\":\"2021-10-27T17:36:43Z\",\"description\":\"tkfa\",\"imageReference\":{\"offer\":\"pqgik\",\"publisher\":\"irtx\",\"sku\":\"uxzejntpsew\",\"osType\":\"oi\",\"version\":\"ukry\"},\"icon\":\"tqmieox\",\"enabled\":true,\"planId\":\"ufhyaomtbgh\",\"isPlanAuthorized\":false},\"tags\":{\"bgj\":\"vkffovjzhpjb\"},\"location\":\"xumvfcluyovw\",\"id\":\"bkfezzxscyhwzdgi\",\"name\":\"ujb\",\"type\":\"bomvzzbtdcqv\"},{\"properties\":{\"author\":\"iyujviylwdshfs\",\"createdDate\":\"2021-10-02T20:28:41Z\",\"description\":\"gy\",\"imageReference\":{\"offer\":\"ymsgaojfmwnc\",\"publisher\":\"mrfhirctymox\",\"sku\":\"tpipiwyczuhx\",\"osType\":\"pqjlihhyusps\",\"version\":\"sdvlmfwdgzxulucv\"},\"icon\":\"mrsreuzvxurisjnh\",\"enabled\":false,\"planId\":\"ifqjz\",\"isPlanAuthorized\":true},\"tags\":{\"upauut\":\"ublwpcesutrg\"},\"location\":\"oqh\",\"id\":\"ejqgw\",\"name\":\"pnfqntcyp\",\"type\":\"xjvfoimwksl\"},{\"properties\":{\"author\":\"cizjxvydfceacvl\",\"createdDate\":\"2021-10-11T13:05:49Z\",\"description\":\"dyftumrtwna\",\"imageReference\":{\"offer\":\"lbiw\",\"publisher\":\"jgcyztsfmznba\",\"sku\":\"ph\",\"osType\":\"qnrnrpxehuwryk\",\"version\":\"aifmvikl\"},\"icon\":\"dvk\",\"enabled\":false,\"planId\":\"dznx\",\"isPlanAuthorized\":false},\"tags\":{\"v\":\"hnjivo\"},\"location\":\"ovqfzge\",\"id\":\"dftuljltduce\",\"name\":\"mtmczuome\",\"type\":\"wcw\"}],\"nextLink\":\"ioknssxmoj\"}")
             .toObject(GalleryImageList.class);
-        Assertions.assertEquals("rgguf", model.value().get(0).tags().get("yaomtb"));
-        Assertions.assertEquals("jmfxumvf", model.value().get(0).location());
-        Assertions.assertEquals("rrghxjbdhqxvcxgf", model.value().get(0).author());
-        Assertions.assertEquals("ofbshr", model.value().get(0).description());
-        Assertions.assertEquals("buswdvzyy", model.value().get(0).imageReference().offer());
-        Assertions.assertEquals("cnunvjsr", model.value().get(0).imageReference().publisher());
-        Assertions.assertEquals("f", model.value().get(0).imageReference().sku());
-        Assertions.assertEquals("nopqgikyzirtx", model.value().get(0).imageReference().osType());
-        Assertions.assertEquals("uxzejntpsew", model.value().get(0).imageReference().version());
-        Assertions.assertEquals("oi", model.value().get(0).icon());
-        Assertions.assertFalse(model.value().get(0).enabled());
-        Assertions.assertEquals("rydxtqm", model.value().get(0).planId());
+        Assertions.assertEquals("vkffovjzhpjb", model.value().get(0).tags().get("bgj"));
+        Assertions.assertEquals("xumvfcluyovw", model.value().get(0).location());
+        Assertions.assertEquals("swdvzyybycnun", model.value().get(0).author());
+        Assertions.assertEquals("tkfa", model.value().get(0).description());
+        Assertions.assertEquals("pqgik", model.value().get(0).imageReference().offer());
+        Assertions.assertEquals("irtx", model.value().get(0).imageReference().publisher());
+        Assertions.assertEquals("uxzejntpsew", model.value().get(0).imageReference().sku());
+        Assertions.assertEquals("oi", model.value().get(0).imageReference().osType());
+        Assertions.assertEquals("ukry", model.value().get(0).imageReference().version());
+        Assertions.assertEquals("tqmieox", model.value().get(0).icon());
+        Assertions.assertTrue(model.value().get(0).enabled());
+        Assertions.assertEquals("ufhyaomtbgh", model.value().get(0).planId());
         Assertions.assertFalse(model.value().get(0).isPlanAuthorized());
-        Assertions.assertEquals("cizjxvydfceacvl", model.nextLink());
+        Assertions.assertEquals("ioknssxmoj", model.nextLink());
     }
 }

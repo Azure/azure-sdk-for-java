@@ -16,28 +16,28 @@ public final class CustomImageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomImageList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"vm\":{\"sourceVmId\":\"ikayuhqlbjbsybb\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"fp\",\"sysPrep\":true,\"osType\":\"None\"},\"description\":\"paslthaqfxssmwu\",\"author\":\"bdsrez\",\"creationDate\":\"2021-11-25T18:05:49Z\",\"managedImageId\":\"neuyow\",\"managedSnapshotId\":\"d\",\"dataDiskStorageInfo\":[{\"lun\":\"sibircgpi\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"ejzanlfz\",\"publisher\":\"av\",\"offer\":\"bzonok\"},\"isPlanAuthorized\":false,\"provisioningState\":\"q\",\"uniqueIdentifier\":\"rgz\"},\"tags\":{\"oiindfpwpjy\":\"lazszrn\",\"zfjvfbgofe\":\"wbtlhflsjcdh\",\"iiojnal\":\"jagrqmqhldvr\"},\"location\":\"fk\",\"id\":\"vsexsowuelu\",\"name\":\"hhahhxvrhmzkwpjg\",\"type\":\"wspughftqsxhqx\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"ukndxdigrjgu\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"fi\",\"sysPrep\":true,\"osType\":\"Linux\"},\"description\":\"tzingamvpph\",\"author\":\"zqzudph\",\"creationDate\":\"2021-05-02T09:33:50Z\",\"managedImageId\":\"dkfw\",\"managedSnapshotId\":\"wcvtbvkayhmtnvyq\",\"dataDiskStorageInfo\":[{\"lun\":\"zwpcnpwzcjaesg\",\"storageType\":\"StandardSSD\"},{\"lun\":\"cyajguqf\",\"storageType\":\"Standard\"},{\"lun\":\"zlvdnkfxusemdw\",\"storageType\":\"StandardSSD\"}],\"customImagePlan\":{\"id\":\"apfcqdpsq\",\"publisher\":\"vpsvuoymgcce\",\"offer\":\"ezrypql\"},\"isPlanAuthorized\":true,\"provisioningState\":\"kerqwkyh\",\"uniqueIdentifier\":\"bopgxedkowepbqp\"},\"tags\":{\"njv\":\"kbwcc\"},\"location\":\"wxlp\",\"id\":\"kftnkhtjsyin\",\"name\":\"wfqatmtd\",\"type\":\"tmdvypgikdgs\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"kbir\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionApplied\"}},\"vhd\":{\"imageName\":\"oqrvqqaatjin\",\"sysPrep\":true,\"osType\":\"Windows\"},\"description\":\"pmfi\",\"author\":\"fggjioolvr\",\"creationDate\":\"2021-01-31T00:57:49Z\",\"managedImageId\":\"tkkgllqwjy\",\"managedSnapshotId\":\"jayvblmhv\",\"dataDiskStorageInfo\":[{\"lun\":\"bxvvyhg\",\"storageType\":\"StandardSSD\"},{\"lun\":\"yrqufegxuvwz\",\"storageType\":\"StandardSSD\"}],\"customImagePlan\":{\"id\":\"mctlpdngitv\",\"publisher\":\"mhrixkwmyijejve\",\"offer\":\"hbpnaixexccbd\"},\"isPlanAuthorized\":false,\"provisioningState\":\"hcexdrrvqa\",\"uniqueIdentifier\":\"kghtpwijnh\"},\"tags\":{\"voowvr\":\"vfycxzb\",\"qp\":\"mtg\",\"s\":\"y\"},\"location\":\"on\",\"id\":\"yhgfipnsx\",\"name\":\"mcwaekrrjr\",\"type\":\"afxtsgum\"}],\"nextLink\":\"glikkxwslolb\"}")
+            "{\"value\":[{\"properties\":{\"vm\":{\"sourceVmId\":\"ejzanlfz\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"nokixrjqcirgz\",\"sysPrep\":true,\"osType\":\"Windows\"},\"description\":\"zszrnwoiindfpw\",\"author\":\"ylwbtlhflsjcdhsz\",\"creationDate\":\"2021-11-09T19:03:51Z\",\"managedImageId\":\"bgofeljag\",\"managedSnapshotId\":\"mqhldvrii\",\"dataDiskStorageInfo\":[{\"lun\":\"al\",\"storageType\":\"Premium\"},{\"lun\":\"vtvsexsowueluq\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"xvrhmzkwp\",\"publisher\":\"wws\",\"offer\":\"ghftqsxhqxujxuk\"},\"isPlanAuthorized\":false,\"provisioningState\":\"igrjguufzdm\",\"uniqueIdentifier\":\"qtfihwhbotzinga\"},\"tags\":{\"dphqamv\":\"phoszqz\"},\"location\":\"fwynwcvtbvkay\",\"id\":\"tnvyqiatkzwp\",\"name\":\"npwzcjaes\",\"type\":\"vvsccyajguq\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"ygz\",\"windowsOsInfo\":{\"windowsOsState\":\"NonSysprepped\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"emdwzrmuhapfc\",\"sysPrep\":false,\"osType\":\"Windows\"},\"description\":\"xqv\",\"author\":\"vuoy\",\"creationDate\":\"2021-06-18T08:14:24Z\",\"managedImageId\":\"elvezrypq\",\"managedSnapshotId\":\"feo\",\"dataDiskStorageInfo\":[{\"lun\":\"wkyhkobopgxe\",\"storageType\":\"Premium\"},{\"lun\":\"epbqpcrfkbw\",\"storageType\":\"StandardSSD\"}],\"customImagePlan\":{\"id\":\"vcdwxlpqekftn\",\"publisher\":\"tjsyin\",\"offer\":\"fq\"},\"isPlanAuthorized\":false,\"provisioningState\":\"dhtmdvypgikd\",\"uniqueIdentifier\":\"zywkb\"},\"tags\":{\"aatjinrvgoupmfi\":\"yuzhlhkjoqrvq\",\"x\":\"bfggjioolvr\"},\"location\":\"tkkgllqwjy\",\"id\":\"jayvblmhv\",\"name\":\"zuhbxvvyhgsopb\",\"type\":\"rqufegxuvwz\"},{\"properties\":{\"vm\":{\"sourceVmId\":\"hlmctlpdngitvgb\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"ijejvegrhbpn\",\"sysPrep\":true,\"osType\":\"Windows\"},\"description\":\"ccbdre\",\"author\":\"hcexdrrvqa\",\"creationDate\":\"2021-04-26T15:49:54Z\",\"managedImageId\":\"htpwij\",\"managedSnapshotId\":\"yjsvfyc\",\"dataDiskStorageInfo\":[{\"lun\":\"voowvr\",\"storageType\":\"Premium\"},{\"lun\":\"jqppyostronzmy\",\"storageType\":\"Standard\"},{\"lun\":\"pnsxkmcwaek\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"afxtsgum\",\"publisher\":\"glikkxwslolb\",\"offer\":\"vuzlm\"},\"isPlanAuthorized\":false,\"provisioningState\":\"fktgplc\",\"uniqueIdentifier\":\"wjxeznoigbr\"},\"tags\":{\"pn\":\"mw\"},\"location\":\"azej\",\"id\":\"qkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"}],\"nextLink\":\"j\"}")
             .toObject(CustomImageList.class);
-        Assertions.assertEquals("lazszrn", model.value().get(0).tags().get("oiindfpwpjy"));
-        Assertions.assertEquals("fk", model.value().get(0).location());
-        Assertions.assertEquals("ikayuhqlbjbsybb", model.value().get(0).vm().sourceVmId());
-        Assertions.assertEquals(WindowsOsState.NON_SYSPREPPED,
+        Assertions.assertEquals("phoszqz", model.value().get(0).tags().get("dphqamv"));
+        Assertions.assertEquals("fwynwcvtbvkay", model.value().get(0).location());
+        Assertions.assertEquals("ejzanlfz", model.value().get(0).vm().sourceVmId());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED,
             model.value().get(0).vm().windowsOsInfo().windowsOsState());
         Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED,
             model.value().get(0).vm().linuxOsInfo().linuxOsState());
-        Assertions.assertEquals("fp", model.value().get(0).vhd().imageName());
+        Assertions.assertEquals("nokixrjqcirgz", model.value().get(0).vhd().imageName());
         Assertions.assertTrue(model.value().get(0).vhd().sysPrep());
-        Assertions.assertEquals(CustomImageOsType.NONE, model.value().get(0).vhd().osType());
-        Assertions.assertEquals("paslthaqfxssmwu", model.value().get(0).description());
-        Assertions.assertEquals("bdsrez", model.value().get(0).author());
-        Assertions.assertEquals("neuyow", model.value().get(0).managedImageId());
-        Assertions.assertEquals("d", model.value().get(0).managedSnapshotId());
-        Assertions.assertEquals("sibircgpi", model.value().get(0).dataDiskStorageInfo().get(0).lun());
-        Assertions.assertEquals(StorageType.STANDARD, model.value().get(0).dataDiskStorageInfo().get(0).storageType());
-        Assertions.assertEquals("ejzanlfz", model.value().get(0).customImagePlan().id());
-        Assertions.assertEquals("av", model.value().get(0).customImagePlan().publisher());
-        Assertions.assertEquals("bzonok", model.value().get(0).customImagePlan().offer());
+        Assertions.assertEquals(CustomImageOsType.WINDOWS, model.value().get(0).vhd().osType());
+        Assertions.assertEquals("zszrnwoiindfpw", model.value().get(0).description());
+        Assertions.assertEquals("ylwbtlhflsjcdhsz", model.value().get(0).author());
+        Assertions.assertEquals("bgofeljag", model.value().get(0).managedImageId());
+        Assertions.assertEquals("mqhldvrii", model.value().get(0).managedSnapshotId());
+        Assertions.assertEquals("al", model.value().get(0).dataDiskStorageInfo().get(0).lun());
+        Assertions.assertEquals(StorageType.PREMIUM, model.value().get(0).dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals("xvrhmzkwp", model.value().get(0).customImagePlan().id());
+        Assertions.assertEquals("wws", model.value().get(0).customImagePlan().publisher());
+        Assertions.assertEquals("ghftqsxhqxujxuk", model.value().get(0).customImagePlan().offer());
         Assertions.assertFalse(model.value().get(0).isPlanAuthorized());
-        Assertions.assertEquals("glikkxwslolb", model.nextLink());
+        Assertions.assertEquals("j", model.nextLink());
     }
 }

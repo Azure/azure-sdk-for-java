@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ParametersValueFileInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParametersValueFileInfo model = BinaryData.fromString(
-            "{\"fileName\":\"tjrybnwjewgdr\",\"parametersValueInfo\":{\"ifthnz\":\"\\\"datavnaenqpehindoyg\\\"\",\"vhqlkthumaqo\":\"\\\"datandslgnayqigynduh\\\"\",\"aolps\":\"\\\"databgycduiertgccym\\\"\"}}")
-            .toObject(ParametersValueFileInfo.class);
-        Assertions.assertEquals("tjrybnwjewgdr", model.fileName());
+        ParametersValueFileInfo model
+            = BinaryData.fromString("{\"fileName\":\"krtswbxqz\",\"parametersValueInfo\":\"\\\"datazjf\\\"\"}")
+                .toObject(ParametersValueFileInfo.class);
+        Assertions.assertEquals("krtswbxqz", model.fileName());
     }
 }

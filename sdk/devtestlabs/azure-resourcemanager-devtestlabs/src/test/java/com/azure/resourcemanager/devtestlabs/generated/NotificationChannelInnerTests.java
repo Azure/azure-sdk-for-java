@@ -17,36 +17,38 @@ public final class NotificationChannelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotificationChannelInner model = BinaryData.fromString(
-            "{\"properties\":{\"webHookUrl\":\"mbtxhwgf\",\"emailRecipient\":\"rtawcoezb\",\"notificationLocale\":\"ubskhudygoookkq\",\"description\":\"jb\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-07-07T02:32:57Z\",\"provisioningState\":\"qtqzfavyv\",\"uniqueIdentifier\":\"qybaryeua\"},\"tags\":{\"ernntiewdjcvbquw\":\"qabqgzslesjcb\"},\"location\":\"ehwagoh\",\"id\":\"f\",\"name\":\"kmr\",\"type\":\"emvvhm\"}")
+            "{\"properties\":{\"webHookUrl\":\"iuxxpshneekulfg\",\"emailRecipient\":\"qubkw\",\"notificationLocale\":\"enr\",\"description\":\"utujba\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-06-02T22:02:25Z\",\"provisioningState\":\"rwm\",\"uniqueIdentifier\":\"vwpklvxwmygdxp\"},\"tags\":{\"nnbj\":\"chisze\",\"xconfozauors\":\"rxgibbd\"},\"location\":\"okwbqplh\",\"id\":\"nuuepzlrp\",\"name\":\"wzsoldweyuqdunv\",\"type\":\"nnrwrbiork\"}")
             .toObject(NotificationChannelInner.class);
-        Assertions.assertEquals("qabqgzslesjcb", model.tags().get("ernntiewdjcvbquw"));
-        Assertions.assertEquals("ehwagoh", model.location());
-        Assertions.assertEquals("mbtxhwgf", model.webhookUrl());
-        Assertions.assertEquals("rtawcoezb", model.emailRecipient());
-        Assertions.assertEquals("ubskhudygoookkq", model.notificationLocale());
-        Assertions.assertEquals("jb", model.description());
-        Assertions.assertEquals(NotificationChannelEventType.COST, model.events().get(0).eventName());
+        Assertions.assertEquals("chisze", model.tags().get("nnbj"));
+        Assertions.assertEquals("okwbqplh", model.location());
+        Assertions.assertEquals("iuxxpshneekulfg", model.webhookUrl());
+        Assertions.assertEquals("qubkw", model.emailRecipient());
+        Assertions.assertEquals("enr", model.notificationLocale());
+        Assertions.assertEquals("utujba", model.description());
+        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.events().get(0).eventName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NotificationChannelInner model
-            = new NotificationChannelInner().withTags(mapOf("ernntiewdjcvbquw", "qabqgzslesjcb"))
-                .withLocation("ehwagoh")
-                .withWebhookUrl("mbtxhwgf")
-                .withEmailRecipient("rtawcoezb")
-                .withNotificationLocale("ubskhudygoookkq")
-                .withDescription("jb")
-                .withEvents(Arrays.asList(new Event().withEventName(NotificationChannelEventType.COST),
-                    new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)));
+            = new NotificationChannelInner().withTags(mapOf("nnbj", "chisze", "xconfozauors", "rxgibbd"))
+                .withLocation("okwbqplh")
+                .withWebhookUrl("iuxxpshneekulfg")
+                .withEmailRecipient("qubkw")
+                .withNotificationLocale("enr")
+                .withDescription("utujba")
+                .withEvents(Arrays.asList(new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                    new Event().withEventName(NotificationChannelEventType.COST),
+                    new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                    new Event().withEventName(NotificationChannelEventType.COST)));
         model = BinaryData.fromObject(model).toObject(NotificationChannelInner.class);
-        Assertions.assertEquals("qabqgzslesjcb", model.tags().get("ernntiewdjcvbquw"));
-        Assertions.assertEquals("ehwagoh", model.location());
-        Assertions.assertEquals("mbtxhwgf", model.webhookUrl());
-        Assertions.assertEquals("rtawcoezb", model.emailRecipient());
-        Assertions.assertEquals("ubskhudygoookkq", model.notificationLocale());
-        Assertions.assertEquals("jb", model.description());
-        Assertions.assertEquals(NotificationChannelEventType.COST, model.events().get(0).eventName());
+        Assertions.assertEquals("chisze", model.tags().get("nnbj"));
+        Assertions.assertEquals("okwbqplh", model.location());
+        Assertions.assertEquals("iuxxpshneekulfg", model.webhookUrl());
+        Assertions.assertEquals("qubkw", model.emailRecipient());
+        Assertions.assertEquals("enr", model.notificationLocale());
+        Assertions.assertEquals("utujba", model.description());
+        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.events().get(0).eventName());
     }
 
     // Use "Map.of" if available

@@ -27,7 +27,7 @@ public final class CustomImagesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.customImages().delete("rmexznlwkb", "okxkhupzer", "fgjblcd", com.azure.core.util.Context.NONE);
+        manager.customImages().delete("zcqymlcfn", "hmhsurlgwqkpm", "zpstauolawiubm", com.azure.core.util.Context.NONE);
 
     }
 }

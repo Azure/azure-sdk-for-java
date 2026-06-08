@@ -29,8 +29,8 @@ public final class DisksAttachMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.disks()
-            .attach("zkdtzxsoed", "lwglihezomucmqg", "snio", "etbzdrdpuenxkgtl",
-                new AttachDiskProperties().withLeasedByLabVmId("mtrlxczn"), com.azure.core.util.Context.NONE);
+            .attach("pcf", "fwzlgzawkgyepeya", "nnidmdiawpzxk", "rntmkctdhu",
+                new AttachDiskProperties().withLeasedByLabVmId("gwqpsqazih"), com.azure.core.util.Context.NONE);
 
     }
 }

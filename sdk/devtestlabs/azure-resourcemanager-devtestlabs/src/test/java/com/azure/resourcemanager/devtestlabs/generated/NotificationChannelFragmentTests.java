@@ -13,19 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationChannelFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationChannelFragment model = BinaryData
-            .fromString(
-                "{\"tags\":{\"pjuohminyfl\":\"kwdlenrdsutujba\",\"w\":\"orwmduvwpklv\",\"epn\":\"ygdxpgpqchis\"}}")
-            .toObject(NotificationChannelFragment.class);
-        Assertions.assertEquals("kwdlenrdsutujba", model.tags().get("pjuohminyfl"));
+        NotificationChannelFragment model
+            = BinaryData.fromString("{\"tags\":{\"ev\":\"nizshqvcim\"}}").toObject(NotificationChannelFragment.class);
+        Assertions.assertEquals("nizshqvcim", model.tags().get("ev"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationChannelFragment model = new NotificationChannelFragment()
-            .withTags(mapOf("pjuohminyfl", "kwdlenrdsutujba", "w", "orwmduvwpklv", "epn", "ygdxpgpqchis"));
+        NotificationChannelFragment model = new NotificationChannelFragment().withTags(mapOf("ev", "nizshqvcim"));
         model = BinaryData.fromObject(model).toObject(NotificationChannelFragment.class);
-        Assertions.assertEquals("kwdlenrdsutujba", model.tags().get("pjuohminyfl"));
+        Assertions.assertEquals("nizshqvcim", model.tags().get("ev"));
     }
 
     // Use "Map.of" if available

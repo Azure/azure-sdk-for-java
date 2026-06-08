@@ -12,18 +12,18 @@ public final class GalleryImagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryImageProperties model = BinaryData.fromString(
-            "{\"author\":\"prvkwcfzqljyxgtc\",\"createdDate\":\"2021-01-05T03:46:23Z\",\"description\":\"dbsdshm\",\"imageReference\":{\"offer\":\"aehvbbxuri\",\"publisher\":\"tfnhtbaxkgxywr\",\"sku\":\"pyklyhpluodpvru\",\"osType\":\"lgzi\",\"version\":\"hostgktstvdxecl\"},\"icon\":\"dqbcvhzlhplod\",\"enabled\":true,\"planId\":\"wwqfbumlkxtrqj\",\"isPlanAuthorized\":true}")
+            "{\"author\":\"gzslesjcbhernnti\",\"createdDate\":\"2021-09-10T03:49:52Z\",\"description\":\"cv\",\"imageReference\":{\"offer\":\"wr\",\"publisher\":\"hwagohbuffkmrqe\",\"sku\":\"vhmxtdrjfu\",\"osType\":\"coebjvewzcj\",\"version\":\"m\"},\"icon\":\"pmguaadraufac\",\"enabled\":true,\"planId\":\"zov\",\"isPlanAuthorized\":false}")
             .toObject(GalleryImageProperties.class);
-        Assertions.assertEquals("prvkwcfzqljyxgtc", model.author());
-        Assertions.assertEquals("dbsdshm", model.description());
-        Assertions.assertEquals("aehvbbxuri", model.imageReference().offer());
-        Assertions.assertEquals("tfnhtbaxkgxywr", model.imageReference().publisher());
-        Assertions.assertEquals("pyklyhpluodpvru", model.imageReference().sku());
-        Assertions.assertEquals("lgzi", model.imageReference().osType());
-        Assertions.assertEquals("hostgktstvdxecl", model.imageReference().version());
-        Assertions.assertEquals("dqbcvhzlhplod", model.icon());
+        Assertions.assertEquals("gzslesjcbhernnti", model.author());
+        Assertions.assertEquals("cv", model.description());
+        Assertions.assertEquals("wr", model.imageReference().offer());
+        Assertions.assertEquals("hwagohbuffkmrqe", model.imageReference().publisher());
+        Assertions.assertEquals("vhmxtdrjfu", model.imageReference().sku());
+        Assertions.assertEquals("coebjvewzcj", model.imageReference().osType());
+        Assertions.assertEquals("m", model.imageReference().version());
+        Assertions.assertEquals("pmguaadraufac", model.icon());
         Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("wwqfbumlkxtrqj", model.planId());
-        Assertions.assertTrue(model.isPlanAuthorized());
+        Assertions.assertEquals("zov", model.planId());
+        Assertions.assertFalse(model.isPlanAuthorized());
     }
 }

@@ -12,10 +12,11 @@ public final class ArtifactDeploymentStatusPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArtifactDeploymentStatusProperties model = BinaryData
-            .fromString("{\"deploymentStatus\":\"gf\",\"artifactsApplied\":1009446634,\"totalArtifacts\":970859098}")
+            .fromString(
+                "{\"deploymentStatus\":\"rohkpigqfusu\",\"artifactsApplied\":914637173,\"totalArtifacts\":853559772}")
             .toObject(ArtifactDeploymentStatusProperties.class);
-        Assertions.assertEquals("gf", model.deploymentStatus());
-        Assertions.assertEquals(1009446634, model.artifactsApplied());
-        Assertions.assertEquals(970859098, model.totalArtifacts());
+        Assertions.assertEquals("rohkpigqfusu", model.deploymentStatus());
+        Assertions.assertEquals(914637173, model.artifactsApplied());
+        Assertions.assertEquals(853559772, model.totalArtifacts());
     }
 }

@@ -11,7 +11,7 @@ public final class ArmTemplatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmTemplateProperties model = BinaryData.fromString(
-            "{\"displayName\":\"blytk\",\"description\":\"mpew\",\"publisher\":\"fbkrvrnsvs\",\"icon\":\"johxcrsb\",\"contents\":\"\\\"datavasrruvwb\\\"\",\"createdDate\":\"2021-03-04T21:23:46Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"bcgjbirxbp\",\"parametersValueInfo\":{\"twss\":\"\\\"datarfbjf\\\"\",\"tpvjzbexilzznfqq\":\"\\\"datat\\\"\",\"taruoujmkcj\":\"\\\"datavwpm\\\"\"}}],\"enabled\":true}")
+            "{\"displayName\":\"pzfqrhhuaoppp\",\"description\":\"eqx\",\"publisher\":\"z\",\"icon\":\"hzxct\",\"contents\":\"\\\"datagbkdmoizpos\\\"\",\"createdDate\":\"2021-02-03T18:27:02Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"bunrmfqjhhk\",\"parametersValueInfo\":\"\\\"datapvjymjhxxjyng\\\"\"}],\"enabled\":false}")
             .toObject(ArmTemplateProperties.class);
     }
 }

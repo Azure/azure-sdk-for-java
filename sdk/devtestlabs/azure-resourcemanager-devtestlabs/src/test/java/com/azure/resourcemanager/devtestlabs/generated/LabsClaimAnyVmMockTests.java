@@ -27,7 +27,7 @@ public final class LabsClaimAnyVmMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.labs().claimAnyVm("jy", "kyxl", com.azure.core.util.Context.NONE);
+        manager.labs().claimAnyVm("mclujyxkyxlzgs", "gkzz", com.azure.core.util.Context.NONE);
 
     }
 }

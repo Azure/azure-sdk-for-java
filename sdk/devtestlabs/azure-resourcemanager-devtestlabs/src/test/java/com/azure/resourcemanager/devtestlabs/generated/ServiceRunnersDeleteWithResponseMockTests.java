@@ -28,7 +28,7 @@ public final class ServiceRunnersDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.serviceRunners()
-            .deleteWithResponse("eojxrjn", "sconxavipney", "hbjizqfsgnwdx", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ydjufbnklbl", "xpegj", "dabalfdxaglzfytl", com.azure.core.util.Context.NONE);
 
     }
 }

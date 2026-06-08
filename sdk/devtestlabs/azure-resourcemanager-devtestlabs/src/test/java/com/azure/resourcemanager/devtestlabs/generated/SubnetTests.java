@@ -13,21 +13,22 @@ public final class SubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Subnet model = BinaryData
-            .fromString("{\"resourceId\":\"phkixkykxdssjpe\",\"labSubnetName\":\"ucfx\",\"allowPublicIp\":\"Allow\"}")
+            .fromString(
+                "{\"resourceId\":\"nzqtpjhmqrhvt\",\"labSubnetName\":\"aiwdcxsmlzzhz\",\"allowPublicIp\":\"Allow\"}")
             .toObject(Subnet.class);
-        Assertions.assertEquals("phkixkykxdssjpe", model.resourceId());
-        Assertions.assertEquals("ucfx", model.labSubnetName());
+        Assertions.assertEquals("nzqtpjhmqrhvt", model.resourceId());
+        Assertions.assertEquals("aiwdcxsmlzzhz", model.labSubnetName());
         Assertions.assertEquals(UsagePermissionType.ALLOW, model.allowPublicIp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Subnet model = new Subnet().withResourceId("phkixkykxdssjpe")
-            .withLabSubnetName("ucfx")
+        Subnet model = new Subnet().withResourceId("nzqtpjhmqrhvt")
+            .withLabSubnetName("aiwdcxsmlzzhz")
             .withAllowPublicIp(UsagePermissionType.ALLOW);
         model = BinaryData.fromObject(model).toObject(Subnet.class);
-        Assertions.assertEquals("phkixkykxdssjpe", model.resourceId());
-        Assertions.assertEquals("ucfx", model.labSubnetName());
+        Assertions.assertEquals("nzqtpjhmqrhvt", model.resourceId());
+        Assertions.assertEquals("aiwdcxsmlzzhz", model.labSubnetName());
         Assertions.assertEquals(UsagePermissionType.ALLOW, model.allowPublicIp());
     }
 }

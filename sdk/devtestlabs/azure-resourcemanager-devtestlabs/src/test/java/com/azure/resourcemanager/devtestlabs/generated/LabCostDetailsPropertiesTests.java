@@ -14,10 +14,10 @@ public final class LabCostDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LabCostDetailsProperties model = BinaryData
-            .fromString("{\"date\":\"2021-11-06T05:34:15Z\",\"cost\":2.221297800668698,\"costType\":\"Unavailable\"}")
+            .fromString("{\"date\":\"2021-10-07T08:54:51Z\",\"cost\":42.566201156552616,\"costType\":\"Reported\"}")
             .toObject(LabCostDetailsProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T05:34:15Z"), model.date());
-        Assertions.assertEquals(2.221297800668698D, model.cost());
-        Assertions.assertEquals(CostType.UNAVAILABLE, model.costType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T08:54:51Z"), model.date());
+        Assertions.assertEquals(42.566201156552616D, model.cost());
+        Assertions.assertEquals(CostType.REPORTED, model.costType());
     }
 }

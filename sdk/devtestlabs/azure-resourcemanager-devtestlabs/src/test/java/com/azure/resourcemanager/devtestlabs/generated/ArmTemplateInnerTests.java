@@ -12,9 +12,9 @@ public final class ArmTemplateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmTemplateInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"ofd\",\"description\":\"uusdttouwa\",\"publisher\":\"ekqvkeln\",\"icon\":\"vbxwyjsflhh\",\"contents\":\"\\\"dataaln\\\"\",\"createdDate\":\"2021-03-25T19:19:56Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"yaw\",\"parametersValueInfo\":{\"slyjpkiid\":\"\\\"dataaq\\\"\",\"eli\":\"\\\"datayexz\\\"\",\"bnxknalaulppg\":\"\\\"datahnrztfol\\\"\",\"gvpgy\":\"\\\"datadtpnapnyiropuhp\\\"\"}},{\"fileName\":\"qgitxmed\",\"parametersValueInfo\":{\"zzhxgktrm\":\"\\\"dataslynqwwnc\\\"\"}},{\"fileName\":\"cnapkteoell\",\"parametersValueInfo\":{\"qrhhu\":\"\\\"datafdygpfqbuaceopz\\\"\",\"ol\":\"\\\"dataopppcqeq\\\"\",\"kdmoi\":\"\\\"datadahzxctobg\\\"\"}}],\"enabled\":false},\"tags\":{\"rmfqjhhkxbpvj\":\"mgrcfbu\",\"xjyngudivk\":\"mjh\",\"qzvszjf\":\"tswb\"},\"location\":\"vjfdx\",\"id\":\"vetvt\",\"name\":\"qaqtdoqmcbxvwvxy\",\"type\":\"lqbhsf\"}")
+            "{\"properties\":{\"displayName\":\"ofd\",\"description\":\"uusdttouwa\",\"publisher\":\"ekqvkeln\",\"icon\":\"vbxwyjsflhh\",\"contents\":\"\\\"dataaln\\\"\",\"createdDate\":\"2021-03-25T19:19:56Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"yaw\",\"parametersValueInfo\":\"\\\"datayaqcslyjpkiidz\\\"\"},{\"fileName\":\"xznelixhnrztf\",\"parametersValueInfo\":\"\\\"datahb\\\"\"},{\"fileName\":\"knalaulppg\",\"parametersValueInfo\":\"\\\"datatpnapnyiropuhpig\\\"\"}],\"enabled\":true},\"tags\":{\"n\":\"gqgitxmedjvcsl\"},\"location\":\"wncwzzhxgktrmg\",\"id\":\"napkteoellw\",\"name\":\"tfdygpfqb\",\"type\":\"ac\"}")
             .toObject(ArmTemplateInner.class);
-        Assertions.assertEquals("mgrcfbu", model.tags().get("rmfqjhhkxbpvj"));
-        Assertions.assertEquals("vjfdx", model.location());
+        Assertions.assertEquals("gqgitxmedjvcsl", model.tags().get("n"));
+        Assertions.assertEquals("wncwzzhxgktrmg", model.location());
     }
 }

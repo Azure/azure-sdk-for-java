@@ -25,7 +25,7 @@ public final class CustomImagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vm\":{\"sourceVmId\":\"qynspgbvoffb\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepRequested\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionRequested\"}},\"vhd\":{\"imageName\":\"qokmyrljial\",\"sysPrep\":false,\"osType\":\"Linux\"},\"description\":\"rqlpbcjtrpz\",\"author\":\"udivbxnhsqeaeonq\",\"creationDate\":\"2021-10-06T17:18:05Z\",\"managedImageId\":\"dhuruzytzarog\",\"managedSnapshotId\":\"moljiywm\",\"dataDiskStorageInfo\":[{\"lun\":\"zvfkneerz\",\"storageType\":\"Standard\"},{\"lun\":\"nsjulugdybnh\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"fjhkeizcpihtdmiw\",\"publisher\":\"kpty\",\"offer\":\"ydbjzcqymlcf\"},\"isPlanAuthorized\":true,\"provisioningState\":\"hsurlgw\",\"uniqueIdentifier\":\"pmmzps\"},\"tags\":{\"vvjhvvlrlohewjj\":\"olawiubmoms\"},\"location\":\"jnkdflqion\",\"id\":\"aeqkzfzqxjoshoh\",\"name\":\"otryegp\",\"type\":\"h\"}";
+            = "{\"properties\":{\"vm\":{\"sourceVmId\":\"fkwdvbtbrekqh\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionApplied\"}},\"vhd\":{\"imageName\":\"byejuwyqwdqigm\",\"sysPrep\":false,\"osType\":\"Linux\"},\"description\":\"z\",\"author\":\"lujkhn\",\"creationDate\":\"2020-12-21T21:35:02Z\",\"managedImageId\":\"nkfm\",\"managedSnapshotId\":\"cqtwmlmhjnqtq\",\"dataDiskStorageInfo\":[{\"lun\":\"e\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"pok\",\"publisher\":\"xejhh\",\"offer\":\"guavtptb\"},\"isPlanAuthorized\":false,\"provisioningState\":\"qynspgbvoffb\",\"uniqueIdentifier\":\"w\"},\"tags\":{\"alzb\":\"aexqokmyrlj\",\"cjtrpzu\":\"obrqlp\",\"lwgdhuruz\":\"udivbxnhsqeaeonq\",\"mpinmzvfkneerzzt\":\"tzarogatmoljiy\"},\"location\":\"nsjulugdybnh\",\"id\":\"lelfjhkeizcpih\",\"name\":\"dmiwjekpty\",\"type\":\"aydb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,26 +35,26 @@ public final class CustomImagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CustomImage response = manager.customImages()
-            .getWithResponse("hjnqt", "eahjedv", "agpokddxe", "hhkvguavtptbk", com.azure.core.util.Context.NONE)
+            .getWithResponse("vstclg", "rvwerfwxbsmtb", "jj", "h", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("olawiubmoms", response.tags().get("vvjhvvlrlohewjj"));
-        Assertions.assertEquals("jnkdflqion", response.location());
-        Assertions.assertEquals("qynspgbvoffb", response.vm().sourceVmId());
-        Assertions.assertEquals(WindowsOsState.SYSPREP_REQUESTED, response.vm().windowsOsInfo().windowsOsState());
-        Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED, response.vm().linuxOsInfo().linuxOsState());
-        Assertions.assertEquals("qokmyrljial", response.vhd().imageName());
+        Assertions.assertEquals("aexqokmyrlj", response.tags().get("alzb"));
+        Assertions.assertEquals("nsjulugdybnh", response.location());
+        Assertions.assertEquals("fkwdvbtbrekqh", response.vm().sourceVmId());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED, response.vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_APPLIED, response.vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals("byejuwyqwdqigm", response.vhd().imageName());
         Assertions.assertFalse(response.vhd().sysPrep());
         Assertions.assertEquals(CustomImageOsType.LINUX, response.vhd().osType());
-        Assertions.assertEquals("rqlpbcjtrpz", response.description());
-        Assertions.assertEquals("udivbxnhsqeaeonq", response.author());
-        Assertions.assertEquals("dhuruzytzarog", response.managedImageId());
-        Assertions.assertEquals("moljiywm", response.managedSnapshotId());
-        Assertions.assertEquals("zvfkneerz", response.dataDiskStorageInfo().get(0).lun());
-        Assertions.assertEquals(StorageType.STANDARD, response.dataDiskStorageInfo().get(0).storageType());
-        Assertions.assertEquals("fjhkeizcpihtdmiw", response.customImagePlan().id());
-        Assertions.assertEquals("kpty", response.customImagePlan().publisher());
-        Assertions.assertEquals("ydbjzcqymlcf", response.customImagePlan().offer());
-        Assertions.assertTrue(response.isPlanAuthorized());
+        Assertions.assertEquals("z", response.description());
+        Assertions.assertEquals("lujkhn", response.author());
+        Assertions.assertEquals("nkfm", response.managedImageId());
+        Assertions.assertEquals("cqtwmlmhjnqtq", response.managedSnapshotId());
+        Assertions.assertEquals("e", response.dataDiskStorageInfo().get(0).lun());
+        Assertions.assertEquals(StorageType.PREMIUM, response.dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals("pok", response.customImagePlan().id());
+        Assertions.assertEquals("xejhh", response.customImagePlan().publisher());
+        Assertions.assertEquals("guavtptb", response.customImagePlan().offer());
+        Assertions.assertFalse(response.isPlanAuthorized());
     }
 }

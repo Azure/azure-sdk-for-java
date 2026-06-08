@@ -32,19 +32,19 @@ public final class VirtualMachinesApplyArtifactsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.virtualMachines()
-            .applyArtifacts("fwsx", "fo", "uworimmov",
+            .applyArtifacts("gvsbtsertoxad", "xuvj", "xmnrqstjcmet",
                 new ApplyArtifactsRequest()
                     .withArtifacts(
-                        Arrays.asList(new ArtifactInstallProperties().withArtifactId("hkkmvhzfovan")
-                            .withArtifactTitle("vaprtgelgw")
+                        Arrays.asList(new ArtifactInstallProperties().withArtifactId("icvnpvvdh")
+                            .withArtifactTitle("naqyqipslzmvcds")
                             .withParameters(Arrays.asList(
-                                new ArtifactParameterProperties().withName("fyaqandmymnqo").withValue("umov"),
-                                new ArtifactParameterProperties().withName("bpbvzopaxmf").withValue("smcwoxfaxd"),
-                                new ArtifactParameterProperties().withName("qi").withValue("satroia")))
-                            .withStatus("sugmocpcjyc")
-                            .withDeploymentStatusMessage("elrgttwfldsiuo")
-                            .withVmExtensionStatusMessage("nikcedpk")
-                            .withInstallTime(OffsetDateTime.parse("2021-02-08T07:42:37Z")))),
+                                new ArtifactParameterProperties().withName("itekdtfobvfiyb").withValue("ich"),
+                                new ArtifactParameterProperties().withName("bfzdqekiv").withValue("p"),
+                                new ArtifactParameterProperties().withName("vdizulrqtbh").withValue("ezp")))
+                            .withStatus("pryfmxmdutzfkgi")
+                            .withDeploymentStatusMessage("oudccgndjg")
+                            .withVmExtensionStatusMessage("r")
+                            .withInstallTime(OffsetDateTime.parse("2021-07-30T00:29:48Z")))),
                 com.azure.core.util.Context.NONE);
 
     }

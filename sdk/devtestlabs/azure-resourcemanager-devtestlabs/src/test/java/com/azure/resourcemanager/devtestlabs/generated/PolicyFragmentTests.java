@@ -13,16 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyFragment model
-            = BinaryData.fromString("{\"tags\":{\"qzz\":\"jtqedcgzulwmm\"}}").toObject(PolicyFragment.class);
-        Assertions.assertEquals("jtqedcgzulwmm", model.tags().get("qzz"));
+        PolicyFragment model = BinaryData.fromString(
+            "{\"tags\":{\"mbtrnegvmnvu\":\"sxjrk\",\"bkkd\":\"eqvldspast\",\"apeewchpxlkt\":\"flvestmjlxrrilo\",\"ufuztcktyhjtq\":\"kuziycsle\"}}")
+            .toObject(PolicyFragment.class);
+        Assertions.assertEquals("sxjrk", model.tags().get("mbtrnegvmnvu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyFragment model = new PolicyFragment().withTags(mapOf("qzz", "jtqedcgzulwmm"));
+        PolicyFragment model = new PolicyFragment().withTags(mapOf("mbtrnegvmnvu", "sxjrk", "bkkd", "eqvldspast",
+            "apeewchpxlkt", "flvestmjlxrrilo", "ufuztcktyhjtq", "kuziycsle"));
         model = BinaryData.fromObject(model).toObject(PolicyFragment.class);
-        Assertions.assertEquals("jtqedcgzulwmm", model.tags().get("qzz"));
+        Assertions.assertEquals("sxjrk", model.tags().get("mbtrnegvmnvu"));
     }
 
     // Use "Map.of" if available

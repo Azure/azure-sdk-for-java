@@ -14,27 +14,27 @@ public final class CostThresholdPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CostThresholdProperties model = BinaryData.fromString(
-            "{\"thresholdId\":\"ujitcjedftww\",\"percentageThreshold\":{\"thresholdValue\":27.255699979607506},\"displayOnChart\":\"Enabled\",\"sendNotificationWhenExceeded\":\"Enabled\",\"notificationSent\":\"zfoqouicybxar\"}")
+            "{\"thresholdId\":\"zkoowtlmnguxawqa\",\"percentageThreshold\":{\"thresholdValue\":97.70570168349758},\"displayOnChart\":\"Disabled\",\"sendNotificationWhenExceeded\":\"Disabled\",\"notificationSent\":\"rqf\"}")
             .toObject(CostThresholdProperties.class);
-        Assertions.assertEquals("ujitcjedftww", model.thresholdId());
-        Assertions.assertEquals(27.255699979607506D, model.percentageThreshold().thresholdValue());
-        Assertions.assertEquals(CostThresholdStatus.ENABLED, model.displayOnChart());
-        Assertions.assertEquals(CostThresholdStatus.ENABLED, model.sendNotificationWhenExceeded());
-        Assertions.assertEquals("zfoqouicybxar", model.notificationSent());
+        Assertions.assertEquals("zkoowtlmnguxawqa", model.thresholdId());
+        Assertions.assertEquals(97.70570168349758D, model.percentageThreshold().thresholdValue());
+        Assertions.assertEquals(CostThresholdStatus.DISABLED, model.displayOnChart());
+        Assertions.assertEquals(CostThresholdStatus.DISABLED, model.sendNotificationWhenExceeded());
+        Assertions.assertEquals("rqf", model.notificationSent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostThresholdProperties model = new CostThresholdProperties().withThresholdId("ujitcjedftww")
-            .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(27.255699979607506D))
-            .withDisplayOnChart(CostThresholdStatus.ENABLED)
-            .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED)
-            .withNotificationSent("zfoqouicybxar");
+        CostThresholdProperties model = new CostThresholdProperties().withThresholdId("zkoowtlmnguxawqa")
+            .withPercentageThreshold(new PercentageCostThresholdProperties().withThresholdValue(97.70570168349758D))
+            .withDisplayOnChart(CostThresholdStatus.DISABLED)
+            .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED)
+            .withNotificationSent("rqf");
         model = BinaryData.fromObject(model).toObject(CostThresholdProperties.class);
-        Assertions.assertEquals("ujitcjedftww", model.thresholdId());
-        Assertions.assertEquals(27.255699979607506D, model.percentageThreshold().thresholdValue());
-        Assertions.assertEquals(CostThresholdStatus.ENABLED, model.displayOnChart());
-        Assertions.assertEquals(CostThresholdStatus.ENABLED, model.sendNotificationWhenExceeded());
-        Assertions.assertEquals("zfoqouicybxar", model.notificationSent());
+        Assertions.assertEquals("zkoowtlmnguxawqa", model.thresholdId());
+        Assertions.assertEquals(97.70570168349758D, model.percentageThreshold().thresholdValue());
+        Assertions.assertEquals(CostThresholdStatus.DISABLED, model.displayOnChart());
+        Assertions.assertEquals(CostThresholdStatus.DISABLED, model.sendNotificationWhenExceeded());
+        Assertions.assertEquals("rqf", model.notificationSent());
     }
 }

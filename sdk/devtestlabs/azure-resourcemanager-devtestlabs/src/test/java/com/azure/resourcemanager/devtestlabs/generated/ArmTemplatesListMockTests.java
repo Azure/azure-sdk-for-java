@@ -22,7 +22,7 @@ public final class ArmTemplatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"tmdpvozglqjbknlz\",\"description\":\"ctzeyowmndc\",\"publisher\":\"dwzqauxzanhmkvfr\",\"icon\":\"kudrbcpftx\",\"contents\":\"\\\"dataqyemebu\\\"\",\"createdDate\":\"2021-03-06T21:47:24Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"irtneemmjau\",\"parametersValueInfo\":{\"erwguda\":\"\\\"dataxefnohaitrani\\\"\"}},{\"fileName\":\"xubvf\",\"parametersValueInfo\":{\"y\":\"\\\"datafcocefhpr\\\"\",\"cdculr\":\"\\\"datafmpztraudsvh\\\"\"}},{\"fileName\":\"pqtmojhvrztnvgys\",\"parametersValueInfo\":{\"zlpykcfazzwjcay\":\"\\\"datadgrtwmew\\\"\",\"nsyby\":\"\\\"datarzrr\\\"\",\"kfscjfncjwv\":\"\\\"datapolwzrghsrlei\\\"\",\"qwtltngvmreupt\":\"\\\"dataag\\\"\"}}],\"enabled\":true},\"tags\":{\"s\":\"ijajwolx\"},\"location\":\"ghmp\",\"id\":\"wl\",\"name\":\"lr\",\"type\":\"igt\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"kbtlwljssm\",\"description\":\"sn\",\"publisher\":\"kpwolg\",\"icon\":\"ubxbteogfgfiijr\",\"contents\":\"\\\"datawlefksxqceazfpxg\\\"\",\"createdDate\":\"2021-09-07T15:14:18Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"luyqqaiossscyvai\",\"parametersValueInfo\":\"\\\"datap\\\"\"},{\"fileName\":\"cvfyeowpsfxtjdhs\",\"parametersValueInfo\":\"\\\"datamhpv\\\"\"},{\"fileName\":\"qfttehdpboujs\",\"parametersValueInfo\":\"\\\"datafvvdshxcdedsue\\\"\"},{\"fileName\":\"gnxcgjtfrnquktr\",\"parametersValueInfo\":\"\\\"datas\\\"\"}],\"enabled\":false},\"tags\":{\"ylt\":\"s\",\"kurrdreyzjwh\":\"wntfmtbgwjdxwna\"},\"location\":\"twwjwzzq\",\"id\":\"uzu\",\"name\":\"kykcyqhyqqzz\",\"type\":\"c\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ArmTemplatesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ArmTemplate> response = manager.armTemplates()
-            .list("qseuzuukykcyqhy", "qzzdcykeyste", "fop", "z", "azgbsqgpe", 264984713, "c",
+            .list("ilz", "dzzqjmu", "za", "ovribq", "otokhtvwtaznk", 634667700, "wwxwjyofgw",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ijajwolx", response.iterator().next().tags().get("s"));
-        Assertions.assertEquals("ghmp", response.iterator().next().location());
+        Assertions.assertEquals("s", response.iterator().next().tags().get("ylt"));
+        Assertions.assertEquals("twwjwzzq", response.iterator().next().location());
     }
 }

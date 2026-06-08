@@ -19,66 +19,60 @@ public final class TargetCostPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetCostProperties model = BinaryData.fromString(
-            "{\"status\":\"Disabled\",\"target\":596883756,\"costThresholds\":[{\"thresholdId\":\"cormr\",\"percentageThreshold\":{\"thresholdValue\":28.38198312382324},\"displayOnChart\":\"Disabled\",\"sendNotificationWhenExceeded\":\"Disabled\",\"notificationSent\":\"f\"},{\"thresholdId\":\"kgjubgdknnqvsazn\",\"percentageThreshold\":{\"thresholdValue\":47.37804572491431},\"displayOnChart\":\"Enabled\",\"sendNotificationWhenExceeded\":\"Disabled\",\"notificationSent\":\"a\"},{\"thresholdId\":\"kycgrauwj\",\"percentageThreshold\":{\"thresholdValue\":59.104298461048366},\"displayOnChart\":\"Enabled\",\"sendNotificationWhenExceeded\":\"Enabled\",\"notificationSent\":\"dmovsm\"},{\"thresholdId\":\"xwabmqoe\",\"percentageThreshold\":{\"thresholdValue\":45.34789210987312},\"displayOnChart\":\"Enabled\",\"sendNotificationWhenExceeded\":\"Enabled\",\"notificationSent\":\"ujmqlgkfbtndoa\"}],\"cycleStartDateTime\":\"2021-04-16T00:49:55Z\",\"cycleEndDateTime\":\"2021-06-02T01:39:29Z\",\"cycleType\":\"CalendarMonth\"}")
+            "{\"status\":\"Enabled\",\"target\":1652429831,\"costThresholds\":[{\"thresholdId\":\"ezkojvdcp\",\"percentageThreshold\":{\"thresholdValue\":85.01792079958246},\"displayOnChart\":\"Enabled\",\"sendNotificationWhenExceeded\":\"Disabled\",\"notificationSent\":\"xarzgszufoxciq\"},{\"thresholdId\":\"idoamciodhkha\",\"percentageThreshold\":{\"thresholdValue\":39.57776293085205},\"displayOnChart\":\"Enabled\",\"sendNotificationWhenExceeded\":\"Enabled\",\"notificationSent\":\"wntoegokdwbwh\"},{\"thresholdId\":\"z\",\"percentageThreshold\":{\"thresholdValue\":47.08009458641283},\"displayOnChart\":\"Disabled\",\"sendNotificationWhenExceeded\":\"Enabled\",\"notificationSent\":\"bt\"}],\"cycleStartDateTime\":\"2021-11-24T10:08:32Z\",\"cycleEndDateTime\":\"2021-03-09T19:19:37Z\",\"cycleType\":\"CalendarMonth\"}")
             .toObject(TargetCostProperties.class);
-        Assertions.assertEquals(TargetCostStatus.DISABLED, model.status());
-        Assertions.assertEquals(596883756, model.target());
-        Assertions.assertEquals("cormr", model.costThresholds().get(0).thresholdId());
-        Assertions.assertEquals(28.38198312382324D,
+        Assertions.assertEquals(TargetCostStatus.ENABLED, model.status());
+        Assertions.assertEquals(1652429831, model.target());
+        Assertions.assertEquals("ezkojvdcp", model.costThresholds().get(0).thresholdId());
+        Assertions.assertEquals(85.01792079958246D,
             model.costThresholds().get(0).percentageThreshold().thresholdValue());
-        Assertions.assertEquals(CostThresholdStatus.DISABLED, model.costThresholds().get(0).displayOnChart());
+        Assertions.assertEquals(CostThresholdStatus.ENABLED, model.costThresholds().get(0).displayOnChart());
         Assertions.assertEquals(CostThresholdStatus.DISABLED,
             model.costThresholds().get(0).sendNotificationWhenExceeded());
-        Assertions.assertEquals("f", model.costThresholds().get(0).notificationSent());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T00:49:55Z"), model.cycleStartDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T01:39:29Z"), model.cycleEndDateTime());
+        Assertions.assertEquals("xarzgszufoxciq", model.costThresholds().get(0).notificationSent());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T10:08:32Z"), model.cycleStartDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T19:19:37Z"), model.cycleEndDateTime());
         Assertions.assertEquals(ReportingCycleType.CALENDAR_MONTH, model.cycleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetCostProperties model = new TargetCostProperties().withStatus(TargetCostStatus.DISABLED)
-            .withTarget(596883756)
+        TargetCostProperties model = new TargetCostProperties().withStatus(TargetCostStatus.ENABLED)
+            .withTarget(1652429831)
             .withCostThresholds(Arrays.asList(
-                new CostThresholdProperties().withThresholdId("cormr")
+                new CostThresholdProperties().withThresholdId("ezkojvdcp")
                     .withPercentageThreshold(
-                        new PercentageCostThresholdProperties().withThresholdValue(28.38198312382324D))
+                        new PercentageCostThresholdProperties().withThresholdValue(85.01792079958246D))
+                    .withDisplayOnChart(CostThresholdStatus.ENABLED)
+                    .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED)
+                    .withNotificationSent("xarzgszufoxciq"),
+                new CostThresholdProperties().withThresholdId("idoamciodhkha")
+                    .withPercentageThreshold(
+                        new PercentageCostThresholdProperties().withThresholdValue(39.57776293085205D))
+                    .withDisplayOnChart(CostThresholdStatus.ENABLED)
+                    .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED)
+                    .withNotificationSent("wntoegokdwbwh"),
+                new CostThresholdProperties().withThresholdId("z")
+                    .withPercentageThreshold(
+                        new PercentageCostThresholdProperties().withThresholdValue(47.08009458641283D))
                     .withDisplayOnChart(CostThresholdStatus.DISABLED)
-                    .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED)
-                    .withNotificationSent("f"),
-                new CostThresholdProperties().withThresholdId("kgjubgdknnqvsazn")
-                    .withPercentageThreshold(
-                        new PercentageCostThresholdProperties().withThresholdValue(47.37804572491431D))
-                    .withDisplayOnChart(CostThresholdStatus.ENABLED)
-                    .withSendNotificationWhenExceeded(CostThresholdStatus.DISABLED)
-                    .withNotificationSent("a"),
-                new CostThresholdProperties().withThresholdId("kycgrauwj")
-                    .withPercentageThreshold(
-                        new PercentageCostThresholdProperties().withThresholdValue(59.104298461048366D))
-                    .withDisplayOnChart(CostThresholdStatus.ENABLED)
                     .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED)
-                    .withNotificationSent("dmovsm"),
-                new CostThresholdProperties().withThresholdId("xwabmqoe")
-                    .withPercentageThreshold(
-                        new PercentageCostThresholdProperties().withThresholdValue(45.34789210987312D))
-                    .withDisplayOnChart(CostThresholdStatus.ENABLED)
-                    .withSendNotificationWhenExceeded(CostThresholdStatus.ENABLED)
-                    .withNotificationSent("ujmqlgkfbtndoa")))
-            .withCycleStartDateTime(OffsetDateTime.parse("2021-04-16T00:49:55Z"))
-            .withCycleEndDateTime(OffsetDateTime.parse("2021-06-02T01:39:29Z"))
+                    .withNotificationSent("bt")))
+            .withCycleStartDateTime(OffsetDateTime.parse("2021-11-24T10:08:32Z"))
+            .withCycleEndDateTime(OffsetDateTime.parse("2021-03-09T19:19:37Z"))
             .withCycleType(ReportingCycleType.CALENDAR_MONTH);
         model = BinaryData.fromObject(model).toObject(TargetCostProperties.class);
-        Assertions.assertEquals(TargetCostStatus.DISABLED, model.status());
-        Assertions.assertEquals(596883756, model.target());
-        Assertions.assertEquals("cormr", model.costThresholds().get(0).thresholdId());
-        Assertions.assertEquals(28.38198312382324D,
+        Assertions.assertEquals(TargetCostStatus.ENABLED, model.status());
+        Assertions.assertEquals(1652429831, model.target());
+        Assertions.assertEquals("ezkojvdcp", model.costThresholds().get(0).thresholdId());
+        Assertions.assertEquals(85.01792079958246D,
             model.costThresholds().get(0).percentageThreshold().thresholdValue());
-        Assertions.assertEquals(CostThresholdStatus.DISABLED, model.costThresholds().get(0).displayOnChart());
+        Assertions.assertEquals(CostThresholdStatus.ENABLED, model.costThresholds().get(0).displayOnChart());
         Assertions.assertEquals(CostThresholdStatus.DISABLED,
             model.costThresholds().get(0).sendNotificationWhenExceeded());
-        Assertions.assertEquals("f", model.costThresholds().get(0).notificationSent());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T00:49:55Z"), model.cycleStartDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T01:39:29Z"), model.cycleEndDateTime());
+        Assertions.assertEquals("xarzgszufoxciq", model.costThresholds().get(0).notificationSent());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T10:08:32Z"), model.cycleStartDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-09T19:19:37Z"), model.cycleEndDateTime());
         Assertions.assertEquals(ReportingCycleType.CALENDAR_MONTH, model.cycleType());
     }
 }

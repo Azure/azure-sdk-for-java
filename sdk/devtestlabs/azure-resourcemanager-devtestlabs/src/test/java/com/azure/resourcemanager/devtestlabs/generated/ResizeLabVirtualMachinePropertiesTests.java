@@ -12,14 +12,14 @@ public final class ResizeLabVirtualMachinePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResizeLabVirtualMachineProperties model
-            = BinaryData.fromString("{\"size\":\"qzolxrzvhqjw\"}").toObject(ResizeLabVirtualMachineProperties.class);
-        Assertions.assertEquals("qzolxrzvhqjw", model.size());
+            = BinaryData.fromString("{\"size\":\"vwgf\"}").toObject(ResizeLabVirtualMachineProperties.class);
+        Assertions.assertEquals("vwgf", model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResizeLabVirtualMachineProperties model = new ResizeLabVirtualMachineProperties().withSize("qzolxrzvhqjw");
+        ResizeLabVirtualMachineProperties model = new ResizeLabVirtualMachineProperties().withSize("vwgf");
         model = BinaryData.fromObject(model).toObject(ResizeLabVirtualMachineProperties.class);
-        Assertions.assertEquals("qzolxrzvhqjw", model.size());
+        Assertions.assertEquals("vwgf", model.size());
     }
 }

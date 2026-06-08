@@ -16,40 +16,57 @@ public final class ApplyArtifactsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplyArtifactsRequest model = BinaryData.fromString(
-            "{\"artifacts\":[{\"artifactId\":\"etgbebjfulb\",\"artifactTitle\":\"ichdlpn\",\"parameters\":[{\"name\":\"nt\",\"value\":\"atzviqsowsaael\"},{\"name\":\"ttcjuhplrvkmjc\",\"value\":\"jvlgfggcvkyyliz\"},{\"name\":\"bjpsfxsfuztlvtm\",\"value\":\"gbwidqlvh\"},{\"name\":\"oveofizrvjfnmj\",\"value\":\"lwyzgib\"}],\"status\":\"ujr\",\"deploymentStatusMessage\":\"fojuidjpuuyj\",\"vmExtensionStatusMessage\":\"ejikzoeovvtzejet\",\"installTime\":\"2021-05-27T14:47:36Z\"}]}")
+            "{\"artifacts\":[{\"artifactId\":\"pxbannovvoxc\",\"artifactTitle\":\"tprwnw\",\"parameters\":[{\"name\":\"vytlyokrrrouuxvn\",\"value\":\"sbcrymodizrxklo\"},{\"name\":\"xnazpmkml\",\"value\":\"evfxzopjhbzxlioh\"},{\"name\":\"dd\",\"value\":\"gxqbawpcb\"}],\"status\":\"zqcyknap\",\"deploymentStatusMessage\":\"fyuicdh\",\"vmExtensionStatusMessage\":\"dyb\",\"installTime\":\"2021-06-24T07:00:42Z\"},{\"artifactId\":\"d\",\"artifactTitle\":\"bid\",\"parameters\":[{\"name\":\"ffplfmuvapckcc\",\"value\":\"vwe\"}],\"status\":\"xoy\",\"deploymentStatusMessage\":\"k\",\"vmExtensionStatusMessage\":\"aimmoiroqb\",\"installTime\":\"2021-04-15T04:47:34Z\"},{\"artifactId\":\"ragapyyrmfsvbp\",\"artifactTitle\":\"bopfppdbwnup\",\"parameters\":[{\"name\":\"kuma\",\"value\":\"caac\"},{\"name\":\"mmcpug\",\"value\":\"hqepvufhbzehewh\"},{\"name\":\"hnl\",\"value\":\"nbldxeaclgschori\"},{\"name\":\"rsrrmoucsofldp\",\"value\":\"iyfc\"}],\"status\":\"beolh\",\"deploymentStatusMessage\":\"lvbmxuqibsxtkcu\",\"vmExtensionStatusMessage\":\"b\",\"installTime\":\"2021-03-03T02:23:59Z\"}]}")
             .toObject(ApplyArtifactsRequest.class);
-        Assertions.assertEquals("etgbebjfulb", model.artifacts().get(0).artifactId());
-        Assertions.assertEquals("ichdlpn", model.artifacts().get(0).artifactTitle());
-        Assertions.assertEquals("nt", model.artifacts().get(0).parameters().get(0).name());
-        Assertions.assertEquals("atzviqsowsaael", model.artifacts().get(0).parameters().get(0).value());
-        Assertions.assertEquals("ujr", model.artifacts().get(0).status());
-        Assertions.assertEquals("fojuidjpuuyj", model.artifacts().get(0).deploymentStatusMessage());
-        Assertions.assertEquals("ejikzoeovvtzejet", model.artifacts().get(0).vmExtensionStatusMessage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T14:47:36Z"), model.artifacts().get(0).installTime());
+        Assertions.assertEquals("pxbannovvoxc", model.artifacts().get(0).artifactId());
+        Assertions.assertEquals("tprwnw", model.artifacts().get(0).artifactTitle());
+        Assertions.assertEquals("vytlyokrrrouuxvn", model.artifacts().get(0).parameters().get(0).name());
+        Assertions.assertEquals("sbcrymodizrxklo", model.artifacts().get(0).parameters().get(0).value());
+        Assertions.assertEquals("zqcyknap", model.artifacts().get(0).status());
+        Assertions.assertEquals("fyuicdh", model.artifacts().get(0).deploymentStatusMessage());
+        Assertions.assertEquals("dyb", model.artifacts().get(0).vmExtensionStatusMessage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T07:00:42Z"), model.artifacts().get(0).installTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplyArtifactsRequest model = new ApplyArtifactsRequest()
-            .withArtifacts(Arrays.asList(new ArtifactInstallProperties().withArtifactId("etgbebjfulb")
-                .withArtifactTitle("ichdlpn")
+        ApplyArtifactsRequest model = new ApplyArtifactsRequest().withArtifacts(Arrays.asList(
+            new ArtifactInstallProperties().withArtifactId("pxbannovvoxc")
+                .withArtifactTitle("tprwnw")
+                .withParameters(Arrays.asList(
+                    new ArtifactParameterProperties().withName("vytlyokrrrouuxvn").withValue("sbcrymodizrxklo"),
+                    new ArtifactParameterProperties().withName("xnazpmkml").withValue("evfxzopjhbzxlioh"),
+                    new ArtifactParameterProperties().withName("dd").withValue("gxqbawpcb")))
+                .withStatus("zqcyknap")
+                .withDeploymentStatusMessage("fyuicdh")
+                .withVmExtensionStatusMessage("dyb")
+                .withInstallTime(OffsetDateTime.parse("2021-06-24T07:00:42Z")),
+            new ArtifactInstallProperties().withArtifactId("d")
+                .withArtifactTitle("bid")
                 .withParameters(
-                    Arrays.asList(new ArtifactParameterProperties().withName("nt").withValue("atzviqsowsaael"),
-                        new ArtifactParameterProperties().withName("ttcjuhplrvkmjc").withValue("jvlgfggcvkyyliz"),
-                        new ArtifactParameterProperties().withName("bjpsfxsfuztlvtm").withValue("gbwidqlvh"),
-                        new ArtifactParameterProperties().withName("oveofizrvjfnmj").withValue("lwyzgib")))
-                .withStatus("ujr")
-                .withDeploymentStatusMessage("fojuidjpuuyj")
-                .withVmExtensionStatusMessage("ejikzoeovvtzejet")
-                .withInstallTime(OffsetDateTime.parse("2021-05-27T14:47:36Z"))));
+                    Arrays.asList(new ArtifactParameterProperties().withName("ffplfmuvapckcc").withValue("vwe")))
+                .withStatus("xoy")
+                .withDeploymentStatusMessage("k")
+                .withVmExtensionStatusMessage("aimmoiroqb")
+                .withInstallTime(OffsetDateTime.parse("2021-04-15T04:47:34Z")),
+            new ArtifactInstallProperties().withArtifactId("ragapyyrmfsvbp")
+                .withArtifactTitle("bopfppdbwnup")
+                .withParameters(Arrays.asList(new ArtifactParameterProperties().withName("kuma").withValue("caac"),
+                    new ArtifactParameterProperties().withName("mmcpug").withValue("hqepvufhbzehewh"),
+                    new ArtifactParameterProperties().withName("hnl").withValue("nbldxeaclgschori"),
+                    new ArtifactParameterProperties().withName("rsrrmoucsofldp").withValue("iyfc")))
+                .withStatus("beolh")
+                .withDeploymentStatusMessage("lvbmxuqibsxtkcu")
+                .withVmExtensionStatusMessage("b")
+                .withInstallTime(OffsetDateTime.parse("2021-03-03T02:23:59Z"))));
         model = BinaryData.fromObject(model).toObject(ApplyArtifactsRequest.class);
-        Assertions.assertEquals("etgbebjfulb", model.artifacts().get(0).artifactId());
-        Assertions.assertEquals("ichdlpn", model.artifacts().get(0).artifactTitle());
-        Assertions.assertEquals("nt", model.artifacts().get(0).parameters().get(0).name());
-        Assertions.assertEquals("atzviqsowsaael", model.artifacts().get(0).parameters().get(0).value());
-        Assertions.assertEquals("ujr", model.artifacts().get(0).status());
-        Assertions.assertEquals("fojuidjpuuyj", model.artifacts().get(0).deploymentStatusMessage());
-        Assertions.assertEquals("ejikzoeovvtzejet", model.artifacts().get(0).vmExtensionStatusMessage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T14:47:36Z"), model.artifacts().get(0).installTime());
+        Assertions.assertEquals("pxbannovvoxc", model.artifacts().get(0).artifactId());
+        Assertions.assertEquals("tprwnw", model.artifacts().get(0).artifactTitle());
+        Assertions.assertEquals("vytlyokrrrouuxvn", model.artifacts().get(0).parameters().get(0).name());
+        Assertions.assertEquals("sbcrymodizrxklo", model.artifacts().get(0).parameters().get(0).value());
+        Assertions.assertEquals("zqcyknap", model.artifacts().get(0).status());
+        Assertions.assertEquals("fyuicdh", model.artifacts().get(0).deploymentStatusMessage());
+        Assertions.assertEquals("dyb", model.artifacts().get(0).vmExtensionStatusMessage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T07:00:42Z"), model.artifacts().get(0).installTime());
     }
 }

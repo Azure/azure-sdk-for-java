@@ -27,7 +27,7 @@ public final class VirtualNetworksDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.virtualNetworks().delete("h", "bsn", "snqliwkmzojfe", com.azure.core.util.Context.NONE);
+        manager.virtualNetworks().delete("weoftnorw", "igsioctqkm", "ja", com.azure.core.util.Context.NONE);
 
     }
 }

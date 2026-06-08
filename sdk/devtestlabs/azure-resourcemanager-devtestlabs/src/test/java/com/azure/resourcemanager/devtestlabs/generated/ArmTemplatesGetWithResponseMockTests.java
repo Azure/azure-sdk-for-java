@@ -21,7 +21,7 @@ public final class ArmTemplatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"jnltcetjdvqydi\",\"description\":\"qkwaruwd\",\"publisher\":\"qzxoebwgjxbi\",\"icon\":\"nbau\",\"contents\":\"\\\"datatzvp\\\"\",\"createdDate\":\"2021-08-31T12:52:48Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"xbzrpejplssanb\",\"parametersValueInfo\":{\"jhboyikebhuhks\":\"\\\"datakgsuxunrswgk\\\"\",\"kh\":\"\\\"datagwl\\\"\",\"yfejyvdwtf\":\"\\\"dataeoijyzcqypzqzufg\\\"\",\"fgybmxs\":\"\\\"dataptpqayamkn\\\"\"}},{\"fileName\":\"ocuullojkpoyhgww\",\"parametersValueInfo\":{\"bsgzl\":\"\\\"dataxdbdljzgdyrcvu\\\"\",\"x\":\"\\\"dataqhbjnqogdxwbsfpy\\\"\",\"ecominxojjluxxd\":\"\\\"datajlf\\\"\",\"dzzqjmu\":\"\\\"datailz\\\"\"}},{\"fileName\":\"ay\",\"parametersValueInfo\":{\"kcqwwxwjyofgwh\":\"\\\"dataibqlotokhtvwtaz\\\"\",\"tsnld\":\"\\\"datakbtlwljssm\\\"\",\"eogfgfiijrykwl\":\"\\\"datapwolgisubxb\\\"\"}},{\"fileName\":\"k\",\"parametersValueInfo\":{\"luyqqaiossscyvai\":\"\\\"dataceazfpxgnmqvz\\\"\",\"fxtjdhsoym\":\"\\\"datappuacvfyeowp\\\"\",\"tkfvvdshx\":\"\\\"datapvtyqfttehdpbouj\\\"\"}}],\"enabled\":true},\"tags\":{\"tfrnquk\":\"uenygnxcg\",\"s\":\"rf\"},\"location\":\"lr\",\"id\":\"myltrwntfmtbg\",\"name\":\"jdxwnazkurrdre\",\"type\":\"zjwhsetwwjwz\"}";
+            = "{\"properties\":{\"displayName\":\"jnltcetjdvqydi\",\"description\":\"qkwaruwd\",\"publisher\":\"qzxoebwgjxbi\",\"icon\":\"nbau\",\"contents\":\"\\\"datatzvp\\\"\",\"createdDate\":\"2021-08-31T12:52:48Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"xbzrpejplssanb\",\"parametersValueInfo\":\"\\\"datatkgsuxunrswgkpj\\\"\"},{\"fileName\":\"oyikebhuhks\",\"parametersValueInfo\":\"\\\"datawlokhueoijyzcq\\\"\"},{\"fileName\":\"zqzu\",\"parametersValueInfo\":\"\\\"datas\\\"\"},{\"fileName\":\"ej\",\"parametersValueInfo\":\"\\\"datadwtfx\\\"\"}],\"enabled\":false},\"tags\":{\"snxoc\":\"yamkncfgybm\",\"oy\":\"ullojk\",\"wdjuxdbdljzgdy\":\"g\",\"sgzlrqhb\":\"cvuq\"},\"location\":\"qogdx\",\"id\":\"sfpyxx\",\"name\":\"jlf\",\"type\":\"ecominxojjluxxd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,7 +35,7 @@ public final class ArmTemplatesGetWithResponseMockTests {
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uenygnxcg", response.tags().get("tfrnquk"));
-        Assertions.assertEquals("lr", response.location());
+        Assertions.assertEquals("yamkncfgybm", response.tags().get("snxoc"));
+        Assertions.assertEquals("qogdx", response.location());
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-06-04)
+## 2.0.0 (2026-06-08)
 
 - Azure Resource Manager DevTestLabs client library for Java. This package contains Microsoft Azure SDK for DevTestLabs Management SDK. The DevTest Labs Client. Package api-version 2018-09-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -57,9 +57,9 @@
 #### `models.PolicyViolation` was modified
 
 * `PolicyViolation()` was changed to private access
-* `withCode(java.lang.String)` was removed
 * `withMessage(java.lang.String)` was removed
 * `validate()` was removed
+* `withCode(java.lang.String)` was removed
 
 #### `models.Subnet` was modified
 
@@ -80,9 +80,9 @@
 #### `models.ExternalSubnet` was modified
 
 * `ExternalSubnet()` was changed to private access
-* `validate()` was removed
 * `withId(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.GalleryImageReference` was modified
 
@@ -135,11 +135,11 @@
 #### `models.ComputeDataDisk` was modified
 
 * `ComputeDataDisk()` was changed to private access
-* `withDiskSizeGiB(java.lang.Integer)` was removed
-* `validate()` was removed
-* `withDiskUri(java.lang.String)` was removed
 * `withManagedDiskId(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDiskSizeGiB(java.lang.Integer)` was removed
+* `withDiskUri(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.CustomImagePropertiesFromPlan` was modified
 
@@ -192,23 +192,23 @@
 #### `models.PolicySetResult` was modified
 
 * `PolicySetResult()` was changed to private access
-* `withHasError(java.lang.Boolean)` was removed
 * `validate()` was removed
 * `withPolicyViolations(java.util.List)` was removed
+* `withHasError(java.lang.Boolean)` was removed
 
 #### `models.LabResourceCostProperties` was modified
 
 * `LabResourceCostProperties()` was changed to private access
-* `withResourceOwner(java.lang.String)` was removed
-* `withResourceType(java.lang.String)` was removed
-* `validate()` was removed
-* `withResourcename(java.lang.String)` was removed
-* `withExternalResourceId(java.lang.String)` was removed
-* `withResourcePricingTier(java.lang.String)` was removed
 * `withResourceId(java.lang.String)` was removed
+* `withResourcePricingTier(java.lang.String)` was removed
 * `withResourceUId(java.lang.String)` was removed
 * `withResourceCost(java.lang.Double)` was removed
+* `withResourcename(java.lang.String)` was removed
+* `withResourceOwner(java.lang.String)` was removed
+* `validate()` was removed
 * `withResourceStatus(java.lang.String)` was removed
+* `withExternalResourceId(java.lang.String)` was removed
+* `withResourceType(java.lang.String)` was removed
 
 #### `models.ArmTemplateParameterProperties` was modified
 
@@ -221,9 +221,9 @@
 #### `models.OperationError` was modified
 
 * `OperationError()` was changed to private access
-* `withMessage(java.lang.String)` was removed
-* `withCode(java.lang.String)` was removed
 * `validate()` was removed
+* `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
 
 #### `models.DetachDataDiskProperties` was modified
 
@@ -300,10 +300,9 @@
 #### `models.ParametersValueFileInfo` was modified
 
 * `ParametersValueFileInfo()` was changed to private access
-* `withParametersValueInfo(java.lang.Object)` was removed
-* `withFileName(java.lang.String)` was removed
-* `java.lang.Object parametersValueInfo()` -> `java.util.Map parametersValueInfo()`
 * `validate()` was removed
+* `withFileName(java.lang.String)` was removed
+* `withParametersValueInfo(java.lang.Object)` was removed
 
 #### `models.WindowsOsInfo` was modified
 
@@ -312,9 +311,9 @@
 #### `models.LabCostDetailsProperties` was modified
 
 * `LabCostDetailsProperties()` was changed to private access
+* `withCost(java.lang.Double)` was removed
 * `validate()` was removed
 * `withDate(java.time.OffsetDateTime)` was removed
-* `withCost(java.lang.Double)` was removed
 * `withCostType(models.CostType)` was removed
 
 #### `models.LabCostSummaryProperties` was modified
@@ -326,13 +325,13 @@
 #### `models.ComputeVmProperties` was modified
 
 * `ComputeVmProperties()` was changed to private access
-* `withDataDisks(java.util.List)` was removed
-* `withDataDiskIds(java.util.List)` was removed
-* `withStatuses(java.util.List)` was removed
 * `withVmSize(java.lang.String)` was removed
-* `validate()` was removed
+* `withDataDiskIds(java.util.List)` was removed
 * `withOsType(java.lang.String)` was removed
 * `withNetworkInterfaceId(java.lang.String)` was removed
+* `validate()` was removed
+* `withStatuses(java.util.List)` was removed
+* `withDataDisks(java.util.List)` was removed
 * `withOsDiskId(java.lang.String)` was removed
 
 #### `models.CostThresholdProperties` was modified
@@ -346,10 +345,10 @@
 #### `models.ArtifactDeploymentStatusProperties` was modified
 
 * `ArtifactDeploymentStatusProperties()` was changed to private access
-* `validate()` was removed
 * `withDeploymentStatus(java.lang.String)` was removed
-* `withArtifactsApplied(java.lang.Integer)` was removed
 * `withTotalArtifacts(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withArtifactsApplied(java.lang.Integer)` was removed
 
 #### `models.LabVirtualMachineFragment` was modified
 
@@ -362,10 +361,10 @@
 #### `models.ComputeVmInstanceViewStatus` was modified
 
 * `ComputeVmInstanceViewStatus()` was changed to private access
-* `validate()` was removed
 * `withCode(java.lang.String)` was removed
-* `withMessage(java.lang.String)` was removed
+* `validate()` was removed
 * `withDisplayStatus(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
 
 #### `models.DayDetails` was modified
 

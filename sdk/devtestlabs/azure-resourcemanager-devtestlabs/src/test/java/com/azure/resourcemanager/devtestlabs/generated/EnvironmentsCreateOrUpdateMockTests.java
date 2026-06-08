@@ -26,7 +26,7 @@ public final class EnvironmentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"qxsaluzyig\",\"parameters\":[{\"name\":\"ewbwqhdgsjs\",\"value\":\"mrncmaz\"},{\"name\":\"s\",\"value\":\"hyqmrejparnpv\"},{\"name\":\"szrbwtdrcwg\",\"value\":\"ll\"},{\"name\":\"lhhfi\",\"value\":\"cfculzj\"}]},\"armTemplateDisplayName\":\"hp\",\"resourceGroupId\":\"wvyldqpzf\",\"createdByUser\":\"soxinu\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"qtcmiwdwisv\"},\"tags\":{\"ajyhftpzc\":\"ylajam\",\"hkigglclwalhvub\":\"ryklleynqa\",\"cmyc\":\"gzphetxd\",\"alec\":\"ajqzj\"},\"location\":\"ibiwksdegyxsb\",\"id\":\"zvoikvntwczf\",\"name\":\"wushlcxpbl\",\"type\":\"lhh\"}";
+            = "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"wtxzuisam\",\"parameters\":[{\"name\":\"niz\",\"value\":\"r\"}]},\"armTemplateDisplayName\":\"sqjghrmth\",\"resourceGroupId\":\"lwsttxsrgxfqpan\",\"createdByUser\":\"eovxgzwhsxyru\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"yohzixyq\"},\"tags\":{\"xhrptyodlh\":\"kvycqqqdseipnquw\",\"bjop\":\"fktltdds\",\"zkqxsalu\":\"ouhbq\",\"wqhdgsjsa\":\"yigfcvcew\"},\"location\":\"rncmazdfsqxh\",\"id\":\"mrejparnpvgr\",\"name\":\"zrbwtdrcwgz\",\"type\":\"ll\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,25 +35,24 @@ public final class EnvironmentsCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DtlEnvironment response
-            = manager.environments()
-                .define("trj")
-                .withExistingUser("mmkfq", "r", "qulw")
-                .withRegion("vycqqqdseipnquw")
-                .withTags(mapOf("paniceo", "hsplwsttxsrgxf", "yrujm", "xgzwhs", "eslikyohzixyqhf", "i"))
-                .withDeploymentProperties(new EnvironmentDeploymentProperties().withArmTemplateId("kvyhzokpoyu")
-                    .withParameters(Arrays.asList(
-                        new ArmTemplateParameterProperties().withName("nsnaajphmp").withValue("jnglpwsad"),
-                        new ArmTemplateParameterProperties().withName("jsumxpezcoio").withValue("rmfqzwq"))))
-                .withArmTemplateDisplayName("xkeedcnwmy")
-                .create();
+        DtlEnvironment response = manager.environments()
+            .define("dxolousdv")
+            .withExistingUser("o", "pimyndnoxax", "rqaqotn")
+            .withRegion("fqzwqdnxkeed")
+            .withTags(mapOf("ezcoioyj", "xjsumx"))
+            .withDeploymentProperties(new EnvironmentDeploymentProperties().withArmTemplateId("tqm")
+                .withParameters(Arrays.asList(
+                    new ArmTemplateParameterProperties().withName("drpizfulgyctsdb").withValue("gkujdsooxrqwoe"),
+                    new ArmTemplateParameterProperties().withName("btigapdyarikeejd").withValue("fhtwmmkfqb"))))
+            .withArmTemplateDisplayName("qulw")
+            .create();
 
-        Assertions.assertEquals("ylajam", response.tags().get("ajyhftpzc"));
-        Assertions.assertEquals("ibiwksdegyxsb", response.location());
-        Assertions.assertEquals("qxsaluzyig", response.deploymentProperties().armTemplateId());
-        Assertions.assertEquals("ewbwqhdgsjs", response.deploymentProperties().parameters().get(0).name());
-        Assertions.assertEquals("mrncmaz", response.deploymentProperties().parameters().get(0).value());
-        Assertions.assertEquals("hp", response.armTemplateDisplayName());
+        Assertions.assertEquals("kvycqqqdseipnquw", response.tags().get("xhrptyodlh"));
+        Assertions.assertEquals("rncmazdfsqxh", response.location());
+        Assertions.assertEquals("wtxzuisam", response.deploymentProperties().armTemplateId());
+        Assertions.assertEquals("niz", response.deploymentProperties().parameters().get(0).name());
+        Assertions.assertEquals("r", response.deploymentProperties().parameters().get(0).value());
+        Assertions.assertEquals("sqjghrmth", response.armTemplateDisplayName());
     }
 
     // Use "Map.of" if available

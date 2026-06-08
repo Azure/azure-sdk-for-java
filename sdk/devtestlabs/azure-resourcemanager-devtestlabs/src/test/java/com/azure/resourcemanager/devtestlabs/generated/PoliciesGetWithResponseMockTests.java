@@ -24,7 +24,7 @@ public final class PoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"zkjthfceyjn\",\"status\":\"Disabled\",\"factName\":\"LabPremiumVmCount\",\"factData\":\"yfj\",\"threshold\":\"fiddhlrufzcq\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-01-30T07:25:04Z\",\"provisioningState\":\"uiocuselqkrsazr\",\"uniqueIdentifier\":\"uddq\"},\"tags\":{\"gyqi\":\"ffisjmrkkhmwdmd\",\"lcvmyolcaymjch\":\"okwtjawhvagnqfqq\"},\"location\":\"snvlaqd\",\"id\":\"yzawatu\",\"name\":\"qkokbczothy\",\"type\":\"gobllms\"}";
+            = "{\"properties\":{\"description\":\"fasgm\",\"status\":\"Disabled\",\"factName\":\"GalleryImage\",\"factData\":\"ducdaaktujktz\",\"threshold\":\"imyfpqdo\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-02-13T21:19:27Z\",\"provisioningState\":\"yytfvpct\",\"uniqueIdentifier\":\"ikff\"},\"tags\":{\"ejjk\":\"kuhznwhvuldbk\"},\"location\":\"gawgazmxjqi\",\"id\":\"ujjs\",\"name\":\"cmlzaahz\",\"type\":\"hu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,17 @@ public final class PoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Policy response = manager.policies()
-            .getWithResponse("kczynuhhoqeqsh", "vl", "q", "xyrqo", "nthbbnkgzukwd", com.azure.core.util.Context.NONE)
+            .getWithResponse("pwgoljt", "xnmxsdobygoogxqa", "j", "vaz", "jfucsaodjnosdkv",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ffisjmrkkhmwdmd", response.tags().get("gyqi"));
-        Assertions.assertEquals("snvlaqd", response.location());
-        Assertions.assertEquals("zkjthfceyjn", response.description());
+        Assertions.assertEquals("kuhznwhvuldbk", response.tags().get("ejjk"));
+        Assertions.assertEquals("gawgazmxjqi", response.location());
+        Assertions.assertEquals("fasgm", response.description());
         Assertions.assertEquals(PolicyStatus.DISABLED, response.status());
-        Assertions.assertEquals(PolicyFactName.LAB_PREMIUM_VM_COUNT, response.factName());
-        Assertions.assertEquals("yfj", response.factData());
-        Assertions.assertEquals("fiddhlrufzcq", response.threshold());
-        Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, response.evaluatorType());
+        Assertions.assertEquals(PolicyFactName.GALLERY_IMAGE, response.factName());
+        Assertions.assertEquals("ducdaaktujktz", response.factData());
+        Assertions.assertEquals("imyfpqdo", response.threshold());
+        Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, response.evaluatorType());
     }
 }

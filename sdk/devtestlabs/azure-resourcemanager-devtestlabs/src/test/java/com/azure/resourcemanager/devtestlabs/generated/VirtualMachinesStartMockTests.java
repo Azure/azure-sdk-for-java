@@ -27,8 +27,7 @@ public final class VirtualMachinesStartMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.virtualMachines()
-            .start("hapejov", "kwxnhwhhnoyrza", "oeehpmjenvjeatea", com.azure.core.util.Context.NONE);
+        manager.virtualMachines().start("cwztlvvws", "mrkkyjtr", "pwpwfkcauxuva", com.azure.core.util.Context.NONE);
 
     }
 }

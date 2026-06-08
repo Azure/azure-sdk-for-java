@@ -14,25 +14,25 @@ public final class EvaluatePoliciesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EvaluatePoliciesRequest model = BinaryData.fromString(
-            "{\"policies\":[{\"factName\":\"giagtcojo\",\"factData\":\"wogfnzjvu\",\"valueOffset\":\"zldmozuxy\",\"userObjectId\":\"sbtkadpysownbtgk\"}]}")
+            "{\"policies\":[{\"factName\":\"xhihfrbbcevqagtl\",\"factData\":\"hlfkqojpy\",\"valueOffset\":\"gtrd\",\"userObjectId\":\"ifmzzsd\"}]}")
             .toObject(EvaluatePoliciesRequest.class);
-        Assertions.assertEquals("giagtcojo", model.policies().get(0).factName());
-        Assertions.assertEquals("wogfnzjvu", model.policies().get(0).factData());
-        Assertions.assertEquals("zldmozuxy", model.policies().get(0).valueOffset());
-        Assertions.assertEquals("sbtkadpysownbtgk", model.policies().get(0).userObjectId());
+        Assertions.assertEquals("xhihfrbbcevqagtl", model.policies().get(0).factName());
+        Assertions.assertEquals("hlfkqojpy", model.policies().get(0).factData());
+        Assertions.assertEquals("gtrd", model.policies().get(0).valueOffset());
+        Assertions.assertEquals("ifmzzsd", model.policies().get(0).userObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EvaluatePoliciesRequest model = new EvaluatePoliciesRequest()
-            .withPolicies(Arrays.asList(new EvaluatePoliciesProperties().withFactName("giagtcojo")
-                .withFactData("wogfnzjvu")
-                .withValueOffset("zldmozuxy")
-                .withUserObjectId("sbtkadpysownbtgk")));
+            .withPolicies(Arrays.asList(new EvaluatePoliciesProperties().withFactName("xhihfrbbcevqagtl")
+                .withFactData("hlfkqojpy")
+                .withValueOffset("gtrd")
+                .withUserObjectId("ifmzzsd")));
         model = BinaryData.fromObject(model).toObject(EvaluatePoliciesRequest.class);
-        Assertions.assertEquals("giagtcojo", model.policies().get(0).factName());
-        Assertions.assertEquals("wogfnzjvu", model.policies().get(0).factData());
-        Assertions.assertEquals("zldmozuxy", model.policies().get(0).valueOffset());
-        Assertions.assertEquals("sbtkadpysownbtgk", model.policies().get(0).userObjectId());
+        Assertions.assertEquals("xhihfrbbcevqagtl", model.policies().get(0).factName());
+        Assertions.assertEquals("hlfkqojpy", model.policies().get(0).factData());
+        Assertions.assertEquals("gtrd", model.policies().get(0).valueOffset());
+        Assertions.assertEquals("ifmzzsd", model.policies().get(0).userObjectId());
     }
 }

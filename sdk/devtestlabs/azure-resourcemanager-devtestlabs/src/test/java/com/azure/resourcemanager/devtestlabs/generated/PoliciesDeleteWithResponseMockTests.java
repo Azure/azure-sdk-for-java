@@ -28,7 +28,8 @@ public final class PoliciesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.policies()
-            .deleteWithResponse("wgwima", "neakh", "mhobcyan", "fvqtvkhgvoo", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("oolkolirhhm", "jusuzgfjzc", "aaxoialahfxwcc", "kdxkuk",
+                com.azure.core.util.Context.NONE);
 
     }
 }

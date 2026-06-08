@@ -13,18 +13,18 @@ public final class DiskListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":155195344,\"leasedByLabVmId\":\"ivbkbxgomfaj\",\"diskBlobName\":\"asqvd\",\"diskUri\":\"y\",\"storageAccountId\":\"uxakjsqzhzbezk\",\"createdDate\":\"2021-02-22T21:43:36Z\",\"hostCaching\":\"idxas\",\"managedDiskId\":\"ddyvvjskgfmo\",\"provisioningState\":\"ah\",\"uniqueIdentifier\":\"gat\"},\"tags\":{\"zybbj\":\"ahhvjhhna\"},\"location\":\"dj\",\"id\":\"yxkyxvx\",\"name\":\"vblbjednljlageua\",\"type\":\"lxunsmjbnkppxy\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1430018563,\"leasedByLabVmId\":\"xeizzg\",\"diskBlobName\":\"lnsrmffe\",\"diskUri\":\"xcktpiymerteeamm\",\"storageAccountId\":\"iekkkzddrtkgdojb\",\"createdDate\":\"2021-11-22T18:27:05Z\",\"hostCaching\":\"vrefdeesv\",\"managedDiskId\":\"uij\",\"provisioningState\":\"txsu\",\"uniqueIdentifier\":\"rtujwsawddjibab\"},\"tags\":{\"fglecdmdqbwp\":\"titvtzeexavox\",\"slhhxudbxv\":\"pqtgsfjac\",\"tnsi\":\"d\",\"z\":\"ud\"},\"location\":\"es\",\"id\":\"dlpagzrcxfail\",\"name\":\"f\",\"type\":\"wmdboxdfgsftuf\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":559964323,\"leasedByLabVmId\":\"nac\",\"diskBlobName\":\"ckknhxkizvy\",\"diskUri\":\"rzvul\",\"storageAccountId\":\"aaeranokqgukk\",\"createdDate\":\"2021-07-04T00:09:58Z\",\"hostCaching\":\"broyla\",\"managedDiskId\":\"ulcdisdosf\",\"provisioningState\":\"jsvg\",\"uniqueIdentifier\":\"whryvycytdcl\"},\"tags\":{\"jdhttzaefedxi\":\"cknfnwmbtmvpd\",\"phkmcrjdqnsdfz\":\"ch\",\"gkylkdghr\":\"bg\",\"kvbwnhhtqlgeh\":\"euutlwxezwzh\"},\"location\":\"pipifh\",\"id\":\"e\",\"name\":\"ajvgcxtxjcsheafi\",\"type\":\"ltugsresmkssjhoi\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1451676187,\"leasedByLabVmId\":\"wegprh\",\"diskBlobName\":\"ill\",\"diskUri\":\"biqtgdq\",\"storageAccountId\":\"mcwsldrizetpwb\",\"createdDate\":\"2021-10-28T12:39:08Z\",\"hostCaching\":\"libph\",\"managedDiskId\":\"zmizakakan\",\"provisioningState\":\"p\",\"uniqueIdentifier\":\"jzhajoy\"},\"tags\":{\"cjmeislstvasy\":\"lmuoyxprimrsopte\",\"fuzboyjathwtzolb\":\"wxdzaumweoohgu\",\"jpahlxvea\":\"emwmdxmebwjs\",\"xnmwmqtibxyijddt\":\"f\"},\"location\":\"cttadi\",\"id\":\"eukmr\",\"name\":\"ieekpndzaa\",\"type\":\"mudqmeq\"}],\"nextLink\":\"gp\"}")
+            "{\"value\":[{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1999198955,\"leasedByLabVmId\":\"zdzgtilaxhnfhqly\",\"diskBlobName\":\"jouw\",\"diskUri\":\"kxoyzunbixxr\",\"storageAccountId\":\"kvcpwpgclr\",\"createdDate\":\"2021-06-07T01:59:28Z\",\"hostCaching\":\"soxfrken\",\"managedDiskId\":\"m\",\"provisioningState\":\"efrp\",\"uniqueIdentifier\":\"dnqqskawaoqvmmb\"},\"tags\":{\"qlkzme\":\"fr\"},\"location\":\"itgvkx\",\"id\":\"yqdrf\",\"name\":\"gcealzxwh\",\"type\":\"ansym\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":771137006,\"leasedByLabVmId\":\"igdivbkbxg\",\"diskBlobName\":\"fajuwas\",\"diskUri\":\"daeyygux\",\"storageAccountId\":\"jsqzhzbezk\",\"createdDate\":\"2021-02-22T21:43:36Z\",\"hostCaching\":\"idxas\",\"managedDiskId\":\"ddyvvjskgfmo\",\"provisioningState\":\"ah\",\"uniqueIdentifier\":\"gat\"},\"tags\":{\"zybbj\":\"ahhvjhhna\"},\"location\":\"dj\",\"id\":\"yxkyxvx\",\"name\":\"vblbjednljlageua\",\"type\":\"lxunsmjbnkppxy\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1430018563,\"leasedByLabVmId\":\"xeizzg\",\"diskBlobName\":\"lnsrmffe\",\"diskUri\":\"xcktpiymerteeamm\",\"storageAccountId\":\"iekkkzddrtkgdojb\",\"createdDate\":\"2021-11-22T18:27:05Z\",\"hostCaching\":\"vrefdeesv\",\"managedDiskId\":\"uij\",\"provisioningState\":\"txsu\",\"uniqueIdentifier\":\"rtujwsawddjibab\"},\"tags\":{\"fglecdmdqbwp\":\"titvtzeexavox\",\"slhhxudbxv\":\"pqtgsfjac\",\"tnsi\":\"d\",\"z\":\"ud\"},\"location\":\"es\",\"id\":\"dlpagzrcxfail\",\"name\":\"f\",\"type\":\"wmdboxdfgsftuf\"}],\"nextLink\":\"brjlnacgcckknhxk\"}")
             .toObject(DiskList.class);
-        Assertions.assertEquals("ahhvjhhna", model.value().get(0).tags().get("zybbj"));
-        Assertions.assertEquals("dj", model.value().get(0).location());
-        Assertions.assertEquals(StorageType.STANDARD_SSD, model.value().get(0).diskType());
-        Assertions.assertEquals(155195344, model.value().get(0).diskSizeGiB());
-        Assertions.assertEquals("ivbkbxgomfaj", model.value().get(0).leasedByLabVmId());
-        Assertions.assertEquals("asqvd", model.value().get(0).diskBlobName());
-        Assertions.assertEquals("y", model.value().get(0).diskUri());
-        Assertions.assertEquals("uxakjsqzhzbezk", model.value().get(0).storageAccountId());
-        Assertions.assertEquals("idxas", model.value().get(0).hostCaching());
-        Assertions.assertEquals("ddyvvjskgfmo", model.value().get(0).managedDiskId());
-        Assertions.assertEquals("gp", model.nextLink());
+        Assertions.assertEquals("fr", model.value().get(0).tags().get("qlkzme"));
+        Assertions.assertEquals("itgvkx", model.value().get(0).location());
+        Assertions.assertEquals(StorageType.PREMIUM, model.value().get(0).diskType());
+        Assertions.assertEquals(1999198955, model.value().get(0).diskSizeGiB());
+        Assertions.assertEquals("zdzgtilaxhnfhqly", model.value().get(0).leasedByLabVmId());
+        Assertions.assertEquals("jouw", model.value().get(0).diskBlobName());
+        Assertions.assertEquals("kxoyzunbixxr", model.value().get(0).diskUri());
+        Assertions.assertEquals("kvcpwpgclr", model.value().get(0).storageAccountId());
+        Assertions.assertEquals("soxfrken", model.value().get(0).hostCaching());
+        Assertions.assertEquals("m", model.value().get(0).managedDiskId());
+        Assertions.assertEquals("brjlnacgcckknhxk", model.nextLink());
     }
 }

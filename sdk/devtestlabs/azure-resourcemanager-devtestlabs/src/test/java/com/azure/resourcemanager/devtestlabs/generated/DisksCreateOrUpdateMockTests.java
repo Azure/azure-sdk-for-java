@@ -24,7 +24,7 @@ public final class DisksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":333620235,\"leasedByLabVmId\":\"ficudyhiz\",\"diskBlobName\":\"czmuhbca\",\"diskUri\":\"nhokh\",\"storageAccountId\":\"twhrjsdm\",\"createdDate\":\"2020-12-22T06:46:12Z\",\"hostCaching\":\"nckidbjpg\",\"managedDiskId\":\"zqpxzbawkikcd\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"dedecfiwh\"},\"tags\":{\"lcxiqqzjko\":\"surejqrshzzbgu\",\"uigdmfivjqterdq\":\"dupnamglr\"},\"location\":\"gd\",\"id\":\"kghpcv\",\"name\":\"wqirvtktyhhm\",\"type\":\"fxlapjajodmkrrw\"}";
+            = "{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":452026602,\"leasedByLabVmId\":\"zocxmtfshksnyzm\",\"diskBlobName\":\"amwbwmbnlslcef\",\"diskUri\":\"d\",\"storageAccountId\":\"wtkvi\",\"createdDate\":\"2021-02-22T08:32:35Z\",\"hostCaching\":\"liwoyngu\",\"managedDiskId\":\"hwvladpc\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"ybkekym\"},\"tags\":{\"hfym\":\"tsilscvqsyei\",\"seuugcig\":\"ouihy\",\"rqbebjnfveglab\":\"hogsmgbvmtd\"},\"location\":\"kbiwznhtfgfic\",\"id\":\"yhizpaczmu\",\"name\":\"bcakzn\",\"type\":\"okh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,30 +34,30 @@ public final class DisksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Disk response = manager.disks()
-            .define("toxjdzj")
-            .withExistingUser("jwfoygizms", "xxbaizabuln", "gsk")
-            .withRegion("mkouihyeseuugci")
-            .withTags(mapOf("sybkekymffzt", "jha", "syeiih", "ilscv"))
-            .withDiskType(StorageType.STANDARD_SSD)
-            .withDiskSizeGiB(1964281386)
-            .withLeasedByLabVmId("xqqm")
-            .withDiskBlobName("paydhfn")
-            .withDiskUri("c")
-            .withStorageAccountId("tfshksnyzm")
-            .withHostCaching("wbwmbnlslcefiq")
-            .withManagedDiskId("twtkvih")
+            .define("k")
+            .withExistingUser("hcxnwjtpfdzxco", "z", "wofw")
+            .withRegion("oygizmsh")
+            .withTags(mapOf("rfwss", "qcahfsgbjmlree", "qmipfj", "vlcwlisolntfxxc"))
+            .withDiskType(StorageType.STANDARD)
+            .withDiskSizeGiB(1620901536)
+            .withLeasedByLabVmId("zxsoednl")
+            .withDiskBlobName("li")
+            .withDiskUri("zomucmqgisnionet")
+            .withStorageAccountId("dr")
+            .withHostCaching("nxkgt")
+            .withManagedDiskId("lmtrlxcznnhz")
             .create();
 
-        Assertions.assertEquals("surejqrshzzbgu", response.tags().get("lcxiqqzjko"));
-        Assertions.assertEquals("gd", response.location());
+        Assertions.assertEquals("tsilscvqsyei", response.tags().get("hfym"));
+        Assertions.assertEquals("kbiwznhtfgfic", response.location());
         Assertions.assertEquals(StorageType.PREMIUM, response.diskType());
-        Assertions.assertEquals(333620235, response.diskSizeGiB());
-        Assertions.assertEquals("ficudyhiz", response.leasedByLabVmId());
-        Assertions.assertEquals("czmuhbca", response.diskBlobName());
-        Assertions.assertEquals("nhokh", response.diskUri());
-        Assertions.assertEquals("twhrjsdm", response.storageAccountId());
-        Assertions.assertEquals("nckidbjpg", response.hostCaching());
-        Assertions.assertEquals("zqpxzbawkikcd", response.managedDiskId());
+        Assertions.assertEquals(452026602, response.diskSizeGiB());
+        Assertions.assertEquals("zocxmtfshksnyzm", response.leasedByLabVmId());
+        Assertions.assertEquals("amwbwmbnlslcef", response.diskBlobName());
+        Assertions.assertEquals("d", response.diskUri());
+        Assertions.assertEquals("wtkvi", response.storageAccountId());
+        Assertions.assertEquals("liwoyngu", response.hostCaching());
+        Assertions.assertEquals("hwvladpc", response.managedDiskId());
     }
 
     // Use "Map.of" if available

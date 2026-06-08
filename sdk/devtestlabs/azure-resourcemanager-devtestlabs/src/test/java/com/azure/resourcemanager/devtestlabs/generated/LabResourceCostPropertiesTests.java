@@ -12,16 +12,16 @@ public final class LabResourceCostPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LabResourceCostProperties model = BinaryData.fromString(
-            "{\"resourcename\":\"oamciodh\",\"resourceUId\":\"azxkhnzbonlwnto\",\"resourceCost\":29.652745453857186,\"resourceType\":\"wbw\",\"resourceOwner\":\"szzcmrvexztv\",\"resourcePricingTier\":\"qgsfraoyzkoow\",\"resourceStatus\":\"mnguxawqaldsyu\",\"resourceId\":\"imerqfobwyznk\",\"externalResourceId\":\"kutwpf\"}")
+            "{\"resourcename\":\"hpagm\",\"resourceUId\":\"skdsnfdsdoakg\",\"resourceCost\":22.774426027127515,\"resourceType\":\"kzevdlhewpusds\",\"resourceOwner\":\"wvogvbbejdc\",\"resourcePricingTier\":\"qqmoaku\",\"resourceStatus\":\"m\",\"resourceId\":\"rwr\",\"externalResourceId\":\"rtwaenuuzko\"}")
             .toObject(LabResourceCostProperties.class);
-        Assertions.assertEquals("oamciodh", model.resourcename());
-        Assertions.assertEquals("azxkhnzbonlwnto", model.resourceUId());
-        Assertions.assertEquals(29.652745453857186D, model.resourceCost());
-        Assertions.assertEquals("wbw", model.resourceType());
-        Assertions.assertEquals("szzcmrvexztv", model.resourceOwner());
-        Assertions.assertEquals("qgsfraoyzkoow", model.resourcePricingTier());
-        Assertions.assertEquals("mnguxawqaldsyu", model.resourceStatus());
-        Assertions.assertEquals("imerqfobwyznk", model.resourceId());
-        Assertions.assertEquals("kutwpf", model.externalResourceId());
+        Assertions.assertEquals("hpagm", model.resourcename());
+        Assertions.assertEquals("skdsnfdsdoakg", model.resourceUId());
+        Assertions.assertEquals(22.774426027127515D, model.resourceCost());
+        Assertions.assertEquals("kzevdlhewpusds", model.resourceType());
+        Assertions.assertEquals("wvogvbbejdc", model.resourceOwner());
+        Assertions.assertEquals("qqmoaku", model.resourcePricingTier());
+        Assertions.assertEquals("m", model.resourceStatus());
+        Assertions.assertEquals("rwr", model.resourceId());
+        Assertions.assertEquals("rtwaenuuzko", model.externalResourceId());
     }
 }

@@ -12,8 +12,8 @@ public final class ExternalSubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSubnet model
-            = BinaryData.fromString("{\"id\":\"flrmymyi\",\"name\":\"qlhris\"}").toObject(ExternalSubnet.class);
-        Assertions.assertEquals("flrmymyi", model.id());
-        Assertions.assertEquals("qlhris", model.name());
+            = BinaryData.fromString("{\"id\":\"tlgy\",\"name\":\"hqvlnnpxybafiqg\"}").toObject(ExternalSubnet.class);
+        Assertions.assertEquals("tlgy", model.id());
+        Assertions.assertEquals("hqvlnnpxybafiqg", model.name());
     }
 }

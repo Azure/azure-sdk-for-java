@@ -22,7 +22,7 @@ public final class GalleryImagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"author\":\"fmaciqgjjrlhiq\",\"createdDate\":\"2021-05-14T22:09:46Z\",\"description\":\"vtbouguxtnd\",\"imageReference\":{\"offer\":\"jtt\",\"publisher\":\"sualapdlndbeaqbk\",\"sku\":\"vvlwynpbbf\",\"osType\":\"zfjmsp\",\"version\":\"zfe\"},\"icon\":\"jljmphfkyezol\",\"enabled\":true,\"planId\":\"icuydoccn\",\"isPlanAuthorized\":true},\"tags\":{\"sdohz\":\"zbuiadhbatecaa\",\"mbwiinjdllwktl\":\"iucbda\"},\"location\":\"owavvqxuajgcqw\",\"id\":\"ynkgfcfd\",\"name\":\"uws\",\"type\":\"kxx\"}]}";
+            = "{\"value\":[{\"properties\":{\"author\":\"fqbqnasd\",\"createdDate\":\"2021-06-25T03:18:26Z\",\"description\":\"zsieuscplhyvd\",\"imageReference\":{\"offer\":\"yzkxitds\",\"publisher\":\"zsvko\",\"sku\":\"upjo\",\"osType\":\"ozsaye\",\"version\":\"azwzlpzbtzuykyki\"},\"icon\":\"sdyepfno\",\"enabled\":true,\"planId\":\"zacfpztgazw\",\"isPlanAuthorized\":true},\"tags\":{\"zmffngdyfcixrh\":\"aaokctgkppgkqzkc\",\"a\":\"cqvhoejgoiutgwrm\",\"hazyntacihnco\":\"p\"},\"location\":\"ipnmliqmv\",\"id\":\"hikea\",\"name\":\"grvgpomxp\",\"type\":\"pdtsdfjyiesocwi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,21 +32,21 @@ public final class GalleryImagesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GalleryImage> response = manager.galleryImages()
-            .list("eaqgrvgpomxpupd", "sdfjyiesoc", "iqbuou", "mpyzgleo", 743582591, "sbgbwwzvdajfwn",
+            .list("foxqwecrsn", "pcs", "lqxov", "pqibukklv", 484076579, "lrmlccmetjscz",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zbuiadhbatecaa", response.iterator().next().tags().get("sdohz"));
-        Assertions.assertEquals("owavvqxuajgcqw", response.iterator().next().location());
-        Assertions.assertEquals("fmaciqgjjrlhiq", response.iterator().next().author());
-        Assertions.assertEquals("vtbouguxtnd", response.iterator().next().description());
-        Assertions.assertEquals("jtt", response.iterator().next().imageReference().offer());
-        Assertions.assertEquals("sualapdlndbeaqbk", response.iterator().next().imageReference().publisher());
-        Assertions.assertEquals("vvlwynpbbf", response.iterator().next().imageReference().sku());
-        Assertions.assertEquals("zfjmsp", response.iterator().next().imageReference().osType());
-        Assertions.assertEquals("zfe", response.iterator().next().imageReference().version());
-        Assertions.assertEquals("jljmphfkyezol", response.iterator().next().icon());
+        Assertions.assertEquals("aaokctgkppgkqzkc", response.iterator().next().tags().get("zmffngdyfcixrh"));
+        Assertions.assertEquals("ipnmliqmv", response.iterator().next().location());
+        Assertions.assertEquals("fqbqnasd", response.iterator().next().author());
+        Assertions.assertEquals("zsieuscplhyvd", response.iterator().next().description());
+        Assertions.assertEquals("yzkxitds", response.iterator().next().imageReference().offer());
+        Assertions.assertEquals("zsvko", response.iterator().next().imageReference().publisher());
+        Assertions.assertEquals("upjo", response.iterator().next().imageReference().sku());
+        Assertions.assertEquals("ozsaye", response.iterator().next().imageReference().osType());
+        Assertions.assertEquals("azwzlpzbtzuykyki", response.iterator().next().imageReference().version());
+        Assertions.assertEquals("sdyepfno", response.iterator().next().icon());
         Assertions.assertTrue(response.iterator().next().enabled());
-        Assertions.assertEquals("icuydoccn", response.iterator().next().planId());
+        Assertions.assertEquals("zacfpztgazw", response.iterator().next().planId());
         Assertions.assertTrue(response.iterator().next().isPlanAuthorized());
     }
 }

@@ -22,7 +22,7 @@ public final class SecretsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"xorpwal\",\"provisioningState\":\"wugexojfccyl\",\"uniqueIdentifier\":\"rh\"},\"tags\":{\"zzxezmnrkj\":\"azjpwexcdrzpro\",\"lokfpmijpdvzv\":\"pjeuxsp\",\"rwyambhbafebzxfk\":\"bhwbdqufvcgnrgla\"},\"location\":\"utibhlen\",\"id\":\"rvrk\",\"name\":\"s\",\"type\":\"bduxvzmlghnys\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"jq\",\"provisioningState\":\"afcnlrtb\",\"uniqueIdentifier\":\"jzzca\"},\"tags\":{\"e\":\"olbuauktwieope\"},\"location\":\"qd\",\"id\":\"swyiljpibkgxyxy\",\"name\":\"ux\",\"type\":\"eddobmcnltm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class SecretsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Secret> response = manager.secrets()
-            .list("iikmoxrezsvavlrx", "kj", "oywlunpipcwyb", "zfn", "npatpftsae", 504459907, "f",
+            .list("yxsbfpz", "oikvntwcz", "zwushlcxpblal", "hezpfkissaidqzs", "aoq", 148489675, "gpto",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("azjpwexcdrzpro", response.iterator().next().tags().get("zzxezmnrkj"));
-        Assertions.assertEquals("utibhlen", response.iterator().next().location());
-        Assertions.assertEquals("xorpwal", response.iterator().next().value());
+        Assertions.assertEquals("olbuauktwieope", response.iterator().next().tags().get("e"));
+        Assertions.assertEquals("qd", response.iterator().next().location());
+        Assertions.assertEquals("jq", response.iterator().next().value());
     }
 }

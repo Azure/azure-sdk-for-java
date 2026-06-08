@@ -14,15 +14,15 @@ public final class CustomImageFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomImageFragment model
-            = BinaryData.fromString("{\"tags\":{\"mouwqlgzrfzeey\":\"klff\"}}").toObject(CustomImageFragment.class);
-        Assertions.assertEquals("klff", model.tags().get("mouwqlgzrfzeey"));
+            = BinaryData.fromString("{\"tags\":{\"cgpik\":\"bi\"}}").toObject(CustomImageFragment.class);
+        Assertions.assertEquals("bi", model.tags().get("cgpik"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomImageFragment model = new CustomImageFragment().withTags(mapOf("mouwqlgzrfzeey", "klff"));
+        CustomImageFragment model = new CustomImageFragment().withTags(mapOf("cgpik", "bi"));
         model = BinaryData.fromObject(model).toObject(CustomImageFragment.class);
-        Assertions.assertEquals("klff", model.tags().get("mouwqlgzrfzeey"));
+        Assertions.assertEquals("bi", model.tags().get("cgpik"));
     }
 
     // Use "Map.of" if available

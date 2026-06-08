@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class FormulaFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FormulaFragment model = BinaryData
-            .fromString("{\"tags\":{\"htywubxcbihwq\":\"iwii\",\"wjchrdg\":\"nfdn\",\"uu\":\"ihxumwctondzj\"}}")
+        FormulaFragment model = BinaryData.fromString("{\"tags\":{\"ufxqknpirgnepttw\":\"bwtovvtgseinqf\"}}")
             .toObject(FormulaFragment.class);
-        Assertions.assertEquals("iwii", model.tags().get("htywubxcbihwq"));
+        Assertions.assertEquals("bwtovvtgseinqf", model.tags().get("ufxqknpirgnepttw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FormulaFragment model
-            = new FormulaFragment().withTags(mapOf("htywubxcbihwq", "iwii", "wjchrdg", "nfdn", "uu", "ihxumwctondzj"));
+        FormulaFragment model = new FormulaFragment().withTags(mapOf("ufxqknpirgnepttw", "bwtovvtgseinqf"));
         model = BinaryData.fromObject(model).toObject(FormulaFragment.class);
-        Assertions.assertEquals("iwii", model.tags().get("htywubxcbihwq"));
+        Assertions.assertEquals("bwtovvtgseinqf", model.tags().get("ufxqknpirgnepttw"));
     }
 
     // Use "Map.of" if available

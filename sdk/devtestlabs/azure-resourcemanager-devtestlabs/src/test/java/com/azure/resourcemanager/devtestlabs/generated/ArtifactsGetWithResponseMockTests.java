@@ -21,7 +21,7 @@ public final class ArtifactsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"kx\",\"description\":\"azwu\",\"publisher\":\"yqvnjobfe\",\"filePath\":\"ldiuhzzgqlm\",\"icon\":\"ewzgiud\",\"targetOsType\":\"xpqh\",\"parameters\":\"\\\"dataqhnmhk\\\"\",\"createdDate\":\"2021-08-06T14:29:34Z\"},\"tags\":{\"heqdgcru\":\"su\",\"m\":\"spiny\",\"jipfdvh\":\"gwokmikpazfbmjxu\",\"ehpphthdklmveta\":\"xdvwz\"},\"location\":\"akfqoixwgiksb\",\"id\":\"tooxrpog\",\"name\":\"phchgjtnhtukfaci\",\"type\":\"mbf\"}";
+            = "{\"properties\":{\"title\":\"bknlzcl\",\"description\":\"zeyowmndcovdwzqa\",\"publisher\":\"zanhmkvfru\",\"filePath\":\"udrbcpftxudqyem\",\"icon\":\"unaucm\",\"targetOsType\":\"rtneemmja\",\"parameters\":\"\\\"datacgxefnohaitraniz\\\"\",\"createdDate\":\"2021-03-02T16:05:57Z\"},\"tags\":{\"vfbngfco\":\"dasmxu\",\"priylfmp\":\"ef\",\"hlcdc\":\"trauds\",\"moj\":\"lregpq\"},\"location\":\"rztnv\",\"id\":\"shqrdgrt\",\"name\":\"mewjzlpyk\",\"type\":\"fa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,10 @@ public final class ArtifactsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Artifact response = manager.artifacts()
-            .getWithResponse("jcvbxqlapsns", "ovyxpavidnie", "wffcvvye", "slpuxgcbdsva", "pnptw",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("keys", "ewfopazdazg", "sqgpewqcfu", "mdpv", "zgl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("su", response.tags().get("heqdgcru"));
-        Assertions.assertEquals("akfqoixwgiksb", response.location());
+        Assertions.assertEquals("dasmxu", response.tags().get("vfbngfco"));
+        Assertions.assertEquals("rztnv", response.location());
     }
 }

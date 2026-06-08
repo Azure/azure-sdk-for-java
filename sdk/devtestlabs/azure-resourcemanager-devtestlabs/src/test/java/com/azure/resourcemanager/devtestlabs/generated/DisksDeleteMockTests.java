@@ -28,7 +28,7 @@ public final class DisksDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.disks()
-            .delete("xjjmztnlmsoodtm", "ecdh", "yswcrptveajczx", "lgsrgkrfizrpywlp", com.azure.core.util.Context.NONE);
+            .delete("lltqstqkqs", "gxiynecovagzk", "eubanlxunpqcc", "qiawzl", com.azure.core.util.Context.NONE);
 
     }
 }

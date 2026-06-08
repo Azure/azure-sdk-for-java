@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RdpConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RdpConnectionInner model = BinaryData.fromString("{\"contents\":\"k\"}").toObject(RdpConnectionInner.class);
-        Assertions.assertEquals("k", model.contents());
+        RdpConnectionInner model
+            = BinaryData.fromString("{\"contents\":\"wlkjxn\"}").toObject(RdpConnectionInner.class);
+        Assertions.assertEquals("wlkjxn", model.contents());
     }
 }

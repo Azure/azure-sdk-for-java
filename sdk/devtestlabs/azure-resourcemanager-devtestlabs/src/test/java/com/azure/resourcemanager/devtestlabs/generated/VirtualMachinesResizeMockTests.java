@@ -29,8 +29,8 @@ public final class VirtualMachinesResizeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.virtualMachines()
-            .resize("glqjoxtdahneaoov", "yjz", "ivfwjlofze", new ResizeLabVirtualMachineProperties().withSize("srmau"),
-                com.azure.core.util.Context.NONE);
+            .resize("vamyyznmrgcdo", "cvucgytoxu", "httnzqs",
+                new ResizeLabVirtualMachineProperties().withSize("mebgszplu"), com.azure.core.util.Context.NONE);
 
     }
 }

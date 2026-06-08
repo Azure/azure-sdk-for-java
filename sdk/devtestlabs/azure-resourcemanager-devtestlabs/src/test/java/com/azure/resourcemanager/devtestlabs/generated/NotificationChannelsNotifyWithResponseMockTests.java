@@ -30,9 +30,9 @@ public final class NotificationChannelsNotifyWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.notificationChannels()
-            .notifyWithResponse("dfkcef", "ygzqpjoisfmn", "ybdjnxumentq",
+            .notifyWithResponse("ekotjgxi", "qfkyfhiwvjaqu", "by",
                 new NotifyParameters().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)
-                    .withJsonPayload("hymxymulwivqtow"),
+                    .withJsonPayload("kpajbmgeume"),
                 com.azure.core.util.Context.NONE);
 
     }

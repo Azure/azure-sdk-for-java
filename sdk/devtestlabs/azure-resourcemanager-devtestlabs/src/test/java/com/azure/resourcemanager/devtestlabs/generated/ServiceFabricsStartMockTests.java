@@ -28,7 +28,7 @@ public final class ServiceFabricsStartMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.serviceFabrics()
-            .start("ulrlzaudgjtfbcl", "kkucddwnh", "zbuto", "cgjtirjwayhicqq", com.azure.core.util.Context.NONE);
+            .start("exozonynp", "me", "dpabcreuwzosg", "jxvcvaso", com.azure.core.util.Context.NONE);
 
     }
 }

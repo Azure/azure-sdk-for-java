@@ -14,25 +14,27 @@ public final class ServiceFabricInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceFabricInner model = BinaryData.fromString(
-            "{\"properties\":{\"externalServiceFabricId\":\"wfgtayxonsup\",\"environmentId\":\"jlzqnhc\",\"applicableSchedule\":{\"location\":\"ltnzoibgsxg\",\"tags\":{\"mpqoxw\":\"yqo\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"xiqxeiiqbimh\",\"weeklyRecurrence\":{},\"dailyRecurrence\":{},\"hourlyRecurrence\":{},\"timeZoneId\":\"nhe\",\"notificationSettings\":{},\"createdDate\":\"2021-10-07T22:05:50Z\",\"targetResourceId\":\"fvwbcb\",\"provisioningState\":\"mbnkb\",\"uniqueIdentifier\":\"qvxkd\"},\"tags\":{\"zuwfmdur\":\"ihebwtsw\",\"sdjubggbqigkxkbs\":\"gegizvcjfel\"},\"location\":\"gak\",\"id\":\"cyrcmjdmspo\",\"name\":\"apvu\",\"type\":\"rylniofrzg\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"mstk\",\"weeklyRecurrence\":{},\"dailyRecurrence\":{},\"hourlyRecurrence\":{},\"timeZoneId\":\"bcuiiz\",\"notificationSettings\":{},\"createdDate\":\"2021-01-01T10:33:49Z\",\"targetResourceId\":\"ansnvp\",\"provisioningState\":\"bmikost\",\"uniqueIdentifier\":\"bkiw\"},\"tags\":{\"ophzfylsgcrp\":\"n\",\"fwyfwlwxjwet\":\"bcunezzceze\",\"zvaylptrsqqw\":\"psihcla\"},\"location\":\"cmwqkchcxwa\",\"id\":\"ewzjkjexfd\",\"name\":\"qvhpsylkkshkbff\",\"type\":\"bmxzjrgywwpg\"}},\"id\":\"snptfujgicgaao\",\"name\":\"pttaqutd\",\"type\":\"wemxswvruunzz\"},\"provisioningState\":\"ehkfkimrtixok\",\"uniqueIdentifier\":\"qyinl\"},\"tags\":{\"hiyxgvelfclduc\":\"pqwhixmonst\"},\"location\":\"irdsvuwcob\",\"id\":\"gstmninwjizciln\",\"name\":\"hgshe\",\"type\":\"jtbxqmuluxlx\"}")
+            "{\"properties\":{\"externalServiceFabricId\":\"pphoj\",\"environmentId\":\"vyhyhsgzfc\",\"applicableSchedule\":{\"location\":\"omfgbeglqgleohib\",\"tags\":{\"rrfx\":\"luan\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"ij\",\"weeklyRecurrence\":{},\"dailyRecurrence\":{},\"hourlyRecurrence\":{},\"timeZoneId\":\"mq\",\"notificationSettings\":{},\"createdDate\":\"2021-06-23T19:28:26Z\",\"targetResourceId\":\"lajrnwxacevehj\",\"provisioningState\":\"yxoaf\",\"uniqueIdentifier\":\"oqltfae\"},\"tags\":{\"gv\":\"nm\",\"qhykprlpyzn\":\"irpghriypoqeyh\",\"iitdfuxt\":\"ciqdsme\"},\"location\":\"siibmiybnnustgn\",\"id\":\"hnmgixhcm\",\"name\":\"vmqfoud\",\"type\":\"rhc\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"otwypundmb\",\"weeklyRecurrence\":{},\"dailyRecurrence\":{},\"hourlyRecurrence\":{},\"timeZoneId\":\"mjkavlgorbmft\",\"notificationSettings\":{},\"createdDate\":\"2021-04-24T03:15:03Z\",\"targetResourceId\":\"fjltfvnzcyjtotp\",\"provisioningState\":\"pvpbdbzqgqqiheds\",\"uniqueIdentifier\":\"wthmkyib\"},\"tags\":{\"wdhohsdtmcdzsu\":\"ihsgq\",\"zlmcmuapcvhdb\":\"cohdx\",\"qqxeyskon\":\"v\",\"clj\":\"zinkfkbgbzbowxeq\"},\"location\":\"gvkzqkjjeokbze\",\"id\":\"zrxcczurt\",\"name\":\"e\",\"type\":\"pqxbkwvzgnzvdf\"}},\"id\":\"d\",\"name\":\"xzmqpnodawop\",\"type\":\"hewjptmcgsbost\"},\"provisioningState\":\"lnd\",\"uniqueIdentifier\":\"tutmzl\"},\"tags\":{\"wwyyurmoch\":\"jlvfhrbbpneqv\",\"ejnhlbkpb\":\"prprsnmokay\",\"hahzvechndbnwi\":\"pcpil\",\"wjwiuub\":\"hol\"},\"location\":\"fqsfa\",\"id\":\"qtferrqwexjkmf\",\"name\":\"apjwogqqnobpudcd\",\"type\":\"btqwpwyawbzas\"}")
             .toObject(ServiceFabricInner.class);
-        Assertions.assertEquals("pqwhixmonst", model.tags().get("hiyxgvelfclduc"));
-        Assertions.assertEquals("irdsvuwcob", model.location());
-        Assertions.assertEquals("wfgtayxonsup", model.externalServiceFabricId());
-        Assertions.assertEquals("jlzqnhc", model.environmentId());
+        Assertions.assertEquals("jlvfhrbbpneqv", model.tags().get("wwyyurmoch"));
+        Assertions.assertEquals("fqsfa", model.location());
+        Assertions.assertEquals("pphoj", model.externalServiceFabricId());
+        Assertions.assertEquals("vyhyhsgzfc", model.environmentId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceFabricInner model = new ServiceFabricInner().withTags(mapOf("hiyxgvelfclduc", "pqwhixmonst"))
-            .withLocation("irdsvuwcob")
-            .withExternalServiceFabricId("wfgtayxonsup")
-            .withEnvironmentId("jlzqnhc");
+        ServiceFabricInner model = new ServiceFabricInner()
+            .withTags(mapOf("wwyyurmoch", "jlvfhrbbpneqv", "ejnhlbkpb", "prprsnmokay", "hahzvechndbnwi", "pcpil",
+                "wjwiuub", "hol"))
+            .withLocation("fqsfa")
+            .withExternalServiceFabricId("pphoj")
+            .withEnvironmentId("vyhyhsgzfc");
         model = BinaryData.fromObject(model).toObject(ServiceFabricInner.class);
-        Assertions.assertEquals("pqwhixmonst", model.tags().get("hiyxgvelfclduc"));
-        Assertions.assertEquals("irdsvuwcob", model.location());
-        Assertions.assertEquals("wfgtayxonsup", model.externalServiceFabricId());
-        Assertions.assertEquals("jlzqnhc", model.environmentId());
+        Assertions.assertEquals("jlvfhrbbpneqv", model.tags().get("wwyyurmoch"));
+        Assertions.assertEquals("fqsfa", model.location());
+        Assertions.assertEquals("pphoj", model.externalServiceFabricId());
+        Assertions.assertEquals("vyhyhsgzfc", model.environmentId());
     }
 
     // Use "Map.of" if available

@@ -14,22 +14,24 @@ public final class EnvironmentDeploymentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnvironmentDeploymentProperties model = BinaryData.fromString(
-            "{\"armTemplateId\":\"rcgegydcwboxjum\",\"parameters\":[{\"name\":\"lihrraiouaubr\",\"value\":\"loqxfuojrngif\"}]}")
+            "{\"armTemplateId\":\"jlmuoyxprimrsopt\",\"parameters\":[{\"name\":\"meisls\",\"value\":\"asylwx\"},{\"name\":\"aumweoohguufu\",\"value\":\"oyjathwtzol\"},{\"name\":\"emwmdxmebwjs\",\"value\":\"p\"},{\"name\":\"lxveabfqx\",\"value\":\"wmqtibx\"}]}")
             .toObject(EnvironmentDeploymentProperties.class);
-        Assertions.assertEquals("rcgegydcwboxjum", model.armTemplateId());
-        Assertions.assertEquals("lihrraiouaubr", model.parameters().get(0).name());
-        Assertions.assertEquals("loqxfuojrngif", model.parameters().get(0).value());
+        Assertions.assertEquals("jlmuoyxprimrsopt", model.armTemplateId());
+        Assertions.assertEquals("meisls", model.parameters().get(0).name());
+        Assertions.assertEquals("asylwx", model.parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentDeploymentProperties model
-            = new EnvironmentDeploymentProperties().withArmTemplateId("rcgegydcwboxjum")
-                .withParameters(Arrays
-                    .asList(new ArmTemplateParameterProperties().withName("lihrraiouaubr").withValue("loqxfuojrngif")));
+        EnvironmentDeploymentProperties model = new EnvironmentDeploymentProperties()
+            .withArmTemplateId("jlmuoyxprimrsopt")
+            .withParameters(Arrays.asList(new ArmTemplateParameterProperties().withName("meisls").withValue("asylwx"),
+                new ArmTemplateParameterProperties().withName("aumweoohguufu").withValue("oyjathwtzol"),
+                new ArmTemplateParameterProperties().withName("emwmdxmebwjs").withValue("p"),
+                new ArmTemplateParameterProperties().withName("lxveabfqx").withValue("wmqtibx")));
         model = BinaryData.fromObject(model).toObject(EnvironmentDeploymentProperties.class);
-        Assertions.assertEquals("rcgegydcwboxjum", model.armTemplateId());
-        Assertions.assertEquals("lihrraiouaubr", model.parameters().get(0).name());
-        Assertions.assertEquals("loqxfuojrngif", model.parameters().get(0).value());
+        Assertions.assertEquals("jlmuoyxprimrsopt", model.armTemplateId());
+        Assertions.assertEquals("meisls", model.parameters().get(0).name());
+        Assertions.assertEquals("asylwx", model.parameters().get(0).value());
     }
 }

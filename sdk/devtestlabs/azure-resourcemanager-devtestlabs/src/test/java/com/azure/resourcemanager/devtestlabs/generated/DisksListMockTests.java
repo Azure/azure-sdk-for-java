@@ -23,7 +23,7 @@ public final class DisksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":755057867,\"leasedByLabVmId\":\"jf\",\"diskBlobName\":\"lgzawkgyepeyamnn\",\"diskUri\":\"mdiawpzx\",\"storageAccountId\":\"rntmkctdhu\",\"createdDate\":\"2021-06-25T21:40:34Z\",\"hostCaching\":\"qp\",\"managedDiskId\":\"azihq\",\"provisioningState\":\"vqgcnbhcbm\",\"uniqueIdentifier\":\"ztibniyntsxjmfm\"},\"tags\":{\"g\":\"vhkmoogjrhskbwgm\"},\"location\":\"lcfog\",\"id\":\"cxn\",\"name\":\"jtpfdzxcouzfw\",\"type\":\"fwaku\"}]}";
+            = "{\"value\":[{\"properties\":{\"diskType\":\"Standard\",\"diskSizeGiB\":522943136,\"leasedByLabVmId\":\"xhmehjnhjiotif\",\"diskBlobName\":\"bcngkegxc\",\"diskUri\":\"xbbfetwil\",\"storageAccountId\":\"zox\",\"createdDate\":\"2021-12-04T08:06:23Z\",\"hostCaching\":\"lfr\",\"managedDiskId\":\"qownkiuajewnahw\",\"provisioningState\":\"jjmztnlmsoodtmv\",\"uniqueIdentifier\":\"dhdyswcrptveaj\"},\"tags\":{\"pywlptyuqhrl\":\"vlgsrgkrfiz\"},\"location\":\"skykpfuofix\",\"id\":\"pcfykkpy\",\"name\":\"cpawmp\",\"type\":\"prdpwrpc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class DisksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Disk> response = manager.disks()
-            .list("yuqh", "lmcskyk", "fuofixcnpcfykkp", "ycpawm", "jp", 1155479295, "pwr",
+            .list("klaslga", "izuxlrarwpewsaud", "ejtig", "sx", "pytn", 1684202361, "bala",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vhkmoogjrhskbwgm", response.iterator().next().tags().get("g"));
-        Assertions.assertEquals("lcfog", response.iterator().next().location());
-        Assertions.assertEquals(StorageType.PREMIUM, response.iterator().next().diskType());
-        Assertions.assertEquals(755057867, response.iterator().next().diskSizeGiB());
-        Assertions.assertEquals("jf", response.iterator().next().leasedByLabVmId());
-        Assertions.assertEquals("lgzawkgyepeyamnn", response.iterator().next().diskBlobName());
-        Assertions.assertEquals("mdiawpzx", response.iterator().next().diskUri());
-        Assertions.assertEquals("rntmkctdhu", response.iterator().next().storageAccountId());
-        Assertions.assertEquals("qp", response.iterator().next().hostCaching());
-        Assertions.assertEquals("azihq", response.iterator().next().managedDiskId());
+        Assertions.assertEquals("vlgsrgkrfiz", response.iterator().next().tags().get("pywlptyuqhrl"));
+        Assertions.assertEquals("skykpfuofix", response.iterator().next().location());
+        Assertions.assertEquals(StorageType.STANDARD, response.iterator().next().diskType());
+        Assertions.assertEquals(522943136, response.iterator().next().diskSizeGiB());
+        Assertions.assertEquals("xhmehjnhjiotif", response.iterator().next().leasedByLabVmId());
+        Assertions.assertEquals("bcngkegxc", response.iterator().next().diskBlobName());
+        Assertions.assertEquals("xbbfetwil", response.iterator().next().diskUri());
+        Assertions.assertEquals("zox", response.iterator().next().storageAccountId());
+        Assertions.assertEquals("lfr", response.iterator().next().hostCaching());
+        Assertions.assertEquals("qownkiuajewnahw", response.iterator().next().managedDiskId());
     }
 }

@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * A file containing a set of parameter values for an ARM template.
@@ -25,7 +24,7 @@ public final class ParametersValueFileInfo implements JsonSerializable<Parameter
     /*
      * Contents of the file.
      */
-    private Map<String, Object> parametersValueInfo;
+    private Object parametersValueInfo;
 
     /**
      * Creates an instance of ParametersValueFileInfo class.
@@ -47,7 +46,7 @@ public final class ParametersValueFileInfo implements JsonSerializable<Parameter
      * 
      * @return the parametersValueInfo value.
      */
-    public Map<String, Object> parametersValueInfo() {
+    public Object parametersValueInfo() {
         return this.parametersValueInfo;
     }
 
@@ -58,8 +57,9 @@ public final class ParametersValueFileInfo implements JsonSerializable<Parameter
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("fileName", this.fileName);
-        jsonWriter.writeMapField("parametersValueInfo", this.parametersValueInfo,
-            (writer, element) -> writer.writeUntyped(element));
+        if (this.parametersValueInfo != null) {
+            jsonWriter.writeUntypedField("parametersValueInfo", this.parametersValueInfo);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -81,8 +81,7 @@ public final class ParametersValueFileInfo implements JsonSerializable<Parameter
                 if ("fileName".equals(fieldName)) {
                     deserializedParametersValueFileInfo.fileName = reader.getString();
                 } else if ("parametersValueInfo".equals(fieldName)) {
-                    Map<String, Object> parametersValueInfo = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedParametersValueFileInfo.parametersValueInfo = parametersValueInfo;
+                    deserializedParametersValueFileInfo.parametersValueInfo = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

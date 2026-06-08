@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class ArtifactsGenerateArmTemplateWithResponseMockTests {
     @Test
     public void testGenerateArmTemplateWithResponse() throws Exception {
-        String responseStr = "{\"template\":\"\\\"dataelwcerwkwb\\\"\",\"parameters\":\"\\\"dataxljtxbusqtbxxn\\\"\"}";
+        String responseStr = "{\"template\":\"\\\"dataeetqujxcxxq\\\"\",\"parameters\":\"\\\"datacqjkedwqu\\\"\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,14 @@ public final class ArtifactsGenerateArmTemplateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ArmTemplateInfo response = manager.artifacts()
-            .generateArmTemplateWithResponse("absr", "rsnrhp", "a", "iwkkvya",
-                new GenerateArmTemplateRequest().withVirtualMachineName("kvvcsemsvuvdjkq")
-                    .withParameters(Arrays.asList(new ParameterInfo().withName("mmlivrjjxnw").withValue("chp")))
-                    .withLocation("xlehzlxpgfquwzp")
+            .generateArmTemplateWithResponse("ipfdvhaxdvwzaehp", "hthdklmvetatlakf", "oixwgiksb", "vtooxrpo",
+                new GenerateArmTemplateRequest().withVirtualMachineName("phchgjtnhtukfaci")
+                    .withParameters(
+                        Arrays.asList(new ParameterInfo().withName("ntumeezbxvq").withValue("nuvwcgasgomtmjzw"),
+                            new ParameterInfo().withName("qgo").withValue("xpwwzt"),
+                            new ParameterInfo().withName("mkkhtgfredml").withValue("grllcc"),
+                            new ParameterInfo().withName("ovjowazhpabacom").withValue("otgkwsxnsrqorcg")))
+                    .withLocation("mv")
                     .withFileUploadOptions(FileUploadOptions.NONE),
                 com.azure.core.util.Context.NONE)
             .getValue();

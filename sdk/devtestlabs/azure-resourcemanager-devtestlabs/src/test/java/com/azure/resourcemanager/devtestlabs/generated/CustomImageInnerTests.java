@@ -25,70 +25,70 @@ public final class CustomImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomImageInner model = BinaryData.fromString(
-            "{\"properties\":{\"vm\":{\"sourceVmId\":\"gmhrskdsnfdsdoak\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepRequested\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"vdlhewpusdsttwv\",\"sysPrep\":true,\"osType\":\"None\"},\"description\":\"ejdcngqqmoakuf\",\"author\":\"jzrwrdgrtw\",\"creationDate\":\"2021-01-23T08:17:26Z\",\"managedImageId\":\"uzkopbminrfd\",\"managedSnapshotId\":\"yuhhziu\",\"dataDiskStorageInfo\":[{\"lun\":\"zbhd\",\"storageType\":\"Standard\"},{\"lun\":\"mzqhoftrmaequi\",\"storageType\":\"Premium\"},{\"lun\":\"cslfaoqzpiyylha\",\"storageType\":\"Premium\"},{\"lun\":\"hc\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"aivwitqscywu\",\"publisher\":\"woluhczbwemhair\",\"offer\":\"rgzdwmsweyp\"},\"isPlanAuthorized\":true,\"provisioningState\":\"ggicccnxqhue\",\"uniqueIdentifier\":\"ktt\"},\"tags\":{\"wem\":\"vlz\"},\"location\":\"rncsdtclu\",\"id\":\"ypbsfgytguslfead\",\"name\":\"ygqukyhejh\",\"type\":\"isxgfp\"}")
+            "{\"properties\":{\"vm\":{\"sourceVmId\":\"inrfdwoyu\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"DeprovisionApplied\"}},\"vhd\":{\"imageName\":\"zbhd\",\"sysPrep\":false,\"osType\":\"None\"},\"description\":\"zqhof\",\"author\":\"maequiahxicslfa\",\"creationDate\":\"2021-11-28T10:16:40Z\",\"managedImageId\":\"iyylhalnswhccsp\",\"managedSnapshotId\":\"aivwitqscywu\",\"dataDiskStorageInfo\":[{\"lun\":\"luhczbw\",\"storageType\":\"Premium\"},{\"lun\":\"i\",\"storageType\":\"Standard\"},{\"lun\":\"gzd\",\"storageType\":\"StandardSSD\"},{\"lun\":\"eypqwdxggicccn\",\"storageType\":\"Standard\"}],\"customImagePlan\":{\"id\":\"xmkttl\",\"publisher\":\"vlz\",\"offer\":\"emhzrncsdtc\"},\"isPlanAuthorized\":false,\"provisioningState\":\"ypbsfgytguslfead\",\"uniqueIdentifier\":\"gq\"},\"tags\":{\"fpel\":\"hejhzisx\",\"ujzra\":\"lppvksrpq\",\"bhshfwpracstwity\":\"htwdwrftswibyrcd\"},\"location\":\"evxccedcp\",\"id\":\"dyodnwzxltj\",\"name\":\"vnhltiugcx\",\"type\":\"avvwxqi\"}")
             .toObject(CustomImageInner.class);
-        Assertions.assertEquals("vlz", model.tags().get("wem"));
-        Assertions.assertEquals("rncsdtclu", model.location());
-        Assertions.assertEquals("gmhrskdsnfdsdoak", model.vm().sourceVmId());
-        Assertions.assertEquals(WindowsOsState.SYSPREP_REQUESTED, model.vm().windowsOsInfo().windowsOsState());
-        Assertions.assertEquals(LinuxOsState.NON_DEPROVISIONED, model.vm().linuxOsInfo().linuxOsState());
-        Assertions.assertEquals("vdlhewpusdsttwv", model.vhd().imageName());
-        Assertions.assertTrue(model.vhd().sysPrep());
+        Assertions.assertEquals("hejhzisx", model.tags().get("fpel"));
+        Assertions.assertEquals("evxccedcp", model.location());
+        Assertions.assertEquals("inrfdwoyu", model.vm().sourceVmId());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED, model.vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_APPLIED, model.vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals("zbhd", model.vhd().imageName());
+        Assertions.assertFalse(model.vhd().sysPrep());
         Assertions.assertEquals(CustomImageOsType.NONE, model.vhd().osType());
-        Assertions.assertEquals("ejdcngqqmoakuf", model.description());
-        Assertions.assertEquals("jzrwrdgrtw", model.author());
-        Assertions.assertEquals("uzkopbminrfd", model.managedImageId());
-        Assertions.assertEquals("yuhhziu", model.managedSnapshotId());
-        Assertions.assertEquals("zbhd", model.dataDiskStorageInfo().get(0).lun());
-        Assertions.assertEquals(StorageType.STANDARD, model.dataDiskStorageInfo().get(0).storageType());
-        Assertions.assertEquals("aivwitqscywu", model.customImagePlan().id());
-        Assertions.assertEquals("woluhczbwemhair", model.customImagePlan().publisher());
-        Assertions.assertEquals("rgzdwmsweyp", model.customImagePlan().offer());
-        Assertions.assertTrue(model.isPlanAuthorized());
+        Assertions.assertEquals("zqhof", model.description());
+        Assertions.assertEquals("maequiahxicslfa", model.author());
+        Assertions.assertEquals("iyylhalnswhccsp", model.managedImageId());
+        Assertions.assertEquals("aivwitqscywu", model.managedSnapshotId());
+        Assertions.assertEquals("luhczbw", model.dataDiskStorageInfo().get(0).lun());
+        Assertions.assertEquals(StorageType.PREMIUM, model.dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals("xmkttl", model.customImagePlan().id());
+        Assertions.assertEquals("vlz", model.customImagePlan().publisher());
+        Assertions.assertEquals("emhzrncsdtc", model.customImagePlan().offer());
+        Assertions.assertFalse(model.isPlanAuthorized());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomImageInner model = new CustomImageInner().withTags(mapOf("wem", "vlz"))
-            .withLocation("rncsdtclu")
-            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("gmhrskdsnfdsdoak")
-                .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_REQUESTED))
-                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.NON_DEPROVISIONED)))
-            .withVhd(new CustomImagePropertiesCustom().withImageName("vdlhewpusdsttwv")
-                .withSysPrep(true)
+        CustomImageInner model = new CustomImageInner()
+            .withTags(mapOf("fpel", "hejhzisx", "ujzra", "lppvksrpq", "bhshfwpracstwity", "htwdwrftswibyrcd"))
+            .withLocation("evxccedcp")
+            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("inrfdwoyu")
+                .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
+                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
+            .withVhd(new CustomImagePropertiesCustom().withImageName("zbhd")
+                .withSysPrep(false)
                 .withOsType(CustomImageOsType.NONE))
-            .withDescription("ejdcngqqmoakuf")
-            .withAuthor("jzrwrdgrtw")
-            .withManagedImageId("uzkopbminrfd")
-            .withManagedSnapshotId("yuhhziu")
+            .withDescription("zqhof")
+            .withAuthor("maequiahxicslfa")
+            .withManagedImageId("iyylhalnswhccsp")
+            .withManagedSnapshotId("aivwitqscywu")
             .withDataDiskStorageInfo(
-                Arrays.asList(new DataDiskStorageTypeInfo().withLun("zbhd").withStorageType(StorageType.STANDARD),
-                    new DataDiskStorageTypeInfo().withLun("mzqhoftrmaequi").withStorageType(StorageType.PREMIUM),
-                    new DataDiskStorageTypeInfo().withLun("cslfaoqzpiyylha").withStorageType(StorageType.PREMIUM),
-                    new DataDiskStorageTypeInfo().withLun("hc").withStorageType(StorageType.STANDARD)))
-            .withCustomImagePlan(new CustomImagePropertiesFromPlan().withId("aivwitqscywu")
-                .withPublisher("woluhczbwemhair")
-                .withOffer("rgzdwmsweyp"))
-            .withIsPlanAuthorized(true);
+                Arrays.asList(new DataDiskStorageTypeInfo().withLun("luhczbw").withStorageType(StorageType.PREMIUM),
+                    new DataDiskStorageTypeInfo().withLun("i").withStorageType(StorageType.STANDARD),
+                    new DataDiskStorageTypeInfo().withLun("gzd").withStorageType(StorageType.STANDARD_SSD),
+                    new DataDiskStorageTypeInfo().withLun("eypqwdxggicccn").withStorageType(StorageType.STANDARD)))
+            .withCustomImagePlan(
+                new CustomImagePropertiesFromPlan().withId("xmkttl").withPublisher("vlz").withOffer("emhzrncsdtc"))
+            .withIsPlanAuthorized(false);
         model = BinaryData.fromObject(model).toObject(CustomImageInner.class);
-        Assertions.assertEquals("vlz", model.tags().get("wem"));
-        Assertions.assertEquals("rncsdtclu", model.location());
-        Assertions.assertEquals("gmhrskdsnfdsdoak", model.vm().sourceVmId());
-        Assertions.assertEquals(WindowsOsState.SYSPREP_REQUESTED, model.vm().windowsOsInfo().windowsOsState());
-        Assertions.assertEquals(LinuxOsState.NON_DEPROVISIONED, model.vm().linuxOsInfo().linuxOsState());
-        Assertions.assertEquals("vdlhewpusdsttwv", model.vhd().imageName());
-        Assertions.assertTrue(model.vhd().sysPrep());
+        Assertions.assertEquals("hejhzisx", model.tags().get("fpel"));
+        Assertions.assertEquals("evxccedcp", model.location());
+        Assertions.assertEquals("inrfdwoyu", model.vm().sourceVmId());
+        Assertions.assertEquals(WindowsOsState.SYSPREP_APPLIED, model.vm().windowsOsInfo().windowsOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_APPLIED, model.vm().linuxOsInfo().linuxOsState());
+        Assertions.assertEquals("zbhd", model.vhd().imageName());
+        Assertions.assertFalse(model.vhd().sysPrep());
         Assertions.assertEquals(CustomImageOsType.NONE, model.vhd().osType());
-        Assertions.assertEquals("ejdcngqqmoakuf", model.description());
-        Assertions.assertEquals("jzrwrdgrtw", model.author());
-        Assertions.assertEquals("uzkopbminrfd", model.managedImageId());
-        Assertions.assertEquals("yuhhziu", model.managedSnapshotId());
-        Assertions.assertEquals("zbhd", model.dataDiskStorageInfo().get(0).lun());
-        Assertions.assertEquals(StorageType.STANDARD, model.dataDiskStorageInfo().get(0).storageType());
-        Assertions.assertEquals("aivwitqscywu", model.customImagePlan().id());
-        Assertions.assertEquals("woluhczbwemhair", model.customImagePlan().publisher());
-        Assertions.assertEquals("rgzdwmsweyp", model.customImagePlan().offer());
-        Assertions.assertTrue(model.isPlanAuthorized());
+        Assertions.assertEquals("zqhof", model.description());
+        Assertions.assertEquals("maequiahxicslfa", model.author());
+        Assertions.assertEquals("iyylhalnswhccsp", model.managedImageId());
+        Assertions.assertEquals("aivwitqscywu", model.managedSnapshotId());
+        Assertions.assertEquals("luhczbw", model.dataDiskStorageInfo().get(0).lun());
+        Assertions.assertEquals(StorageType.PREMIUM, model.dataDiskStorageInfo().get(0).storageType());
+        Assertions.assertEquals("xmkttl", model.customImagePlan().id());
+        Assertions.assertEquals("vlz", model.customImagePlan().publisher());
+        Assertions.assertEquals("emhzrncsdtc", model.customImagePlan().offer());
+        Assertions.assertFalse(model.isPlanAuthorized());
     }
 
     // Use "Map.of" if available

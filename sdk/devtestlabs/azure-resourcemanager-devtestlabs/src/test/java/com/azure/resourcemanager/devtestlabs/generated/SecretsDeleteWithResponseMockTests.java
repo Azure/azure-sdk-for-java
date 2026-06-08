@@ -27,7 +27,7 @@ public final class SecretsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.secrets().deleteWithResponse("uweyyjshcyb", "fuppoxprc", "vo", "ujx", com.azure.core.util.Context.NONE);
+        manager.secrets().deleteWithResponse("yctajqz", "vale", "xb", "biwksde", com.azure.core.util.Context.NONE);
 
     }
 }

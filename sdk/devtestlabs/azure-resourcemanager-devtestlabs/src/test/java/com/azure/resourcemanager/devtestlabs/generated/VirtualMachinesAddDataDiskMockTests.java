@@ -32,12 +32,12 @@ public final class VirtualMachinesAddDataDiskMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.virtualMachines()
-            .addDataDisk("ecuyr", "wimbzayspzvr", "etv",
+            .addDataDisk("kuckgkdskswtiiq", "cqikclsm", "lnssw",
                 new DataDiskProperties()
-                    .withAttachNewDataDiskOptions(new AttachNewDataDiskOptions().withDiskSizeGiB(1128260811)
-                        .withDiskName("zxplgtpvdvatlz")
-                        .withDiskType(StorageType.STANDARD_SSD))
-                    .withExistingLabDiskId("hnzrsbkkzovlzdm")
+                    .withAttachNewDataDiskOptions(new AttachNewDataDiskOptions().withDiskSizeGiB(805108821)
+                        .withDiskName("onaaxwmgzrujlqc")
+                        .withDiskType(StorageType.PREMIUM))
+                    .withExistingLabDiskId("lleiq")
                     .withHostCaching(HostCachingOptions.READ_ONLY),
                 com.azure.core.util.Context.NONE);
 

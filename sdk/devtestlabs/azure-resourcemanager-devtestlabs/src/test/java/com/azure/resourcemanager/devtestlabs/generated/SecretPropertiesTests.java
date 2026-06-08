@@ -12,15 +12,16 @@ public final class SecretPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecretProperties model = BinaryData
-            .fromString("{\"value\":\"awbzasqb\",\"provisioningState\":\"ljgkyex\",\"uniqueIdentifier\":\"guyaip\"}")
+            .fromString(
+                "{\"value\":\"tuodxeszabbelaw\",\"provisioningState\":\"ua\",\"uniqueIdentifier\":\"zkwrrwoyc\"}")
             .toObject(SecretProperties.class);
-        Assertions.assertEquals("awbzasqb", model.value());
+        Assertions.assertEquals("tuodxeszabbelaw", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretProperties model = new SecretProperties().withValue("awbzasqb");
+        SecretProperties model = new SecretProperties().withValue("tuodxeszabbelaw");
         model = BinaryData.fromObject(model).toObject(SecretProperties.class);
-        Assertions.assertEquals("awbzasqb", model.value());
+        Assertions.assertEquals("tuodxeszabbelaw", model.value());
     }
 }

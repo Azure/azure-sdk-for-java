@@ -13,15 +13,16 @@ public final class NotificationChannelListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotificationChannelList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"webHookUrl\":\"crxgibb\",\"emailRecipient\":\"xconfozauors\",\"notificationLocale\":\"okwbqplh\",\"description\":\"nuuepzlrp\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-11-17T09:31:02Z\",\"provisioningState\":\"uqdunvmnnrwrbi\",\"uniqueIdentifier\":\"ktalywjhhgdnhxms\"},\"tags\":{\"ox\":\"omi\",\"euzaof\":\"gdufiqnd\",\"cubiipuipw\":\"chvcyyysfgdo\"},\"location\":\"onmacjekniz\",\"id\":\"qvci\",\"name\":\"pevf\",\"type\":\"mblrrilbywd\"},{\"properties\":{\"webHookUrl\":\"miccwrwfscjfnyn\",\"emailRecipient\":\"qujizdvo\",\"notificationLocale\":\"tiby\",\"description\":\"bblgyavut\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-05-07T08:43:18Z\",\"provisioningState\":\"sks\",\"uniqueIdentifier\":\"iml\"},\"tags\":{\"cvizqzdwlvw\":\"jxkcgxxlxsff\",\"bdyhgkfminsgowz\":\"youpfgfbkj\",\"tgzukxitmmqt\":\"ttsttktlahbqact\"},\"location\":\"qqxhrnxrxcpj\",\"id\":\"savokqdzf\",\"name\":\"azivjlfrqttbajl\",\"type\":\"atnwxyiopi\"},{\"properties\":{\"webHookUrl\":\"qqfkuv\",\"emailRecipient\":\"xkdmligo\",\"notificationLocale\":\"brxk\",\"description\":\"loazuruocbgoo\",\"events\":[{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-05-01T19:42:34Z\",\"provisioningState\":\"hjxa\",\"uniqueIdentifier\":\"vjgsl\"},\"tags\":{\"yw\":\"il\",\"gkxnyedabg\":\"t\"},\"location\":\"udtjuewbc\",\"id\":\"xuuwhcj\",\"name\":\"xccybvpa\",\"type\":\"akkud\"},{\"properties\":{\"webHookUrl\":\"xgwjplmagstcyoh\",\"emailRecipient\":\"kyrk\",\"notificationLocale\":\"dg\",\"description\":\"gsj\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-03-24T15:34:10Z\",\"provisioningState\":\"iyhddvi\",\"uniqueIdentifier\":\"egfnmntfpmvmemfn\"},\"tags\":{\"lxlllchpo\":\"wvvb\",\"hfuk\":\"bzevwrd\"},\"location\":\"sjcswsmystuluqyp\",\"id\":\"vlerchpqbmfpjba\",\"name\":\"widf\",\"type\":\"xsspuunnoxyhk\"}],\"nextLink\":\"qddrihpfhoqcaae\"}")
+            "{\"value\":[{\"properties\":{\"webHookUrl\":\"b\",\"emailRecipient\":\"rilbywdx\",\"notificationLocale\":\"icc\",\"description\":\"wfscjfn\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-01-17T07:53:09Z\",\"provisioningState\":\"qytibyowbblgyavu\",\"uniqueIdentifier\":\"thjoxoism\"},\"tags\":{\"sffgcvizqzd\":\"bpimlqoljxkcgxxl\",\"w\":\"l\"},\"location\":\"oupfgfb\",\"id\":\"ubdyhgk\",\"name\":\"minsgowzf\",\"type\":\"tsttktlahbq\"},{\"properties\":{\"webHookUrl\":\"tx\",\"emailRecipient\":\"zukxitmmqtgqq\",\"notificationLocale\":\"hrnxrxc\",\"description\":\"uisavokq\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-03-08T11:11:41Z\",\"provisioningState\":\"tbajlkatn\",\"uniqueIdentifier\":\"yiopi\"},\"tags\":{\"ovibrxkp\":\"qfkuvscxkdmli\",\"bteoybf\":\"loazuruocbgoo\"},\"location\":\"xakvvjgslor\",\"id\":\"lmywwtkgkxnyed\",\"name\":\"b\",\"type\":\"yvudtjuewbci\"}],\"nextLink\":\"uuwhcjyxcc\"}")
             .toObject(NotificationChannelList.class);
-        Assertions.assertEquals("omi", model.value().get(0).tags().get("ox"));
-        Assertions.assertEquals("onmacjekniz", model.value().get(0).location());
-        Assertions.assertEquals("crxgibb", model.value().get(0).webhookUrl());
-        Assertions.assertEquals("xconfozauors", model.value().get(0).emailRecipient());
-        Assertions.assertEquals("okwbqplh", model.value().get(0).notificationLocale());
-        Assertions.assertEquals("nuuepzlrp", model.value().get(0).description());
-        Assertions.assertEquals(NotificationChannelEventType.COST, model.value().get(0).events().get(0).eventName());
-        Assertions.assertEquals("qddrihpfhoqcaae", model.nextLink());
+        Assertions.assertEquals("bpimlqoljxkcgxxl", model.value().get(0).tags().get("sffgcvizqzd"));
+        Assertions.assertEquals("oupfgfb", model.value().get(0).location());
+        Assertions.assertEquals("b", model.value().get(0).webhookUrl());
+        Assertions.assertEquals("rilbywdx", model.value().get(0).emailRecipient());
+        Assertions.assertEquals("icc", model.value().get(0).notificationLocale());
+        Assertions.assertEquals("wfscjfn", model.value().get(0).description());
+        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN,
+            model.value().get(0).events().get(0).eventName());
+        Assertions.assertEquals("uuwhcjyxcc", model.nextLink());
     }
 }

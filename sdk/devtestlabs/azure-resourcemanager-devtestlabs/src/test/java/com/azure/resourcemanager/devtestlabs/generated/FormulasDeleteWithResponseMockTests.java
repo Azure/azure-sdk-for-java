@@ -28,7 +28,7 @@ public final class FormulasDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.formulas()
-            .deleteWithResponse("srtmdylperpiltt", "zgczfcmfpfbode", "resrgvtshuvft", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("mtmesrfsv", "inkzpa", "qtdiswxspvckoj", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -15,44 +15,45 @@ public final class DiskInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskInner model = BinaryData.fromString(
-            "{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":537154841,\"leasedByLabVmId\":\"bpfgzdj\",\"diskBlobName\":\"vzflbq\",\"diskUri\":\"aqvlgafcqusr\",\"storageAccountId\":\"etnwsdtutnw\",\"createdDate\":\"2021-07-12T02:33:43Z\",\"hostCaching\":\"cvuzhyrmewipmve\",\"managedDiskId\":\"xukuqgsj\",\"provisioningState\":\"undxgketw\",\"uniqueIdentifier\":\"hzjhf\"},\"tags\":{\"gpmuneqsxvmhfbuz\":\"vvmu\",\"ms\":\"yihsasbhudypohyu\",\"ttymsjny\":\"ynsqyrpfoobr\"},\"location\":\"dnfwqzdzg\",\"id\":\"la\",\"name\":\"hnfhqlyvijouwi\",\"type\":\"kxoyzunbixxr\"}")
+            "{\"properties\":{\"diskType\":\"Standard\",\"diskSizeGiB\":2000086586,\"leasedByLabVmId\":\"pfajnjwltlwtjj\",\"diskBlobName\":\"ktalhsnvkcdmxz\",\"diskUri\":\"oaimlnw\",\"storageAccountId\":\"aomylwea\",\"createdDate\":\"2021-12-02T19:30Z\",\"hostCaching\":\"sethwwn\",\"managedDiskId\":\"hlf\",\"provisioningState\":\"wpchwahf\",\"uniqueIdentifier\":\"usnfepgfewet\"},\"tags\":{\"hdjhlimmbcx\":\"xgncxyk\",\"cporxvxcjz\":\"h\",\"juhdqazkmtgguwpi\":\"qizxfpxtgqscjavf\",\"jcivmmg\":\"r\"},\"location\":\"cf\",\"id\":\"rxgkne\",\"name\":\"vyi\",\"type\":\"zqodfvpgshox\"}")
             .toObject(DiskInner.class);
-        Assertions.assertEquals("vvmu", model.tags().get("gpmuneqsxvmhfbuz"));
-        Assertions.assertEquals("dnfwqzdzg", model.location());
-        Assertions.assertEquals(StorageType.PREMIUM, model.diskType());
-        Assertions.assertEquals(537154841, model.diskSizeGiB());
-        Assertions.assertEquals("bpfgzdj", model.leasedByLabVmId());
-        Assertions.assertEquals("vzflbq", model.diskBlobName());
-        Assertions.assertEquals("aqvlgafcqusr", model.diskUri());
-        Assertions.assertEquals("etnwsdtutnw", model.storageAccountId());
-        Assertions.assertEquals("cvuzhyrmewipmve", model.hostCaching());
-        Assertions.assertEquals("xukuqgsj", model.managedDiskId());
+        Assertions.assertEquals("xgncxyk", model.tags().get("hdjhlimmbcx"));
+        Assertions.assertEquals("cf", model.location());
+        Assertions.assertEquals(StorageType.STANDARD, model.diskType());
+        Assertions.assertEquals(2000086586, model.diskSizeGiB());
+        Assertions.assertEquals("pfajnjwltlwtjj", model.leasedByLabVmId());
+        Assertions.assertEquals("ktalhsnvkcdmxz", model.diskBlobName());
+        Assertions.assertEquals("oaimlnw", model.diskUri());
+        Assertions.assertEquals("aomylwea", model.storageAccountId());
+        Assertions.assertEquals("sethwwn", model.hostCaching());
+        Assertions.assertEquals("hlf", model.managedDiskId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiskInner model = new DiskInner()
-            .withTags(mapOf("gpmuneqsxvmhfbuz", "vvmu", "ms", "yihsasbhudypohyu", "ttymsjny", "ynsqyrpfoobr"))
-            .withLocation("dnfwqzdzg")
-            .withDiskType(StorageType.PREMIUM)
-            .withDiskSizeGiB(537154841)
-            .withLeasedByLabVmId("bpfgzdj")
-            .withDiskBlobName("vzflbq")
-            .withDiskUri("aqvlgafcqusr")
-            .withStorageAccountId("etnwsdtutnw")
-            .withHostCaching("cvuzhyrmewipmve")
-            .withManagedDiskId("xukuqgsj");
+            .withTags(mapOf("hdjhlimmbcx", "xgncxyk", "cporxvxcjz", "h", "juhdqazkmtgguwpi", "qizxfpxtgqscjavf",
+                "jcivmmg", "r"))
+            .withLocation("cf")
+            .withDiskType(StorageType.STANDARD)
+            .withDiskSizeGiB(2000086586)
+            .withLeasedByLabVmId("pfajnjwltlwtjj")
+            .withDiskBlobName("ktalhsnvkcdmxz")
+            .withDiskUri("oaimlnw")
+            .withStorageAccountId("aomylwea")
+            .withHostCaching("sethwwn")
+            .withManagedDiskId("hlf");
         model = BinaryData.fromObject(model).toObject(DiskInner.class);
-        Assertions.assertEquals("vvmu", model.tags().get("gpmuneqsxvmhfbuz"));
-        Assertions.assertEquals("dnfwqzdzg", model.location());
-        Assertions.assertEquals(StorageType.PREMIUM, model.diskType());
-        Assertions.assertEquals(537154841, model.diskSizeGiB());
-        Assertions.assertEquals("bpfgzdj", model.leasedByLabVmId());
-        Assertions.assertEquals("vzflbq", model.diskBlobName());
-        Assertions.assertEquals("aqvlgafcqusr", model.diskUri());
-        Assertions.assertEquals("etnwsdtutnw", model.storageAccountId());
-        Assertions.assertEquals("cvuzhyrmewipmve", model.hostCaching());
-        Assertions.assertEquals("xukuqgsj", model.managedDiskId());
+        Assertions.assertEquals("xgncxyk", model.tags().get("hdjhlimmbcx"));
+        Assertions.assertEquals("cf", model.location());
+        Assertions.assertEquals(StorageType.STANDARD, model.diskType());
+        Assertions.assertEquals(2000086586, model.diskSizeGiB());
+        Assertions.assertEquals("pfajnjwltlwtjj", model.leasedByLabVmId());
+        Assertions.assertEquals("ktalhsnvkcdmxz", model.diskBlobName());
+        Assertions.assertEquals("oaimlnw", model.diskUri());
+        Assertions.assertEquals("aomylwea", model.storageAccountId());
+        Assertions.assertEquals("sethwwn", model.hostCaching());
+        Assertions.assertEquals("hlf", model.managedDiskId());
     }
 
     // Use "Map.of" if available

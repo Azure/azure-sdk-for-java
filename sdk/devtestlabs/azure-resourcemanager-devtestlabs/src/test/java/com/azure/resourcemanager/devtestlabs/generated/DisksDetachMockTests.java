@@ -29,8 +29,8 @@ public final class DisksDetachMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.disks()
-            .detach("hzkbnbmx", "xmwtygeqzu", "itoqcahfsg", "jmlreesrfwsszvlc",
-                new DetachDiskProperties().withLeasedByLabVmId("isolntfxxcrqmip"), com.azure.core.util.Context.NONE);
+            .detach("odvqgcnbhcbmj", "ztibniyntsxjmfm", "ftvhkmoogj", "hskb",
+                new DetachDiskProperties().withLeasedByLabVmId("mjgrulcfog"), com.azure.core.util.Context.NONE);
 
     }
 }

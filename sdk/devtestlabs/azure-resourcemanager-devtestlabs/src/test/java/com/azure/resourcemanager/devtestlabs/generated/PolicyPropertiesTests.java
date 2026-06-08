@@ -15,30 +15,30 @@ public final class PolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyProperties model = BinaryData.fromString(
-            "{\"description\":\"kambtrnegvmnvuqe\",\"status\":\"Enabled\",\"factName\":\"GalleryImage\",\"factData\":\"astjbkkdmflvestm\",\"threshold\":\"xrrilozapee\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-06-18T15:44:53Z\",\"provisioningState\":\"ktwkuziyc\",\"uniqueIdentifier\":\"evufuztck\"}")
+            "{\"description\":\"y\",\"status\":\"Disabled\",\"factName\":\"LabVmCount\",\"factData\":\"qxepnylbfuaj\",\"threshold\":\"jtlvofqzhvfciby\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-06-03T02:39:16Z\",\"provisioningState\":\"rkjpvdwxfzwii\",\"uniqueIdentifier\":\"zjb\"}")
             .toObject(PolicyProperties.class);
-        Assertions.assertEquals("kambtrnegvmnvuqe", model.description());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
-        Assertions.assertEquals(PolicyFactName.GALLERY_IMAGE, model.factName());
-        Assertions.assertEquals("astjbkkdmflvestm", model.factData());
-        Assertions.assertEquals("xrrilozapee", model.threshold());
+        Assertions.assertEquals("y", model.description());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
+        Assertions.assertEquals(PolicyFactName.LAB_VM_COUNT, model.factName());
+        Assertions.assertEquals("qxepnylbfuaj", model.factData());
+        Assertions.assertEquals("jtlvofqzhvfciby", model.threshold());
         Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.evaluatorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyProperties model = new PolicyProperties().withDescription("kambtrnegvmnvuqe")
-            .withStatus(PolicyStatus.ENABLED)
-            .withFactName(PolicyFactName.GALLERY_IMAGE)
-            .withFactData("astjbkkdmflvestm")
-            .withThreshold("xrrilozapee")
+        PolicyProperties model = new PolicyProperties().withDescription("y")
+            .withStatus(PolicyStatus.DISABLED)
+            .withFactName(PolicyFactName.LAB_VM_COUNT)
+            .withFactData("qxepnylbfuaj")
+            .withThreshold("jtlvofqzhvfciby")
             .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY);
         model = BinaryData.fromObject(model).toObject(PolicyProperties.class);
-        Assertions.assertEquals("kambtrnegvmnvuqe", model.description());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
-        Assertions.assertEquals(PolicyFactName.GALLERY_IMAGE, model.factName());
-        Assertions.assertEquals("astjbkkdmflvestm", model.factData());
-        Assertions.assertEquals("xrrilozapee", model.threshold());
+        Assertions.assertEquals("y", model.description());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
+        Assertions.assertEquals(PolicyFactName.LAB_VM_COUNT, model.factName());
+        Assertions.assertEquals("qxepnylbfuaj", model.factData());
+        Assertions.assertEquals("jtlvofqzhvfciby", model.threshold());
         Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.evaluatorType());
     }
 }

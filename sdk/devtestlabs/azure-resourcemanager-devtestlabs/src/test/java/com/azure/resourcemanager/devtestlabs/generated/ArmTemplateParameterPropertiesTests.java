@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmTemplateParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmTemplateParameterProperties model = BinaryData.fromString("{\"name\":\"z\",\"value\":\"sccbiuimzd\"}")
+        ArmTemplateParameterProperties model = BinaryData.fromString("{\"name\":\"jddtvqct\",\"value\":\"dija\"}")
             .toObject(ArmTemplateParameterProperties.class);
-        Assertions.assertEquals("z", model.name());
-        Assertions.assertEquals("sccbiuimzd", model.value());
+        Assertions.assertEquals("jddtvqct", model.name());
+        Assertions.assertEquals("dija", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArmTemplateParameterProperties model
-            = new ArmTemplateParameterProperties().withName("z").withValue("sccbiuimzd");
+            = new ArmTemplateParameterProperties().withName("jddtvqct").withValue("dija");
         model = BinaryData.fromObject(model).toObject(ArmTemplateParameterProperties.class);
-        Assertions.assertEquals("z", model.name());
-        Assertions.assertEquals("sccbiuimzd", model.value());
+        Assertions.assertEquals("jddtvqct", model.name());
+        Assertions.assertEquals("dija", model.value());
     }
 }

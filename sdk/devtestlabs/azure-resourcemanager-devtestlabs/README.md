@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-devtestlabs</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -73,8 +73,8 @@ See [API design][design] for general introduction on design and key concepts on 
 ```java
 lab = devTestLabsManager.labs()
     .define(labName)
-    .withRegion(REGION)
     .withExistingResourceGroup(resourceGroupName)
+    .withRegion(REGION)
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/devtestlabs/azure-resourcemanager-devtestlabs/SAMPLE.md)

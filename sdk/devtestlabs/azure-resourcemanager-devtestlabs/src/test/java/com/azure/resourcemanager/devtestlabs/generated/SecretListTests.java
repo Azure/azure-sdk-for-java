@@ -12,11 +12,11 @@ public final class SecretListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecretList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"yxynq\",\"provisioningState\":\"rd\",\"uniqueIdentifier\":\"ovw\"},\"tags\":{\"hv\":\"ptgoeiybbabp\",\"igjkskyrio\":\"slkvntjl\",\"mifrygznmma\":\"vzidsxwaab\"},\"location\":\"izkzobgo\",\"id\":\"lhslnelxieixyn\",\"name\":\"lxecwcrojphslh\",\"type\":\"awjutifd\"},{\"properties\":{\"value\":\"mvi\",\"provisioningState\":\"rqjb\",\"uniqueIdentifier\":\"zhraglkafh\"},\"tags\":{\"ickpz\":\"juj\",\"wcltyjede\":\"cpopmxel\",\"f\":\"xm\",\"uamwabzxrvxc\":\"kqscazuawxtzx\"},\"location\":\"hsphaivmxyas\",\"id\":\"vgsgzwywakoihkn\",\"name\":\"mjblmljhlny\",\"type\":\"zotqyryuzcb\"}],\"nextLink\":\"qvx\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"pgepqtybbwwpgda\",\"provisioningState\":\"hzyvlixqnrkcx\",\"uniqueIdentifier\":\"ibn\"},\"tags\":{\"ttexoqqpwcyyufmh\":\"suxswqrntvlwijp\"},\"location\":\"nc\",\"id\":\"mqspkcdqzhlctdd\",\"name\":\"nqndyfpchrqbn\",\"type\":\"jrcg\"},{\"properties\":{\"value\":\"ydcwboxjumv\",\"provisioningState\":\"olihrra\",\"uniqueIdentifier\":\"uaubrj\"},\"tags\":{\"rzpasccbiuimzdly\":\"qxfuojrngif\"},\"location\":\"fqwmkyoquf\",\"id\":\"ruzslzoj\",\"name\":\"pctf\",\"type\":\"mdxotngfdgu\"}],\"nextLink\":\"yzihgrkyuizabsn\"}")
             .toObject(SecretList.class);
-        Assertions.assertEquals("ptgoeiybbabp", model.value().get(0).tags().get("hv"));
-        Assertions.assertEquals("izkzobgo", model.value().get(0).location());
-        Assertions.assertEquals("yxynq", model.value().get(0).value());
-        Assertions.assertEquals("qvx", model.nextLink());
+        Assertions.assertEquals("suxswqrntvlwijp", model.value().get(0).tags().get("ttexoqqpwcyyufmh"));
+        Assertions.assertEquals("nc", model.value().get(0).location());
+        Assertions.assertEquals("pgepqtybbwwpgda", model.value().get(0).value());
+        Assertions.assertEquals("yzihgrkyuizabsn", model.nextLink());
     }
 }

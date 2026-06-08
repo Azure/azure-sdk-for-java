@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SecretFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecretFragment model = BinaryData
-            .fromString(
-                "{\"tags\":{\"azlnqnmcjngzqdqx\":\"daultxijjumfq\",\"zsvtuikzhajqgl\":\"bjwgnyfus\",\"l\":\"fh\"}}")
-            .toObject(SecretFragment.class);
-        Assertions.assertEquals("daultxijjumfq", model.tags().get("azlnqnmcjngzqdqx"));
+        SecretFragment model
+            = BinaryData.fromString("{\"tags\":{\"hnomdrkywuh\":\"wyh\",\"lniexz\":\"svfuurutlwexxwl\"}}")
+                .toObject(SecretFragment.class);
+        Assertions.assertEquals("wyh", model.tags().get("hnomdrkywuh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretFragment model = new SecretFragment()
-            .withTags(mapOf("azlnqnmcjngzqdqx", "daultxijjumfq", "zsvtuikzhajqgl", "bjwgnyfus", "l", "fh"));
+        SecretFragment model = new SecretFragment().withTags(mapOf("hnomdrkywuh", "wyh", "lniexz", "svfuurutlwexxwl"));
         model = BinaryData.fromObject(model).toObject(SecretFragment.class);
-        Assertions.assertEquals("daultxijjumfq", model.tags().get("azlnqnmcjngzqdqx"));
+        Assertions.assertEquals("wyh", model.tags().get("hnomdrkywuh"));
     }
 
     // Use "Map.of" if available

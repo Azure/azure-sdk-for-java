@@ -14,17 +14,17 @@ public final class UserFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserFragment model = BinaryData
-            .fromString("{\"tags\":{\"cxfhbcporxv\":\"djhlimm\",\"xfpxtgqscja\":\"cjzhqi\",\"qaz\":\"ftjuh\"}}")
+            .fromString("{\"tags\":{\"e\":\"o\",\"rqnkkzjcjbtr\":\"joxslhvnhla\",\"eitpkxztmo\":\"aehvvibrxjjstoq\"}}")
             .toObject(UserFragment.class);
-        Assertions.assertEquals("djhlimm", model.tags().get("cxfhbcporxv"));
+        Assertions.assertEquals("o", model.tags().get("e"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserFragment model
-            = new UserFragment().withTags(mapOf("cxfhbcporxv", "djhlimm", "xfpxtgqscja", "cjzhqi", "qaz", "ftjuh"));
+        UserFragment model = new UserFragment()
+            .withTags(mapOf("e", "o", "rqnkkzjcjbtr", "joxslhvnhla", "eitpkxztmo", "aehvvibrxjjstoq"));
         model = BinaryData.fromObject(model).toObject(UserFragment.class);
-        Assertions.assertEquals("djhlimm", model.tags().get("cxfhbcporxv"));
+        Assertions.assertEquals("o", model.tags().get("e"));
     }
 
     // Use "Map.of" if available

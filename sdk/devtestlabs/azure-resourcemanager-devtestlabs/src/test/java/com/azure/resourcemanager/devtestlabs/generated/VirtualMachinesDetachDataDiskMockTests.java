@@ -29,8 +29,8 @@ public final class VirtualMachinesDetachDataDiskMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.virtualMachines()
-            .detachDataDisk("pxmib", "lnupoyryefqmw", "vyztxlno",
-                new DetachDataDiskProperties().withExistingLabDiskId("pbjceegvy"), com.azure.core.util.Context.NONE);
+            .detachDataDisk("ujcyohigimwdc", "klkqnqvkixnmb", "mecuyrzwim",
+                new DetachDataDiskProperties().withExistingLabDiskId("ayspzvriet"), com.azure.core.util.Context.NONE);
 
     }
 }

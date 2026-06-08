@@ -26,7 +26,7 @@ public final class NotificationChannelsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"webHookUrl\":\"rnzpducdaak\",\"emailRecipient\":\"jktzboimyfpq\",\"notificationLocale\":\"wkppnwyytfvp\",\"description\":\"fjikffffgkuhznw\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-02-27T00:32:44Z\",\"provisioningState\":\"jkjigawgaz\",\"uniqueIdentifier\":\"jqifhujjsbcml\"},\"tags\":{\"roolkolir\":\"hzbh\"},\"location\":\"mojusuz\",\"id\":\"jzc\",\"name\":\"aaxoialahfxwcc\",\"type\":\"kdxkuk\"}";
+            = "{\"properties\":{\"webHookUrl\":\"lsycoyb\",\"emailRecipient\":\"a\",\"notificationLocale\":\"ubfajc\",\"description\":\"hjqwmchqoh\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-11-23T12:25:12Z\",\"provisioningState\":\"ymjzpwdlvwtiws\",\"uniqueIdentifier\":\"sa\"},\"tags\":{\"kewnazeajbkajl\":\"qnamppultassa\"},\"location\":\"izyddcvxodk\",\"id\":\"fsxxby\",\"name\":\"e\",\"type\":\"qlvge\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,23 +36,24 @@ public final class NotificationChannelsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NotificationChannel response = manager.notificationChannels()
-            .define("ajcywhjqw")
-            .withExistingLab("h", "sycoybajasqub")
-            .withRegion("xv")
-            .withTags(mapOf("dcvxodkrvfsxxby", "cyizy", "qlvge", "e", "xnmxsdobygoogxqa", "pwgoljt"))
-            .withWebhookUrl("hqohtfxcpup")
-            .withEmailRecipient("i")
-            .withNotificationLocale("j")
-            .withDescription("wdlvwtiwsmosaon")
-            .withEvents(Arrays.asList(new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)))
+            .define("apeqiscrpil")
+            .withExistingLab("mj", "xcbccwkqmt")
+            .withRegion("cefeygzqpj")
+            .withTags(mapOf("jkxpylrwoxzgwpsy", "wc", "erdkdkgawqwjxild", "jijeypdvrb"))
+            .withWebhookUrl("trqrejda")
+            .withEmailRecipient("uqimldahlfxl")
+            .withNotificationLocale("ifmuadjnfsncsk")
+            .withDescription("oshjgcze")
+            .withEvents(Arrays.asList(new Event().withEventName(NotificationChannelEventType.COST),
+                new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)))
             .create();
 
-        Assertions.assertEquals("hzbh", response.tags().get("roolkolir"));
-        Assertions.assertEquals("mojusuz", response.location());
-        Assertions.assertEquals("rnzpducdaak", response.webhookUrl());
-        Assertions.assertEquals("jktzboimyfpq", response.emailRecipient());
-        Assertions.assertEquals("wkppnwyytfvp", response.notificationLocale());
-        Assertions.assertEquals("fjikffffgkuhznw", response.description());
+        Assertions.assertEquals("qnamppultassa", response.tags().get("kewnazeajbkajl"));
+        Assertions.assertEquals("izyddcvxodk", response.location());
+        Assertions.assertEquals("lsycoyb", response.webhookUrl());
+        Assertions.assertEquals("a", response.emailRecipient());
+        Assertions.assertEquals("ubfajc", response.notificationLocale());
+        Assertions.assertEquals("hjqwmchqoh", response.description());
         Assertions.assertEquals(NotificationChannelEventType.COST, response.events().get(0).eventName());
     }
 

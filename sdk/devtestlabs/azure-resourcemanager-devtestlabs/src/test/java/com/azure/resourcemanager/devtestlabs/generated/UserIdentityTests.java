@@ -12,27 +12,27 @@ public final class UserIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserIdentity model = BinaryData.fromString(
-            "{\"principalName\":\"weazul\",\"principalId\":\"ethwwnpjhlfz\",\"tenantId\":\"pchwa\",\"objectId\":\"bousn\",\"appId\":\"pgfewetwlyx\"}")
+            "{\"principalName\":\"jaffmmfblcqcuu\",\"principalId\":\"qibrtalme\",\"tenantId\":\"t\",\"objectId\":\"dslqxihhrmooizqs\",\"appId\":\"pxiutc\"}")
             .toObject(UserIdentity.class);
-        Assertions.assertEquals("weazul", model.principalName());
-        Assertions.assertEquals("ethwwnpjhlfz", model.principalId());
-        Assertions.assertEquals("pchwa", model.tenantId());
-        Assertions.assertEquals("bousn", model.objectId());
-        Assertions.assertEquals("pgfewetwlyx", model.appId());
+        Assertions.assertEquals("jaffmmfblcqcuu", model.principalName());
+        Assertions.assertEquals("qibrtalme", model.principalId());
+        Assertions.assertEquals("t", model.tenantId());
+        Assertions.assertEquals("dslqxihhrmooizqs", model.objectId());
+        Assertions.assertEquals("pxiutc", model.appId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserIdentity model = new UserIdentity().withPrincipalName("weazul")
-            .withPrincipalId("ethwwnpjhlfz")
-            .withTenantId("pchwa")
-            .withObjectId("bousn")
-            .withAppId("pgfewetwlyx");
+        UserIdentity model = new UserIdentity().withPrincipalName("jaffmmfblcqcuu")
+            .withPrincipalId("qibrtalme")
+            .withTenantId("t")
+            .withObjectId("dslqxihhrmooizqs")
+            .withAppId("pxiutc");
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
-        Assertions.assertEquals("weazul", model.principalName());
-        Assertions.assertEquals("ethwwnpjhlfz", model.principalId());
-        Assertions.assertEquals("pchwa", model.tenantId());
-        Assertions.assertEquals("bousn", model.objectId());
-        Assertions.assertEquals("pgfewetwlyx", model.appId());
+        Assertions.assertEquals("jaffmmfblcqcuu", model.principalName());
+        Assertions.assertEquals("qibrtalme", model.principalId());
+        Assertions.assertEquals("t", model.tenantId());
+        Assertions.assertEquals("dslqxihhrmooizqs", model.objectId());
+        Assertions.assertEquals("pxiutc", model.appId());
     }
 }

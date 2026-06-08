@@ -22,7 +22,7 @@ public final class NotificationChannelsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"webHookUrl\":\"gttpufpbpgnrho\",\"emailRecipient\":\"ujbfwxiplkys\",\"notificationLocale\":\"syjprxslwhdmcvh\",\"description\":\"bzjhfvhuwzb\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-09-04T23:38:32Z\",\"provisioningState\":\"hmxvvl\",\"uniqueIdentifier\":\"skapbxwie\"},\"tags\":{\"imyc\":\"yaderltfokyks\",\"rsejegprkj\":\"grvkcxzznnuif\"},\"location\":\"wrjmwv\",\"id\":\"tu\",\"name\":\"kxxi\",\"type\":\"wgxql\"}";
+            = "{\"properties\":{\"webHookUrl\":\"nncfmaciqgjjrlhi\",\"emailRecipient\":\"wixvtbouguxtndop\",\"notificationLocale\":\"ttbas\",\"description\":\"lapdlnd\",\"events\":[{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-03-21T20:17:10Z\",\"provisioningState\":\"pb\",\"uniqueIdentifier\":\"qvzfj\"},\"tags\":{\"mphfkyezolgjzm\":\"ugzfeuzjl\"},\"location\":\"uydoccnx\",\"id\":\"anzbui\",\"name\":\"dh\",\"type\":\"atecaa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class NotificationChannelsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NotificationChannel response = manager.notificationChannels()
-            .getWithResponse("clhuulriqbyokv", "gbzsxebrslt", "fyhcdjw", "uoard", com.azure.core.util.Context.NONE)
+            .getWithResponse("bu", "utmp", "zgleofjsbg", "wwzvdaj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yaderltfokyks", response.tags().get("imyc"));
-        Assertions.assertEquals("wrjmwv", response.location());
-        Assertions.assertEquals("gttpufpbpgnrho", response.webhookUrl());
-        Assertions.assertEquals("ujbfwxiplkys", response.emailRecipient());
-        Assertions.assertEquals("syjprxslwhdmcvh", response.notificationLocale());
-        Assertions.assertEquals("bzjhfvhuwzb", response.description());
-        Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, response.events().get(0).eventName());
+        Assertions.assertEquals("ugzfeuzjl", response.tags().get("mphfkyezolgjzm"));
+        Assertions.assertEquals("uydoccnx", response.location());
+        Assertions.assertEquals("nncfmaciqgjjrlhi", response.webhookUrl());
+        Assertions.assertEquals("wixvtbouguxtndop", response.emailRecipient());
+        Assertions.assertEquals("ttbas", response.notificationLocale());
+        Assertions.assertEquals("lapdlnd", response.description());
+        Assertions.assertEquals(NotificationChannelEventType.COST, response.events().get(0).eventName());
     }
 }

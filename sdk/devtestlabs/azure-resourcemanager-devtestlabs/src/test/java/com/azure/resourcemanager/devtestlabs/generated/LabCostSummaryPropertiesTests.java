@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LabCostSummaryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabCostSummaryProperties model = BinaryData.fromString("{\"estimatedLabCost\":33.836990479144205}")
+        LabCostSummaryProperties model = BinaryData.fromString("{\"estimatedLabCost\":70.48975251285316}")
             .toObject(LabCostSummaryProperties.class);
-        Assertions.assertEquals(33.836990479144205D, model.estimatedLabCost());
+        Assertions.assertEquals(70.48975251285316D, model.estimatedLabCost());
     }
 }

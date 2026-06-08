@@ -15,16 +15,16 @@ public final class PolicyListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"vpglydz\",\"status\":\"Disabled\",\"factName\":\"ScheduleEditPermission\",\"factData\":\"ev\",\"threshold\":\"epr\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-08-29T21:00:59Z\",\"provisioningState\":\"tpzdmovzvfvaawzq\",\"uniqueIdentifier\":\"f\"},\"tags\":{\"glae\":\"ur\"},\"location\":\"ndtic\",\"id\":\"pvz\",\"name\":\"lqtmldgxob\",\"type\":\"irclnpk\"},{\"properties\":{\"description\":\"ayzri\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"fvjlboxqvkjlmx\",\"threshold\":\"mdy\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-10-03T08:27:18Z\",\"provisioningState\":\"gumbnraauzzptja\",\"uniqueIdentifier\":\"sdzhezww\"},\"tags\":{\"hqyikvy\":\"qyuvvfonkp\",\"vluwmncsttij\":\"auy\"},\"location\":\"bvpoekrsgsgbdhu\",\"id\":\"gnjdgkynscliqhz\",\"name\":\"h\",\"type\":\"nk\"},{\"properties\":{\"description\":\"tkubotppn\",\"status\":\"Enabled\",\"factName\":\"ScheduleEditPermission\",\"factData\":\"ihfrbbcevqa\",\"threshold\":\"ltd\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-08-19T16:56:38Z\",\"provisioningState\":\"jpykvgtrdcnifmzz\",\"uniqueIdentifier\":\"ymbrnysuxmpraf\"},\"tags\":{\"roud\":\"khocxvdfffwaf\"},\"location\":\"pavehhr\",\"id\":\"bunzozudh\",\"name\":\"xg\",\"type\":\"moy\"},{\"properties\":{\"description\":\"dyuib\",\"status\":\"Enabled\",\"factName\":\"ScheduleEditPermission\",\"factData\":\"zydvfvf\",\"threshold\":\"naeo\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-10-16T19:23:29Z\",\"provisioningState\":\"gorf\",\"uniqueIdentifier\":\"kiscvwmzhwpl\"},\"tags\":{\"hnze\":\"xvxilcbtg\"},\"location\":\"xtjjfzqlqhycav\",\"id\":\"ggxdb\",\"name\":\"esmi\",\"type\":\"knlrariaawiuagy\"}],\"nextLink\":\"qfby\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"gzulwmmrqzzr\",\"status\":\"Enabled\",\"factName\":\"LabTargetCost\",\"factData\":\"ydzgkrvqeevtoe\",\"threshold\":\"yutnwytpzdmov\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-05-20T20:20:31Z\",\"provisioningState\":\"wzqa\",\"uniqueIdentifier\":\"lgzurig\"},\"tags\":{\"dticokpvzml\":\"cx\"},\"location\":\"mldgxobfirc\",\"id\":\"pkc\",\"name\":\"ayzri\",\"type\":\"khyawfvjlboxqv\"},{\"properties\":{\"description\":\"lmxhomdyn\",\"status\":\"Disabled\",\"factName\":\"LabPremiumVmCount\",\"factData\":\"umbnraauzzp\",\"threshold\":\"a\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-07-18T15:19:57Z\",\"provisioningState\":\"ezwwv\",\"uniqueIdentifier\":\"qyuvvfonkp\"},\"tags\":{\"y\":\"yik\",\"vluwmncsttij\":\"auy\"},\"location\":\"bvpoekrsgsgbdhu\",\"id\":\"gnjdgkynscliqhz\",\"name\":\"h\",\"type\":\"nk\"}],\"nextLink\":\"tkubotppn\"}")
             .toObject(PolicyList.class);
-        Assertions.assertEquals("ur", model.value().get(0).tags().get("glae"));
-        Assertions.assertEquals("ndtic", model.value().get(0).location());
-        Assertions.assertEquals("vpglydz", model.value().get(0).description());
-        Assertions.assertEquals(PolicyStatus.DISABLED, model.value().get(0).status());
-        Assertions.assertEquals(PolicyFactName.SCHEDULE_EDIT_PERMISSION, model.value().get(0).factName());
-        Assertions.assertEquals("ev", model.value().get(0).factData());
-        Assertions.assertEquals("epr", model.value().get(0).threshold());
+        Assertions.assertEquals("cx", model.value().get(0).tags().get("dticokpvzml"));
+        Assertions.assertEquals("mldgxobfirc", model.value().get(0).location());
+        Assertions.assertEquals("gzulwmmrqzzr", model.value().get(0).description());
+        Assertions.assertEquals(PolicyStatus.ENABLED, model.value().get(0).status());
+        Assertions.assertEquals(PolicyFactName.LAB_TARGET_COST, model.value().get(0).factName());
+        Assertions.assertEquals("ydzgkrvqeevtoe", model.value().get(0).factData());
+        Assertions.assertEquals("yutnwytpzdmov", model.value().get(0).threshold());
         Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, model.value().get(0).evaluatorType());
-        Assertions.assertEquals("qfby", model.nextLink());
+        Assertions.assertEquals("tkubotppn", model.nextLink());
     }
 }

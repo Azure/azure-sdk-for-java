@@ -12,12 +12,12 @@ public final class DtlEnvironmentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DtlEnvironmentList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"hsgz\",\"parameters\":[{},{},{}]},\"armTemplateDisplayName\":\"gomfgbeglq\",\"resourceGroupId\":\"eohibet\",\"createdByUser\":\"uankrrfxeeeb\",\"provisioningState\":\"j\",\"uniqueIdentifier\":\"cvbmqzb\"},\"tags\":{\"uyxoaf\":\"lajrnwxacevehj\"},\"location\":\"oqltfae\",\"id\":\"inmfgvxirp\",\"name\":\"hriypoqeyhlqhy\",\"type\":\"prlpy\"},{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"ciqdsme\",\"parameters\":[{},{},{},{}]},\"armTemplateDisplayName\":\"dfuxtya\",\"resourceGroupId\":\"ibmi\",\"createdByUser\":\"nnust\",\"provisioningState\":\"ljhnmgixhcmav\",\"uniqueIdentifier\":\"foudor\"},\"tags\":{\"ndm\":\"yyprotwyp\",\"k\":\"xhugcm\",\"bmftpmdt\":\"vlgo\"},\"location\":\"jltfvnzcyjtotpv\",\"id\":\"vpbdbzqgq\",\"name\":\"ihed\",\"type\":\"vqwt\"},{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"yibcy\",\"parameters\":[{},{}]},\"armTemplateDisplayName\":\"gqcwdhohsdtmc\",\"resourceGroupId\":\"sufco\",\"createdByUser\":\"xbzlmc\",\"provisioningState\":\"apcvhdbe\",\"uniqueIdentifier\":\"qqxeyskon\"},\"tags\":{\"wxeqocljmygvkzqk\":\"nkfkbgbzb\",\"rtle\":\"jeokbzefezrxccz\",\"zdix\":\"pqxbkwvzgnzvdf\"},\"location\":\"q\",\"id\":\"odawopqhewjptmcg\",\"name\":\"bostzel\",\"type\":\"dlat\"}],\"nextLink\":\"mzlbiojlvfhrb\"}")
+            "{\"value\":[{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"pibudqwyxebeybpm\",\"parameters\":[{},{},{}]},\"armTemplateDisplayName\":\"tffyaqit\",\"resourceGroupId\":\"heioqa\",\"createdByUser\":\"v\",\"provisioningState\":\"ufuqyrx\",\"uniqueIdentifier\":\"lcgqlsismj\"},\"tags\":{\"ju\":\"ddgamquhiosr\",\"zhczexrxzbujrtrh\":\"vfcdisyirn\"},\"location\":\"wrevkhgnlnzon\",\"id\":\"rpiqywncv\",\"name\":\"tszcofizehtdhgb\",\"type\":\"k\"}],\"nextLink\":\"eljeamurvzmlovua\"}")
             .toObject(DtlEnvironmentList.class);
-        Assertions.assertEquals("lajrnwxacevehj", model.value().get(0).tags().get("uyxoaf"));
-        Assertions.assertEquals("oqltfae", model.value().get(0).location());
-        Assertions.assertEquals("hsgz", model.value().get(0).deploymentProperties().armTemplateId());
-        Assertions.assertEquals("gomfgbeglq", model.value().get(0).armTemplateDisplayName());
-        Assertions.assertEquals("mzlbiojlvfhrb", model.nextLink());
+        Assertions.assertEquals("ddgamquhiosr", model.value().get(0).tags().get("ju"));
+        Assertions.assertEquals("wrevkhgnlnzon", model.value().get(0).location());
+        Assertions.assertEquals("pibudqwyxebeybpm", model.value().get(0).deploymentProperties().armTemplateId());
+        Assertions.assertEquals("tffyaqit", model.value().get(0).armTemplateDisplayName());
+        Assertions.assertEquals("eljeamurvzmlovua", model.nextLink());
     }
 }

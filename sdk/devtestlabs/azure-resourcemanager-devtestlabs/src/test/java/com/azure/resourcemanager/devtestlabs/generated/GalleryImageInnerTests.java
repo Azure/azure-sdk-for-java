@@ -12,20 +12,20 @@ public final class GalleryImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryImageInner model = BinaryData.fromString(
-            "{\"properties\":{\"author\":\"ygdyftumrtw\",\"createdDate\":\"2021-07-25T06:04:38Z\",\"description\":\"slbi\",\"imageReference\":{\"offer\":\"jgcyztsfmznba\",\"publisher\":\"ph\",\"sku\":\"qnrnrpxehuwryk\",\"osType\":\"aifmvikl\",\"version\":\"dvk\"},\"icon\":\"ejd\",\"enabled\":false,\"planId\":\"vdsrhnjiv\",\"isPlanAuthorized\":false},\"tags\":{\"jdftuljltd\":\"ovqfzge\",\"zuo\":\"ceamtm\"},\"location\":\"jw\",\"id\":\"wqiok\",\"name\":\"ssxmojms\",\"type\":\"p\"}")
+            "{\"properties\":{\"author\":\"vpkjpr\",\"createdDate\":\"2021-06-29T04:33:46Z\",\"description\":\"fz\",\"imageReference\":{\"offer\":\"yxgtczh\",\"publisher\":\"dbsdshm\",\"sku\":\"maehvbbxurip\",\"osType\":\"fnhtbaxkgxyw\",\"version\":\"kpyklyhp\"},\"icon\":\"odpvruudlgzib\",\"enabled\":false,\"planId\":\"tgk\",\"isPlanAuthorized\":true},\"tags\":{\"odqkdlwwqfb\":\"xeclzedqbcvhzlhp\",\"lmbtxhwgfwsrt\":\"mlkxtrqjfs\",\"kh\":\"wcoezbrhub\",\"ookk\":\"dyg\"},\"location\":\"qjbvleorfmlu\",\"id\":\"tqzfavyv\",\"name\":\"qqybarye\",\"type\":\"ayjkqa\"}")
             .toObject(GalleryImageInner.class);
-        Assertions.assertEquals("ovqfzge", model.tags().get("jdftuljltd"));
-        Assertions.assertEquals("jw", model.location());
-        Assertions.assertEquals("ygdyftumrtw", model.author());
-        Assertions.assertEquals("slbi", model.description());
-        Assertions.assertEquals("jgcyztsfmznba", model.imageReference().offer());
-        Assertions.assertEquals("ph", model.imageReference().publisher());
-        Assertions.assertEquals("qnrnrpxehuwryk", model.imageReference().sku());
-        Assertions.assertEquals("aifmvikl", model.imageReference().osType());
-        Assertions.assertEquals("dvk", model.imageReference().version());
-        Assertions.assertEquals("ejd", model.icon());
+        Assertions.assertEquals("xeclzedqbcvhzlhp", model.tags().get("odqkdlwwqfb"));
+        Assertions.assertEquals("qjbvleorfmlu", model.location());
+        Assertions.assertEquals("vpkjpr", model.author());
+        Assertions.assertEquals("fz", model.description());
+        Assertions.assertEquals("yxgtczh", model.imageReference().offer());
+        Assertions.assertEquals("dbsdshm", model.imageReference().publisher());
+        Assertions.assertEquals("maehvbbxurip", model.imageReference().sku());
+        Assertions.assertEquals("fnhtbaxkgxyw", model.imageReference().osType());
+        Assertions.assertEquals("kpyklyhp", model.imageReference().version());
+        Assertions.assertEquals("odpvruudlgzib", model.icon());
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("vdsrhnjiv", model.planId());
-        Assertions.assertFalse(model.isPlanAuthorized());
+        Assertions.assertEquals("tgk", model.planId());
+        Assertions.assertTrue(model.isPlanAuthorized());
     }
 }

@@ -27,7 +27,8 @@ public final class VirtualMachinesTransferDisksMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.virtualMachines().transferDisks("edoyqxlunkft", "mcxqqxmyzklao", "n", com.azure.core.util.Context.NONE);
+        manager.virtualMachines()
+            .transferDisks("qebuuxjxhfxfjwp", "kktpmbmxbmbr", "gzzxljbkhxsd", com.azure.core.util.Context.NONE);
 
     }
 }

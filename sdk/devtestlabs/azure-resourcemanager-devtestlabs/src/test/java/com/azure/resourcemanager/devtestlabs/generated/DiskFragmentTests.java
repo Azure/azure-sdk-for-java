@@ -13,15 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskFragment model = BinaryData.fromString("{\"tags\":{\"moy\":\"whcans\"}}").toObject(DiskFragment.class);
-        Assertions.assertEquals("whcans", model.tags().get("moy"));
+        DiskFragment model = BinaryData
+            .fromString(
+                "{\"tags\":{\"gpmuneqsxvmhfbuz\":\"vvmu\",\"ms\":\"yihsasbhudypohyu\",\"ttymsjny\":\"ynsqyrpfoobr\"}}")
+            .toObject(DiskFragment.class);
+        Assertions.assertEquals("vvmu", model.tags().get("gpmuneqsxvmhfbuz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskFragment model = new DiskFragment().withTags(mapOf("moy", "whcans"));
+        DiskFragment model = new DiskFragment()
+            .withTags(mapOf("gpmuneqsxvmhfbuz", "vvmu", "ms", "yihsasbhudypohyu", "ttymsjny", "ynsqyrpfoobr"));
         model = BinaryData.fromObject(model).toObject(DiskFragment.class);
-        Assertions.assertEquals("whcans", model.tags().get("moy"));
+        Assertions.assertEquals("vvmu", model.tags().get("gpmuneqsxvmhfbuz"));
     }
 
     // Use "Map.of" if available

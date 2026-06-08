@@ -11,7 +11,7 @@ public final class ArmTemplateInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmTemplateInfoInner model
-            = BinaryData.fromString("{\"template\":\"\\\"datalmfmtdaay\\\"\",\"parameters\":\"\\\"datav\\\"\"}")
+            = BinaryData.fromString("{\"template\":\"\\\"datahlyfjhdgqgg\\\"\",\"parameters\":\"\\\"datadunyg\\\"\"}")
                 .toObject(ArmTemplateInfoInner.class);
     }
 }

@@ -14,22 +14,22 @@ public final class SecretInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecretInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"neqvcwwyyurmo\",\"provisioningState\":\"ppr\",\"uniqueIdentifier\":\"snmokayzej\"},\"tags\":{\"hzvechndbnwieho\":\"bkpbzpcpiljh\",\"fqsfa\":\"ewjwiuubw\"},\"location\":\"qtferrqwexjkmf\",\"id\":\"pjwogqqno\",\"name\":\"pud\",\"type\":\"dabtqwp\"}")
+            "{\"properties\":{\"value\":\"shcxlpmjerbdk\",\"provisioningState\":\"vidizozsdb\",\"uniqueIdentifier\":\"xjmonf\"},\"tags\":{\"cypuuwwlt\":\"w\",\"tzenk\":\"uqj\",\"zhmkdasvflyh\":\"if\"},\"location\":\"cu\",\"id\":\"hxgsrboldfor\",\"name\":\"bwjl\",\"type\":\"izbfhfovvacq\"}")
             .toObject(SecretInner.class);
-        Assertions.assertEquals("bkpbzpcpiljh", model.tags().get("hzvechndbnwieho"));
-        Assertions.assertEquals("qtferrqwexjkmf", model.location());
-        Assertions.assertEquals("neqvcwwyyurmo", model.value());
+        Assertions.assertEquals("w", model.tags().get("cypuuwwlt"));
+        Assertions.assertEquals("cu", model.location());
+        Assertions.assertEquals("shcxlpmjerbdk", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretInner model = new SecretInner().withTags(mapOf("hzvechndbnwieho", "bkpbzpcpiljh", "fqsfa", "ewjwiuubw"))
-            .withLocation("qtferrqwexjkmf")
-            .withValue("neqvcwwyyurmo");
+        SecretInner model = new SecretInner().withTags(mapOf("cypuuwwlt", "w", "tzenk", "uqj", "zhmkdasvflyh", "if"))
+            .withLocation("cu")
+            .withValue("shcxlpmjerbdk");
         model = BinaryData.fromObject(model).toObject(SecretInner.class);
-        Assertions.assertEquals("bkpbzpcpiljh", model.tags().get("hzvechndbnwieho"));
-        Assertions.assertEquals("qtferrqwexjkmf", model.location());
-        Assertions.assertEquals("neqvcwwyyurmo", model.value());
+        Assertions.assertEquals("w", model.tags().get("cypuuwwlt"));
+        Assertions.assertEquals("cu", model.location());
+        Assertions.assertEquals("shcxlpmjerbdk", model.value());
     }
 
     // Use "Map.of" if available

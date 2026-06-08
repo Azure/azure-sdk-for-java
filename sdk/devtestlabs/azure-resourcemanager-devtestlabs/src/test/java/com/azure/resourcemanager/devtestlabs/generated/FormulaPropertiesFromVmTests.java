@@ -12,14 +12,14 @@ public final class FormulaPropertiesFromVmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FormulaPropertiesFromVm model
-            = BinaryData.fromString("{\"labVmId\":\"vtylbfpncu\"}").toObject(FormulaPropertiesFromVm.class);
-        Assertions.assertEquals("vtylbfpncu", model.labVmId());
+            = BinaryData.fromString("{\"labVmId\":\"udfdlwgg\"}").toObject(FormulaPropertiesFromVm.class);
+        Assertions.assertEquals("udfdlwgg", model.labVmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FormulaPropertiesFromVm model = new FormulaPropertiesFromVm().withLabVmId("vtylbfpncu");
+        FormulaPropertiesFromVm model = new FormulaPropertiesFromVm().withLabVmId("udfdlwgg");
         model = BinaryData.fromObject(model).toObject(FormulaPropertiesFromVm.class);
-        Assertions.assertEquals("vtylbfpncu", model.labVmId());
+        Assertions.assertEquals("udfdlwgg", model.labVmId());
     }
 }

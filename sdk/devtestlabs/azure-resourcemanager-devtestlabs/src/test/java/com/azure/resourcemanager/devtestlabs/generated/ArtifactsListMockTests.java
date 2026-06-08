@@ -22,7 +22,7 @@ public final class ArtifactsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"title\":\"mkkhtgfredml\",\"description\":\"grllcc\",\"publisher\":\"ovjowazhpabacom\",\"filePath\":\"otgkwsxnsrqorcg\",\"icon\":\"mv\",\"targetOsType\":\"bxeetqujxcxxqn\",\"parameters\":\"\\\"dataqjkedwqurc\\\"\",\"createdDate\":\"2021-10-08T07:24:52Z\"},\"tags\":{\"se\":\"vvxwjong\",\"chskxxka\":\"qqrsil\",\"aqgvto\":\"sbvr\",\"jrthcfjzhx\":\"rulfuct\"},\"location\":\"ubqjro\",\"id\":\"vrjeqmtzzbeqrztr\",\"name\":\"alx\",\"type\":\"d\"}]}";
+            = "{\"value\":[{\"properties\":{\"title\":\"m\",\"description\":\"ajwolxfs\",\"publisher\":\"ghmp\",\"filePath\":\"wl\",\"icon\":\"rcigtzjcvbxq\",\"targetOsType\":\"psnssovyxp\",\"parameters\":\"\\\"dataidnievwffcv\\\"\",\"createdDate\":\"2021-06-25T23:51:24Z\"},\"tags\":{\"trkxgpazwu\":\"lpuxgcbdsvalpnpt\",\"qvn\":\"x\",\"gqlmfaewzgi\":\"obfelhldiuhz\"},\"location\":\"jpxpqhttqhnmhkre\",\"id\":\"dsuxheqdgcrux\",\"name\":\"pinymmqgwokmikp\",\"type\":\"zfbmjxuv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ArtifactsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Artifact> response = manager.artifacts()
-            .list("tumeezbxvqxb", "uvwc", "asgom", "mjzwx", "qgo", 1097426583, "xpwwzt",
+            .list("zwjcaye", "zrransyb", "lpolwzrghsrle", "nkfscjfn", "jwvuag", 1509328014, "wtltngvmreuptrk",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vvxwjong", response.iterator().next().tags().get("se"));
-        Assertions.assertEquals("ubqjro", response.iterator().next().location());
+        Assertions.assertEquals("lpuxgcbdsvalpnpt", response.iterator().next().tags().get("trkxgpazwu"));
+        Assertions.assertEquals("jpxpqhttqhnmhkre", response.iterator().next().location());
     }
 }

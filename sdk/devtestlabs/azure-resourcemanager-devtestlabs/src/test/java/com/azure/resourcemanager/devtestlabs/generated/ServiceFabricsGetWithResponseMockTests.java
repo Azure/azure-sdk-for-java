@@ -21,7 +21,7 @@ public final class ServiceFabricsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"externalServiceFabricId\":\"bzwgwhgkgsoau\",\"environmentId\":\"rssat\",\"applicableSchedule\":{\"location\":\"ipufdmxuqbdq\",\"tags\":{\"ixhg\":\"ttuxvzfqayopbt\",\"arxneibpgbr\":\"bhxmndztgsqjayq\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"tags\":{\"nh\":\"q\",\"mzngocfrjuy\":\"nmotpuwnnoh\"},\"location\":\"yiulayno\",\"id\":\"gkfh\",\"name\":\"xttpfs\",\"type\":\"wgsghqucumldd\"},\"labVmsStartup\":{\"properties\":{},\"tags\":{\"arigrjdljlkqh\":\"llfeothx\"},\"location\":\"rbzkuastaxk\",\"id\":\"r\",\"name\":\"ulhgltoiz\",\"type\":\"xvsc\"}},\"id\":\"gfyys\",\"name\":\"yekgafxc\",\"type\":\"vfcck\"},\"provisioningState\":\"twlety\",\"uniqueIdentifier\":\"szrtlhpdhwynct\"},\"tags\":{\"jfmbbfnvjxitz\":\"c\",\"tiklsm\":\"vnk\",\"ii\":\"ihqlcoqks\",\"vqdorbccqcd\":\"hyxwbgbud\"},\"location\":\"hojvlirkn\",\"id\":\"osa\",\"name\":\"rdtnagzl\",\"type\":\"pya\"}";
+            = "{\"properties\":{\"externalServiceFabricId\":\"hnysvlpyeu\",\"environmentId\":\"p\",\"applicableSchedule\":{\"location\":\"xqbolxvhhyqqegat\",\"tags\":{\"nmtsdixc\":\"znmg\",\"ibmg\":\"w\",\"gair\":\"ymncjc\",\"fbhtleberp\":\"cqzoofjnqjsve\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"tags\":{\"j\":\"knfqnw\",\"xgkrh\":\"xowkdnj\",\"r\":\"iehycpnowawonoe\"},\"location\":\"qlhfwaf\",\"id\":\"zmpyrguyfaz\",\"name\":\"kocbyg\",\"type\":\"thrmxkbcjwwdxo\"},\"labVmsStartup\":{\"properties\":{},\"tags\":{\"eda\":\"ppkeboozflyacag\"},\"location\":\"qclmgdtwgabd\",\"id\":\"kuz\",\"name\":\"wjecooyvhtuqbpe\",\"type\":\"nii\"}},\"id\":\"cgagdvcdqhftzbp\",\"name\":\"faofd\",\"type\":\"phtnc\"},\"provisioningState\":\"hjobzrfprizdcq\",\"uniqueIdentifier\":\"f\"},\"tags\":{\"orssatfyb\":\"bzwgwhgkgsoau\"},\"location\":\"ufdmxuq\",\"id\":\"qna\",\"name\":\"ttuxvzfqayopbt\",\"type\":\"ixhg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,12 @@ public final class ServiceFabricsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceFabric response = manager.serviceFabrics()
-            .getWithResponse("ncgagdvc", "qhftzbpyfaofd", "phtnc", "mhjobzr", "prizdcqhyft",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("mbhbafebzxf", "jqut", "bhlenntrvrkpsab", "u", "vzm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("c", response.tags().get("jfmbbfnvjxitz"));
-        Assertions.assertEquals("hojvlirkn", response.location());
-        Assertions.assertEquals("bzwgwhgkgsoau", response.externalServiceFabricId());
-        Assertions.assertEquals("rssat", response.environmentId());
+        Assertions.assertEquals("bzwgwhgkgsoau", response.tags().get("orssatfyb"));
+        Assertions.assertEquals("ufdmxuq", response.location());
+        Assertions.assertEquals("hnysvlpyeu", response.externalServiceFabricId());
+        Assertions.assertEquals("p", response.environmentId());
     }
 }

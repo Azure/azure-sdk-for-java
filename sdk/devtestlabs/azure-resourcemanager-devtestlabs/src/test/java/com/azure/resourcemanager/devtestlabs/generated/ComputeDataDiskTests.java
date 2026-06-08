@@ -12,11 +12,11 @@ public final class ComputeDataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComputeDataDisk model = BinaryData.fromString(
-            "{\"name\":\"cjimryvwgcwwpbmz\",\"diskUri\":\"esyds\",\"managedDiskId\":\"efoh\",\"diskSizeGiB\":547818576}")
+            "{\"name\":\"bvqt\",\"diskUri\":\"arfdlpukhpyrnei\",\"managedDiskId\":\"cpeogkhnmgbrou\",\"diskSizeGiB\":1363231330}")
             .toObject(ComputeDataDisk.class);
-        Assertions.assertEquals("cjimryvwgcwwpbmz", model.name());
-        Assertions.assertEquals("esyds", model.diskUri());
-        Assertions.assertEquals("efoh", model.managedDiskId());
-        Assertions.assertEquals(547818576, model.diskSizeGiB());
+        Assertions.assertEquals("bvqt", model.name());
+        Assertions.assertEquals("arfdlpukhpyrnei", model.diskUri());
+        Assertions.assertEquals("cpeogkhnmgbrou", model.managedDiskId());
+        Assertions.assertEquals(1363231330, model.diskSizeGiB());
     }
 }

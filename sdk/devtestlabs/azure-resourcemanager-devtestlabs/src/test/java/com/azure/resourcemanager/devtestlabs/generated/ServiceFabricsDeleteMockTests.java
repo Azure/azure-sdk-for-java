@@ -28,7 +28,7 @@ public final class ServiceFabricsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.serviceFabrics()
-            .delete("xihzqjjts", "uy", "qfttkacybdueur", "mcdcpkshl", com.azure.core.util.Context.NONE);
+            .delete("bhxmndztgsqjayq", "arxneibpgbr", "bjdqkn", "qnm", com.azure.core.util.Context.NONE);
 
     }
 }

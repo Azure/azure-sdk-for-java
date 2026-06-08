@@ -17,38 +17,38 @@ public final class SubnetOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubnetOverride model = BinaryData.fromString(
-            "{\"resourceId\":\"lmiiiovg\",\"labSubnetName\":\"gxuugqkctotio\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Deny\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{\"transportProtocol\":\"Udp\",\"backendPort\":857680137},{\"transportProtocol\":\"Udp\",\"backendPort\":1879687901}]},\"virtualNetworkPoolName\":\"ranblwphqlkccu\"}")
+            "{\"resourceId\":\"arbgjekgl\",\"labSubnetName\":\"byu\",\"useInVmCreationPermission\":\"Default\",\"usePublicIpAddressPermission\":\"Allow\",\"sharedPublicIpAddressConfiguration\":{\"allowedPorts\":[{\"transportProtocol\":\"Tcp\",\"backendPort\":2074330013},{\"transportProtocol\":\"Udp\",\"backendPort\":417009435}]},\"virtualNetworkPoolName\":\"irwgdnqzbrf\"}")
             .toObject(SubnetOverride.class);
-        Assertions.assertEquals("lmiiiovg", model.resourceId());
-        Assertions.assertEquals("gxuugqkctotio", model.labSubnetName());
+        Assertions.assertEquals("arbgjekgl", model.resourceId());
+        Assertions.assertEquals("byu", model.labSubnetName());
         Assertions.assertEquals(UsagePermissionType.DEFAULT, model.useInVmCreationPermission());
-        Assertions.assertEquals(UsagePermissionType.DENY, model.usePublicIpAddressPermission());
-        Assertions.assertEquals(TransportProtocol.UDP,
+        Assertions.assertEquals(UsagePermissionType.ALLOW, model.usePublicIpAddressPermission());
+        Assertions.assertEquals(TransportProtocol.TCP,
             model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).transportProtocol());
-        Assertions.assertEquals(857680137,
+        Assertions.assertEquals(2074330013,
             model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).backendPort());
-        Assertions.assertEquals("ranblwphqlkccu", model.virtualNetworkPoolName());
+        Assertions.assertEquals("irwgdnqzbrf", model.virtualNetworkPoolName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetOverride model = new SubnetOverride().withResourceId("lmiiiovg")
-            .withLabSubnetName("gxuugqkctotio")
+        SubnetOverride model = new SubnetOverride().withResourceId("arbgjekgl")
+            .withLabSubnetName("byu")
             .withUseInVmCreationPermission(UsagePermissionType.DEFAULT)
-            .withUsePublicIpAddressPermission(UsagePermissionType.DENY)
+            .withUsePublicIpAddressPermission(UsagePermissionType.ALLOW)
             .withSharedPublicIpAddressConfiguration(new SubnetSharedPublicIpAddressConfiguration().withAllowedPorts(
-                Arrays.asList(new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(857680137),
-                    new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(1879687901))))
-            .withVirtualNetworkPoolName("ranblwphqlkccu");
+                Arrays.asList(new Port().withTransportProtocol(TransportProtocol.TCP).withBackendPort(2074330013),
+                    new Port().withTransportProtocol(TransportProtocol.UDP).withBackendPort(417009435))))
+            .withVirtualNetworkPoolName("irwgdnqzbrf");
         model = BinaryData.fromObject(model).toObject(SubnetOverride.class);
-        Assertions.assertEquals("lmiiiovg", model.resourceId());
-        Assertions.assertEquals("gxuugqkctotio", model.labSubnetName());
+        Assertions.assertEquals("arbgjekgl", model.resourceId());
+        Assertions.assertEquals("byu", model.labSubnetName());
         Assertions.assertEquals(UsagePermissionType.DEFAULT, model.useInVmCreationPermission());
-        Assertions.assertEquals(UsagePermissionType.DENY, model.usePublicIpAddressPermission());
-        Assertions.assertEquals(TransportProtocol.UDP,
+        Assertions.assertEquals(UsagePermissionType.ALLOW, model.usePublicIpAddressPermission());
+        Assertions.assertEquals(TransportProtocol.TCP,
             model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).transportProtocol());
-        Assertions.assertEquals(857680137,
+        Assertions.assertEquals(2074330013,
             model.sharedPublicIpAddressConfiguration().allowedPorts().get(0).backendPort());
-        Assertions.assertEquals("ranblwphqlkccu", model.virtualNetworkPoolName());
+        Assertions.assertEquals("irwgdnqzbrf", model.virtualNetworkPoolName());
     }
 }

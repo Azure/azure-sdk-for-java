@@ -21,7 +21,7 @@ public final class EnvironmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"asupmlppdpg\",\"parameters\":[{\"name\":\"azvbkar\",\"value\":\"tgongrua\"},{\"name\":\"yiysjqheni\",\"value\":\"eq\"}]},\"armTemplateDisplayName\":\"uba\",\"resourceGroupId\":\"jdeayscse\",\"createdByUser\":\"zjemexmnvkvm\",\"provisioningState\":\"rxl\",\"uniqueIdentifier\":\"wmcpmrrdlhvdvm\"},\"tags\":{\"zmhkdclacroczfmu\":\"beaeq\",\"zezbzu\":\"erkeluxzsh\"},\"location\":\"dlevzskejcgw\",\"id\":\"gqkstyecupyu\",\"name\":\"jparda\",\"type\":\"sjcfma\"}";
+            = "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"wh\",\"parameters\":[{\"name\":\"urejqrshzzbg\",\"value\":\"lcxiqqzjko\"},{\"name\":\"upnamglroui\",\"value\":\"mfivjqterd\"}]},\"armTemplateDisplayName\":\"igdyd\",\"resourceGroupId\":\"hpcvr\",\"createdByUser\":\"irvt\",\"provisioningState\":\"yhhmvfxl\",\"uniqueIdentifier\":\"jajodmkrr\"},\"tags\":{\"gira\":\"gqvqokqluj\",\"xchpqvctsfa\":\"wly\"},\"location\":\"hwwskn\",\"id\":\"vzuzhasupmlppd\",\"name\":\"gzvzqazvbkarkp\",\"type\":\"gongr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class EnvironmentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DtlEnvironment response = manager.environments()
-            .getWithResponse("pgqvqo", "qlujqgi", "abwlyvx", "hpqvcts", "aeuhwwsknstvz",
+            .getWithResponse("itwhrjsdmmazdnck", "dbjp", "lhzqpxzbawkikcdg", "hbssdpjeyo", "xdede",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("beaeq", response.tags().get("zmhkdclacroczfmu"));
-        Assertions.assertEquals("dlevzskejcgw", response.location());
-        Assertions.assertEquals("asupmlppdpg", response.deploymentProperties().armTemplateId());
-        Assertions.assertEquals("azvbkar", response.deploymentProperties().parameters().get(0).name());
-        Assertions.assertEquals("tgongrua", response.deploymentProperties().parameters().get(0).value());
-        Assertions.assertEquals("uba", response.armTemplateDisplayName());
+        Assertions.assertEquals("gqvqokqluj", response.tags().get("gira"));
+        Assertions.assertEquals("hwwskn", response.location());
+        Assertions.assertEquals("wh", response.deploymentProperties().armTemplateId());
+        Assertions.assertEquals("urejqrshzzbg", response.deploymentProperties().parameters().get(0).name());
+        Assertions.assertEquals("lcxiqqzjko", response.deploymentProperties().parameters().get(0).value());
+        Assertions.assertEquals("igdyd", response.armTemplateDisplayName());
     }
 }

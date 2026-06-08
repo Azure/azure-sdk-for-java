@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class LabVirtualMachineFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabVirtualMachineFragment model = BinaryData.fromString(
-            "{\"tags\":{\"lklmtkhlo\":\"pwndyqlea\",\"jmzsyzfh\":\"kxxpvbrd\",\"jlpjrtwszhv\":\"tlhikcyychun\",\"hvtrrmhwrbfdpyf\":\"uic\"}}")
-            .toObject(LabVirtualMachineFragment.class);
-        Assertions.assertEquals("pwndyqlea", model.tags().get("lklmtkhlo"));
+        LabVirtualMachineFragment model
+            = BinaryData.fromString("{\"tags\":{\"paz\":\"fhp\",\"xhpdulontacnpqwt\":\"zoyw\"}}")
+                .toObject(LabVirtualMachineFragment.class);
+        Assertions.assertEquals("fhp", model.tags().get("paz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabVirtualMachineFragment model = new LabVirtualMachineFragment().withTags(mapOf("lklmtkhlo", "pwndyqlea",
-            "jmzsyzfh", "kxxpvbrd", "jlpjrtwszhv", "tlhikcyychun", "hvtrrmhwrbfdpyf", "uic"));
+        LabVirtualMachineFragment model
+            = new LabVirtualMachineFragment().withTags(mapOf("paz", "fhp", "xhpdulontacnpqwt", "zoyw"));
         model = BinaryData.fromObject(model).toObject(LabVirtualMachineFragment.class);
-        Assertions.assertEquals("pwndyqlea", model.tags().get("lklmtkhlo"));
+        Assertions.assertEquals("fhp", model.tags().get("paz"));
     }
 
     // Use "Map.of" if available

@@ -1,4 +1,4 @@
 directory: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/DevTestLabs
-commit: 9f89280810e11ae3fe472d1ed2aa06dc3435378c
+commit: 32ada2b0eb2a00153979d3868e486d68de6a5276
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

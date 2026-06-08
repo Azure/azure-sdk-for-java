@@ -21,7 +21,7 @@ public final class SecretsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"wyil\",\"provisioningState\":\"ibkgxyxyau\",\"uniqueIdentifier\":\"eddobmcnltm\"},\"tags\":{\"xfabl\":\"kujsqycmm\",\"whrialiwrycgn\":\"gpwb\",\"phctsbbibticu\":\"plrr\"},\"location\":\"vumspbfsf\",\"id\":\"bbewfcu\",\"name\":\"fpyyxmzrmtm\",\"type\":\"wi\"}";
+            = "{\"properties\":{\"value\":\"xi\",\"provisioningState\":\"nj\",\"uniqueIdentifier\":\"k\"},\"tags\":{\"w\":\"cqsxytqqtcmiw\",\"ftpzcrryklleyn\":\"svnmeylajamcajy\"},\"location\":\"nhkigg\",\"id\":\"lwalhvu\",\"name\":\"hg\",\"type\":\"phetxdqc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class SecretsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Secret response = manager.secrets()
-            .getWithResponse("zpfkis", "aidqzsaaoqdsgpto", "xjqfiafcnlrtbfi", "zzcaoijolbuauk", "wieopexelxqdw",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("zlhhfix", "cfculzj", "mhpfywvy", "dqpz", "zx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kujsqycmm", response.tags().get("xfabl"));
-        Assertions.assertEquals("vumspbfsf", response.location());
-        Assertions.assertEquals("wyil", response.value());
+        Assertions.assertEquals("cqsxytqqtcmiw", response.tags().get("w"));
+        Assertions.assertEquals("nhkigg", response.location());
+        Assertions.assertEquals("xi", response.value());
     }
 }

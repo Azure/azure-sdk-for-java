@@ -13,39 +13,39 @@ public final class ApplicableScheduleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicableScheduleInner model = BinaryData.fromString(
-            "{\"location\":\"jhvsujztczyt\",\"tags\":{\"auunfprnjletlx\":\"w\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"do\",\"weeklyRecurrence\":{\"weekdays\":[\"mowaziynknlqwzdv\",\"iwhxqszdtmaajq\",\"huxy\",\"rjvmtygjbmzyosp\"],\"time\":\"shck\"},\"dailyRecurrence\":{\"time\":\"jpmspbpssdfppy\"},\"hourlyRecurrence\":{\"minute\":2005729063},\"timeZoneId\":\"yujtvczkcnyx\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1591034330,\"webhookUrl\":\"xvglnkvxlxp\",\"emailRecipient\":\"lqivbgkcv\",\"notificationLocale\":\"pzvuqdflvo\"},\"createdDate\":\"2021-11-22T18:46:16Z\",\"targetResourceId\":\"fpubcpzgpxti\",\"provisioningState\":\"j\",\"uniqueIdentifier\":\"idibgqjxgpn\"},\"tags\":{\"gpikqmh\":\"ov\",\"jrmzvupor\":\"ao\",\"qpswokmvkhlggdhb\":\"zdfuydzvkfvxcnqm\",\"zu\":\"mzqkz\"},\"location\":\"wtglxx\",\"id\":\"jfpgpicrmn\",\"name\":\"hr\",\"type\":\"mqgjsxvpq\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"bodthsqqgvri\",\"weeklyRecurrence\":{\"weekdays\":[\"c\",\"a\",\"jfrnxousxauzlwv\"],\"time\":\"mwohqfzizvuxmmkj\"},\"dailyRecurrence\":{\"time\":\"hnwpzt\"},\"hourlyRecurrence\":{\"minute\":1962597445},\"timeZoneId\":\"ribi\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":456926110,\"webhookUrl\":\"cfotangcfhnykzcu\",\"emailRecipient\":\"wvxwlmzqwmvt\",\"notificationLocale\":\"jmxmcuqud\"},\"createdDate\":\"2021-03-21T08:13:48Z\",\"targetResourceId\":\"lxynpdkvgf\",\"provisioningState\":\"uiyjib\",\"uniqueIdentifier\":\"phdu\"},\"tags\":{\"oxgjiuqhibt\":\"iknp\",\"pqwjedm\":\"z\"},\"location\":\"r\",\"id\":\"g\",\"name\":\"wpktvqylkmqpzoyh\",\"type\":\"fbcgwgcloxoebqin\"}},\"id\":\"pnwjfujq\",\"name\":\"afcba\",\"type\":\"hpzpo\"}")
+            "{\"location\":\"ibmikostbzb\",\"tags\":{\"phzfylsgcrp\":\"buqny\",\"fwyfwlwxjwet\":\"bcunezzceze\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"clafzvaylpt\",\"weeklyRecurrence\":{\"weekdays\":[\"wztcmwqkchc\",\"waxfewzjkj\",\"xfdeqvhpsyl\"],\"time\":\"shk\"},\"dailyRecurrence\":{\"time\":\"mbmxzjrgywwpgj\"},\"hourlyRecurrence\":{\"minute\":1849178398},\"timeZoneId\":\"fujg\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":226222516,\"webhookUrl\":\"pttaqutd\",\"emailRecipient\":\"emxswvruu\",\"notificationLocale\":\"zjgehkfkim\"},\"createdDate\":\"2021-08-19T18:54:47Z\",\"targetResourceId\":\"okffqyinljqepqwh\",\"provisioningState\":\"monstshiyxgve\",\"uniqueIdentifier\":\"clduc\"},\"tags\":{\"uwc\":\"rds\",\"egstmninwjizci\":\"b\",\"tbxqmuluxlxq\":\"nghgshej\"},\"location\":\"nersb\",\"id\":\"ucrwnami\",\"name\":\"ze\",\"type\":\"rqbsmswziq\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"kzruswh\",\"weeklyRecurrence\":{\"weekdays\":[\"znvfbycjsxjww\",\"xzv\"],\"time\":\"wmxqhndvnoamlds\"},\"dailyRecurrence\":{\"time\":\"ohdjhhflzok\"},\"hourlyRecurrence\":{\"minute\":1429661120},\"timeZoneId\":\"e\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1895884470,\"webhookUrl\":\"ltsxoatf\",\"emailRecipient\":\"zpnpbswv\",\"notificationLocale\":\"loccsrmozihm\"},\"createdDate\":\"2021-06-17T22:27:31Z\",\"targetResourceId\":\"wtxxpkyjcx\",\"provisioningState\":\"xgrytfmp\",\"uniqueIdentifier\":\"cil\"},\"tags\":{\"t\":\"aykggnoxu\",\"cpfnznthjtwkja\":\"ksxwpnd\",\"tcqiosmg\":\"srxuzvoam\"},\"location\":\"ahgx\",\"id\":\"lyrtltlaprlt\",\"name\":\"katbhjm\",\"type\":\"nnbsoqeqa\"}},\"id\":\"rvlagunbtgfebwln\",\"name\":\"mhyreeudz\",\"type\":\"av\"}")
             .toObject(ApplicableScheduleInner.class);
-        Assertions.assertEquals("jhvsujztczyt", model.location());
-        Assertions.assertEquals("w", model.tags().get("auunfprnjletlx"));
-        Assertions.assertEquals("ov", model.labVmsShutdown().tags().get("gpikqmh"));
-        Assertions.assertEquals("wtglxx", model.labVmsShutdown().location());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsShutdown().status());
-        Assertions.assertEquals("do", model.labVmsShutdown().taskType());
-        Assertions.assertEquals("mowaziynknlqwzdv", model.labVmsShutdown().weeklyRecurrence().weekdays().get(0));
-        Assertions.assertEquals("shck", model.labVmsShutdown().weeklyRecurrence().time());
-        Assertions.assertEquals("jpmspbpssdfppy", model.labVmsShutdown().dailyRecurrence().time());
-        Assertions.assertEquals(2005729063, model.labVmsShutdown().hourlyRecurrence().minute());
-        Assertions.assertEquals("yujtvczkcnyx", model.labVmsShutdown().timeZoneId());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsShutdown().notificationSettings().status());
-        Assertions.assertEquals(1591034330, model.labVmsShutdown().notificationSettings().timeInMinutes());
-        Assertions.assertEquals("xvglnkvxlxp", model.labVmsShutdown().notificationSettings().webhookUrl());
-        Assertions.assertEquals("lqivbgkcv", model.labVmsShutdown().notificationSettings().emailRecipient());
-        Assertions.assertEquals("pzvuqdflvo", model.labVmsShutdown().notificationSettings().notificationLocale());
-        Assertions.assertEquals("fpubcpzgpxti", model.labVmsShutdown().targetResourceId());
-        Assertions.assertEquals("iknp", model.labVmsStartup().tags().get("oxgjiuqhibt"));
-        Assertions.assertEquals("r", model.labVmsStartup().location());
+        Assertions.assertEquals("ibmikostbzb", model.location());
+        Assertions.assertEquals("buqny", model.tags().get("phzfylsgcrp"));
+        Assertions.assertEquals("rds", model.labVmsShutdown().tags().get("uwc"));
+        Assertions.assertEquals("nersb", model.labVmsShutdown().location());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsShutdown().status());
+        Assertions.assertEquals("clafzvaylpt", model.labVmsShutdown().taskType());
+        Assertions.assertEquals("wztcmwqkchc", model.labVmsShutdown().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("shk", model.labVmsShutdown().weeklyRecurrence().time());
+        Assertions.assertEquals("mbmxzjrgywwpgj", model.labVmsShutdown().dailyRecurrence().time());
+        Assertions.assertEquals(1849178398, model.labVmsShutdown().hourlyRecurrence().minute());
+        Assertions.assertEquals("fujg", model.labVmsShutdown().timeZoneId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsShutdown().notificationSettings().status());
+        Assertions.assertEquals(226222516, model.labVmsShutdown().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("pttaqutd", model.labVmsShutdown().notificationSettings().webhookUrl());
+        Assertions.assertEquals("emxswvruu", model.labVmsShutdown().notificationSettings().emailRecipient());
+        Assertions.assertEquals("zjgehkfkim", model.labVmsShutdown().notificationSettings().notificationLocale());
+        Assertions.assertEquals("okffqyinljqepqwh", model.labVmsShutdown().targetResourceId());
+        Assertions.assertEquals("aykggnoxu", model.labVmsStartup().tags().get("t"));
+        Assertions.assertEquals("ahgx", model.labVmsStartup().location());
         Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsStartup().status());
-        Assertions.assertEquals("bodthsqqgvri", model.labVmsStartup().taskType());
-        Assertions.assertEquals("c", model.labVmsStartup().weeklyRecurrence().weekdays().get(0));
-        Assertions.assertEquals("mwohqfzizvuxmmkj", model.labVmsStartup().weeklyRecurrence().time());
-        Assertions.assertEquals("hnwpzt", model.labVmsStartup().dailyRecurrence().time());
-        Assertions.assertEquals(1962597445, model.labVmsStartup().hourlyRecurrence().minute());
-        Assertions.assertEquals("ribi", model.labVmsStartup().timeZoneId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsStartup().notificationSettings().status());
-        Assertions.assertEquals(456926110, model.labVmsStartup().notificationSettings().timeInMinutes());
-        Assertions.assertEquals("cfotangcfhnykzcu", model.labVmsStartup().notificationSettings().webhookUrl());
-        Assertions.assertEquals("wvxwlmzqwmvt", model.labVmsStartup().notificationSettings().emailRecipient());
-        Assertions.assertEquals("jmxmcuqud", model.labVmsStartup().notificationSettings().notificationLocale());
-        Assertions.assertEquals("lxynpdkvgf", model.labVmsStartup().targetResourceId());
+        Assertions.assertEquals("kzruswh", model.labVmsStartup().taskType());
+        Assertions.assertEquals("znvfbycjsxjww", model.labVmsStartup().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("wmxqhndvnoamlds", model.labVmsStartup().weeklyRecurrence().time());
+        Assertions.assertEquals("ohdjhhflzok", model.labVmsStartup().dailyRecurrence().time());
+        Assertions.assertEquals(1429661120, model.labVmsStartup().hourlyRecurrence().minute());
+        Assertions.assertEquals("e", model.labVmsStartup().timeZoneId());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsStartup().notificationSettings().status());
+        Assertions.assertEquals(1895884470, model.labVmsStartup().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("ltsxoatf", model.labVmsStartup().notificationSettings().webhookUrl());
+        Assertions.assertEquals("zpnpbswv", model.labVmsStartup().notificationSettings().emailRecipient());
+        Assertions.assertEquals("loccsrmozihm", model.labVmsStartup().notificationSettings().notificationLocale());
+        Assertions.assertEquals("wtxxpkyjcx", model.labVmsStartup().targetResourceId());
     }
 }

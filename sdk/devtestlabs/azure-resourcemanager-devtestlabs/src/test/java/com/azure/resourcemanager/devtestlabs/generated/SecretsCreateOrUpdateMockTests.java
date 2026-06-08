@@ -23,7 +23,7 @@ public final class SecretsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"iehycpnowawonoe\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"jzmpy\"},\"tags\":{\"gvthrmxkbcjww\":\"yfazbkocb\",\"pkeboozflyac\":\"xomraw\",\"lm\":\"gaedaoiq\"},\"location\":\"twgabdx\",\"id\":\"uz\",\"name\":\"wjecooyvhtuqbpe\",\"type\":\"nii\"}";
+            = "{\"properties\":{\"value\":\"ip\",\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"aebwfwhxorpwa\"},\"tags\":{\"trhthvazjpwex\":\"wugexojfccyl\",\"probzzxezmnrkjgp\":\"dr\"},\"location\":\"uxsphlokfpm\",\"id\":\"pd\",\"name\":\"zvfbhwbdquf\",\"type\":\"cgnrglaqrwy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class SecretsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Secret response = manager.secrets()
-            .define("lxvhhyqqegatxgrz")
-            .withExistingUser("lpyeu", "kppdi", "qb")
-            .withRegion("htleberpyljek")
-            .withTags(mapOf("qjsvep", "airwcqzoofj"))
-            .withValue("gin")
+            .define("qgpwbmwhr")
+            .withExistingUser("ytkujsq", "cm", "oxfab")
+            .withRegion("upp")
+            .withTags(mapOf("sfeqbbe", "icuhqvumspb", "uqfpyyxmzrmtm", "f", "uweyyjshcyb", "wi"))
+            .withValue("li")
             .create();
 
-        Assertions.assertEquals("yfazbkocb", response.tags().get("gvthrmxkbcjww"));
-        Assertions.assertEquals("twgabdx", response.location());
-        Assertions.assertEquals("iehycpnowawonoe", response.value());
+        Assertions.assertEquals("wugexojfccyl", response.tags().get("trhthvazjpwex"));
+        Assertions.assertEquals("uxsphlokfpm", response.location());
+        Assertions.assertEquals("ip", response.value());
     }
 
     // Use "Map.of" if available

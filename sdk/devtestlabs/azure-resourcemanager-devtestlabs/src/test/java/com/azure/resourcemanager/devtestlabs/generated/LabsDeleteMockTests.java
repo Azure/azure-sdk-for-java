@@ -27,7 +27,7 @@ public final class LabsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.labs().delete("albmqkyojwyvfk", "btsuahxs", com.azure.core.util.Context.NONE);
+        manager.labs().delete("ydjfb", "c", com.azure.core.util.Context.NONE);
 
     }
 }

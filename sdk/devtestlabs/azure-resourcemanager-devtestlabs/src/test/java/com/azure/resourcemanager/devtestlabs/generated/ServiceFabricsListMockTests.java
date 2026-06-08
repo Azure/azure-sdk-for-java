@@ -22,7 +22,7 @@ public final class ServiceFabricsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"rwtrdgscnvqeonsg\",\"environmentId\":\"xlw\",\"applicableSchedule\":{\"location\":\"yohxpth\",\"tags\":{\"esobpbokhmm\":\"pvkvtwf\",\"kasmcolmugpyva\":\"cdyarnggcjfwblqh\",\"kluwz\":\"s\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"tags\":{\"bg\":\"zvtyevjhubn\",\"mioyjpn\":\"qisqsqkp\",\"qdvrdmvxyrxdh\":\"lviqcpszpmc\",\"mbtple\":\"vqojbxaotcgbz\"},\"location\":\"ioyidoxznvg\",\"id\":\"tmuuvdawsx\",\"name\":\"rszbkn\",\"type\":\"mxlpnerxrz\"},\"labVmsStartup\":{\"properties\":{},\"tags\":{\"rzaqmnbx\":\"c\",\"jmbnvynf\":\"aehtd\",\"lsk\":\"ooeactedc\"},\"location\":\"ddida\",\"id\":\"llrqmtlpbyxro\",\"name\":\"duyqypf\",\"type\":\"mnoiicsudy\"}},\"id\":\"rjjtalxrdsjrho\",\"name\":\"uqwg\",\"type\":\"sxxhdodp\"},\"provisioningState\":\"yblvtbdmvsbyi\",\"uniqueIdentifier\":\"elqpvekmk\"},\"tags\":{\"dusxurs\":\"botlog\",\"iqrizfwihvaan\":\"ivuxcjkcoqwczs\",\"fdvbbaexxjfwtg\":\"qtnhjrfd\",\"mczfedyuepsvplt\":\"fkkauigvmua\"},\"location\":\"ajjvywe\",\"id\":\"fkumcfjxoky\",\"name\":\"lsyasv\",\"type\":\"nkwmygjj\"}]}";
+            = "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"astax\",\"environmentId\":\"pruulhg\",\"applicableSchedule\":{\"location\":\"izwxvs\",\"tags\":{\"yekgafxc\":\"gfyys\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"tags\":{\"ety\":\"ckwrtw\",\"lhpdhwynctaczcnj\":\"eszr\",\"x\":\"mbbfnv\"},\"location\":\"zovnkrtiklsm\",\"id\":\"hql\",\"name\":\"oqksyiibhyxwbgbu\",\"type\":\"avqdorbccqcd\"},\"labVmsStartup\":{\"properties\":{},\"tags\":{\"ucosawrdt\":\"jvlirk\",\"ihzqjjtsmuy\":\"agzlgpyai\",\"mcdcpkshl\":\"qfttkacybdueur\",\"bfdjhyaaknyukibx\":\"jermhzic\"},\"location\":\"lhphzwxq\",\"id\":\"jpiilh\",\"name\":\"tozyagjjnxkb\",\"type\":\"lh\"}},\"id\":\"xgffklvq\",\"name\":\"rwtrdgscnvqeonsg\",\"type\":\"wxlwme\"},\"provisioningState\":\"ohxp\",\"uniqueIdentifier\":\"ceopvk\"},\"tags\":{\"obpbokhmm\":\"fve\",\"kasmcolmugpyva\":\"cdyarnggcjfwblqh\",\"kluwz\":\"s\"},\"location\":\"ygz\",\"id\":\"yevjhubnobguq\",\"name\":\"sqsqkpdmioyjpnml\",\"type\":\"iqcpszpmcvq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ServiceFabricsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ServiceFabric> response = manager.serviceFabrics()
-            .list("jermhzic", "bfdjhyaaknyukibx", "glhphzwx", "tej", "iilhvtozyagj", 819545266, "xkbylhyyxgffklv",
-                com.azure.core.util.Context.NONE);
+            .list("tpuwnnohmmzngocf", "juypwyiulaynosu", "kfhaxttpfsmwgsgh", "ucumlddauqml", "feothxu", 634362693,
+                "igrjdljlkqhvkrbz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("botlog", response.iterator().next().tags().get("dusxurs"));
-        Assertions.assertEquals("ajjvywe", response.iterator().next().location());
-        Assertions.assertEquals("rwtrdgscnvqeonsg", response.iterator().next().externalServiceFabricId());
-        Assertions.assertEquals("xlw", response.iterator().next().environmentId());
+        Assertions.assertEquals("fve", response.iterator().next().tags().get("obpbokhmm"));
+        Assertions.assertEquals("ygz", response.iterator().next().location());
+        Assertions.assertEquals("astax", response.iterator().next().externalServiceFabricId());
+        Assertions.assertEquals("pruulhg", response.iterator().next().environmentId());
     }
 }

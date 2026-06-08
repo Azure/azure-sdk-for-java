@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataDiskStorageTypeInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataDiskStorageTypeInfo model = BinaryData.fromString("{\"lun\":\"jivfxzsjabib\",\"storageType\":\"Standard\"}")
-            .toObject(DataDiskStorageTypeInfo.class);
-        Assertions.assertEquals("jivfxzsjabib", model.lun());
-        Assertions.assertEquals(StorageType.STANDARD, model.storageType());
+        DataDiskStorageTypeInfo model
+            = BinaryData.fromString("{\"lun\":\"paslthaqfxssmwu\",\"storageType\":\"Premium\"}")
+                .toObject(DataDiskStorageTypeInfo.class);
+        Assertions.assertEquals("paslthaqfxssmwu", model.lun());
+        Assertions.assertEquals(StorageType.PREMIUM, model.storageType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataDiskStorageTypeInfo model
-            = new DataDiskStorageTypeInfo().withLun("jivfxzsjabib").withStorageType(StorageType.STANDARD);
+            = new DataDiskStorageTypeInfo().withLun("paslthaqfxssmwu").withStorageType(StorageType.PREMIUM);
         model = BinaryData.fromObject(model).toObject(DataDiskStorageTypeInfo.class);
-        Assertions.assertEquals("jivfxzsjabib", model.lun());
-        Assertions.assertEquals(StorageType.STANDARD, model.storageType());
+        Assertions.assertEquals("paslthaqfxssmwu", model.lun());
+        Assertions.assertEquals(StorageType.PREMIUM, model.storageType());
     }
 }

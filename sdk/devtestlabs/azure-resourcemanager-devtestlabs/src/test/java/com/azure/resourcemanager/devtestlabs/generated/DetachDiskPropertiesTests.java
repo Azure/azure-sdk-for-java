@@ -12,14 +12,14 @@ public final class DetachDiskPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DetachDiskProperties model
-            = BinaryData.fromString("{\"leasedByLabVmId\":\"tffyaqit\"}").toObject(DetachDiskProperties.class);
-        Assertions.assertEquals("tffyaqit", model.leasedByLabVmId());
+            = BinaryData.fromString("{\"leasedByLabVmId\":\"nrzvuljraaer\"}").toObject(DetachDiskProperties.class);
+        Assertions.assertEquals("nrzvuljraaer", model.leasedByLabVmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DetachDiskProperties model = new DetachDiskProperties().withLeasedByLabVmId("tffyaqit");
+        DetachDiskProperties model = new DetachDiskProperties().withLeasedByLabVmId("nrzvuljraaer");
         model = BinaryData.fromObject(model).toObject(DetachDiskProperties.class);
-        Assertions.assertEquals("tffyaqit", model.leasedByLabVmId());
+        Assertions.assertEquals("nrzvuljraaer", model.leasedByLabVmId());
     }
 }

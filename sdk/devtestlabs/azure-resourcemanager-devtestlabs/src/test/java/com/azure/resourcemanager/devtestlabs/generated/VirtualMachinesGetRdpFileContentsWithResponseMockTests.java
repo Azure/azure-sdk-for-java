@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class VirtualMachinesGetRdpFileContentsWithResponseMockTests {
     @Test
     public void testGetRdpFileContentsWithResponse() throws Exception {
-        String responseStr = "{\"contents\":\"joduifvulxfaryrv\"}";
+        String responseStr = "{\"contents\":\"mfwsxafofu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,10 @@ public final class VirtualMachinesGetRdpFileContentsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RdpConnection response = manager.virtualMachines()
-            .getRdpFileContentsWithResponse("e", "tkutnjil", "ukkrehyh", com.azure.core.util.Context.NONE)
+            .getRdpFileContentsWithResponse("fphmdzxplg", "pvdvatlzmgs", "hnzrsbkkzovlzdm",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("joduifvulxfaryrv", response.contents());
+        Assertions.assertEquals("mfwsxafofu", response.contents());
     }
 }

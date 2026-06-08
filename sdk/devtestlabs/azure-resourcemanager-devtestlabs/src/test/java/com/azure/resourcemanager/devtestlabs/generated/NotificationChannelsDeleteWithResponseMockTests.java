@@ -28,7 +28,7 @@ public final class NotificationChannelsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.notificationChannels()
-            .deleteWithResponse("ekotjgxi", "qfkyfhiwvjaqu", "by", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("sdohz", "iucbda", "mbwiinjdllwktl", com.azure.core.util.Context.NONE);
 
     }
 }

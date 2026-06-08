@@ -17,34 +17,32 @@ public final class DtlEnvironmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DtlEnvironmentInner model = BinaryData.fromString(
-            "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"eioqaqhvse\",\"parameters\":[{\"name\":\"yrxpdlcgqls\",\"value\":\"mjqfrddgamquhio\"},{\"name\":\"sjuivfcdisyir\",\"value\":\"zhczexrxzbujrtrh\"}]},\"armTemplateDisplayName\":\"wrevkhgnlnzon\",\"resourceGroupId\":\"rpiqywncv\",\"createdByUser\":\"szcofizeht\",\"provisioningState\":\"gbjkvreljeamur\",\"uniqueIdentifier\":\"mlovuanashcxl\"},\"tags\":{\"lvidizozs\":\"erbdk\",\"n\":\"bccxjmonfdgn\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\",\"cu\":\"lyhb\"},\"location\":\"hxgsrboldfor\",\"id\":\"wjlvizbfhfov\",\"name\":\"acqpbtuodxesza\",\"type\":\"belawumuaslzkwr\"}")
+            "{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"kqg\",\"parameters\":[{\"name\":\"qnvb\",\"value\":\"ylaxxulcdi\"}]},\"armTemplateDisplayName\":\"osfjbjsv\",\"resourceGroupId\":\"rwhryvycytd\",\"createdByUser\":\"xgccknfnw\",\"provisioningState\":\"tmvpdvjdhtt\",\"uniqueIdentifier\":\"efedxihchrphkm\"},\"tags\":{\"fzpbgtgkyl\":\"dqns\",\"jeuut\":\"dgh\",\"bwnhhtql\":\"wxezwzhok\"},\"location\":\"hgppipifhpfeoa\",\"id\":\"gcxtxj\",\"name\":\"sheafid\",\"type\":\"tugsresmkssjh\"}")
             .toObject(DtlEnvironmentInner.class);
-        Assertions.assertEquals("erbdk", model.tags().get("lvidizozs"));
-        Assertions.assertEquals("hxgsrboldfor", model.location());
-        Assertions.assertEquals("eioqaqhvse", model.deploymentProperties().armTemplateId());
-        Assertions.assertEquals("yrxpdlcgqls", model.deploymentProperties().parameters().get(0).name());
-        Assertions.assertEquals("mjqfrddgamquhio", model.deploymentProperties().parameters().get(0).value());
-        Assertions.assertEquals("wrevkhgnlnzon", model.armTemplateDisplayName());
+        Assertions.assertEquals("dqns", model.tags().get("fzpbgtgkyl"));
+        Assertions.assertEquals("hgppipifhpfeoa", model.location());
+        Assertions.assertEquals("kqg", model.deploymentProperties().armTemplateId());
+        Assertions.assertEquals("qnvb", model.deploymentProperties().parameters().get(0).name());
+        Assertions.assertEquals("ylaxxulcdi", model.deploymentProperties().parameters().get(0).value());
+        Assertions.assertEquals("osfjbjsv", model.armTemplateDisplayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DtlEnvironmentInner model = new DtlEnvironmentInner()
-            .withTags(
-                mapOf("lvidizozs", "erbdk", "n", "bccxjmonfdgn", "keifzzhmkdasv", "ypuuwwltvuqjctze", "cu", "lyhb"))
-            .withLocation("hxgsrboldfor")
-            .withDeploymentProperties(new EnvironmentDeploymentProperties().withArmTemplateId("eioqaqhvse")
-                .withParameters(Arrays.asList(
-                    new ArmTemplateParameterProperties().withName("yrxpdlcgqls").withValue("mjqfrddgamquhio"),
-                    new ArmTemplateParameterProperties().withName("sjuivfcdisyir").withValue("zhczexrxzbujrtrh"))))
-            .withArmTemplateDisplayName("wrevkhgnlnzon");
+            .withTags(mapOf("fzpbgtgkyl", "dqns", "jeuut", "dgh", "bwnhhtql", "wxezwzhok"))
+            .withLocation("hgppipifhpfeoa")
+            .withDeploymentProperties(new EnvironmentDeploymentProperties().withArmTemplateId("kqg")
+                .withParameters(
+                    Arrays.asList(new ArmTemplateParameterProperties().withName("qnvb").withValue("ylaxxulcdi"))))
+            .withArmTemplateDisplayName("osfjbjsv");
         model = BinaryData.fromObject(model).toObject(DtlEnvironmentInner.class);
-        Assertions.assertEquals("erbdk", model.tags().get("lvidizozs"));
-        Assertions.assertEquals("hxgsrboldfor", model.location());
-        Assertions.assertEquals("eioqaqhvse", model.deploymentProperties().armTemplateId());
-        Assertions.assertEquals("yrxpdlcgqls", model.deploymentProperties().parameters().get(0).name());
-        Assertions.assertEquals("mjqfrddgamquhio", model.deploymentProperties().parameters().get(0).value());
-        Assertions.assertEquals("wrevkhgnlnzon", model.armTemplateDisplayName());
+        Assertions.assertEquals("dqns", model.tags().get("fzpbgtgkyl"));
+        Assertions.assertEquals("hgppipifhpfeoa", model.location());
+        Assertions.assertEquals("kqg", model.deploymentProperties().armTemplateId());
+        Assertions.assertEquals("qnvb", model.deploymentProperties().parameters().get(0).name());
+        Assertions.assertEquals("ylaxxulcdi", model.deploymentProperties().parameters().get(0).value());
+        Assertions.assertEquals("osfjbjsv", model.armTemplateDisplayName());
     }
 
     // Use "Map.of" if available

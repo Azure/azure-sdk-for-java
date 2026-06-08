@@ -12,19 +12,19 @@ public final class ServiceFabricPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceFabricPropertiesInner model = BinaryData.fromString(
-            "{\"externalServiceFabricId\":\"vnersbycucrw\",\"environmentId\":\"mikzeb\",\"applicableSchedule\":{\"location\":\"smswziqgfuh\",\"tags\":{\"czznvfbycjsxj\":\"ruswhv\",\"vumwmxqh\":\"wix\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"amldseh\",\"weeklyRecurrence\":{\"weekdays\":[\"jhhflzokxcoxpel\"],\"time\":\"eta\"},\"dailyRecurrence\":{\"time\":\"sxoa\"},\"hourlyRecurrence\":{\"minute\":184618447},\"timeZoneId\":\"pnpbswveflocc\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":1317782310,\"webhookUrl\":\"m\",\"emailRecipient\":\"g\",\"notificationLocale\":\"txx\"},\"createdDate\":\"2021-06-29T13:46:46Z\",\"targetResourceId\":\"cxcjxgry\",\"provisioningState\":\"mpcycilrmcaykgg\",\"uniqueIdentifier\":\"xu\"},\"tags\":{\"cpfnznthjtwkja\":\"ksxwpnd\",\"tcqiosmg\":\"srxuzvoam\",\"xqdlyrtltlapr\":\"zah\"},\"location\":\"zkatb\",\"id\":\"mznnbsoqeqalarvl\",\"name\":\"gunbtgfebwlnbm\",\"type\":\"yreeudz\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"dqmjxly\",\"weeklyRecurrence\":{\"weekdays\":[\"gouwtlmj\",\"yuojqtobaxk\",\"eytu\"],\"time\":\"bfjkw\"},\"dailyRecurrence\":{\"time\":\"nkqbhsyrq\"},\"hourlyRecurrence\":{\"minute\":620994471},\"timeZoneId\":\"denxau\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":95985677,\"webhookUrl\":\"ifmjnn\",\"emailRecipient\":\"tqabpxuckpgg\",\"notificationLocale\":\"wey\"},\"createdDate\":\"2021-04-18T01:33:53Z\",\"targetResourceId\":\"lisn\",\"provisioningState\":\"fl\",\"uniqueIdentifier\":\"mpizru\"},\"tags\":{\"iixtmkzj\":\"qxpxiwfcngjsaa\",\"irhgfgrwsdp\":\"kv\"},\"location\":\"atzv\",\"id\":\"glbyvi\",\"name\":\"tctbrxkjzwrgxffm\",\"type\":\"hkwfbkgozxwop\"}},\"id\":\"yd\",\"name\":\"izqaclnapxbiyg\",\"type\":\"ugjknf\"},\"provisioningState\":\"fcttuxuuyilfl\",\"uniqueIdentifier\":\"iquvrehm\"}")
+            "{\"externalServiceFabricId\":\"ucljgkyexaoguya\",\"environmentId\":\"ids\",\"applicableSchedule\":{\"location\":\"ltxijjumfqwazln\",\"tags\":{\"usfzsvtuikzha\":\"cjngzqdqxtbjwgny\"},\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"fh\",\"weeklyRecurrence\":{\"weekdays\":[\"ryxynqnzrd\",\"sovwxznptgoeiyb\"],\"time\":\"bp\"},\"dailyRecurrence\":{\"time\":\"f\"},\"hourlyRecurrence\":{\"minute\":510494448},\"timeZoneId\":\"tjlrigjksky\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":714440003,\"webhookUrl\":\"dsxwaab\",\"emailRecipient\":\"ifrygzn\",\"notificationLocale\":\"axri\"},\"createdDate\":\"2021-02-02T15:25:14Z\",\"targetResourceId\":\"bgopxlhslnel\",\"provisioningState\":\"eixynllxecwcroj\",\"uniqueIdentifier\":\"slhcawjutifd\"},\"tags\":{\"afhonqj\":\"vigorqjbttzhragl\"},\"location\":\"eickpz\",\"id\":\"p\",\"name\":\"pmxelnwcltyje\",\"type\":\"ex\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"kqscazuawxtzx\",\"weeklyRecurrence\":{\"weekdays\":[\"wabzxrvxcushsp\",\"aivmxyasflvgs\",\"zwywako\"],\"time\":\"knsmjblmljhlnymz\"},\"dailyRecurrence\":{\"time\":\"yryuzcb\"},\"hourlyRecurrence\":{\"minute\":1331204401},\"timeZoneId\":\"mv\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1895835136,\"webhookUrl\":\"onsupeujlz\",\"emailRecipient\":\"hcvsqltnzoi\",\"notificationLocale\":\"sxgnx\"},\"createdDate\":\"2021-05-19T23:46Z\",\"targetResourceId\":\"nmpqoxwdofdb\",\"provisioningState\":\"qxeiiqbimhtmwwi\",\"uniqueIdentifier\":\"ehfqpofvwbc\"},\"tags\":{\"vqvxk\":\"mbnkb\",\"tswbzuwfmd\":\"ivqiheb\"},\"location\":\"agegiz\",\"id\":\"jfelisdjubggbqig\",\"name\":\"xkbsazgakgac\",\"type\":\"rcmjdmspofapvuh\"}},\"id\":\"lniofrzgbzje\",\"name\":\"mstk\",\"type\":\"nlvxbcuii\"},\"provisioningState\":\"ktwfa\",\"uniqueIdentifier\":\"nv\"}")
             .toObject(ServiceFabricPropertiesInner.class);
-        Assertions.assertEquals("vnersbycucrw", model.externalServiceFabricId());
-        Assertions.assertEquals("mikzeb", model.environmentId());
+        Assertions.assertEquals("ucljgkyexaoguya", model.externalServiceFabricId());
+        Assertions.assertEquals("ids", model.environmentId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceFabricPropertiesInner model
-            = new ServiceFabricPropertiesInner().withExternalServiceFabricId("vnersbycucrw")
-                .withEnvironmentId("mikzeb");
+            = new ServiceFabricPropertiesInner().withExternalServiceFabricId("ucljgkyexaoguya")
+                .withEnvironmentId("ids");
         model = BinaryData.fromObject(model).toObject(ServiceFabricPropertiesInner.class);
-        Assertions.assertEquals("vnersbycucrw", model.externalServiceFabricId());
-        Assertions.assertEquals("mikzeb", model.environmentId());
+        Assertions.assertEquals("ucljgkyexaoguya", model.externalServiceFabricId());
+        Assertions.assertEquals("ids", model.environmentId());
     }
 }

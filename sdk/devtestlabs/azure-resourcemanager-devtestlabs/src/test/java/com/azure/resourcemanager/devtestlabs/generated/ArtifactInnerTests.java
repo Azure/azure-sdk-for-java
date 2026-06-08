@@ -12,9 +12,9 @@ public final class ArtifactInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArtifactInner model = BinaryData.fromString(
-            "{\"properties\":{\"title\":\"ejrjxgciqibrho\",\"description\":\"sdqrhzoymibmrq\",\"publisher\":\"bahwfl\",\"filePath\":\"zdtmhrkwofy\",\"icon\":\"oqac\",\"targetOsType\":\"expbtg\",\"parameters\":\"\\\"databwoenwashrt\\\"\",\"createdDate\":\"2021-03-25T05:20:51Z\"},\"tags\":{\"waasip\":\"qxwbpokulpiu\",\"obyu\":\"i\"},\"location\":\"rpqlp\",\"id\":\"cciuqgbdbutau\",\"name\":\"fbtkuwhhmhyk\",\"type\":\"joxafnndlpi\"}")
+            "{\"properties\":{\"title\":\"fuflrwdmhdlx\",\"description\":\"rxsagafcnihgwqa\",\"publisher\":\"edgfbcvkcvq\",\"filePath\":\"keqdcvdrhvoods\",\"icon\":\"bobzdopcjwvnhd\",\"targetOsType\":\"wmgxcxrsl\",\"parameters\":\"\\\"datautwu\\\"\",\"createdDate\":\"2021-07-28T00:53:44Z\"},\"tags\":{\"yqsluic\":\"khjwn\",\"modfvuefywsbpfvm\":\"dggkzzlvmbmpa\"},\"location\":\"hrfou\",\"id\":\"taakc\",\"name\":\"wiyzvqtmnubexkp\",\"type\":\"ksmond\"}")
             .toObject(ArtifactInner.class);
-        Assertions.assertEquals("qxwbpokulpiu", model.tags().get("waasip"));
-        Assertions.assertEquals("rpqlp", model.location());
+        Assertions.assertEquals("khjwn", model.tags().get("yqsluic"));
+        Assertions.assertEquals("hrfou", model.location());
     }
 }

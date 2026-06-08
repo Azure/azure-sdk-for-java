@@ -26,7 +26,7 @@ public final class PoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"xpejpewpy\",\"status\":\"Disabled\",\"factName\":\"LabTargetCost\",\"factData\":\"pqcrzgeuqxbpiat\",\"threshold\":\"aujegqdtadra\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-11-21T07:02:15Z\",\"provisioningState\":\"krukizyhgsqt\",\"uniqueIdentifier\":\"s\"},\"tags\":{\"ggweeiwdhdmncgb\":\"qfpjb\",\"dfb\":\"zuscstunmlh\"},\"location\":\"ciichgj\",\"id\":\"smvxodgw\",\"name\":\"f\",\"type\":\"zsifcuvbdujgcwx\"}";
+            = "{\"properties\":{\"description\":\"ncclabvoyngsuxxc\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"ogh\",\"threshold\":\"a\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-09-07T05:46:22Z\",\"provisioningState\":\"rmov\",\"uniqueIdentifier\":\"xurntujm\"},\"tags\":{\"e\":\"unwemhd\"},\"location\":\"slkyozd\",\"id\":\"zjuegrh\",\"name\":\"htslejtvxj\",\"type\":\"xvgjbfi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,27 +36,26 @@ public final class PoliciesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Policy response = manager.policies()
-            .define("dsaidjanormovdxx")
-            .withExistingPolicyset("rncclabv", "yngsuxxcz", "myqjog")
-            .withRegion("mnoejhqlfmsib")
-            .withTags(mapOf("cbjqqwmtqsm", "jod", "cywnfyszza", "xsazuxejgw", "ozsyvrm", "zsinqbdnddb", "eeih",
-                "jmyitrchwudl"))
-            .withDescription("ntujmoilunwemhd")
+            .define("mvgxsmpknpwir")
+            .withExistingPolicyset("uowyrnskbyhqu", "czygxv", "ajpxecxqnwhscoza")
+            .withRegion("adkm")
+            .withTags(mapOf("dyotnplfacqoccq", "prstvkitbfj", "hutfdoadtxopge", "qxwetjtd"))
+            .withDescription("jfewxqouox")
             .withStatus(PolicyStatus.DISABLED)
-            .withFactName(PolicyFactName.GALLERY_IMAGE)
-            .withFactData("kyozds")
-            .withThreshold("jue")
+            .withFactName(PolicyFactName.LAB_VM_SIZE)
+            .withFactData("aprhknqiijgencdg")
+            .withThreshold("queqihk")
             .withEvaluatorType(PolicyEvaluatorType.ALLOWED_VALUES_POLICY)
             .create();
 
-        Assertions.assertEquals("qfpjb", response.tags().get("ggweeiwdhdmncgb"));
-        Assertions.assertEquals("ciichgj", response.location());
-        Assertions.assertEquals("xpejpewpy", response.description());
-        Assertions.assertEquals(PolicyStatus.DISABLED, response.status());
-        Assertions.assertEquals(PolicyFactName.LAB_TARGET_COST, response.factName());
-        Assertions.assertEquals("pqcrzgeuqxbpiat", response.factData());
-        Assertions.assertEquals("aujegqdtadra", response.threshold());
-        Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, response.evaluatorType());
+        Assertions.assertEquals("unwemhd", response.tags().get("e"));
+        Assertions.assertEquals("slkyozd", response.location());
+        Assertions.assertEquals("ncclabvoyngsuxxc", response.description());
+        Assertions.assertEquals(PolicyStatus.ENABLED, response.status());
+        Assertions.assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET, response.factName());
+        Assertions.assertEquals("ogh", response.factData());
+        Assertions.assertEquals("a", response.threshold());
+        Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, response.evaluatorType());
     }
 
     // Use "Map.of" if available

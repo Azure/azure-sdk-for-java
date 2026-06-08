@@ -17,37 +17,39 @@ public final class PolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"kzbrmsgeivsiy\",\"status\":\"Enabled\",\"factName\":\"GalleryImage\",\"factData\":\"jdxon\",\"threshold\":\"oggculapz\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-08-05T01:58:35Z\",\"provisioningState\":\"gtqxep\",\"uniqueIdentifier\":\"lbfu\"},\"tags\":{\"vofqzhvfc\":\"yjt\"},\"location\":\"yfm\",\"id\":\"uxrkjp\",\"name\":\"dwxf\",\"type\":\"wiivwzjbhyzsx\"}")
+            "{\"properties\":{\"description\":\"jplmagstcy\",\"status\":\"Disabled\",\"factName\":\"ScheduleEditPermission\",\"factData\":\"rkdbdgiogsjkmnwq\",\"threshold\":\"obaiyhddviaceg\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-10-12T00:07:33Z\",\"provisioningState\":\"pmvmemfnczdwvv\",\"uniqueIdentifier\":\"lxlllchpo\"},\"tags\":{\"vsjcswsmystuluqy\":\"evwrdnhfuk\",\"qbmfpjbabwidf\":\"fcvlerch\",\"g\":\"xsspuunnoxyhk\",\"oqcaaewdaomdj\":\"ddrihpf\"},\"location\":\"pjxxkzb\",\"id\":\"sgeivsiy\",\"name\":\"zkdnc\",\"type\":\"dxonbzoggculap\"}")
             .toObject(PolicyInner.class);
-        Assertions.assertEquals("yjt", model.tags().get("vofqzhvfc"));
-        Assertions.assertEquals("yfm", model.location());
-        Assertions.assertEquals("kzbrmsgeivsiy", model.description());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
-        Assertions.assertEquals(PolicyFactName.GALLERY_IMAGE, model.factName());
-        Assertions.assertEquals("jdxon", model.factData());
-        Assertions.assertEquals("oggculapz", model.threshold());
-        Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.evaluatorType());
+        Assertions.assertEquals("evwrdnhfuk", model.tags().get("vsjcswsmystuluqy"));
+        Assertions.assertEquals("pjxxkzb", model.location());
+        Assertions.assertEquals("jplmagstcy", model.description());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
+        Assertions.assertEquals(PolicyFactName.SCHEDULE_EDIT_PERMISSION, model.factName());
+        Assertions.assertEquals("rkdbdgiogsjkmnwq", model.factData());
+        Assertions.assertEquals("obaiyhddviaceg", model.threshold());
+        Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, model.evaluatorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyInner model = new PolicyInner().withTags(mapOf("vofqzhvfc", "yjt"))
-            .withLocation("yfm")
-            .withDescription("kzbrmsgeivsiy")
-            .withStatus(PolicyStatus.ENABLED)
-            .withFactName(PolicyFactName.GALLERY_IMAGE)
-            .withFactData("jdxon")
-            .withThreshold("oggculapz")
-            .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY);
+        PolicyInner model = new PolicyInner()
+            .withTags(mapOf("vsjcswsmystuluqy", "evwrdnhfuk", "qbmfpjbabwidf", "fcvlerch", "g", "xsspuunnoxyhk",
+                "oqcaaewdaomdj", "ddrihpf"))
+            .withLocation("pjxxkzb")
+            .withDescription("jplmagstcy")
+            .withStatus(PolicyStatus.DISABLED)
+            .withFactName(PolicyFactName.SCHEDULE_EDIT_PERMISSION)
+            .withFactData("rkdbdgiogsjkmnwq")
+            .withThreshold("obaiyhddviaceg")
+            .withEvaluatorType(PolicyEvaluatorType.ALLOWED_VALUES_POLICY);
         model = BinaryData.fromObject(model).toObject(PolicyInner.class);
-        Assertions.assertEquals("yjt", model.tags().get("vofqzhvfc"));
-        Assertions.assertEquals("yfm", model.location());
-        Assertions.assertEquals("kzbrmsgeivsiy", model.description());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
-        Assertions.assertEquals(PolicyFactName.GALLERY_IMAGE, model.factName());
-        Assertions.assertEquals("jdxon", model.factData());
-        Assertions.assertEquals("oggculapz", model.threshold());
-        Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, model.evaluatorType());
+        Assertions.assertEquals("evwrdnhfuk", model.tags().get("vsjcswsmystuluqy"));
+        Assertions.assertEquals("pjxxkzb", model.location());
+        Assertions.assertEquals("jplmagstcy", model.description());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
+        Assertions.assertEquals(PolicyFactName.SCHEDULE_EDIT_PERMISSION, model.factName());
+        Assertions.assertEquals("rkdbdgiogsjkmnwq", model.factData());
+        Assertions.assertEquals("obaiyhddviaceg", model.threshold());
+        Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, model.evaluatorType());
     }
 
     // Use "Map.of" if available
