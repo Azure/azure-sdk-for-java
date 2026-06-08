@@ -96,20 +96,6 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The BetaAgentsImpl object to access its operations.
-     */
-    private final BetaAgentsImpl betaAgents;
-
-    /**
-     * Gets the BetaAgentsImpl object to access its operations.
-     * 
-     * @return the BetaAgentsImpl object.
-     */
-    public BetaAgentsImpl getBetaAgents() {
-        return this.betaAgents;
-    }
-
-    /**
      * The BetaMemoryStoresImpl object to access its operations.
      */
     private final BetaMemoryStoresImpl betaMemoryStores;
@@ -135,6 +121,20 @@ public final class AgentsClientImpl {
      */
     public BetaToolboxesImpl getBetaToolboxes() {
         return this.betaToolboxes;
+    }
+
+    /**
+     * The BetaAgentsImpl object to access its operations.
+     */
+    private final BetaAgentsImpl betaAgents;
+
+    /**
+     * Gets the BetaAgentsImpl object to access its operations.
+     * 
+     * @return the BetaAgentsImpl object.
+     */
+    public BetaAgentsImpl getBetaAgents() {
+        return this.betaAgents;
     }
 
     /**
@@ -208,9 +208,9 @@ public final class AgentsClientImpl {
         this.endpoint = endpoint;
         this.foundryFeatures = foundryFeatures;
         this.serviceVersion = serviceVersion;
-        this.betaAgents = new BetaAgentsImpl(this);
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);
         this.betaToolboxes = new BetaToolboxesImpl(this);
+        this.betaAgents = new BetaAgentsImpl(this);
         this.agents = new AgentsImpl(this);
     }
 }

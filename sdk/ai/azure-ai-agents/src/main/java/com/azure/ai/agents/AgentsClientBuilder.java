@@ -61,13 +61,13 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClientBuilder(
     serviceClients = {
-        BetaAgentsClient.class,
         BetaMemoryStoresClient.class,
         BetaToolboxesClient.class,
+        BetaAgentsClient.class,
         AgentsClient.class,
-        BetaAgentsAsyncClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaToolboxesAsyncClient.class,
+        BetaAgentsAsyncClient.class,
         AgentsAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,

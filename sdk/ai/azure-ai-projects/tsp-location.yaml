@@ -1,3 +1,27 @@
-directory: specification/ai-foundry/data-plane/Foundry
-commit: 2caf5b4203873612c63ac68d716e765028bbd20c
+directory: specification/ai-foundry/data-plane/Foundry/src/sdk-java-azure-ai-projects
+commit: f8e667f99d6ad30020a26e96295d965869f044df
 repo: Azure/azure-rest-api-specs
+additionalDirectories:
+    - specification/ai-foundry/data-plane/Foundry/src/agents-session-files
+    - specification/ai-foundry/data-plane/Foundry/src/common
+    - specification/ai-foundry/data-plane/Foundry/src/connections
+    - specification/ai-foundry/data-plane/Foundry/src/data_generation_jobs
+    - specification/ai-foundry/data-plane/Foundry/src/datasets
+    - specification/ai-foundry/data-plane/Foundry/src/deployments
+    - specification/ai-foundry/data-plane/Foundry/src/evaluation-rules
+    - specification/ai-foundry/data-plane/Foundry/src/evaluation-taxonomies
+    - specification/ai-foundry/data-plane/Foundry/src/evaluators
+    - specification/ai-foundry/data-plane/Foundry/src/indexes
+    - specification/ai-foundry/data-plane/Foundry/src/insights
+    - specification/ai-foundry/data-plane/Foundry/src/memory-stores
+    - specification/ai-foundry/data-plane/Foundry/src/models
+    - specification/ai-foundry/data-plane/Foundry/src/openai-conversations
+    - specification/ai-foundry/data-plane/Foundry/src/openai-evaluations
+    - specification/ai-foundry/data-plane/Foundry/src/openai-responses
+    - specification/ai-foundry/data-plane/Foundry/src/red-teams
+    - specification/ai-foundry/data-plane/Foundry/src/routines
+    - specification/ai-foundry/data-plane/Foundry/src/schedules
+    - specification/ai-foundry/data-plane/Foundry/src/servicepatterns.tsp
+    - specification/ai-foundry/data-plane/Foundry/src/skills
+    - specification/ai-foundry/data-plane/Foundry/src/toolboxes
+    - specification/ai-foundry/data-plane/Foundry/src/tools
