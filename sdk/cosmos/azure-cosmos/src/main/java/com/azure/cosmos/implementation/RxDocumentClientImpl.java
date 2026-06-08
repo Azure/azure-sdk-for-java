@@ -6231,7 +6231,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 });
 
             return responseObservable
-                .map(serviceResponse -> BatchResponseParser.fromDocumentServiceResponse(serviceResponse, serverBatchRequest, true));
+                .map(serviceResponse -> {
+                    logger.info(
+                        "RxDocumentClientImpl - raw wire batch response before parsing: connectionMode={}, "
+                            + "statusCode={}, activityId={}, "
+                            + "payloadLength={}, headers={}, body={}",
+                        this.connectionPolicy.getConnectionMode(),
+                        serviceResponse.getStatusCode(),
+                        serviceResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID),
+                        serviceResponse.getResponsePayloadLength(),
+                        serviceResponse.getResponseHeaders(),
+                        serviceResponse.getResponseBody());
+
+                    return BatchResponseParser.fromDocumentServiceResponse(serviceResponse, serverBatchRequest, true);
+                });
 
         } catch (Exception ex) {
             logger.debug("Failure in executing a batch due to [{}]", ex.getMessage(), ex);

@@ -662,6 +662,17 @@ public final class BulkExecutor<TContext> implements Disposable {
         CosmosItemOperation itemOperation = operationResult.getOperation();
         TContext actualContext = this.getActualContext(itemOperation);
 
+        logger.info(
+            "BulkExecutor - mapped batch operation result to bulk item response: responseStatusCode={}, "
+                + "operationResultStatusCode={}, bulkItemStatusCode={}, operationType={}, {}, Context: {} {}",
+            response.getStatusCode(),
+            operationResult.getStatusCode(),
+            cosmosBulkItemResponse.getStatusCode(),
+            itemOperation != null ? itemOperation.getOperationType() : null,
+            getItemOperationDiagnostics(itemOperation),
+            this.operationContextText,
+            getThreadInfo());
+
         logDebugOrWarning(
             "HandleTransactionalBatchOperationResult - PKRange {}, Response Status Code {}, " +
                 "Operation Status Code, {}, {}, Context: {} {}",

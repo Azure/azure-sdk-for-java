@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ import java.util.List;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 public final class BatchResponseParser {
+    private static final Logger logger = LoggerFactory.getLogger(BatchResponseParser.class);
+    private static final int MAX_LOGGED_OPERATION_LENGTH = 256;
 
     /** Creates a transactional batch response from a documentServiceResponse.
      *
@@ -40,9 +44,35 @@ public final class BatchResponseParser {
 
         CosmosBatchResponse response = null;
         final JsonNode responseContentAsJson = documentServiceResponse.getResponseBody();
+        int responseStatusCode = documentServiceResponse.getStatusCode();
+        int responseSubStatusCode = BatchExecUtils.getSubStatusCode(documentServiceResponse.getResponseHeaders());
+
+        logger.info(
+            "BatchResponseParser - received batch response: requestOperationCount={}, outerStatusCode={}, "
+                + "outerSubStatusCode={}, payloadLength={}, payloadPresent={}, isAtomicBatch={}, shouldContinueOnError={}",
+            request.getOperations().size(),
+            responseStatusCode,
+            responseSubStatusCode,
+            documentServiceResponse.getResponsePayloadLength(),
+            responseContentAsJson != null,
+            request.isAtomicBatch(),
+            request.isShouldContinueOnError());
 
         if (responseContentAsJson != null) {
-            response = BatchResponseParser.populateFromResponseContent(documentServiceResponse, request, shouldPromoteOperationStatus);
+            logger.info("BatchResponseParser - full raw batch response payload: {}", responseContentAsJson);
+
+            try {
+                response = BatchResponseParser.populateFromResponseContent(documentServiceResponse, request, shouldPromoteOperationStatus);
+            } catch (RuntimeException exception) {
+                logger.error(
+                    "BatchResponseParser - failed to parse batch response payload. outerStatusCode={}, "
+                        + "outerSubStatusCode={}, payload={}",
+                    responseStatusCode,
+                    responseSubStatusCode,
+                    responseContentAsJson,
+                    exception);
+                throw exception;
+            }
 
             if (response == null) {
                 // Convert any payload read failures as InternalServerError
@@ -55,10 +85,13 @@ public final class BatchResponseParser {
             }
         }
 
-        int responseStatusCode = documentServiceResponse.getStatusCode();
-        int responseSubStatusCode = BatchExecUtils.getSubStatusCode(documentServiceResponse.getResponseHeaders());
-
         if (response == null) {
+            logger.info(
+                "BatchResponseParser - no response payload was parsed; creating batch response from outer status. "
+                    + "outerStatusCode={}, outerSubStatusCode={}",
+                responseStatusCode,
+                responseSubStatusCode);
+
             response = ModelBridgeInternal.createCosmosBatchResponse(
                 responseStatusCode,
                 responseSubStatusCode,
@@ -68,6 +101,15 @@ public final class BatchResponseParser {
         }
 
         if (response.size() != request.getOperations().size()) {
+            logger.warn(
+                "BatchResponseParser - parsed result count mismatch. parsedResultCount={}, requestOperationCount={}, "
+                    + "outerStatusCode={}, parsedBatchStatusCode={}, parsedBatchSubStatusCode={}",
+                response.size(),
+                request.getOperations().size(),
+                responseStatusCode,
+                response.getStatusCode(),
+                response.getSubStatusCode());
+
             if (responseStatusCode >= 200 && responseStatusCode <= 299)  {
                 // Server should be guaranteeing number of results equal to operations when
                 // batch request is successful - so fail as InternalServerError if this is not the case.
@@ -86,10 +128,18 @@ public final class BatchResponseParser {
             }
 
             BatchResponseParser.createAndPopulateResults(response, request.getOperations(), retryAfterDuration);
+
+            logParsedResults("BatchResponseParser - synthesized result", response.getResults());
         }
 
         checkState(response.size() == request.getOperations().size(),
             "Number of responses should be equal to number of operations in request.");
+
+        logger.info(
+            "BatchResponseParser - final batch response: statusCode={}, subStatusCode={}, resultCount={}",
+            response.getStatusCode(),
+            response.getSubStatusCode(),
+            response.size());
 
         return response;
     }
@@ -103,6 +153,12 @@ public final class BatchResponseParser {
         final ArrayNode responseContent = (ArrayNode)documentServiceResponse.getResponseBody();
         final List<CosmosItemOperation> cosmosItemOperations = request.getOperations();
         final ObjectNode[] objectNodes = new ObjectNode[responseContent.size()];
+
+        logger.info(
+            "BatchResponseParser - parsing batch response content: responseArraySize={}, requestOperationCount={}",
+            responseContent.size(),
+            request.getOperations().size());
+
         int i = 0;
         for (Iterator<JsonNode> it = responseContent.iterator(); it.hasNext(); ) {
             JsonNode arrayItemNode = it.next();
@@ -112,10 +168,19 @@ public final class BatchResponseParser {
 
         for (int index = 0; index < objectNodes.length; index++) {
             ObjectNode objectInArray = objectNodes[index];
+            CosmosBatchOperationResult result = BatchResponseParser.createBatchOperationResultFromJson(
+                objectInArray,
+                cosmosItemOperations.get(index));
 
-            results.add(
-                BatchResponseParser.createBatchOperationResultFromJson(objectInArray, cosmosItemOperations.get(index)));
+            if (!result.isSuccessStatusCode()) {
+                logger.info("BatchResponseParser - raw failed operation result[{}]: {}", index, objectInArray);
+            }
+
+            results.add(result);
         }
+
+        logger.info("BatchResponseParser - parsed result status summary: {}", summarizeStatuses(results));
+        logParsedResults("BatchResponseParser - parsed result", results);
 
         int responseStatusCode = documentServiceResponse.getStatusCode();
         int responseSubStatusCode = BatchExecUtils.getSubStatusCode(documentServiceResponse.getResponseHeaders());
@@ -185,6 +250,60 @@ public final class BatchResponseParser {
             retryAfterMilliseconds != null ? Duration.ofMillis(retryAfterMilliseconds) : Duration.ZERO,
             subStatusCode,
             cosmosItemOperation);
+    }
+
+    private static void logParsedResults(String messagePrefix, List<CosmosBatchOperationResult> results) {
+        for (int index = 0; index < results.size(); index++) {
+            CosmosBatchOperationResult result = results.get(index);
+            if (result.isSuccessStatusCode()) {
+                continue;
+            }
+
+            CosmosItemOperation operation = result.getOperation();
+
+            logger.info(
+                "{}[{}]: operationType={}, operationId={}, partitionKey={}, statusCode={}, "
+                    + "subStatusCode={}, requestCharge={}, retryAfter={}",
+                messagePrefix,
+                index,
+                operation != null ? operation.getOperationType() : null,
+                operation != null ? summarize(operation.getId()) : null,
+                operation != null && operation.getPartitionKeyValue() != null
+                    ? summarize(operation.getPartitionKeyValue().toString())
+                    : null,
+                result.getStatusCode(),
+                result.getSubStatusCode(),
+                result.getRequestCharge(),
+                result.getRetryAfterDuration());
+        }
+    }
+
+    private static String summarizeStatuses(List<CosmosBatchOperationResult> results) {
+        StringBuilder builder = new StringBuilder("[");
+
+        for (int index = 0; index < results.size(); index++) {
+            if (index > 0) {
+                builder.append(", ");
+            }
+
+            CosmosBatchOperationResult result = results.get(index);
+            builder.append(index)
+                .append(":")
+                .append(result.getStatusCode())
+                .append("/")
+                .append(result.getSubStatusCode());
+        }
+
+        builder.append("]");
+        return builder.toString();
+    }
+
+    private static String summarize(String value) {
+        if (value == null || value.length() <= MAX_LOGGED_OPERATION_LENGTH) {
+            return value;
+        }
+
+        return value.substring(0, MAX_LOGGED_OPERATION_LENGTH) + "...(len=" + value.length() + ")";
     }
 
     /**

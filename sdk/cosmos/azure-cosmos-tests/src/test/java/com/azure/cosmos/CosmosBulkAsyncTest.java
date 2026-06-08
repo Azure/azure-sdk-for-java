@@ -25,6 +25,8 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -205,6 +207,105 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             }).blockLast();
 
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void createItem_withBulk_withExcessivelyLongIdReturnsBadRequestResponse() {
+        int invalidOperationIndex = 1;
+        String operationId = UUID.randomUUID().toString();
+        String[] ids = new String[] {
+            "doc-" + operationId + "_0",
+            generateLongId(3000),
+            "doc-" + operationId + "_2"
+        };
+        String[] partitionKeys = ids;
+
+        assertBulkCreateBadRequestForInvalidOperation(ids, partitionKeys, invalidOperationIndex);
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void createItem_withBulk_withExcessivelyLongIdAndValidPartitionKeyReturnsBadRequestResponse() {
+        int invalidOperationIndex = 1;
+        String operationId = UUID.randomUUID().toString();
+        String partitionKey = "pk-" + operationId;
+        String[] ids = new String[] {
+            "doc-" + operationId + "_0",
+            generateLongId(3000),
+            "doc-" + operationId + "_2"
+        };
+        String[] partitionKeys = new String[] {
+            partitionKey,
+            partitionKey,
+            partitionKey
+        };
+
+        assertBulkCreateBadRequestForInvalidOperation(ids, partitionKeys, invalidOperationIndex);
+    }
+
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    public void createItem_withBulk_withValidIdAndExcessivelyLongPartitionKeyReturnsBadRequestResponse() {
+        int invalidOperationIndex = 1;
+        String operationId = UUID.randomUUID().toString();
+        String[] ids = new String[] {
+            "doc-" + operationId + "_0",
+            "doc-" + operationId + "_1",
+            "doc-" + operationId + "_2"
+        };
+        String[] partitionKeys = new String[] {
+            "pk-" + operationId + "_0",
+            generateLongId(3000),
+            "pk-" + operationId + "_2"
+        };
+
+        assertBulkCreateBadRequestForInvalidOperation(ids, partitionKeys, invalidOperationIndex);
+    }
+
+    private void assertBulkCreateBadRequestForInvalidOperation(
+        String[] ids,
+        String[] partitionKeys,
+        int invalidOperationIndex) {
+
+        assertThat(ids).hasSize(partitionKeys.length);
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+
+        for (int i = 0; i < ids.length; i++) {
+            String id = ids[i];
+            String partitionKey = partitionKeys[i];
+
+            ObjectNode doc = JsonNodeFactory.instance.objectNode();
+            doc.put("id", id);
+            doc.put("mypk", partitionKey);
+            doc.put("index", i);
+            doc.put("description", "Test document #" + i);
+
+            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(partitionKey), i));
+        }
+
+        List<CosmosBulkOperationResponse<Integer>> responses = bulkAsyncContainer
+            .<Integer>executeBulkOperations(Flux.fromIterable(cosmosItemOperations), new CosmosBulkExecutionOptions())
+            .collectList()
+            .block();
+
+        assertThat(responses).isNotNull();
+        assertThat(responses).hasSize(ids.length);
+        assertThat(responses)
+            .allSatisfy(response -> assertThat(response.getResponse()).isNotNull());
+
+        CosmosBulkOperationResponse<Integer> invalidOperationResponse = responses
+            .stream()
+            .filter(response -> invalidOperationIndex == response.getBatchContext())
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Expected bulk response for invalid operation"));
+
+        assertThat(invalidOperationResponse.getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+        assertThat(invalidOperationResponse.getResponse().isSuccessStatusCode()).isFalse();
+        assertThat(invalidOperationResponse.getResponse().getStatusCode()).isNotEqualTo(-1);
+
+        if (invalidOperationResponse.getException() != null) {
+            assertThat(invalidOperationResponse.getException()).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) invalidOperationResponse.getException()).getStatusCode())
+                .isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+        }
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
@@ -916,6 +1017,18 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
     private int getTotalRequest() {
         return getTotalRequest(200, 300);
+    }
+
+    private static String generateLongId(int length) {
+        StringBuilder stringBuilder = new StringBuilder(length);
+        stringBuilder.append("excessively-long-id-");
+        String filler = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+        while (stringBuilder.length() < length) {
+            stringBuilder.append(filler, 0, Math.min(filler.length(), length - stringBuilder.length()));
+        }
+
+        return stringBuilder.toString();
     }
 
     private static class ItemOperationContext {
