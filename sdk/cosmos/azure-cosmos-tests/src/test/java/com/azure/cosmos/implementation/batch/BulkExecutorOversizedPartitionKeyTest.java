@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Tests that reproduce the silent failure scenario where bulk operations containing
@@ -49,15 +48,19 @@ public class BulkExecutorOversizedPartitionKeyTest {
     private static final int TIMEOUT = 40000;
 
     /**
-     * Demonstrates that when a server returns HTTP 200 but with a JSON object response body
-     * (instead of the expected JSON array), BatchResponseParser throws ClassCastException.
+     * Verifies that when a server returns HTTP 400 BadRequest with a JSON object response body
+     * (instead of the expected JSON array), BatchResponseParser correctly surfaces the actual
+     * server status code (400) to all operations in the batch.
      *
      * This simulates the server-side behavior when a batch request contains an operation
-     * with a partition key exceeding the 2 KiB limit and the server responds with an error
-     * object rather than the expected array of individual operation results.
+     * with a partition key exceeding the 2 KiB limit: the server rejects the entire batch
+     * with status 400 and an error object body.
+     *
+     * Previously (before fix), this would throw ClassCastException causing all co-batched
+     * operations to silently fail with statusCode = -1.
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void batchResponseParser_throwsClassCastException_whenResponseBodyIsObjectNode() {
+    public void batchResponseParser_surfacesServerStatusCode_whenResponseBodyIsErrorObject() {
         // Setup: Create a batch request with multiple valid operations
         int operationCount = 5;
         ItemBulkOperation<?, ?>[] operations = new ItemBulkOperation<?, ?>[operationCount];
@@ -79,10 +82,9 @@ public class BulkExecutorOversizedPartitionKeyTest {
             BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
             null);
 
-        // Simulate server returning HTTP 200 but with a JSON OBJECT body (error response)
+        // Simulate server returning HTTP 400 BadRequest with a JSON OBJECT body (error response)
         // instead of the expected JSON ARRAY of individual operation results.
-        // This can happen when the server rejects the batch at validation level (e.g., oversized partition key)
-        // but still returns HTTP 200 at the transport layer.
+        // This happens when the server rejects the batch at validation level (e.g., oversized partition key).
         String errorResponseBody = "{\"code\":\"BadRequest\",\"message\":\"Partition key exceeds maximum allowed size of 2048 bytes.\"}";
 
         Map<String, String> headers = new HashMap<>();
@@ -93,21 +95,93 @@ public class BulkExecutorOversizedPartitionKeyTest {
         byte[] blob = errorResponseBody.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             null,
-            HttpResponseStatus.OK.code(),  // HTTP 200 - transport level success
+            HttpResponseStatus.BAD_REQUEST.code(),  // HTTP 400 - server rejected the batch
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
             blob.length);
 
-        // ACT & ASSERT: The parser throws ClassCastException because the response body
-        // is a JSON Object, not the expected JSON Array.
-        // This ClassCastException is NOT a CosmosException, so when caught by BulkExecutor's
-        // onErrorResume, ALL co-batched operations receive statusCode = -1.
-        assertThatThrownBy(() ->
-            BatchResponseParser.fromDocumentServiceResponse(
-                new RxDocumentServiceResponse(null, storeResponse),
-                serverOperationBatchRequest.getBatchRequest(),
-                true)
-        ).isInstanceOf(ClassCastException.class);
+        // ACT: Parse the response - should NOT throw ClassCastException anymore
+        CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
+            new RxDocumentServiceResponse(null, storeResponse),
+            serverOperationBatchRequest.getBatchRequest(),
+            true);
+
+        // ASSERT: The actual server status code (400 BadRequest) is surfaced to all operations.
+        // This makes the failure visible and actionable — consumers can detect 400 errors.
+        assertThat(batchResponse.getStatusCode())
+            .as("Response should surface actual server status code (400 BadRequest)")
+            .isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+        assertThat(batchResponse.size())
+            .as("All operations should be accounted for in the response")
+            .isEqualTo(operationCount);
+
+        // Each operation should get the server's 400 error status
+        for (int i = 0; i < operationCount; i++) {
+            CosmosBatchOperationResult result = batchResponse.getResults().get(i);
+            assertThat(result.getStatusCode())
+                .as("Operation %d should get server status code 400 BadRequest", i)
+                .isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+        }
+    }
+
+    /**
+     * Verifies that when a server returns HTTP 200 with a non-array body (edge case where
+     * transport says success but response is malformed), the parser treats it as an
+     * InternalServerError since a 2xx with wrong response shape is an invalid server response.
+     */
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void batchResponseParser_returnsInternalServerError_whenHttp200WithNonArrayBody() {
+        // Setup: Create a batch request with multiple valid operations
+        int operationCount = 5;
+        ItemBulkOperation<?, ?>[] operations = new ItemBulkOperation<?, ?>[operationCount];
+        for (int i = 0; i < operationCount; i++) {
+            operations[i] = new ItemBulkOperation<>(
+                CosmosItemOperationType.CREATE,
+                UUID.randomUUID().toString(),
+                new PartitionKey("validKey" + i),
+                null,
+                null,
+                null
+            );
+        }
+
+        ServerOperationBatchRequest serverOperationBatchRequest = PartitionKeyRangeServerBatchRequest.createBatchRequest(
+            "0",
+            Arrays.asList(operations),
+            BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES,
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
+            null);
+
+        // HTTP 200 but with non-array body — this is an invalid server response
+        String errorResponseBody = "{\"code\":\"BadRequest\",\"message\":\"Partition key exceeds maximum allowed size of 2048 bytes.\"}";
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, UUID.randomUUID().toString());
+        headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, "0");
+        headers.put(HttpConstants.HttpHeaders.SUB_STATUS, "0");
+
+        byte[] blob = errorResponseBody.getBytes(StandardCharsets.UTF_8);
+        StoreResponse storeResponse = new StoreResponse(
+            null,
+            HttpResponseStatus.OK.code(),  // HTTP 200 but body is wrong shape
+            headers,
+            new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
+            blob.length);
+
+        // ACT
+        CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
+            new RxDocumentServiceResponse(null, storeResponse),
+            serverOperationBatchRequest.getBatchRequest(),
+            true);
+
+        // ASSERT: Since status is 2xx but response count != operation count,
+        // the parser correctly treats it as InternalServerError (invalid server response)
+        assertThat(batchResponse.getStatusCode())
+            .as("HTTP 200 with wrong response shape should be treated as InternalServerError")
+            .isEqualTo(HttpResponseStatus.INTERNAL_SERVER_ERROR.code());
+        assertThat(batchResponse.size())
+            .as("All operations should be accounted for in the response")
+            .isEqualTo(operationCount);
     }
 
     /**
@@ -258,15 +332,17 @@ public class BulkExecutorOversizedPartitionKeyTest {
 
     /**
      * Demonstrates the full error propagation path: when a non-CosmosException occurs
-     * during batch response processing, the BulkOperationStatusTracker records -1 for
-     * ALL operations in the batch, and each operation's CosmosBulkOperationResponse has
-     * a null response (no CosmosBulkItemResponse) but contains the exception.
+     * during batch response processing, the BulkOperationStatusTracker records 500
+     * (InternalServerError) for ALL operations in the batch, and each operation's
+     * CosmosBulkOperationResponse has a null response (no CosmosBulkItemResponse) but
+     * contains the exception.
      *
      * This simulates what happens in BulkExecutor.handleTransactionalBatchExecutionException
-     * when a ClassCastException (non-CosmosException) is propagated from the response parser.
+     * when a non-CosmosException is propagated. With the fix, the status code is 500
+     * (instead of the previous -1) making the failure visible and actionable.
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void statusTracker_recordsMinusOne_forNonCosmosException() {
+    public void statusTracker_records500_forNonCosmosException() {
         // Create operations that would be in the same batch
         int operationCount = 5;
         ItemBulkOperation<?, ?>[] operations = new ItemBulkOperation<?, ?>[operationCount];
@@ -283,23 +359,23 @@ public class BulkExecutorOversizedPartitionKeyTest {
 
         // Simulate the non-CosmosException path that BulkExecutor.handleTransactionalBatchExecutionException
         // follows when the exception is NOT a CosmosException (e.g., ClassCastException from response parsing)
-        // BulkExecutor records (-1, -1) for each operation in the batch when a non-CosmosException occurs
+        // With the fix, BulkExecutor records (500, 0) instead of (-1, -1) for each operation
 
-        // Verify that statusTracker records -1/-1 entries for each operation
+        // Verify that statusTracker records 500/UNKNOWN entries for each operation
         for (ItemBulkOperation<?, ?> operation : operations) {
             BulkOperationStatusTracker tracker = operation.getStatusTracker();
 
             // Initial state - tracker should have no entries (toString shows "[]")
             assertThat(tracker.toString()).isEqualTo("[]");
 
-            // After recording -1/-1 (simulating what BulkExecutor does for non-CosmosException)
-            tracker.recordStatusCode(-1, -1);
+            // After recording 500/0 (simulating what BulkExecutor now does for non-CosmosException)
+            tracker.recordStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), HttpConstants.SubStatusCodes.UNKNOWN);
 
-            // The tracker should now contain an entry with statusCode=-1, subStatusCode=-1
+            // The tracker should now contain an entry with statusCode=500
             String trackerState = tracker.toString();
             assertThat(trackerState)
-                .as("Status tracker should record -1/-1 for non-CosmosException errors")
-                .contains("(-1/-1");
+                .as("Status tracker should record 500 (InternalServerError) for non-CosmosException errors")
+                .contains("(500/");
         }
     }
 }

@@ -29,6 +29,7 @@ import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
@@ -820,9 +821,22 @@ public final class BulkExecutor<TContext> implements Disposable {
         TContext actualContext = this.getActualContext(itemOperation);
 
         if (itemOperation instanceof ItemBulkOperation<?, ?>) {
-            // record for non-cosmos exception
-            ((ItemBulkOperation<?, ?>) itemOperation).getStatusTracker().recordStatusCode(-1, -1);
+            // Record InternalServerError for non-CosmosException failures instead of -1/-1
+            // so that failures are visible and actionable to consumers checking status codes.
+            ((ItemBulkOperation<?, ?>) itemOperation).getStatusTracker().recordStatusCode(
+                HttpResponseStatus.INTERNAL_SERVER_ERROR.code(), HttpConstants.SubStatusCodes.UNKNOWN);
         }
+
+        logger.warn(
+            "HandleTransactionalBatchExecutionException - non-CosmosException, PKRange {}, "
+                + "ExceptionType: {}, Message: {}, {}, Context: {} {}",
+            thresholds.getPartitionKeyRangeId(),
+            exception.getClass().getName(),
+            exception.getMessage(),
+            getItemOperationDiagnostics(itemOperation),
+            this.operationContextText,
+            getThreadInfo(),
+            exception);
 
         return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
     }

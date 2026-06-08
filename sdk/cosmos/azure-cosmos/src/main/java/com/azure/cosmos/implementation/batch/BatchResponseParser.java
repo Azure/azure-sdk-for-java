@@ -44,8 +44,9 @@ public final class BatchResponseParser {
         if (responseContentAsJson != null) {
             response = BatchResponseParser.populateFromResponseContent(documentServiceResponse, request, shouldPromoteOperationStatus);
 
-            if (response == null) {
-                // Convert any payload read failures as InternalServerError
+            if (response == null && responseContentAsJson.isArray()) {
+                // Only treat as deserialization failure if the response was an array we failed to parse.
+                // Non-array responses (e.g., error objects) should fall through to use the actual server status code.
                 response = ModelBridgeInternal.createCosmosBatchResponse(
                     HttpResponseStatus.INTERNAL_SERVER_ERROR.code(),
                     HttpConstants.SubStatusCodes.UNKNOWN,
@@ -100,7 +101,13 @@ public final class BatchResponseParser {
         final boolean shouldPromoteOperationStatus) {
 
         final List<CosmosBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
-        final ArrayNode responseContent = (ArrayNode)documentServiceResponse.getResponseBody();
+        final JsonNode responseBody = documentServiceResponse.getResponseBody();
+        if (!(responseBody instanceof ArrayNode)) {
+            // Server returned a non-array response (e.g., error object for oversized partition key).
+            // Return null so the caller surfaces the actual server status code.
+            return null;
+        }
+        final ArrayNode responseContent = (ArrayNode) responseBody;
         final List<CosmosItemOperation> cosmosItemOperations = request.getOperations();
         final ObjectNode[] objectNodes = new ObjectNode[responseContent.size()];
         int i = 0;
