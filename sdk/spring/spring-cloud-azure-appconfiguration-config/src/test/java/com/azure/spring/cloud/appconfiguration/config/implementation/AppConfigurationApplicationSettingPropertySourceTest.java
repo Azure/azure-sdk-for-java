@@ -402,7 +402,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         assertThat(propertySource.getProperty(TEST_KEY_1)).isEqualTo(TEST_VALUE_1);
 
         // featureFlagClient should have been called
-        Mockito.verify(featureFlagClientMock).proccessFeatureFlags(Mockito.any(), Mockito.any());
+        Mockito.verify(featureFlagClientMock).processFeatureFlags(Mockito.any(), Mockito.any());
     }
 
     @Test
@@ -411,6 +411,6 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
         propertySource.initProperties(null, contextMock);
 
-        Mockito.verify(featureFlagClientMock).proccessFeatureFlags(Mockito.any(), Mockito.any());
+        Mockito.verify(featureFlagClientMock).processFeatureFlags(Mockito.any(), Mockito.any());
     }
 }

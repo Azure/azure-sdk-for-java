@@ -125,7 +125,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         }
 
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
-        featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
+        featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
     private List<ConfigurationSetting> resolveSnapshotReferences(List<ConfigurationSetting> settings) {
@@ -133,6 +133,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         for (ConfigurationSetting setting : settings) {
             if (SNAPSHOT_REF_CONTENT_TYPE.equals(setting.getContentType())) {
                 // Handle snapshot reference
+                replicaClient.getTracingInfo().setUsesSnapshotReference();
                 List<ConfigurationSetting> snapshotSettings = replicaClient.listSettingSnapshot(setting.getValue(),
                     Context.NONE);
                 resolvedSettings.addAll(snapshotSettings);
