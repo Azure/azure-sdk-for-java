@@ -51,7 +51,7 @@ public class SessionFilesAsyncSample {
                 String sessionId = resources.getSession().getAgentSessionId();
 
                 return betaAgentsAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                    BinaryData.fromString("Sample session file 1."),null)
+                    BinaryData.fromString("Sample session file 1."), null)
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
                     .then(betaAgentsAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
                         BinaryData.fromString("Sample session file 2."), null))

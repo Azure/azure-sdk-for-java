@@ -66,7 +66,7 @@ public class SessionFilesSample {
             System.out.printf("Session file content (%s):%n%s%n", REMOTE_FILE_PATH_1, fileContent);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_1);
-            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,false, null);
+            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false, null);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_2);
             betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false, null);
