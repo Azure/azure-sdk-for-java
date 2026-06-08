@@ -52,7 +52,7 @@ public class GlobalSecondaryIndexTest {
         CosmosGlobalSecondaryIndexDefinition retrieved = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(retrieved).isNotNull();
         assertThat(retrieved.getSourceContainerId()).isEqualTo("gsi-src");
-        assertThat(retrieved.getQueryDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
+        assertThat(retrieved.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -161,7 +161,7 @@ public class GlobalSecondaryIndexTest {
         CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerId()).isEqualTo("gsi-src");
-        assertThat(definition.getQueryDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
+        assertThat(definition.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
         // No status field in the JSON, so the accessor returns null.
         assertThat(definition.getStatus()).isNull();
@@ -213,7 +213,7 @@ public class GlobalSecondaryIndexTest {
         assertThat(definition).isNotNull();
         assertThat(definition.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
-        assertThat(definition.getQueryDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
+        assertThat(definition.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
         assertThat(definition.getStatus()).isEqualTo(CosmosGlobalSecondaryIndexBuildStatus.ACTIVE);
     }
 
@@ -243,7 +243,7 @@ public class GlobalSecondaryIndexTest {
             .as("New wire format should take precedence when both are present")
             .isEqualTo("gsi-new");
         assertThat(definition.getSourceContainerRid()).isEqualTo("NewRid=");
-        assertThat(definition.getQueryDefinition()).isEqualTo("SELECT c.id FROM c");
+        assertThat(definition.getDefinition()).isEqualTo("SELECT c.id FROM c");
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -269,7 +269,7 @@ public class GlobalSecondaryIndexTest {
         CosmosGlobalSecondaryIndexDefinition deserializedDef = deserialized.getGlobalSecondaryIndexDefinition();
         assertThat(deserializedDef).isNotNull();
         assertThat(deserializedDef.getSourceContainerId()).isEqualTo("gsi-src");
-        assertThat(deserializedDef.getQueryDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
+        assertThat(deserializedDef.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
 
         // Verify the RID round-tripped correctly through the wire format
         ObjectNode jsonNode = (ObjectNode) simpleObjectMapper.readTree(json);
@@ -301,7 +301,7 @@ public class GlobalSecondaryIndexTest {
         // The GSI definition itself should be non-null (the JSON node exists)
         CosmosGlobalSecondaryIndexDefinition gsiDef = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(gsiDef).isNotNull();
-        assertThat(gsiDef.getQueryDefinition()).isEqualTo("SELECT c.customerId FROM c");
+        assertThat(gsiDef.getDefinition()).isEqualTo("SELECT c.customerId FROM c");
 
         // But sourceContainerId should be null
         assertThat(gsiDef.getSourceContainerId())

@@ -96,7 +96,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
             assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
-            assertThat(gsiDef.getQueryDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
+            assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
             assertThat(gsiDef.getSourceContainerRid()).isNotNull().isNotEmpty();
         } finally {
             safeDeleteAllCollections(database);
@@ -133,7 +133,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             CosmosGlobalSecondaryIndexDefinition gsiDef = readResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
             assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
-            assertThat(gsiDef.getQueryDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
+            assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
             assertThat(gsiDef.getSourceContainerRid()).isNotNull().isNotEmpty();
         } finally {
             safeDeleteAllCollections(database);
@@ -211,7 +211,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             CosmosGlobalSecondaryIndexDefinition gsiDef = createResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
             assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
-            assertThat(gsiDef.getQueryDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
+            assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
             assertThat(gsiDef.getSourceContainerRid()).isNotNull().isNotEmpty();
         } finally {
             safeDeleteAllCollections(database);
@@ -259,7 +259,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
             CosmosGlobalSecondaryIndexDefinition gsiDef = replaceResponse.getProperties().getGlobalSecondaryIndexDefinition();
             assertThat(gsiDef).isNotNull();
             assertThat(gsiDef.getSourceContainerId()).isEqualTo(sourceContainerId);
-            assertThat(gsiDef.getQueryDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
+            assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
         } finally {
             safeDeleteAllCollections(database);
         }
@@ -361,7 +361,7 @@ public class GlobalSecondaryIndexContainerCrudTest extends TestSuiteBase {
                 .isNotNull()
                 .isNotEmpty()
                 .isEqualTo(expectedSourceRid);
-            assertThat(gsiDef.getQueryDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
+            assertThat(gsiDef.getDefinition()).isEqualTo(GSI_QUERY_DEFINITION);
         } finally {
             safeDeleteAllCollections(database);
         }

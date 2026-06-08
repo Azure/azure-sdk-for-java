@@ -106,7 +106,7 @@ public final class CosmosGlobalSecondaryIndexDefinition {
      * @return the query definition.
      */
     @Beta(value = Beta.SinceVersion.V4_81_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getQueryDefinition() {
+    public String getDefinition() {
         return this.jsonSerializable.getString(Constants.Properties.GLOBAL_SECONDARY_INDEX_QUERY_DEFINITION);
     }
 
