@@ -397,11 +397,11 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
     // Config to indicate the SETTINGS_MAX_FRAME_SIZE advertised by the HTTP/2 client to the remote peer.
-    // The value is expressed in kilobytes (KB) and is clamped to [64 KB, 16 MB] — the lower bound matches
+    // The value is expressed in kilobytes (KB) and is clamped to [64 KB, 16383 KB] — the lower bound matches
     // the SDK's historical default so users can only grow the frame size, and the upper bound is the
-    // hard maximum permitted by the HTTP/2 spec (RFC 7540: 2^24 - 1 bytes, rounded down to 16 MB).
+    // largest whole-KB value below the HTTP/2 spec max (RFC 7540: 2^24 - 1 bytes).
     private static final int MIN_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;            // 64 KB
-    private static final int MAX_HTTP2_MAX_FRAME_SIZE_IN_KB = 16 * 1024;     // 16 MB
+    private static final int MAX_HTTP2_MAX_FRAME_SIZE_IN_KB = 16_383;        // 16383 KB
     private static final int DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;        // 64 KB
     private static final String HTTP2_MAX_FRAME_SIZE_IN_KB = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
     private static final String HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE = "COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB";
@@ -1407,7 +1407,7 @@ public class Configs {
      * {@code COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB} or environment variable
      * {@code COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB}. Resolution order is system property, then environment
      * variable, then the SDK default of 64 KB. The configured value is clamped to the inclusive range
-     * [64 KB, 16 MB]; an unparseable or out-of-range value falls back to the default (or is clamped)
+     * [64 KB, 16383 KB]; an unparseable or out-of-range value falls back to the default (or is clamped)
      * and a warning is logged. The returned value is converted to bytes for downstream Netty
      * consumption.
      */

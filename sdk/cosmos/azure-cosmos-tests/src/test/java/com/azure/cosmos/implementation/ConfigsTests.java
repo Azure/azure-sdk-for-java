@@ -174,7 +174,7 @@ public class ConfigsTests {
         final String propName = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
         final int defaultBytes = 64 * 1024;
         final int minBytes = 64 * 1024;
-        final int maxBytes = 16 * 1024 * 1024;
+        final int maxBytes = 16_383 * 1024;
 
         System.clearProperty(propName);
 
@@ -189,8 +189,8 @@ public class ConfigsTests {
             System.clearProperty(propName);
         }
 
-        // Valid value at upper bound (16 MB)
-        System.setProperty(propName, String.valueOf(16 * 1024));
+        // Valid value at upper bound (16383 KB)
+        System.setProperty(propName, "16383");
         try {
             assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
         } finally {
@@ -213,7 +213,7 @@ public class ConfigsTests {
             System.clearProperty(propName);
         }
 
-        // Above upper bound -> clamped down to 16 MB
+        // Above upper bound -> clamped down to 16383 KB
         System.setProperty(propName, String.valueOf(32 * 1024));
         try {
             assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
