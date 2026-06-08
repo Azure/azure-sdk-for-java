@@ -41,6 +41,7 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
@@ -55,6 +56,7 @@ import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileListRangesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
@@ -100,6 +102,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
@@ -1603,51 +1606,55 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesPaged(@TempDir Path tempDir) throws IOException {
+    public void listAllRanges(@TempDir Path tempDir) throws IOException {
         int uploadFileSize = Constants.MB;
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(Constants.KB));
-        ShareFileRange offsetRange = new ShareFileRange(Constants.KB, 2L * Constants.KB - 1);
-        ShareFileRange startRange = new ShareFileRange(0L, (long) (uploadFileSize - 1));
+        ShareFileRange offsetRange = FileShareTestHelper.rangeFromOffsetAndLength(Constants.KB, Constants.KB);
+        ShareFileRange startRange = FileShareTestHelper.rangeFromLength(uploadFileSize);
+        ShareFileListRangesOptions options = new ShareFileListRangesOptions().setRange(startRange);
 
         StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
             .then(uploadRangeFromFile(uploadFilePath, offsetRange))
-            .thenMany(primaryFileAsyncClient.listRanges(startRange, null))
+            .thenMany(primaryFileAsyncClient.listAllRanges(options))
             .collectList()).assertNext(ranges -> {
                 assertEquals(1, ranges.size());
-                FileShareTestHelper.assertFileRangeEquals(offsetRange, ranges.get(0));
+                assertFalse(ranges.get(0).isClear());
+                FileShareTestHelper.assertFileRangeEquals(offsetRange, ranges.get(0).getRange());
             }).verifyComplete();
     }
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesAccessConditions(@TempDir Path tempDir) throws IOException {
+    public void listAllRangesAccessConditions(@TempDir Path tempDir) throws IOException {
         int uploadFileSize = Constants.MB;
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(Constants.KB));
-        ShareFileRange offsetRange = new ShareFileRange(Constants.KB, 2L * Constants.KB - 1);
-        ShareFileRange startRange = new ShareFileRange(0L, (long) (uploadFileSize - 1));
+        ShareFileRange offsetRange = FileShareTestHelper.rangeFromOffsetAndLength(Constants.KB, Constants.KB);
+        ShareFileRange startRange = FileShareTestHelper.rangeFromLength(uploadFileSize);
 
         StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
             .then(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID))
             .flatMapMany(leaseId -> {
                 ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(leaseId);
+                ShareFileListRangesOptions options
+                    = new ShareFileListRangesOptions().setRange(startRange).setRequestConditions(conditions);
                 return uploadRangeFromFile(uploadFilePath, offsetRange, conditions)
-                    .thenMany(primaryFileAsyncClient.listRanges(startRange, conditions));
+                    .thenMany(primaryFileAsyncClient.listAllRanges(options).byPage());
             })
-            .collectList()).assertNext(ranges -> assertFalse(ranges.isEmpty())).verifyComplete();
+            .collectList()).assertNext(pages -> assertFalse(pages.isEmpty())).verifyComplete();
     }
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesAccessConditionsFails() {
+    public void listAllRangesAccessConditionsFails() {
         int uploadFileSize = Constants.MB;
-        ShareFileRange startRange = new ShareFileRange(0L, (long) (uploadFileSize - 1));
-        String leaseId = testResourceNamer.randomUuid();
+        ShareFileRange startRange = FileShareTestHelper.rangeFromLength(uploadFileSize);
+        ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
+        ShareFileListRangesOptions options
+            = new ShareFileListRangesOptions().setRange(startRange).setRequestConditions(conditions);
 
         StepVerifier
             .create(
-                primaryFileAsyncClient.create(uploadFileSize)
-                    .thenMany(primaryFileAsyncClient.listRanges(startRange,
-                        new ShareRequestConditions().setLeaseId(leaseId))))
+                primaryFileAsyncClient.create(uploadFileSize).thenMany(primaryFileAsyncClient.listAllRanges(options)))
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
                 assertEquals("LeaseNotPresentWithFileOperation", e.getErrorCode().getValue());
@@ -1656,39 +1663,30 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesDiffAccessConditionsFailWrongId(@TempDir Path tempDir) throws IOException {
-        int uploadFileSize = Constants.MB;
-        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(Constants.KB));
-        ShareFileRange offsetRange = new ShareFileRange(Constants.KB, 2L * Constants.KB - 1);
-        ShareFileRange startRange = new ShareFileRange(0L, (long) (uploadFileSize - 1));
-
-        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
-            .then(uploadRangeFromFile(uploadFilePath, offsetRange))
-            .then(setupFileLeaseCondition(primaryFileAsyncClient, GARBAGE_LEASE_ID))
-            .flatMapMany(leaseId -> primaryFileAsyncClient.listRanges(startRange,
-                new ShareRequestConditions().setLeaseId(leaseId))))
-            .verifyError(ShareStorageException.class);
-    }
-
-    @Test
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesPagedByPage(@TempDir Path tempDir) throws IOException {
+    public void listAllRangesPagedByPage(@TempDir Path tempDir) throws IOException {
         int uploadFileSize = Constants.MB;
         int rangeLength = Constants.KB;
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
         ShareFileRange firstRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
         ShareFileRange secondRange = FileShareTestHelper.rangeFromOffsetAndLength(2L * rangeLength, rangeLength);
+        ShareFileRange thirdRange = FileShareTestHelper.rangeFromOffsetAndLength(4L * rangeLength, rangeLength);
 
         StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
             .then(uploadRangeFromFile(uploadFilePath, firstRange))
             .then(uploadRangeFromFile(uploadFilePath, secondRange))
-            .thenMany(primaryFileAsyncClient.listRanges().byPage(1))
+            .then(uploadRangeFromFile(uploadFilePath, thirdRange))
+            .thenMany(primaryFileAsyncClient.listAllRanges().byPage(1))
             .collectList()).assertNext(pages -> {
-                assertEquals(2, pages.size());
+                assertEquals(3, pages.size());
                 assertEquals(1, pages.get(0).getValue().size());
-                FileShareTestHelper.assertFileRangeEquals(firstRange, pages.get(0).getValue().get(0));
+                FileShareTestHelper.assertFileRangeItemEquals(firstRange, pages.get(0).getValue().get(0));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(0).getContinuationToken()));
                 assertEquals(1, pages.get(1).getValue().size());
-                FileShareTestHelper.assertFileRangeEquals(secondRange, pages.get(1).getValue().get(0));
+                FileShareTestHelper.assertFileRangeItemEquals(secondRange, pages.get(1).getValue().get(0));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(1).getContinuationToken()));
+                assertEquals(1, pages.get(2).getValue().size());
+                FileShareTestHelper.assertFileRangeItemEquals(thirdRange, pages.get(2).getValue().get(0));
+                assertNull(pages.get(2).getContinuationToken());
             }).verifyComplete();
     }
 
@@ -1787,7 +1785,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesDiffPopulatedAndCleared(@TempDir Path tempDir) throws IOException {
+    public void listAllRangesDiffPopulatedAndCleared(@TempDir Path tempDir) throws IOException {
         int rangeLength = Constants.KB;
         Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
         ShareFileRange rangeToClear = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
@@ -1805,55 +1803,109 @@ public class FileAsyncApiTests extends FileShareTestBase {
                         = fileBuilderHelper(shareName, filePath).snapshot(snapshot.getSnapshot())
                             .buildFileAsyncClient();
                     return snapshotFileClient
-                        .listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()));
+                        .listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()))
+                        .collectList();
                 })))
-            .assertNext(response -> {
-                assertEquals(1, response.getValue().getRanges().size());
-                FileShareTestHelper.assertFileRangeEquals(populatedRange, response.getValue().getRanges().get(0));
-                assertEquals(1, response.getValue().getClearRanges().size());
-                FileShareTestHelper.assertClearRangeEquals(clearedRange, response.getValue().getClearRanges().get(0));
+            .assertNext(rangeItems -> {
+                List<ShareFileRangeItem> populated
+                    = rangeItems.stream().filter(item -> !item.isClear()).collect(Collectors.toList());
+                List<ShareFileRangeItem> cleared
+                    = rangeItems.stream().filter(ShareFileRangeItem::isClear).collect(Collectors.toList());
+                assertEquals(1, populated.size());
+                FileShareTestHelper.assertFileRangeItemEquals(populatedRange, populated.get(0));
+                assertEquals(1, cleared.size());
+                FileShareTestHelper.assertClearRangeItemEquals(clearedRange, cleared.get(0));
             })
             .verifyComplete();
     }
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesDiffAccessConditions() {
-        int uploadFileSize = Constants.MB;
-        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
+    public void listAllRangesDiffPagedByPage(@TempDir Path tempDir) throws IOException {
+        int rangeLength = Constants.KB;
+        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
+        ShareFileRange rangeToClear = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange firstPopulatedRange
+            = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
+        ShareFileRange secondPopulatedRange
+            = FileShareTestHelper.rangeFromOffsetAndLength(5L * Constants.KB, rangeLength);
+        ClearRange clearedRange = FileShareTestHelper.clearRangeFromOffsetAndLength(rangeToClear.getStart(), 512);
 
-        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
+        StepVerifier.create(primaryFileAsyncClient.create(Constants.MB)
+            .then(uploadRangeFromFile(uploadFilePath, rangeToClear))
             .then(shareAsyncClient.createSnapshot())
-            .flatMap(previousSnapshot -> setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID)
-                .flatMap(leaseId -> {
+            .flatMap(previousSnapshot -> uploadRangeFromFile(uploadFilePath, firstPopulatedRange)
+                .then(uploadRangeFromFile(uploadFilePath, secondPopulatedRange))
+                .then(primaryFileAsyncClient.clearRangeWithResponse(512, clearedRange.getStart()))
+                .then(shareAsyncClient.createSnapshot())
+                .flatMap(snapshot -> {
+                    ShareFileAsyncClient snapshotFileClient
+                        = fileBuilderHelper(shareName, filePath).snapshot(snapshot.getSnapshot())
+                            .buildFileAsyncClient();
                     ShareFileListRangesDiffOptions options
-                        = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
-                            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
-                    return primaryFileAsyncClient.listRangesDiffWithResponse(options);
+                        = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
+
+                    return snapshotFileClient.listAllRangesDiff(options).byPage(1).collectList();
                 })))
-            .assertNext(response -> {
-                assertNotNull(response.getValue());
-                FileShareTestHelper.assertResponseStatusCode(response, 200);
+            .assertNext(pages -> {
+                assertEquals(3, pages.size());
+                pages.forEach(page -> assertEquals(1, page.getValue().size()));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(0).getContinuationToken()));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(1).getContinuationToken()));
+                assertNull(pages.get(2).getContinuationToken());
+
+                List<ShareFileRangeItem> rangeItems
+                    = pages.stream().flatMap(page -> page.getValue().stream()).collect(Collectors.toList());
+                List<ShareFileRangeItem> populated
+                    = rangeItems.stream().filter(item -> !item.isClear()).collect(Collectors.toList());
+                List<ShareFileRangeItem> cleared
+                    = rangeItems.stream().filter(ShareFileRangeItem::isClear).collect(Collectors.toList());
+                assertEquals(2, populated.size());
+                FileShareTestHelper.assertFileRangeItemEquals(firstPopulatedRange, populated.get(0));
+                FileShareTestHelper.assertFileRangeItemEquals(secondPopulatedRange, populated.get(1));
+                assertEquals(1, cleared.size());
+                FileShareTestHelper.assertClearRangeItemEquals(clearedRange, cleared.get(0));
             })
             .verifyComplete();
     }
 
     @Test
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
-    public void listRangesDiffAccessConditionsFail() {
+    public void listAllRangesDiffAccessConditions() {
         int uploadFileSize = Constants.MB;
         ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
 
         StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
             .then(shareAsyncClient.createSnapshot())
-            .flatMap(previousSnapshot -> setupFileLeaseCondition(primaryFileAsyncClient, GARBAGE_LEASE_ID)
-                .flatMap(leaseId -> {
+            .flatMapMany(previousSnapshot -> setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID)
+                .flatMapMany(leaseId -> {
                     ShareFileListRangesDiffOptions options
                         = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
                             .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
-                    return primaryFileAsyncClient.listRangesDiffWithResponse(options);
+                    return primaryFileAsyncClient.listAllRangesDiff(options).byPage();
+                }))
+            .collectList()).assertNext(pages -> assertFalse(pages.isEmpty())).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesDiffAccessConditionsFail() {
+        int uploadFileSize = Constants.MB;
+        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
+
+        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
+            .then(shareAsyncClient.createSnapshot())
+            .flatMapMany(previousSnapshot -> setupFileLeaseCondition(primaryFileAsyncClient, GARBAGE_LEASE_ID)
+                .flatMapMany(leaseId -> {
+                    ShareFileListRangesDiffOptions options
+                        = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
+                            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
+                    return primaryFileAsyncClient.listAllRangesDiff(options);
                 })))
-            .verifyError(ShareStorageException.class);
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals("LeaseIdMismatchWithFileOperation", e.getErrorCode().getValue());
+            });
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")

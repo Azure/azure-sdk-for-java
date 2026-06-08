@@ -15,6 +15,7 @@ import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
@@ -107,6 +108,10 @@ public class FileShareTestHelper {
         return new ShareFileRange(offset, offset + length - 1);
     }
 
+    protected static ShareFileRange rangeFromLength(long length) {
+        return rangeFromOffsetAndLength(0, length);
+    }
+
     protected static ClearRange clearRangeFromOffsetAndLength(long offset, long length) {
         return new ClearRange().setStart(offset).setEnd(offset + length - 1);
     }
@@ -124,6 +129,17 @@ public class FileShareTestHelper {
     protected static void assertClearRangeEquals(ClearRange expected, ClearRange actual) {
         assertEquals(expected.getStart(), actual.getStart());
         assertEquals(expected.getEnd(), actual.getEnd());
+    }
+
+    protected static void assertFileRangeItemEquals(ShareFileRange expected, ShareFileRangeItem actual) {
+        assertEquals(false, actual.isClear());
+        assertFileRangeEquals(expected, actual.getRange());
+    }
+
+    protected static void assertClearRangeItemEquals(ClearRange expected, ShareFileRangeItem actual) {
+        assertEquals(true, actual.isClear());
+        assertEquals(expected.getStart(), actual.getRange().getStart());
+        assertEquals(expected.getEnd(), actual.getRange().getEnd());
     }
 
     protected static InputStream getInputStream(byte[] data) {
