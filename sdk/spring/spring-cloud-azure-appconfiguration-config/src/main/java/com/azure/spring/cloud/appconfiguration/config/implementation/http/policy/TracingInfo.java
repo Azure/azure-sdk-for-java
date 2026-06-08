@@ -12,7 +12,6 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.LOAD_BALANCING_FEATURE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SNAPSHOT_REFERENCE_TAG;
 import com.azure.spring.cloud.appconfiguration.config.implementation.HostType;
 import com.azure.spring.cloud.appconfiguration.config.implementation.JsonConfigurationParser;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
@@ -36,8 +35,6 @@ public class TracingInfo {
 
     private boolean usesAiccConfiguration = false;
 
-    private boolean usesSnapshotReference = false;
-
     private boolean isFailoverRequest = false;
 
     public TracingInfo(boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
@@ -53,14 +50,6 @@ public class TracingInfo {
      */
     public void setUsesLoadBalancing(boolean usesLoadBalancing) {
         this.usesLoadBalancing = usesLoadBalancing;
-    }
-
-    /**
-     * Sets whether snapshot references are used.
-     * @param usesSnapshotReference whether snapshot references are used
-     */
-    public void setUsesSnapshotReference(boolean usesSnapshotReference) {
-        this.usesSnapshotReference = usesSnapshotReference;
     }
 
     /**
@@ -211,12 +200,6 @@ public class TracingInfo {
                 sb.append(DELIMITER);
             }
             sb.append(AI_CHAT_COMPLETION_FEATURE);
-        }
-        if (usesSnapshotReference) {
-            if (sb.length() > 0) {
-                sb.append(DELIMITER);
-            }
-            sb.append(SNAPSHOT_REFERENCE_TAG);
         }
         return sb.toString();
     }
