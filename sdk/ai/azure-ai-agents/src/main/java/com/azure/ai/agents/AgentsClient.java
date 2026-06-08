@@ -46,7 +46,9 @@ public final class AgentsClient {
     private final AgentsImpl serviceClient;
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     *
+     * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -132,7 +134,9 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return an agent
+     *
+     * Retrieves an agent definition by its unique name along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -141,7 +145,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version.
+     * Create an agent version
+     *
+     * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -276,7 +282,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -346,7 +354,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     *
+     * Retrieves an agent definition by its unique name.
      *
      * @param agentName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,7 +365,9 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an agent
+     *
+     * Retrieves an agent definition by its unique name.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -366,7 +378,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -385,7 +399,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      *
      * @param agentName The name of the agent to retrieve versions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,7 +422,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version.
+     * Create an agent version
+     *
+     * Creates a new version for the specified agent and returns the created version resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -433,7 +451,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates the agent.
+     * Create an agent
+     *
+     * Creates a new agent or a new version of an existing agent.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -596,6 +616,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Update an agent
+     *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Header Parameters</strong></p>
@@ -726,6 +748,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Update an agent
+     *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -761,7 +785,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -875,6 +901,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
@@ -991,7 +1019,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1064,7 +1094,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1093,6 +1125,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1120,7 +1154,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1151,6 +1187,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1187,7 +1225,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1226,7 +1266,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1268,7 +1310,9 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1278,7 +1322,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      *
      * @param agentName The name of the agent to retrieve.
      * @param agentVersion The version of the agent to retrieve.
@@ -1288,7 +1334,9 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1300,7 +1348,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      *
      * @param kind Filter agents by kind. If not provided, all agents are returned.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -1347,7 +1397,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      *
      * @param agentName The name of the agent to retrieve versions for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -1391,7 +1443,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1507,7 +1561,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1545,7 +1601,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     *
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1609,7 +1667,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     *
+     * Returns the conversations available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1671,6 +1731,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Delete an agent
+     *
      * Deletes an agent. For hosted agents, if any version has active sessions, the request
      * is rejected with HTTP 409 unless `force` is set to true. When force is true, all
      * associated sessions are cascade-deleted along with the agent and its versions.
@@ -1710,6 +1772,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Delete an agent version
+     *
      * Deletes a specific version of an agent. For hosted agents, if the version has active
      * sessions, the request is rejected with HTTP 409 unless `force` is set to true. When
      * force is true, all sessions associated with this version are cascade-deleted.
@@ -1752,7 +1816,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates the agent.
+     * Create an agent
+     *
+     * Creates a new agent or a new version of an existing agent.
      *
      * @param options Options for createAgent API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1783,6 +1849,8 @@ public final class AgentsClient {
     }
 
     /**
+     * Update an agent
+     *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1824,7 +1892,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version.
+     * Create an agent version
+     *
+     * Creates a new version for the specified agent and returns the created version resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1940,7 +2010,9 @@ public final class AgentsClient {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     *
+     * Returns the conversations available in the current project.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.

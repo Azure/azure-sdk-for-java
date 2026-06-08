@@ -255,7 +255,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     * 
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -337,7 +339,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     * 
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -419,7 +423,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     * 
+     * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -450,7 +456,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     * 
+     * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -480,7 +488,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -533,7 +543,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -579,7 +591,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -630,7 +644,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     * 
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -676,7 +692,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -751,7 +769,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -818,7 +838,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -890,7 +912,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     * 
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -957,7 +981,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     * 
+     * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1009,7 +1035,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     * 
+     * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1061,7 +1089,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     * 
+     * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1106,7 +1136,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     * 
+     * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1150,7 +1182,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
+     * 
+     * Removes the specified toolbox along with all of its versions.
      * 
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1168,7 +1202,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
+     * 
+     * Removes the specified toolbox along with all of its versions.
      * 
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1186,7 +1222,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
+     * 
+     * Removes the specified version of a toolbox.
      * 
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
@@ -1206,7 +1244,9 @@ public final class BetaToolboxesImpl {
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
+     * 
+     * Removes the specified version of a toolbox.
      * 
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.

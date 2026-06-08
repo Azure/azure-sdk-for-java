@@ -53,7 +53,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     *
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -132,7 +134,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     *
+     * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -161,7 +165,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -208,7 +214,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -276,7 +284,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     *
+     * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -326,7 +336,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     *
+     * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -367,7 +379,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
+     *
+     * Removes the specified toolbox along with all of its versions.
      *
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -384,7 +398,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
+     *
+     * Removes the specified version of a toolbox.
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
@@ -403,7 +419,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     *
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
@@ -438,7 +456,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Create a new version of a toolbox. If the toolbox does not exist, it will be created.
+     * Create a new version of a toolbox
+     *
+     * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      *
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param tools The list of tools to include in this version.
@@ -463,7 +483,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a toolbox.
+     * Retrieve a toolbox
+     *
+     * Retrieves the specified toolbox and its current configuration.
      *
      * @param name The name of the toolbox to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,7 +506,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -537,7 +561,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * List all toolboxes.
+     * List toolboxes
+     *
+     * Returns the toolboxes available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -567,7 +593,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
      *
      * @param name The name of the toolbox to list versions for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -623,7 +651,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * List all versions of a toolbox.
+     * List toolbox versions
+     *
+     * Returns the available versions for the specified toolbox.
      *
      * @param name The name of the toolbox to list versions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -656,7 +686,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Retrieve a specific version of a toolbox.
+     * Retrieve a specific version of a toolbox
+     *
+     * Retrieves the specified version of a toolbox by name and version identifier.
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
@@ -678,7 +710,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Update a toolbox to point to a specific version.
+     * Update a toolbox to point to a specific version
+     *
+     * Updates the toolbox's default version pointer to the specified version.
      *
      * @param name The name of the toolbox to update.
      * @param defaultVersion The version identifier that the toolbox should point to. When set, the toolbox's default
@@ -703,7 +737,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Delete a toolbox and all its versions.
+     * Delete a toolbox
+     *
+     * Removes the specified toolbox along with all of its versions.
      *
      * @param name The name of the toolbox to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -723,7 +759,9 @@ public final class BetaToolboxesAsyncClient {
     }
 
     /**
-     * Delete a specific version of a toolbox.
+     * Delete a specific version of a toolbox
+     *
+     * Removes the specified version of a toolbox.
      *
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.

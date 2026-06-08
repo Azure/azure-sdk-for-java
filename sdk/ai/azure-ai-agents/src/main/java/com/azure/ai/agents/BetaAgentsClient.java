@@ -63,6 +63,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Create a new code-based agent
+     *
      * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
      * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
      * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
@@ -180,6 +182,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Update a code-based agent
+     *
      * Updates a code-based agent by uploading new code and creating a new version.
      * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
      * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
@@ -298,7 +302,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Updates an agent endpoint.
+     * Update an agent endpoint
+     *
+     * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -432,7 +438,9 @@ public final class BetaAgentsClient {
      * }
      * </pre>
      *
-     * @param agentName The name of the agent to retrieve.
+     * @param agentName The name of the agent to retrieve
+     *
+     * The name of the agent to retrieve.
      * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -449,7 +457,14 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * The createAgentVersionFromCode operation.
+     * Create an agent version from code
+     *
+     * Creates a new agent version from code. Uploads the code zip and creates a new version
+     * for an existing agent. The SHA-256 hex digest of the zip is provided in the
+     * `x-ms-code-zip-sha256` header for integrity and dedup.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -519,7 +534,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Download the code zip for a code-based hosted agent.
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent.
      * Returns the previously-uploaded zip (`application/zip`).
      *
      * If `agent_version` is supplied, returns that version's code zip; otherwise
@@ -569,6 +586,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Create a session
+     *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
@@ -632,7 +651,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Retrieves a session by ID.
+     * Get a session
+     *
+     * Retrieves the details of a hosted agent session by agent name and session identifier.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -669,8 +690,9 @@ public final class BetaAgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response}.
+     * @return a session
+     *
+     * Retrieves the details of a hosted agent session by agent name and session identifier along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -715,6 +737,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Delete a session
+     *
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
      * <p><strong>Header Parameters</strong></p>
@@ -746,8 +770,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
+     * Stop a session
+     *
+     * Terminates the specified hosted agent session and returns 204 No Content when the request succeeds.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -775,7 +800,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * List sessions for an agent
+     *
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -840,6 +867,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Stream console logs for a hosted agent session
+     *
      * Streams console logs (stdout / stderr) for a specific hosted agent session
      * as a Server-Sent Events (SSE) stream.
      *
@@ -909,8 +938,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Upload a file to the session sandbox via binary stream.
-     * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
+     * Upload a session file
+     *
+     * Uploads binary file content to the specified path in the session sandbox.
+     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -962,7 +993,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Download a file from the session sandbox as a binary stream.
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path as a binary stream.
+     * The path is resolved relative to the session home directory.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -1001,9 +1035,11 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * List files and directories at a given path in the session sandbox.
-     * Returns only the immediate children of the specified directory (non-recursive).
-     * If path is not provided, lists the session home directory.
+     * List session files
+     *
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1068,8 +1104,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Delete a file or directory from the session sandbox.
-     * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
+     * Delete a session file
+     *
+     * Deletes the specified file or directory from the session sandbox.
+     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1109,9 +1147,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Creates an agent optimization job.
+     * Create an agent optimization job
      *
-     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
+     * Creates an agent optimization job and returns the queued job.
+     * Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -1292,9 +1331,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Get info about an agent optimization job.
+     * Get an agent optimization job
      *
-     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
+     * Retrieves the specified agent optimization job.
+     * Returns 202 while the job is in progress and 200 after it reaches a terminal state.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1427,9 +1467,10 @@ public final class BetaAgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about an agent optimization job.
+     * @return an agent optimization job
      *
-     * Get an optimization job by id along with {@link Response}.
+     * Retrieves the specified agent optimization job.
+     * Returns 202 while the job is in progress and 200 after it reaches a terminal state along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1438,9 +1479,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of agent optimization jobs.
+     * List agent optimization jobs
      *
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
+     * Returns agent optimization jobs with cursor pagination and optional lifecycle or agent filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1604,9 +1645,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Cancels an agent optimization job.
+     * Cancel an agent optimization job
      *
-     * Request cancellation. Idempotent on terminal states.
+     * Requests cancellation of the specified agent optimization job.
+     * The operation remains idempotent after the job reaches a terminal state.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1749,9 +1791,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Deletes an agent optimization job.
+     * Delete an agent optimization job
      *
-     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     * Deletes the specified agent optimization job and its candidate artifacts.
+     * Cancels the job first when it is still in a non-terminal state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1776,9 +1819,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of candidates for an optimization job.
+     * List optimization job candidates
      *
-     * List candidates produced by a job.
+     * Returns the candidates produced by the specified optimization job.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1874,9 +1917,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Get a candidate by id.
+     * Get an optimization candidate
      *
-     * Get a single candidate's metadata, manifest, and promotion info.
+     * Retrieves metadata, manifest information, and promotion details for the specified candidate.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1913,9 +1956,10 @@ public final class BetaAgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate by id.
+     * @return an optimization candidate
      *
-     * Get a single candidate's metadata, manifest, and promotion info along with {@link Response}.
+     * Retrieves metadata, manifest information, and promotion details for the specified candidate along with
+     * {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1925,9 +1969,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Get candidate deploy config.
+     * Get an optimization candidate config
      *
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
+     * Retrieves the deploy configuration JSON for the specified candidate.
+     * Clients can use it to compose `agents.create_version(...)` requests.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1957,9 +2002,10 @@ public final class BetaAgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate deploy config.
+     * @return an optimization candidate config
      *
-     * Get the candidate's deploy config JSON along with {@link Response}.
+     * Retrieves the deploy configuration JSON for the specified candidate.
+     * Clients can use it to compose `agents.create_version(...)` requests along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1969,9 +2015,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Get candidate evaluation results.
+     * Get optimization candidate results
      *
-     * Get full per-task evaluation results for a candidate.
+     * Retrieves full per-task evaluation results for the specified candidate.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2008,9 +2054,9 @@ public final class BetaAgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate evaluation results.
+     * @return optimization candidate results
      *
-     * Get full per-task evaluation results for a candidate along with {@link Response}.
+     * Retrieves full per-task evaluation results for the specified candidate along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2020,9 +2066,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Get a candidate file.
+     * Get an optimization candidate file
      *
-     * Stream a specific file from the candidate's blob directory.
+     * Streams the specified file from the candidate's blob directory.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2039,9 +2085,9 @@ public final class BetaAgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate file.
+     * @return an optimization candidate file
      *
-     * Stream a specific file from the candidate's blob directory along with {@link Response}.
+     * Streams the specified file from the candidate's blob directory along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2051,9 +2097,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Promote a candidate.
+     * Promote an optimization candidate
      *
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
+     * Promotes the specified candidate and records the deployment timestamp and target agent version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2098,6 +2144,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Create a new code-based agent
+     *
      * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
      * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
      * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
@@ -2139,6 +2187,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Create a new code-based agent
+     *
      * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
      * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
      * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
@@ -2174,6 +2224,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Update a code-based agent
+     *
      * Updates a code-based agent by uploading new code and creating a new version.
      * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
      * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
@@ -2216,6 +2268,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Update a code-based agent
+     *
      * Updates a code-based agent by uploading new code and creating a new version.
      * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
      * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
@@ -2253,9 +2307,13 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Updates an agent endpoint.
+     * Update an agent endpoint
      *
-     * @param agentName The name of the agent to retrieve.
+     * Applies a merge-patch update to the specified agent endpoint configuration.
+     *
+     * @param agentName The name of the agent to retrieve
+     *
+     * The name of the agent to retrieve.
      * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * preview resources.
@@ -2288,9 +2346,13 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Updates an agent endpoint.
+     * Update an agent endpoint
      *
-     * @param agentName The name of the agent to retrieve.
+     * Applies a merge-patch update to the specified agent endpoint configuration.
+     *
+     * @param agentName The name of the agent to retrieve
+     *
+     * The name of the agent to retrieve.
      * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2317,7 +2379,14 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * The createAgentVersionFromCode operation.
+     * Create an agent version from code
+     *
+     * Creates a new agent version from code. Uploads the code zip and creates a new version
+     * for an existing agent. The SHA-256 hex digest of the zip is provided in the
+     * `x-ms-code-zip-sha256` header for integrity and dedup.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -2355,7 +2424,14 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * The createAgentVersionFromCode operation.
+     * Create an agent version from code
+     *
+     * Creates a new agent version from code. Uploads the code zip and creates a new version
+     * for an existing agent. The SHA-256 hex digest of the zip is provided in the
+     * `x-ms-code-zip-sha256` header for integrity and dedup.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -2388,7 +2464,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Download the code zip for a code-based hosted agent.
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent.
      * Returns the previously-uploaded zip (`application/zip`).
      *
      * If `agent_version` is supplied, returns that version's code zip; otherwise
@@ -2426,7 +2504,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Download the code zip for a code-based hosted agent.
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent.
      * Returns the previously-uploaded zip (`application/zip`).
      *
      * If `agent_version` is supplied, returns that version's code zip; otherwise
@@ -2453,6 +2533,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Create a session
+     *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
@@ -2488,6 +2570,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Create a session
+     *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
@@ -2514,7 +2598,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Retrieves a session by ID.
+     * Get a session
+     *
+     * Retrieves the details of a hosted agent session by agent name and session identifier.
      *
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -2528,7 +2614,9 @@ public final class BetaAgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
+     * @return a session
+     *
+     * Retrieves the details of a hosted agent session by agent name and session identifier.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2547,7 +2635,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Retrieves a session by ID.
+     * Get a session
+     *
+     * Retrieves the details of a hosted agent session by agent name and session identifier.
      *
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -2557,7 +2647,9 @@ public final class BetaAgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
+     * @return a session
+     *
+     * Retrieves the details of a hosted agent session by agent name and session identifier.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2569,6 +2661,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Delete a session
+     *
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
      *
@@ -2601,6 +2695,8 @@ public final class BetaAgentsClient {
     }
 
     /**
+     * Delete a session
+     *
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
      *
@@ -2622,8 +2718,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
+     * Stop a session
+     *
+     * Terminates the specified hosted agent session and returns 204 No Content when the request succeeds.
      *
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -2648,8 +2745,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
+     * Stop a session
+     *
+     * Terminates the specified hosted agent session and returns 204 No Content when the request succeeds.
      *
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -2669,7 +2767,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * List sessions for an agent
+     *
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
      *
      * @param agentName The name of the agent.
      * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
@@ -2723,7 +2823,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * List sessions for an agent
+     *
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
      *
      * @param agentName The name of the agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2744,8 +2846,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Upload a file to the session sandbox via binary stream.
-     * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
+     * Upload a session file
+     *
+     * Uploads binary file content to the specified path in the session sandbox.
+     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -2780,8 +2884,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Upload a file to the session sandbox via binary stream.
-     * Maximum file size is 50 MB. Uploads exceeding this limit return 413 Payload Too Large.
+     * Upload a session file
+     *
+     * Uploads binary file content to the specified path in the session sandbox.
+     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -2806,7 +2912,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Download a file from the session sandbox as a binary stream.
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path as a binary stream.
+     * The path is resolved relative to the session home directory.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -2839,7 +2948,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Download a file from the session sandbox as a binary stream.
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path as a binary stream.
+     * The path is resolved relative to the session home directory.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -2861,9 +2973,11 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * List files and directories at a given path in the session sandbox.
-     * Returns only the immediate children of the specified directory (non-recursive).
-     * If path is not provided, lists the session home directory.
+     * List session files
+     *
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -2924,9 +3038,11 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * List files and directories at a given path in the session sandbox.
-     * Returns only the immediate children of the specified directory (non-recursive).
-     * If path is not provided, lists the session home directory.
+     * List session files
+     *
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -2948,8 +3064,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Delete a file or directory from the session sandbox.
-     * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
+     * Delete a session file
+     *
+     * Deletes the specified file or directory from the session sandbox.
+     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -2986,8 +3104,10 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Delete a file or directory from the session sandbox.
-     * If `recursive` is false (default) and the target is a non-empty directory, the API returns 409 Conflict.
+     * Delete a session file
+     *
+     * Deletes the specified file or directory from the session sandbox.
+     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -3054,9 +3174,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of agent optimization jobs.
+     * List agent optimization jobs
      *
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
+     * Returns agent optimization jobs with cursor pagination and optional lifecycle or agent filters.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3117,9 +3237,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of candidates for an optimization job.
+     * List optimization job candidates
      *
-     * List candidates produced by a job.
+     * Returns the candidates produced by the specified optimization job.
      *
      * @param jobId The optimization job id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3215,9 +3335,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of agent optimization jobs.
+     * List agent optimization jobs
      *
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
+     * Returns agent optimization jobs with cursor pagination and optional lifecycle or agent filters.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -3268,9 +3388,9 @@ public final class BetaAgentsClient {
     }
 
     /**
-     * Returns a list of candidates for an optimization job.
+     * List optimization job candidates
      *
-     * List candidates produced by a job.
+     * Returns the candidates produced by the specified optimization job.
      *
      * @param jobId The optimization job id.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the

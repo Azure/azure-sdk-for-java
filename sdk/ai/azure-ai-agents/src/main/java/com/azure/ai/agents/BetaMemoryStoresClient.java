@@ -61,7 +61,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Create a memory store.
+     * Create a memory store
+     *
+     * Creates a memory store resource with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -116,7 +118,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update a memory store.
+     * Update a memory store
+     *
+     * Updates the specified memory store with the supplied configuration changes.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -168,7 +172,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Retrieve a memory store.
+     * Get a memory store
+     *
+     * Retrieves the specified memory store and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -196,7 +202,9 @@ public final class BetaMemoryStoresClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a memory store that can store and retrieve user memories along with {@link Response}.
+     * @return a memory store
+     *
+     * Retrieves the specified memory store and its current configuration along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -205,7 +213,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * List all memory stores.
+     * List memory stores
+     *
+     * Returns the memory stores available to the caller.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -288,7 +298,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Get memory store update result.
+     * Get an update result
+     *
+     * Retrieves the status and result of a memory store update operation.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -349,7 +361,9 @@ public final class BetaMemoryStoresClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return memory store update result along with {@link Response}.
+     * @return an update result
+     *
+     * Retrieves the status and result of a memory store update operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -359,7 +373,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Create a memory store.
+     * Create a memory store
+     *
+     * Creates a memory store resource with the provided configuration.
      *
      * @param name The name of the memory store.
      * @param definition The memory store definition.
@@ -387,7 +403,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Create a memory store.
+     * Create a memory store
+     *
+     * Creates a memory store resource with the provided configuration.
      *
      * @param name The name of the memory store.
      * @param definition The memory store definition.
@@ -411,7 +429,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Retrieve a memory store.
+     * Get a memory store
+     *
+     * Retrieves the specified memory store and its current configuration.
      *
      * @param name The name of the memory store to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,7 +440,9 @@ public final class BetaMemoryStoresClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a memory store that can store and retrieve user memories.
+     * @return a memory store
+     *
+     * Retrieves the specified memory store and its current configuration.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -431,7 +453,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * List all memory stores.
+     * List memory stores
+     *
+     * Returns the memory stores available to the caller.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -486,7 +510,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Get memory store update result.
+     * Get an update result
+     *
+     * Retrieves the status and result of a memory store update operation.
      *
      * @param name The name of the memory store.
      * @param updateId The ID of the memory update operation.
@@ -496,7 +522,9 @@ public final class BetaMemoryStoresClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return memory store update result.
+     * @return an update result
+     *
+     * Retrieves the status and result of a memory store update operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -548,7 +576,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update a memory store.
+     * Update a memory store
+     *
+     * Updates the specified memory store with the supplied configuration changes.
      *
      * @param name The name of the memory store to update.
      * @param description A human-readable description of the memory store.
@@ -574,7 +604,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update a memory store.
+     * Update a memory store
+     *
+     * Updates the specified memory store with the supplied configuration changes.
      *
      * @param name The name of the memory store to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,7 +629,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * List all memory stores.
+     * List memory stores
+     *
+     * Returns the memory stores available to the caller.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -640,7 +674,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Search for relevant memories from a memory store based on conversation context.
+     * Search memories
+     *
+     * Searches the specified memory store for memories relevant to the provided conversation context.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -708,7 +744,10 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update memory store with conversation memories.
+     * Update memories
+     *
+     * Starts an update that writes conversation memories into the specified memory store.
+     * The operation returns a long-running status location for polling the update result.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -794,7 +833,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Search for relevant memories from a memory store based on conversation context.
+     * Search memories
+     *
+     * Searches the specified memory store for memories relevant to the provided conversation context.
      *
      * @param name The name of the memory store to search.
      * @param scope The namespace that logically groups and isolates memories, such as a user ID.
@@ -825,7 +866,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Search for relevant memories from a memory store based on conversation context.
+     * Search memories
+     *
+     * Searches the specified memory store for memories relevant to the provided conversation context.
      *
      * @param name The name of the memory store to search.
      * @param scope The namespace that logically groups and isolates memories, such as a user ID.
@@ -874,7 +917,10 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update memory store with conversation memories.
+     * Update memories
+     *
+     * Starts an update that writes conversation memories into the specified memory store.
+     * The operation returns a long-running status location for polling the update result.
      *
      * @param name The name of the memory store to update.
      * @param scope The namespace that logically groups and isolates memories, such as a user ID.
@@ -907,7 +953,10 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update memory store with conversation memories.
+     * Update memories
+     *
+     * Starts an update that writes conversation memories into the specified memory store.
+     * The operation returns a long-running status location for polling the update result.
      *
      * @param name The name of the memory store to update.
      * @param scope The namespace that logically groups and isolates memories, such as a user ID.
@@ -978,7 +1027,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Delete a memory store.
+     * Delete a memory store
+     *
+     * Deletes the specified memory store.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1006,7 +1057,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Delete all memories associated with a specific scope from a memory store.
+     * Delete memories by scope
+     *
+     * Deletes all memories in the specified memory store that are associated with the provided scope.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1047,7 +1100,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Create a memory item in a memory store.
+     * Create a memory item
+     *
+     * Creates a memory item in the specified memory store.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1092,7 +1147,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update a memory item in a memory store.
+     * Update a memory item
+     *
+     * Updates the specified memory item in the memory store.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1136,7 +1193,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Retrieve a memory item from a memory store.
+     * Get a memory item
+     *
+     * Retrieves the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1158,8 +1217,9 @@ public final class BetaMemoryStoresClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single memory item stored in the memory store, containing content and metadata along with
-     * {@link Response}.
+     * @return a memory item
+     *
+     * Retrieves the specified memory item from the memory store along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1168,7 +1228,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Delete a memory item from a memory store.
+     * Delete a memory item
+     *
+     * Deletes the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1197,7 +1259,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Create a memory item in a memory store.
+     * Create a memory item
+     *
+     * Creates a memory item in the specified memory store.
      *
      * @param name The name of the memory store.
      * @param scope The namespace that logically groups and isolates memories, such as a user ID.
@@ -1223,7 +1287,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Update a memory item in a memory store.
+     * Update a memory item
+     *
+     * Updates the specified memory item in the memory store.
      *
      * @param name The name of the memory store.
      * @param memoryId The ID of the memory item to update.
@@ -1248,7 +1314,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * Retrieve a memory item from a memory store.
+     * Get a memory item
+     *
+     * Retrieves the specified memory item from the memory store.
      *
      * @param name The name of the memory store.
      * @param memoryId The ID of the memory item to retrieve.
@@ -1258,7 +1326,9 @@ public final class BetaMemoryStoresClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single memory item stored in the memory store, containing content and metadata.
+     * @return a memory item
+     *
+     * Retrieves the specified memory item from the memory store.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1306,7 +1376,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * List all memory items in a memory store.
+     * List memory items
+     *
+     * Returns memory items from the specified memory store.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1370,7 +1442,9 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
-     * List all memory items in a memory store.
+     * List memory items
+     *
+     * Returns memory items from the specified memory store.
      *
      * @param options Options for listMemories API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
