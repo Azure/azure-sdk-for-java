@@ -9,17 +9,17 @@
 
 #### `models.Caches` was modified
 
+* `void poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)` -> `models.Cache poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)`
 * `void resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.Cache resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `void resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.Cache resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
-* `void poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)` -> `models.Cache poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)`
 * `void poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest)` -> `models.Cache poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest)`
 
 #### `models.Cache` was modified
 
 * `void resetSmbPassword(com.azure.core.util.Context)` -> `models.Cache resetSmbPassword(com.azure.core.util.Context)`
 * `void poolChange(models.PoolChangeRequest,com.azure.core.util.Context)` -> `models.Cache poolChange(models.PoolChangeRequest,com.azure.core.util.Context)`
-* `void poolChange(models.PoolChangeRequest)` -> `models.Cache poolChange(models.PoolChangeRequest)`
 * `void resetSmbPassword()` -> `models.Cache resetSmbPassword()`
+* `void poolChange(models.PoolChangeRequest)` -> `models.Cache poolChange(models.PoolChangeRequest)`
 
 ### Features Added
 
