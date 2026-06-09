@@ -15,36 +15,27 @@ public final class ExpandMsixImageListTests {
         ExpandMsixImageList model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"packageAlias\":\"bkpyc\",\"imagePath\":\"lwn\",\"packageName\":\"hjdauwhvylwz\",\"packageFamilyName\":\"dhxujznbmpo\",\"packageFullName\":\"wpr\",\"displayName\":\"lve\",\"packageRelativePath\":\"lupj\",\"isRegularRegistration\":true,\"isActive\":true,\"packageDependencies\":[{\"dependencyName\":\"cswsrtjri\",\"publisher\":\"rbpbewtghfgblcg\",\"minVersion\":\"zvlvqhjkbegib\"},{\"dependencyName\":\"mxiebw\",\"publisher\":\"loayqcgw\",\"minVersion\":\"zjuzgwyz\"},{\"dependencyName\":\"txon\",\"publisher\":\"ts\",\"minVersion\":\"jcbpwxqpsrknft\"}],\"version\":\"vriuhprwmdyvx\",\"lastUpdated\":\"2021-05-28T21:07:01Z\",\"packageApplications\":[{\"appId\":\"ww\",\"description\":\"yqbexrmcqibycno\",\"appUserModelID\":\"knme\",\"friendlyName\":\"sgzvahapjyzhpv\",\"iconImageName\":\"zcjrvxdjzlmwlx\"},{\"appId\":\"fhzovawjvzunluth\",\"description\":\"prnxipeil\",\"appUserModelID\":\"zuaejxd\",\"friendlyName\":\"tskzbbtdzumveek\",\"iconImageName\":\"wozuhkf\"}],\"certificateName\":\"yofd\",\"certificateExpiry\":\"2021-04-25T06:48:17Z\"},\"id\":\"sd\",\"name\":\"touwaboekqv\",\"type\":\"elnsmvbxw\"},{\"properties\":{\"packageAlias\":\"flhhcaal\",\"imagePath\":\"ixisxyawjoy\",\"packageName\":\"cslyjpk\",\"packageFamilyName\":\"dzyexznelixh\",\"packageFullName\":\"ztfolhbnxk\",\"displayName\":\"laulppg\",\"packageRelativePath\":\"tpnapnyiropuhpig\",\"isRegularRegistration\":true,\"isActive\":false,\"packageDependencies\":[{\"dependencyName\":\"itxmedjvcslynqww\",\"publisher\":\"wzz\",\"minVersion\":\"gktrmgucnapkte\"},{\"dependencyName\":\"llwptfdy\",\"publisher\":\"fqbuaceopzf\",\"minVersion\":\"hhuao\"}],\"version\":\"pcqeqx\",\"lastUpdated\":\"2021-02-19T08:33:13Z\",\"packageApplications\":[{\"appId\":\"zxctobgb\",\"description\":\"moizpos\",\"appUserModelID\":\"grcfb\",\"friendlyName\":\"rmfqjhhkxbpvj\",\"iconImageName\":\"jhxxjyn\"},{\"appId\":\"vkr\",\"description\":\"wbxqzvszjfau\",\"appUserModelID\":\"fdxxivetvtcqaqtd\",\"friendlyName\":\"mcbxvwvxysl\",\"iconImageName\":\"hsfxoblytkb\"},{\"appId\":\"wwwfbkr\",\"description\":\"nsvs\",\"appUserModelID\":\"johxcrsb\",\"friendlyName\":\"vasrruvwb\",\"iconImageName\":\"qfsubcgjbirx\"}],\"certificateName\":\"srfbjfdtwss\",\"certificateExpiry\":\"2021-06-01T18:34:35Z\"},\"id\":\"pvjzbe\",\"name\":\"ilzznfqqnvwp\",\"type\":\"qtaruoujmkcjhwq\"},{\"properties\":{\"packageAlias\":\"r\",\"imagePath\":\"n\",\"packageName\":\"ewgdrjervn\",\"packageFamilyName\":\"nqpeh\",\"packageFullName\":\"doy\",\"displayName\":\"ifthnz\",\"packageRelativePath\":\"dslgnayqigynduh\",\"isRegularRegistration\":true,\"isActive\":false,\"packageDependencies\":[{\"dependencyName\":\"umaq\",\"publisher\":\"bgycduiertgccym\",\"minVersion\":\"olpsslqlf\"},{\"dependencyName\":\"dnbbglzps\",\"publisher\":\"ydmcwyhzdxssa\",\"minVersion\":\"zmnvdfznudaod\"}],\"version\":\"zbn\",\"lastUpdated\":\"2021-04-02T19:32:11Z\",\"packageApplications\":[{\"appId\":\"stdbhhxsrzdzu\",\"description\":\"rsc\",\"appUserModelID\":\"t\",\"friendlyName\":\"vfiwjmygtdss\",\"iconImageName\":\"wtmwerio\"},{\"appId\":\"qsemwabne\",\"description\":\"hhszh\",\"appUserModelID\":\"plvwiwubmwmbes\",\"friendlyName\":\"nkww\",\"iconImageName\":\"pjflcxogao\"},{\"appId\":\"m\",\"description\":\"ikvmkqzeqqk\",\"appUserModelID\":\"tfz\",\"friendlyName\":\"hhvh\",\"iconImageName\":\"r\"},{\"appId\":\"wobdagxtibqdx\",\"description\":\"wakbogqxndl\",\"appUserModelID\":\"gxhuriplbp\",\"friendlyName\":\"xunkbebxmubyynt\",\"iconImageName\":\"rbqtkoie\"}],\"certificateName\":\"tgqr\",\"certificateExpiry\":\"2021-06-26T20:58:29Z\"},\"id\":\"u\",\"name\":\"lauwzizxbmpgcjef\",\"type\":\"zmuvpbttdumorppx\"},{\"properties\":{\"packageAlias\":\"nzbtbhj\",\"imagePath\":\"lkfg\",\"packageName\":\"dneu\",\"packageFamilyName\":\"fphsdyhtozfikdow\",\"packageFullName\":\"uuvxz\",\"displayName\":\"lvithhqzonosgg\",\"packageRelativePath\":\"c\",\"isRegularRegistration\":false,\"isActive\":false,\"packageDependencies\":[{\"dependencyName\":\"ka\",\"publisher\":\"utiiswacf\",\"minVersion\":\"dkzzewkfvhqcrail\"},{\"dependencyName\":\"n\",\"publisher\":\"fuflrwdmhdlx\",\"minVersion\":\"rxsagafcnihgwqa\"},{\"dependencyName\":\"edgfbcvkcvq\",\"publisher\":\"keqdcvdrhvoods\",\"minVersion\":\"bobzdopcjwvnhd\"},{\"dependencyName\":\"wmgxcxrsl\",\"publisher\":\"utwu\",\"minVersion\":\"grpkhjwniyqs\"}],\"version\":\"i\",\"lastUpdated\":\"2021-04-15T16:21:59Z\",\"packageApplications\":[{\"appId\":\"zzlvmbmpaxmodfv\",\"description\":\"fy\",\"appUserModelID\":\"bpfvm\",\"friendlyName\":\"hrfou\",\"iconImageName\":\"taakc\"}],\"certificateName\":\"zvqtmnubexkp\",\"certificateExpiry\":\"2021-05-08T13:31:38Z\"},\"id\":\"ondjmq\",\"name\":\"xvy\",\"type\":\"omgkopkwho\"}],\"nextLink\":\"pajqgxysm\"}")
             .toObject(ExpandMsixImageList.class);
-        Assertions.assertEquals("bkpyc", model.value().get(0).properties().packageAlias());
-        Assertions.assertEquals("lwn", model.value().get(0).properties().imagePath());
-        Assertions.assertEquals("hjdauwhvylwz", model.value().get(0).properties().packageName());
-        Assertions.assertEquals("dhxujznbmpo", model.value().get(0).properties().packageFamilyName());
-        Assertions.assertEquals("wpr", model.value().get(0).properties().packageFullName());
-        Assertions.assertEquals("lve", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("lupj", model.value().get(0).properties().packageRelativePath());
-        Assertions.assertTrue(model.value().get(0).properties().isRegularRegistration());
-        Assertions.assertTrue(model.value().get(0).properties().isActive());
-        Assertions.assertEquals("cswsrtjri",
-            model.value().get(0).properties().packageDependencies().get(0).dependencyName());
-        Assertions.assertEquals("rbpbewtghfgblcg",
-            model.value().get(0).properties().packageDependencies().get(0).publisher());
-        Assertions.assertEquals("zvlvqhjkbegib",
-            model.value().get(0).properties().packageDependencies().get(0).minVersion());
-        Assertions.assertEquals("vriuhprwmdyvx", model.value().get(0).properties().version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T21:07:01Z"),
-            model.value().get(0).properties().lastUpdated());
-        Assertions.assertEquals("ww", model.value().get(0).properties().packageApplications().get(0).appId());
-        Assertions.assertEquals("yqbexrmcqibycno",
-            model.value().get(0).properties().packageApplications().get(0).description());
-        Assertions.assertEquals("knme",
-            model.value().get(0).properties().packageApplications().get(0).appUserModelId());
-        Assertions.assertEquals("sgzvahapjyzhpv",
-            model.value().get(0).properties().packageApplications().get(0).friendlyName());
-        Assertions.assertEquals("zcjrvxdjzlmwlx",
-            model.value().get(0).properties().packageApplications().get(0).iconImageName());
-        Assertions.assertEquals("yofd", model.value().get(0).properties().certificateName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T06:48:17Z"),
-            model.value().get(0).properties().certificateExpiry());
+        Assertions.assertEquals("bkpyc", model.value().get(0).packageAlias());
+        Assertions.assertEquals("lwn", model.value().get(0).imagePath());
+        Assertions.assertEquals("hjdauwhvylwz", model.value().get(0).packageName());
+        Assertions.assertEquals("dhxujznbmpo", model.value().get(0).packageFamilyName());
+        Assertions.assertEquals("wpr", model.value().get(0).packageFullName());
+        Assertions.assertEquals("lve", model.value().get(0).displayName());
+        Assertions.assertEquals("lupj", model.value().get(0).packageRelativePath());
+        Assertions.assertTrue(model.value().get(0).isRegularRegistration());
+        Assertions.assertTrue(model.value().get(0).isActive());
+        Assertions.assertEquals("cswsrtjri", model.value().get(0).packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.value().get(0).packageDependencies().get(0).publisher());
+        Assertions.assertEquals("zvlvqhjkbegib", model.value().get(0).packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("vriuhprwmdyvx", model.value().get(0).version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T21:07:01Z"), model.value().get(0).lastUpdated());
+        Assertions.assertEquals("ww", model.value().get(0).packageApplications().get(0).appId());
+        Assertions.assertEquals("yqbexrmcqibycno", model.value().get(0).packageApplications().get(0).description());
+        Assertions.assertEquals("knme", model.value().get(0).packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.value().get(0).packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.value().get(0).packageApplications().get(0).iconImageName());
+        Assertions.assertEquals("yofd", model.value().get(0).certificateName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T06:48:17Z"), model.value().get(0).certificateExpiry());
         Assertions.assertEquals("pajqgxysm", model.nextLink());
     }
 }

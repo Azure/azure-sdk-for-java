@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.desktopvirtualization.models.ExpandMsixImageProperties;
+import com.azure.resourcemanager.desktopvirtualization.fluent.models.ExpandMsixImageProperties;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 

@@ -36,36 +36,28 @@ public final class MsixImagesExpandMockTests {
             .expand("fkndl", "vtwknvgmmbugt", new MsixImageUri().withUri("atmqaqkuea"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oeshoygzcbyfq", response.iterator().next().properties().packageAlias());
-        Assertions.assertEquals("faoytehqpuv", response.iterator().next().properties().imagePath());
-        Assertions.assertEquals("vqmtdwckygroejn", response.iterator().next().properties().packageName());
-        Assertions.assertEquals("ljdjuskbrreqy", response.iterator().next().properties().packageFamilyName());
-        Assertions.assertEquals("ceysfaqeg", response.iterator().next().properties().packageFullName());
-        Assertions.assertEquals("wryshwd", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("vbxgkqusyb", response.iterator().next().properties().packageRelativePath());
-        Assertions.assertTrue(response.iterator().next().properties().isRegularRegistration());
-        Assertions.assertFalse(response.iterator().next().properties().isActive());
-        Assertions.assertEquals("vvlfntymtp",
-            response.iterator().next().properties().packageDependencies().get(0).dependencyName());
-        Assertions.assertEquals("wenaz",
-            response.iterator().next().properties().packageDependencies().get(0).publisher());
-        Assertions.assertEquals("ohzrsqalsx",
-            response.iterator().next().properties().packageDependencies().get(0).minVersion());
-        Assertions.assertEquals("tekva", response.iterator().next().properties().version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T21:15:49Z"),
-            response.iterator().next().properties().lastUpdated());
-        Assertions.assertEquals("qvqyvweht",
-            response.iterator().next().properties().packageApplications().get(0).appId());
-        Assertions.assertEquals("mxhzzysevus",
-            response.iterator().next().properties().packageApplications().get(0).description());
+        Assertions.assertEquals("oeshoygzcbyfq", response.iterator().next().packageAlias());
+        Assertions.assertEquals("faoytehqpuv", response.iterator().next().imagePath());
+        Assertions.assertEquals("vqmtdwckygroejn", response.iterator().next().packageName());
+        Assertions.assertEquals("ljdjuskbrreqy", response.iterator().next().packageFamilyName());
+        Assertions.assertEquals("ceysfaqeg", response.iterator().next().packageFullName());
+        Assertions.assertEquals("wryshwd", response.iterator().next().displayName());
+        Assertions.assertEquals("vbxgkqusyb", response.iterator().next().packageRelativePath());
+        Assertions.assertTrue(response.iterator().next().isRegularRegistration());
+        Assertions.assertFalse(response.iterator().next().isActive());
+        Assertions.assertEquals("vvlfntymtp", response.iterator().next().packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("wenaz", response.iterator().next().packageDependencies().get(0).publisher());
+        Assertions.assertEquals("ohzrsqalsx", response.iterator().next().packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("tekva", response.iterator().next().version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T21:15:49Z"), response.iterator().next().lastUpdated());
+        Assertions.assertEquals("qvqyvweht", response.iterator().next().packageApplications().get(0).appId());
+        Assertions.assertEquals("mxhzzysevus", response.iterator().next().packageApplications().get(0).description());
         Assertions.assertEquals("vzrrryveimi",
-            response.iterator().next().properties().packageApplications().get(0).appUserModelId());
-        Assertions.assertEquals("kdyzatvfuzk",
-            response.iterator().next().properties().packageApplications().get(0).friendlyName());
-        Assertions.assertEquals("tjvv",
-            response.iterator().next().properties().packageApplications().get(0).iconImageName());
-        Assertions.assertEquals("sl", response.iterator().next().properties().certificateName());
+            response.iterator().next().packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("kdyzatvfuzk", response.iterator().next().packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("tjvv", response.iterator().next().packageApplications().get(0).iconImageName());
+        Assertions.assertEquals("sl", response.iterator().next().certificateName());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T14:39:47Z"),
-            response.iterator().next().properties().certificateExpiry());
+            response.iterator().next().certificateExpiry());
     }
 }

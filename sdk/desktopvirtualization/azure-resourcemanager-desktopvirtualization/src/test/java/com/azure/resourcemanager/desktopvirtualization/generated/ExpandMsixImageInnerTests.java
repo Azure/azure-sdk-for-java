@@ -15,26 +15,26 @@ public final class ExpandMsixImageInnerTests {
         ExpandMsixImageInner model = BinaryData.fromString(
             "{\"properties\":{\"packageAlias\":\"bq\",\"imagePath\":\"vmkcx\",\"packageName\":\"apvhelxprgly\",\"packageFamilyName\":\"dd\",\"packageFullName\":\"cbcuejrjxgciqi\",\"displayName\":\"hos\",\"packageRelativePath\":\"dqrhzoymib\",\"isRegularRegistration\":false,\"isActive\":true,\"packageDependencies\":[{\"dependencyName\":\"wfluszdt\",\"publisher\":\"rkwofyyvoqa\",\"minVersion\":\"iexpbtgiwbwo\"},{\"dependencyName\":\"washr\",\"publisher\":\"tkcnqxwb\",\"minVersion\":\"kulpiujwaasi\"},{\"dependencyName\":\"i\",\"publisher\":\"byuqerpqlp\",\"minVersion\":\"cciuqgbdbutau\"},{\"dependencyName\":\"btkuwhh\",\"publisher\":\"ykojoxafnndlpic\",\"minVersion\":\"o\"}],\"version\":\"kcdyhbpk\",\"lastUpdated\":\"2021-02-04T17:28:33Z\",\"packageApplications\":[{\"appId\":\"q\",\"description\":\"vvqfovljxyws\",\"appUserModelID\":\"syrsndsytgadgvra\",\"friendlyName\":\"en\",\"iconImageName\":\"nzar\"},{\"appId\":\"uu\",\"description\":\"fqka\",\"appUserModelID\":\"wiipfpub\",\"friendlyName\":\"bwwift\",\"iconImageName\":\"qkvpuvksgplsakn\"},{\"appId\":\"ynl\",\"description\":\"huopxodlqiynto\",\"appUserModelID\":\"ihleos\",\"friendlyName\":\"w\",\"iconImageName\":\"mslyzrpzbchckqqz\"}],\"certificateName\":\"iysui\",\"certificateExpiry\":\"2021-06-27T05:18:24Z\"},\"id\":\"edyatrwyhqmibzyh\",\"name\":\"itsmypyyn\",\"type\":\"cdpu\"}")
             .toObject(ExpandMsixImageInner.class);
-        Assertions.assertEquals("bq", model.properties().packageAlias());
-        Assertions.assertEquals("vmkcx", model.properties().imagePath());
-        Assertions.assertEquals("apvhelxprgly", model.properties().packageName());
-        Assertions.assertEquals("dd", model.properties().packageFamilyName());
-        Assertions.assertEquals("cbcuejrjxgciqi", model.properties().packageFullName());
-        Assertions.assertEquals("hos", model.properties().displayName());
-        Assertions.assertEquals("dqrhzoymib", model.properties().packageRelativePath());
-        Assertions.assertFalse(model.properties().isRegularRegistration());
-        Assertions.assertTrue(model.properties().isActive());
-        Assertions.assertEquals("wfluszdt", model.properties().packageDependencies().get(0).dependencyName());
-        Assertions.assertEquals("rkwofyyvoqa", model.properties().packageDependencies().get(0).publisher());
-        Assertions.assertEquals("iexpbtgiwbwo", model.properties().packageDependencies().get(0).minVersion());
-        Assertions.assertEquals("kcdyhbpk", model.properties().version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T17:28:33Z"), model.properties().lastUpdated());
-        Assertions.assertEquals("q", model.properties().packageApplications().get(0).appId());
-        Assertions.assertEquals("vvqfovljxyws", model.properties().packageApplications().get(0).description());
-        Assertions.assertEquals("syrsndsytgadgvra", model.properties().packageApplications().get(0).appUserModelId());
-        Assertions.assertEquals("en", model.properties().packageApplications().get(0).friendlyName());
-        Assertions.assertEquals("nzar", model.properties().packageApplications().get(0).iconImageName());
-        Assertions.assertEquals("iysui", model.properties().certificateName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T05:18:24Z"), model.properties().certificateExpiry());
+        Assertions.assertEquals("bq", model.packageAlias());
+        Assertions.assertEquals("vmkcx", model.imagePath());
+        Assertions.assertEquals("apvhelxprgly", model.packageName());
+        Assertions.assertEquals("dd", model.packageFamilyName());
+        Assertions.assertEquals("cbcuejrjxgciqi", model.packageFullName());
+        Assertions.assertEquals("hos", model.displayName());
+        Assertions.assertEquals("dqrhzoymib", model.packageRelativePath());
+        Assertions.assertFalse(model.isRegularRegistration());
+        Assertions.assertTrue(model.isActive());
+        Assertions.assertEquals("wfluszdt", model.packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("rkwofyyvoqa", model.packageDependencies().get(0).publisher());
+        Assertions.assertEquals("iexpbtgiwbwo", model.packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("kcdyhbpk", model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T17:28:33Z"), model.lastUpdated());
+        Assertions.assertEquals("q", model.packageApplications().get(0).appId());
+        Assertions.assertEquals("vvqfovljxyws", model.packageApplications().get(0).description());
+        Assertions.assertEquals("syrsndsytgadgvra", model.packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("en", model.packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("nzar", model.packageApplications().get(0).iconImageName());
+        Assertions.assertEquals("iysui", model.certificateName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T05:18:24Z"), model.certificateExpiry());
     }
 }

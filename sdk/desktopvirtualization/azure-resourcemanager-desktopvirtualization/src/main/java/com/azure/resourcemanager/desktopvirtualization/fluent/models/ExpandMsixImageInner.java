@@ -10,8 +10,11 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.desktopvirtualization.models.ExpandMsixImageProperties;
+import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
+import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Represents the definition of contents retrieved after expanding the MSIX Image.
@@ -21,7 +24,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
     /*
      * Detailed properties for ExpandMsixImage
      */
-    private ExpandMsixImageProperties properties;
+    private ExpandMsixImageProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -50,12 +53,12 @@ public final class ExpandMsixImageInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Detailed properties for ExpandMsixImage.
+     * Get the innerProperties property: Detailed properties for ExpandMsixImage.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public ExpandMsixImageProperties properties() {
-        return this.properties;
+    private ExpandMsixImageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -98,12 +101,148 @@ public final class ExpandMsixImageInner extends ProxyResource {
     }
 
     /**
+     * Get the packageAlias property: Alias of MSIX Package.
+     * 
+     * @return the packageAlias value.
+     */
+    public String packageAlias() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageAlias();
+    }
+
+    /**
+     * Get the imagePath property: VHD/CIM image path on Network Share.
+     * 
+     * @return the imagePath value.
+     */
+    public String imagePath() {
+        return this.innerProperties() == null ? null : this.innerProperties().imagePath();
+    }
+
+    /**
+     * Get the packageName property: Package Name from appxmanifest.xml.
+     * 
+     * @return the packageName value.
+     */
+    public String packageName() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageName();
+    }
+
+    /**
+     * Get the packageFamilyName property: Package Family Name from appxmanifest.xml. Contains Package Name and
+     * Publisher name.
+     * 
+     * @return the packageFamilyName value.
+     */
+    public String packageFamilyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageFamilyName();
+    }
+
+    /**
+     * Get the packageFullName property: Package Full Name from appxmanifest.xml.
+     * 
+     * @return the packageFullName value.
+     */
+    public String packageFullName() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageFullName();
+    }
+
+    /**
+     * Get the displayName property: User friendly Name to be displayed in the portal.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Get the packageRelativePath property: Relative Path to the package inside the image.
+     * 
+     * @return the packageRelativePath value.
+     */
+    public String packageRelativePath() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageRelativePath();
+    }
+
+    /**
+     * Get the isRegularRegistration property: Specifies how to register Package in feed.
+     * 
+     * @return the isRegularRegistration value.
+     */
+    public Boolean isRegularRegistration() {
+        return this.innerProperties() == null ? null : this.innerProperties().isRegularRegistration();
+    }
+
+    /**
+     * Get the isActive property: Make this version of the package the active one across the hostpool.
+     * 
+     * @return the isActive value.
+     */
+    public Boolean isActive() {
+        return this.innerProperties() == null ? null : this.innerProperties().isActive();
+    }
+
+    /**
+     * Get the packageDependencies property: List of package dependencies.
+     * 
+     * @return the packageDependencies value.
+     */
+    public List<MsixPackageDependencies> packageDependencies() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageDependencies();
+    }
+
+    /**
+     * Get the version property: Package version found in the appxmanifest.xml.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the lastUpdated property: Date Package was last updated, found in the appxmanifest.xml.
+     * 
+     * @return the lastUpdated value.
+     */
+    public OffsetDateTime lastUpdated() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdated();
+    }
+
+    /**
+     * Get the packageApplications property: List of package applications.
+     * 
+     * @return the packageApplications value.
+     */
+    public List<MsixPackageApplications> packageApplications() {
+        return this.innerProperties() == null ? null : this.innerProperties().packageApplications();
+    }
+
+    /**
+     * Get the certificateName property: Certificate name found in the appxmanifest.xml.
+     * 
+     * @return the certificateName value.
+     */
+    public String certificateName() {
+        return this.innerProperties() == null ? null : this.innerProperties().certificateName();
+    }
+
+    /**
+     * Get the certificateExpiry property: Date certificate expires, found in the appxmanifest.xml.
+     * 
+     * @return the certificateExpiry value.
+     */
+    public OffsetDateTime certificateExpiry() {
+        return this.innerProperties() == null ? null : this.innerProperties().certificateExpiry();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,7 +269,7 @@ public final class ExpandMsixImageInner extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedExpandMsixImageInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedExpandMsixImageInner.properties = ExpandMsixImageProperties.fromJson(reader);
+                    deserializedExpandMsixImageInner.innerProperties = ExpandMsixImageProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedExpandMsixImageInner.systemData = SystemData.fromJson(reader);
                 } else {

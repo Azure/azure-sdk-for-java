@@ -16,10 +16,8 @@ public final class PrivateEndpointConnectionTests {
             "{\"properties\":{\"groupIds\":[\"xqtvcofu\",\"f\",\"vkg\"],\"privateEndpoint\":{\"id\":\"gdknnqv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"qntorudsgsahmkyc\",\"actionsRequired\":\"auwjuetaebu\"},\"provisioningState\":\"Failed\"},\"id\":\"movsmzlxwabmqoe\",\"name\":\"kif\",\"type\":\"vtpuqujmqlgk\"}")
             .toObject(PrivateEndpointConnection.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
-            model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("qntorudsgsahmkyc",
-            model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("auwjuetaebu",
-            model.properties().privateLinkServiceConnectionState().actionsRequired());
+            model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("qntorudsgsahmkyc", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("auwjuetaebu", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }
