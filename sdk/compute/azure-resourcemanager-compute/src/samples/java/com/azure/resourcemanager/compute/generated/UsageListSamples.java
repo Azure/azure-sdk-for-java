@@ -29,6 +29,6 @@ public final class UsageListSamples {
      * @param manager Entry point to ComputeManager.
      */
     public static void usageListMaximumSetGen(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient().getUsages().list("4_.", com.azure.core.util.Context.NONE);
+        manager.serviceClient().getUsages().list("4.0", com.azure.core.util.Context.NONE);
     }
 }
