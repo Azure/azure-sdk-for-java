@@ -28,7 +28,7 @@ public interface NetAppResourcesClient {
      * 
      * Check if a resource name is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +45,7 @@ public interface NetAppResourcesClient {
      * 
      * Check if a resource name is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,7 +60,7 @@ public interface NetAppResourcesClient {
      * 
      * Check if a file path is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +77,7 @@ public interface NetAppResourcesClient {
      * 
      * Check if a file path is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,7 +92,7 @@ public interface NetAppResourcesClient {
      * 
      * Check if a quota is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +109,7 @@ public interface NetAppResourcesClient {
      * 
      * Check if a quota is available.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +124,7 @@ public interface NetAppResourcesClient {
      * 
      * Provides storage to network proximity and logical zone mapping information.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -139,7 +139,7 @@ public interface NetAppResourcesClient {
      * 
      * Provides storage to network proximity and logical zone mapping information.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -153,7 +153,7 @@ public interface NetAppResourcesClient {
      * 
      * Get details of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +170,7 @@ public interface NetAppResourcesClient {
      * 
      * Get details of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,7 +185,7 @@ public interface NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,7 +201,7 @@ public interface NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +218,7 @@ public interface NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -233,7 +233,7 @@ public interface NetAppResourcesClient {
      * 
      * Update the network features of the specified network sibling set.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
