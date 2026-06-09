@@ -36,7 +36,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaDatasetsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaDatasetsClient();
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
 
         Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);

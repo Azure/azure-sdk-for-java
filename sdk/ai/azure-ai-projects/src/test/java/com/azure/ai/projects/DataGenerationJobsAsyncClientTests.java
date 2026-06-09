@@ -40,7 +40,7 @@ public class DataGenerationJobsAsyncClientTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaDatasetsAsyncClient();
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsAsyncClient();
 
         StepVerifier.create(
             dataGenerationJobsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {

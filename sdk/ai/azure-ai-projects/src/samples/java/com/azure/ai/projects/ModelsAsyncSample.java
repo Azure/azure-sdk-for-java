@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class ModelsAsyncSample {
     private static final BetaModelsAsyncClient MODELS_ASYNC_CLIENT = new AIProjectClientBuilder()
-        .allowPreview(true)
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .beta().buildBetaModelsAsyncClient();

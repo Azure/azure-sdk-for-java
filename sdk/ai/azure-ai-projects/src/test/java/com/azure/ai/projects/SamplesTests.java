@@ -37,8 +37,7 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void skillsPackageSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) throws IOException {
-        BetaSkillsClient skillsClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaSkillsClient();
+        BetaSkillsClient skillsClient = getClientBuilder(httpClient, serviceVersion).beta().buildBetaSkillsClient();
         String skillName = SAMPLE_SKILL_NAME;
 
         try {
@@ -76,7 +75,7 @@ public class SamplesTests extends ClientTestBase {
     public void skillsPackageAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws IOException {
         BetaSkillsAsyncClient skillsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaSkillsAsyncClient();
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaSkillsAsyncClient();
         String skillName = SAMPLE_SKILL_ASYNC_NAME;
 
         StepVerifier.create(skillsAsyncClient.deleteSkill(skillName)
@@ -100,7 +99,7 @@ public class SamplesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaDatasetsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaDatasetsClient();
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
 
         Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
@@ -121,7 +120,7 @@ public class SamplesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaDatasetsAsyncClient();
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsAsyncClient();
 
         StepVerifier.create(
             dataGenerationJobsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
@@ -134,8 +133,7 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        BetaModelsClient modelsClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaModelsClient();
+        BetaModelsClient modelsClient = getClientBuilder(httpClient, serviceVersion).beta().buildBetaModelsClient();
 
         Iterable<ModelVersion> modelVersions = modelsClient.listLatestModelVersions();
         Assertions.assertNotNull(modelVersions);
@@ -157,7 +155,7 @@ public class SamplesTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void modelsListLatestAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         BetaModelsAsyncClient modelsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).allowPreview(true).beta().buildBetaModelsAsyncClient();
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaModelsAsyncClient();
 
         AtomicBoolean sawModel = new AtomicBoolean(false);
         StepVerifier.create(modelsAsyncClient.listLatestModelVersions().take(5).doOnNext(modelVersion -> {

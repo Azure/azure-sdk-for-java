@@ -30,10 +30,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class DataGenerationJobsAsyncSample {
 
     private static final BetaDatasetsAsyncClient DATA_GENERATION_JOBS_ASYNC_CLIENT = new AIProjectClientBuilder()
-        .allowPreview(true)
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .allowPreview(true)
         .beta().buildBetaDatasetsAsyncClient();
 
     public static void main(String[] args) {

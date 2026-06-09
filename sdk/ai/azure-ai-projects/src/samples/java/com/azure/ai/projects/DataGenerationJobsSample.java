@@ -27,11 +27,10 @@ import java.util.UUID;
 public class DataGenerationJobsSample {
 
     private static final BetaDatasetsClient DATA_GENERATION_JOBS_CLIENT = new AIProjectClientBuilder()
-        .allowPreview(true)
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .allowPreview(true)
-        .beta().buildBetaDatasetsClient();
+        .beta()
+        .buildBetaDatasetsClient();
 
     public static void main(String[] args) {
         listGenerationJobs();

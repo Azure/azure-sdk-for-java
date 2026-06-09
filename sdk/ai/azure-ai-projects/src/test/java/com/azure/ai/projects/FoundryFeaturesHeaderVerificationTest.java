@@ -150,7 +150,6 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
 
         createBuilder(httpClient).endpoint("https://localhost:8080/api/projects/project/evaluations/evaluation")
-            .allowPreview(true)
             .beta()
             .buildBetaDatasetsClient()
             .getGenerationJobWithResponse("job", new RequestOptions());

@@ -22,7 +22,6 @@ public class SkillsAsyncSample {
 
     private static BetaSkillsAsyncClient skillsAsyncClient
         = new AIProjectClientBuilder()
-            .allowPreview(true)
             .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .beta().buildBetaSkillsAsyncClient();
