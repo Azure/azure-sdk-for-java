@@ -23,9 +23,11 @@ import java.util.Map;
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.projects.clientInitialization
-        AIProjectClientBuilder builder = new AIProjectClientBuilder().allowPreview(true);
+        AIProjectClientBuilder builder = new AIProjectClientBuilder()
+            .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+        // Beta* clients automatically opt in to their preview service area.
         BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();

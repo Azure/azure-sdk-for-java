@@ -60,8 +60,8 @@ The Agents client library has the following sub-clients which group the differen
 - `AgentsClient` / `AgentsAsyncClient`: Perform generally available operations related to agents, such as creating, retrieving, updating, and deleting agents.
 - `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent operations, including hosted-agent sessions, session files, code package operations, and preview agent optimization operations.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
-- `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
-- `BetaToolboxesClient` / `BetaToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions. This operation group requires the `Toolboxes=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
+- `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
+- `BetaToolboxesClient` / `BetaToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -70,12 +70,13 @@ To access each sub-client you need to use your `AgentsClientBuilder()`. The Agen
 ```java
 AgentsClientBuilder builder = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint);
+                .endpoint(endpoint)
+                .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
 
 // Agents sub-clients
 AgentsClient agentsClient = builder.buildAgentsClient();
 AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-// Beta Agents sub-clients (preview).
+// Beta* clients automatically opt in to their preview service area.
 BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 // Responses sub-clients.
@@ -94,6 +95,13 @@ The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can
 ```java
 OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIAsyncClient = builder.buildOpenAIAsyncClient();
+
+// OpenAI SDK ResponseService accessed from ResponsesClient
+ResponsesClient responsesClient = builder.buildResponsesClient();
+ResponseService responseService = responsesClient.getResponseService();
+
+// OpenAI SDK ConversationService accessed from OpenAIClient
+ConversationService conversationService = openAIClient.conversations();
 ```
 
 ### Agent tools
@@ -132,37 +140,30 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 Supported tool classes may also expose optional `name`, `description`, and `toolConfigs` properties for user-defined labels and per-tool configuration.
 
-### Experimental features and opt-in flags
+### Preview operation groups and beta clients
 
-Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK provides two enums for these flags:
+Several operation groups in the Agents client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.
 
-- **`AgentDefinitionOptInKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `AGENT_ENDPOINT_V1_PREVIEW`, `CODE_AGENTS_V1_PREVIEW`, `EXTERNAL_AGENTS_V1_PREVIEW`.
-- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `ROUTINES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`, `DATA_GENERATION_JOBS_V1_PREVIEW`, `MODELS_V1_PREVIEW`, `AGENTS_OPTIMIZATION_V1_PREVIEW`.
-
-> **Note:** The `BetaMemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request. The `BetaToolboxesClient` automatically sets the `Toolboxes=V1Preview` opt-in flag on every request. Agent optimization methods accept `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW`; code-based hosted agents and external agents use the corresponding `AgentDefinitionOptInKeys` values.
+Use `AgentsClientBuilder.allowPreview(true)` when building non-Beta clients that support preview service behavior. For example, `AgentsClient` and `AgentsAsyncClient` use this builder setting to allow the service to return preview response types:
 
 ```java
-// OpenAI SDK ResponseService accessed from ResponsesClient
-ResponsesClient responsesClient = builder.buildResponsesClient();
-ResponseService responseService = responsesClient.getResponseService();
+AgentsClientBuilder builder = new AgentsClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint)
+    .allowPreview(true);
 
-// OpenAI SDK ConversationService accessed from OpenAIClient
-OpenAIClient openAIClient = builder.buildOpenAIClient();
-ConversationService conversationService = openAIClient.conversations();
+AgentsClient agentsClient = builder.buildAgentsClient();
 ```
 
-### Preview hosted-agent capabilities
+Clients whose names start with `Beta` always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
 
-Hosted-agent previews are exposed on `BetaAgentsClient` and `BetaAgentsAsyncClient`. The following capabilities require the corresponding opt-in flag when you create or modify preview resources:
+| Beta sub-client | Automatically populated `Foundry-Features` value |
+|---|---|
+| `BetaAgentsClient` | `HostedAgents=V1Preview,WorkflowAgents=V1Preview,AgentEndpoints=V1Preview,CodeAgents=V1Preview,ExternalAgents=V1Preview,AgentsOptimization=V1Preview` |
+| `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
+| `BetaToolboxesClient` | `Toolboxes=V1Preview` |
 
-| Capability | APIs and models | Opt-in flag |
-|---|---|---|
-| Code-based hosted agents | `createAgentVersionFromCode`, `updateAgentFromCode`, `downloadAgentCode`, `CodeConfiguration`, `CodeDependencyResolution` | `AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW` |
-| External agents | `ExternalAgentDefinition`, `AgentKind.EXTERNAL` | `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW` |
-| Agent endpoints and sessions | `AgentEndpointConfig`, `createSession`, `listSessions`, `stopSession`, session-file methods | `AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW` |
-| Agent optimization | `createOptimizationJob`, `listOptimizationJobs`, `listOptimizationCandidates`, `promoteOptimizationCandidate` | `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW` |
-
-For code-based hosted agents, `CodeConfiguration.getContentSha256()` returns the service-computed SHA-256 hash of the uploaded code package. Session APIs that need per-user isolation can use overloads that accept `userIsolationKey`, or set the `x-ms-user-isolation-key` header through `RequestOptions`. To delete hosted agents or agent versions that still have active sessions, add the `force=true` query parameter through `RequestOptions` when calling the corresponding `deleteAgentWithResponse` or `deleteAgentVersionWithResponse` method.
+The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ### Memory item management
 

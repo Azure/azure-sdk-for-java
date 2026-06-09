@@ -49,9 +49,11 @@ Various documentation is available to help you get started
 The Azure AI Foundry provides a centralized spot to manage your AI Foundry resources. In order to access each feature you need to initialize your builder and access the corresponding sub-client like it's shown in the following code snippet:
 
 ```java com.azure.ai.projects.clientInitialization
-AIProjectClientBuilder builder = new AIProjectClientBuilder().allowPreview(true);
+AIProjectClientBuilder builder = new AIProjectClientBuilder()
+    .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+// Beta* clients automatically opt in to their preview service area.
 BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
@@ -110,22 +112,34 @@ OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
 ```
 
-### Preview operation groups and opt-in flags
+### Preview operation groups and beta clients
 
-Several operation groups in the AI Projects client library are in **preview** and require the `Foundry-Features` HTTP header for opt-in. The SDK automatically sets this header on every request for the following sub-clients:
+Several operation groups in the AI Projects client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.
 
-| Sub-client | Opt-in flag |
+Use `AIProjectClientBuilder.allowPreview(true)` when building non-Beta clients that support preview service behavior. For example, `EvaluationRulesClient` and `EvaluationRulesAsyncClient` use this builder setting to allow the service to return preview response types:
+
+```java
+AIProjectClientBuilder builder = new AIProjectClientBuilder()
+    .allowPreview(true);
+
+EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
+```
+
+Clients whose names start with `Beta` always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
+
+| Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
+| `BetaDatasetsClient` | `DataGenerationJobs=V1Preview` |
 | `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
+| `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
+| `BetaInsightsClient` | `Insights=V1Preview` |
 | `BetaModelsClient` | `Models=V1Preview` |
 | `BetaRedTeamsClient` | `RedTeams=V1Preview` |
+| `BetaRoutinesClient` | `Routines=V1Preview` |
 | `BetaSchedulesClient` | `Schedules=V1Preview` |
 | `BetaSkillsClient` | `Skills=V1Preview` |
 
-The `BetaDatasetsClient`, `BetaRoutinesClient`, `EvaluationRulesClient`, and `BetaInsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling methods that accept it (e.g., `FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW`, `FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW`, `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
-
-The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `ROUTINES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`, `DATA_GENERATION_JOBS_V1_PREVIEW`, `MODELS_V1_PREVIEW`, `AGENTS_OPTIMIZATION_V1_PREVIEW`.
+The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
