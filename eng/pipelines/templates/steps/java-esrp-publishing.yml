@@ -170,7 +170,6 @@ steps:
                   --batch-mode `
                   -q `
                   org.apache.maven.plugins:maven-dependency-plugin:copy `
-                  -DremoteRepositories=azure-sdk-for-java::default::https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1 `
                   "-Dmaven.repo.local=$repoPath" `
                   "-Dartifact=$($package.Coordinate)" `
                   "-DoutputDirectory=$downloadRoot" `
