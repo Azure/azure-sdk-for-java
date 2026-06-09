@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ArcSettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/PatchArcSetting.json
+     * x-ms-original-file: 2026-04-30/PatchArcSetting.json
      */
     /**
      * Sample code: Patch ArcSetting.

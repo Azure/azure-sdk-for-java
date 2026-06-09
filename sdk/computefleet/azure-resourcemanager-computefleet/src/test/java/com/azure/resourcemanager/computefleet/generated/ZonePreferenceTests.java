@@ -12,16 +12,16 @@ public final class ZonePreferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZonePreference model
-            = BinaryData.fromString("{\"zone\":\"uaejxdultsk\",\"rank\":618241707}").toObject(ZonePreference.class);
-        Assertions.assertEquals("uaejxdultsk", model.zone());
-        Assertions.assertEquals(618241707, model.rank());
+            = BinaryData.fromString("{\"zone\":\"fovasr\",\"rank\":181665784}").toObject(ZonePreference.class);
+        Assertions.assertEquals("fovasr", model.zone());
+        Assertions.assertEquals(181665784, model.rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZonePreference model = new ZonePreference().withZone("uaejxdultsk").withRank(618241707);
+        ZonePreference model = new ZonePreference().withZone("fovasr").withRank(181665784);
         model = BinaryData.fromObject(model).toObject(ZonePreference.class);
-        Assertions.assertEquals("uaejxdultsk", model.zone());
-        Assertions.assertEquals(618241707, model.rank());
+        Assertions.assertEquals("fovasr", model.zone());
+        Assertions.assertEquals(181665784, model.rank());
     }
 }

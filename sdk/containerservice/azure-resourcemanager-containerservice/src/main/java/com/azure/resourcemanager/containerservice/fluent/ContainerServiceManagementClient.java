@@ -103,6 +103,13 @@ public interface ContainerServiceManagementClient {
     TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings();
 
     /**
+     * Gets the IdentityBindingsClient object to access its operations.
+     * 
+     * @return the IdentityBindingsClient object.
+     */
+    IdentityBindingsClient getIdentityBindings();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      * 
      * @return the OperationsClient object.

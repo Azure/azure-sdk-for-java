@@ -66,6 +66,15 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku UBUNTU2404 = fromString("Ubuntu2404");
 
     /**
+     * Use Azure Container Linux as the OS for node images. Azure Container Linux is a container-optimized,
+     * security-focused Linux OS built on Azure Linux, with an immutable filesystem. ACL is derived from the Flatcar
+     * Container Linux project, building on Flatcar's proven container-first, immutable design, while adding Azure Linux
+     * packages, servicing, and deep integration with the Azure and AKS lifecycle. For more information, see
+     * https://aka.ms/azurecontainerlinux.
+     */
+    public static final OSSku AZURE_CONTAINER_LINUX = fromString("AzureContainerLinux");
+
+    /**
      * Creates a new instance of OSSku value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

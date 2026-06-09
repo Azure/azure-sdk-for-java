@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerservice.models.AgentPoolArtifactStreamingProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolGatewayProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
@@ -188,7 +189,8 @@ public class ManagedClusterAgentPoolProfileProperties
     private String currentOrchestratorVersion;
 
     /*
-     * The version of node image
+     * The version of the node image. Setting this value triggers an agentPool rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      */
     private String nodeImageVersion;
 
@@ -355,6 +357,11 @@ public class ManagedClusterAgentPoolProfileProperties
      * Gateway.
      */
     private AgentPoolGatewayProfile gatewayProfile;
+
+    /*
+     * Configuration for using artifact streaming on AKS.
+     */
+    private AgentPoolArtifactStreamingProfile artifactStreamingProfile;
 
     /*
      * Specifications on VirtualMachines agent pool.
@@ -896,7 +903,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the nodeImageVersion property: The version of node image.
+     * Get the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @return the nodeImageVersion value.
      */
@@ -905,12 +914,14 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the nodeImageVersion property: The version of node image.
+     * Set the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @param nodeImageVersion the nodeImageVersion value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
+    public ManagedClusterAgentPoolProfileProperties withNodeImageVersion(String nodeImageVersion) {
         this.nodeImageVersion = nodeImageVersion;
         return this;
     }
@@ -1523,6 +1534,27 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * 
+     * @return the artifactStreamingProfile value.
+     */
+    public AgentPoolArtifactStreamingProfile artifactStreamingProfile() {
+        return this.artifactStreamingProfile;
+    }
+
+    /**
+     * Set the artifactStreamingProfile property: Configuration for using artifact streaming on AKS.
+     * 
+     * @param artifactStreamingProfile the artifactStreamingProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties
+        withArtifactStreamingProfile(AgentPoolArtifactStreamingProfile artifactStreamingProfile) {
+        this.artifactStreamingProfile = artifactStreamingProfile;
+        return this;
+    }
+
+    /**
      * Get the virtualMachinesProfile property: Specifications on VirtualMachines agent pool.
      * 
      * @return the virtualMachinesProfile value.
@@ -1644,6 +1676,9 @@ public class ManagedClusterAgentPoolProfileProperties
         if (gatewayProfile() != null) {
             gatewayProfile().validate();
         }
+        if (artifactStreamingProfile() != null) {
+            artifactStreamingProfile().validate();
+        }
         if (virtualMachinesProfile() != null) {
             virtualMachinesProfile().validate();
         }
@@ -1687,6 +1722,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("orchestratorVersion", this.orchestratorVersion);
+        jsonWriter.writeStringField("nodeImageVersion", this.nodeImageVersion);
         jsonWriter.writeJsonField("upgradeSettings", this.upgradeSettings);
         jsonWriter.writeJsonField("powerState", this.powerState);
         jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
@@ -1717,6 +1753,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         jsonWriter.writeJsonField("gpuProfile", this.gpuProfile);
         jsonWriter.writeJsonField("gatewayProfile", this.gatewayProfile);
+        jsonWriter.writeJsonField("artifactStreamingProfile", this.artifactStreamingProfile);
         jsonWriter.writeJsonField("virtualMachinesProfile", this.virtualMachinesProfile);
         jsonWriter.writeArrayField("virtualMachineNodesStatus", this.virtualMachineNodesStatus,
             (writer, element) -> writer.writeJson(element));
@@ -1872,6 +1909,9 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("gatewayProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.gatewayProfile
                         = AgentPoolGatewayProfile.fromJson(reader);
+                } else if ("artifactStreamingProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.artifactStreamingProfile
+                        = AgentPoolArtifactStreamingProfile.fromJson(reader);
                 } else if ("virtualMachinesProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.virtualMachinesProfile
                         = VirtualMachinesProfile.fromJson(reader);

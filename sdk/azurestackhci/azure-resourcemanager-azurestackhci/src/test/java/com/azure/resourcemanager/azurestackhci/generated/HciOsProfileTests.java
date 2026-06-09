@@ -11,7 +11,7 @@ public final class HciOsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciOsProfile model
-            = BinaryData.fromString("{\"bootType\":\"ybxawoijpodtblx\",\"assemblyVersion\":\"kwjdjodqhy\"}")
+            = BinaryData.fromString("{\"bootType\":\"bhfckdvezcrcssb\",\"assemblyVersion\":\"ddubbnqfblhkal\"}")
                 .toObject(HciOsProfile.class);
     }
 }

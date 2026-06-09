@@ -7,13 +7,14 @@ package com.azure.resourcemanager.cloudhealth.generated;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleProperties;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.ResourceGraphQuerySpecification;
 
 /**
  * Samples for DiscoveryRules CreateOrUpdate.
  */
 public final class DiscoveryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/DiscoveryRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_CreateOrUpdate.json
      */
     /**
      * Sample code: DiscoveryRules_CreateOrUpdate.
@@ -25,11 +26,11 @@ public final class DiscoveryRulesCreateOrUpdateSamples {
             .define("myDiscoveryRule")
             .withExistingHealthmodel("myResourceGroup", "myHealthModel")
             .withProperties(new DiscoveryRuleProperties().withDisplayName("myDisplayName")
-                .withResourceGraphQuery(
-                    "resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'")
                 .withAuthenticationSetting("authSetting1")
                 .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED)
-                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED))
+                .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
+                .withSpecification(new ResourceGraphQuerySpecification().withResourceGraphQuery(
+                    "resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'")))
             .create();
     }
 }
