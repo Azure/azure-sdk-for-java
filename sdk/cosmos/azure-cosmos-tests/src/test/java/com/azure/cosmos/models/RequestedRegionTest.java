@@ -71,11 +71,13 @@ public class RequestedRegionTest {
     }
 
     @Test(groups = {"unit"})
-    public void enumContainsAllSixVariants() {
-        // Spec gate Q7=A: ship all six variants in the initial release.
+    public void enumContainsAllVariants() {
+        // Aligned with the cross-SDK RequestedRegionReason taxonomy (matches the merged
+        // .NET hedging-detection enum, which exposes UNKNOWN as the zero/default sentinel).
         RequestedRegionReason[] values = RequestedRegionReason.values();
 
         assertThat(values).containsExactlyInAnyOrder(
+            RequestedRegionReason.UNKNOWN,
             RequestedRegionReason.INITIAL,
             RequestedRegionReason.OPERATION_RETRY,
             RequestedRegionReason.TRANSPORT_RETRY,

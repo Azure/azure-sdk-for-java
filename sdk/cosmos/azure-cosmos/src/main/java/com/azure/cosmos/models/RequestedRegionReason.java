@@ -16,6 +16,15 @@ package com.azure.cosmos.models;
 public enum RequestedRegionReason {
 
     /**
+     * Default sentinel value. The SDK does <strong>not</strong> emit this value from a real
+     * dispatch; its presence indicates the {@link RequestedRegion} was produced by default
+     * construction (for example a deserialized value where the reason was absent) rather than
+     * by an SDK dispatch. Exposed so the Java enum stays aligned with the cross-SDK
+     * {@code RequestedRegionReason} taxonomy, where it is the zero/default value.
+     */
+    UNKNOWN,
+
+    /**
      * The initial attempt for the operation. Every operation has exactly one {@code INITIAL}
      * entry tied to the first region the SDK targeted.
      */
