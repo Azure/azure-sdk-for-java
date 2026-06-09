@@ -24,6 +24,11 @@ steps:
         MainPublisher: 'ESRPRELPACMANTEST'
 
     - ${{ if eq('true', parameters.VerifyJarPublish) }}:
+      - task: MavenAuthenticate@0
+        displayName: 'Maven Authenticate'
+        inputs:
+          artifactsFeeds: 'azure-sdk-for-java'
+
       - task: PowerShell@2
         displayName: 'Verify ESRP published package jars are downloadable'
         inputs:

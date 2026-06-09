@@ -229,6 +229,9 @@ stages:
               - input: pipelineArtifact
                 artifactName: 'packages-esrp-flattened'
                 targetPath: '$(Pipeline.Workspace)/packages-esrp-flattened'
+              - input: pipelineArtifact
+                artifactName: 'maven-settings'
+                targetPath: '$(Pipeline.Workspace)/maven-settings'
             pool:
               name: azsdk-pool
               image: windows-2022
@@ -237,10 +240,15 @@ stages:
               runOnce:
                 deploy:
                   steps:
+                    - pwsh: |
+                        $m2Dir = if ($env:USERPROFILE) { "$env:USERPROFILE\.m2" } else { "$HOME/.m2" }
+                        New-Item -ItemType Directory -Force -Path $m2Dir | Out-Null
+                        Copy-Item -Path '$(Pipeline.Workspace)/maven-settings/settings.xml' -Destination "$m2Dir/settings.xml"
+                      displayName: 'Setup Maven mirror settings'
                     - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
                       parameters:
                         FlattenedDirectory: $(Pipeline.Workspace)/packages-esrp-flattened
-                        VerifyJarPublish: ${{ parameters.VerifyJarPublish }}
+                        VerifyJarPublish: true
 
         - job: PublishDevFeedPackage
           displayName: "Publish to Java Dev feed"

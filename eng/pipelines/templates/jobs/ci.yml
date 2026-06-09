@@ -271,6 +271,22 @@ jobs:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: 'packages'
 
+      - task: PowerShell@2
+        displayName: 'Stage Maven Settings for publishing'
+        inputs:
+          pwsh: true
+          targetType: inline
+          script: |
+            $settingsArtifactDirectory = Join-Path '$(Agent.TempDirectory)' 'maven-settings'
+            New-Item -Path $settingsArtifactDirectory -ItemType Directory -Force | Out-Null
+            Copy-Item -Path '$(Build.SourcesDirectory)/eng/settings.xml' -Destination (Join-Path $settingsArtifactDirectory 'settings.xml')
+
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactPath: $(Agent.TempDirectory)/maven-settings
+          ArtifactName: 'maven-settings'
+          SbomEnabled: false
+
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
       # during testing if tests failed, and linting reports.
