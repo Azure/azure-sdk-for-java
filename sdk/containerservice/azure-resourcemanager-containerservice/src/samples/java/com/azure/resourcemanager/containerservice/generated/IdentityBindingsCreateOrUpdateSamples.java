@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerservice.models.IdentityBindingProperti
  */
 public final class IdentityBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/IdentityBindings_Create_Or_Update.json
+     * x-ms-original-file: 2026-04-01/IdentityBindings_Create_Or_Update.json
      */
     /**
      * Sample code: Create or update Identity Binding.

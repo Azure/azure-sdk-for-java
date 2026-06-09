@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResou
  */
 public final class ResolvePrivateLinkServiceIdPOSTSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ResolvePrivateLinkServiceId.json
+     * x-ms-original-file: 2026-04-01/ResolvePrivateLinkServiceId.json
      */
     /**
      * Sample code: Resolve the Private Link Service ID for Managed Cluster.
