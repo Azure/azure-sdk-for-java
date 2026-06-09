@@ -93,15 +93,18 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             // * for wildcard match
             processConfigurationSettings(replicaClient.listSettings(settingSelector, context),
                 settingSelector.getKeyFilter(),
-                keyPrefixTrimValues);
+                keyPrefixTrimValues, context);
         }
     }
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
-        List<String> keyPrefixTrimValues)
+        List<String> keyPrefixTrimValues, Context context)
         throws InvalidConfigurationPropertyValueException {
+        // Reset per-label state so flags from a previous label aren't re-processed.
+        featureFlagsList.clear();
+
         // First resolve snapshot references
-        settings = resolveSnapshotReferences(settings);
+        settings = resolveSnapshotReferences(settings, context);
 
         for (ConfigurationSetting setting : settings) {
             replicaClient.getTracingInfo().updateAiConfigurationTracing(setting.getContentType());
@@ -128,14 +131,14 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
-    private List<ConfigurationSetting> resolveSnapshotReferences(List<ConfigurationSetting> settings) {
+    private List<ConfigurationSetting> resolveSnapshotReferences(List<ConfigurationSetting> settings, Context context) {
         List<ConfigurationSetting> resolvedSettings = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
             if (SNAPSHOT_REF_CONTENT_TYPE.equals(setting.getContentType())) {
                 // Handle snapshot reference
                 replicaClient.getTracingInfo().setUsesSnapshotReference();
                 List<ConfigurationSetting> snapshotSettings = replicaClient.listSettingSnapshot(setting.getValue(),
-                    Context.NONE);
+                    context);
                 resolvedSettings.addAll(snapshotSettings);
             } else if (setting instanceof FeatureFlagConfigurationSetting) {
                 // We need to strip feature flags as we only support feature flags from snapshots, and if they are in a

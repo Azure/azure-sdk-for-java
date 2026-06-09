@@ -40,9 +40,10 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * </p>
      *
      * @param trim prefix to trim
-     * @param isRefresh true if a refresh triggered the loading of the Snapshot.
+     * @param context request context propagated to the App Configuration client.
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
+    @Override
     public void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException {
         replicaClient.getTracingInfo().resetAiConfigurationTracing();
         List<ConfigurationSetting> settings = replicaClient.listSettingSnapshot(snapshotName, context);
