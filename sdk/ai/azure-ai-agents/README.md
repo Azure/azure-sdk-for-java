@@ -740,6 +740,46 @@ If there are significant differences, API calls may fail due to incompatibility.
 
 Always ensure that the chosen API version is fully supported and operational for your specific use case and that it aligns with the service's versioning policy.
 
+## Tracing (Experimental)
+
+This package supports OpenTelemetry-based tracing for GenAI operations. When enabled, spans are emitted for agent creation, response generation, and streaming with [GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/).
+
+### Quick Start
+
+```java
+// 1. Set up OpenTelemetry (console exporter example)
+// SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+//     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+//     .build();
+// OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
+
+// 2. Enable GenAI tracing
+GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+
+// 3. Use the client normally — spans are emitted automatically
+AgentsClient client = new AgentsClientBuilder()
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildAgentsClient();
+```
+
+### Content Recording
+
+By default, message content is **NOT** recorded in traces (privacy-safe). To enable:
+- Set environment variable `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`, or
+- Pass programmatically: `new GenAiTracingOptions().setContentRecording(true)`
+
+### Trace Context Propagation
+
+W3C trace context headers (`traceparent`/`tracestate`) are injected into outgoing requests by default. To disable:
+- Set environment variable `AZURE_TRACING_GEN_AI_ENABLE_TRACE_CONTEXT_PROPAGATION=false`, or
+- Pass programmatically: `new GenAiTracingOptions().setTraceContextPropagation(false)`
+
+### Samples
+
+- [Console tracing](src/samples/java/com/azure/ai/agents/TracingConsoleSample.java)
+- [Azure Monitor tracing](src/samples/java/com/azure/ai/agents/TracingAzureMonitorSample.java)
+
 ## Troubleshooting
 
 ### Enable client logging

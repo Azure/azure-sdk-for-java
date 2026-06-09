@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added experimental GenAI tracing support via `GenAiTracingConfiguration.enableGenAiTracing()` and `GenAiTracingConfiguration.disableGenAiTracing()`. When enabled, OpenTelemetry spans are emitted for agent CRUD, response generation (chat/invoke_agent), and streaming operations with GenAI semantic convention attributes, token usage metrics, and optional content recording gated by the `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` environment variable.
 - Added protocol-style methods on `ResponsesClient` and `ResponsesAsyncClient` that accept a raw JSON request body (`BinaryData`) and a `com.openai.core.RequestOptions`, and return the openai-java raw HTTP response. These mirror the existing `createAzureResponse` and `createStreamingAzureResponse` typed surface: `createResponseWithResponse` (returns `HttpResponseFor<Response>`) and `createResponseStreamWithResponse` (returns `HttpResponseFor<StreamResponse<ResponseStreamEvent>>`). They delegate to the underlying openai-java `ResponseService.withRawResponse()` surface and continue to flow through the Azure HTTP pipeline.
 
 ### Other Changes
