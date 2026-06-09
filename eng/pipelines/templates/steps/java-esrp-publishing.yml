@@ -6,6 +6,33 @@ parameters:
 
 steps:
   - ${{if eq(parameters.ShouldPublish, 'true')}}:
+    # TODO: REMOVE BEFORE MERGE
+    - task: PowerShell@2
+      displayName: 'Move one package out of flattened ESRP directory (test)'
+      condition: and(succeeded(), eq(variables['System.JobAttempt'], '1'))
+      inputs:
+        pwsh: true
+        targetType: inline
+        script: |
+          $flattenedDirectory = (Resolve-Path '${{ parameters.FlattenedDirectory }}').Path
+          $stagedDirectory = Join-Path '$(Agent.TempDirectory)' 'java-esrp-publishing-test-package'
+          $packagePom = Get-ChildItem -Path $flattenedDirectory -Filter *.pom -File | Sort-Object Name | Select-Object -First 1
+          $packagePrefix = $packagePom.BaseName
+          $packageFiles = Get-ChildItem -Path $flattenedDirectory -File | Where-Object { $_.Name -like "$packagePrefix*" }
+
+          if (Test-Path $stagedDirectory) {
+            Remove-Item -Path $stagedDirectory -Recurse -Force
+          }
+
+          New-Item -Path $stagedDirectory -ItemType Directory -Force | Out-Null
+
+          Write-Host "Moving package prefix out of flattened directory: $packagePrefix"
+          foreach ($packageFile in $packageFiles) {
+            Write-Host "  Moving $($packageFile.Name)"
+          }
+
+          Move-Item -Path $packageFiles.FullName -Destination $stagedDirectory -Force
+
     - task: EsrpRelease@9
       displayName: 'Publish to ESRP'
       inputs:
@@ -22,6 +49,29 @@ steps:
         Approvers: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
         ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
         MainPublisher: 'ESRPRELPACMANTEST'
+
+    # TODO: REMOVE BEFORE MERGE
+    - task: PowerShell@2
+      displayName: 'Move one package back into flattened ESRP directory (test)'
+      condition: and(always(), eq(variables['System.JobAttempt'], '1'))
+      inputs:
+        pwsh: true
+        targetType: inline
+        script: |
+          $flattenedDirectory = (Resolve-Path '${{ parameters.FlattenedDirectory }}').Path
+          $stagedDirectory = Join-Path '$(Agent.TempDirectory)' 'java-esrp-publishing-test-package'
+
+          if (Test-Path $stagedDirectory) {
+            $packageFiles = Get-ChildItem -Path $stagedDirectory -File | Sort-Object Name
+
+            Write-Host "Moving package back into flattened directory"
+            foreach ($packageFile in $packageFiles) {
+              Write-Host "  Restoring $($packageFile.Name)"
+            }
+
+            Move-Item -Path $packageFiles.FullName -Destination $flattenedDirectory -Force
+            Remove-Item -Path $stagedDirectory -Recurse -Force
+          }
 
     - ${{ if eq('true', parameters.VerifyJarPublish) }}:
       - task: MavenAuthenticate@0
@@ -45,7 +95,7 @@ steps:
             $metadataRepo = Join-Path $workRoot 'maven-metadata-repo'
             $downloadRoot = Join-Path $workRoot 'jar-downloads'
             $retrySeconds = 60
-            $maxAttempts = 10
+            $maxAttempts = 20
 
             function Get-MavenValue([string]$PomPath, [string]$Expression) {
               Set-Location $mavenWork
@@ -120,7 +170,7 @@ steps:
                   --batch-mode `
                   -q `
                   org.apache.maven.plugins:maven-dependency-plugin:copy `
-                  -DremoteRepositories=central::default::https://repo.maven.apache.org/maven2 `
+                  -DremoteRepositories=azure-sdk-for-java::default::https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1 `
                   "-Dmaven.repo.local=$repoPath" `
                   "-Dartifact=$($package.Coordinate)" `
                   "-DoutputDirectory=$downloadRoot" `
