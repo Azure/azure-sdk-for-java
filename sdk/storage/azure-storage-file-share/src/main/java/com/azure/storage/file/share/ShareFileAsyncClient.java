@@ -2807,6 +2807,41 @@ public class ShareFileAsyncClient {
     }
 
     /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged flux.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareFileRangeItem> listAllRangesDiff(String previousSnapshot) {
+        return listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot));
+    }
+
+    /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged flux.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangesDiffOptions}
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return listAllRangesDiffWithOptionalTimeout(options, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
      * List of valid ranges for a file between the file and the specified snapshot.
      *
      * <p><strong>Code Samples</strong></p>
@@ -2882,41 +2917,6 @@ public class ShareFileAsyncClient {
         }
     }
 
-    /**
-     * Lists ranges that have changed between the file and the specified snapshot as a paged flux.
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
-     *
-     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
-     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
-     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
-     * @return {@link ShareFileRangeItem ranges} in the file.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ShareFileRangeItem> listAllRangesDiff(String previousSnapshot) {
-        return listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot));
-    }
-
-    /**
-     * Lists ranges that have changed between the file and the specified snapshot as a paged flux.
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
-     *
-     * @param options {@link ShareFileListRangesDiffOptions}
-     * @return {@link ShareFileRangeItem ranges} in the file.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options) {
-        try {
-            StorageImplUtils.assertNotNull("options", options);
-            return listAllRangesDiffWithOptionalTimeout(options, null, Context.NONE);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
-    }
-
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
 
@@ -2940,7 +2940,7 @@ public class ShareFileAsyncClient {
         Context context) {
         final ShareFileListRangesOptions finalOptions = options == null ? new ShareFileListRangesOptions() : options;
 
-        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> retriever = (marker, pageSize) -> {
+        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever = (marker, pageSize) -> {
             return StorageImplUtils
                 .applyOptionalTimeout(this.listRangesWithResponse(finalOptions.getRange(),
                     finalOptions.getRequestConditions(), null, null, marker, pageSize, context), timeout)
@@ -2948,13 +2948,15 @@ public class ShareFileAsyncClient {
                     response.getHeaders(), toShareFileRangeItems(response.getValue(), false),
                     response.getValue().getNextMarker(), response.getHeaders()));
         };
+        Function<Integer, Mono<PagedResponse<ShareFileRangeItem>>> firstPageRetriever
+            = pageSize -> nextPageRetriever.apply(null, pageSize);
 
-        return new PagedFlux<>(pageSize -> retriever.apply(null, pageSize), retriever);
+        return new PagedFlux<>(firstPageRetriever, nextPageRetriever);
     }
 
     PagedFlux<ShareFileRangeItem> listAllRangesDiffWithOptionalTimeout(ShareFileListRangesDiffOptions options,
         Duration timeout, Context context) {
-        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> retriever = (marker, pageSize) -> {
+        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever = (marker, pageSize) -> {
             return StorageImplUtils
                 .applyOptionalTimeout(this.listRangesWithResponse(options.getRange(), options.getRequestConditions(),
                     options.getPreviousSnapshot(), options.isRenameIncluded(), marker, pageSize, context), timeout)
@@ -2962,29 +2964,10 @@ public class ShareFileAsyncClient {
                     response.getHeaders(), toShareFileRangeItems(response.getValue(), true),
                     response.getValue().getNextMarker(), response.getHeaders()));
         };
+        Function<Integer, Mono<PagedResponse<ShareFileRangeItem>>> firstPageRetriever
+            = pageSize -> nextPageRetriever.apply(null, pageSize);
 
-        return new PagedFlux<>(pageSize -> retriever.apply(null, pageSize), retriever);
-    }
-
-    private static java.util.List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
-        boolean includeClearRanges) {
-        java.util.List<ShareFileRangeItem> ranges = rangeList.getRanges()
-            .stream()
-            .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-            .map(ShareFileRange::new)
-            .map(range -> new ShareFileRangeItem(range, false))
-            .collect(Collectors.toList());
-
-        if (includeClearRanges) {
-            ranges.addAll(rangeList.getClearRanges()
-                .stream()
-                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                .map(ShareFileRange::new)
-                .map(range -> new ShareFileRangeItem(range, true))
-                .collect(Collectors.toList()));
-        }
-
-        return ranges;
+        return new PagedFlux<>(firstPageRetriever, nextPageRetriever);
     }
 
     Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
@@ -3664,5 +3647,26 @@ public class ShareFileAsyncClient {
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
+    }
+
+    private static java.util.List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
+        boolean includeClearRanges) {
+        java.util.List<ShareFileRangeItem> ranges = rangeList.getRanges()
+            .stream()
+            .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+            .map(ShareFileRange::new)
+            .map(range -> new ShareFileRangeItem(range, false))
+            .collect(Collectors.toList());
+
+        if (includeClearRanges) {
+            ranges.addAll(rangeList.getClearRanges()
+                .stream()
+                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                .map(ShareFileRange::new)
+                .map(range -> new ShareFileRangeItem(range, true))
+                .collect(Collectors.toList()));
+        }
+
+        return ranges;
     }
 }

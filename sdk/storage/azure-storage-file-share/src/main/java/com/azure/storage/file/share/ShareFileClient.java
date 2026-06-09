@@ -2576,21 +2576,6 @@ public class ShareFileClient {
         }
     }
 
-    ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> listRangesWithResponse(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
-        Integer maxResultsPerPage, Duration timeout, Context context) {
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        String rangeString = range == null ? null : range.toString();
-
-        Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
-            = () -> this.azureFileStorageClient.getFiles()
-                .getRangeListWithResponse(shareName, filePath, snapshot, previousSnapshot, null, rangeString,
-                    finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage, context);
-
-        return sendRequest(operation, timeout, ShareStorageException.class);
-    }
-
     /**
      * Lists all ranges for the file as a paged iterable.
      *
@@ -2625,17 +2610,69 @@ public class ShareFileClient {
             ? new ShareRequestConditions()
             : finalOptions.getRequestConditions();
 
-        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> retriever = (marker, pageSize) -> {
-            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
-                = listRangesWithResponse(finalOptions.getRange(), finalRequestConditions, null, null, marker,
-                    pageSize, timeout, finalContext);
+        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> nextPageRetriever = (marker, pageSize) -> {
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = listRangesWithResponse(
+                finalOptions.getRange(), finalRequestConditions, null, null, marker, pageSize, timeout, finalContext);
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 toShareFileRangeItems(response.getValue(), false), response.getValue().getNextMarker(),
                 response.getDeserializedHeaders());
         };
+        Function<Integer, PagedResponse<ShareFileRangeItem>> firstPageRetriever
+            = pageSize -> nextPageRetriever.apply(null, pageSize);
 
-            return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
+        return new PagedIterable<>(firstPageRetriever, nextPageRetriever);
+    }
+
+    /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged iterable.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ShareFileRangeItem> listAllRangesDiff(String previousSnapshot) {
+        return listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot), null, Context.NONE);
+    }
+
+    /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged iterable.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangesDiffOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options, Duration timeout,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions finalRequestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
+
+        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> nextPageRetriever = (marker, pageSize) -> {
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
+                = listRangesWithResponse(options.getRange(), finalRequestConditions, options.getPreviousSnapshot(),
+                    options.isRenameIncluded(), marker, pageSize, timeout, finalContext);
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                toShareFileRangeItems(response.getValue(), true), response.getValue().getNextMarker(),
+                response.getDeserializedHeaders());
+        };
+        Function<Integer, PagedResponse<ShareFileRangeItem>> firstPageRetriever
+            = pageSize -> nextPageRetriever.apply(null, pageSize);
+
+        return new PagedIterable<>(firstPageRetriever, nextPageRetriever);
     }
 
     /**
@@ -2715,77 +2752,6 @@ public class ShareFileClient {
                 rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(), null, null, finalContext);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
-    }
-
-    /**
-     * Lists ranges that have changed between the file and the specified snapshot as a paged iterable.
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
-     *
-     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
-     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
-     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
-     * @return {@link ShareFileRangeItem ranges} in the file.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ShareFileRangeItem> listAllRangesDiff(String previousSnapshot) {
-        return listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot), null, Context.NONE);
-    }
-
-    /**
-     * Lists ranges that have changed between the file and the specified snapshot as a paged iterable.
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
-     *
-     * @param options {@link ShareFileListRangesDiffOptions}
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return {@link ShareFileRangeItem ranges} in the file.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options, Duration timeout,
-        Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions finalRequestConditions
-            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
-
-        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> retriever = (marker, pageSize) -> {
-            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
-                = listRangesWithResponse(options.getRange(), finalRequestConditions, options.getPreviousSnapshot(),
-                    options.isRenameIncluded(), marker, pageSize, timeout, finalContext);
-
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                toShareFileRangeItems(response.getValue(), true), response.getValue().getNextMarker(),
-                response.getDeserializedHeaders());
-        };
-
-        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
-
-    }
-
-    private static java.util.List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
-        boolean includeClearRanges) {
-        java.util.List<ShareFileRangeItem> ranges = rangeList.getRanges()
-            .stream()
-            .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-            .map(ShareFileRange::new)
-            .map(range -> new ShareFileRangeItem(range, false))
-            .collect(Collectors.toList());
-
-        if (includeClearRanges) {
-            ranges.addAll(rangeList.getClearRanges()
-                .stream()
-                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                .map(ShareFileRange::new)
-                .map(range -> new ShareFileRangeItem(range, true))
-                .collect(Collectors.toList()));
-        }
-
-        return ranges;
     }
 
     /**
@@ -3449,5 +3415,41 @@ public class ShareFileClient {
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
+    }
+
+    ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> listRangesWithResponse(ShareFileRange range,
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
+        Integer maxResultsPerPage, Duration timeout, Context context) {
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        String rangeString = range == null ? null : range.toString();
+
+        Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
+            = () -> this.azureFileStorageClient.getFiles()
+                .getRangeListWithResponse(shareName, filePath, snapshot, previousSnapshot, null, rangeString,
+                    finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage, context);
+
+        return sendRequest(operation, timeout, ShareStorageException.class);
+    }
+
+    private static java.util.List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
+        boolean includeClearRanges) {
+        java.util.List<ShareFileRangeItem> ranges = rangeList.getRanges()
+            .stream()
+            .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+            .map(ShareFileRange::new)
+            .map(range -> new ShareFileRangeItem(range, false))
+            .collect(Collectors.toList());
+
+        if (includeClearRanges) {
+            ranges.addAll(rangeList.getClearRanges()
+                .stream()
+                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                .map(ShareFileRange::new)
+                .map(range -> new ShareFileRangeItem(range, true))
+                .collect(Collectors.toList()));
+        }
+
+        return ranges;
     }
 }
