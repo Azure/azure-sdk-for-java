@@ -23,6 +23,7 @@ import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryI
 import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileItemConstructorProxy;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
 import com.azure.storage.file.share.implementation.models.BlockDeviceItem;
@@ -667,7 +668,7 @@ public class ModelHelper {
     private static ShareFileItem toShareFileItem(StringEncoded name, boolean isDirectory, String fileId,
         FileProperty properties, String attributes, String permissionKey, Long fileSize, Long linkCount,
         NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
-        return new ShareFileItem(ModelHelper.decodeName(name), isDirectory, fileId,
+        return ShareFileItemConstructorProxy.create(ModelHelper.decodeName(name), isDirectory, fileId,
             ModelHelper.transformFileProperty(properties), NtfsFileAttributes.toAttributes(attributes), permissionKey,
             fileSize, linkCount, fileType, linkText, deviceMajor, deviceMinor);
     }

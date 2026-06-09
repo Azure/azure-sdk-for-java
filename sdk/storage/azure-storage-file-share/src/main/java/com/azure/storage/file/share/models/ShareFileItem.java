@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileItemConstructorProxy;
 
 import java.util.EnumSet;
 
@@ -24,6 +25,10 @@ public final class ShareFileItem {
     private final String linkText;
     private final Long deviceMajor;
     private final Long deviceMinor;
+
+    static {
+        ShareFileItemConstructorProxy.setAccessor(ShareFileItem::new);
+    }
 
     /**
      * Creates an instance of file or directory reference information about a specific Share.
@@ -52,7 +57,7 @@ public final class ShareFileItem {
         this(name, isDirectory, id, properties, fileAttributes, permissionKey, fileSize, null, null, null, null, null);
     }
 
-    public ShareFileItem(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
+    private ShareFileItem(String name, boolean isDirectory, String id, ShareFileItemProperties properties,
         EnumSet<NtfsFileAttributes> fileAttributes, String permissionKey, Long fileSize, Long linkCount,
         NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
         this.name = name;
@@ -132,22 +137,47 @@ public final class ShareFileItem {
         return permissionKey;
     }
 
+    /**
+     * Gets the number of hard links to the file or directory.
+     *
+     * @return The number of hard links to the file or directory.
+     */
     public Long getLinkCount() {
         return linkCount;
     }
 
+    /**
+     * Gets the type of the file or directory.
+     *
+     * @return The type of the file or directory.
+     */
     public NfsFileType getFileType() {
         return fileType;
     }
 
+    /**
+     * Gets the target path of the symbolic link.
+     *
+     * @return The target path of the symbolic link.
+     */
     public String getLinkText() {
         return linkText;
     }
 
+    /**
+     * Gets the major device number.
+     *
+     * @return The major device number.
+     */
     public Long getDeviceMajor() {
         return deviceMajor;
     }
 
+    /**
+     * Gets the minor device number.
+     *
+     * @return The minor device number.
+     */
     public Long getDeviceMinor() {
         return deviceMinor;
     }
