@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class FirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/FirewallRulesListByServer.json
+     * x-ms-original-file: 2026-04-01-preview/FirewallRulesListByServer.json
      */
     /**
      * Sample code: List information about all firewall rules in a server.

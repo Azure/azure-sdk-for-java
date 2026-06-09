@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class TargetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Targets_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/Targets_Delete.json
      */
     /**
      * Sample code: Delete a Target that extends a virtual machine resource.

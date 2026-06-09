@@ -54,4 +54,10 @@ public final class MemoryItemKind extends ExpandableStringEnum<MemoryItemKind> {
     public static Collection<MemoryItemKind> values() {
         return values(MemoryItemKind.class);
     }
+
+    /**
+     * Routine procedures extracted from conversations.
+     */
+    @Generated
+    public static final MemoryItemKind PROCEDURAL = fromString("procedural");
 }

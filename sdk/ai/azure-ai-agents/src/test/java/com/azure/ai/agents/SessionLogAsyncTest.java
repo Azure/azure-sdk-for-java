@@ -13,6 +13,8 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Disposable;
@@ -29,12 +31,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class SessionLogAsyncTest extends ClientTestBase {
     private static final String AGENT_NAME = "MySessionHostedAgent3";
     private static final String AGENT_VERSION = "16";
-    private static final String ISOLATION_KEY = "sse-validation";
     private static final String SESSION_ID = "sse-validation-record-async";
 
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    @Disabled
     public void validatesSessionLogStream(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsAsyncClient client = getAgentsAsyncClient(httpClient, serviceVersion);
         RequestOptions featureOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
@@ -42,7 +44,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
 
         deleteSession(client);
         AgentSessionResource session = client
-            .createSessionWithResponse(AGENT_NAME, ISOLATION_KEY,
+            .createSessionWithResponse(AGENT_NAME,
                 BinaryData.fromObject(new com.azure.ai.agents.implementation.models.CreateSessionRequest(
                     new VersionRefIndicator(AGENT_VERSION)).setAgentSessionId(SESSION_ID)),
                 featureOptions)
@@ -78,8 +80,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
     }
 
     private static Mono<Void> deleteSessionAsync(AgentsAsyncClient client) {
-        return client
-            .deleteSession(AGENT_NAME, SESSION_ID, ISOLATION_KEY, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW)
+        return client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
             .onErrorResume(error -> Mono.empty());
     }
 

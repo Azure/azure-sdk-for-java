@@ -55,7 +55,37 @@ public enum RequestTracingConstants {
     /**
      * Constant for number of replicas, not including origin configured.
      */
-    REPLICA_COUNT("ReplicaCount");
+    REPLICA_COUNT("ReplicaCount"),
+
+    /**
+     * Constant for tracing the max variants count.
+     */
+    MAX_VARIANTS_KEY("MaxVariants"),
+
+    /**
+     * Constant for tracing feature flag features.
+     */
+    FF_FEATURES_KEY("FFFeatures"),
+
+    /**
+     * Constant for tracing general features.
+     */
+    FEATURES_KEY("Features"),
+
+    /**
+     * Constant for tracing the feature management version.
+     */
+    FM_SPRING_VER_KEY("FMSpVer"),
+
+    /**
+     * Constant for tracing if this is a failover request.
+     */
+    FAILOVER_TAG("Failover"),
+
+    /**
+     * Constant for tracing the filter key.
+     */
+    FILTER_KEY("Filter");
 
     private final String text;
 

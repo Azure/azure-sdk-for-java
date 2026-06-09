@@ -52,7 +52,7 @@ import java.util.Map;
  */
 public final class StorageAccountsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/NfsV3AccountCreate.json
+     * x-ms-original-file: 2026-04-01/NfsV3AccountCreate.json
      */
     /**
      * Sample code: NfsV3AccountCreate.
@@ -78,7 +78,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateWithSmartAccessTier.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateWithSmartAccessTier.json
      */
     /**
      * Sample code: StorageAccountCreateWithSmartAccessTier.
@@ -120,7 +120,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreate.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreate.json
      */
     /**
      * Sample code: StorageAccountCreate.
@@ -165,7 +165,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreate_zones.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreate_zones.json
      */
     /**
      * Sample code: StorageAccountCreate_zones.
@@ -204,7 +204,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreate_placement.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreate_placement.json
      */
     /**
      * Sample code: StorageAccountCreate_placement.
@@ -243,7 +243,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateDisallowPublicNetworkAccess.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateDisallowPublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountCreateDisallowPublicNetworkAccess.
@@ -281,7 +281,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateDnsEndpointTypeToStandard.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateDnsEndpointTypeToStandard.json
      */
     /**
      * Sample code: StorageAccountCreateDnsEndpointTypeToStandard.
@@ -321,7 +321,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
      */
     /**
      * Sample code: StorageAccountCreateDnsEndpointTypeToAzureDnsZone.
@@ -361,7 +361,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateWithDataCollaborationPolicy.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateWithDataCollaborationPolicy.json
      */
     /**
      * Sample code: StorageAccountCreateWithDataCollaborationPolicy.
@@ -384,7 +384,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreatePremiumBlockBlobStorage.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreatePremiumBlockBlobStorage.json
      */
     /**
      * Sample code: StorageAccountCreatePremiumBlockBlobStorage.
@@ -412,7 +412,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateWithImmutabilityPolicy.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateWithImmutabilityPolicy.json
      */
     /**
      * Sample code: StorageAccountCreateWithImmutabilityPolicy.
@@ -438,7 +438,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
      */
     /**
      * Sample code: StorageAccountCreateAllowedCopyScopeToPrivateLink.
@@ -474,7 +474,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateEnablePublicNetworkAccess.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateEnablePublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountCreateEnablePublicNetworkAccess.
@@ -512,7 +512,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateAllowedCopyScopeToAAD.json
      */
     /**
      * Sample code: StorageAccountCreateAllowedCopyScopeToAAD.
@@ -548,7 +548,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
      * Sample code: StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.
@@ -582,7 +582,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
+     * x-ms-original-file: 2026-04-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**
      * Sample code: StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.

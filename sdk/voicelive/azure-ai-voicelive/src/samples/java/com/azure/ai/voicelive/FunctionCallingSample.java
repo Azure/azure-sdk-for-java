@@ -16,15 +16,14 @@ import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
 import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ItemType;
-import com.azure.ai.voicelive.models.OpenAIVoice;
-import com.azure.ai.voicelive.models.OpenAIVoiceName;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ResponseFunctionCallItem;
+import com.azure.ai.voicelive.models.AzureStandardVoice;
 import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
 import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDone;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
@@ -165,7 +164,7 @@ public final class FunctionCallingSample {
         // Start session. Session lifetime is local to this reactive chain — the session is
         // captured by the lambda passed to flatMapMany and then threaded into per-event handling
         // via flatMap, so no instance field or shared holder is needed.
-        client.startSession(DEFAULT_MODEL)
+        client.startSession(DEFAULT_MODEL, null)
             .flatMapMany(session -> {
                 System.out.println("✓ Session started successfully");
                 audioProcessorRef.set(new AudioProcessor(session));
@@ -231,7 +230,7 @@ public final class FunctionCallingSample {
                 + "When asked about weather, use the get_current_weather function. "
                 + "Acknowledge when you're calling a function and present the results naturally in your response."
             )
-            .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
+            .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AvaNeural")))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
@@ -247,7 +246,7 @@ public final class FunctionCallingSample {
                 .setCreateResponse(true))
             .setTools(functionTools)
             .setInputAudioTranscription(
-                new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1)
+                new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1).setLanguage("en")
             );
 
         return new ClientEventSessionUpdate(sessionOptions);
@@ -302,7 +301,7 @@ public final class FunctionCallingSample {
      */
     private static Mono<Void> handleServerEvent(
         VoiceLiveSessionAsyncClient session,
-        SessionUpdate event,
+        SessionServerEvent event,
         AudioProcessor audioProcessor,
         Map<String, String[]> pendingFunctionCalls
     ) {
@@ -503,11 +502,15 @@ public final class FunctionCallingSample {
                             int bytesRead = microphone.read(buffer, 0, buffer.length);
                             if (bytesRead > 0) {
                                 byte[] audioData = Arrays.copyOf(buffer, bytesRead);
-                                session.sendInputAudio(BinaryData.fromBytes(audioData))
-                                    .subscribe(
-                                        noValueEmitted -> { /* sendInputAudio returns Mono<Void>; no onNext values are ever emitted */ },
-                                        error -> System.err.println("Error sending audio: " + error.getMessage())
-                                    );
+                                // Block on this capture thread so sends are serialized; fire-and-forget
+                                // subscribes can flood the WebSocket send sink and trigger FAIL_OVERFLOW.
+                                try {
+                                    session.sendInputAudio(BinaryData.fromBytes(audioData)).block();
+                                } catch (Exception sendError) {
+                                    if (isCapturing.get()) {
+                                        System.err.println("Error sending audio: " + sendError.getMessage());
+                                    }
+                                }
                             }
                         } catch (Exception e) {
                             if (isCapturing.get()) {

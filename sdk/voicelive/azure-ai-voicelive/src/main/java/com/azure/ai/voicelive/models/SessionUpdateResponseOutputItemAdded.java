@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when a new Item is created during Response generation.
  */
 @Immutable
-public final class SessionUpdateResponseOutputItemAdded extends SessionUpdate {
+public final class SessionUpdateResponseOutputItemAdded extends SessionServerEvent {
 
     /*
      * The type of event.

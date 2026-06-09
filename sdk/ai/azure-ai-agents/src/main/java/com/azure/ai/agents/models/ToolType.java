@@ -186,4 +186,16 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType WORK_IQ_PREVIEW = fromString("work_iq_preview");
+
+    /**
+     * Static value fabric_iq_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType FABRIC_IQ_PREVIEW = fromString("fabric_iq_preview");
+
+    /**
+     * Static value toolbox_search_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType TOOLBOX_SEARCH_PREVIEW = fromString("toolbox_search_preview");
 }

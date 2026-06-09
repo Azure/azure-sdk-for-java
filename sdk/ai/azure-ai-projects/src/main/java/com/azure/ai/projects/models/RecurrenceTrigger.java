@@ -39,7 +39,7 @@ public final class RecurrenceTrigger extends Trigger {
     private OffsetDateTime endTime;
 
     /*
-     * Time zone for the recurrence schedule.
+     * Time zone for the recurrence schedule. Defaults to `UTC`.
      */
     @Generated
     private TimeZone timeZone;
@@ -88,7 +88,7 @@ public final class RecurrenceTrigger extends Trigger {
     }
 
     /**
-     * Get the timeZone property: Time zone for the recurrence schedule.
+     * Get the timeZone property: Time zone for the recurrence schedule. Defaults to `UTC`.
      *
      * @return the timeZone value.
      */
@@ -219,7 +219,7 @@ public final class RecurrenceTrigger extends Trigger {
     }
 
     /**
-     * Set the timeZone property: Time zone for the recurrence schedule.
+     * Set the timeZone property: Time zone for the recurrence schedule. Defaults to `UTC`.
      *
      * @param timeZone the timeZone value to set.
      * @return the RecurrenceTrigger object itself.

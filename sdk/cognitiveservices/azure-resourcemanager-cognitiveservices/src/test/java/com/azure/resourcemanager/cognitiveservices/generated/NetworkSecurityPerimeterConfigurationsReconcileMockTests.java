@@ -21,7 +21,7 @@ public final class NetworkSecurityPerimeterConfigurationsReconcileMockTests {
     @Test
     public void testReconcile() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningIssues\":[{\"name\":\"hwb\",\"properties\":{\"issueType\":\"fvcgnrglaqr\",\"severity\":\"ambhbafebzxf\",\"description\":\"qutibhl\",\"suggestedResourceIds\":[\"trvrkpsab\",\"u\",\"vzm\"],\"suggestedAccessRules\":[{},{},{}]}},{\"name\":\"ysvlpyeuukppd\",\"properties\":{\"issueType\":\"bo\",\"severity\":\"vhh\",\"description\":\"qe\",\"suggestedResourceIds\":[\"xgrzn\",\"gin\"],\"suggestedAccessRules\":[{},{},{}]}},{\"name\":\"ixchwkibm\",\"properties\":{\"issueType\":\"mncj\",\"severity\":\"gair\",\"description\":\"qzoof\",\"suggestedResourceIds\":[\"jsvepfbhtleberp\",\"ljekn\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"j\",\"perimeterGuid\":\"owkdnjr\",\"location\":\"krhwieh\"},\"resourceAssociation\":{\"name\":\"nowawonoehrguqlh\",\"accessMode\":\"afbjzmpy\"},\"profile\":{\"name\":\"yfazbkocb\",\"accessRulesVersion\":8588821644991336007,\"accessRules\":[{\"name\":\"x\",\"properties\":{}},{\"name\":\"jww\",\"properties\":{}},{\"name\":\"mrawppkeboozfl\",\"properties\":{}},{\"name\":\"agaedaoi\",\"properties\":{}}],\"diagnosticSettingsVersion\":3224819326668961409,\"enabledLogCategories\":[\"wga\",\"dxfkuzb\"]}},\"id\":\"ecooyvhtuqbp\",\"name\":\"lniibncg\",\"type\":\"gdvcdqhftz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningIssues\":[{\"name\":\"rcjlvkrkegtyczup\",\"properties\":{\"issueType\":\"xlzmiyddee\",\"severity\":\"qvabmhvsexduet\",\"description\":\"pfczewxtrl\",\"suggestedResourceIds\":[\"xyazkjpirgzx\",\"bcz\"],\"suggestedAccessRules\":[{},{}]}},{\"name\":\"gbth\",\"properties\":{\"issueType\":\"i\",\"severity\":\"buiggrunozf\",\"description\":\"aljthoivsdwsn\",\"suggestedResourceIds\":[\"f\",\"hscj\"],\"suggestedAccessRules\":[{},{}]}},{\"name\":\"hzbhwahfbw\",\"properties\":{\"issueType\":\"nnx\",\"severity\":\"vynuqqkotauratn\",\"description\":\"ppfzsclef\",\"suggestedResourceIds\":[\"etndqlmfdggnbbu\",\"pwovvvsfleevn\"],\"suggestedAccessRules\":[{},{}]}},{\"name\":\"rehjuqwvapx\",\"properties\":{\"issueType\":\"hpzihacenqqzlx\",\"severity\":\"zubfo\",\"description\":\"dbgmkfwmjcwte\",\"suggestedResourceIds\":[\"xwyrkbrehzlr\",\"njpchamkaeplr\",\"jub\",\"wuyw\"],\"suggestedAccessRules\":[{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"ieikmwlaoklfnis\",\"perimeterGuid\":\"gucbmt\",\"location\":\"dscnns\"},\"resourceAssociation\":{\"name\":\"yyuvtzrxzhclec\",\"accessMode\":\"tzqzcloy\"},\"profile\":{\"name\":\"pgidhzgyresgzsdt\",\"accessRulesVersion\":8490985759859580887,\"accessRules\":[{\"name\":\"plbchy\",\"properties\":{}}],\"diagnosticSettingsVersion\":2887159636628713648,\"enabledLogCategories\":[\"fbqvumkxqj\",\"iuepmaxfnzlpqmp\",\"t\",\"efvulblmr\"]}},\"id\":\"xyprhfcaeooifqdy\",\"name\":\"jflobhahqmomf\",\"type\":\"corkfrocgbmxl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,26 +31,26 @@ public final class NetworkSecurityPerimeterConfigurationsReconcileMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkSecurityPerimeterConfiguration response = manager.networkSecurityPerimeterConfigurations()
-            .reconcile("rh", "hvazjpwexcdr", "probzzxezmnrkjgp", com.azure.core.util.Context.NONE);
+            .reconcile("fzcfasf", "d", "opalvngtwyu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hwb", response.properties().provisioningIssues().get(0).name());
-        Assertions.assertEquals("fvcgnrglaqr",
+        Assertions.assertEquals("rcjlvkrkegtyczup", response.properties().provisioningIssues().get(0).name());
+        Assertions.assertEquals("xlzmiyddee",
             response.properties().provisioningIssues().get(0).properties().issueType());
-        Assertions.assertEquals("ambhbafebzxf",
+        Assertions.assertEquals("qvabmhvsexduet",
             response.properties().provisioningIssues().get(0).properties().severity());
-        Assertions.assertEquals("qutibhl",
+        Assertions.assertEquals("pfczewxtrl",
             response.properties().provisioningIssues().get(0).properties().description());
-        Assertions.assertEquals("trvrkpsab",
+        Assertions.assertEquals("xyazkjpirgzx",
             response.properties().provisioningIssues().get(0).properties().suggestedResourceIds().get(0));
-        Assertions.assertEquals("j", response.properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("owkdnjr", response.properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("krhwieh", response.properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("nowawonoehrguqlh", response.properties().resourceAssociation().name());
-        Assertions.assertEquals("afbjzmpy", response.properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("yfazbkocb", response.properties().profile().name());
-        Assertions.assertEquals(8588821644991336007L, response.properties().profile().accessRulesVersion());
-        Assertions.assertEquals("x", response.properties().profile().accessRules().get(0).name());
-        Assertions.assertEquals(3224819326668961409L, response.properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("wga", response.properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("ieikmwlaoklfnis", response.properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("gucbmt", response.properties().networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("dscnns", response.properties().networkSecurityPerimeter().location());
+        Assertions.assertEquals("yyuvtzrxzhclec", response.properties().resourceAssociation().name());
+        Assertions.assertEquals("tzqzcloy", response.properties().resourceAssociation().accessMode());
+        Assertions.assertEquals("pgidhzgyresgzsdt", response.properties().profile().name());
+        Assertions.assertEquals(8490985759859580887L, response.properties().profile().accessRulesVersion());
+        Assertions.assertEquals("plbchy", response.properties().profile().accessRules().get(0).name());
+        Assertions.assertEquals(2887159636628713648L, response.properties().profile().diagnosticSettingsVersion());
+        Assertions.assertEquals("fbqvumkxqj", response.properties().profile().enabledLogCategories().get(0));
     }
 }

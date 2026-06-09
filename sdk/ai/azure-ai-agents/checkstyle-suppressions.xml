@@ -28,6 +28,8 @@
   <suppress files="com.azure.ai.agents.models.PromptAgentDefinition.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.ResponsesClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.agents.ResponsesAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.ai.agents.implementation.MultipartFormDataHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.ai.agents.AgentsClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.agents.AgentsAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.ai.agents.models.DatasetItem.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
 </suppressions>

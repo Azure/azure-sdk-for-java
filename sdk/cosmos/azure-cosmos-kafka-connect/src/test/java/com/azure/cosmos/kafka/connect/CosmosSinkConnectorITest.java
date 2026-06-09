@@ -12,7 +12,6 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -286,8 +285,8 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             kafkaCosmosConnectContainer.registerConnector(connectorName, sinkConnectorConfig);
 
             Properties producerProperties = kafkaCosmosConnectContainer.getProducerProperties();
-            producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
-            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
+            producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, TestAvroSerializer.class.getName());
+            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, TestAvroSerializer.class.getName());
             KafkaProducer<GenericRecord, GenericRecord> kafkaProducer = new KafkaProducer<>(producerProperties);
 
             // first create few records in the topic
@@ -364,8 +363,8 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             kafkaCosmosConnectContainer.registerConnector(connectorName, sinkConnectorConfig);
 
             Properties producerProperties = kafkaCosmosConnectContainer.getProducerProperties();
-            producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
-            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
+            producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, TestAvroSerializer.class.getName());
+            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, TestAvroSerializer.class.getName());
             KafkaProducer<GenericRecord, GenericRecord> kafkaProducer = new KafkaProducer<>(producerProperties);
 
             logger.info("Creating sink record...");
@@ -432,8 +431,8 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             kafkaCosmosConnectContainer.registerConnector(connectorName, sinkConnectorConfig);
 
             Properties producerProperties = kafkaCosmosConnectContainer.getProducerProperties();
-            producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
-            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
+            producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, TestAvroSerializer.class.getName());
+            producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, TestAvroSerializer.class.getName());
             KafkaProducer<GenericRecord, GenericRecord> kafkaProducer = new KafkaProducer<>(producerProperties);
 
             logger.info("Creating sink record...");
