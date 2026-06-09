@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GarnetClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGarnetClusterListByResourceGroup.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBGarnetClusterListByResourceGroup.json
      */
     /**
      * Sample code: CosmosDBGarnetClusterListByResourceGroup.

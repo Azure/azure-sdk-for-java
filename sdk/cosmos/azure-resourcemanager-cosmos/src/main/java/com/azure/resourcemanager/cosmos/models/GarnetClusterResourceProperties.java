@@ -42,9 +42,9 @@ public final class GarnetClusterResourceProperties implements JsonSerializable<G
     private Integer replicationFactor;
 
     /*
-     * Number of nodes.
+     * Number of shards in the cluster.
      */
-    private Integer nodeCount;
+    private Integer shardCount;
 
     /*
      * Virtual Machine SKU used for clusters. Default value is Standard_DS14_v2.
@@ -56,6 +56,16 @@ public final class GarnetClusterResourceProperties implements JsonSerializable<G
      * cluster virtual machines.
      */
     private Boolean availabilityZone;
+
+    /*
+     * The authentication method used for the Garnet cluster.
+     */
+    private GarnetAuthenticationType authenticationMethod;
+
+    /*
+     * Flag to indicate if persistence is enabled for the Garnet cluster.
+     */
+    private Boolean persistence;
 
     /*
      * Allocation state of the cluster and data center resources. Active implies the virtual machines of the cluster are
@@ -149,22 +159,22 @@ public final class GarnetClusterResourceProperties implements JsonSerializable<G
     }
 
     /**
-     * Get the nodeCount property: Number of nodes.
+     * Get the shardCount property: Number of shards in the cluster.
      * 
-     * @return the nodeCount value.
+     * @return the shardCount value.
      */
-    public Integer nodeCount() {
-        return this.nodeCount;
+    public Integer shardCount() {
+        return this.shardCount;
     }
 
     /**
-     * Set the nodeCount property: Number of nodes.
+     * Set the shardCount property: Number of shards in the cluster.
      * 
-     * @param nodeCount the nodeCount value to set.
+     * @param shardCount the shardCount value to set.
      * @return the GarnetClusterResourceProperties object itself.
      */
-    public GarnetClusterResourceProperties withNodeCount(Integer nodeCount) {
-        this.nodeCount = nodeCount;
+    public GarnetClusterResourceProperties withShardCount(Integer shardCount) {
+        this.shardCount = shardCount;
         return this;
     }
 
@@ -207,6 +217,46 @@ public final class GarnetClusterResourceProperties implements JsonSerializable<G
      */
     public GarnetClusterResourceProperties withAvailabilityZone(Boolean availabilityZone) {
         this.availabilityZone = availabilityZone;
+        return this;
+    }
+
+    /**
+     * Get the authenticationMethod property: The authentication method used for the Garnet cluster.
+     * 
+     * @return the authenticationMethod value.
+     */
+    public GarnetAuthenticationType authenticationMethod() {
+        return this.authenticationMethod;
+    }
+
+    /**
+     * Set the authenticationMethod property: The authentication method used for the Garnet cluster.
+     * 
+     * @param authenticationMethod the authenticationMethod value to set.
+     * @return the GarnetClusterResourceProperties object itself.
+     */
+    public GarnetClusterResourceProperties withAuthenticationMethod(GarnetAuthenticationType authenticationMethod) {
+        this.authenticationMethod = authenticationMethod;
+        return this;
+    }
+
+    /**
+     * Get the persistence property: Flag to indicate if persistence is enabled for the Garnet cluster.
+     * 
+     * @return the persistence value.
+     */
+    public Boolean persistence() {
+        return this.persistence;
+    }
+
+    /**
+     * Set the persistence property: Flag to indicate if persistence is enabled for the Garnet cluster.
+     * 
+     * @param persistence the persistence value to set.
+     * @return the GarnetClusterResourceProperties object itself.
+     */
+    public GarnetClusterResourceProperties withPersistence(Boolean persistence) {
+        this.persistence = persistence;
         return this;
     }
 
@@ -315,9 +365,12 @@ public final class GarnetClusterResourceProperties implements JsonSerializable<G
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeNumberField("replicationFactor", this.replicationFactor);
-        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeNumberField("shardCount", this.shardCount);
         jsonWriter.writeStringField("nodeSku", this.nodeSku);
         jsonWriter.writeBooleanField("availabilityZone", this.availabilityZone);
+        jsonWriter.writeStringField("authenticationMethod",
+            this.authenticationMethod == null ? null : this.authenticationMethod.toString());
+        jsonWriter.writeBooleanField("persistence", this.persistence);
         jsonWriter.writeStringField("allocationState",
             this.allocationState == null ? null : this.allocationState.toString());
         jsonWriter.writeStringField("clusterType", this.clusterType == null ? null : this.clusterType.toString());
@@ -354,12 +407,18 @@ public final class GarnetClusterResourceProperties implements JsonSerializable<G
                 } else if ("replicationFactor".equals(fieldName)) {
                     deserializedGarnetClusterResourceProperties.replicationFactor
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("nodeCount".equals(fieldName)) {
-                    deserializedGarnetClusterResourceProperties.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("shardCount".equals(fieldName)) {
+                    deserializedGarnetClusterResourceProperties.shardCount = reader.getNullable(JsonReader::getInt);
                 } else if ("nodeSku".equals(fieldName)) {
                     deserializedGarnetClusterResourceProperties.nodeSku = reader.getString();
                 } else if ("availabilityZone".equals(fieldName)) {
                     deserializedGarnetClusterResourceProperties.availabilityZone
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("authenticationMethod".equals(fieldName)) {
+                    deserializedGarnetClusterResourceProperties.authenticationMethod
+                        = GarnetAuthenticationType.fromString(reader.getString());
+                } else if ("persistence".equals(fieldName)) {
+                    deserializedGarnetClusterResourceProperties.persistence
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("allocationState".equals(fieldName)) {
                     deserializedGarnetClusterResourceProperties.allocationState

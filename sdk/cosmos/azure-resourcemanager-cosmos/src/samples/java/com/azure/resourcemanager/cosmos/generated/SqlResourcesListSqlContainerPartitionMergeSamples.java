@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.MergeParameters;
  */
 public final class SqlResourcesListSqlContainerPartitionMergeSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlContainerPartitionMerge.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlContainerPartitionMerge.json
      */
     /**
      * Sample code: CosmosDBSqlContainerPartitionMerge.

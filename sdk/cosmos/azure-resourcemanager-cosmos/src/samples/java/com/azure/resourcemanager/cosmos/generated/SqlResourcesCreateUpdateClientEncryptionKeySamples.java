@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cosmos.models.KeyWrapMetadata;
  */
 public final class SqlResourcesCreateUpdateClientEncryptionKeySamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBClientEncryptionKeyCreateUpdate.

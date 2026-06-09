@@ -9,7 +9,6 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionResource;
 import com.azure.resourcemanager.cosmos.models.MongoIndex;
-import com.azure.resourcemanager.cosmos.models.MongoIndexKeys;
 import com.azure.resourcemanager.cosmos.models.MongoIndexOptions;
 import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
 import java.time.OffsetDateTime;
@@ -22,7 +21,7 @@ import java.util.Map;
  */
 public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionRestore.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBCollectionRestore.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionRestore.
@@ -46,7 +45,7 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBCollectionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionCreateUpdate.
@@ -59,13 +58,17 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
             .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
                 new MongoDBCollectionCreateUpdateParameters().withLocation("West US")
                     .withTags(mapOf())
-                    .withResource(new MongoDBCollectionResource().withId("collectionName")
-                        .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
-                        .withIndexes(Arrays.asList(
-                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_ts")))
-                                .withOptions(new MongoIndexOptions().withExpireAfterSeconds(100).withUnique(true)),
-                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_id")))))
-                        .withAnalyticalStorageTtl(500))
+                    .withResource(
+                        new MongoDBCollectionResource().withId("collectionName")
+                            .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
+                            .withIndexes(
+                                Arrays.asList(
+                                    new MongoIndex()
+                                        .withOptions(
+                                            new MongoIndexOptions().withExpireAfterSeconds(100).withUnique(true))
+                                        .withKeys(Arrays.asList("_ts")),
+                                    new MongoIndex().withKeys(Arrays.asList("_id"))))
+                            .withAnalyticalStorageTtl(500))
                     .withOptions(new CreateUpdateOptions()),
                 com.azure.core.util.Context.NONE);
     }

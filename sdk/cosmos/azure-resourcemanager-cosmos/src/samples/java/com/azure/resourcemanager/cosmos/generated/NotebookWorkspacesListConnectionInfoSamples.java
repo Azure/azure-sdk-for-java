@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
  */
 public final class NotebookWorkspacesListConnectionInfoSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBNotebookWorkspaceListConnectionInfo.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBNotebookWorkspaceListConnectionInfo.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceListConnectionInfo.

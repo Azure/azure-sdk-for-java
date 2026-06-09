@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountDelete.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountDelete.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountDelete.

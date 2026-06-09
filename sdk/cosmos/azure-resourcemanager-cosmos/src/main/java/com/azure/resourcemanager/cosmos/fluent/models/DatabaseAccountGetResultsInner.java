@@ -33,6 +33,7 @@ import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
+import com.azure.resourcemanager.cosmos.models.SoftDeleteConfiguration;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import java.io.IOException;
 import java.util.List;
@@ -50,14 +51,19 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     private DatabaseAccountGetProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
+     * The location of the resource group to which the resource belongs.
      */
     private String location;
+
+    /*
+     * Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
+     * key no greater than 128 characters and value no greater than 256 characters. For example, the default experience
+     * for a template type is set with
+     * \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\"
+     * .
+     */
+    private Map<String, String> tags;
 
     /*
      * Identity for the resource.
@@ -105,27 +111,7 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the location property: The location of the resource group to which the resource belongs.
      *
      * @return the location value.
      */
@@ -134,13 +120,41 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
-     * Set the location property: The geo-location where the resource lives.
+     * Set the location property: The location of the resource group to which the resource belongs.
      *
      * @param location the location value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
     public DatabaseAccountGetResultsInner withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current
+     * \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\".
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current
+     * \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\".
+     *
+     * @param tags the tags value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -1223,6 +1237,29 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     *
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().softDeleteConfiguration();
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     *
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withSoftDeleteConfiguration(softDeleteConfiguration);
+        return this;
+    }
+
+    /**
      * Get the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
      * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
      * and dedicated throughput containers in the account for 1 region. READ ONLY.
@@ -1279,6 +1316,35 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
+     * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     *
+     * @return the enforceHierarchicalPartitionKeyIdLastLevel value.
+     */
+    public Boolean enforceHierarchicalPartitionKeyIdLastLevel() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().enforceHierarchicalPartitionKeyIdLastLevel();
+    }
+
+    /**
+     * Set the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
+     *
+     * @param enforceHierarchicalPartitionKeyIdLastLevel the enforceHierarchicalPartitionKeyIdLastLevel value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withEnforceHierarchicalPartitionKeyIdLastLevel(Boolean enforceHierarchicalPartitionKeyIdLastLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties()
+            .withEnforceHierarchicalPartitionKeyIdLastLevel(enforceHierarchicalPartitionKeyIdLastLevel);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1299,8 +1365,8 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -1331,11 +1397,11 @@ public final class DatabaseAccountGetResultsInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedDatabaseAccountGetResultsInner.innerProperties
                         = DatabaseAccountGetProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDatabaseAccountGetResultsInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedDatabaseAccountGetResultsInner.location = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedDatabaseAccountGetResultsInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {

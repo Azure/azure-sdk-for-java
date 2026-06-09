@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class CassandraResourcesCreateUpdateCassandraTableSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBCassandraTableCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBCassandraTableCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraTableCreateUpdate.
