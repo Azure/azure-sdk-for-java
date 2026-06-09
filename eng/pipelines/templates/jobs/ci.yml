@@ -285,7 +285,6 @@ jobs:
         parameters:
           ArtifactPath: $(Agent.TempDirectory)/maven-settings
           ArtifactName: 'maven-settings'
-          SbomEnabled: false
 
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
