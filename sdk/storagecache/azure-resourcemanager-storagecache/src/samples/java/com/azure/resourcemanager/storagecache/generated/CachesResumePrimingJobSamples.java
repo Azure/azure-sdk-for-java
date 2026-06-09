@@ -20,7 +20,7 @@ public final class CachesResumePrimingJobSamples {
      */
     public static void resumePrimingJob(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         manager.caches()
-            .resumePrimingJob("scgroup", "sc1", new PrimingJobIdParameter().withPrimingJobId("00000000000_0000000000"),
+            .resumePrimingJob("scgroup", "sc1", new PrimingJobIdParameter().withPrimingJobId("0"),
                 com.azure.core.util.Context.NONE);
     }
 }

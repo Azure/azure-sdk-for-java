@@ -20,7 +20,7 @@ public final class CachesStopPrimingJobSamples {
      */
     public static void stopPrimingJob(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
         manager.caches()
-            .stopPrimingJob("scgroup", "sc1", new PrimingJobIdParameter().withPrimingJobId("00000000000_0000000000"),
+            .stopPrimingJob("scgroup", "sc1", new PrimingJobIdParameter().withPrimingJobId("0"),
                 com.azure.core.util.Context.NONE);
     }
 }

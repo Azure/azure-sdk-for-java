@@ -12,68 +12,68 @@ import java.util.Collection;
  */
 public final class MigrationSubstate extends ExpandableStringEnum<MigrationSubstate> {
     /**
-     * Static value PerformingPreRequisiteSteps for MigrationSubstate.
+     * Performing pre-requisite steps for migration.
      */
     public static final MigrationSubstate PERFORMING_PRE_REQUISITE_STEPS = fromString("PerformingPreRequisiteSteps");
 
     /**
-     * Static value WaitingForLogicalReplicationSetupRequestOnSourceDB for MigrationSubstate.
+     * Waiting for logical replication setup request on source database.
      */
     public static final MigrationSubstate WAITING_FOR_LOGICAL_REPLICATION_SETUP_REQUEST_ON_SOURCE_DB
         = fromString("WaitingForLogicalReplicationSetupRequestOnSourceDB");
 
     /**
-     * Static value WaitingForDBsToMigrateSpecification for MigrationSubstate.
+     * Waiting for databases to migrate specification.
      */
     public static final MigrationSubstate WAITING_FOR_DBS_TO_MIGRATE_SPECIFICATION
         = fromString("WaitingForDBsToMigrateSpecification");
 
     /**
-     * Static value WaitingForTargetDBOverwriteConfirmation for MigrationSubstate.
+     * Waiting for target database overwrite confirmation.
      */
     public static final MigrationSubstate WAITING_FOR_TARGET_DBOVERWRITE_CONFIRMATION
         = fromString("WaitingForTargetDBOverwriteConfirmation");
 
     /**
-     * Static value WaitingForDataMigrationScheduling for MigrationSubstate.
+     * Waiting for data migration scheduling.
      */
     public static final MigrationSubstate WAITING_FOR_DATA_MIGRATION_SCHEDULING
         = fromString("WaitingForDataMigrationScheduling");
 
     /**
-     * Static value WaitingForDataMigrationWindow for MigrationSubstate.
+     * Waiting for data migration window.
      */
     public static final MigrationSubstate WAITING_FOR_DATA_MIGRATION_WINDOW
         = fromString("WaitingForDataMigrationWindow");
 
     /**
-     * Static value MigratingData for MigrationSubstate.
+     * Migrating data.
      */
     public static final MigrationSubstate MIGRATING_DATA = fromString("MigratingData");
 
     /**
-     * Static value WaitingForCutoverTrigger for MigrationSubstate.
+     * Waiting for cutover trigger.
      */
     public static final MigrationSubstate WAITING_FOR_CUTOVER_TRIGGER = fromString("WaitingForCutoverTrigger");
 
     /**
-     * Static value CompletingMigration for MigrationSubstate.
+     * Completing migration.
      */
     public static final MigrationSubstate COMPLETING_MIGRATION = fromString("CompletingMigration");
 
     /**
-     * Static value Completed for MigrationSubstate.
+     * Migration completed.
      */
     public static final MigrationSubstate COMPLETED = fromString("Completed");
 
     /**
-     * Static value CancelingRequestedDBMigrations for MigrationSubstate.
+     * Canceling requested database migrations.
      */
     public static final MigrationSubstate CANCELING_REQUESTED_DBMIGRATIONS
         = fromString("CancelingRequestedDBMigrations");
 
     /**
-     * Static value ValidationInProgress for MigrationSubstate.
+     * Validation in progress.
      */
     public static final MigrationSubstate VALIDATION_IN_PROGRESS = fromString("ValidationInProgress");
 
