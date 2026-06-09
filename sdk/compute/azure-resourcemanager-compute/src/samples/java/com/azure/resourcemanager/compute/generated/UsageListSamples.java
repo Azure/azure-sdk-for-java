@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class UsageListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/computeRPCommonExamples/Usage_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Usage_List_MinimumSet_Gen.
@@ -21,7 +21,7 @@ public final class UsageListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01/computeRPCommonExamples/Usage_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Usage_List_MaximumSet_Gen.
@@ -29,6 +29,6 @@ public final class UsageListSamples {
      * @param manager Entry point to ComputeManager.
      */
     public static void usageListMaximumSetGen(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient().getUsages().list("4_.", com.azure.core.util.Context.NONE);
+        manager.serviceClient().getUsages().list("4.0", com.azure.core.util.Context.NONE);
     }
 }

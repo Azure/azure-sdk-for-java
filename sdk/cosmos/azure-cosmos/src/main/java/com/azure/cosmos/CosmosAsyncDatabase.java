@@ -6,6 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Offer;
@@ -22,6 +23,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
@@ -1395,10 +1397,44 @@ public class CosmosAsyncDatabase {
         String spanName = "createContainer." + containerProperties.getId();
         RequestOptions nonNullRequestOptions =
             options != null ? ModelBridgeInternal.toRequestOptions(options) : new RequestOptions();
-        Mono<CosmosContainerResponse> responseMono = getDocClientWrapper()
-            .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
-                nonNullRequestOptions)
-            .map(ModelBridgeInternal::createCosmosContainerResponse).single();
+
+        Mono<CosmosContainerResponse> responseMono = Mono.defer(() -> {
+            // Take a SDK-private snapshot of the caller's container properties up-front via
+            // ModelBridgeInternal.getV2Collection (which clones via toJson()). All subsequent
+            // mutations — in particular the source-container RID injection performed by
+            // ridResolution — happen against this snapshot, never against the caller-owned
+            // containerProperties / GSI definition. This makes the call safe to run concurrently
+            // against a shared CosmosContainerProperties instance and prevents the SDK from
+            // surfacing torn state back to the caller.
+            DocumentCollection snapshot = ModelBridgeInternal.getV2Collection(containerProperties);
+            CosmosGlobalSecondaryIndexDefinition gsiDefinitionSnapshot =
+                snapshot.getGlobalSecondaryIndexDefinition();
+
+            Mono<Void> ridResolution;
+            if (gsiDefinitionSnapshot != null && gsiDefinitionSnapshot.getSourceContainerId() != null) {
+                ridResolution = this.getContainer(gsiDefinitionSnapshot.getSourceContainerId())
+                    .read(new CosmosContainerRequestOptions(), context)
+                    .flatMap(sourceContainerResponse -> {
+                        String rid = sourceContainerResponse.getProperties().getResourceId();
+                        ImplementationBridgeHelpers.CosmosGlobalSecondaryIndexDefinitionHelper
+                            .getCosmosGlobalSecondaryIndexDefinitionAccessor()
+                            .setSourceCollectionRid(gsiDefinitionSnapshot, rid);
+                        // Re-emit the GSI definition under both wire keys on the snapshot so that
+                        // the resolved sourceCollectionRid is guaranteed to appear in the request
+                        // body regardless of whether getObject(...) returned a live or detached
+                        // wrapper around the snapshot's sub-tree.
+                        snapshot.setGlobalSecondaryIndexDefinition(gsiDefinitionSnapshot);
+                        return Mono.empty();
+                    });
+            } else {
+                ridResolution = Mono.empty();
+            }
+
+            return ridResolution
+                .then(getDocClientWrapper()
+                    .createCollection(this.getLink(), snapshot, nonNullRequestOptions)
+                    .map(ModelBridgeInternal::createCosmosContainerResponse).single());
+        });
 
         return this.client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,

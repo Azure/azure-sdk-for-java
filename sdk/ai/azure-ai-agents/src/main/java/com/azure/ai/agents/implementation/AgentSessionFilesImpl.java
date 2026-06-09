@@ -23,12 +23,19 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -72,93 +79,93 @@ public final class AgentSessionFilesImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AgentsClientAgentSessionFiles")
     public interface AgentSessionFilesService {
-        @Put("/agents/{agent_name}/endpoint/sessions/{session_id}/files/content")
+        @Put("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadSessionFile(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
             @QueryParam("path") String path, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/octet-stream") BinaryData content, RequestOptions requestOptions, Context context);
 
-        @Put("/agents/{agent_name}/endpoint/sessions/{session_id}/files/content")
+        @Put("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadSessionFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
             @QueryParam("path") String path, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/octet-stream") BinaryData content, RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/endpoint/sessions/{session_id}/files/content")
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> downloadSessionFile(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/endpoint/sessions/{session_id}/files/content")
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> downloadSessionFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/endpoint/sessions/{session_id}/files")
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSessionFiles(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listSessionFiles(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Get("/agents/{agent_name}/endpoint/sessions/{session_id}/files")
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSessionFilesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+        Response<BinaryData> listSessionFilesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
-        @Delete("/agents/{agent_name}/endpoint/sessions/{session_id}/files")
+        @Delete("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSessionFile(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/agents/{agent_name}/endpoint/sessions/{session_id}/files")
+        @Delete("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSessionFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
     }
@@ -172,7 +179,10 @@ public final class AgentSessionFilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -195,7 +205,7 @@ public final class AgentSessionFilesImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -207,12 +217,12 @@ public final class AgentSessionFilesImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadSessionFileWithResponseAsync(String agentName, String sessionId,
+    public Mono<Response<BinaryData>> uploadSessionFileWithResponseAsync(String agentName, String agentSessionId,
         String path, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.uploadSessionFile(this.client.getEndpoint(), agentName, sessionId, path,
+        return FluxUtil.withContext(
+            context -> service.uploadSessionFile(this.client.getEndpoint(), agentName, agentSessionId, path,
                 contentType, this.client.getServiceVersion().getVersion(), accept, content, requestOptions, context));
     }
 
@@ -225,7 +235,10 @@ public final class AgentSessionFilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -248,7 +261,7 @@ public final class AgentSessionFilesImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -259,11 +272,11 @@ public final class AgentSessionFilesImpl {
      * @return response from uploading a file to a session sandbox along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String sessionId, String path,
+    public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String agentSessionId, String path,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return service.uploadSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path, contentType,
+        return service.uploadSessionFileSync(this.client.getEndpoint(), agentName, agentSessionId, path, contentType,
             this.client.getServiceVersion().getVersion(), accept, content, requestOptions, Context.NONE);
     }
 
@@ -275,7 +288,10 @@ public final class AgentSessionFilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -287,7 +303,7 @@ public final class AgentSessionFilesImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -297,11 +313,11 @@ public final class AgentSessionFilesImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadSessionFileWithResponseAsync(String agentName, String sessionId,
+    public Mono<Response<BinaryData>> downloadSessionFileWithResponseAsync(String agentName, String agentSessionId,
         String path, RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.downloadSessionFile(this.client.getEndpoint(), agentName,
-            sessionId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            agentSessionId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -312,7 +328,10 @@ public final class AgentSessionFilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -324,7 +343,7 @@ public final class AgentSessionFilesImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -334,23 +353,49 @@ public final class AgentSessionFilesImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String sessionId, String path,
+    public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.downloadSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path,
+        return service.downloadSessionFileSync(this.client.getEndpoint(), agentName, agentSessionId, path,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -358,48 +403,70 @@ public final class AgentSessionFilesImpl {
      * <pre>
      * {@code
      * {
-     *     path: String (Required)
-     *     entries (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             size: long (Required)
-     *             is_directory: boolean (Required)
-     *             modified_time: OffsetDateTime (Required)
-     *         }
-     *     ]
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
      * }
      * }
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
+     * @param agentSessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from listing a directory in a session sandbox along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionFilesWithResponseAsync(String agentName, String sessionId, String path,
+    private Mono<PagedResponse<BinaryData>> listSessionFilesSinglePageAsync(String agentName, String agentSessionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSessionFiles(this.client.getEndpoint(), agentName, sessionId,
-            path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.listSessionFiles(this.client.getEndpoint(), agentName, agentSessionId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "entries"), null, null));
     }
 
     /**
      * List files and directories at a given path in the session sandbox.
      * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -407,35 +474,163 @@ public final class AgentSessionFilesImpl {
      * <pre>
      * {@code
      * {
-     *     path: String (Required)
-     *     entries (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             size: long (Required)
-     *             is_directory: boolean (Required)
-     *             modified_time: OffsetDateTime (Required)
-     *         }
-     *     ]
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
      * }
      * }
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory.
+     * @param agentSessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from listing a directory in a session sandbox along with {@link Response}.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listSessionFilesAsync(String agentName, String agentSessionId,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listSessionFilesSinglePageAsync(agentName, agentSessionId, requestOptions));
+    }
+
+    /**
+     * List files and directories at a given path in the session sandbox.
+     * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSessionFilesWithResponse(String agentName, String sessionId, String path,
+    private PagedResponse<BinaryData> listSessionFilesSinglePage(String agentName, String agentSessionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSessionFilesSync(this.client.getEndpoint(), agentName, sessionId, path,
+        Response<BinaryData> res = service.listSessionFilesSync(this.client.getEndpoint(), agentName, agentSessionId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "entries"), null, null);
+    }
+
+    /**
+     * List files and directories at a given path in the session sandbox.
+     * Returns only the immediate children of the specified directory (non-recursive).
+     * If path is not provided, lists the session home directory.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listSessionFiles(String agentName, String agentSessionId,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listSessionFilesSinglePage(agentName, agentSessionId, requestOptions));
     }
 
     /**
@@ -445,8 +640,8 @@ public final class AgentSessionFilesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. Defaults
-     * to false.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. The
+     * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -455,12 +650,15 @@ public final class AgentSessionFilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -470,10 +668,10 @@ public final class AgentSessionFilesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSessionFileWithResponseAsync(String agentName, String sessionId, String path,
+    public Mono<Response<Void>> deleteSessionFileWithResponseAsync(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.deleteSessionFile(this.client.getEndpoint(), agentName,
-            sessionId, path, this.client.getServiceVersion().getVersion(), requestOptions, context));
+            agentSessionId, path, this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -483,8 +681,8 @@ public final class AgentSessionFilesImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. Defaults
-     * to false.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. The
+     * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -493,12 +691,15 @@ public final class AgentSessionFilesImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
      * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
+     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
+     * "ExternalAgents=V1Preview".</td></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
-     * @param sessionId The session ID.
+     * @param agentSessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -508,9 +709,28 @@ public final class AgentSessionFilesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSessionFileWithResponse(String agentName, String sessionId, String path,
+    public Response<Void> deleteSessionFileWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
-        return service.deleteSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path,
+        return service.deleteSessionFileSync(this.client.getEndpoint(), agentName, agentSessionId, path,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

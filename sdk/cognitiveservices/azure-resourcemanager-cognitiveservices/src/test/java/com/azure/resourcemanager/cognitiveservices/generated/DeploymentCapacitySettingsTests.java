@@ -12,18 +12,18 @@ public final class DeploymentCapacitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentCapacitySettings model
-            = BinaryData.fromString("{\"designatedCapacity\":779451406,\"priority\":1043675485}")
+            = BinaryData.fromString("{\"designatedCapacity\":351540832,\"priority\":1043474675}")
                 .toObject(DeploymentCapacitySettings.class);
-        Assertions.assertEquals(779451406, model.designatedCapacity());
-        Assertions.assertEquals(1043675485, model.priority());
+        Assertions.assertEquals(351540832, model.designatedCapacity());
+        Assertions.assertEquals(1043474675, model.priority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentCapacitySettings model
-            = new DeploymentCapacitySettings().withDesignatedCapacity(779451406).withPriority(1043675485);
+            = new DeploymentCapacitySettings().withDesignatedCapacity(351540832).withPriority(1043474675);
         model = BinaryData.fromObject(model).toObject(DeploymentCapacitySettings.class);
-        Assertions.assertEquals(779451406, model.designatedCapacity());
-        Assertions.assertEquals(1043675485, model.priority());
+        Assertions.assertEquals(351540832, model.designatedCapacity());
+        Assertions.assertEquals(1043474675, model.priority());
     }
 }

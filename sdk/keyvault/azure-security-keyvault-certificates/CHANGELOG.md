@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.10.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.10.0-beta.1 (2026-06-04)
+
+### Features Added
+
+- Added an experimental PlatformManaged property on CertificatePolicy for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point. [#49210](https://github.com/Azure/azure-sdk-for-java/pull/49210)
+
+### Other Changes
+
+- Upgraded to API service version `2026-03-01-preview`
+
+## 4.9.0 (2026-05-26)
+
+### Features Added
+
+- Added support for service version `V2025_07_01`.
+- Added the following methods to `SubjectAlternativeNames`:
+  - `setUniformResourceIdentifiers(java.util.List)`
+  - `setIpAddresses(java.util.List)`
+  - `getUniformResourceIdentifiers()`
+  - `getIpAddresses()`
 
 ## 4.8.7 (2026-05-05)
 

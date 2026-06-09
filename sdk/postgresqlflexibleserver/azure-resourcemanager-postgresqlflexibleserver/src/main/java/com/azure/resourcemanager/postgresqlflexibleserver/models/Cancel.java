@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class Cancel extends ExpandableStringEnum<Cancel> {
     /**
-     * Static value True for Cancel.
+     * Cancel must be triggered for the entire migration.
      */
     public static final Cancel TRUE = fromString("True");
 
     /**
-     * Static value False for Cancel.
+     * Cancel must not be triggered for the entire migration.
      */
     public static final Cancel FALSE = fromString("False");
 

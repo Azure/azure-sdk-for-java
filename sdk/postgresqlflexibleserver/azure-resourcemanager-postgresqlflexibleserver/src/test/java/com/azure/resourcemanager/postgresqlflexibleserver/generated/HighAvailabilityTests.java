@@ -13,7 +13,7 @@ public final class HighAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HighAvailability model = BinaryData
-            .fromString("{\"mode\":\"ZoneRedundant\",\"state\":\"NotEnabled\",\"standbyAvailabilityZone\":\"ah\"}")
+            .fromString("{\"mode\":\"ZoneRedundant\",\"state\":\"FailingOver\",\"standbyAvailabilityZone\":\"ah\"}")
             .toObject(HighAvailability.class);
         Assertions.assertEquals(HighAvailabilityMode.ZONE_REDUNDANT, model.mode());
         Assertions.assertEquals("ah", model.standbyAvailabilityZone());

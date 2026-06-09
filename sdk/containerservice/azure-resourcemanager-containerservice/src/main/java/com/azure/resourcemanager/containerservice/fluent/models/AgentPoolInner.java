@@ -671,12 +671,30 @@ public final class AgentPoolInner extends ProxyResource {
     }
 
     /**
-     * Get the nodeImageVersion property: The version of node image.
+     * Get the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @return the nodeImageVersion value.
      */
     public String nodeImageVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().nodeImageVersion();
+    }
+
+    /**
+     * Set the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
+     * 
+     * @param nodeImageVersion the nodeImageVersion value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNodeImageVersion(String nodeImageVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withNodeImageVersion(nodeImageVersion);
+        return this;
     }
 
     /**

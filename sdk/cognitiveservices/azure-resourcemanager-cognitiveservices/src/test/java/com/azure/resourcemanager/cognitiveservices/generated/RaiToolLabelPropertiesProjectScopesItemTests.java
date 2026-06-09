@@ -13,20 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiToolLabelPropertiesProjectScopesItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiToolLabelPropertiesProjectScopesItem model
-            = BinaryData.fromString("{\"project\":\"x\",\"labelValues\":{\"rydxtqm\":\"jntpsewgioilqu\"}}")
-                .toObject(RaiToolLabelPropertiesProjectScopesItem.class);
-        Assertions.assertEquals("x", model.project());
-        Assertions.assertEquals("jntpsewgioilqu", model.labelValues().get("rydxtqm"));
+        RaiToolLabelPropertiesProjectScopesItem model = BinaryData.fromString(
+            "{\"project\":\"btgn\",\"labelValues\":{\"vodggxdbee\":\"zeyqxtjjfzqlqhyc\",\"wiuagydwqf\":\"mieknlraria\",\"ocqwogfnzjvus\":\"ylyrfgiagtco\"}}")
+            .toObject(RaiToolLabelPropertiesProjectScopesItem.class);
+        Assertions.assertEquals("btgn", model.project());
+        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.labelValues().get("vodggxdbee"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiToolLabelPropertiesProjectScopesItem model = new RaiToolLabelPropertiesProjectScopesItem().withProject("x")
-            .withLabelValues(mapOf("rydxtqm", "jntpsewgioilqu"));
+        RaiToolLabelPropertiesProjectScopesItem model = new RaiToolLabelPropertiesProjectScopesItem()
+            .withProject("btgn")
+            .withLabelValues(
+                mapOf("vodggxdbee", "zeyqxtjjfzqlqhyc", "wiuagydwqf", "mieknlraria", "ocqwogfnzjvus", "ylyrfgiagtco"));
         model = BinaryData.fromObject(model).toObject(RaiToolLabelPropertiesProjectScopesItem.class);
-        Assertions.assertEquals("x", model.project());
-        Assertions.assertEquals("jntpsewgioilqu", model.labelValues().get("rydxtqm"));
+        Assertions.assertEquals("btgn", model.project());
+        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.labelValues().get("vodggxdbee"));
     }
 
     // Use "Map.of" if available

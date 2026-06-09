@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.Http2PingHandler;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
@@ -68,7 +69,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
+import com.azure.cosmos.implementation.routing.RegionIdRegistry;
+import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -127,7 +129,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -835,9 +836,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         while (readableLocationsIterator.hasNext()) {
             DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
 
-            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
-
-            if (RegionNameToRegionIdMap.getRegionId(normalizedReadableRegion) == -1) {
+            if (RegionIdRegistry.getRegionId(readableLocation.getName()) == -1) {
                 return false;
             }
         }
@@ -1678,7 +1677,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.RegionScopedSessionCapturing);
         }
 
+        if (!isHttp2PingHealthEffectivelyEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2PingHealth);
+        }
+
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
+    }
+
+    /**
+     * Returns true when HTTP/2 PING keepalive is effectively enabled for this client,
+     * delegating to {@link Http2PingHandler#isPingHealthEffectivelyEnabled} so the
+     * user-agent feature flag stays in lockstep with the transport install gate in
+     * {@code ReactorNettyClient}.
+     */
+    private boolean isHttp2PingHealthEffectivelyEnabled() {
+        return Http2PingHandler.isPingHealthEffectivelyEnabled(
+            this.connectionPolicy.getHttp2ConnectionConfig());
     }
 
     @Override
@@ -1992,16 +2006,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
-            && readConsistencyStrategyName != null
-            && ! readConsistencyStrategyName.equalsIgnoreCase(ReadConsistencyStrategy.DEFAULT.toString())) {
-
-            logger.warn(
-                "ReadConsistencyStrategy {} defined in Gateway mode. "
-                    + "This version of the SDK only supports ReadConsistencyStrategy in DIRECT mode. "
-                    + "This setting will be ignored.",
-                readConsistencyStrategyName);
+    public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        if (readConsistencyStrategy == ReadConsistencyStrategy.GLOBAL_STRONG) {
+            ConsistencyLevel accountConsistency = this.getDefaultConsistencyLevelOfAccount();
+            if (accountConsistency != ConsistencyLevel.STRONG) {
+                throw new BadRequestException(
+                    String.format(
+                        RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
+                        readConsistencyStrategy,
+                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                        ConsistencyLevel.STRONG,
+                        accountConsistency));
+            }
         }
     }
 
@@ -2033,8 +2049,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = readConsistencyStrategy.toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(readConsistencyStrategy);
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
         if (options == null) {
@@ -2078,13 +2098,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(options.getReadConsistencyStrategy());
             headers.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
-        if (options.getConsistencyLevel() != null) {
+        if (options.getConsistencyLevel() != null
+            && !headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
+            // Only set ConsistencyLevel when ReadConsistencyStrategy is NOT already present.
+            // readConsistencyStrategy takes precedence — setting both causes gateway rejection.
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 
@@ -5502,8 +5529,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-                RxDocumentClientImpl.this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+                RxDocumentClientImpl.this.validateReadConsistencyStrategy(readConsistencyStrategy);
             }
 
             @Override
@@ -8590,13 +8617,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
         if (excludedRegions != null) {
-            excludedRegions.forEach(r -> normalizedExcludedRegions.add(r.toLowerCase(Locale.ROOT)));
+            excludedRegions.forEach(r -> normalizedExcludedRegions.add(RegionNameNormalizer.normalize(r)));
         }
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
         regionalRoutingContextList.forEach(consolidatedLocationEndpoints -> {
             String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), operationType);
-            if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
+            if (!normalizedExcludedRegions.contains(RegionNameNormalizer.normalize(regionName))) {
                 orderedRegionsForSpeculation.add(regionName);
             }
         });

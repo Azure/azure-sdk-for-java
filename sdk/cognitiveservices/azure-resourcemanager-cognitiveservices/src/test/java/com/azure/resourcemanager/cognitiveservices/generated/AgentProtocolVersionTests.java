@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentProtocolVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentProtocolVersion model
-            = BinaryData.fromString("{\"protocol\":\"Responses\",\"version\":\"gkkileplkcsmkn\"}")
-                .toObject(AgentProtocolVersion.class);
-        Assertions.assertEquals(AgentProtocol.RESPONSES, model.protocol());
-        Assertions.assertEquals("gkkileplkcsmkn", model.version());
+        AgentProtocolVersion model = BinaryData.fromString("{\"protocol\":\"Agent\",\"version\":\"kkld\"}")
+            .toObject(AgentProtocolVersion.class);
+        Assertions.assertEquals(AgentProtocol.AGENT, model.protocol());
+        Assertions.assertEquals("kkld", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentProtocolVersion model
-            = new AgentProtocolVersion().withProtocol(AgentProtocol.RESPONSES).withVersion("gkkileplkcsmkn");
+        AgentProtocolVersion model = new AgentProtocolVersion().withProtocol(AgentProtocol.AGENT).withVersion("kkld");
         model = BinaryData.fromObject(model).toObject(AgentProtocolVersion.class);
-        Assertions.assertEquals(AgentProtocol.RESPONSES, model.protocol());
-        Assertions.assertEquals("gkkileplkcsmkn", model.version());
+        Assertions.assertEquals(AgentProtocol.AGENT, model.protocol());
+        Assertions.assertEquals("kkld", model.version());
     }
 }

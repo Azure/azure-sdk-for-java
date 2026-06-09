@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.computelimit.generated;
 
+import com.azure.resourcemanager.computelimit.models.FeatureEnableRequest;
+
 /**
  * Samples for Features Enable.
  */
 public final class FeaturesEnableSamples {
     /*
-     * x-ms-original-file: 2026-04-30/Features_Enable.json
+     * x-ms-original-file: 2026-06-01/Features_Enable.json
      */
     /**
      * Sample code: Enable feature.
@@ -17,6 +19,9 @@ public final class FeaturesEnableSamples {
      * @param manager Entry point to ComputeLimitManager.
      */
     public static void enableFeature(com.azure.resourcemanager.computelimit.ComputeLimitManager manager) {
-        manager.features().enable("eastus", "VmCategoryQuota", com.azure.core.util.Context.NONE);
+        manager.features()
+            .enable("eastus", "VmCategoryQuota",
+                new FeatureEnableRequest().withServiceTreeId("a1b2c3d4-5678-90ab-cdef-1234567890ab"),
+                com.azure.core.util.Context.NONE);
     }
 }

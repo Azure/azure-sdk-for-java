@@ -31,11 +31,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     private String provisioningState;
 
     /*
-     * The version of node image
-     */
-    private String nodeImageVersion;
-
-    /*
      * The version of Kubernetes the Agent Pool is running. If orchestratorVersion is a fully specified version
      * <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion is <major.minor>, this field
      * will contain the full <major.minor.patch> version being used.
@@ -85,16 +80,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the nodeImageVersion property: The version of node image.
-     * 
-     * @return the nodeImageVersion value.
-     */
-    @Override
-    public String nodeImageVersion() {
-        return this.nodeImageVersion;
     }
 
     /**
@@ -299,6 +284,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withOrchestratorVersion(String orchestratorVersion) {
         super.withOrchestratorVersion(orchestratorVersion);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withNodeImageVersion(String nodeImageVersion) {
+        super.withNodeImageVersion(nodeImageVersion);
         return this;
     }
 
@@ -671,6 +665,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeStringField("type", type() == null ? null : type().toString());
         jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
         jsonWriter.writeStringField("orchestratorVersion", orchestratorVersion());
+        jsonWriter.writeStringField("nodeImageVersion", nodeImageVersion());
         jsonWriter.writeJsonField("upgradeSettings", upgradeSettings());
         jsonWriter.writeJsonField("powerState", powerState());
         jsonWriter.writeArrayField("availabilityZones", availabilityZones(),
@@ -779,7 +774,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("currentOrchestratorVersion".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.currentOrchestratorVersion = reader.getString();
                 } else if ("nodeImageVersion".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfile.nodeImageVersion = reader.getString();
+                    deserializedManagedClusterAgentPoolProfile.withNodeImageVersion(reader.getString());
                 } else if ("upgradeSettings".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withUpgradeSettings(AgentPoolUpgradeSettings.fromJson(reader));
