@@ -1,14 +1,17 @@
 # Release History
 
-## 12.35.0-beta.2 (Unreleased)
+## 12.35.0 (2026-06-10)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS. 
+- Added support for service version 2026-06-06.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-storage-internal-avro` from `12.19.0` to version `12.20.0`.
 
 ## 12.34.0 (2026-05-14)
 

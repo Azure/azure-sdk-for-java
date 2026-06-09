@@ -1,14 +1,15 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.28.0 (2026-06-10)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added `getTags`/`setTags` to path APIs (sync + async).
+- Added support for service version 2026-06-06.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.34.0` to version `12.35.0`.
 
 ## 12.27.0 (2026-05-14)
 

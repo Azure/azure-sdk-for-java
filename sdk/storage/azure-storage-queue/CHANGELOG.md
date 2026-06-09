@@ -1,14 +1,14 @@
 # Release History
 
-## 12.30.0-beta.2 (Unreleased)
+## 12.30.0 (2026-06-10)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version 2026-06-06.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
 
 ## 12.29.0 (2026-05-14)
 
