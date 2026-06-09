@@ -9,6 +9,7 @@
 
 #### Dependency Updates
 - Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
 
 ## 12.19.0 (2026-05-14)
 
