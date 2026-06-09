@@ -12,32 +12,32 @@ import java.util.Collection;
  */
 public final class MigrationDatabaseState extends ExpandableStringEnum<MigrationDatabaseState> {
     /**
-     * Static value InProgress for MigrationDatabaseState.
+     * Migration is in progress for the database.
      */
     public static final MigrationDatabaseState IN_PROGRESS = fromString("InProgress");
 
     /**
-     * Static value WaitingForCutoverTrigger for MigrationDatabaseState.
+     * Migration is waiting for cutover trigger for the database.
      */
     public static final MigrationDatabaseState WAITING_FOR_CUTOVER_TRIGGER = fromString("WaitingForCutoverTrigger");
 
     /**
-     * Static value Failed for MigrationDatabaseState.
+     * Migration has failed for the database.
      */
     public static final MigrationDatabaseState FAILED = fromString("Failed");
 
     /**
-     * Static value Canceled for MigrationDatabaseState.
+     * Migration has been canceled for the database.
      */
     public static final MigrationDatabaseState CANCELED = fromString("Canceled");
 
     /**
-     * Static value Succeeded for MigrationDatabaseState.
+     * Migration has succeeded for the database.
      */
     public static final MigrationDatabaseState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value Canceling for MigrationDatabaseState.
+     * Migration is being canceled for the database.
      */
     public static final MigrationDatabaseState CANCELING = fromString("Canceling");
 

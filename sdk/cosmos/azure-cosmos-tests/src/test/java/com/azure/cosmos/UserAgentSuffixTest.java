@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.ITestContext;
@@ -14,6 +15,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -115,8 +118,15 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     private void validateUserAgentSuffix(String actualUserAgent, String expectedUserAgentSuffix) {
 
+        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix:
+        // when HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
+        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
         if (Configs.isHttp2Enabled()) {
-            expectedUserAgentSuffix = expectedUserAgentSuffix + "|F10";
+            int featureValue = UserAgentFeatureFlags.Http2.getValue();
+            if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
+                featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
+            }
+            expectedUserAgentSuffix = expectedUserAgentSuffix + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
         }
 
         assertThat(actualUserAgent).endsWith(expectedUserAgentSuffix);

@@ -13,10 +13,10 @@ public final class ObjectRecommendationPropertiesAnalyzedWorkloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ObjectRecommendationPropertiesAnalyzedWorkload model = BinaryData.fromString(
-            "{\"startTime\":\"2021-08-18T20:43:06Z\",\"endTime\":\"2021-06-08T23:16:11Z\",\"queryCount\":1541278105}")
+            "{\"startTime\":\"2021-06-21T09:24:47Z\",\"endTime\":\"2021-05-11T09:51:47Z\",\"queryCount\":1410442260}")
             .toObject(ObjectRecommendationPropertiesAnalyzedWorkload.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T20:43:06Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T23:16:11Z"), model.endTime());
-        Assertions.assertEquals(1541278105, model.queryCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T09:24:47Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T09:51:47Z"), model.endTime());
+        Assertions.assertEquals(1410442260, model.queryCount());
     }
 }
