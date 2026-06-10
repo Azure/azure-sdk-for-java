@@ -153,6 +153,38 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         return buffer.capacity();
     }
 
+    /*
+     * Implementation notes for read(ByteBuffer):
+     *
+     * Caller pattern. The typical caller drives a loop:
+     *     while (channel.read(dst) != -1) { ... }
+     * After the final bytes are drained from the internal buffer, absolutePosition equals
+     * readBehavior.getResourceLength() and the next read() call is expected to return -1.
+     *
+     * Zero-remaining destination. Per the ReadableByteChannel/SeekableByteChannel contract, if dst.remaining() == 0
+     * (e.g. dst = ByteBuffer.allocate(0) or a previously-filled buffer with position() == limit()), the channel must
+     * make no attempt to read and must return 0 -- NOT -1 -- even when the underlying resource has already reached
+     * end-of-stream. Without an explicit short-circuit, the cached-EOF fast-path would return -1 in violation of the
+     * contract, and the not-yet-EOF path would issue a wasted refillReadBuffer() service round-trip only to
+     * ultimately return 0.
+     *
+     * EOF short-circuit. When the internal buffer is empty, the implementation checks whether absolutePosition has
+     * already reached (or exceeded) the cached resource length and returns -1 directly. Without this short-circuit,
+     * an empty buffer would fall into refillReadBuffer(absolutePosition), which delegates to readBehavior.read(...)
+     * and issues a real HTTP range GET at an offset >= resourceLength.
+     *
+     * How absolutePosition can reach (or exceed) resourceLength:
+     *   1. Normal sequential drain: after the last bytes are consumed, the refill branch sets
+     *      absolutePosition = resourceLength, and the caller's loop re-enters read() once more expecting -1.
+     *      This is the dominant case and produces absolutePosition == resourceLength.
+     *   2. Construction with startingPosition >= resourceLength -- the constructor only validates >= 0 and does not
+     *      clamp against the resource length.
+     *   3. position(newPosition) -> readModeSeek(newPosition) performs no upper-bound check against resourceLength,
+     *      so a caller can seek strictly past EOF (absolutePosition > resourceLength).
+     *   4. getResourceLength() is documented as possibly cached; if it is later refreshed (or the underlying blob is
+     *      replaced with a shorter blob), a previously-valid absolutePosition can become strictly greater than the
+     *      refreshed resourceLength without the channel doing anything wrong.
+     */
     @Override
     public int read(ByteBuffer dst) throws IOException {
         assertOpen();
@@ -162,22 +194,13 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
                 .logExceptionAsError(new IllegalArgumentException("'dst' is read-only and cannot be written to."));
         }
 
-        // ReadableByteChannel/SeekableByteChannel contract: if dst.remaining() == 0 (e.g. dst = ByteBuffer.allocate(0)
-        // or a previously-filled buffer with position() == limit()), the channel must make no attempt to read and must
-        // return 0 -- NOT -1 -- even when the underlying resource has already reached end-of-stream. Without this
-        // short-circuit, the cached-EOF fast-path below would return -1 in violation of the contract, and the
-        // not-yet-EOF path would issue a wasted refillReadBuffer() service round-trip only to ultimately return 0.
+        // See contract note (zero-remaining destination) in the comment block above this method.
         if (!dst.hasRemaining()) {
             return 0;
         }
 
         if (buffer.remaining() == 0) {
-            // If the channel has already advanced to (or beyond) the cached end of the resource, avoid issuing an
-            // additional service round-trip just to discover EOF. The behavior's resourceLength is populated up-front
-            // by openSeekableByteChannelRead from the blob's properties, so a probe past the end (which would normally
-            // produce a 416 Range Not Satisfiable response) is unnecessary and is a source of spurious failures when
-            // the network or service injects transient IOExceptions (connection reset, premature close, channel
-            // timeout) on that probe request.
+            // See EOF short-circuit note in the comment block above this method.
             long resourceLength = readBehavior.getResourceLength();
             if (resourceLength >= 0 && absolutePosition >= resourceLength) {
                 absolutePosition = resourceLength;
@@ -205,6 +228,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
 
     private int refillReadBuffer(long newBufferAbsolutePosition) throws IOException {
         buffer.clear();
+        // This delegates to the backing behavior and may issue a service range read from newBufferAbsolutePosition.
         int read = readBehavior.read(buffer, newBufferAbsolutePosition);
         buffer.rewind();
         buffer.limit(Math.max(read, 0));
