@@ -6,7 +6,8 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaAgentsClient;
-import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
@@ -45,7 +46,7 @@ public class SessionLogStreamSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsClient agentsClient = builder.buildAgentsClient();
+        AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
         BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         HostedAgentSessionResources resources = null;

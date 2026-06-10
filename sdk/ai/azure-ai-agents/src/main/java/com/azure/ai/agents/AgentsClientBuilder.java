@@ -42,6 +42,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.openai.azure.AzureOpenAIServiceVersion;
+import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -517,7 +519,15 @@ public final class AgentsClientBuilder
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(CoreUtils.isNullOrEmpty(agentName) ? getDefaultBaseUrl() : getAgentEndpointBaseUrl(agentName));
+        builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
+        if (CoreUtils.isNullOrEmpty(agentName)) {
+            builder.baseUrl(getDefaultBaseUrl());
+        } else {
+            builder.baseUrl(getAgentEndpointBaseUrl(agentName));
+            // The agent endpoint exposes a single service version, addressed as 'v1'. It must be
+            // sent explicitly; UNIFIED mode alone omits api-version, which the endpoint rejects.
+            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(AgentsServiceVersion.V1.getVersion()));
+        }
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
@@ -527,7 +537,15 @@ public final class AgentsClientBuilder
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
-        builder.baseUrl(CoreUtils.isNullOrEmpty(agentName) ? getDefaultBaseUrl() : getAgentEndpointBaseUrl(agentName));
+        builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
+        if (CoreUtils.isNullOrEmpty(agentName)) {
+            builder.baseUrl(getDefaultBaseUrl());
+        } else {
+            builder.baseUrl(getAgentEndpointBaseUrl(agentName));
+            // The agent endpoint exposes a single service version, addressed as 'v1'. It must be
+            // sent explicitly; UNIFIED mode alone omits api-version, which the endpoint rejects.
+            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(AgentsServiceVersion.V1.getVersion()));
+        }
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;

@@ -6,7 +6,8 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaAgentsAsyncClient;
-import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
@@ -46,7 +47,7 @@ public class SessionLogStreamAsyncSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
         BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 

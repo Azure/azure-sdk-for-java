@@ -13,6 +13,8 @@
 
 ### Bugs Fixed
 
+- Fixed the agent-scoped OpenAI client returned by `AgentsClientBuilder.buildAgentScopedOpenAIClient` and `buildAgentScopedOpenAIAsyncClient` so requests to a hosted-agent endpoint target the correct URL. Previously the request path was duplicated (`.../protocols/openai/openai/responses`) and used an unsupported default `api-version`, causing `400` errors when invoking the OpenAI Responses API or streaming session logs through an agent endpoint. The client now uses the unified Azure URL path mode and sends `api-version=v1`.
+
 ### Other Changes
 
 ## 2.1.0 (2026-06-01)
