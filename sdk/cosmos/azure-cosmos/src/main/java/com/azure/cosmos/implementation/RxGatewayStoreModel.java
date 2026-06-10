@@ -750,7 +750,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
 
                 if (WebExceptionUtility.isNetworkFailure(dce)) {
-                    if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    if (WebExceptionUtility.isHttp2PingTimeoutClose(dce)) {
+                        // PING-keepalive-driven close is a LOCAL transport failure (NAT idle reap, LB
+                        // shedding, etc.); the regional gateway is NOT known to be unhealthy. Stamp a
+                        // dedicated subStatusCode so ClientRetryPolicy can route this to in-region retry
+                        // WITHOUT marking the endpoint unavailable. Check BEFORE the read-timeout
+                        // branch -- a PING ACK timeout is not the same thing as an HTTP response read
+                        // timeout, and the two branches lead to different (though similar) retry paths.
+                        BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED);
+                    } else if (WebExceptionUtility.isReadTimeoutException(dce)) {
                         BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
                     } else {
                         BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
