@@ -1,0 +1,15 @@
+services:
+  financial-jersey-sample:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ${REGISTRY:-}lc4jsample:latest
+
+    ports:
+      - "8088:8088"
+      - "5005:5005"
+    env_file:
+      - ../../../.env
+
+
+
