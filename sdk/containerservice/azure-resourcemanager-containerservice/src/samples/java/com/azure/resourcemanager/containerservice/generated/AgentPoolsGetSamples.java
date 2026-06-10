@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/AgentPoolsGet.json
+     * x-ms-original-file: 2026-04-01/AgentPoolsGet.json
      */
     /**
      * Sample code: Get Agent Pool.

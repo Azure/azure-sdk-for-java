@@ -61,4 +61,10 @@ public final class EouDetectionModel extends ExpandableStringEnum<EouDetectionMo
     public static Collection<EouDetectionModel> values() {
         return values(EouDetectionModel.class);
     }
+
+    /**
+     * Static value smart_end_of_turn_detection for EouDetectionModel.
+     */
+    @Generated
+    public static final EouDetectionModel SMART_END_OF_TURN_DETECTION = fromString("smart_end_of_turn_detection");
 }

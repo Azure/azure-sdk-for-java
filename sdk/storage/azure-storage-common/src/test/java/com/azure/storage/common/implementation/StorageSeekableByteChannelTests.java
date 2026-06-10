@@ -318,7 +318,7 @@ public class StorageSeekableByteChannelTests {
             return toRead;
         });
 
-        // Use a chunkSize larger than resourceSize and position at 0 so the channel's internal buffer is empty.
+        // Use a chunkSize equal to resourceSize and position at 0 so the channel's internal buffer is empty.
         StorageSeekableByteChannel channel = new StorageSeekableByteChannel(resourceSize, behavior, 0L);
 
         // Zero-capacity read at start-of-stream -- channel is not at EOF, internal buffer is empty.

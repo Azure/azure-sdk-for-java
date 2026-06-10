@@ -18,6 +18,7 @@ from utils import (
     update_version,
     get_latest_ga_version,
     get_latest_release_version,
+    is_first_release,
 )
 from generate_data import (
     sdk_automation as sdk_automation_data,
@@ -368,10 +369,19 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     )
 
     if succeeded:
-        # Infer sdk release type from generated metadata when not explicitly provided
+        # Infer sdk release type from generated metadata when not explicitly provided.
+        # However, if the package has never been released, always force a beta first release
+        # (1.0.0-beta.1) regardless of whether the API version is GA or preview.
         if not sdk_release_type and sdk_folder and module:
-            inferred_type = infer_sdk_release_type(sdk_root, sdk_folder, module)
-            release_beta_sdk = inferred_type == "beta"
+            if is_first_release(sdk_root, GROUP_ID, module):
+                logging.info(
+                    f"[SelfServe] Package {GROUP_ID}:{module} has never been released; "
+                    f"forcing first release to {DEFAULT_VERSION} (sdkReleaseType=beta)."
+                )
+                release_beta_sdk = True
+            else:
+                inferred_type = infer_sdk_release_type(sdk_root, sdk_folder, module)
+                release_beta_sdk = inferred_type == "beta"
 
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
