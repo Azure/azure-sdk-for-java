@@ -48,6 +48,7 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
@@ -60,6 +61,20 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public final class BuilderHelper {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+
+    /**
+     * Environment variable / configuration key that, when set, selects the {@link SessionMode}
+     * to use on a builder that has not been explicitly configured (i.e. still using
+     * {@link SessionMode#AUTO}). Accepted values are the names of {@link SessionMode}
+     * (case-insensitive): {@code NONE}, {@code AUTO}, {@code SINGLE_SPECIFIED_CONTAINER}.
+     */
+    public static final String PROPERTY_AZURE_STORAGE_SESSION_MODE = "AZURE_STORAGE_SESSION_MODE";
+
+    /**
+     * Environment variable / configuration key that, when set, supplies the container name to
+     * scope the session to on a builder where it has not been explicitly configured.
+     */
+    public static final String PROPERTY_AZURE_STORAGE_SESSION_CONTAINER_NAME = "AZURE_STORAGE_SESSION_CONTAINER_NAME";
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-storage-blob.properties");
@@ -298,6 +313,55 @@ public final class BuilderHelper {
         if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
+        }
+    }
+
+    /**
+     * Applies environment / configuration based defaults to the supplied {@link SessionOptions}.
+     * <p>
+     * This is a fallback that only fills in values the caller has not explicitly configured on the
+     * builder, so explicit programmatic configuration always wins:
+     * <ul>
+     *   <li>{@link #PROPERTY_AZURE_STORAGE_SESSION_MODE} is consulted only when
+     *       {@link SessionOptions#getSessionMode()} is still {@link SessionMode#AUTO} (the default).
+     *       The env var value is matched case-insensitively against the names of {@link SessionMode}.</li>
+     *   <li>{@link #PROPERTY_AZURE_STORAGE_SESSION_CONTAINER_NAME} is consulted only when
+     *       {@link SessionOptions#getContainerName()} is {@code null} or empty.</li>
+     * </ul>
+     * Mutates {@code sessionOptions} in place.
+     *
+     * @param sessionOptions the options instance to populate; must not be {@code null}.
+     * @param configuration the configuration store to read from; if {@code null}, the global
+     *                      configuration is used.
+     * @param logger {@link ClientLogger} used to log any exception.
+     * @throws IllegalArgumentException if {@link #PROPERTY_AZURE_STORAGE_SESSION_MODE} is set to a
+     *                                  value that does not name a known {@link SessionMode}.
+     */
+    public static void applyEnvironmentSessionDefaults(SessionOptions sessionOptions, Configuration configuration,
+        ClientLogger logger) {
+        Configuration effectiveConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+
+        if (sessionOptions.getSessionMode() == SessionMode.AUTO) {
+            String envMode = effectiveConfiguration.get(PROPERTY_AZURE_STORAGE_SESSION_MODE);
+            if (!CoreUtils.isNullOrEmpty(envMode)) {
+                SessionMode parsed;
+                try {
+                    parsed = SessionMode.valueOf(envMode.trim().toUpperCase(Locale.ROOT));
+                } catch (IllegalArgumentException ex) {
+                    throw logger.logExceptionAsError(new IllegalArgumentException("Invalid value '" + envMode
+                        + "' for environment variable " + PROPERTY_AZURE_STORAGE_SESSION_MODE
+                        + ". Allowed values are: NONE, AUTO, SINGLE_SPECIFIED_CONTAINER.", ex));
+                }
+                sessionOptions.setSessionMode(parsed);
+            }
+        }
+
+        if (CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
+            String envContainer = effectiveConfiguration.get(PROPERTY_AZURE_STORAGE_SESSION_CONTAINER_NAME);
+            if (!CoreUtils.isNullOrEmpty(envContainer)) {
+                sessionOptions.setContainerName(envContainer.trim());
+            }
         }
     }
 }

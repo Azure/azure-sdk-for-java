@@ -58,16 +58,9 @@ public class StorageSessionCredentialTest {
     // encoded query string (e.g. snapshot=...%3A...).
     //
     // Scope is intentionally narrow. Session and SharedKey legitimately diverge on:
-    //   - missing Content-Length (SharedKey emits literal "null" via String.join; Session emits "")
-    //   - Content-Length "0" on GETs (SharedKey normalizes to ""; Session preserves "0" to match
-    //     what azure-core's RestProxyBase puts on the wire — see the comment on
-    //     StorageSessionCredential.buildStringToSign).
-    // Content-Length is pinned to a realistic non-zero value to bypass both quirks.
-    //
-    // DELETE this test once azure-core stops setting Content-Length: 0 on GETs and
-    // StorageSessionCredential.buildStringToSign is removed in favor of delegating to
-    // sharedKey.generateAuthorizationHeader(...). At that point this assertion becomes
-    // tautological (SharedKey vs. SharedKey).
+    //   - missing Content-Length (SharedKey emits literal "null" via String.join; Session emits "").
+    // Content-Length is pinned to a realistic non-zero value to bypass that quirk. Equivalence for
+    // Content-Length: 0 (which the server normalizes to "") is covered separately.
     @Test
     public void canonicalizationMatchesSharedKeyForEncodedQuery() throws MalformedURLException {
         StorageSessionCredential sessionCred = SessionTestHelper.createValidCredential();

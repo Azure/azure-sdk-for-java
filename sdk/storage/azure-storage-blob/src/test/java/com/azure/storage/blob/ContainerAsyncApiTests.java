@@ -2311,4 +2311,62 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
     }
 
+    @Test
+    @LiveOnly
+    @Disabled("This test is disabled since it requires specific environment vars to be set that are not normally set")
+    @ResourceLock("BlobSessionAuth")
+    // Async twin of ContainerApiTests#downloadBlobUsingEnvVarSessionAuth. Verifies the env-var
+    // session-activation feature end-to-end. With NO explicit SessionOptions and NO
+    // .sessionOptions(...) call, a customer who only exports AZURE_STORAGE_SESSION_MODE and
+    // AZURE_STORAGE_SESSION_CONTAINER_NAME should get blob downloads automatically signed with
+    // the "Session" auth scheme instead of "Bearer".
+    public void downloadBlobUsingEnvVarSessionAuth() {
+
+        String myContainerName = "session-test-container";
+        String endpoint = ENVIRONMENT.getPrimaryAccount().getBlobEndpoint();
+
+        // Setup: provision the container and upload a blob the customer will later download.
+        primaryBlobServiceAsyncClient.createBlobContainer(myContainerName).block();
+        String blobName = generateBlobName();
+        primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(myContainerName)
+            .getBlobAsyncClient(blobName)
+            .getBlockBlobAsyncClient()
+            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .block();
+
+        // A real customer would deploy with these environment variables set on the process:
+        //   AZURE_STORAGE_SESSION_MODE=SINGLE_SPECIFIED_CONTAINER
+        //   AZURE_STORAGE_SESSION_CONTAINER_NAME=<their container>
+        // This test relies on those env vars being set on the host running it.
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
+            if (auth != null && trimmed != null && trimmed.contains("/")) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        try {
+            // Customer code: no .sessionOptions(...), no .configuration(...). The env vars
+            // set on the host are the only thing turning on session-based auth.
+            BlobContainerAsyncClient sessionCcAsync = instrument(new BlobContainerClientBuilder().endpoint(endpoint)
+                .containerName(myContainerName)
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .addPolicy(inspect)).buildAsyncClient();
+
+            StepVerifier.create(sessionCcAsync.getBlobAsyncClient(blobName).downloadContent())
+                .assertNext(downloaded -> assertEquals(DATA.getDefaultText(), downloaded.toString()))
+                .verifyComplete();
+
+            assertFalse(downloadAuthSchemes.isEmpty(), "Expected to observe at least one blob download request");
+            assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+                "Expected env-var-configured client to use Session auth on blob downloads; saw " + downloadAuthSchemes);
+        } finally {
+            primaryBlobServiceAsyncClient.deleteBlobContainer(myContainerName).block();
+        }
+    }
+
 }
