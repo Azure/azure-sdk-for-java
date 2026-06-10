@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed transient `410/1002` (`PartitionKeyRangeGone`) errors surfacing to query callers during a partition split or merge. The query-path `PartitionKeyRangeGoneRetryPolicy` previously retried only once and ignored the in-progress `410/1007` (`CompletingSplitOrMerge`) and `410/1008` (`CompletingPartitionMigration`) sub-status codes; it now refreshes the routing map and retries those sub-statuses up to 10 times before surfacing the error.
 
 #### Other Changes
 

@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO: this need testing
 /**
@@ -25,7 +26,8 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     private final IPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
     private final Map<String, Object> requestOptionProperties;
-    private volatile boolean retried;
+    private static final int MAX_RETRY_COUNT = 10;
+    private final AtomicInteger retryCount = new AtomicInteger(0);
     private RxDocumentServiceRequest request;
 
     public PartitionKeyRangeGoneRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
@@ -53,9 +55,11 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
         CosmosException clientException = Utils.as(exception, CosmosException.class);
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
-                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
+                (Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)
+                    || Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE)
+                    || Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION))) {
 
-            if (this.retried){
+            if (this.retryCount.getAndIncrement() >= MAX_RETRY_COUNT) {
                 return Mono.just(ShouldRetryResult.error(clientException));
             }
 
@@ -96,10 +100,8 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                 });
 
                 //  TODO: Check if this behavior can be replaced by doOnSubscribe
-                return refreshedRoutingMapObs.flatMap(rm -> {
-                    this.retried = true;
-                    return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-                });
+                return refreshedRoutingMapObs.flatMap(rm ->
+                    Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
 
             });
 
