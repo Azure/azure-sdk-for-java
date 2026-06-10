@@ -626,15 +626,18 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     /**
-     * Guards the workaround in {@link StorageSessionCredential#buildStringToSign}: the Session
-     * protocol signs the literal {@code Content-Length} value rather than normalizing
-     * {@code "0" -> ""} like SharedKey does. This is required today because azure-core's
-     * {@code RestProxyBase} unconditionally adds {@code Content-Length: 0} to body-less GET
-     * requests. Once that is fixed in azure-core, the buildStringToSign workaround can be removed
-     * and this test should be updated (or deleted) to reflect the new behavior.
+     * Regression guard: the Session protocol must normalize {@code Content-Length: "0"} to
+     * {@code ""} in the string-to-sign, matching the server's canonicalization (which is the
+     * same as documented Shared Key canonicalization). Signing with {@code Content-Length: 0}
+     * must therefore produce the same HMAC as signing without a Content-Length header at all.
+     * <p>
+     * Originally we expected the opposite (signing the literal "0") based on a misread of the
+     * service behavior; that caused 401 InvalidAuthenticationInfo errors on real blob GETs
+     * because azure-core's {@code RestProxyBase} unconditionally puts {@code Content-Length: 0}
+     * on body-less GETs while the server canonicalizes that to "" before computing its HMAC.
      */
     @Test
-    public void contentLengthZeroIsIncludedInSessionSignature() {
+    public void contentLengthZeroProducesSameSignatureAsMissingContentLength() {
         String pinnedDate = "Wed, 22 Apr 2026 20:00:00 GMT";
 
         HttpRequest withCl0
@@ -658,9 +661,9 @@ public class SessionTokenCredentialPolicyTest {
         credentialWithToken(FIRST_TOKEN).signRequest(withoutCl);
         String sigWithoutCl = extractSignature(withoutCl.getHeaders().getValue(authHeaderName));
 
-        assertTrue(!sigWithCl0.equals(sigWithoutCl),
-            "Session signature must include literal Content-Length value: signing with "
-                + "Content-Length: 0 must differ from signing without Content-Length");
+        assertEquals(sigWithCl0, sigWithoutCl,
+            "Session signature must normalize Content-Length: 0 to empty: signing with "
+                + "Content-Length: 0 must match signing without Content-Length");
     }
 
     private static String extractSignature(String authHeader) {

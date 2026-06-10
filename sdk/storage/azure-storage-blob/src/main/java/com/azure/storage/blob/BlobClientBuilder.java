@@ -136,6 +136,11 @@ public final class BlobClientBuilder
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
+        BuilderHelper.applyEnvironmentSessionDefaults(sessionOptions, configuration, LOGGER);
+        if (CoreUtils.isNullOrEmpty(containerName) && !CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
+            containerName = sessionOptions.getContainerName();
+        }
+
         BuilderHelper.validateSessionMode(sessionOptions, containerName, LOGGER);
 
         /*
@@ -183,6 +188,11 @@ public final class BlobClientBuilder
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
+        }
+
+        BuilderHelper.applyEnvironmentSessionDefaults(sessionOptions, configuration, LOGGER);
+        if (CoreUtils.isNullOrEmpty(containerName) && !CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
+            containerName = sessionOptions.getContainerName();
         }
 
         /*
