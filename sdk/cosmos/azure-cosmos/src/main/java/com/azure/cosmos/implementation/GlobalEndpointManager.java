@@ -51,6 +51,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
     private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabledOnClient = new AtomicBoolean(false);
     private final AtomicReference<EndpointOrchestrator> thinClientProbeOrchestrator = new AtomicReference<>(null);
+    private final AtomicReference<Disposable> thinClientProbeDisposable = new AtomicReference<>(null);
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
@@ -200,7 +201,16 @@ public class GlobalEndpointManager implements AutoCloseable {
             disposable.dispose();
         }
         // Stop accepting new thin-client probe cycles. The shared HttpClient is owned by
-        // RxDocumentClientImpl and is closed there; we only stop scheduling work here.
+        // RxDocumentClientImpl and is closed there; we only stop scheduling work here and
+        // cancel any in-flight probe subscription so its work cannot outlive close().
+        Disposable probeDisposable = this.thinClientProbeDisposable.getAndSet(null);
+        if (probeDisposable != null && !probeDisposable.isDisposed()) {
+            try {
+                probeDisposable.dispose();
+            } catch (Throwable t) {
+                logger.debug("Ignoring error while disposing in-flight thin-client probe.", t);
+            }
+        }
         EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.getAndSet(null);
         if (orchestrator != null) {
             try {
@@ -462,16 +472,30 @@ public class GlobalEndpointManager implements AutoCloseable {
             // orchestrator's internal state, which is consulted at the next routing decision.
             // We additionally guard against any synchronous throw here so a probe issue
             // can never trip CosmosClient initialization or a topology refresh.
-            orchestrator
-                .runProbeCycle(endpoints)
-                .subscribeOn(CosmosSchedulers.GLOBAL_ENDPOINT_MANAGER_BOUNDED_ELASTIC)
-                .subscribe(
-                    healthy -> {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Thin-client probe cycle completed; proxyHealthy={}", healthy);
-                        }
-                    },
-                    t -> logger.debug("Thin-client probe cycle subscription error", t));
+            //
+            // The returned Disposable is swapped into thinClientProbeDisposable so that
+            // close() can cancel an in-flight cycle. The orchestrator's internal
+            // single-flight CAS guarantees only one cycle runs at a time, so a swap-and-
+            // discard here is rare; we still dispose any prior one defensively to honor
+            // post-close cancellation even if the previous trigger somehow lingered.
+            Disposable previous = this.thinClientProbeDisposable.getAndSet(
+                orchestrator
+                    .runProbeCycle(endpoints)
+                    .subscribeOn(CosmosSchedulers.GLOBAL_ENDPOINT_MANAGER_BOUNDED_ELASTIC)
+                    .subscribe(
+                        healthy -> {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Thin-client probe cycle completed; proxyHealthy={}", healthy);
+                            }
+                        },
+                        t -> logger.debug("Thin-client probe cycle subscription error", t)));
+            if (previous != null && !previous.isDisposed()) {
+                try {
+                    previous.dispose();
+                } catch (Throwable ignored) {
+                    // best-effort
+                }
+            }
         } catch (Throwable t) {
             // Defensive: probe issues must never bubble out and fail topology refresh or
             // CosmosClient init. Log and move on — the gate stays at its current state.

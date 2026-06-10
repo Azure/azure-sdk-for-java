@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Defaulted `COSMOS.THINCLIENT_ENABLED=true` and added an HTTP/2 connectivity-probe (`EndpointOrchestrator`) for thin-client (Gateway V2) data-plane routing. The probe starts **optimistic** — thin-client routes immediately on SDK init — and only flips traffic back to Gateway V1 after N consecutive RED probe cycles (default 2) at topology-refresh boundaries; a single GREEN cycle restores thin-client routing. Probe is no-op for Direct mode and metadata/query-plan/all-versions-and-deletes calls always go to Gateway V1.
 
 ### 4.81.0 (2026-06-08)
 
@@ -24,7 +25,6 @@
 
 #### Other Changes
 * Added HTTP/2 PING keepalive (default ON) for Gateway service endpoints to detect silently-broken connections. - See [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)
-* Defaulted `COSMOS.THINCLIENT_ENABLED=true` and added an HTTP/2 connectivity-probe (`EndpointOrchestrator`) that gates thin-client (Gateway V2) data-plane routing on per-region probe health; thin-client only activates when probes are green for all regional endpoints across N consecutive topology refresh cycles, otherwise traffic falls back to Gateway V1.
 * Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)
 * Promoted the `ReadConsistencyStrategy` and `Http2ConnectionConfig` related `@Beta` APIs to GA. - See [PR 49345](https://github.com/Azure/azure-sdk-for-java/pull/49345)
 * Fixed a sporadic `NullPointerException` in `JsonSerializable.getWithMapping` triggered by concurrent first-time calls to `DatabaseAccount.getConsistencyPolicy()` and its sibling lazy getters (`getReplicationPolicy`, `getSystemReplicationPolicy`, `getQueryEngineConfiguration`). The fix makes `JsonSerializable.propertyBag` `final`, closing an unsafe-publication race in the lazy-initialisation pattern. - See [Issue 49256](https://github.com/Azure/azure-sdk-for-java/issues/49256) and [PR #49258](https://github.com/Azure/azure-sdk-for-java/pull/49258)

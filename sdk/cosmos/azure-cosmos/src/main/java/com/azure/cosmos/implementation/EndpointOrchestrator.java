@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -67,6 +68,8 @@ public class EndpointOrchestrator implements java.io.Closeable {
 
     private final AtomicBoolean proxyHealthy = new AtomicBoolean(true);
     private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final AtomicBoolean cycleInProgress = new AtomicBoolean(false);
+    private final AtomicLong cycleIdSeq = new AtomicLong(0);
     private final AtomicInteger consecutiveFailures = new AtomicInteger(0);
     private final AtomicReference<Instant> lastCycleAt = new AtomicReference<>(null);
     private final AtomicReference<Instant> lastFailureAt = new AtomicReference<>(null);
@@ -97,41 +100,58 @@ public class EndpointOrchestrator implements java.io.Closeable {
      * RED cycle so that probe failures do not propagate out and fail topology refresh.
      */
     public Mono<Boolean> runProbeCycle(Collection<URI> regionalEndpoints) {
-        if (this.closed.get()) {
-            // Client is shutting down; do not initiate any further network I/O.
-            return Mono.fromSupplier(this.proxyHealthy::get);
-        }
+        // All preconditions are re-evaluated at subscription time so an upstream
+        // cancellation (e.g. GlobalEndpointManager.close() disposing the swap-disposable)
+        // is honored before any HTTP I/O is initiated.
+        return Mono.defer(() -> {
+            if (this.closed.get()) {
+                return Mono.fromSupplier(this.proxyHealthy::get);
+            }
 
-        if (!Configs.isThinClientProbeEnabled()) {
-            return Mono.fromSupplier(this.proxyHealthy::get);
-        }
+            if (!Configs.isThinClientProbeEnabled()) {
+                return Mono.fromSupplier(this.proxyHealthy::get);
+            }
 
-        if (regionalEndpoints == null || regionalEndpoints.isEmpty()) {
-            // No thin-client regions in topology -> probe is moot. Leave state unchanged.
-            return Mono.fromSupplier(this.proxyHealthy::get);
-        }
+            if (regionalEndpoints == null || regionalEndpoints.isEmpty()) {
+                // No thin-client regions in topology -> probe is moot. Leave state unchanged.
+                return Mono.fromSupplier(this.proxyHealthy::get);
+            }
 
-        Set<URI> endpoints = new HashSet<>(regionalEndpoints);
-        endpoints.removeIf(Objects::isNull);
-        if (endpoints.isEmpty()) {
-            return Mono.fromSupplier(this.proxyHealthy::get);
-        }
+            Set<URI> endpoints = new HashSet<>(regionalEndpoints);
+            endpoints.removeIf(Objects::isNull);
+            if (endpoints.isEmpty()) {
+                return Mono.fromSupplier(this.proxyHealthy::get);
+            }
 
-        Instant cycleStart = Instant.now();
+            // Single-flight: if a cycle is already running, skip this trigger. Combined
+            // with the monotonic cycleId below, this guarantees that overlapping refresh
+            // calls cannot increment consecutiveFailures faster than once per *completed*
+            // cycle (addresses eager failover under refresh storms) and cannot let a stale
+            // older cycle clobber a newer one (addresses missed/flapping failover).
+            if (!this.cycleInProgress.compareAndSet(false, true)) {
+                logger.debug("Thin-client probe cycle already in progress; skipping overlapping trigger.");
+                return Mono.fromSupplier(this.proxyHealthy::get);
+            }
 
-        return Flux
-            .fromIterable(endpoints)
-            .flatMap(this::probeEndpoint)
-            .collectList()
-            .map(results -> applyCycleResult(results, endpoints, cycleStart))
-            .onErrorResume(t -> {
-                logger.warn(
-                    "Thin-client probe cycle threw an unexpected error; counting as RED cycle.", t);
-                return Mono.just(applyCycleResult(
-                    Collections.singletonList(new ProbeResult(null, false, "exception:" + t.getClass().getSimpleName())),
-                    endpoints,
-                    cycleStart));
-            });
+            final long cycleId = this.cycleIdSeq.incrementAndGet();
+            final Instant cycleStart = Instant.now();
+
+            return Flux
+                .fromIterable(endpoints)
+                .flatMap(this::probeEndpoint)
+                .collectList()
+                .map(results -> applyCycleResult(results, endpoints, cycleStart, cycleId))
+                .onErrorResume(t -> {
+                    logger.warn(
+                        "Thin-client probe cycle threw an unexpected error; counting as RED cycle.", t);
+                    return Mono.just(applyCycleResult(
+                        Collections.singletonList(new ProbeResult(null, false, "exception:" + t.getClass().getSimpleName())),
+                        endpoints,
+                        cycleStart,
+                        cycleId));
+                })
+                .doFinally(s -> this.cycleInProgress.set(false));
+        });
     }
 
     /** @return current proxy-health flag; {@code true} means SDK may route data plane to proxy. */
@@ -194,17 +214,32 @@ public class EndpointOrchestrator implements java.io.Closeable {
 
         return this.httpClient
             .send(request, this.perProbeTimeout)
-            .map(response -> {
+            .flatMap(response -> {
                 int status = response.statusCode();
                 boolean ok = status == 200;
                 if (!ok) {
                     logger.debug("Thin-client probe to {} returned status {}", regionalEndpoint, status);
                 }
-                // Drain body so reactor-netty releases the underlying buffer.
-                response.body()
+                // Drain the body within the probe Mono lifecycle so reactor-netty releases
+                // the underlying buffer and a slow/trickling body cannot leak resources
+                // outside `perProbeTimeout`. doFinally + onErrorResume guarantee that
+                // status-based RED/GREEN classification still wins regardless of how the
+                // drain stream terminates.
+                final ProbeResult result = new ProbeResult(regionalEndpoint, ok, "status:" + status);
+                return response.body()
+                    .doOnNext(buf -> {
+                        if (buf != null) {
+                            buf.release();
+                        }
+                    })
+                    .then(Mono.just(result))
+                    .timeout(this.perProbeTimeout)
                     .doFinally(s -> safeClose(response))
-                    .subscribe(buf -> { if (buf != null) buf.release(); }, t -> { });
-                return new ProbeResult(regionalEndpoint, ok, "status:" + status);
+                    .onErrorResume(drainError -> {
+                        logger.debug("Thin-client probe body drain to {} failed: {}",
+                            regionalEndpoint, drainError.toString());
+                        return Mono.just(result);
+                    });
             })
             .onErrorResume(t -> {
                 logger.debug(
@@ -216,7 +251,16 @@ public class EndpointOrchestrator implements java.io.Closeable {
     private Boolean applyCycleResult(
         java.util.List<ProbeResult> results,
         Set<URI> attemptedEndpoints,
-        Instant cycleStart) {
+        Instant cycleStart,
+        long cycleId) {
+
+        // If the orchestrator was closed (e.g. CosmosClient.close()) while this cycle was
+        // in flight, drop the result so we don't mutate health state on a dead client.
+        if (this.closed.get()) {
+            logger.debug(
+                "Thin-client probe cycle {} completed after close; dropping result.", cycleId);
+            return this.proxyHealthy.get();
+        }
 
         int successCount = 0;
         Set<URI> failedEndpoints = new HashSet<>();
