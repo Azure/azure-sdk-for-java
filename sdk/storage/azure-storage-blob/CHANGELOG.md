@@ -4,7 +4,7 @@
 
 ### Features Added
 - Added support for Blob Smart Tier.
-- Added support for virtual directory-scoped SAS. 
+- Added support for virtual directory-scoped SAS.
 - Added support for service version 2026-06-06.
 
 ### Other Changes
