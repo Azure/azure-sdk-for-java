@@ -21,8 +21,7 @@ To learn how to develop a stress test project, first review the [Azure SDK Stres
 ### Deploying stress tests
 
 1. In a terminal, navigate to the `azure-sdk-for-java` root folder
-2. Execute: `.\sdk\servicebus\azure-messaging-servicebus-stress\New-StressTestRun.ps1 -Namespace <stress test namespace>`
-
+2. Execute: `.\sdk\eventhubs\azure-messaging-eventhubs-stress\New-StressTestRun.ps1 -Namespace <stress test namespace>`
 > NOTE: The default environment for stress test deployments is "storage". This may change depending on EngSys resources.
 
 ### Monitoring and validating stress tests
