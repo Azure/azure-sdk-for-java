@@ -1,6 +1,6 @@
 # Release History
 
-## 12.28.0 (2026-06-10)
+## 12.28.0 (2026-06-11)
 
 ### Features Added
 - Added `getTags`/`setTags` to path APIs (sync + async).
