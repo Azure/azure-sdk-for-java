@@ -56,26 +56,31 @@ final class StorageSessionCredential {
         request.setHeader(HttpHeaderName.AUTHORIZATION, SESSION_PREFIX + sessionToken + ":" + signature);
     }
 
-    // Mirrors StorageSharedKeyCredential.buildStringToSign but does NOT replace "0" with "" for
-    // Content-Length. The Session protocol signs the literal value the wire carries.
+    // Mirrors StorageSharedKeyCredential.buildStringToSign. The server canonicalizes
+    // Content-Length: 0 to "" before computing its HMAC (matching the documented Shared Key
+    // canonicalization), so we must do the same here to produce a matching signature.
     //
-    // We inline this rather than delegate to StorageSharedKeyCredential because of a quirk in
-    // azure-core's RestProxyBase.configRequest (sdk/core/azure-core/src/main/java/com/azure/core/
-    // implementation/http/rest/RestProxyBase.java, line 305): it unconditionally calls
-    // `request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0")` for body-less requests including
-    // GETs (an RFC 7230 violation; .NET's transports skip it). SharedKey's canonicalization
-    // then normalizes "0" -> "" in the string-to-sign, but the server signs the literal "0" it
-    // sees on the wire, so delegating produces a signature mismatch.
-    //
-    // TODO: once RestProxyBase.java:305 is changed to skip Content-Length: 0 for GET/DELETE,
-    // delete this method and delegate to sharedKey.generateAuthorizationHeader(...).
-    // This matches what happens in dotnet:
-    // https://github.com/Azure/azure-sdk-for-net/blob/57598097b0ba056de7d90e5b1624d6c529cd3d60/sdk/core/Azure.Core/src/Pipeline/HttpWebRequestTransport.cs#L94-L99
+    // TODO (azure-core, RFC hygiene only — does NOT affect Storage signing correctness):
+    //   azure-core's RestProxyBase.configRequest (sdk/core/azure-core/.../RestProxyBase.java)
+    //   unconditionally sets Content-Length: 0 on body-less requests, including GETs. Per
+    //   RFC 7230 §3.3.2 a user agent SHOULD NOT send a Content-Length header when the request
+    //   has no body and the method does not anticipate one (.NET's transports skip it). This
+    //   does NOT cause a signing mismatch here — the server normalizes "0" -> "" and our local
+    //   normalization above matches — so it is purely an RFC-hygiene issue. The Content-Length
+    //   normalization in this method should remain in place even if azure-core is fixed: it
+    //   reflects the documented Shared Key canonicalization rule, not a workaround for
+    //   azure-core behavior. Track the azure-core fix separately if pursued.
+
     private String buildStringToSign(HttpRequest request) {
         HttpHeaders headers = request.getHeaders();
         Collator collator = Collator.getInstance(Locale.ROOT);
 
         String contentLength = getHeaderOrEmpty(headers, HttpHeaderName.CONTENT_LENGTH);
+        // Normalize "0" to "" to match the server's canonicalization (matches
+        // StorageSharedKeyCredential.buildStringToSign).
+        if ("0".equals(contentLength)) {
+            contentLength = "";
+        }
         // If x-ms-date is present, the Date slot is empty.
         String dateHeader = headers.getValue(X_MS_DATE) != null ? "" : getHeaderOrEmpty(headers, HttpHeaderName.DATE);
 
