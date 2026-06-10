@@ -50,8 +50,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile DatabaseAccount latestDatabaseAccount;
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
     private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabledOnClient = new AtomicBoolean(false);
-    private final AtomicReference<EndpointOrchestrator> thinClientProbeOrchestrator = new AtomicReference<>(null);
-    private final AtomicReference<Disposable> thinClientProbeDisposable = new AtomicReference<>(null);
+    private final AtomicReference<EndpointProbeClient> thinClientProbeClient = new AtomicReference<>(null);
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
@@ -201,22 +200,15 @@ public class GlobalEndpointManager implements AutoCloseable {
             disposable.dispose();
         }
         // Stop accepting new thin-client probe cycles. The shared HttpClient is owned by
-        // RxDocumentClientImpl and is closed there; we only stop scheduling work here and
-        // cancel any in-flight probe subscription so its work cannot outlive close().
-        Disposable probeDisposable = this.thinClientProbeDisposable.getAndSet(null);
-        if (probeDisposable != null && !probeDisposable.isDisposed()) {
+        // RxDocumentClientImpl and is closed there. In-flight probe cycles are chained into
+        // the topology-refresh reactor pipeline, so cancellation propagates through the
+        // outer subscription disposed above.
+        EndpointProbeClient probeClient = this.thinClientProbeClient.getAndSet(null);
+        if (probeClient != null) {
             try {
-                probeDisposable.dispose();
+                probeClient.close();
             } catch (Throwable t) {
-                logger.debug("Ignoring error while disposing in-flight thin-client probe.", t);
-            }
-        }
-        EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.getAndSet(null);
-        if (orchestrator != null) {
-            try {
-                orchestrator.close();
-            } catch (Throwable t) {
-                logger.debug("Ignoring error while closing thin-client probe orchestrator.", t);
+                logger.debug("Ignoring error while closing thin-client probe client.", t);
             }
         }
         logger.debug("GlobalEndpointManager closed.");
@@ -232,7 +224,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                     new ArrayList<>(this.getEffectivePreferredRegions()),
                     this::getDatabaseAccountAsync);
 
-                return databaseAccountObs.map(dbAccount -> {
+                return databaseAccountObs.flatMap(dbAccount -> {
                     this.databaseAccountWriteLock.lock();
 
                     try {
@@ -241,10 +233,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                         this.databaseAccountWriteLock.unlock();
                     }
 
-                    this.triggerThinClientProbeCycle();
-                    return dbAccount;
-                }).flatMap(dbAccount -> {
-                    return Mono.empty();
+                    return this.runThinClientProbeCycleMono();
                 });
             }
 
@@ -278,6 +267,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         return Mono.defer(() -> {
             logger.debug("refreshLocationPrivateAsync() refreshing locations");
 
+            Mono<Void> probePrefix = Mono.empty();
             if (databaseAccount != null) {
                 this.databaseAccountWriteLock.lock();
 
@@ -287,65 +277,66 @@ public class GlobalEndpointManager implements AutoCloseable {
                     this.databaseAccountWriteLock.unlock();
                 }
 
-                this.triggerThinClientProbeCycle();
+                probePrefix = this.runThinClientProbeCycleMono();
             }
 
-            Utils.ValueHolder<Boolean> canRefreshInBackground = new Utils.ValueHolder<>();
-            if (this.locationCache.shouldRefreshEndpoints(canRefreshInBackground)) {
-                logger.debug("shouldRefreshEndpoints: true");
+            return probePrefix.then(Mono.defer(() -> {
+                Utils.ValueHolder<Boolean> canRefreshInBackground = new Utils.ValueHolder<>();
+                if (this.locationCache.shouldRefreshEndpoints(canRefreshInBackground)) {
+                    logger.debug("shouldRefreshEndpoints: true");
 
-                if (databaseAccount == null && !canRefreshInBackground.v) {
-                    logger.debug("shouldRefreshEndpoints: can't be done in background");
+                    if (databaseAccount == null && !canRefreshInBackground.v) {
+                        logger.debug("shouldRefreshEndpoints: can't be done in background");
 
-                    Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
-                            this.defaultEndpoint,
-                            new ArrayList<>(this.getEffectivePreferredRegions()),
-                            this::getDatabaseAccountAsync);
+                        Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
+                                this.defaultEndpoint,
+                                new ArrayList<>(this.getEffectivePreferredRegions()),
+                                this::getDatabaseAccountAsync);
 
-                    return databaseAccountObs.map(dbAccount -> {
-                        this.databaseAccountWriteLock.lock();
+                        return databaseAccountObs.flatMap(dbAccount -> {
+                            this.databaseAccountWriteLock.lock();
 
-                        try {
-                            this.locationCache.onDatabaseAccountRead(dbAccount);
-                        } finally {
-                            this.databaseAccountWriteLock.unlock();
-                        }
+                            try {
+                                this.locationCache.onDatabaseAccountRead(dbAccount);
+                            } finally {
+                                this.databaseAccountWriteLock.unlock();
+                            }
 
-                        this.isRefreshing.set(false);
-                        this.triggerThinClientProbeCycle();
-                        return dbAccount;
-                    }).flatMap(dbAccount -> {
-                        // trigger a startRefreshLocationTimerAsync don't wait on it.
-                        if (!this.refreshInBackground.get()) {
-                            this.startRefreshLocationTimerAsync();
-                        }
-                        return Mono.empty();
-                    });
+                            this.isRefreshing.set(false);
+                            return this.runThinClientProbeCycleMono();
+                        }).then(Mono.defer(() -> {
+                            // trigger a startRefreshLocationTimerAsync don't wait on it.
+                            if (!this.refreshInBackground.get()) {
+                                this.startRefreshLocationTimerAsync();
+                            }
+                            return Mono.empty();
+                        }));
+                    }
+
+                    // trigger a startRefreshLocationTimerAsync don't wait on it.
+                    if (!this.refreshInBackground.get()) {
+                        this.startRefreshLocationTimerAsync();
+                    }
+
+                    this.isRefreshing.set(false);
+                    return Mono.<Void>empty();
+                } else {
+                    logger.debug("shouldRefreshEndpoints: false, nothing to do.");
+
+                    // Even when no endpoint refresh is needed right now, we must keep the
+                    // background refresh timer running so that future database account
+                    // topology changes are detected — e.g., multi-write <-> single-write
+                    // transitions, failover priority changes, region add/remove.
+                    // This aligns with the .NET SDK behavior where the background loop
+                    // continues unconditionally as long as the client is alive.
+                    if (!this.refreshInBackground.get()) {
+                        this.startRefreshLocationTimerAsync();
+                    }
+
+                    this.isRefreshing.set(false);
+                    return Mono.<Void>empty();
                 }
-
-                // trigger a startRefreshLocationTimerAsync don't wait on it.
-                if (!this.refreshInBackground.get()) {
-                    this.startRefreshLocationTimerAsync();
-                }
-
-                this.isRefreshing.set(false);
-                return Mono.empty();
-            } else {
-                logger.debug("shouldRefreshEndpoints: false, nothing to do.");
-
-                // Even when no endpoint refresh is needed right now, we must keep the
-                // background refresh timer running so that future database account
-                // topology changes are detected — e.g., multi-write <-> single-write
-                // transitions, failover priority changes, region add/remove.
-                // This aligns with the .NET SDK behavior where the background loop
-                // continues unconditionally as long as the client is alive.
-                if (!this.refreshInBackground.get()) {
-                    this.startRefreshLocationTimerAsync();
-                }
-
-                this.isRefreshing.set(false);
-                return Mono.empty();
-            }
+            }));
         });
     }
 
@@ -412,12 +403,12 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     /**
      * Wires the thin-client HTTP/2 {@link HttpClient} used by the connectivity-probe
-     * orchestrator. Must be invoked by the client bootstrap before {@link #init()} so
+     * probeClient. Must be invoked by the client bootstrap before {@link #init()} so
      * that the very first topology refresh can issue probes.
      *
-     * <p>If {@link Configs#isThinClientProbeEnabled()} is {@code false}, the orchestrator
-     * is still instantiated but {@link EndpointOrchestrator#runProbeCycle(Collection)}
-     * short-circuits to a no-op and {@link EndpointOrchestrator#isProxyHealthy()} stays
+     * <p>If {@link Configs#isThinClientProbeEnabled()} is {@code false}, the probeClient
+     * is still instantiated but {@link EndpointProbeClient#runProbeCycle(Collection)}
+     * short-circuits to a no-op and {@link EndpointProbeClient#isProxyHealthy()} stays
      * optimistically {@code true}, preserving today's behavior.
      */
     public void setThinClientHttpClient(HttpClient httpClient) {
@@ -425,43 +416,43 @@ public class GlobalEndpointManager implements AutoCloseable {
             return;
         }
         try {
-            this.thinClientProbeOrchestrator.compareAndSet(null, new EndpointOrchestrator(httpClient));
+            this.thinClientProbeClient.compareAndSet(null, new EndpointProbeClient(httpClient));
         } catch (Throwable t) {
-            // Probe wiring must never trip CosmosClient initialization. If the orchestrator
+            // Probe wiring must never trip CosmosClient initialization. If the probe client
             // can't be constructed for any reason, leave it null — `isProxyProbeHealthy()`
             // then returns true (optimistic) and routing behaves as if no probe were wired.
-            logger.warn("Failed to wire thin-client connectivity-probe orchestrator; thin-client routing will proceed without probe gating.", t);
+            logger.warn("Failed to wire thin-client connectivity-probe client; thin-client routing will proceed without probe gating.", t);
         }
     }
 
     /**
-     * Returns {@code true} when the thin-client connectivity-probe orchestrator considers
+     * Returns {@code true} when the thin-client connectivity-probe client considers
      * the proxy fleet healthy enough to receive data-plane traffic. Returns {@code true}
-     * by default (optimistic) when no orchestrator has been wired (e.g. tests, or
+     * by default (optimistic) when no probe client has been wired (e.g. tests, or
      * non-thin-client clients) so existing routing decisions are unaffected.
      */
     public boolean isProxyProbeHealthy() {
-        EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.get();
-        return orchestrator == null || orchestrator.isProxyHealthy();
+        EndpointProbeClient probeClient = this.thinClientProbeClient.get();
+        return probeClient == null || probeClient.isProxyHealthy();
     }
 
     /**
      * @return a read-only diagnostics snapshot of the probe state, or {@code null} when
-     *         no orchestrator has been wired.
+     *         no probe client has been wired.
      */
-    public EndpointOrchestrator.DiagnosticsSnapshot getThinClientProbeDiagnostics() {
-        EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.get();
-        return orchestrator == null ? null : orchestrator.getDiagnosticsSnapshot();
+    public EndpointProbeClient.DiagnosticsSnapshot getThinClientProbeDiagnostics() {
+        EndpointProbeClient probeClient = this.thinClientProbeClient.get();
+        return probeClient == null ? null : probeClient.getDiagnosticsSnapshot();
     }
 
-    private void triggerThinClientProbeCycle() {
-        try {
-            EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.get();
-            if (orchestrator == null) {
-                return;
+    private Mono<Void> runThinClientProbeCycleMono() {
+        return Mono.defer(() -> {
+            EndpointProbeClient probeClient = this.thinClientProbeClient.get();
+            if (probeClient == null) {
+                return Mono.empty();
             }
             if (!this.hasThinClientReadLocations.get()) {
-                return;
+                return Mono.empty();
             }
             Set<URI> endpoints = this.locationCache.getThinClientRegionalEndpoints();
             if (endpoints.isEmpty()) {
@@ -473,43 +464,28 @@ public class GlobalEndpointManager implements AutoCloseable {
                 // and our optimistic `proxyHealthy=true` default — and pin data-plane traffic to a
                 // thin-client model that has no resolved endpoint to route to. Flip the probe gate
                 // to RED so the SDK falls back to Gateway V1 until the resolution mismatch clears.
-                orchestrator.forceUnhealthy("hasThinClientReadLocations=true but resolved endpoint set is empty");
-                return;
+                probeClient.forceUnhealthy("hasThinClientReadLocations=true but resolved endpoint set is empty");
+                return Mono.empty();
             }
-            // Fire-and-forget: probe runs out-of-band on the global endpoint manager
-            // scheduler. Failures are absorbed inside runProbeCycle and reflected in the
-            // orchestrator's internal state, which is consulted at the next routing decision.
-            // We additionally guard against any synchronous throw here so a probe issue
-            // can never trip CosmosClient initialization or a topology refresh.
-            //
-            // The returned Disposable is swapped into thinClientProbeDisposable so that
-            // close() can cancel an in-flight cycle. The orchestrator's internal
-            // single-flight CAS guarantees only one cycle runs at a time, so a swap-and-
-            // discard here is rare; we still dispose any prior one defensively to honor
-            // post-close cancellation even if the previous trigger somehow lingered.
-            Disposable previous = this.thinClientProbeDisposable.getAndSet(
-                orchestrator
-                    .runProbeCycle(endpoints)
-                    .subscribeOn(CosmosSchedulers.GLOBAL_ENDPOINT_MANAGER_BOUNDED_ELASTIC)
-                    .subscribe(
-                        healthy -> {
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Thin-client probe cycle completed; proxyHealthy={}", healthy);
-                            }
-                        },
-                        t -> logger.debug("Thin-client probe cycle subscription error", t)));
-            if (previous != null && !previous.isDisposed()) {
-                try {
-                    previous.dispose();
-                } catch (Throwable ignored) {
-                    // best-effort
-                }
-            }
-        } catch (Throwable t) {
+            // Chained into the topology-refresh reactor pipeline. Cancellation propagates
+            // through the outer subscription (disposed in close() via backgroundRefreshDisposable).
+            // The probe client's internal single-flight CAS guarantees only one cycle runs at
+            // a time; runProbeCycle absorbs all per-probe errors and never errors the Mono.
+            return probeClient
+                .runProbeCycle(endpoints)
+                .subscribeOn(CosmosSchedulers.GLOBAL_ENDPOINT_MANAGER_BOUNDED_ELASTIC)
+                .doOnNext(healthy -> {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Thin-client probe cycle completed; proxyHealthy={}", healthy);
+                    }
+                })
+                .then();
+        }).onErrorResume(t -> {
             // Defensive: probe issues must never bubble out and fail topology refresh or
             // CosmosClient init. Log and move on — the gate stays at its current state.
-            logger.warn("Thin-client probe trigger threw synchronously; ignoring to protect topology refresh.", t);
-        }
+            logger.warn("Thin-client probe cycle threw; ignoring to protect topology refresh.", t);
+            return Mono.empty();
+        });
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {

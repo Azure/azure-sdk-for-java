@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.LocationCache;
@@ -158,8 +159,8 @@ public class ThinClientProbeWiringTests {
             assertThat(probeCallCount.get()).as("probe was issued for each thin-client region").isGreaterThanOrEqualTo(2);
             assertThat(gem.isProxyProbeHealthy()).as("after all-200 cycle, proxy is healthy").isTrue();
             assertThat(gem.getThinClientProbeDiagnostics()).isNotNull();
-            assertThat(gem.getThinClientProbeDiagnostics().isProxyHealthy()).isTrue();
-            assertThat(gem.getThinClientProbeDiagnostics().getLastSuccessCount()).isEqualTo(2);
+            assertThat(gem.getThinClientProbeDiagnostics().getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
+            assertThat(gem.getThinClientProbeDiagnostics().getLastStateUpdatedAt()).isNotNull();
         } finally {
             LifeCycleUtils.closeQuietly(gem);
         }
@@ -267,8 +268,8 @@ public class ThinClientProbeWiringTests {
             }
 
             @Override
-            public com.azure.cosmos.implementation.http.HttpHeaders headers() {
-                return new com.azure.cosmos.implementation.http.HttpHeaders();
+            public HttpHeaders headers() {
+                return new HttpHeaders();
             }
 
             @Override

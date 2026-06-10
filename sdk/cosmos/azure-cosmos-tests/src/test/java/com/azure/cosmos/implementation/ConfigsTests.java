@@ -277,7 +277,7 @@ public class ConfigsTests {
     public void thinClientProbeFailureThresholdDefaultTest() {
         System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
         try {
-            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(2);
+            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
         }
@@ -313,7 +313,7 @@ public class ConfigsTests {
     public void thinClientProbeFailureThresholdInvalidFallsBackToDefaultTest() {
         System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "not-a-number");
         try {
-            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(2);
+            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
         }

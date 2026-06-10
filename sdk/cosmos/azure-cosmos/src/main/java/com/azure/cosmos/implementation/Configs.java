@@ -63,7 +63,7 @@ public class Configs {
     private static final String THINCLIENT_PROBE_ENABLED = "COSMOS.THINCLIENT_PROBE_ENABLED";
     private static final String THINCLIENT_PROBE_ENABLED_VARIABLE = "COSMOS_THINCLIENT_PROBE_ENABLED";
 
-    private static final int DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD = 2;
+    private static final int DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD = 1;
     private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD = "COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD";
     private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE = "COSMOS_THINCLIENT_PROBE_FAILURE_THRESHOLD";
 
@@ -633,7 +633,7 @@ public class Configs {
     /**
      * Number of consecutive probe cycles that must be RED before the SDK flips data-plane
      * routing from the thin-client proxy back to Gateway V1. A single GREEN cycle resets
-     * the counter. Default: 2. Override with {@code COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD}
+     * the counter. Default: 1. Override with {@code COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD}
      * or {@code COSMOS_THINCLIENT_PROBE_FAILURE_THRESHOLD}. Values less than 1 are coerced to 1.
      */
     public static int getThinClientProbeFailureThreshold() {

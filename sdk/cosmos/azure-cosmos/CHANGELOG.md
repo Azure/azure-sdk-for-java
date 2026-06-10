@@ -9,7 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Defaulted `COSMOS.THINCLIENT_ENABLED=true` and added an HTTP/2 connectivity-probe (`EndpointOrchestrator`) for thin-client (Gateway V2) data-plane routing. The probe starts **optimistic** — thin-client routes immediately on SDK init — and only flips traffic back to Gateway V1 after N consecutive RED probe cycles (default 2, `COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD`) at topology-refresh boundaries; M consecutive GREEN cycles restore thin-client routing (default 1, `COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD` — raise to match the failure threshold for symmetric hysteresis). Probe is no-op for Direct mode and metadata/query-plan/all-versions-and-deletes calls always go to Gateway V1.
+* Enabled Gateway V2 (thin-client) data-plane routing by default for eligible Gateway-mode clients (`COSMOS.THINCLIENT_ENABLED=true`); gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1.
 
 ### 4.81.0 (2026-06-08)
 

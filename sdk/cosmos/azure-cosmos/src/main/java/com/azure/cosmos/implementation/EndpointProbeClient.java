@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -19,6 +20,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Drives the thin-client HTTP/2 connectivity probe lifecycle.
  *
  * <p>For every thin-client regional endpoint discovered via {@code GlobalEndpointManager}
- * topology refresh, this orchestrator issues a {@code POST /connectivity-probe} (path
+ * topology refresh, this client issues a {@code POST /connectivity-probe} (path
  * configurable via {@link Configs#getThinClientProbePath()}) over the thin-client HTTP/2
  * {@link HttpClient}. The probe contract (confirmed via CosmosDB PR 2107592) is strict:
  * <ul>
@@ -41,11 +43,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * </ul>
  *
  * <p>A cycle is GREEN only if every supplied regional endpoint returns 200 within the
- * per-probe budget; otherwise the cycle is RED. The orchestrator applies a
- * configurable consecutive-failure threshold
- * ({@link Configs#getThinClientProbeFailureThreshold()}) before flipping
- * {@link #isProxyHealthy()} from {@code true} to {@code false}; a single GREEN cycle
- * resets the counter and restores health.
+ * per-probe budget; otherwise the cycle is RED. The client applies a configurable
+ * consecutive-failure threshold ({@link Configs#getThinClientProbeFailureThreshold()})
+ * before flipping {@link #isProxyHealthy()} from {@code true} to {@code false}; a
+ * single GREEN cycle resets the counter and restores health.
  *
  * <p>Routing decisions are made strictly at refresh boundaries; this class does not
  * implement any per-request circuit-breaker. The data-plane routing site is expected to
@@ -56,9 +57,9 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p>This class is internal; it is not part of the published public API.
  */
-public class EndpointOrchestrator implements java.io.Closeable {
+public class EndpointProbeClient implements Closeable {
 
-    private static final Logger logger = LoggerFactory.getLogger(EndpointOrchestrator.class);
+    private static final Logger logger = LoggerFactory.getLogger(EndpointProbeClient.class);
     private static final byte[] EMPTY_BODY = new byte[0];
 
     private final HttpClient httpClient;
@@ -73,14 +74,13 @@ public class EndpointOrchestrator implements java.io.Closeable {
     private final AtomicLong cycleIdSeq = new AtomicLong(0);
     private final AtomicInteger consecutiveFailures = new AtomicInteger(0);
     private final AtomicInteger consecutiveSuccesses = new AtomicInteger(0);
-    private final AtomicReference<Instant> lastCycleAt = new AtomicReference<>(null);
-    private final AtomicReference<Instant> lastFailureAt = new AtomicReference<>(null);
-    private final AtomicReference<Set<URI>> lastFailedEndpoints =
-        new AtomicReference<>(Collections.emptySet());
-    private final AtomicInteger lastSuccessCount = new AtomicInteger(0);
-    private final AtomicInteger lastFailureCount = new AtomicInteger(0);
+    // Lean diagnostic surface: only the last cycle outcome (true=GREEN/success, false=RED/failed)
+    // and the wall-clock instant at which it was recorded. Anything beyond this is best
+    // observed via logs to keep the diagnostic shape stable across releases.
+    private final AtomicReference<Boolean> lastCycleSuccess = new AtomicReference<>(null);
+    private final AtomicReference<Instant> lastStateUpdatedAt = new AtomicReference<>(null);
 
-    public EndpointOrchestrator(HttpClient httpClient) {
+    public EndpointProbeClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient");
         this.failureThreshold = Configs.getThinClientProbeFailureThreshold();
         this.recoveryThreshold = Configs.getThinClientProbeRecoveryThreshold();
@@ -180,6 +180,8 @@ public class EndpointOrchestrator implements java.io.Closeable {
         }
         this.consecutiveSuccesses.set(0);
         int now = this.consecutiveFailures.incrementAndGet();
+        this.lastCycleSuccess.set(Boolean.FALSE);
+        this.lastStateUpdatedAt.set(Instant.now());
         if (this.proxyHealthy.compareAndSet(true, false)) {
             logger.warn(
                 "Thin-client probe gate flipped UNHEALTHY without an HTTP cycle (consecutiveFailures={}, reason='{}'). "
@@ -190,19 +192,11 @@ public class EndpointOrchestrator implements java.io.Closeable {
 
     /** @return read-only snapshot of probe state suitable for diagnostics. */
     public DiagnosticsSnapshot getDiagnosticsSnapshot() {
-        return new DiagnosticsSnapshot(
-            this.proxyHealthy.get(),
-            this.consecutiveFailures.get(),
-            this.failureThreshold,
-            this.lastCycleAt.get(),
-            this.lastFailureAt.get(),
-            this.lastFailedEndpoints.get(),
-            this.lastSuccessCount.get(),
-            this.lastFailureCount.get());
+        return new DiagnosticsSnapshot(this.lastCycleSuccess.get(), this.lastStateUpdatedAt.get());
     }
 
     /**
-     * Marks the orchestrator as closed. Subsequent {@link #runProbeCycle(Collection)}
+     * Marks the probe client as closed. Subsequent {@link #runProbeCycle(Collection)}
      * invocations short-circuit and issue no further HTTP/2 probes. The shared
      * thin-client {@link HttpClient} is owned by {@code RxDocumentClientImpl} and is NOT
      * closed here — its lifetime is bound to the {@code CosmosClient} itself.
@@ -215,7 +209,7 @@ public class EndpointOrchestrator implements java.io.Closeable {
     @Override
     public void close() {
         if (this.closed.compareAndSet(false, true)) {
-            logger.debug("EndpointOrchestrator closed; no further thin-client probes will be issued.");
+            logger.debug("EndpointProbeClient closed; no further thin-client probes will be issued.");
         }
     }
 
@@ -278,12 +272,12 @@ public class EndpointOrchestrator implements java.io.Closeable {
     }
 
     private Boolean applyCycleResult(
-        java.util.List<ProbeResult> results,
+        List<ProbeResult> results,
         Set<URI> attemptedEndpoints,
         Instant cycleStart,
         long cycleId) {
 
-        // If the orchestrator was closed (e.g. CosmosClient.close()) while this cycle was
+        // If the probe client was closed (e.g. CosmosClient.close()) while this cycle was
         // in flight, drop the result so we don't mutate health state on a dead client.
         if (this.closed.get()) {
             logger.debug(
@@ -319,10 +313,8 @@ public class EndpointOrchestrator implements java.io.Closeable {
 
         boolean cycleGreen = (successCount == attemptedEndpoints.size()) && failedEndpoints.isEmpty();
 
-        this.lastCycleAt.set(cycleStart);
-        this.lastSuccessCount.set(successCount);
-        this.lastFailureCount.set(failureCount);
-        this.lastFailedEndpoints.set(Collections.unmodifiableSet(failedEndpoints));
+        this.lastCycleSuccess.set(cycleGreen);
+        this.lastStateUpdatedAt.set(cycleStart);
 
         if (cycleGreen) {
             this.consecutiveFailures.set(0);
@@ -350,7 +342,6 @@ public class EndpointOrchestrator implements java.io.Closeable {
             }
         } else {
             this.consecutiveSuccesses.set(0);
-            this.lastFailureAt.set(cycleStart);
             int now = this.consecutiveFailures.incrementAndGet();
             if (now >= this.failureThreshold) {
                 if (this.proxyHealthy.compareAndSet(true, false)) {
@@ -407,43 +398,27 @@ public class EndpointOrchestrator implements java.io.Closeable {
         }
     }
 
-    /** Immutable snapshot of probe state for client diagnostics. */
+    /**
+     * Immutable, intentionally-lean snapshot of probe state for client diagnostics.
+     * Exposes only the outcome of the most recent probe cycle (or {@code null} if no
+     * cycle has run yet) and the wall-clock time at which that state was last updated.
+     * Richer details (per-endpoint failures, hysteresis counters, thresholds) are
+     * intentionally not surfaced here to keep the diagnostic shape stable across
+     * releases — consult the logs for those details.
+     */
     public static final class DiagnosticsSnapshot {
-        private final boolean proxyHealthy;
-        private final int consecutiveFailures;
-        private final int failureThreshold;
-        private final Instant lastCycleAt;
-        private final Instant lastFailureAt;
-        private final Set<URI> lastFailedEndpoints;
-        private final int lastSuccessCount;
-        private final int lastFailureCount;
+        private final Boolean lastCycleSuccess;
+        private final Instant lastStateUpdatedAt;
 
-        DiagnosticsSnapshot(
-            boolean proxyHealthy,
-            int consecutiveFailures,
-            int failureThreshold,
-            Instant lastCycleAt,
-            Instant lastFailureAt,
-            Set<URI> lastFailedEndpoints,
-            int lastSuccessCount,
-            int lastFailureCount) {
-            this.proxyHealthy = proxyHealthy;
-            this.consecutiveFailures = consecutiveFailures;
-            this.failureThreshold = failureThreshold;
-            this.lastCycleAt = lastCycleAt;
-            this.lastFailureAt = lastFailureAt;
-            this.lastFailedEndpoints = lastFailedEndpoints;
-            this.lastSuccessCount = lastSuccessCount;
-            this.lastFailureCount = lastFailureCount;
+        DiagnosticsSnapshot(Boolean lastCycleSuccess, Instant lastStateUpdatedAt) {
+            this.lastCycleSuccess = lastCycleSuccess;
+            this.lastStateUpdatedAt = lastStateUpdatedAt;
         }
 
-        public boolean isProxyHealthy() { return proxyHealthy; }
-        public int getConsecutiveFailures() { return consecutiveFailures; }
-        public int getFailureThreshold() { return failureThreshold; }
-        public Instant getLastCycleAt() { return lastCycleAt; }
-        public Instant getLastFailureAt() { return lastFailureAt; }
-        public Set<URI> getLastFailedEndpoints() { return lastFailedEndpoints; }
-        public int getLastSuccessCount() { return lastSuccessCount; }
-        public int getLastFailureCount() { return lastFailureCount; }
+        /** @return {@code true} if the most recent cycle was GREEN, {@code false} if RED, {@code null} if no cycle has completed yet. */
+        public Boolean getLastCycleSuccess() { return lastCycleSuccess; }
+
+        /** @return wall-clock instant at which {@link #getLastCycleSuccess()} was last updated, or {@code null} if never. */
+        public Instant getLastStateUpdatedAt() { return lastStateUpdatedAt; }
     }
 }

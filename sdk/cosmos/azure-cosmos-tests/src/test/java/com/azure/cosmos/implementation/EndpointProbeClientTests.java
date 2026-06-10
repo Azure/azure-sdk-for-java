@@ -13,8 +13,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.ConnectException;
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
-public class EndpointOrchestratorTests {
+public class EndpointProbeClientTests {
 
     private static final URI REGION_EAST = URI.create("https://probe-east.example.com:10250");
     private static final URI REGION_WEST = URI.create("https://probe-west.example.com:10250");
@@ -53,18 +55,18 @@ public class EndpointOrchestratorTests {
         AtomicInteger sendCount = new AtomicInteger(0);
         HttpClient client = mockClient(statusByEndpoint, sendCount, false);
 
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(client);
+        EndpointProbeClient probeClient = new EndpointProbeClient(client);
 
-        Boolean healthy = orchestrator.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block();
+        Instant before = Instant.now();
+        Boolean healthy = probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block();
 
         assertThat(healthy).isTrue();
-        assertThat(orchestrator.isProxyHealthy()).isTrue();
+        assertThat(probeClient.isProxyHealthy()).isTrue();
         assertThat(sendCount.get()).isEqualTo(2);
-        EndpointOrchestrator.DiagnosticsSnapshot snap = orchestrator.getDiagnosticsSnapshot();
-        assertThat(snap.getConsecutiveFailures()).isZero();
-        assertThat(snap.getLastSuccessCount()).isEqualTo(2);
-        assertThat(snap.getLastFailureCount()).isZero();
-        assertThat(snap.getLastFailedEndpoints()).isEmpty();
+        EndpointProbeClient.DiagnosticsSnapshot snap = probeClient.getDiagnosticsSnapshot();
+        assertThat(snap.getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
+        assertThat(snap.getLastStateUpdatedAt()).isNotNull();
+        assertThat(snap.getLastStateUpdatedAt()).isAfterOrEqualTo(before);
     }
 
     @Test(groups = { "unit" })
@@ -77,18 +79,17 @@ public class EndpointOrchestratorTests {
         statusByEndpoint.put(REGION_WEST, 503);
         HttpClient client = mockClient(statusByEndpoint, new AtomicInteger(), false);
 
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(client);
+        EndpointProbeClient probeClient = new EndpointProbeClient(client);
 
-        // Cycle 1: RED but below threshold.
-        assertThat(orchestrator.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isTrue();
-        assertThat(orchestrator.isProxyHealthy()).isTrue();
-        assertThat(orchestrator.getDiagnosticsSnapshot().getConsecutiveFailures()).isEqualTo(1);
+        // Cycle 1: RED but below threshold — gate stays HEALTHY.
+        assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isTrue();
+        assertThat(probeClient.isProxyHealthy()).isTrue();
+        assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
 
         // Cycle 2: RED at threshold -> flip.
-        assertThat(orchestrator.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isFalse();
-        assertThat(orchestrator.isProxyHealthy()).isFalse();
-        assertThat(orchestrator.getDiagnosticsSnapshot().getConsecutiveFailures()).isEqualTo(2);
-        assertThat(orchestrator.getDiagnosticsSnapshot().getLastFailedEndpoints()).containsExactly(REGION_WEST);
+        assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isFalse();
+        assertThat(probeClient.isProxyHealthy()).isFalse();
+        assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
     }
 
     @Test(groups = { "unit" })
@@ -97,21 +98,21 @@ public class EndpointOrchestratorTests {
 
         Map<URI, Integer> redByEndpoint = new HashMap<>();
         redByEndpoint.put(REGION_EAST, 503);
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(mockClient(redByEndpoint, new AtomicInteger(), false));
+        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(redByEndpoint, new AtomicInteger(), false));
 
-        assertThat(orchestrator.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
-        assertThat(orchestrator.isProxyHealthy()).isFalse();
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
+        assertThat(probeClient.isProxyHealthy()).isFalse();
 
         // Toggling client returns red on first call and green on subsequent calls; drive the
-        // orchestrator to RED on cycle 1 then GREEN on cycle 2 and assert hysteresis recovery.
-        EndpointOrchestrator combo = new EndpointOrchestrator(toggleClient(REGION_EAST, 503, 200));
+        // probe client to RED on cycle 1 then GREEN on cycle 2 and assert hysteresis recovery.
+        EndpointProbeClient combo = new EndpointProbeClient(toggleClient(REGION_EAST, 503, 200));
 
         assertThat(combo.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
         assertThat(combo.isProxyHealthy()).isFalse();
 
         assertThat(combo.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
         assertThat(combo.isProxyHealthy()).isTrue();
-        assertThat(combo.getDiagnosticsSnapshot().getConsecutiveFailures()).isZero();
+        assertThat(combo.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
     }
 
     @Test(groups = { "unit" })
@@ -119,15 +120,15 @@ public class EndpointOrchestratorTests {
         System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
 
         HttpClient client = Mockito.mock(HttpClient.class);
-        Mockito.doAnswer(inv -> Mono.error(new java.net.ConnectException("refused")))
+        Mockito.doAnswer(inv -> Mono.error(new ConnectException("refused")))
             .when(client).send(any(HttpRequest.class), any(Duration.class));
-        Mockito.doAnswer(inv -> Mono.error(new java.net.ConnectException("refused")))
+        Mockito.doAnswer(inv -> Mono.error(new ConnectException("refused")))
             .when(client).send(any(HttpRequest.class));
 
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(client);
+        EndpointProbeClient probeClient = new EndpointProbeClient(client);
 
-        assertThat(orchestrator.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
-        assertThat(orchestrator.isProxyHealthy()).isFalse();
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
+        assertThat(probeClient.isProxyHealthy()).isFalse();
     }
 
     @Test(groups = { "unit" })
@@ -135,11 +136,11 @@ public class EndpointOrchestratorTests {
         System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
 
         HttpClient client = Mockito.mock(HttpClient.class);
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(client);
+        EndpointProbeClient probeClient = new EndpointProbeClient(client);
 
-        Boolean healthy = orchestrator.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block();
+        Boolean healthy = probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block();
         assertThat(healthy).isTrue();
-        assertThat(orchestrator.isProxyHealthy()).isTrue();
+        assertThat(probeClient.isProxyHealthy()).isTrue();
         Mockito.verify(client, Mockito.never()).send(any(HttpRequest.class), any(Duration.class));
         Mockito.verify(client, Mockito.never()).send(any(HttpRequest.class));
     }
@@ -147,10 +148,10 @@ public class EndpointOrchestratorTests {
     @Test(groups = { "unit" })
     public void emptyOrNullEndpointSet_isNoOp() {
         HttpClient client = Mockito.mock(HttpClient.class);
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(client);
+        EndpointProbeClient probeClient = new EndpointProbeClient(client);
 
-        assertThat(orchestrator.runProbeCycle(null).block()).isTrue();
-        assertThat(orchestrator.runProbeCycle(Collections.emptyList()).block()).isTrue();
+        assertThat(probeClient.runProbeCycle(null).block()).isTrue();
+        assertThat(probeClient.runProbeCycle(Collections.emptyList()).block()).isTrue();
         Mockito.verify(client, Mockito.never()).send(any(HttpRequest.class), any(Duration.class));
         Mockito.verify(client, Mockito.never()).send(any(HttpRequest.class));
     }
@@ -160,8 +161,8 @@ public class EndpointOrchestratorTests {
         System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
         Map<URI, Integer> statusByEndpoint = new HashMap<>();
         statusByEndpoint.put(REGION_EAST, 400);
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(mockClient(statusByEndpoint, new AtomicInteger(), false));
-        assertThat(orchestrator.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
+        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(statusByEndpoint, new AtomicInteger(), false));
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
     }
 
     @Test(groups = { "unit" })
@@ -171,8 +172,8 @@ public class EndpointOrchestratorTests {
         AtomicInteger sendCount = new AtomicInteger(0);
         HttpClient client = mockClient(statusByEndpoint, sendCount, true);
 
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(client);
-        orchestrator.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
+        EndpointProbeClient probeClient = new EndpointProbeClient(client);
+        probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
 
         assertThat(sendCount.get()).isEqualTo(1);
     }
@@ -180,21 +181,17 @@ public class EndpointOrchestratorTests {
     @Test(groups = { "unit" })
     public void recoveryThresholdRequiresMultipleGreenCycles() {
         // Operator opts into more conservative recovery: require two consecutive GREEN cycles
-        // before flipping back to healthy. With default failureThreshold=2 the orchestrator
-        // becomes UNHEALTHY after two REDs. A single GREEN must NOT restore traffic.
+        // before flipping back to healthy. With default failureThreshold=1 the probe client
+        // becomes UNHEALTHY after one RED. A single GREEN must NOT restore traffic.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
         System.setProperty("COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD", "2");
 
-        // Sequenced client returns RED, RED, GREEN, GREEN across successive probe calls
-        // against the single regional endpoint. runProbeCycle returns the post-cycle value of
-        // isProxyHealthy() (not the per-cycle outcome) so we read that explicitly throughout.
-        HttpClient sequencedClient = sequencedClient(REGION_EAST, 503, 503, 200, 200);
-        EndpointOrchestrator e = new EndpointOrchestrator(sequencedClient);
+        // Sequenced client returns RED, GREEN, GREEN across successive probe calls
+        // against the single regional endpoint.
+        HttpClient sequencedClient = sequencedClient(REGION_EAST, 503, 200, 200);
+        EndpointProbeClient e = new EndpointProbeClient(sequencedClient);
 
-        // RED #1 — under failure threshold of 2, gate stays HEALTHY.
-        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
-        assertThat(e.isProxyHealthy()).isTrue();
-
-        // RED #2 — hits failure threshold, gate flips UNHEALTHY.
+        // RED #1 — hits failure threshold of 1, gate flips UNHEALTHY.
         e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
         assertThat(e.isProxyHealthy()).isFalse();
 
@@ -215,25 +212,27 @@ public class EndpointOrchestratorTests {
         // default does not pin traffic to an unreachable thin-client store model.
         Map<URI, Integer> greenByEndpoint = new HashMap<>();
         greenByEndpoint.put(REGION_EAST, 200);
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(mockClient(greenByEndpoint, new AtomicInteger(), false));
-        assertThat(orchestrator.isProxyHealthy()).isTrue();
+        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
+        assertThat(probeClient.isProxyHealthy()).isTrue();
 
-        orchestrator.forceUnhealthy("test: endpoint resolution mismatch");
-        assertThat(orchestrator.isProxyHealthy()).isFalse();
-        assertThat(orchestrator.getDiagnosticsSnapshot().getConsecutiveFailures()).isGreaterThan(0);
+        probeClient.forceUnhealthy("test: endpoint resolution mismatch");
+        assertThat(probeClient.isProxyHealthy()).isFalse();
+        assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
+        assertThat(probeClient.getDiagnosticsSnapshot().getLastStateUpdatedAt()).isNotNull();
     }
 
     @Test(groups = { "unit" })
-    public void forceUnhealthy_onClosedOrchestrator_isNoOp() {
+    public void forceUnhealthy_onClosedProbeClient_isNoOp() {
         Map<URI, Integer> greenByEndpoint = new HashMap<>();
         greenByEndpoint.put(REGION_EAST, 200);
-        EndpointOrchestrator orchestrator = new EndpointOrchestrator(mockClient(greenByEndpoint, new AtomicInteger(), false));
-        orchestrator.close();
+        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
+        probeClient.close();
 
-        // Closed orchestrators must not mutate any state — otherwise diagnostics from a
+        // Closed probe clients must not mutate any state — otherwise diagnostics from a
         // shutting-down client would show spurious failures.
-        orchestrator.forceUnhealthy("test");
-        assertThat(orchestrator.getDiagnosticsSnapshot().getConsecutiveFailures()).isZero();
+        probeClient.forceUnhealthy("test");
+        // Snapshot should remain at its pre-close state (no cycle ever ran).
+        assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isNull();
     }
 
     private static HttpClient sequencedClient(URI endpoint, int... statuses) {
