@@ -2142,4 +2142,210 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         assertTrue(containerClient.getBlobContainerUrl().contains("my%20container"));
     }
+
+    @Test
+    public void listBlobsArrowBasic() {
+        // Upload a test blob
+        String blobName = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
+
+        StepVerifier
+            .create(
+                bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).thenMany(ccAsync.listBlobs(options, null)))
+            .assertNext(item -> {
+                assertEquals(blobName, item.getName());
+                assertNotNull(item.getProperties());
+                assertEquals(DATA.getDefaultDataSize(), item.getProperties().getContentLength());
+                assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
+                assertNotNull(item.getProperties().getLastModified());
+                assertNotNull(item.getProperties().getETag());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
+            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+
+        StepVerifier.create(
+            bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, metadata, null, null, null)
+                .thenMany(ccAsync.listBlobs(options, null)))
+            .assertNext(item -> {
+                assertNotNull(item.getMetadata());
+                assertEquals("testvalue", item.getMetadata().get("testkey"));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void listBlobsArrowPagination() {
+        // Upload 3 blobs
+        Flux<BlockBlobItem> uploads = Flux.range(0, 3)
+            .flatMap(i -> ccAsync.getBlobAsyncClient("blob" + i)
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true).setMaxResultsPerPage(1);
+
+        Mono<List<BlobItem>> result = uploads.then(ccAsync.listBlobs(options, null).byPage().doOnNext(page -> {
+            assertTrue(page.getValue().size() <= 1);
+        }).flatMap(page -> Flux.fromIterable(page.getValue())).collectList());
+
+        StepVerifier.create(result).assertNext(allBlobs -> assertEquals(3, allBlobs.size())).verifyComplete();
+    }
+
+    @Test
+    public void listBlobsArrowNullUseArrowUsesXml() {
+        // Default apacheArrowEnabled is null — should use XML path without error
+        String blobName = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options = new ListBlobsOptions();
+        assertNull(options.isApacheArrowEnabled());
+
+        StepVerifier
+            .create(
+                bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).thenMany(ccAsync.listBlobs(options, null)))
+            .assertNext(item -> assertEquals(blobName, item.getName()))
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowEncryptedBlob() {
+        // Upload a blob with CPK (customer-provided key)
+        String blobName = generateBlobName();
+        CustomerProvidedKey cpk = new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomKey()));
+        BlockBlobAsyncClient cpkClient
+            = ccAsync.getBlobAsyncClient(blobName).getCustomerProvidedKeyAsyncClient(cpk).getBlockBlobAsyncClient();
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
+
+        StepVerifier.create(cpkClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .thenMany(ccAsync.listBlobs(options, null))).assertNext(item -> {
+                assertEquals(blobName, item.getName());
+                // CPK blob should have server-encrypted = true
+                assertTrue(item.getProperties().isServerEncrypted());
+                // Metadata should be null (no metadata was set)
+                assertNull(item.getMetadata());
+            }).verifyComplete();
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowBasic() {
+        // Upload blobs in a directory structure
+        Flux<BlockBlobItem> uploads = Flux.concat(
+            ccAsync.getBlobAsyncClient("dir/blob1")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()),
+            ccAsync.getBlobAsyncClient("dir/blob2")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()),
+            ccAsync.getBlobAsyncClient("topblob")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
+
+        Mono<List<BlobItem>> items
+            = uploads.then(ccAsync.listBlobsByHierarchy("/", options).collect(Collectors.toList()));
+
+        StepVerifier.create(items).assertNext(list -> {
+            // Root level: one prefix "dir/" and one blob "topblob"
+            assertEquals(2, list.size());
+
+            BlobItem prefixItem = list.stream().filter(BlobItem::isPrefix).findFirst().orElse(null);
+            BlobItem blobItem = list.stream().filter(i -> !i.isPrefix()).findFirst().orElse(null);
+
+            assertNotNull(prefixItem);
+            assertEquals("dir/", prefixItem.getName());
+            assertTrue(prefixItem.isPrefix());
+
+            assertNotNull(blobItem);
+            assertEquals("topblob", blobItem.getName());
+            assertFalse(blobItem.isPrefix());
+            assertNotNull(blobItem.getProperties());
+            assertEquals(DATA.getDefaultDataSize(), blobItem.getProperties().getContentLength());
+            assertEquals(BlobType.BLOCK_BLOB, blobItem.getProperties().getBlobType());
+            assertNotNull(blobItem.getProperties().getLastModified());
+            assertNotNull(blobItem.getProperties().getETag());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+
+        Mono<?> uploads = ccAsync.getBlobAsyncClient("dir/" + blobName)
+            .getBlockBlobAsyncClient()
+            .uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, metadata, null, null, null)
+            .then(ccAsync.getBlobAsyncClient("topblob")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
+            .setPrefix("dir/")
+            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+
+        StepVerifier.create(uploads.thenMany(ccAsync.listBlobsByHierarchy("/", options))).assertNext(item -> {
+            assertFalse(item.isPrefix());
+            assertNotNull(item.getMetadata());
+            assertEquals("testvalue", item.getMetadata().get("testkey"));
+        }).verifyComplete();
+    }
+
+    @Test
+    public void listBlobsByHierarchyArrowPagination() {
+        // Upload blobs across multiple directories
+        Flux<BlockBlobItem> uploads = Flux.concat(
+            Flux.range(0, 3)
+                .flatMap(i -> ccAsync.getBlobAsyncClient("dir" + i + "/blob")
+                    .getBlockBlobAsyncClient()
+                    .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())),
+            ccAsync.getBlobAsyncClient("topblob")
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true).setMaxResultsPerPage(1);
+
+        Mono<List<BlobItem>> result
+            = uploads.then(ccAsync.listBlobsByHierarchy("/", options).byPage().doOnNext(page -> {
+                assertTrue(page.getValue().size() <= 1);
+            }).flatMap(page -> Flux.fromIterable(page.getValue())).collectList());
+
+        // 3 prefixes + 1 blob = 4 items
+        StepVerifier.create(result).assertNext(allItems -> assertEquals(4, allItems.size())).verifyComplete();
+    }
+
+    @Test
+    public void listBlobsArrowWithTags() {
+        // Upload a blob and set tags
+        String blobName = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tagkey", "tagvalue");
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true)
+            .setDetails(new BlobListDetails().setRetrieveTags(true));
+
+        Mono<?> upload = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(ccAsync.getBlobAsyncClient(blobName).setTags(tags));
+
+        StepVerifier.create(upload.thenMany(ccAsync.listBlobs(options, null))).assertNext(item -> {
+            assertEquals(blobName, item.getName());
+            assertNotNull(item.getTags());
+            assertEquals("tagvalue", item.getTags().get("tagkey"));
+        }).verifyComplete();
+    }
 }
