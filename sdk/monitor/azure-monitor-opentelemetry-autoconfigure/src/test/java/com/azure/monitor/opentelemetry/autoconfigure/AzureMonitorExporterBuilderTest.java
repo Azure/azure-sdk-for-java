@@ -31,6 +31,13 @@ public class AzureMonitorExporterBuilderTest {
     @Test
     public void customerSdkStatsDisabledByAllProperty() {
         ConfigProperties config = DefaultConfigProperties
+            .createFromMap(Collections.singletonMap("APPLICATIONINSIGHTS_SDKSTATS_DISABLED_ALL", "true"));
+        assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
+    }
+
+    @Test
+    public void customerSdkStatsDisabledByAllPropertyMixedCase() {
+        ConfigProperties config = DefaultConfigProperties
             .createFromMap(Collections.singletonMap("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", "true"));
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
     }
@@ -39,7 +46,7 @@ public class AzureMonitorExporterBuilderTest {
     public void customerSdkStatsDisabledAllTakesPrecedence() {
         Map<String, String> props = new HashMap<>();
         props.put("APPLICATIONINSIGHTS_SDKSTATS_DISABLED", "false");
-        props.put("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", "true");
+        props.put("APPLICATIONINSIGHTS_SDKSTATS_DISABLED_ALL", "true");
         ConfigProperties config = DefaultConfigProperties.createFromMap(props);
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isFalse();
     }
@@ -47,7 +54,7 @@ public class AzureMonitorExporterBuilderTest {
     @Test
     public void customerSdkStatsDisabledAllFalseLeavesEnabled() {
         ConfigProperties config = DefaultConfigProperties
-            .createFromMap(Collections.singletonMap("APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL", "false"));
+            .createFromMap(Collections.singletonMap("APPLICATIONINSIGHTS_SDKSTATS_DISABLED_ALL", "false"));
         assertThat(AzureMonitorExporterBuilder.isCustomerSdkStatsEnabled(config)).isTrue();
     }
 }
