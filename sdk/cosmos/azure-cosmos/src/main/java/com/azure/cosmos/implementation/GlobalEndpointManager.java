@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -48,6 +50,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile DatabaseAccount latestDatabaseAccount;
     private final AtomicBoolean hasThinClientReadLocations = new AtomicBoolean(false);
     private final AtomicBoolean lastRecordedPerPartitionAutomaticFailoverEnabledOnClient = new AtomicBoolean(false);
+    private final AtomicReference<EndpointOrchestrator> thinClientProbeOrchestrator = new AtomicReference<>(null);
 
     private final ReentrantReadWriteLock.WriteLock databaseAccountWriteLock;
 
@@ -196,6 +199,16 @@ public class GlobalEndpointManager implements AutoCloseable {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+        // Stop accepting new thin-client probe cycles. The shared HttpClient is owned by
+        // RxDocumentClientImpl and is closed there; we only stop scheduling work here.
+        EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.getAndSet(null);
+        if (orchestrator != null) {
+            try {
+                orchestrator.close();
+            } catch (Throwable t) {
+                logger.debug("Ignoring error while closing thin-client probe orchestrator.", t);
+            }
+        }
         logger.debug("GlobalEndpointManager closed.");
     }
 
@@ -218,6 +231,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                         this.databaseAccountWriteLock.unlock();
                     }
 
+                    this.triggerThinClientProbeCycle();
                     return dbAccount;
                 }).flatMap(dbAccount -> {
                     return Mono.empty();
@@ -262,6 +276,8 @@ public class GlobalEndpointManager implements AutoCloseable {
                 } finally {
                     this.databaseAccountWriteLock.unlock();
                 }
+
+                this.triggerThinClientProbeCycle();
             }
 
             Utils.ValueHolder<Boolean> canRefreshInBackground = new Utils.ValueHolder<>();
@@ -286,6 +302,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                         }
 
                         this.isRefreshing.set(false);
+                        this.triggerThinClientProbeCycle();
                         return dbAccount;
                     }).flatMap(dbAccount -> {
                         // trigger a startRefreshLocationTimerAsync don't wait on it.
@@ -381,6 +398,85 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public boolean hasThinClientReadLocations() {
         return this.hasThinClientReadLocations.get();
+    }
+
+    /**
+     * Wires the thin-client HTTP/2 {@link HttpClient} used by the connectivity-probe
+     * orchestrator. Must be invoked by the client bootstrap before {@link #init()} so
+     * that the very first topology refresh can issue probes.
+     *
+     * <p>If {@link Configs#isThinClientProbeEnabled()} is {@code false}, the orchestrator
+     * is still instantiated but {@link EndpointOrchestrator#runProbeCycle(Collection)}
+     * short-circuits to a no-op and {@link EndpointOrchestrator#isProxyHealthy()} stays
+     * optimistically {@code true}, preserving today's behavior.
+     */
+    public void setThinClientHttpClient(HttpClient httpClient) {
+        if (httpClient == null) {
+            return;
+        }
+        try {
+            this.thinClientProbeOrchestrator.compareAndSet(null, new EndpointOrchestrator(httpClient));
+        } catch (Throwable t) {
+            // Probe wiring must never trip CosmosClient initialization. If the orchestrator
+            // can't be constructed for any reason, leave it null — `isProxyProbeHealthy()`
+            // then returns true (optimistic) and routing behaves as if no probe were wired.
+            logger.warn("Failed to wire thin-client connectivity-probe orchestrator; thin-client routing will proceed without probe gating.", t);
+        }
+    }
+
+    /**
+     * Returns {@code true} when the thin-client connectivity-probe orchestrator considers
+     * the proxy fleet healthy enough to receive data-plane traffic. Returns {@code true}
+     * by default (optimistic) when no orchestrator has been wired (e.g. tests, or
+     * non-thin-client clients) so existing routing decisions are unaffected.
+     */
+    public boolean isProxyProbeHealthy() {
+        EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.get();
+        return orchestrator == null || orchestrator.isProxyHealthy();
+    }
+
+    /**
+     * @return a read-only diagnostics snapshot of the probe state, or {@code null} when
+     *         no orchestrator has been wired.
+     */
+    public EndpointOrchestrator.DiagnosticsSnapshot getThinClientProbeDiagnostics() {
+        EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.get();
+        return orchestrator == null ? null : orchestrator.getDiagnosticsSnapshot();
+    }
+
+    private void triggerThinClientProbeCycle() {
+        try {
+            EndpointOrchestrator orchestrator = this.thinClientProbeOrchestrator.get();
+            if (orchestrator == null) {
+                return;
+            }
+            if (!this.hasThinClientReadLocations.get()) {
+                return;
+            }
+            Set<URI> endpoints = this.locationCache.getThinClientRegionalEndpoints();
+            if (endpoints.isEmpty()) {
+                return;
+            }
+            // Fire-and-forget: probe runs out-of-band on the global endpoint manager
+            // scheduler. Failures are absorbed inside runProbeCycle and reflected in the
+            // orchestrator's internal state, which is consulted at the next routing decision.
+            // We additionally guard against any synchronous throw here so a probe issue
+            // can never trip CosmosClient initialization or a topology refresh.
+            orchestrator
+                .runProbeCycle(endpoints)
+                .subscribeOn(CosmosSchedulers.GLOBAL_ENDPOINT_MANAGER_BOUNDED_ELASTIC)
+                .subscribe(
+                    healthy -> {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Thin-client probe cycle completed; proxyHealthy={}", healthy);
+                        }
+                    },
+                    t -> logger.debug("Thin-client probe cycle subscription error", t));
+        } catch (Throwable t) {
+            // Defensive: probe issues must never bubble out and fail topology refresh or
+            // CosmosClient init. Log and move on — the gate stays at its current state.
+            logger.warn("Thin-client probe trigger threw synchronously; ignoring to protect topology refresh.", t);
+        }
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {

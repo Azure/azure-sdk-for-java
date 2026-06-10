@@ -881,6 +881,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.reactorHttpClient,
                 this.additionalHeaders);
 
+            // Wire thin-client HttpClient into GEM so the connectivity-probe orchestrator
+            // can fan out probes after every topology refresh. Must happen BEFORE
+            // globalEndpointManager.init() so the first refresh probes immediately.
+            // Caveats — probe is only wired when:
+            //   1. Connection mode is GATEWAY (skip for Direct mode), AND
+            //   2. HTTP/2 is configured and effectively enabled, AND
+            //   3. Thin-client is enabled via Configs.
+            // All three are encoded in `this.useThinClient`. If false, no probe overhead
+            // is incurred and `isProxyProbeHealthy()` returns true by default (no-op gate).
+            // Wiring itself is guarded inside GEM so any failure cannot trip client init.
+            if (this.useThinClient) {
+                try {
+                    this.globalEndpointManager.setThinClientHttpClient(this.reactorHttpClient);
+                } catch (Throwable t) {
+                    // Defense in depth: GEM already swallows wiring failures, but if anything
+                    // does escape we must not fail CosmosClient construction over a probe.
+                    logger.warn("Failed to wire thin-client connectivity-probe HttpClient; continuing without probe gating.", t);
+                }
+            }
+
             this.perPartitionFailoverConfigModifier
                 = (databaseAccount -> {
                 this.initializePerPartitionFailover(databaseAccount);
@@ -8967,6 +8987,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
         if (!useThinClient
             || !this.globalEndpointManager.hasThinClientReadLocations()
+            || !this.globalEndpointManager.isProxyProbeHealthy()
             || request.getResourceType() != ResourceType.Document) {
 
             return false;

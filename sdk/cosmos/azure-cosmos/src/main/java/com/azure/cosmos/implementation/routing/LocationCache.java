@@ -137,6 +137,33 @@ public class LocationCache {
         return this.locationInfo.availableReadRegionalRoutingContexts;
     }
 
+    /**
+     * Returns the set of non-null thin-client regional endpoints discovered in the most
+     * recent topology refresh. Used by the thin-client connectivity probe orchestrator
+     * to fan out HTTP/2 probes after each topology update.
+     *
+     * @return immutable snapshot of thin-client regional endpoints; empty if no
+     *         thin-client read locations are present.
+     */
+    public Set<URI> getThinClientRegionalEndpoints() {
+        UnmodifiableMap<String, RegionalRoutingContext> byRegion =
+            this.locationInfo.availableReadRegionalRoutingContextsByRegionName;
+        if (byRegion == null || byRegion.isEmpty()) {
+            return Collections.emptySet();
+        }
+        Set<URI> endpoints = new HashSet<>();
+        for (RegionalRoutingContext ctx : byRegion.values()) {
+            if (ctx == null) {
+                continue;
+            }
+            URI thinclientEndpoint = ctx.getThinclientRegionalEndpoint();
+            if (thinclientEndpoint != null) {
+                endpoints.add(thinclientEndpoint);
+            }
+        }
+        return Collections.unmodifiableSet(endpoints);
+    }
+
     public List<RegionalRoutingContext> getAvailableWriteRegionalRoutingContexts() {
         return this.locationInfo.availableWriteRegionalRoutingContexts;
     }

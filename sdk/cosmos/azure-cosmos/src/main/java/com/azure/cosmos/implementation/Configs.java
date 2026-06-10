@@ -51,9 +51,25 @@ public class Configs {
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
     private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
-    private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
+    private static final boolean DEFAULT_THINCLIENT_ENABLED = true;
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
+
+    // Thin-client connectivity probe (POST /connectivity-probe over HTTP/2 to each thin-client regional endpoint).
+    // The probe runs after every successful account-topology refresh. When the cycle is RED for
+    // THINCLIENT_PROBE_FAILURE_THRESHOLD consecutive cycles, the SDK falls back to Gateway V1 for data-plane
+    // requests until a subsequent cycle is GREEN. See proxy contract: only HTTP 200 counts as GREEN.
+    private static final boolean DEFAULT_THINCLIENT_PROBE_ENABLED = true;
+    private static final String THINCLIENT_PROBE_ENABLED = "COSMOS.THINCLIENT_PROBE_ENABLED";
+    private static final String THINCLIENT_PROBE_ENABLED_VARIABLE = "COSMOS_THINCLIENT_PROBE_ENABLED";
+
+    private static final int DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD = 2;
+    private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD = "COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD";
+    private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE = "COSMOS_THINCLIENT_PROBE_FAILURE_THRESHOLD";
+
+    private static final String DEFAULT_THINCLIENT_PROBE_PATH = "/connectivity-probe";
+    private static final String THINCLIENT_PROBE_PATH = "COSMOS.THINCLIENT_PROBE_PATH";
+    private static final String THINCLIENT_PROBE_PATH_VARIABLE = "COSMOS_THINCLIENT_PROBE_PATH";
 
     private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
@@ -543,6 +559,87 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    /**
+     * Returns whether the thin-client connectivity probe is enabled. When true, the SDK
+     * issues {@code POST /connectivity-probe} against every thin-client regional endpoint
+     * after each topology refresh and gates data-plane routing on the result.
+     * Default: true. Override with {@code COSMOS.THINCLIENT_PROBE_ENABLED} or
+     * {@code COSMOS_THINCLIENT_PROBE_ENABLED}.
+     */
+    public static boolean isThinClientProbeEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return DEFAULT_THINCLIENT_PROBE_ENABLED;
+    }
+
+    /**
+     * Number of consecutive probe cycles that must be RED before the SDK flips data-plane
+     * routing from the thin-client proxy back to Gateway V1. A single GREEN cycle resets
+     * the counter. Default: 2. Override with {@code COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD}
+     * or {@code COSMOS_THINCLIENT_PROBE_FAILURE_THRESHOLD}. Values less than 1 are coerced to 1.
+     */
+    public static int getThinClientProbeFailureThreshold() {
+        int value = DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD;
+
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_FAILURE_THRESHOLD);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                value = Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException ignored) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    THINCLIENT_PROBE_FAILURE_THRESHOLD);
+                valueFromSystemProperty = null;
+            }
+        }
+
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    value = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException ignored) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
+                        valueFromEnvVariable,
+                        THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE,
+                        DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD);
+                }
+            }
+        }
+
+        return Math.max(1, value);
+    }
+
+    /**
+     * URL path for the thin-client connectivity probe. Default: {@code /connectivity-probe}
+     * (matches proxy contract from CosmosDB PR 2107592). Override with
+     * {@code COSMOS.THINCLIENT_PROBE_PATH} or {@code COSMOS_THINCLIENT_PROBE_PATH}; intended
+     * primarily for testing.
+     */
+    public static String getThinClientProbePath() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_PATH);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return valueFromSystemProperty;
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_PATH_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return valueFromEnvVariable;
+        }
+
+        return DEFAULT_THINCLIENT_PROBE_PATH;
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {
