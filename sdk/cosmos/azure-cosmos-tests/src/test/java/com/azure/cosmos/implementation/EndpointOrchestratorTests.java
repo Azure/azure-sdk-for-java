@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -34,6 +33,7 @@ public class EndpointOrchestratorTests {
     public void resetSystemProperties() {
         System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
         System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD");
         System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
     }
 
@@ -41,6 +41,7 @@ public class EndpointOrchestratorTests {
     public void clearSystemProperties() {
         System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
         System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD");
         System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
     }
 
@@ -101,14 +102,8 @@ public class EndpointOrchestratorTests {
         assertThat(orchestrator.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
         assertThat(orchestrator.isProxyHealthy()).isFalse();
 
-        // Now swap to a green client and run another cycle on a fresh orchestrator that already saw a red.
-        Map<URI, Integer> greenByEndpoint = new HashMap<>();
-        greenByEndpoint.put(REGION_EAST, 200);
-        EndpointOrchestrator greenOrchestrator = new EndpointOrchestrator(mockClient(greenByEndpoint, new AtomicInteger(), false));
-
-        // Drive greenOrchestrator into the unhealthy state manually by replaying a red first.
-        Map<URI, Integer> redOnly = new HashMap<>();
-        redOnly.put(REGION_EAST, 503);
+        // Toggling client returns red on first call and green on subsequent calls; drive the
+        // orchestrator to RED on cycle 1 then GREEN on cycle 2 and assert hysteresis recovery.
         EndpointOrchestrator combo = new EndpointOrchestrator(toggleClient(REGION_EAST, 503, 200));
 
         assertThat(combo.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
@@ -182,6 +177,81 @@ public class EndpointOrchestratorTests {
         assertThat(sendCount.get()).isEqualTo(1);
     }
 
+    @Test(groups = { "unit" })
+    public void recoveryThresholdRequiresMultipleGreenCycles() {
+        // Operator opts into more conservative recovery: require two consecutive GREEN cycles
+        // before flipping back to healthy. With default failureThreshold=2 the orchestrator
+        // becomes UNHEALTHY after two REDs. A single GREEN must NOT restore traffic.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD", "2");
+
+        // Sequenced client returns RED, RED, GREEN, GREEN across successive probe calls
+        // against the single regional endpoint. runProbeCycle returns the post-cycle value of
+        // isProxyHealthy() (not the per-cycle outcome) so we read that explicitly throughout.
+        HttpClient sequencedClient = sequencedClient(REGION_EAST, 503, 503, 200, 200);
+        EndpointOrchestrator e = new EndpointOrchestrator(sequencedClient);
+
+        // RED #1 — under failure threshold of 2, gate stays HEALTHY.
+        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
+        assertThat(e.isProxyHealthy()).isTrue();
+
+        // RED #2 — hits failure threshold, gate flips UNHEALTHY.
+        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
+        assertThat(e.isProxyHealthy()).isFalse();
+
+        // GREEN #1 — under recovery threshold of 2, gate STAYS UNHEALTHY.
+        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
+        assertThat(e.isProxyHealthy()).isFalse();
+
+        // GREEN #2 — second consecutive GREEN restores healthy.
+        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
+        assertThat(e.isProxyHealthy()).isTrue();
+    }
+
+    @Test(groups = { "unit" })
+    public void forceUnhealthy_flipsGateToRedWithoutRunningProbe() {
+        // Safeguard path used by GlobalEndpointManager when account topology says thin-client
+        // is eligible but LocationCache cannot resolve a single thin-client regional endpoint.
+        // Without a fan-out, this method must still flip the gate so the optimistic-startup
+        // default does not pin traffic to an unreachable thin-client store model.
+        Map<URI, Integer> greenByEndpoint = new HashMap<>();
+        greenByEndpoint.put(REGION_EAST, 200);
+        EndpointOrchestrator orchestrator = new EndpointOrchestrator(mockClient(greenByEndpoint, new AtomicInteger(), false));
+        assertThat(orchestrator.isProxyHealthy()).isTrue();
+
+        orchestrator.forceUnhealthy("test: endpoint resolution mismatch");
+        assertThat(orchestrator.isProxyHealthy()).isFalse();
+        assertThat(orchestrator.getDiagnosticsSnapshot().getConsecutiveFailures()).isGreaterThan(0);
+    }
+
+    @Test(groups = { "unit" })
+    public void forceUnhealthy_onClosedOrchestrator_isNoOp() {
+        Map<URI, Integer> greenByEndpoint = new HashMap<>();
+        greenByEndpoint.put(REGION_EAST, 200);
+        EndpointOrchestrator orchestrator = new EndpointOrchestrator(mockClient(greenByEndpoint, new AtomicInteger(), false));
+        orchestrator.close();
+
+        // Closed orchestrators must not mutate any state — otherwise diagnostics from a
+        // shutting-down client would show spurious failures.
+        orchestrator.forceUnhealthy("test");
+        assertThat(orchestrator.getDiagnosticsSnapshot().getConsecutiveFailures()).isZero();
+    }
+
+    private static HttpClient sequencedClient(URI endpoint, int... statuses) {
+        HttpClient client = Mockito.mock(HttpClient.class);
+        AtomicInteger callCount = new AtomicInteger(0);
+        Mockito.doAnswer(inv -> {
+            int n = callCount.getAndIncrement();
+            int status = statuses[Math.min(n, statuses.length - 1)];
+            return Mono.just(stubResponse(status));
+        }).when(client).send(any(HttpRequest.class), any(Duration.class));
+        Mockito.doAnswer(inv -> {
+            int n = callCount.getAndIncrement();
+            int status = statuses[Math.min(n, statuses.length - 1)];
+            return Mono.just(stubResponse(status));
+        }).when(client).send(any(HttpRequest.class));
+        return client;
+    }
+
     // --- Mock helpers ---
 
     private static HttpClient mockClient(
@@ -236,12 +306,15 @@ public class EndpointOrchestratorTests {
     }
 
     private static HttpResponse stubResponse(int status) {
-        ByteBuf empty = Unpooled.EMPTY_BUFFER;
+        // Use Mono.empty() so the production body-drain path is not exercised with a singleton
+        // ByteBuf whose refCnt would underflow across multiple probe calls and silently throw
+        // IllegalReferenceCountException into the swallowed error handler. This mirrors real
+        // ReactorNettyHttpResponse.body() behavior on an empty HTTP/2 response.
         return new HttpResponse() {
             @Override public int statusCode() { return status; }
             @Override public String headerValue(String name) { return null; }
             @Override public HttpHeaders headers() { return new HttpHeaders(); }
-            @Override public Mono<ByteBuf> body() { return Mono.just(empty); }
+            @Override public Mono<ByteBuf> body() { return Mono.empty(); }
             @Override public Mono<String> bodyAsString() { return Mono.just(""); }
             @Override public void close() { }
         };

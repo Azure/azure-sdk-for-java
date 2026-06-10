@@ -146,22 +146,32 @@ public class LocationCache {
      *         thin-client read locations are present.
      */
     public Set<URI> getThinClientRegionalEndpoints() {
-        UnmodifiableMap<String, RegionalRoutingContext> byRegion =
-            this.locationInfo.availableReadRegionalRoutingContextsByRegionName;
-        if (byRegion == null || byRegion.isEmpty()) {
+        Set<URI> endpoints = new HashSet<>();
+        collectThinClientEndpoints(this.locationInfo.availableReadRegionalRoutingContextsByRegionName, endpoints);
+        // Also walk write regions: useThinClientStoreModel() routes writes (point ops, batch) through
+        // thin-client too, so a write-only region's thin-client endpoint must be probed as well.
+        // Set semantics dedupe the common case where a region is both readable and writable.
+        collectThinClientEndpoints(this.locationInfo.availableWriteRegionalRoutingContextsByRegionName, endpoints);
+        if (endpoints.isEmpty()) {
             return Collections.emptySet();
         }
-        Set<URI> endpoints = new HashSet<>();
+        return Collections.unmodifiableSet(endpoints);
+    }
+
+    private static void collectThinClientEndpoints(
+        UnmodifiableMap<String, RegionalRoutingContext> byRegion, Set<URI> sink) {
+        if (byRegion == null || byRegion.isEmpty()) {
+            return;
+        }
         for (RegionalRoutingContext ctx : byRegion.values()) {
             if (ctx == null) {
                 continue;
             }
             URI thinclientEndpoint = ctx.getThinclientRegionalEndpoint();
             if (thinclientEndpoint != null) {
-                endpoints.add(thinclientEndpoint);
+                sink.add(thinclientEndpoint);
             }
         }
-        return Collections.unmodifiableSet(endpoints);
     }
 
     public List<RegionalRoutingContext> getAvailableWriteRegionalRoutingContexts() {

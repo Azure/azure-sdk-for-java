@@ -465,6 +465,15 @@ public class GlobalEndpointManager implements AutoCloseable {
             }
             Set<URI> endpoints = this.locationCache.getThinClientRegionalEndpoints();
             if (endpoints.isEmpty()) {
+                // Safeguard against eligibility/resolution disagreement: hasThinClientReadLocations is
+                // derived from the raw account-topology response, while getThinClientRegionalEndpoints
+                // is derived from the resolved LocationCache contexts (which can drop endpoints when
+                // gateway and thin-client region names fail to normalize-match). Without this branch
+                // the routing gate (`useThinClientStoreModel`) would still pass `hasThinClientReadLocations`
+                // and our optimistic `proxyHealthy=true` default — and pin data-plane traffic to a
+                // thin-client model that has no resolved endpoint to route to. Flip the probe gate
+                // to RED so the SDK falls back to Gateway V1 until the resolution mismatch clears.
+                orchestrator.forceUnhealthy("hasThinClientReadLocations=true but resolved endpoint set is empty");
                 return;
             }
             // Fire-and-forget: probe runs out-of-band on the global endpoint manager

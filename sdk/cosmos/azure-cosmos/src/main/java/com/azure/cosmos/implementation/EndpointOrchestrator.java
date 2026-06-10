@@ -63,6 +63,7 @@ public class EndpointOrchestrator implements java.io.Closeable {
 
     private final HttpClient httpClient;
     private final int failureThreshold;
+    private final int recoveryThreshold;
     private final Duration perProbeTimeout;
     private final String probePath;
 
@@ -71,6 +72,7 @@ public class EndpointOrchestrator implements java.io.Closeable {
     private final AtomicBoolean cycleInProgress = new AtomicBoolean(false);
     private final AtomicLong cycleIdSeq = new AtomicLong(0);
     private final AtomicInteger consecutiveFailures = new AtomicInteger(0);
+    private final AtomicInteger consecutiveSuccesses = new AtomicInteger(0);
     private final AtomicReference<Instant> lastCycleAt = new AtomicReference<>(null);
     private final AtomicReference<Instant> lastFailureAt = new AtomicReference<>(null);
     private final AtomicReference<Set<URI>> lastFailedEndpoints =
@@ -81,6 +83,7 @@ public class EndpointOrchestrator implements java.io.Closeable {
     public EndpointOrchestrator(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "httpClient");
         this.failureThreshold = Configs.getThinClientProbeFailureThreshold();
+        this.recoveryThreshold = Configs.getThinClientProbeRecoveryThreshold();
         this.perProbeTimeout = Duration.ofMillis(Configs.getThinClientConnectionTimeoutInMs());
         this.probePath = Configs.getThinClientProbePath();
     }
@@ -157,6 +160,32 @@ public class EndpointOrchestrator implements java.io.Closeable {
     /** @return current proxy-health flag; {@code true} means SDK may route data plane to proxy. */
     public boolean isProxyHealthy() {
         return this.proxyHealthy.get();
+    }
+
+    /**
+     * Forces the proxy-health flag to {@code false} without running a probe cycle. Used by
+     * {@code GlobalEndpointManager} as a safeguard when account topology reports thin-client
+     * read locations but {@code LocationCache} cannot resolve a single thin-client regional
+     * endpoint (e.g. name-normalization mismatch between the gateway and thin-client region
+     * lists). In that scenario no probe can fire, so the optimistic-startup default would
+     * silently bypass the safety net and pin traffic to thin-client even when the proxy is
+     * effectively unreachable. Calling this method flips the gate to RED and increments
+     * {@code consecutiveFailures} so the next genuine cycle's hysteresis behavior is honored.
+     *
+     * @param reason short human-readable reason captured in the log.
+     */
+    public void forceUnhealthy(String reason) {
+        if (this.closed.get()) {
+            return;
+        }
+        this.consecutiveSuccesses.set(0);
+        int now = this.consecutiveFailures.incrementAndGet();
+        if (this.proxyHealthy.compareAndSet(true, false)) {
+            logger.warn(
+                "Thin-client probe gate flipped UNHEALTHY without an HTTP cycle (consecutiveFailures={}, reason='{}'). "
+                    + "SDK will route data plane to Gateway V1 until {} consecutive GREEN cycle(s).",
+                now, reason, this.recoveryThreshold);
+        }
     }
 
     /** @return read-only snapshot of probe state suitable for diagnostics. */
@@ -296,23 +325,40 @@ public class EndpointOrchestrator implements java.io.Closeable {
         this.lastFailedEndpoints.set(Collections.unmodifiableSet(failedEndpoints));
 
         if (cycleGreen) {
-            int prior = this.consecutiveFailures.getAndSet(0);
-            if (prior > 0 || !this.proxyHealthy.get()) {
+            this.consecutiveFailures.set(0);
+            int greens = this.consecutiveSuccesses.incrementAndGet();
+            if (this.proxyHealthy.get()) {
+                if (greens == 1) {
+                    // already healthy; suppress noisy log
+                    return this.proxyHealthy.get();
+                }
+                logger.debug(
+                    "Thin-client probe cycle GREEN ({} endpoints). Consecutive GREEN={}; proxy remains healthy.",
+                    successCount, greens);
+            } else if (greens >= this.recoveryThreshold) {
+                if (this.proxyHealthy.compareAndSet(false, true)) {
+                    logger.info(
+                        "Thin-client probe cycle GREEN ({} endpoints). Consecutive GREEN={} (recovery threshold={}); "
+                            + "proxy marked HEALTHY; SDK will resume routing data plane to thin-client.",
+                        successCount, greens, this.recoveryThreshold);
+                }
+            } else {
                 logger.info(
-                    "Thin-client probe cycle GREEN ({} endpoints). Resetting consecutive failures (was {}); proxy marked healthy.",
-                    successCount, prior);
+                    "Thin-client probe cycle GREEN ({} endpoints). Consecutive GREEN={} (recovery threshold={}); "
+                        + "proxy remains UNHEALTHY pending further GREEN cycles.",
+                    successCount, greens, this.recoveryThreshold);
             }
-            this.proxyHealthy.set(true);
         } else {
+            this.consecutiveSuccesses.set(0);
             this.lastFailureAt.set(cycleStart);
             int now = this.consecutiveFailures.incrementAndGet();
             if (now >= this.failureThreshold) {
                 if (this.proxyHealthy.compareAndSet(true, false)) {
                     logger.warn(
                         "Thin-client probe cycle RED ({} succeeded / {} failed) for {} consecutive cycles (threshold={}). "
-                            + "Marking proxy UNHEALTHY; SDK will route data plane to Gateway V1 until next GREEN cycle. "
+                            + "Marking proxy UNHEALTHY; SDK will route data plane to Gateway V1 until {} consecutive GREEN cycle(s). "
                             + "Failed endpoints: {}",
-                        successCount, failureCount, now, this.failureThreshold, failedEndpoints);
+                        successCount, failureCount, now, this.failureThreshold, this.recoveryThreshold, failedEndpoints);
                 } else {
                     logger.warn(
                         "Thin-client probe cycle RED ({} succeeded / {} failed); consecutive failures={} (threshold={}); proxy remains UNHEALTHY. Failed endpoints: {}",

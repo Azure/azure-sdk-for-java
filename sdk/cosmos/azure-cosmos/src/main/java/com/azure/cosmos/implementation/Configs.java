@@ -67,6 +67,14 @@ public class Configs {
     private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD = "COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD";
     private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE = "COSMOS_THINCLIENT_PROBE_FAILURE_THRESHOLD";
 
+    // Number of consecutive GREEN probe cycles required to restore proxy-healthy after
+    // a RED-flip. Default 1 preserves the optimistic-recovery behavior shipped in 4.82.0-beta.1.
+    // Raise this (e.g. to match THINCLIENT_PROBE_FAILURE_THRESHOLD) to reduce routing oscillation
+    // when a region is intermittently flapping.
+    private static final int DEFAULT_THINCLIENT_PROBE_RECOVERY_THRESHOLD = 1;
+    private static final String THINCLIENT_PROBE_RECOVERY_THRESHOLD = "COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD";
+    private static final String THINCLIENT_PROBE_RECOVERY_THRESHOLD_VARIABLE = "COSMOS_THINCLIENT_PROBE_RECOVERY_THRESHOLD";
+
     private static final String DEFAULT_THINCLIENT_PROBE_PATH = "/connectivity-probe";
     private static final String THINCLIENT_PROBE_PATH = "COSMOS.THINCLIENT_PROBE_PATH";
     private static final String THINCLIENT_PROBE_PATH_VARIABLE = "COSMOS_THINCLIENT_PROBE_PATH";
@@ -655,6 +663,49 @@ public class Configs {
                         valueFromEnvVariable,
                         THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE,
                         DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD);
+                }
+            }
+        }
+
+        return Math.max(1, value);
+    }
+
+    /**
+     * Number of consecutive GREEN probe cycles required to restore data-plane routing
+     * back to the thin-client proxy after the SDK has flipped to Gateway V1. Default: 1
+     * (a single GREEN cycle restores). Raise this (e.g. to match
+     * {@link #getThinClientProbeFailureThreshold()}) to reduce routing oscillation when a
+     * region is intermittently flapping. Override with
+     * {@code COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD} or
+     * {@code COSMOS_THINCLIENT_PROBE_RECOVERY_THRESHOLD}. Values less than 1 are coerced to 1.
+     */
+    public static int getThinClientProbeRecoveryThreshold() {
+        int value = DEFAULT_THINCLIENT_PROBE_RECOVERY_THRESHOLD;
+
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_RECOVERY_THRESHOLD);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                value = Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException ignored) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    THINCLIENT_PROBE_RECOVERY_THRESHOLD);
+                valueFromSystemProperty = null;
+            }
+        }
+
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_RECOVERY_THRESHOLD_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    value = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException ignored) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
+                        valueFromEnvVariable,
+                        THINCLIENT_PROBE_RECOVERY_THRESHOLD_VARIABLE,
+                        DEFAULT_THINCLIENT_PROBE_RECOVERY_THRESHOLD);
                 }
             }
         }

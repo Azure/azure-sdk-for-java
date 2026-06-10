@@ -9001,9 +9001,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
+        return shouldUseThinClientStoreModel(
+            this.useThinClient,
+            this.globalEndpointManager.hasThinClientReadLocations(),
+            this.globalEndpointManager.isProxyProbeHealthy(),
+            request);
+    }
+
+    /**
+     * Pure-function gate predicate exposed at package visibility so unit tests can verify
+     * routing-fallback behavior (probe-unhealthy =&gt; gateway V1) without standing up a full
+     * {@link RxDocumentClientImpl}. All four inputs must be supplied by the caller; this
+     * method does not touch any client state.
+     */
+    static boolean shouldUseThinClientStoreModel(
+        boolean useThinClient,
+        boolean hasThinClientReadLocations,
+        boolean isProxyProbeHealthy,
+        RxDocumentServiceRequest request) {
+
         if (!useThinClient
-            || !this.globalEndpointManager.hasThinClientReadLocations()
-            || !this.globalEndpointManager.isProxyProbeHealthy()
+            || !hasThinClientReadLocations
+            || !isProxyProbeHealthy
             || request.getResourceType() != ResourceType.Document) {
 
             return false;
