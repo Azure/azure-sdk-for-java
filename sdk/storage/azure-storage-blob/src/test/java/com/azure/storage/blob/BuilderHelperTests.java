@@ -16,7 +16,10 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
@@ -31,6 +34,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -831,6 +835,192 @@ public class BuilderHelperTests {
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
             .buildClient());
+    }
+
+    // endregion
+
+    // region environment variable session activation tests
+
+    private static Configuration envConfiguration(String mode, String container) {
+        TestConfigurationSource envSource = new TestConfigurationSource();
+        if (mode != null) {
+            envSource.put(BuilderHelper.PROPERTY_AZURE_STORAGE_SESSION_MODE, mode);
+        }
+        if (container != null) {
+            envSource.put(BuilderHelper.PROPERTY_AZURE_STORAGE_SESSION_CONTAINER_NAME, container);
+        }
+        return new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
+            .build();
+    }
+
+    @Test
+    public void containerBuilderActivatesSessionFromEnvWhenNothingExplicit() {
+        Configuration config = envConfiguration("SINGLE_SPECIFIED_CONTAINER", "envcontainer");
+
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .configuration(config)
+            .buildClient());
+    }
+
+    @Test
+    public void containerBuilderEnvModeWithoutContainerNameStillThrows() {
+        Configuration config = envConfiguration("SINGLE_SPECIFIED_CONTAINER", null);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                .credential(new MockTokenCredential())
+                .httpClient(new NoOpHttpClient())
+                .configuration(config)
+                .buildClient());
+    }
+
+    @Test
+    public void containerBuilderEnvModeIsCaseInsensitive() {
+        Configuration config = envConfiguration("single_specified_container", "envcontainer");
+
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .configuration(config)
+            .buildClient());
+    }
+
+    @Test
+    public void containerBuilderInvalidEnvModeThrows() {
+        Configuration config = envConfiguration("NOT_A_REAL_MODE", "envcontainer");
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                .credential(new MockTokenCredential())
+                .httpClient(new NoOpHttpClient())
+                .configuration(config)
+                .buildClient());
+    }
+
+    @Test
+    public void containerBuilderExplicitSessionModeOverridesEnv() {
+        Configuration config = envConfiguration("SINGLE_SPECIFIED_CONTAINER", "envcontainer");
+        SessionOptions explicitNone = new SessionOptions().setSessionMode(SessionMode.NONE);
+
+        // Explicit NONE must not be upgraded by env vars and no container is required.
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .configuration(config)
+            .sessionOptions(explicitNone)
+            .buildClient());
+    }
+
+    @Test
+    public void containerBuilderExplicitContainerNameWinsOverEnv() {
+        Configuration config = envConfiguration("SINGLE_SPECIFIED_CONTAINER", "envcontainer");
+        SessionOptions options = new SessionOptions().setContainerName("explicitcontainer");
+
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .containerName("explicitcontainer")
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .configuration(config)
+            .sessionOptions(options)
+            .buildClient());
+
+        assertEquals("explicitcontainer", options.getContainerName());
+    }
+
+    @Test
+    public void blobBuilderActivatesSessionFromEnvWhenNothingExplicit() {
+        Configuration config = envConfiguration("SINGLE_SPECIFIED_CONTAINER", "envcontainer");
+
+        assertDoesNotThrow(() -> new BlobClientBuilder().endpoint(ENDPOINT)
+            .blobName("myblob")
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .configuration(config)
+            .buildClient());
+    }
+
+    @Test
+    public void serviceBuilderActivatesSessionFromEnvWhenNothingExplicit() {
+        Configuration config = envConfiguration("SINGLE_SPECIFIED_CONTAINER", "envcontainer");
+        SessionOptions options = new SessionOptions();
+
+        assertDoesNotThrow(() -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .configuration(config)
+            .sessionOptions(options)
+            .buildClient());
+
+        // Env vars must have flowed through to the SessionOptions instance.
+        assertEquals(SessionMode.SINGLE_SPECIFIED_CONTAINER, options.getSessionMode());
+        assertEquals("envcontainer", options.getContainerName());
+    }
+
+    @Test
+    public void applyEnvironmentSessionDefaultsLeavesExplicitValuesIntact() {
+        Configuration config = envConfiguration("SINGLE_SPECIFIED_CONTAINER", "envcontainer");
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.NONE).setContainerName("explicit");
+
+        BuilderHelper.applyEnvironmentSessionDefaults(options, config, new ClientLogger(BuilderHelperTests.class));
+
+        assertEquals(SessionMode.NONE, options.getSessionMode());
+        assertEquals("explicit", options.getContainerName());
+    }
+
+    @Test
+    public void applyEnvironmentSessionDefaultsAppliesOnlyContainerNameWhenModeExplicit() {
+        Configuration config = envConfiguration(null, "envcontainer");
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER);
+
+        BuilderHelper.applyEnvironmentSessionDefaults(options, config, new ClientLogger(BuilderHelperTests.class));
+
+        assertEquals(SessionMode.SINGLE_SPECIFIED_CONTAINER, options.getSessionMode());
+        assertEquals("envcontainer", options.getContainerName());
+    }
+
+    // endregion
+
+    // region environment-variable end-to-end test
+    //
+    // This single test verifies that a customer can activate the session feature with NO code
+    // change at all -- just by exporting environment variables before starting the JVM:
+    //
+    //     set AZURE_STORAGE_SESSION_MODE=SINGLE_SPECIFIED_CONTAINER
+    //     set AZURE_STORAGE_SESSION_CONTAINER_NAME=mycontainer
+    //
+    // It is @Disabled by default because:
+    //   1. CI doesn't (and shouldn't) set these process-level env vars.
+    //   2. EnvironmentConfiguration in azure-core caches reads from the global Configuration
+    //      for the lifetime of the JVM, so it cannot be reliably reset between tests inside
+    //      the same Surefire fork.
+    //
+    // To run it manually after setting the env vars above:
+    //
+    //     mvn -pl sdk/storage/azure-storage-blob test ^
+    //       "-Dtest=BuilderHelperTests#environmentVariablesActivateSession"
+    //
+    // The 10 injection-based tests above already cover all of the helper's branching logic
+    // by injecting a Configuration directly; this test exists only to prove the real
+    // System.getenv lookup path also works.
+
+    @Test
+    @Disabled("Run manually after exporting AZURE_STORAGE_SESSION_MODE=SINGLE_SPECIFIED_CONTAINER and "
+        + "AZURE_STORAGE_SESSION_CONTAINER_NAME=<name>. See the comment above for details.")
+    public void environmentVariablesActivateSession() {
+        SessionOptions options = new SessionOptions();
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(options)
+            .buildClient());
+
+        String expectedContainer = System.getenv(BuilderHelper.PROPERTY_AZURE_STORAGE_SESSION_CONTAINER_NAME);
+        assertEquals(SessionMode.SINGLE_SPECIFIED_CONTAINER, options.getSessionMode(),
+            "Expected env var AZURE_STORAGE_SESSION_MODE=SINGLE_SPECIFIED_CONTAINER to populate sessionMode");
+        assertEquals(expectedContainer, options.getContainerName(),
+            "Expected env var AZURE_STORAGE_SESSION_CONTAINER_NAME to populate containerName");
     }
 
     // endregion
