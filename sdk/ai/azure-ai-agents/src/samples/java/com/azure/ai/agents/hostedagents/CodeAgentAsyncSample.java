@@ -6,6 +6,7 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaAgentsAsyncClient;
+import com.azure.ai.agents.hostedagents.utils.CodeAgentSampleUtils;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;

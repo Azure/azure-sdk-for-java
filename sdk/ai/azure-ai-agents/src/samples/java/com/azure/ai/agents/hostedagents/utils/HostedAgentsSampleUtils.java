@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.hostedagents;
+package com.azure.ai.agents.hostedagents.utils;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClient;
@@ -33,17 +33,25 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-final class HostedAgentsSampleUtils {
-    static final String SAMPLE_AGENT_NAME = "java-hosted-agent-sample";
+public final class HostedAgentsSampleUtils {
+    public static final String SAMPLE_AGENT_NAME = "java-hosted-agent-sample";
 
     private static final int MAX_POLL_ATTEMPTS = 60;
     private static final Duration POLL_INTERVAL = Duration.ofSeconds(10);
 
+    // Session log streaming is an endless server-sent-event stream: the service keeps the
+    // connection open and never signals completion, so it is the client's responsibility to
+    // close the connection. This sample reads for at most STREAM_READ_TIMEOUT before closing.
+    private static final Duration STREAM_READ_TIMEOUT = Duration.ofSeconds(3);
+
     private HostedAgentsSampleUtils() {
     }
 
-    static HostedAgentSessionResources createAgentAndSession(AgentsClient agentsClient,
+    public static HostedAgentSessionResources createAgentAndSession(AgentsClient agentsClient,
         BetaAgentsClient betaAgentsClient, String agentName, String image) {
         AgentVersionDetails agent = createHostedAgentVersion(agentsClient, agentName, image);
         waitForAgentVersionActive(agentsClient, agentName, agent.getVersion());
@@ -56,7 +64,7 @@ final class HostedAgentsSampleUtils {
         return new HostedAgentSessionResources(agent, session);
     }
 
-    static Mono<HostedAgentSessionResources> createAgentAndSessionAsync(AgentsAsyncClient agentsAsyncClient,
+    public static Mono<HostedAgentSessionResources> createAgentAndSessionAsync(AgentsAsyncClient agentsAsyncClient,
         BetaAgentsAsyncClient betaAgentsAsyncClient, String agentName, String image) {
         return createHostedAgentVersionAsync(agentsAsyncClient, agentName, image)
             .flatMap(agent -> waitForAgentVersionActiveAsync(agentsAsyncClient, agentName, agent.getVersion())
@@ -70,7 +78,7 @@ final class HostedAgentsSampleUtils {
                 }));
     }
 
-    static void cleanup(AgentsClient agentsClient, BetaAgentsClient betaAgentsClient, String agentName,
+    public static void cleanup(AgentsClient agentsClient, BetaAgentsClient betaAgentsClient, String agentName,
         HostedAgentSessionResources resources) {
         if (resources == null) {
             return;
@@ -95,7 +103,7 @@ final class HostedAgentsSampleUtils {
         }
     }
 
-    static Mono<Void> cleanupAsync(AgentsAsyncClient agentsAsyncClient, BetaAgentsAsyncClient betaAgentsAsyncClient,
+    public static Mono<Void> cleanupAsync(AgentsAsyncClient agentsAsyncClient, BetaAgentsAsyncClient betaAgentsAsyncClient,
         String agentName, HostedAgentSessionResources resources) {
         if (resources == null) {
             return Mono.empty();
@@ -120,7 +128,7 @@ final class HostedAgentsSampleUtils {
         return deleteSession.then(deleteAgentVersion);
     }
 
-    static void printResponseOutput(Response response) {
+    public static void printResponseOutput(Response response) {
         for (ResponseOutputItem outputItem : response.output()) {
             if (outputItem.message().isPresent()) {
                 ResponseOutputMessage message = outputItem.message().get();
@@ -130,13 +138,19 @@ final class HostedAgentsSampleUtils {
         }
     }
 
-    static void printSseFrames(BinaryData streamData, int maxLogEvents) throws IOException {
+    public static void printSseFrames(BinaryData streamData, int maxLogEvents) throws IOException {
         int eventCount = 0;
         String eventName = null;
         StringBuilder data = new StringBuilder();
 
-        try (InputStream stream = streamData.toStream();
-             BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+        // The session log stream is endless, so the client must close the connection itself.
+        // Schedule a watchdog that closes the stream after STREAM_READ_TIMEOUT; closing it
+        // unblocks the in-progress readLine() call and ends the loop below.
+        InputStream stream = streamData.toStream();
+        ScheduledExecutorService watchdog = Executors.newSingleThreadScheduledExecutor();
+        watchdog.schedule(() -> closeQuietly(stream), STREAM_READ_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
             String line;
             while (eventCount < maxLogEvents && (line = reader.readLine()) != null) {
                 if (line.isEmpty()) {
@@ -157,6 +171,19 @@ final class HostedAgentsSampleUtils {
                     data.append(line.substring("data: ".length()));
                 }
             }
+        } catch (IOException e) {
+            // Expected when the watchdog closes the endless stream after the timeout; the stream
+            // has no natural end, so a read failure after closing is the normal way to stop.
+        } finally {
+            watchdog.shutdownNow();
+        }
+    }
+
+    private static void closeQuietly(InputStream stream) {
+        try {
+            stream.close();
+        } catch (IOException ignored) {
+            // Closing only to interrupt the blocking read; nothing to do if it fails.
         }
     }
 
@@ -254,7 +281,7 @@ final class HostedAgentsSampleUtils {
         }
     }
 
-    static final class HostedAgentSessionResources {
+    public static final class HostedAgentSessionResources {
         private final AgentVersionDetails agent;
         private final AgentSessionResource session;
 
@@ -263,11 +290,11 @@ final class HostedAgentsSampleUtils {
             this.session = session;
         }
 
-        AgentVersionDetails getAgent() {
+        public AgentVersionDetails getAgent() {
             return agent;
         }
 
-        AgentSessionResource getSession() {
+        public AgentSessionResource getSession() {
             return session;
         }
     }

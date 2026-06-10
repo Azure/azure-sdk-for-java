@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.hostedagents;
+package com.azure.ai.agents.hostedagents.utils;
 
 import com.azure.ai.agents.models.AgentProtocol;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -26,17 +26,17 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-final class CodeAgentSampleUtils {
-    static final String SAMPLE_AGENT_NAME = "java-code-agent-sample";
+public final class CodeAgentSampleUtils {
+    public static final String SAMPLE_AGENT_NAME = "java-code-agent-sample";
 
     private CodeAgentSampleUtils() {
     }
 
-    static CreateAgentVersionFromCodeContent createAgentVersionFromCodeContent(BinaryData codeZip) {
+    public static CreateAgentVersionFromCodeContent createAgentVersionFromCodeContent(BinaryData codeZip) {
         return new CreateAgentVersionFromCodeContent(createMetadata(), createCodeFileDetails(codeZip));
     }
 
-    static BinaryData createCodeZip() throws IOException {
+    public static BinaryData createCodeZip() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
             addZipEntry(zipOutputStream, "main.py", createMainPy());
@@ -45,7 +45,7 @@ final class CodeAgentSampleUtils {
         return BinaryData.fromBytes(outputStream.toByteArray());
     }
 
-    static String sha256(BinaryData data) {
+    public static String sha256(BinaryData data) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(data.toBytes());
@@ -59,7 +59,7 @@ final class CodeAgentSampleUtils {
         }
     }
 
-    static void printLatestVersion(AgentVersionDetails version) {
+    public static void printLatestVersion(AgentVersionDetails version) {
         System.out.printf("Agent version: %s%n", version.getVersion());
         System.out.printf("Status: %s%n", version.getStatus());
         if (version.getDefinition() instanceof HostedAgentDefinition) {
