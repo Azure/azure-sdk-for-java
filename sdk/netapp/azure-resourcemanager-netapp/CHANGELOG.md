@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0 (2026-06-09)
+## 2.3.0 (2026-06-10)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
@@ -9,17 +9,17 @@
 
 #### `models.Caches` was modified
 
-* `void poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)` -> `models.Cache poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)`
 * `void resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.Cache resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `void resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.Cache resetSmbPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
+* `void poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)` -> `models.Cache poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest,com.azure.core.util.Context)`
 * `void poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest)` -> `models.Cache poolChange(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.PoolChangeRequest)`
 
 #### `models.Cache` was modified
 
+* `void poolChange(models.PoolChangeRequest)` -> `models.Cache poolChange(models.PoolChangeRequest)`
 * `void resetSmbPassword(com.azure.core.util.Context)` -> `models.Cache resetSmbPassword(com.azure.core.util.Context)`
 * `void poolChange(models.PoolChangeRequest,com.azure.core.util.Context)` -> `models.Cache poolChange(models.PoolChangeRequest,com.azure.core.util.Context)`
 * `void resetSmbPassword()` -> `models.Cache resetSmbPassword()`
-* `void poolChange(models.PoolChangeRequest)` -> `models.Cache poolChange(models.PoolChangeRequest)`
 
 ### Features Added
 
