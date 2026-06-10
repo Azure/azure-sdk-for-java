@@ -99,9 +99,17 @@ public final class LlmInputHelper {
      *
      * <p>The markdown body contains the extracted text with page-break markers
      * ({@code <!-- InputPageNumber: N -->}) inserted at page boundaries so downstream
-     * consumers can locate content by page number. If the service markdown already
-     * contains {@code <!-- InputPageNumber:} markers, the helper passes them through
-     * unchanged to avoid duplicates.
+     * consumers can locate content by page number. {@code N} is the <strong>original
+     * 1-based page number from the source document</strong> (i.e., the page index in
+     * the analyzed PDF), not a counter that restarts at 1 for each call. This matters
+     * when the analyze request specifies a {@link com.azure.ai.contentunderstanding.models.ContentRange}
+     * (e.g., {@code "2-3,5"}): the markers in the output will read
+     * {@code InputPageNumber: 2}, {@code 3}, {@code 5} &mdash; not {@code 1},
+     * {@code 2}, {@code 3}. Downstream consumers (RAG indexers, page-citation prompts)
+     * can rely on the marker value to cite the correct source page even when only a
+     * subset of pages was analyzed. If the service markdown already contains
+     * {@code <!-- InputPageNumber:} markers, the helper passes them through unchanged
+     * to avoid duplicates.
      *
      * @param result the {@link AnalysisResult} from a Content Understanding analyze operation.
      * @return a formatted string with YAML front matter followed by markdown content.
