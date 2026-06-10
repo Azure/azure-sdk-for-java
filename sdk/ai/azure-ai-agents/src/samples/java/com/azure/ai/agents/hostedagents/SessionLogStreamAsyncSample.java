@@ -46,7 +46,7 @@ public class SessionLogStreamAsyncSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
         BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 

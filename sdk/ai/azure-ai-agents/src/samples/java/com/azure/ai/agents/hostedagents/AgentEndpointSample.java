@@ -42,7 +42,7 @@ public class AgentEndpointSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsClient agentsClient = builder.buildAgentsClient();
+        AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
         BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         HostedAgentSessionResources resources = null;

@@ -82,7 +82,7 @@ final class CodeAgentSampleUtils {
     private static HostedAgentDefinition createHostedAgentDefinition() {
         return new HostedAgentDefinition("0.5", "1Gi")
             .setCodeConfiguration(new CodeConfiguration(
-                "python_3_11",
+                "python_3_13",
                 Arrays.asList("python", "main.py"),
                 CodeDependencyResolution.REMOTE_BUILD))
             .setProtocolVersions(Collections.singletonList(
