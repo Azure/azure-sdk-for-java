@@ -8,7 +8,7 @@
 
 #### Bugs Fixed
 
-* Added `spring-boot-data-commons` dependency to fix incompatibility with Spring Cloud OpenFeign 5.0.1 on Spring Boot 4. Previously, `DataWebProperties` moved from `spring-data-commons` to `spring-boot-data-commons` in Spring Boot 4, causing OpenFeign's encoder auto-configuration to fail with `No bean found of type interface feign.codec.Encoder` when both libraries were used together. See [Bug #44816](https://github.com/Azure/azure-sdk-for-java/issues/44816).
+* Fixed bug about no bean found of type `feign.codec.Encoder` in Spring Boot 4 by adding `spring-boot-data-commons` dependency ([49441](https://github.com/Azure/azure-sdk-for-java/issues/49441)).
 
 #### Other Changes
 
