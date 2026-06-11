@@ -357,7 +357,7 @@ public final class BuilderHelper {
             }
         }
 
-        if (CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
+        if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
             String envContainer = effectiveConfiguration.get(PROPERTY_AZURE_STORAGE_SESSION_CONTAINER_NAME);
             if (!CoreUtils.isNullOrEmpty(envContainer)) {
                 sessionOptions.setContainerName(envContainer.trim());

@@ -2336,7 +2336,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         // A real customer would deploy with these environment variables set on the process:
         //   AZURE_STORAGE_SESSION_MODE=SINGLE_SPECIFIED_CONTAINER
-        //   AZURE_STORAGE_SESSION_CONTAINER_NAME=<their container>
+        //   AZURE_STORAGE_SESSION_CONTAINER_NAME=session-test-container
         // This test relies on those env vars being set on the host running it.
 
         List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
