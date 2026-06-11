@@ -52,6 +52,16 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"fast", "thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosNotFoundTests() {
+        // Thin-client routing tests in this class (the "thinclient" group) assert that
+        // requests actually went through the proxy on port 10250 via assertThinClientEndpointUsed
+        // and rely on proxy-specific substatus codes (e.g. OWNER_RESOURCE_NOT_EXISTS = 1003).
+        // The connectivity probe is enabled by default in production, but the proxy-side
+        // /connectivity-probe endpoint is not deployed in every CI test account yet. With the
+        // default failure threshold of 1, a single failed probe cycle flips routing from the
+        // proxy to Gateway V1, breaking these assertions. Disable the probe here so the routing
+        // path under test is exercised deterministically; production callers still get the
+        // probe ON by default. Cleared in @AfterClass to avoid leaking into other test classes.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
         executeWithRetry(() -> {
             safeClose(this.commonAsyncClient);
             this.commonAsyncClient = getClientBuilder().buildAsyncClient();
@@ -88,6 +98,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     @AfterClass(groups = {"fast", "thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.commonAsyncClient);
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
     }
 
     @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
