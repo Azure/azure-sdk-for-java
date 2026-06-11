@@ -2604,24 +2604,9 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRangeItem> listAllRanges(ShareFileListRangesOptions options, Duration timeout,
         Context context) {
-        ShareFileListRangesOptions finalOptions = options == null ? new ShareFileListRangesOptions() : options;
-        Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions finalRequestConditions = finalOptions.getRequestConditions() == null
-            ? new ShareRequestConditions()
-            : finalOptions.getRequestConditions();
-
-        BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> nextPageRetriever = (marker, pageSize) -> {
-            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = listRangesWithResponse(
-                finalOptions.getRange(), finalRequestConditions, null, null, marker, pageSize, timeout, finalContext);
-
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                toShareFileRangeItems(response.getValue(), false), response.getValue().getNextMarker(),
-                response.getDeserializedHeaders());
-        };
-        Function<Integer, PagedResponse<ShareFileRangeItem>> firstPageRetriever
-            = pageSize -> nextPageRetriever.apply(null, pageSize);
-
-        return new PagedIterable<>(firstPageRetriever, nextPageRetriever);
+            StorageImplUtils.assertNotNull("options", options);
+            return listAllRangesInternal(options.getRange(), options.getRequestConditions(), null, null, false,
+                timeout, context);
     }
 
     /**
@@ -2656,17 +2641,23 @@ public class ShareFileClient {
     public PagedIterable<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
+        return listAllRangesInternal(options.getRange(), options.getRequestConditions(), options.getPreviousSnapshot(),
+            options.isRenameIncluded(), true, timeout, context);
+    }
+
+    private PagedIterable<ShareFileRangeItem> listAllRangesInternal(ShareFileRange range,
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename,
+        boolean includeClearRanges, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
-            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
 
         BiFunction<String, Integer, PagedResponse<ShareFileRangeItem>> nextPageRetriever = (marker, pageSize) -> {
-            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
-                = listRangesWithResponse(options.getRange(), finalRequestConditions, options.getPreviousSnapshot(),
-                    options.isRenameIncluded(), marker, pageSize, timeout, finalContext);
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = listRangesWithResponse(range,
+                finalRequestConditions, previousSnapshot, supportRename, marker, pageSize, timeout, finalContext);
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                toShareFileRangeItems(response.getValue(), true), response.getValue().getNextMarker(),
+                toShareFileRangeItems(response.getValue(), includeClearRanges), response.getValue().getNextMarker(),
                 response.getDeserializedHeaders());
         };
         Function<Integer, PagedResponse<ShareFileRangeItem>> firstPageRetriever

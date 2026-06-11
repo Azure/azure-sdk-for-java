@@ -118,6 +118,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.file.share.implementation.util.ModelHelper.toShareFileRangeItems;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -2769,7 +2770,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
-            return listRangesWithOptionalTimeout(range, requestConditions, null, Context.NONE);
+            return listRangesWithOptionalTimeout(range, requestConditions, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -2800,7 +2801,9 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRangeItem> listAllRanges(ShareFileListRangesOptions options) {
         try {
-            return listAllRangesWithOptionalTimeout(options, null, Context.NONE);
+            ShareFileListRangesOptions finalOptions = options == null ? new ShareFileListRangesOptions() : options;
+            return listAllRangesInternal(finalOptions.getRange(), finalOptions.getRequestConditions(), null, null,
+                false, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -2835,7 +2838,8 @@ public class ShareFileAsyncClient {
     public PagedFlux<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-            return listAllRangesDiffWithOptionalTimeout(options, null, Context.NONE);
+            return listAllRangesInternal(options.getRange(), options.getRequestConditions(),
+                options.getPreviousSnapshot(), options.isRenameIncluded(), true, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -2918,11 +2922,11 @@ public class ShareFileAsyncClient {
     }
 
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
-        ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        ShareRequestConditions requestConditions, Duration timeout) {
 
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(
-                this.listRangesWithResponse(range, requestConditions, null, null, null, null, context), timeout)
+                this.listRangesWithResponse(range, requestConditions, null, null, null, null, Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 response.getValue()
@@ -2936,34 +2940,17 @@ public class ShareFileAsyncClient {
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
-    PagedFlux<ShareFileRangeItem> listAllRangesWithOptionalTimeout(ShareFileListRangesOptions options, Duration timeout,
-        Context context) {
-        final ShareFileListRangesOptions finalOptions = options == null ? new ShareFileListRangesOptions() : options;
 
-        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever = (marker, pageSize) -> {
-            return StorageImplUtils
-                .applyOptionalTimeout(this.listRangesWithResponse(finalOptions.getRange(),
-                    finalOptions.getRequestConditions(), null, null, marker, pageSize, context), timeout)
+    PagedFlux<ShareFileRangeItem> listAllRangesInternal(ShareFileRange range, ShareRequestConditions requestConditions,
+        String previousSnapshot, Boolean supportRename, boolean includeClearRanges, Duration timeout) {
+        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever = (marker,
+            pageSize) -> StorageImplUtils
+                .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, previousSnapshot,
+                    supportRename, marker, pageSize, Context.NONE), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), toShareFileRangeItems(response.getValue(), false),
+                    response.getHeaders(), toShareFileRangeItems(response.getValue(), includeClearRanges),
                     response.getValue().getNextMarker(), response.getHeaders()));
-        };
-        Function<Integer, Mono<PagedResponse<ShareFileRangeItem>>> firstPageRetriever
-            = pageSize -> nextPageRetriever.apply(null, pageSize);
 
-        return new PagedFlux<>(firstPageRetriever, nextPageRetriever);
-    }
-
-    PagedFlux<ShareFileRangeItem> listAllRangesDiffWithOptionalTimeout(ShareFileListRangesDiffOptions options,
-        Duration timeout, Context context) {
-        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever = (marker, pageSize) -> {
-            return StorageImplUtils
-                .applyOptionalTimeout(this.listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                    options.getPreviousSnapshot(), options.isRenameIncluded(), marker, pageSize, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), toShareFileRangeItems(response.getValue(), true),
-                    response.getValue().getNextMarker(), response.getHeaders()));
-        };
         Function<Integer, Mono<PagedResponse<ShareFileRangeItem>>> firstPageRetriever
             = pageSize -> nextPageRetriever.apply(null, pageSize);
 
@@ -3647,26 +3634,5 @@ public class ShareFileAsyncClient {
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
-    }
-
-    private static java.util.List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
-        boolean includeClearRanges) {
-        java.util.List<ShareFileRangeItem> ranges = rangeList.getRanges()
-            .stream()
-            .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-            .map(ShareFileRange::new)
-            .map(range -> new ShareFileRangeItem(range, false))
-            .collect(Collectors.toList());
-
-        if (includeClearRanges) {
-            ranges.addAll(rangeList.getClearRanges()
-                .stream()
-                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                .map(ShareFileRange::new)
-                .map(range -> new ShareFileRangeItem(range, true))
-                .collect(Collectors.toList()));
-        }
-
-        return ranges;
     }
 }
