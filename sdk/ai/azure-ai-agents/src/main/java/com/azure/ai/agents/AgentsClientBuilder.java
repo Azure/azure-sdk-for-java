@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsClientImpl;
 import com.azure.ai.agents.implementation.TokenUtils;
+import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
@@ -16,14 +17,10 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -56,7 +53,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import reactor.core.publisher.Mono;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -87,8 +83,6 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
-    private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
-
     private static final String AGENT_PREVIEW_FEATURES = Stream
         .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
             Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString()))
@@ -100,24 +94,6 @@ public final class AgentsClientBuilder
     private static final String TOOLBOXES_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString();
 
     private boolean allowPreview;
-
-    private static HttpPipelinePolicy createFoundryFeaturesPolicy(String foundryFeatures) {
-        return new HttpPipelinePolicy() {
-
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                if (CoreUtils.isNullOrEmpty(context.getHttpRequest().getHeaders().getValue(FOUNDRY_FEATURES))) {
-                    context.getHttpRequest().getHeaders().set(FOUNDRY_FEATURES, foundryFeatures);
-                }
-                return next.process();
-            }
-
-            @Override
-            public HttpPipelinePosition getPipelinePosition() {
-                return HttpPipelinePosition.PER_CALL;
-            }
-        };
-    }
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
@@ -339,21 +315,16 @@ public final class AgentsClientBuilder
     }
 
     private AgentsClientImpl buildInnerClient(String previewFeatures) {
-        HttpPipelinePolicy foundryFeaturesPolicy = allowPreview ? addFoundryFeaturesPolicy(previewFeatures) : null;
-        try {
+        this.validateClient();
+        if (CoreUtils.isNullOrEmpty(previewFeatures)) {
             return buildInnerClient();
-        } finally {
-            removeFoundryFeaturesPolicy(foundryFeaturesPolicy);
         }
-    }
-
-    private AgentsClientImpl buildBetaInnerClient(String previewFeatures) {
-        HttpPipelinePolicy foundryFeaturesPolicy = addFoundryFeaturesPolicy(previewFeatures);
-        try {
-            return buildInnerClient();
-        } finally {
-            removeFoundryFeaturesPolicy(foundryFeaturesPolicy);
-        }
+        HttpPipeline localPipeline = resolvePipeline(previewFeatures);
+        AgentsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
+        AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
+            this.endpoint, localServiceVersion);
+        return client;
     }
 
     @Generated
@@ -401,28 +372,15 @@ public final class AgentsClientBuilder
         return httpPipeline;
     }
 
-    private HttpPipeline createHttpPipelineWithPreview(String previewFeatures) {
-        HttpPipelinePolicy foundryFeaturesPolicy = allowPreview ? addFoundryFeaturesPolicy(previewFeatures) : null;
-        try {
-            return createHttpPipeline();
-        } finally {
-            removeFoundryFeaturesPolicy(foundryFeaturesPolicy);
-        }
+    private HttpPipeline resolvePipeline(String foundryFeatures) {
+        this.validateClient();
+        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();
+        HttpPipelinePolicy foundryFeaturesPolicy = FoundryPolicyHelper.createFoundryFeaturesPolicy(foundryFeatures);
+        return FoundryPolicyHelper.prependPolicy(localPipeline, foundryFeaturesPolicy);
     }
 
-    private HttpPipelinePolicy addFoundryFeaturesPolicy(String previewFeatures) {
-        if (CoreUtils.isNullOrEmpty(previewFeatures)) {
-            return null;
-        }
-        HttpPipelinePolicy foundryFeaturesPolicy = createFoundryFeaturesPolicy(previewFeatures);
-        this.pipelinePolicies.add(0, foundryFeaturesPolicy);
-        return foundryFeaturesPolicy;
-    }
-
-    private void removeFoundryFeaturesPolicy(HttpPipelinePolicy foundryFeaturesPolicy) {
-        if (foundryFeaturesPolicy != null) {
-            this.pipelinePolicies.remove(foundryFeaturesPolicy);
-        }
+    private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
+        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
     }
 
     /**
@@ -432,8 +390,7 @@ public final class AgentsClientBuilder
      */
     public ResponsesClient buildResponsesClient() {
         return new ResponsesClient(getOpenAIClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
     }
 
     /**
@@ -443,8 +400,7 @@ public final class AgentsClientBuilder
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
         return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
     }
 
     /**
@@ -455,8 +411,7 @@ public final class AgentsClientBuilder
      */
     public OpenAIClient buildOpenAIClient() {
         return getOpenAIClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     /**
@@ -472,8 +427,8 @@ public final class AgentsClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         return getOpenAIClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(
-                HttpClientHelper.mapToOpenAIHttpClient(createHttpPipelineWithPreview(AGENT_PREVIEW_FEATURES))));
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(createOpenAIHttpClient(allowPreview ? AGENT_PREVIEW_FEATURES : null)));
     }
 
     /**
@@ -484,8 +439,7 @@ public final class AgentsClientBuilder
      */
     public OpenAIClientAsync buildOpenAIAsyncClient() {
         return getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     /**
@@ -501,8 +455,8 @@ public final class AgentsClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         return getOpenAIAsyncClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(
-                HttpClientHelper.mapToOpenAIHttpClient(createHttpPipelineWithPreview(AGENT_PREVIEW_FEATURES))));
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(createOpenAIHttpClient(allowPreview ? AGENT_PREVIEW_FEATURES : null)));
     }
 
     private String getDefaultBaseUrl() {
@@ -559,7 +513,7 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsAsyncClient.
      */
     public AgentsAsyncClient buildAgentsAsyncClient() {
-        return new AgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getAgents());
+        return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
     }
 
     /**
@@ -568,7 +522,7 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsClient.
      */
     public AgentsClient buildAgentsClient() {
-        return new AgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getAgents());
+        return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
     }
 
     /**
@@ -605,7 +559,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaAgentsAsyncClient.
          */
         public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-            return new BetaAgentsAsyncClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+            return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
 
         /**
@@ -615,7 +569,7 @@ public final class AgentsClientBuilder
          */
         public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
             return new BetaMemoryStoresAsyncClient(
-                buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+                buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
 
         /**
@@ -624,7 +578,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaToolboxesAsyncClient.
          */
         public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-            return new BetaToolboxesAsyncClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+            return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
 
         /**
@@ -633,7 +587,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaAgentsClient.
          */
         public BetaAgentsClient buildBetaAgentsClient() {
-            return new BetaAgentsClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+            return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
 
         /**
@@ -642,8 +596,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaMemoryStoresClient.
          */
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
-            return new BetaMemoryStoresClient(
-                buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+            return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
 
         /**
@@ -652,7 +605,7 @@ public final class AgentsClientBuilder
          * @return an instance of BetaToolboxesClient.
          */
         public BetaToolboxesClient buildBetaToolboxesClient() {
-            return new BetaToolboxesClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+            return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
     }
 
@@ -662,7 +615,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaAgentsAsyncClient.
      */
     private BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
-        return new BetaAgentsAsyncClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
     }
 
     /**
@@ -671,8 +624,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaMemoryStoresAsyncClient.
      */
     private BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
-        return new BetaMemoryStoresAsyncClient(
-            buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        return new BetaMemoryStoresAsyncClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
     }
 
     /**
@@ -681,7 +633,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaToolboxesAsyncClient.
      */
     private BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-        return new BetaToolboxesAsyncClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+        return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
     }
 
     /**
@@ -690,7 +642,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaAgentsClient.
      */
     private BetaAgentsClient buildBetaAgentsClient() {
-        return new BetaAgentsClient(buildBetaInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
+        return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
     }
 
     /**
@@ -699,7 +651,7 @@ public final class AgentsClientBuilder
      * @return an instance of BetaMemoryStoresClient.
      */
     private BetaMemoryStoresClient buildBetaMemoryStoresClient() {
-        return new BetaMemoryStoresClient(buildBetaInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
     }
 
     /**
@@ -708,6 +660,6 @@ public final class AgentsClientBuilder
      * @return an instance of BetaToolboxesClient.
      */
     private BetaToolboxesClient buildBetaToolboxesClient() {
-        return new BetaToolboxesClient(buildBetaInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+        return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
     }
 }
