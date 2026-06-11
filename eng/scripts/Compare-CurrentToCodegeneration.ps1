@@ -15,10 +15,6 @@ The service directories that will be searched for 'tsp-location.yaml' files to
 run code regeneration. If this parameter is not specified, the script will not check any directories and will exit
 with a success status.
 
-.PARAMETER RegenerationType
-The type of regeneration to perform. This can be 'All', or 'TypeSpec'. If not specified, the script will use
-'All' as the default, which means it will run TypeSpec code generation.
-
 .PARAMETER Parallelization
 The number of parallel jobs to run. The default is the number of processors on the machine. If unspecified or
 less than 1, it will default to 1.
@@ -27,10 +23,6 @@ less than 1, it will default to 1.
 param(
   [Parameter(Mandatory = $false)]
   [string]$ServiceDirectories,
-
-  [Parameter(Mandatory = $false)]
-  [ValidateSet('All', 'TypeSpec')]
-  [string]$RegenerationType = 'All',
 
   [Parameter(Mandatory = $false)]
   [int]$Parallelization = [Environment]::ProcessorCount
@@ -67,17 +59,15 @@ function Find-GenerationInformation {
 
   $path = Join-Path -Path $sdkFolder $LibraryFolder
 
-  if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-    if ($LibraryFolder.Contains("-v2")) {
-      # Skip v2 libraries for TypeSpec regeneration as they are not supported.
-      Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
-      return
-    }
+  if ($LibraryFolder.Contains("-v2")) {
+    # Skip v2 libraries for TypeSpec regeneration as they are not supported.
+    Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
+    return
+  }
 
-    # Search for 'tsp-location.yaml' script in the specified service directory.
-    Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
-      $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
-    }
+  # Search for 'tsp-location.yaml' script in the specified service directory.
+  Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
+    $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
   }
 }
 
@@ -94,8 +84,8 @@ if ($Parallelization -lt 1) {
 
 # Normalize, deduplicate, and sort ServiceDirectories so top-level services are processed
 # before specific libraries. This prevents duplicate work when both are provided.
-# Then search for 'Update-Codegeneration.ps1' or 'tsp-location.yaml' scripts in those directories,
-# based on RegenerationType, and store the results in a list of GenerationInformation objects.
+# Then search for 'tsp-location.yaml' files in those directories and store the results in a
+# list of GenerationInformation objects.
 $generationInformations = New-Object 'Collections.ArrayList'
 $orderedServiceDirectories = $ServiceDirectories.Split(',') |
   ForEach-Object { $_.Trim().Trim('/') } |
@@ -133,17 +123,14 @@ foreach ($serviceDirectory in $orderedServiceDirectories) {
 }
 
 if ($generationInformations.Count -eq 0) {
-  $kind = $RegenerationType -eq 'All' ? 'TypeSpec' : $RegenerationType
-  Write-Host "No $kind generation files to regenerate in directories: $ServiceDirectories."
+  Write-Host "No TypeSpec generation files to regenerate in directories: $ServiceDirectories."
   exit 0
 }
 
-if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-  $output = (& npm --prefix "$tspClientFolder" ci 2>&1)
-  if ($LASTEXITCODE -ne 0) {
-    Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
-    exit 1
-  }
+$output = (& npm --prefix "$tspClientFolder" ci 2>&1)
+if ($LASTEXITCODE -ne 0) {
+  Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
+  exit 1
 }
 
 $generateScript = {
