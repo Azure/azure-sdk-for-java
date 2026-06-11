@@ -138,6 +138,15 @@
     </dependency>
 
     <!-- Test -->
+    <!-- Used to verify the fix for https://github.com/Azure/azure-sdk-for-java/issues/49441: with
+         azure-spring-data-cosmos on the classpath, OpenFeign must still register a feign.codec.Encoder bean
+         on Spring Boot 4. See OpenFeignEncoderBeanRegistrationUnitTest. -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <version>5.0.1</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-starter-openfeign;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
