@@ -142,7 +142,8 @@ class AadOAuth2ClientConfiguration {
         AadProfileProperties profile = properties.getProfile();
         AadAuthorizationServerEndpoints endpoints = new AadAuthorizationServerEndpoints(
                 profile.getEnvironment().getActiveDirectoryEndpoint(), profile.getTenantId());
-        return new AadOidcIdTokenDecoderFactory(endpoints.getJwkSetEndpoint(), createRestTemplate(restTemplateBuilder));
+        return new AadOidcIdTokenDecoderFactory(endpoints.getJwkSetEndpoint(),
+                createRestTemplate(restTemplateBuilder), properties);
     }
 
     @SuppressWarnings({"deprecation", "removal"})
