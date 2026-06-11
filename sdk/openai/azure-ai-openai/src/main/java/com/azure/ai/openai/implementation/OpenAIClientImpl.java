@@ -2673,7 +2673,7 @@ public final class OpenAIClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>after</td><td>String</td><td>No</td><td>Identifier for the last event from the previous pagination
      * request.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>Number of batches to retrieve. Defaults to 20.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The number of batches to retrieve. The default is 20.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2752,7 +2752,7 @@ public final class OpenAIClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>after</td><td>String</td><td>No</td><td>Identifier for the last event from the previous pagination
      * request.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>Number of batches to retrieve. Defaults to 20.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The number of batches to retrieve. The default is 20.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3029,7 +3029,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param batchId The identifier of the batch.
+     * @param batchId The ID of the batch job to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3092,7 +3092,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param batchId The identifier of the batch.
+     * @param batchId The ID of the batch job to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3153,7 +3153,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param batchId The identifier of the batch.
+     * @param batchId The ID of the batch job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3216,7 +3216,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param batchId The identifier of the batch.
+     * @param batchId The ID of the batch job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
