@@ -8,11 +8,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
- * Per-request HTTP/2 child-stream handler that translates a parent-TCP-channel close
+ * Per-child-stream HTTP/2 handler that translates a parent-TCP-channel close
  * driven by {@link Http2PingHandler} into a typed {@link Http2PingTimeoutChannelClosedException}.
  * <p>
  * Installed at the head of each H2 child-stream pipeline by
- * {@code ReactorNettyClient}'s {@code .doOnRequest(...)} hook. When the parent (TCP)
+ * {@code ReactorNettyClient}'s {@code .observe(...)} hook on {@code STREAM_CONFIGURED}
+ * (the per-child-stream lifecycle event). When the parent (TCP)
  * channel is closed by {@link Http2PingHandler} after consecutive PING-ACK timeouts
  * or consecutive PING-send failures, the H2 multiplex codec propagates
  * {@code channelInactive} to every child stream.
@@ -29,7 +30,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * JVM-wide {@link #INSTANCE} is reused across all H2 child streams.
  * <p>
  * For non-H2 channels (parent is {@code null}) this handler is never installed; the
- * install site in {@code ReactorNettyClient} gates on {@code ch.parent() != null}.
+ * install site in {@code ReactorNettyClient} only runs at {@code STREAM_CONFIGURED}
+ * (H2 child streams) and additionally gates on {@code ch.parent() != null}.
  */
 @ChannelHandler.Sharable
 final class Http2PingCloseRewrapHandler extends ChannelInboundHandlerAdapter {

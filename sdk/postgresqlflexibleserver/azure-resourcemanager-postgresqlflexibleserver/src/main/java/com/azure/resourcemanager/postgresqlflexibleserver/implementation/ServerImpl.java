@@ -33,6 +33,8 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckRequest;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StartMajorVersionUpgradePrecheckResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import java.time.OffsetDateTime;
@@ -302,6 +304,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     public MigrateNetworkStatus migrateNetworkMode(Context context) {
         return serviceManager.servers().migrateNetworkMode(resourceGroupName, serverName, context);
+    }
+
+    public StartMajorVersionUpgradePrecheckResponse
+        startMajorVersionUpgradePrecheck(StartMajorVersionUpgradePrecheckRequest body) {
+        return serviceManager.servers().startMajorVersionUpgradePrecheck(resourceGroupName, serverName, body);
+    }
+
+    public StartMajorVersionUpgradePrecheckResponse
+        startMajorVersionUpgradePrecheck(StartMajorVersionUpgradePrecheckRequest body, Context context) {
+        return serviceManager.servers().startMajorVersionUpgradePrecheck(resourceGroupName, serverName, body, context);
     }
 
     public ServerImpl withRegion(Region location) {

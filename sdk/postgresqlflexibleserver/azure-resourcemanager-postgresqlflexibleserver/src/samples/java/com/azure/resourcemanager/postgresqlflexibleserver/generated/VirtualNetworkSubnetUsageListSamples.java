@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkS
  */
 public final class VirtualNetworkSubnetUsageListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/VirtualNetworkSubnetUsageList.json
+     * x-ms-original-file: 2026-04-01-preview/VirtualNetworkSubnetUsageList.json
      */
     /**
      * Sample code: List the virtual network subnet usage for a given virtual network.
