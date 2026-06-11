@@ -120,12 +120,19 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
         // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix:
         // when HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
-        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
+        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in. ThinClient is set when
+        // COSMOS.THINCLIENT_ENABLED is true (default true after Gateway V2 default enablement).
+        int featureValue = 0;
+        if (Configs.isThinClientEnabled()) {
+            featureValue |= UserAgentFeatureFlags.ThinClient.getValue();
+        }
         if (Configs.isHttp2Enabled()) {
-            int featureValue = UserAgentFeatureFlags.Http2.getValue();
+            featureValue |= UserAgentFeatureFlags.Http2.getValue();
             if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
                 featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
             }
+        }
+        if (featureValue != 0) {
             expectedUserAgentSuffix = expectedUserAgentSuffix + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
         }
 
