@@ -45,8 +45,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileShareTestHelper {
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
@@ -121,23 +123,13 @@ public class FileShareTestHelper {
         assertEquals(expected.getEnd(), actual.getEnd());
     }
 
-    protected static void assertFileRangeEquals(ShareFileRange expected, FileRange actual) {
-        assertEquals(expected.getStart(), actual.getStart());
-        assertEquals(expected.getEnd(), actual.getEnd());
-    }
-
-    protected static void assertClearRangeEquals(ClearRange expected, ClearRange actual) {
-        assertEquals(expected.getStart(), actual.getStart());
-        assertEquals(expected.getEnd(), actual.getEnd());
-    }
-
     protected static void assertFileRangeItemEquals(ShareFileRange expected, ShareFileRangeItem actual) {
-        assertEquals(false, actual.isClear());
+        assertFalse(actual.isClear());
         assertFileRangeEquals(expected, actual.getRange());
     }
 
     protected static void assertClearRangeItemEquals(ClearRange expected, ShareFileRangeItem actual) {
-        assertEquals(true, actual.isClear());
+        assertTrue(actual.isClear());
         assertEquals(expected.getStart(), actual.getRange().getStart());
         assertEquals(expected.getEnd(), actual.getRange().getEnd());
     }

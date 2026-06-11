@@ -2604,9 +2604,9 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRangeItem> listAllRanges(ShareFileListRangesOptions options, Duration timeout,
         Context context) {
-            StorageImplUtils.assertNotNull("options", options);
-            return listAllRangesInternal(options.getRange(), options.getRequestConditions(), null, null, false,
-                timeout, context);
+        StorageImplUtils.assertNotNull("options", options);
+        return listAllRangesInternal(options.getRange(), options.getRequestConditions(), null, null, false, timeout,
+            context);
     }
 
     /**

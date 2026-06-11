@@ -2913,7 +2913,6 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
                 options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE);
         } catch (RuntimeException ex) {
@@ -2940,11 +2939,10 @@ public class ShareFileAsyncClient {
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
-
     PagedFlux<ShareFileRangeItem> listAllRangesInternal(ShareFileRange range, ShareRequestConditions requestConditions,
         String previousSnapshot, Boolean supportRename, boolean includeClearRanges, Duration timeout) {
-        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever = (marker,
-            pageSize) -> StorageImplUtils
+        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever
+            = (marker, pageSize) -> StorageImplUtils
                 .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, previousSnapshot,
                     supportRename, marker, pageSize, Context.NONE), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
