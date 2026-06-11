@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
@@ -26,6 +27,7 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -712,6 +714,70 @@ public class ConsistencyWriterTest {
                 assertThat(error).isInstanceOf(RequestTimeoutException.class);
                 RequestTimeoutException rte = (RequestTimeoutException) error;
                 assertThat(rte.getSubStatusCode()).isEqualTo(SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
+            })
+            .verify(Duration.ofSeconds(30));
+    }
+
+    @Test(groups = "unit")
+    public void writeBarrier_AllReplicasThrottled_PreservesCauseAndRetryAfter() {
+        // When all replicas return 429 and retries exhaust, the synthesized 408 must preserve the underlying
+        // 429 as its cause and propagate the server-advised x-ms-retry-after-ms so a downstream retry policy
+        // honoring the 408 still has the server hint.
+        HttpHeaders throttleHeaders = new HttpHeaders();
+        throttleHeaders.set(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, "1500");
+        RequestRateTooLargeException throttleException =
+            new RequestRateTooLargeException(null, throttleHeaders, (java.net.URI) null);
+        StoreResult throttledStoreResult = new StoreResult(
+            null,
+            throttleException,
+            "1",
+            0,
+            0,
+            0.0,
+            UUID.randomUUID().toString(),
+            UUID.randomUUID().toString(),
+            4,
+            2,
+            false,
+            null,
+            0,
+            0,
+            1,
+            1,
+            null,
+            0.3,
+            90.0);
+        List<StoreResult> throttledResults = Collections.singletonList(throttledStoreResult);
+
+        StoreReader storeReader = Mockito.mock(StoreReader.class);
+        Mockito.when(storeReader.readMultipleReplicaAsync(
+                Mockito.any(),
+                Mockito.anyBoolean(),
+                Mockito.anyInt(),
+                Mockito.anyBoolean(),
+                Mockito.anyBoolean(),
+                Mockito.any(),
+                Mockito.anyBoolean(),
+                Mockito.anyBoolean()))
+            .thenReturn(Mono.just(throttledResults));
+
+        initializeConsistencyWriterWithStoreReader(false, storeReader, true);
+
+        RxDocumentServiceRequest barrierRequest = mockDocumentServiceRequest(clientContext);
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        barrierRequest.requestContext.timeoutHelper = timeoutHelper;
+
+        Mono<Boolean> result = consistencyWriter.waitForWriteBarrierAsync(
+            barrierRequest, 100L, new java.util.concurrent.atomic.AtomicReference<>(null), BarrierType.GLOBAL_STRONG_WRITE);
+
+        StepVerifier.create(result)
+            .expectErrorSatisfies(error -> {
+                assertThat(error).isInstanceOf(RequestTimeoutException.class);
+                RequestTimeoutException rte = (RequestTimeoutException) error;
+                assertThat(rte.getSubStatusCode()).isEqualTo(SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED);
+                assertThat(rte.getCause()).isSameAs(throttleException);
+                assertThat(rte.getResponseHeaders().get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS))
+                    .isEqualTo("1500");
             })
             .verify(Duration.ofSeconds(30));
     }

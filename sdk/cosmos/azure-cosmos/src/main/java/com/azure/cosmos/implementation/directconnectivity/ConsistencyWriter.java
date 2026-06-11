@@ -29,6 +29,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -513,6 +514,7 @@ public class ConsistencyWriter {
         AtomicInteger writeBarrierRetryCount = new AtomicInteger(ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES);
         AtomicLong maxGlobalCommittedLsnReceived = new AtomicLong(0);
         AtomicBoolean lastAttemptWasThrottled = new AtomicBoolean(false);
+        AtomicReference<CosmosException> lastThrottledException = new AtomicReference<>(null);
         return Flux.defer(() -> {
             if (barrierRequest.requestContext.timeoutHelper.isElapsed()) {
                 return Flux.error(new RequestTimeoutException());
@@ -520,11 +522,14 @@ public class ConsistencyWriter {
 
             if (writeBarrierRetryCount.get() == 0) {
                 if (this.enableBarrierEarlyYieldOn429 && lastAttemptWasThrottled.get()) {
+                    CosmosException lastThrottled = lastThrottledException.get();
                     logger.warn("ConsistencyWriter: Write barrier failed after all retries; last attempt was "
                         + "throttled (429). Throwing RequestTimeoutException (408).");
                     return Flux.error(
                         new RequestTimeoutException(
                             RMResources.RequestTimeout,
+                            lastThrottled,
+                            buildRetryAfterHeadersFromThrottled(lastThrottled),
                             null,
                             HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED));
                 }
@@ -557,6 +562,7 @@ public class ConsistencyWriter {
                     if (isAvoidQuorumSelectionStoreResult) {
                         writeBarrierRetryCount.decrementAndGet();
                         lastAttemptWasThrottled.set(false);
+                        lastThrottledException.set(null);
                         return this.isBarrierMeetPossibleInPresenceOfAvoidQuorumSelectionException(
                             barrierRequest,
                             selectedGlobalCommittedLsn,
@@ -572,8 +578,12 @@ public class ConsistencyWriter {
                         logger.info("ConsistencyWriter: waitForWriteBarrierAsync - All contacted replicas returned "
                             + "429 Too Many Requests for this attempt. Continuing retries.");
                         lastAttemptWasThrottled.set(this.enableBarrierEarlyYieldOn429);
+                        // Preserve the underlying 429 so that, if retries exhaust and we synthesize a 408,
+                        // its cause and the server-advised x-ms-retry-after-ms are not lost.
+                        lastThrottledException.set(extractThrottledException(responses));
                     } else {
                         lastAttemptWasThrottled.set(false);
+                        lastThrottledException.set(null);
                     }
 
                     if (responses != null && responses.stream().anyMatch(response -> {
@@ -623,6 +633,46 @@ public class ConsistencyWriter {
             }
         })
         ).take(1).single();
+    }
+
+    /**
+     * Returns a representative 429 {@link CosmosException} from a set of store results where every contacted
+     * replica was throttled, or {@code null} if none can be extracted. Used to preserve the underlying throttle
+     * cause when the write-barrier loop exhausts its retries and synthesizes a 408.
+     */
+    private static CosmosException extractThrottledException(List<StoreResult> responses) {
+        if (responses == null) {
+            return null;
+        }
+        for (StoreResult storeResult : responses) {
+            if (storeResult.isThrottledException) {
+                // isThrottledException implies a non-null 429 exception, so getException() will not throw here.
+                return storeResult.getException();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Builds an {@link HttpHeaders} carrying only the server-advised {@code x-ms-retry-after-ms} from the
+     * supplied throttled exception, so that a downstream retry policy honoring the 408 still has the server hint.
+     * Returns {@code null} when no retry-after is available.
+     */
+    private static HttpHeaders buildRetryAfterHeadersFromThrottled(CosmosException throttledException) {
+        if (throttledException == null) {
+            return null;
+        }
+        Map<String, String> responseHeaders = throttledException.getResponseHeaders();
+        if (responseHeaders == null) {
+            return null;
+        }
+        String retryAfterInMs = responseHeaders.get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
+        if (StringUtils.isEmpty(retryAfterInMs)) {
+            return null;
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, retryAfterInMs);
+        return headers;
     }
 
     static void getLsnAndGlobalCommittedLsn(StoreResponse response, Utils.ValueHolder<Long> lsn, Utils.ValueHolder<Long> globalCommittedLsn, BarrierType barrierType) {

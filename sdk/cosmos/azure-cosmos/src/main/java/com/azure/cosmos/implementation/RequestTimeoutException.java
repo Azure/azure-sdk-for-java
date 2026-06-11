@@ -100,7 +100,7 @@ public class RequestTimeoutException extends CosmosException {
             requestUrl != null ? requestUrl.toString() : null);
     }
 
-    RequestTimeoutException(String message,
+    public RequestTimeoutException(String message,
                             Exception innerException,
                             HttpHeaders headers,
                             URI requestUrl,
