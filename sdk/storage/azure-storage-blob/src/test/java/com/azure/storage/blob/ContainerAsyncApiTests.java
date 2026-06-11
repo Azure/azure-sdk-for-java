@@ -4,11 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -18,6 +21,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -31,6 +35,7 @@ import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.test.shared.TestHttpClientType;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -39,6 +44,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -48,8 +54,11 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.io.ByteArrayInputStream;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -2245,6 +2254,17 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(ccAsync.listBlobs().byPage(2)).thenConsumeWhile(page -> {
             assertEquals(2, page.getValue().size());
             return true;
+    @ResourceLock("BlobSessionAuth")
+    public void createSession() {
+        BlobContainerAsyncClient oauthCcAsync
+            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
+        StepVerifier.create(oauthCcAsync.createSession()).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getId());
+            assertNotNull(response.getExpiration());
+            assertNotNull(response.getCredentials());
+            assertNotNull(response.getCredentials().getSessionToken());
+            assertNotNull(response.getCredentials().getSessionKey());
         }).verifyComplete();
     }
 
@@ -2507,4 +2527,147 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertEquals("tagvalue", item.getTags().get("tagkey"));
         }).verifyComplete();
     }
+    @ResourceLock("BlobSessionAuth")
+    public void createSessionWithResponse() {
+        BlobContainerAsyncClient oauthCcAsync
+            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
+        StepVerifier.create(oauthCcAsync.createSessionWithResponse()).assertNext(response -> {
+            assertResponseStatusCode(response, 201);
+            CreateSessionResponse sessionResponse = response.getValue();
+            assertNotNull(sessionResponse);
+            assertNotNull(sessionResponse.getId());
+            assertNotNull(sessionResponse.getExpiration());
+            assertTrue(sessionResponse.getExpiration().isAfter(testResourceNamer.now()));
+            assertNotNull(sessionResponse.getCredentials());
+            assertNotNull(sessionResponse.getCredentials().getSessionToken());
+            assertNotNull(sessionResponse.getCredentials().getSessionKey());
+        }).verifyComplete();
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobOverSessionAuth() {
+        int blobCount = 5;
+        List<String> blobNames = new ArrayList<>();
+        for (int i = 0; i < blobCount; i++) {
+            String blobName = generateBlobName();
+            ccAsync.getBlobAsyncClient(blobName)
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                .block();
+            blobNames.add(blobName);
+        }
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
+            if (auth != null && trimmed != null && trimmed.contains("/")) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobContainerAsyncClient sessionCcAsync = sessionEnabledContainerAsyncClient(inspect);
+
+        for (String blobName : blobNames) {
+            StepVerifier.create(sessionCcAsync.getBlobAsyncClient(blobName).downloadContent())
+                .assertNext(downloaded -> assertEquals(DATA.getDefaultText(), downloaded.toString()))
+                .verifyComplete();
+        }
+
+        // Greater than or equal to because there might be a retry that has a Session token as well if test is run with
+        // listBlobsOverSessionEnabledClient()
+        assertTrue(downloadAuthSchemes.size() >= blobCount,
+            "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
+        assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+            "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(blobName);
+        blobClient.upload(BinaryData.fromBytes(data), true).block();
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobAsyncClient sessionBlob = sessionEnabledContainerAsyncClient(inspect).getBlobAsyncClient(blobName);
+        File outFile = File.createTempFile(prefix, ".tmp");
+        outFile.deleteOnExit();
+        Files.deleteIfExists(outFile.toPath());
+
+        try {
+            StepVerifier.create(sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null,
+                null, false)).expectNextCount(1).verifyComplete();
+
+            Assertions.assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+            assertTrue(downloadAuthSchemes.size() > 1,
+                "Expected multiple chunked download requests; saw " + downloadAuthSchemes);
+            assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+                "Expected all chunked blob downloads to use Session auth; saw " + downloadAuthSchemes);
+        } finally {
+            Files.deleteIfExists(outFile.toPath());
+        }
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // This test validates that listing blobs with a session-enabled client uses Bearer authorization because
+    // List Blobs is a container-level GET request, not a blob-level GET request.
+    public void listBlobsOverSessionEnabledClient() {
+        String blobName = generateBlobName();
+        ccAsync.getBlobAsyncClient(blobName)
+            .getBlockBlobAsyncClient()
+            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .block();
+
+        List<String> listAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String query = req.getUrl().getQuery();
+            if (auth != null && query != null && query.contains("comp=list")) {
+                listAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobContainerAsyncClient sessionCcAsync = sessionEnabledContainerAsyncClient(inspect);
+
+        StepVerifier.create(sessionCcAsync.listBlobs().filter(b -> b.getName().equals(blobName)).hasElements())
+            .expectNext(true)
+            .verifyComplete();
+
+        assertFalse(listAuthSchemes.isEmpty(), "Expected to observe at least one list request");
+        assertTrue(listAuthSchemes.stream().allMatch("Bearer"::equals),
+            "Container list operation must use Bearer authorization; saw " + listAuthSchemes);
+    }
+
+    private BlobContainerAsyncClient sessionEnabledContainerAsyncClient(HttpPipelinePolicy... policies) {
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER)
+            .setContainerName(ccAsync.getBlobContainerName())
+            .setAccountName(ccAsync.getAccountName());
+        return getOAuthServiceAsyncClient(sessionOptions, policies)
+            .getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
+    }
+
 }
