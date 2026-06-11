@@ -251,6 +251,20 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static {
+        // Disable the thin-client connectivity probe by default for E2E tests.
+        // The proxy-side /connectivity-probe endpoint is not deployed in every CI
+        // test account yet, so leaving the probe ON would (after a single failed
+        // cycle, given the default failure threshold of 1) flip routing from the
+        // thin-client proxy to Gateway V1 and break tests that explicitly assert
+        // thin-client routing (e.g. assertThinClientEndpointUsed) or rely on
+        // proxy-specific response substatus codes. Tests that exercise the probe
+        // itself (EndpointProbeClientTests, ThinClientProbeWiringTests) set this
+        // property explicitly in @BeforeMethod and are not affected. Tests that
+        // need the probe ON can override the system property in their own setup.
+        if (System.getProperty("COSMOS.THINCLIENT_PROBE_ENABLED") == null) {
+            System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
+        }
+
         CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
