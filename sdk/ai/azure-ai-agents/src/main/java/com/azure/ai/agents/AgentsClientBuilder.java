@@ -373,7 +373,6 @@ public final class AgentsClientBuilder
     }
 
     private HttpPipeline resolvePipeline(String foundryFeatures) {
-        this.validateClient();
         HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();
         HttpPipelinePolicy foundryFeaturesPolicy = FoundryPolicyHelper.createFoundryFeaturesPolicy(foundryFeatures);
         return FoundryPolicyHelper.prependPolicy(localPipeline, foundryFeaturesPolicy);

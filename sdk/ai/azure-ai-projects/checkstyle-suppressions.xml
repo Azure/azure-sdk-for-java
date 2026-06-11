@@ -9,4 +9,5 @@
   <suppress files="com.azure.ai.projects.BetaRoutinesClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.projects.BetaRoutinesAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.projects.implementation.MultipartFormDataHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFields" />
+  <suppress files="com.azure.ai.projects.implementation.http.FoundryPolicyHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
   </suppressions>

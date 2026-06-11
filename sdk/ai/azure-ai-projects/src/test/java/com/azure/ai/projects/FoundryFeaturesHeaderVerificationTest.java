@@ -6,8 +6,13 @@ package com.azure.ai.projects;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -19,12 +24,15 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class FoundryFeaturesHeaderVerificationTest {
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
+    private static final HttpHeaderName CUSTOM_PIPELINE_HEADER = HttpHeaderName.fromString("X-Custom-Pipeline");
+    private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
 
     @Test
     public void allowPreviewAddsAreaSpecificHeaders() {
@@ -157,6 +165,72 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
     }
 
+    @Test
+    public void betaClientWithCustomPipelineAddsFoundryHeaderAndPreservesPipeline() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        HttpPipeline customPipeline = createCustomPipeline(httpClient);
+        int originalPolicyCount = customPipeline.getPolicyCount();
+
+        createBuilder(customPipeline).beta()
+            .buildBetaModelsClient()
+            .getModelVersionWithResponse("model", "1", new RequestOptions());
+
+        assertEquals("Models=V1Preview", foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+        assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
+    }
+
+    @Test
+    public void customPipelineDoesNotAddEvaluationRuleHeaderUnlessAllowPreview() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        HttpPipeline customPipeline = createCustomPipeline(httpClient);
+
+        createBuilder(customPipeline).buildEvaluationRulesClient()
+            .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
+
+        assertNull(foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+
+        createBuilder(customPipeline).allowPreview(true)
+            .buildEvaluationRulesClient()
+            .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
+
+        assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+    }
+
+    @Test
+    public void customPipelineDoesNotOverrideExplicitFoundryHeader() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        String explicitHeader = "Insights=V1Preview";
+        RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
+
+        createBuilder(createCustomPipeline(httpClient)).beta()
+            .buildBetaDatasetsClient()
+            .getGenerationJobWithResponse("job", requestOptions);
+
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+    }
+
+    @Test
+    public void openAIClientsUseCustomPipeline() {
+        RecordingHttpClient httpClient = newOpenAIRecordingHttpClient();
+        AIProjectClientBuilder builder = createBuilder(createCustomPipeline(httpClient));
+
+        builder.buildOpenAIClient().models().list();
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildAgentScopedOpenAIClient("agent").models().list();
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+        assertNull(foundryFeatures(httpClient));
+    }
+
+    private static RecordingHttpClient newOpenAIRecordingHttpClient() {
+        return new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::openAIResponse);
+    }
+
     private static AIProjectClientBuilder createBuilder(RecordingHttpClient httpClient) {
         return new AIProjectClientBuilder().endpoint("https://localhost:8080/api/projects/project")
             .credential(new MockTokenCredential())
@@ -164,20 +238,61 @@ public class FoundryFeaturesHeaderVerificationTest {
             .serviceVersion(AIProjectsServiceVersion.V1);
     }
 
+    private static AIProjectClientBuilder createBuilder(HttpPipeline pipeline) {
+        return new AIProjectClientBuilder().endpoint("https://localhost:8080/api/projects/project")
+            .credential(new MockTokenCredential())
+            .pipeline(pipeline)
+            .serviceVersion(AIProjectsServiceVersion.V1);
+    }
+
+    private static HttpPipeline createCustomPipeline(RecordingHttpClient httpClient) {
+        return new HttpPipelineBuilder().httpClient(httpClient).policies(new CustomPipelinePolicy()).build();
+    }
+
     private static String foundryFeatures(RecordingHttpClient httpClient) {
         return httpClient.getLastRequest().getHeaders().getValue(FOUNDRY_FEATURES);
     }
 
+    private static String customPipelineHeader(RecordingHttpClient httpClient) {
+        return httpClient.getLastRequest().getHeaders().getValue(CUSTOM_PIPELINE_HEADER);
+    }
+
+    private static HttpResponse openAIResponse(HttpRequest request) {
+        String path = request.getUrl().getPath();
+        String responseBody = path.endsWith("/models") ? "{\"data\":[],\"object\":\"list\"}" : "{}";
+        return jsonResponse(request, responseBody);
+    }
+
+    private static HttpResponse jsonResponse(HttpRequest request, String responseBody) {
+        HttpHeaders responseHeaders
+            = new HttpHeaders().set(HttpHeaderName.fromString("Content-Type"), "application/json");
+        return new MockHttpResponse(request, 200, responseHeaders, responseBody.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static final class CustomPipelinePolicy implements HttpPipelinePolicy {
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            context.getHttpRequest().getHeaders().set(CUSTOM_PIPELINE_HEADER, CUSTOM_PIPELINE_VALUE);
+            return next.process();
+        }
+    }
+
     private static final class RecordingHttpClient implements HttpClient {
         private final List<HttpRequest> requests = new ArrayList<>();
+        private final Function<HttpRequest, HttpResponse> responseFactory;
+
+        private RecordingHttpClient() {
+            this(request -> jsonResponse(request, "{}"));
+        }
+
+        private RecordingHttpClient(Function<HttpRequest, HttpResponse> responseFactory) {
+            this.responseFactory = responseFactory;
+        }
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             this.requests.add(request);
-            HttpHeaders responseHeaders
-                = new HttpHeaders().set(HttpHeaderName.fromString("Content-Type"), "application/json");
-            return Mono
-                .just(new MockHttpResponse(request, 200, responseHeaders, "{}".getBytes(StandardCharsets.UTF_8)));
+            return Mono.just(responseFactory.apply(request));
         }
 
         @Override
