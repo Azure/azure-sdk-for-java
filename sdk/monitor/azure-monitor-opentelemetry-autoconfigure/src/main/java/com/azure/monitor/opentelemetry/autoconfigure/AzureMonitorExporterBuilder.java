@@ -69,8 +69,7 @@ class AzureMonitorExporterBuilder {
         = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
 
     private static final String SDKSTATS_DISABLED_ENV_VAR = "APPLICATIONINSIGHTS_SDKSTATS_DISABLED";
-    private static final String SDKSTATS_DISABLED_ALL_ENV_VAR = "APPLICATIONINSIGHTS_SDKSTATS_DISABLED_ALL";
-    private static final String SDKSTATS_DISABLED_ALL_ENV_VAR_MIXED_CASE = "APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL";
+    private static final String SDKSTATS_DISABLED_ALL_ENV_VAR = "APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL";
     private static final String SDKSTATS_EXPORT_INTERVAL_ENV_VAR = "APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL";
     private static final long SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS = 900; // 15 minutes
 
@@ -272,8 +271,7 @@ class AzureMonitorExporterBuilder {
     }
 
     static boolean isCustomerSdkStatsEnabled(ConfigProperties configProperties) {
-        if ("true".equalsIgnoreCase(configProperties.getString(SDKSTATS_DISABLED_ALL_ENV_VAR))
-            || "true".equalsIgnoreCase(configProperties.getString(SDKSTATS_DISABLED_ALL_ENV_VAR_MIXED_CASE))) {
+        if ("true".equalsIgnoreCase(configProperties.getString(SDKSTATS_DISABLED_ALL_ENV_VAR))) {
             return false;
         }
         String disabledValue = configProperties.getString(SDKSTATS_DISABLED_ENV_VAR);
