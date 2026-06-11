@@ -2314,9 +2314,9 @@ public class ContainerApiTests extends BlobTestBase {
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         // A real customer would deploy with these environment variables set on the process:
-//   AZURE_STORAGE_SESSION_MODE=SINGLE_SPECIFIED_CONTAINER
-//   AZURE_STORAGE_SESSION_CONTAINER_NAME=session-test-container
-// This test relies on those env vars being set on the host running it.
+        //   AZURE_STORAGE_SESSION_MODE=SINGLE_SPECIFIED_CONTAINER
+        //   AZURE_STORAGE_SESSION_CONTAINER_NAME=session-test-container
+        // This test relies on those env vars being set on the host running it.
 
         List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
         RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
