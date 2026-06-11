@@ -11,6 +11,8 @@
 
 ### Bugs Fixed
 
+- Fixed OpenAI clients built from `AIProjectClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
+
 ### Other Changes
 
 ## 2.1.0 (2026-06-01)
