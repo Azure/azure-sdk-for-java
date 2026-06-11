@@ -2297,7 +2297,7 @@ class FileApiTests extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryFileClient.listAllRanges(options, null, null).forEach(ignored -> {
             }));
-        assertEquals("LeaseNotPresentWithFileOperation", e.getErrorCode().getValue(), e.getErrorCode().getValue());
+        assertEquals("LeaseNotPresentWithFileOperation", e.getErrorCode().getValue());
     }
 
     @Test
@@ -2586,8 +2586,7 @@ class FileApiTests extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryFileClient.listAllRangesDiff(options, null, null).forEach(ignored -> {
             }));
-        assertTrue("LeaseIdMismatchWithFileOperation".contentEquals(e.getErrorCode().getValue()),
-            "Error code thrown does not match: LeaseIdMismatchWithFileOperation");
+        assertEquals("LeaseIdMismatchWithFileOperation", e.getErrorCode().getValue());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")

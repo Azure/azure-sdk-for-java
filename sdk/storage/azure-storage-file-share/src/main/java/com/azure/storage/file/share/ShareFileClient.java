@@ -113,6 +113,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
+import static com.azure.storage.file.share.implementation.util.ModelHelper.toShareFileRangeItems;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -3421,26 +3422,5 @@ public class ShareFileClient {
                     finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage, context);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
-    }
-
-    private static java.util.List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
-        boolean includeClearRanges) {
-        java.util.List<ShareFileRangeItem> ranges = rangeList.getRanges()
-            .stream()
-            .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-            .map(ShareFileRange::new)
-            .map(range -> new ShareFileRangeItem(range, false))
-            .collect(Collectors.toList());
-
-        if (includeClearRanges) {
-            ranges.addAll(rangeList.getClearRanges()
-                .stream()
-                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                .map(ShareFileRange::new)
-                .map(range -> new ShareFileRangeItem(range, true))
-                .collect(Collectors.toList()));
-        }
-
-        return ranges;
     }
 }
