@@ -194,6 +194,7 @@ public final class BlobClientBuilder
         if (CoreUtils.isNullOrEmpty(containerName) && !CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
             containerName = sessionOptions.getContainerName();
         }
+        BuilderHelper.validateSessionMode(sessionOptions, containerName, LOGGER);
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
