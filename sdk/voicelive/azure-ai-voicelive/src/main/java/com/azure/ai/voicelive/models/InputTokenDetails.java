@@ -18,58 +18,10 @@ import java.io.IOException;
 public final class InputTokenDetails implements JsonSerializable<InputTokenDetails> {
 
     /*
-     * Number of cached tokens used in the input.
-     */
-    @Generated
-    private final int cachedTokens;
-
-    /*
-     * Number of text tokens used in the input.
-     */
-    @Generated
-    private final int textTokens;
-
-    /*
-     * Number of audio tokens used in the input.
-     */
-    @Generated
-    private final int audioTokens;
-
-    /*
      * Details of cached token usage.
      */
     @Generated
     private final CachedTokenDetails cachedTokensDetails;
-
-    /**
-     * Get the cachedTokens property: Number of cached tokens used in the input.
-     *
-     * @return the cachedTokens value.
-     */
-    @Generated
-    public int getCachedTokens() {
-        return this.cachedTokens;
-    }
-
-    /**
-     * Get the textTokens property: Number of text tokens used in the input.
-     *
-     * @return the textTokens value.
-     */
-    @Generated
-    public int getTextTokens() {
-        return this.textTokens;
-    }
-
-    /**
-     * Get the audioTokens property: Number of audio tokens used in the input.
-     *
-     * @return the audioTokens value.
-     */
-    @Generated
-    public int getAudioTokens() {
-        return this.audioTokens;
-    }
 
     /**
      * Get the cachedTokensDetails property: Details of cached token usage.
@@ -88,10 +40,10 @@ public final class InputTokenDetails implements JsonSerializable<InputTokenDetai
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("cached_tokens", this.cachedTokens);
-        jsonWriter.writeIntField("text_tokens", this.textTokens);
-        jsonWriter.writeIntField("audio_tokens", this.audioTokens);
-        jsonWriter.writeIntField("image_tokens", this.imageTokens);
+        jsonWriter.writeIntField("cached_tokens", this.cachedTokenCount);
+        jsonWriter.writeIntField("text_tokens", this.textTokenCount);
+        jsonWriter.writeIntField("audio_tokens", this.audioTokenCount);
+        jsonWriter.writeIntField("image_tokens", this.imageTokenCount);
         jsonWriter.writeJsonField("cached_tokens_details", this.cachedTokensDetails);
         return jsonWriter.writeEndObject();
     }
@@ -108,64 +60,113 @@ public final class InputTokenDetails implements JsonSerializable<InputTokenDetai
     @Generated
     public static InputTokenDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int cachedTokens = 0;
-            int textTokens = 0;
-            int audioTokens = 0;
-            int imageTokens = 0;
+            int cachedTokenCount = 0;
+            int textTokenCount = 0;
+            int audioTokenCount = 0;
+            int imageTokenCount = 0;
             CachedTokenDetails cachedTokensDetails = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("cached_tokens".equals(fieldName)) {
-                    cachedTokens = reader.getInt();
+                    cachedTokenCount = reader.getInt();
                 } else if ("text_tokens".equals(fieldName)) {
-                    textTokens = reader.getInt();
+                    textTokenCount = reader.getInt();
                 } else if ("audio_tokens".equals(fieldName)) {
-                    audioTokens = reader.getInt();
+                    audioTokenCount = reader.getInt();
                 } else if ("image_tokens".equals(fieldName)) {
-                    imageTokens = reader.getInt();
+                    imageTokenCount = reader.getInt();
                 } else if ("cached_tokens_details".equals(fieldName)) {
                     cachedTokensDetails = CachedTokenDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new InputTokenDetails(cachedTokens, textTokens, audioTokens, imageTokens, cachedTokensDetails);
+            return new InputTokenDetails(cachedTokenCount, textTokenCount, audioTokenCount, imageTokenCount,
+                cachedTokensDetails);
         });
     }
+
+    /**
+     * Creates an instance of InputTokenDetails class.
+     *
+     * @param cachedTokenCount the cachedTokenCount value to set.
+     * @param textTokenCount the textTokenCount value to set.
+     * @param audioTokenCount the audioTokenCount value to set.
+     * @param imageTokenCount the imageTokenCount value to set.
+     * @param cachedTokensDetails the cachedTokensDetails value to set.
+     */
+    @Generated
+    private InputTokenDetails(int cachedTokenCount, int textTokenCount, int audioTokenCount, int imageTokenCount,
+        CachedTokenDetails cachedTokensDetails) {
+        this.cachedTokenCount = cachedTokenCount;
+        this.textTokenCount = textTokenCount;
+        this.audioTokenCount = audioTokenCount;
+        this.imageTokenCount = imageTokenCount;
+        this.cachedTokensDetails = cachedTokensDetails;
+    }
+
+    /*
+     * Number of cached tokens used in the input.
+     */
+    @Generated
+    private final int cachedTokenCount;
+
+    /*
+     * Number of text tokens used in the input.
+     */
+    @Generated
+    private final int textTokenCount;
+
+    /*
+     * Number of audio tokens used in the input.
+     */
+    @Generated
+    private final int audioTokenCount;
 
     /*
      * Number of image tokens used in the input.
      */
     @Generated
-    private final int imageTokens;
+    private final int imageTokenCount;
 
     /**
-     * Creates an instance of InputTokenDetails class.
+     * Get the cachedTokenCount property: Number of cached tokens used in the input.
      *
-     * @param cachedTokens the cachedTokens value to set.
-     * @param textTokens the textTokens value to set.
-     * @param audioTokens the audioTokens value to set.
-     * @param imageTokens the imageTokens value to set.
-     * @param cachedTokensDetails the cachedTokensDetails value to set.
+     * @return the cachedTokenCount value.
      */
     @Generated
-    private InputTokenDetails(int cachedTokens, int textTokens, int audioTokens, int imageTokens,
-        CachedTokenDetails cachedTokensDetails) {
-        this.cachedTokens = cachedTokens;
-        this.textTokens = textTokens;
-        this.audioTokens = audioTokens;
-        this.imageTokens = imageTokens;
-        this.cachedTokensDetails = cachedTokensDetails;
+    public int getCachedTokenCount() {
+        return this.cachedTokenCount;
     }
 
     /**
-     * Get the imageTokens property: Number of image tokens used in the input.
+     * Get the textTokenCount property: Number of text tokens used in the input.
      *
-     * @return the imageTokens value.
+     * @return the textTokenCount value.
      */
     @Generated
-    public int getImageTokens() {
-        return this.imageTokens;
+    public int getTextTokenCount() {
+        return this.textTokenCount;
+    }
+
+    /**
+     * Get the audioTokenCount property: Number of audio tokens used in the input.
+     *
+     * @return the audioTokenCount value.
+     */
+    @Generated
+    public int getAudioTokenCount() {
+        return this.audioTokenCount;
+    }
+
+    /**
+     * Get the imageTokenCount property: Number of image tokens used in the input.
+     *
+     * @return the imageTokenCount value.
+     */
+    @Generated
+    public int getImageTokenCount() {
+        return this.imageTokenCount;
     }
 }

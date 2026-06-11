@@ -12,7 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Migration;
  */
 public final class MigrationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsUpdate.json
      */
     /**
      * Sample code: Update an existing migration.

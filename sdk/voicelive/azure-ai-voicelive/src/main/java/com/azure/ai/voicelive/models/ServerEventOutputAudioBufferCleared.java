@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when the output audio buffer has been cleared.
  */
 @Immutable
-public final class ServerEventOutputAudioBufferCleared extends SessionUpdate {
+public final class ServerEventOutputAudioBufferCleared extends SessionServerEvent {
 
     /*
      * The type of event.

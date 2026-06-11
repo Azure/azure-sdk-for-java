@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when a web search call is in progress.
  */
 @Immutable
-public final class ServerEventResponseWebSearchCallInProgress extends SessionUpdate {
+public final class ServerEventResponseWebSearchCallInProgress extends SessionServerEvent {
 
     /*
      * The type of event.

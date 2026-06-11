@@ -337,16 +337,16 @@
 # ServiceOwners:                                                   @Kishp01 @rajeshka @shankarsama
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                                    @axisc @hmlam @j7nw4r @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/                                                    @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @hmlam @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs/                          @axisc @hmlam @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/microsoft-azure-eventhubs/                          @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Hubs
-# ServiceOwners:                                                   @axisc @hmlam @sjkwak
+# ServiceOwners:                                                   @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak
 
 # PRLabel: %Health Deidentification
 /sdk/healthdataaiservices/                                         @alexathomases @Azure/healthdatadeidentification @Azure/azure-java-sdk

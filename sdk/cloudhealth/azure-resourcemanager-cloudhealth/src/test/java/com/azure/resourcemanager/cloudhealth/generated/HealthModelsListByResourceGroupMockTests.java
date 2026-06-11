@@ -11,7 +11,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.HealthModel;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +23,7 @@ public final class HealthModelsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataplaneEndpoint\":\"atpxl\",\"provisioningState\":\"Creating\",\"discovery\":{\"scope\":\"yjmoadsu\",\"addRecommendedSignals\":\"Enabled\",\"identity\":\"m\"}},\"identity\":{\"principalId\":\"mjsjqb\",\"tenantId\":\"hyxxrwlycoduhpk\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"dgssofwqmzqal\":{\"principalId\":\"areqna\",\"clientId\":\"qugjhkycube\"},\"imrzrtuzqog\":{\"principalId\":\"mnjijpxacqqudf\",\"clientId\":\"yxbaaabjyvayf\"},\"ud\":{\"principalId\":\"xnevfdnwn\",\"clientId\":\"ewzsyyceuzsoib\"},\"paxh\":{\"principalId\":\"rx\",\"clientId\":\"thzvaytdwkqbrqu\"}}},\"location\":\"iilivpdtiirqtd\",\"tags\":{\"l\":\"xoruzfgsquyfxrx\",\"zwl\":\"ptramxj\",\"tdooaoj\":\"nwxuqlcvydyp\"},\"id\":\"niodkooeb\",\"name\":\"nuj\",\"type\":\"emmsbvdkc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"l\",\"tenantId\":\"qttbaj\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"brxk\":{\"principalId\":\"wxyiopidkqq\",\"clientId\":\"uvscxkdmligov\"},\"ybfhjxa\":{\"principalId\":\"loazuruocbgoo\",\"clientId\":\"te\"}}},\"location\":\"vjgsl\",\"tags\":{\"yw\":\"il\",\"gkxnyedabg\":\"t\"},\"id\":\"vudtjuewbcihx\",\"name\":\"uwhcjyxccybv\",\"type\":\"ayakkudzpx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +33,11 @@ public final class HealthModelsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HealthModel> response
-            = manager.healthModels().listByResourceGroup("bdunygaeqid", com.azure.core.util.Context.NONE);
+            = manager.healthModels().listByResourceGroup("dzf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iilivpdtiirqtd", response.iterator().next().location());
-        Assertions.assertEquals("xoruzfgsquyfxrx", response.iterator().next().tags().get("l"));
-        Assertions.assertEquals("yjmoadsu", response.iterator().next().properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
-            response.iterator().next().properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("m", response.iterator().next().properties().discovery().identity());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+        Assertions.assertEquals("vjgsl", response.iterator().next().location());
+        Assertions.assertEquals("il", response.iterator().next().tags().get("yw"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             response.iterator().next().identity().type());
     }
 }

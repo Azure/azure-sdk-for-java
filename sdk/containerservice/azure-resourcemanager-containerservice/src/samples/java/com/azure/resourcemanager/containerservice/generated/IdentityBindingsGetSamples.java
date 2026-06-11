@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class IdentityBindingsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/IdentityBindings_Get.json
+     * x-ms-original-file: 2026-04-01/IdentityBindings_Get.json
      */
     /**
      * Sample code: Get Identity Binding.

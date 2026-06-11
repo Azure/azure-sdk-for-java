@@ -5,6 +5,7 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -33,7 +34,7 @@ public final class EvaluationScheduleTask extends ScheduleTask {
      * The evaluation run payload.
      */
     @Generated
-    private final EvaluationScheduleTaskEvalRun evalRun;
+    private final Map<String, BinaryData> evalRun;
 
     /**
      * Get the type property: Type of the task.
@@ -62,7 +63,7 @@ public final class EvaluationScheduleTask extends ScheduleTask {
      * @return the evalRun value.
      */
     @Generated
-    public EvaluationScheduleTaskEvalRun getEvalRun() {
+    public Map<String, BinaryData> getEvalRun() {
         return this.evalRun;
     }
 
@@ -85,7 +86,13 @@ public final class EvaluationScheduleTask extends ScheduleTask {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("configuration", getConfiguration(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("evalId", this.evalId);
-        jsonWriter.writeJsonField("evalRun", this.evalRun);
+        jsonWriter.writeMapField("evalRun", this.evalRun, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -104,7 +111,7 @@ public final class EvaluationScheduleTask extends ScheduleTask {
         return jsonReader.readObject(reader -> {
             Map<String, String> configuration = null;
             String evalId = null;
-            EvaluationScheduleTaskEvalRun evalRun = null;
+            Map<String, BinaryData> evalRun = null;
             ScheduleTaskType type = ScheduleTaskType.EVALUATION;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -114,7 +121,8 @@ public final class EvaluationScheduleTask extends ScheduleTask {
                 } else if ("evalId".equals(fieldName)) {
                     evalId = reader.getString();
                 } else if ("evalRun".equals(fieldName)) {
-                    evalRun = EvaluationScheduleTaskEvalRun.fromJson(reader);
+                    evalRun = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("type".equals(fieldName)) {
                     type = ScheduleTaskType.fromString(reader.getString());
                 } else {
@@ -135,7 +143,7 @@ public final class EvaluationScheduleTask extends ScheduleTask {
      * @param evalRun the evalRun value to set.
      */
     @Generated
-    public EvaluationScheduleTask(String evalId, EvaluationScheduleTaskEvalRun evalRun) {
+    public EvaluationScheduleTask(String evalId, Map<String, BinaryData> evalRun) {
         this.evalId = evalId;
         this.evalRun = evalRun;
     }

@@ -100,12 +100,12 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.81.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.82.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -858,6 +858,67 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
+      <id>manual-http-network-fault</id>
+      <properties>
+        <test.groups>manual-http-network-fault</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/manual-http-network-fault-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <COSMOS.THINCLIENT_ENABLED>true</COSMOS.THINCLIENT_ENABLED>
+                <COSMOS.HTTP2_ENABLED>true</COSMOS.HTTP2_ENABLED>
+                <COSMOS.HTTP2_PING_HEALTH_ENABLED>true</COSMOS.HTTP2_PING_HEALTH_ENABLED>
+                <COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>1</COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>
+                <COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>2</COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- Compute / Gateway V2 variant of manual-http-network-fault. Same suite XML and test
+           group as the thin-client variant; the only difference is COSMOS.THINCLIENT_ENABLED=false
+           so HTTP/2 tests (e.g. Http2PingKeepaliveTest) exercise the regional gateway on :443
+           instead of the thin-client proxy on :10250. Requires an account whose regional
+           gateway negotiates h2 via ALPN. -->
+      <id>manual-http-network-fault-compute</id>
+      <properties>
+        <test.groups>manual-http-network-fault</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/manual-http-network-fault-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <COSMOS.THINCLIENT_ENABLED>false</COSMOS.THINCLIENT_ENABLED>
+                <COSMOS.HTTP2_ENABLED>true</COSMOS.HTTP2_ENABLED>
+                <COSMOS.HTTP2_PING_HEALTH_ENABLED>true</COSMOS.HTTP2_PING_HEALTH_ENABLED>
+                <COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>1</COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS>
+                <COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>2</COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <!-- thin client integration tests, requires thin client endpoint and key -->
       <id>fi-thinclient-multi-region</id>
       <properties>
@@ -899,6 +960,33 @@ Licensed under the MIT License.
               </suiteXmlFiles>
               <systemPropertyVariables>
                 <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- global secondary index integration tests, requires pre-provisioned Cosmos DB account with GSI support -->
+      <id>gsi</id>
+      <properties>
+        <test.groups>gsi</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/gsi-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
           </plugin>

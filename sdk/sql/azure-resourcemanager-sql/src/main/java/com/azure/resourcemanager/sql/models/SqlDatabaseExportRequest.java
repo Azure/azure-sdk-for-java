@@ -97,6 +97,26 @@ public interface SqlDatabaseExportRequest extends HasInnerModel<ExportDatabaseDe
              */
             SqlDatabaseExportRequest.DefinitionStages.WithExecute
                 withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+
+            /**
+             * Sets the user-assigned managed identity (UAMI) used to authenticate to the SQL database for export.
+             *
+             * <p>The SQL server must have the specified UAMI assigned (and typically set as its primary identity), the
+             * UAMI must be granted the appropriate role on the target storage account (e.g. {@code Storage Blob Data
+             * Contributor}), and it must be mapped to a database user with the required privileges. When this method
+             * is used, no administrator password is sent to the service.</p>
+             *
+             * <p>This method is for user-assigned managed identity. System-assigned managed identity is not supported.
+             * See <a href="https://learn.microsoft.com/azure/azure-sql/database/database-import-export-managed-identity?view=azuresql&tabs=azure-portal#limitations">Limitations</a></p>
+             *
+             * @param managedIdentityResourceId the Azure resource ID of the user-assigned managed identity to use
+             *                                  for both SQL and storage access
+             * @return next definition stage
+             */
+            default SqlDatabaseExportRequest.DefinitionStages.WithExecute
+                withManagedIdentity(String managedIdentityResourceId) {
+                throw new UnsupportedOperationException("[withManagedIdentity] is not supported in " + getClass());
+            }
         }
 
         /**

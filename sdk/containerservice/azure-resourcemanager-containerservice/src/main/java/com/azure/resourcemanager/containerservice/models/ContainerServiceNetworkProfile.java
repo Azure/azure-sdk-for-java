@@ -114,19 +114,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      */
     private List<IpFamily> ipFamilies;
 
-    /*
-     * Defines access to special link local addresses (Azure Instance Metadata Service, aka IMDS) for pods with
-     * hostNetwork=false. if not specified, the default is 'IMDS'.
-     */
-    private PodLinkLocalAccess podLinkLocalAccess;
-
-    /*
-     * Holds configuration customizations for kube-proxy. Any values not defined will use the kube-proxy defaulting
-     * behavior. See https://v<version>.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * <version> is represented by a <major version>-<minor version> string. Kubernetes version 1.23 would be '1-23'.
-     */
-    private ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig;
-
     /**
      * Creates an instance of ContainerServiceNetworkProfile class.
      */
@@ -506,57 +493,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the podLinkLocalAccess property: Defines access to special link local addresses (Azure Instance Metadata
-     * Service, aka IMDS) for pods with hostNetwork=false. if not specified, the default is 'IMDS'.
-     * 
-     * @return the podLinkLocalAccess value.
-     */
-    public PodLinkLocalAccess podLinkLocalAccess() {
-        return this.podLinkLocalAccess;
-    }
-
-    /**
-     * Set the podLinkLocalAccess property: Defines access to special link local addresses (Azure Instance Metadata
-     * Service, aka IMDS) for pods with hostNetwork=false. if not specified, the default is 'IMDS'.
-     * 
-     * @param podLinkLocalAccess the podLinkLocalAccess value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withPodLinkLocalAccess(PodLinkLocalAccess podLinkLocalAccess) {
-        this.podLinkLocalAccess = podLinkLocalAccess;
-        return this;
-    }
-
-    /**
-     * Get the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
-     * use the kube-proxy defaulting behavior. See
-     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
-     * would be '1-23'.
-     * 
-     * @return the kubeProxyConfig value.
-     */
-    public ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig() {
-        return this.kubeProxyConfig;
-    }
-
-    /**
-     * Set the kubeProxyConfig property: Holds configuration customizations for kube-proxy. Any values not defined will
-     * use the kube-proxy defaulting behavior. See
-     * https://v&lt;version&gt;.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/ where
-     * &lt;version&gt; is represented by a &lt;major version&gt;-&lt;minor version&gt; string. Kubernetes version 1.23
-     * would be '1-23'.
-     * 
-     * @param kubeProxyConfig the kubeProxyConfig value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile
-        withKubeProxyConfig(ContainerServiceNetworkProfileKubeProxyConfig kubeProxyConfig) {
-        this.kubeProxyConfig = kubeProxyConfig;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -573,9 +509,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         }
         if (staticEgressGatewayProfile() != null) {
             staticEgressGatewayProfile().validate();
-        }
-        if (kubeProxyConfig() != null) {
-            kubeProxyConfig().validate();
         }
     }
 
@@ -606,9 +539,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("ipFamilies", this.ipFamilies,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("podLinkLocalAccess",
-            this.podLinkLocalAccess == null ? null : this.podLinkLocalAccess.toString());
-        jsonWriter.writeJsonField("kubeProxyConfig", this.kubeProxyConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -674,12 +604,6 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("ipFamilies".equals(fieldName)) {
                     List<IpFamily> ipFamilies = reader.readArray(reader1 -> IpFamily.fromString(reader1.getString()));
                     deserializedContainerServiceNetworkProfile.ipFamilies = ipFamilies;
-                } else if ("podLinkLocalAccess".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.podLinkLocalAccess
-                        = PodLinkLocalAccess.fromString(reader.getString());
-                } else if ("kubeProxyConfig".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.kubeProxyConfig
-                        = ContainerServiceNetworkProfileKubeProxyConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

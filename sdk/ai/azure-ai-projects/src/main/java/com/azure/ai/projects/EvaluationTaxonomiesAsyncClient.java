@@ -278,7 +278,7 @@ public final class EvaluationTaxonomiesAsyncClient {
      * </pre>
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -288,9 +288,9 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createEvaluationTaxonomyWithResponse(String name, BinaryData body,
+    public Mono<Response<BinaryData>> createEvaluationTaxonomyWithResponse(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        return this.serviceClient.createEvaluationTaxonomyWithResponseAsync(name, body, requestOptions);
+        return this.serviceClient.createEvaluationTaxonomyWithResponseAsync(name, taxonomy, requestOptions);
     }
 
     /**
@@ -384,7 +384,7 @@ public final class EvaluationTaxonomiesAsyncClient {
      * </pre>
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -394,9 +394,9 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateEvaluationTaxonomyWithResponse(String name, BinaryData body,
+    public Mono<Response<BinaryData>> updateEvaluationTaxonomyWithResponse(String name, BinaryData taxonomy,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateEvaluationTaxonomyWithResponseAsync(name, body, requestOptions);
+        return this.serviceClient.updateEvaluationTaxonomyWithResponseAsync(name, taxonomy, requestOptions);
     }
 
     /**
@@ -513,7 +513,7 @@ public final class EvaluationTaxonomiesAsyncClient {
      * Create an evaluation taxonomy.
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -524,10 +524,10 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationTaxonomy> createEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+    public Mono<EvaluationTaxonomy> createEvaluationTaxonomy(String name, EvaluationTaxonomy taxonomy) {
         // Generated convenience method for createEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions)
+        return createEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(taxonomy), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationTaxonomy.class));
     }
@@ -536,7 +536,7 @@ public final class EvaluationTaxonomiesAsyncClient {
      * Update an evaluation taxonomy.
      *
      * @param name The name of the evaluation taxonomy.
-     * @param body The evaluation taxonomy.
+     * @param taxonomy The evaluation taxonomy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -547,10 +547,10 @@ public final class EvaluationTaxonomiesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EvaluationTaxonomy> updateEvaluationTaxonomy(String name, EvaluationTaxonomy body) {
+    public Mono<EvaluationTaxonomy> updateEvaluationTaxonomy(String name, EvaluationTaxonomy taxonomy) {
         // Generated convenience method for updateEvaluationTaxonomyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(body), requestOptions)
+        return updateEvaluationTaxonomyWithResponse(name, BinaryData.fromObject(taxonomy), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EvaluationTaxonomy.class));
     }
