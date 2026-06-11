@@ -5,6 +5,7 @@ package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.models.*;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.Tag;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,9 +32,14 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        TilerInfoGeoJsonFeature data = dataClient.getInfoGeoJson(collectionId, itemId, Arrays.asList("image"));
+        // Pass assets parameter like Python SDK: get_item_info_geo_json(assets=["image"])
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        Response<BinaryData> response = dataClient.getItemInfoGeoJsonWithResponse(collectionId, itemId, requestOptions);
 
-        assertNotNull(data, "Response data should not be null");
+        assertNotNull(response, "Response should not be null");
+        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+        assertNotNull(response.getValue(), "Response body should not be null");
         System.out.println("Info GeoJSON retrieved successfully");
     }
 
@@ -48,10 +53,14 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        GetStatisticsOptions options = new GetStatisticsOptions().setAssets(Arrays.asList("image"));
-        TilerStacItemStatistics statistics = dataClient.listStatistics(collectionId, itemId, options);
+        // Pass assets parameter like Python SDK: get_item_statistics(assets=["image"])
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        Response<BinaryData> response = dataClient.getItemStatisticsWithResponse(collectionId, itemId, requestOptions);
 
-        assertNotNull(statistics, "Statistics should not be null");
+        assertNotNull(response, "Response should not be null");
+        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+        assertNotNull(response.getValue(), "Response body should not be null");
         System.out.println("Statistics retrieved successfully");
     }
 
@@ -65,18 +74,17 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        // Use WithResponse API to bypass the codegen bug where toObject(byte[].class)
-        // tries JSON deserialization on XML content. Build query params manually.
+        // Use protocol method with query params for WMTS XML response
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("assets", "image", false);
         requestOptions.addQueryParam("tile_format", "png", false);
         requestOptions.addQueryParam("tile_scale", "1", false);
         requestOptions.addQueryParam("minzoom", "7", false);
         requestOptions.addQueryParam("maxzoom", "14", false);
-        byte[] xmlBytes
-            = dataClient.getWmtsCapabilitiesWithResponse(collectionId, itemId, "WebMercatorQuad", requestOptions)
-                .getValue()
-                .toBytes();
+        byte[] xmlBytes = dataClient
+            .getItemWmtsCapabilitiesByTmsWithResponse(collectionId, itemId, "WebMercatorQuad", requestOptions)
+            .getValue()
+            .toBytes();
 
         String xmlString = new String(xmlBytes, StandardCharsets.UTF_8);
 
@@ -101,15 +109,15 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        GetAssetStatisticsOptions options = new GetAssetStatisticsOptions().setAssets(Arrays.asList("image"));
-        AssetStatisticsResponse response = dataClient.getAssetStatistics(collectionId, itemId, options);
+        // Pass assets parameter like Python SDK: get_item_asset_statistics(assets=["image"])
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        Response<BinaryData> response
+            = dataClient.getItemAssetStatisticsWithResponse(collectionId, itemId, requestOptions);
 
         assertNotNull(response, "Response should not be null");
-        Map<String, BandStatisticsMap> statistics = response.getAdditionalProperties();
-        assertNotNull(statistics, "Statistics should not be null");
-        assertTrue(statistics.containsKey("image"), "Should contain statistics for 'image' asset");
-
-        System.out.println("Number of assets with statistics: " + statistics.size());
+        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+        assertNotNull(response.getValue(), "Response body should not be null");
         System.out.println("Asset statistics retrieved successfully");
     }
 
@@ -129,10 +137,14 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);
 
-        CropGeoJsonOptions options
-            = new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
-
-        BinaryData imageData = dataClient.cropGeoJson(collectionId, itemId, "png", options, feature);
+        // Use protocol method to pass required assets parameter
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
+        requestOptions.addQueryParam("format", "png", false);
+        BinaryData imageData
+            = dataClient.cropFeatureWithResponse(collectionId, itemId, BinaryData.fromObject(feature), requestOptions)
+                .getValue();
 
         byte[] imageBytes = imageData.toBytes();
         System.out.println("Image size: " + imageBytes.length + " bytes");

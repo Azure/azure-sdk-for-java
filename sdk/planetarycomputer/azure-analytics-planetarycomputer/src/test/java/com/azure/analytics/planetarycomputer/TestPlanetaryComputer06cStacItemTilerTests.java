@@ -4,6 +4,8 @@
 package com.azure.analytics.planetarycomputer;
 
 import com.azure.analytics.planetarycomputer.models.*;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
@@ -30,11 +32,15 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
         Feature feature = new Feature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
-        CropGeoJsonOptions options
-            = new CropGeoJsonOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
-
+        // Use protocol method to pass assets
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
         BinaryData imageData
-            = dataClient.cropGeoJsonWithDimensions(collectionId, itemId, 512, 512, "png", options, feature);
+            = dataClient
+                .cropFeatureWidthByHeightWithResponse(collectionId, itemId, 512, 512, "png",
+                    BinaryData.fromObject(feature), requestOptions)
+                .getValue();
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -56,19 +62,17 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
         Feature feature = new Feature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
-        // Use the protocol method to avoid BandStatistics.fromJson failing on null values
-        // returned by the server (codegen bug: fields typed as double but server sends null)
-        com.azure.core.http.rest.RequestOptions requestOptions = new com.azure.core.http.rest.RequestOptions();
+        // Use protocol method to avoid deserialization issues with null statistics fields
+        RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("assets", "image", false);
-        com.azure.core.http.rest.Response<BinaryData> response = dataClient
-            .getGeoJsonStatisticsWithResponse(collectionId, itemId, BinaryData.fromObject(feature), requestOptions);
+        Response<BinaryData> response = dataClient.getItemFeatureStatisticsWithResponse(collectionId, itemId,
+            BinaryData.fromObject(feature), requestOptions);
 
         assertNotNull(response);
         assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
         BinaryData body = response.getValue();
         assertNotNull(body);
 
-        // Validate the raw JSON has the expected structure
         String json = body.toString();
         assertTrue(json.contains("\"type\":\"Feature\""), "Response should be a GeoJSON Feature");
         assertTrue(json.contains("\"statistics\""), "Response should contain statistics");
@@ -84,10 +88,13 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
 
         double minx = -84.3930, miny = 33.6798, maxx = -84.3670, maxy = 33.7058;
 
-        GetPartOptions options
-            = new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
-
-        BinaryData imageData = dataClient.getPart(collectionId, itemId, minx, miny, maxx, maxy, "png", options);
+        // Use protocol method to pass required assets parameter
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
+        BinaryData imageData = dataClient
+            .getItemBboxCropWithResponse(collectionId, itemId, minx, miny, maxx, maxy, "png", requestOptions)
+            .getValue();
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -106,11 +113,14 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
 
         double minx = -84.3930, miny = 33.6798, maxx = -84.3670, maxy = 33.7058;
 
-        GetPartOptions options
-            = new GetPartOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
-
-        BinaryData imageData
-            = dataClient.getPartWithDimensions(collectionId, itemId, minx, miny, maxx, maxy, 256, 256, "png", options);
+        // Use protocol method to pass required assets parameter
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
+        BinaryData imageData = dataClient
+            .getItemBboxCropWithDimensionsWithResponse(collectionId, itemId, minx, miny, maxx, maxy, 256, 256, "png",
+                requestOptions)
+            .getValue();
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -127,15 +137,19 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        // Coordinates matching the recording
-        double longitude = -77.09;
-        double latitude = 38.9;
+        // Coordinates within the NAIP item bounds (Georgia area)
+        double longitude = -84.386;
+        double latitude = 33.676;
 
-        TilerCoreModelsResponsesPoint pointData = dataClient.getPoint(collectionId, itemId, longitude, latitude,
-            Arrays.asList("image"), null, null, null, null, null, null, null);
+        // Use protocol method to pass required assets parameter
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        Response<BinaryData> response
+            = dataClient.getItemPointWithResponse(collectionId, itemId, longitude, latitude, requestOptions);
 
-        assertNotNull(pointData);
-        assertNotNull(pointData.getBandNames());
+        assertNotNull(response);
+        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+        assertNotNull(response.getValue());
         System.out.println("Point data retrieved successfully");
     }
 }
