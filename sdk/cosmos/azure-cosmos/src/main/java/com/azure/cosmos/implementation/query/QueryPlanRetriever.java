@@ -55,8 +55,9 @@ class QueryPlanRetriever {
     // new NonStreamingOrderBy query feature the client might run into some issue of not being able to recognize this,
     // and throw a 400 exception. If the environment variable `AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY` is set to
     // True to opt out of this new query feature, we will return the OLD query features to operate correctly.
-    // TODO: Consider adding ListAndSetAggregate, CountIf, HybridSearchSkipOrderByRewrite
-    // to align with .NET SDK feature set. See PR #47759 review.
+    // TODO: Add ListAndSetAggregate after Java supports MAKELIST/MAKESET query aggregation.
+    // TODO: Add HybridSearchSkipOrderByRewrite after the Java hybrid query pipeline can consume the optimized plan.
+    // See PR #47759 review.
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
@@ -70,6 +71,7 @@ class QueryPlanRetriever {
                                                                QueryFeature.NonValueAggregate.name() + ", " +
                                                                QueryFeature.NonStreamingOrderBy.name() + ", " +
                                                                QueryFeature.HybridSearch.name() + ", " +
+                                                               QueryFeature.CountIf.name() + ", " +
                                                                QueryFeature.WeightedRankFusion.name();
 
     private static final String OLD_SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
