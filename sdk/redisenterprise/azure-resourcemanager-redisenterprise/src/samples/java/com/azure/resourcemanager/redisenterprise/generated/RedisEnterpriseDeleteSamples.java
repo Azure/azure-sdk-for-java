@@ -14,9 +14,9 @@ public final class RedisEnterpriseDeleteSamples {
     /**
      * Sample code: RedisEnterpriseDelete.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
-    public static void redisEnterpriseDelete(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+    public static void redisEnterpriseDelete(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.redisEnterprises().delete("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

@@ -19,10 +19,10 @@ public final class AccessPolicyAssignmentsImpl implements AccessPolicyAssignment
 
     private final AccessPolicyAssignmentsClient innerClient;
 
-    private final com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
     public AccessPolicyAssignmentsImpl(AccessPolicyAssignmentsClient innerClient,
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -172,7 +172,7 @@ public final class AccessPolicyAssignmentsImpl implements AccessPolicyAssignment
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 

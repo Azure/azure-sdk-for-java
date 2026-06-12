@@ -42,25 +42,25 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * The service client containing this operation class.
      */
-    private final CacheClientImpl client;
+    private final RedisEnterpriseManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkResourcesClientImpl(CacheClientImpl client) {
+    PrivateLinkResourcesClientImpl(RedisEnterpriseManagementClientImpl client) {
         this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CacheClientPrivateLinkResources to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for RedisEnterpriseManagementClientPrivateLinkResources to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CacheClientPrivateLinkResources")
+    @ServiceInterface(name = "RedisEnterpriseManagementClientPrivateLinkResources")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/privateLinkResources")

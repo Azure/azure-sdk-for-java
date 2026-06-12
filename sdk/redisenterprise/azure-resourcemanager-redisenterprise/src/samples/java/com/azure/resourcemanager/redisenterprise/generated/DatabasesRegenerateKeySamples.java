@@ -17,10 +17,10 @@ public final class DatabasesRegenerateKeySamples {
     /**
      * Sample code: RedisEnterpriseDatabasesRegenerateKey.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDatabasesRegenerateKey(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .regenerateKey("rg1", "cache1", "default", new RegenerateKeyParameters().withKeyType(AccessKeyType.PRIMARY),
                 com.azure.core.util.Context.NONE);

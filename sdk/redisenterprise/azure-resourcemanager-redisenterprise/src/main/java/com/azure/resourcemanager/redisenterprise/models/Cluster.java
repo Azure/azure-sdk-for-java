@@ -77,7 +77,7 @@ public interface Cluster {
      * 
      * @return the identity value.
      */
-    ManagedServiceIdentityV4 identity();
+    ManagedServiceIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -127,11 +127,11 @@ public interface Cluster {
     MaintenanceConfiguration maintenanceConfiguration();
 
     /**
-     * Gets the hostName property: DNS name of the cluster endpoint.
+     * Gets the hostname property: DNS name of the cluster endpoint.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    String hostName();
+    String hostname();
 
     /**
      * Gets the provisioningState property: Current provisioning status of the cluster.
@@ -330,7 +330,7 @@ public interface Cluster {
              * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(ManagedServiceIdentityV4 identity);
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
 
         /**
@@ -478,7 +478,7 @@ public interface Cluster {
              * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
-            Update withIdentity(ManagedServiceIdentityV4 identity);
+            Update withIdentity(ManagedServiceIdentity identity);
         }
 
         /**

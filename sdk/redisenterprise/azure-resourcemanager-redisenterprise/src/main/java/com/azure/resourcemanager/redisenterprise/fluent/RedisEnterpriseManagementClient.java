@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for CacheClient class.
+ * The interface for RedisEnterpriseManagementClient class.
  */
-public interface CacheClient {
+public interface RedisEnterpriseManagementClient {
     /**
      * Gets Service host.
      * 

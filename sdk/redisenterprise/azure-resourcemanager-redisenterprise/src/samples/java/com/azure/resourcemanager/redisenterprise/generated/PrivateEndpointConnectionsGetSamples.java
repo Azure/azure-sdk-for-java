@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionsGetSamples {
     /**
      * Sample code: RedisEnterpriseGetPrivateEndpointConnection.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseGetPrivateEndpointConnection(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.privateEndpointConnections()
             .getWithResponse("rg1", "cache1", "pectest01", com.azure.core.util.Context.NONE);
     }

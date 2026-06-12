@@ -22,10 +22,10 @@ public final class DatabasesUpdateSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesUpdate Clustering on No Cluster Cache.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDatabasesUpdateClusteringOnNoClusterCache(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         Database resource = manager.databases()
             .getWithResponse("rg1", "cache1", "default", com.azure.core.util.Context.NONE)
             .getValue();
@@ -43,10 +43,10 @@ public final class DatabasesUpdateSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesUpdate.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseDatabasesUpdate(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseDatabasesUpdate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         Database resource = manager.databases()
             .getWithResponse("rg1", "cache1", "default", com.azure.core.util.Context.NONE)
             .getValue();
@@ -54,7 +54,7 @@ public final class DatabasesUpdateSamples {
             .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
             .withClientProtocol(Protocol.ENCRYPTED)
             .withEvictionPolicy(EvictionPolicy.ALL_KEYS_LRU)
-            .withPersistence(new Persistence().withRdbEnabled(true).withRdbFrequency(RdbFrequency.TWELVEH))
+            .withPersistence(new Persistence().withRdbEnabled(true).withRdbFrequency(RdbFrequency.ONE_TWOH))
             .withNotifyKeyspaceEvents("KEA")
             .apply();
     }

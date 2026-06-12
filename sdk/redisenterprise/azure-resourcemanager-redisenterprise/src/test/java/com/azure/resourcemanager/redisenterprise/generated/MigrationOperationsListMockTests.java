@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.redisenterprise.RedisenterpriseManager;
+import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.Migration;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,17 +21,17 @@ public final class MigrationOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"tpvjzbexilzznfqq\",\"provisioningState\":\"ReadyForDnsSwitch\",\"statusDetails\":\"mqtaruoujmkcjh\",\"creationTime\":\"2020-12-21T15:35:14Z\",\"lastModifiedTime\":\"2021-10-12T23:12:05Z\"},\"id\":\"ybn\",\"name\":\"jewgdrjerv\",\"type\":\"aen\"}]}";
+            = "{\"value\":[{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"ruoujmk\",\"provisioningState\":\"ReadyForDnsSwitch\",\"statusDetails\":\"qytjrybnwjewgd\",\"creationTime\":\"2021-04-13T17:49:37Z\",\"lastModifiedTime\":\"2021-06-30T15:09:15Z\"},\"id\":\"aen\",\"name\":\"pehindoygm\",\"type\":\"fthnzdn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        RedisenterpriseManager manager = RedisenterpriseManager.configure()
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Migration> response
-            = manager.migrationOperations().list("sqfsubcgjbirxb", "ybsrfbjfdtwss", com.azure.core.util.Context.NONE);
+            = manager.migrationOperations().list("tpvjzbexilzznfqq", "vwpm", com.azure.core.util.Context.NONE);
 
     }
 }

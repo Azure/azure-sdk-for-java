@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.redisenterprise.RedisenterpriseManager;
+import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.Migration;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -20,17 +20,18 @@ public final class MigrationOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"ygpfqb\",\"provisioningState\":\"CancellationFailed\",\"statusDetails\":\"op\",\"creationTime\":\"2021-04-15T23:44:21Z\",\"lastModifiedTime\":\"2021-10-11T15:02:03Z\"},\"id\":\"uaopppcqeq\",\"name\":\"ol\",\"type\":\"dahzxctobg\"}";
+            = "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"dahzxctobg\",\"provisioningState\":\"Cancelling\",\"statusDetails\":\"oizpostmgrcfbun\",\"creationTime\":\"2021-04-30T20:29:14Z\",\"lastModifiedTime\":\"2021-10-01T13:01:52Z\"},\"id\":\"hkxbpv\",\"name\":\"ymjhxxjyngudivkr\",\"type\":\"swbxqz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        RedisenterpriseManager manager = RedisenterpriseManager.configure()
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Migration response
-            = manager.migrationOperations().getWithResponse("t", "oellwp", com.azure.core.util.Context.NONE).getValue();
+        Migration response = manager.migrationOperations()
+            .getWithResponse("pfqbuaceopzf", "rhhuaopppcqeqx", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

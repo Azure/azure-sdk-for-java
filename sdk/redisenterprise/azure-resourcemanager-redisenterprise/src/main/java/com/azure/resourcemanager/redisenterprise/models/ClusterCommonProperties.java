@@ -17,7 +17,7 @@ import java.util.List;
  * Properties of Redis Enterprise clusters, as opposed to general resource properties like location, tags.
  */
 @Fluent
-public class ClusterProperties implements JsonSerializable<ClusterProperties> {
+public class ClusterCommonProperties implements JsonSerializable<ClusterCommonProperties> {
     /*
      * Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the
      * availability SLA, and increases the risk of data loss.
@@ -44,7 +44,7 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * DNS name of the cluster endpoint
      */
-    private String hostName;
+    private String hostname;
 
     /*
      * Current provisioning status of the cluster
@@ -78,9 +78,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
     private String migratedEndpoint;
 
     /**
-     * Creates an instance of ClusterProperties class.
+     * Creates an instance of ClusterCommonProperties class.
      */
-    public ClusterProperties() {
+    public ClusterCommonProperties() {
     }
 
     /**
@@ -98,9 +98,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * replicated. This affects the availability SLA, and increases the risk of data loss.
      * 
      * @param highAvailability the highAvailability value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    public ClusterProperties withHighAvailability(HighAvailability highAvailability) {
+    public ClusterCommonProperties withHighAvailability(HighAvailability highAvailability) {
         this.highAvailability = highAvailability;
         return this;
     }
@@ -122,9 +122,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * them. They are mentioned only for the sake of consistency with old API versions.
      * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    public ClusterProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+    public ClusterCommonProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         this.minimumTlsVersion = minimumTlsVersion;
         return this;
     }
@@ -142,9 +142,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * Set the encryption property: Encryption-at-rest configuration for the cluster.
      * 
      * @param encryption the encryption value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    public ClusterProperties withEncryption(ClusterPropertiesEncryption encryption) {
+    public ClusterCommonProperties withEncryption(ClusterPropertiesEncryption encryption) {
         this.encryption = encryption;
         return this;
     }
@@ -162,30 +162,30 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * Set the maintenanceConfiguration property: Cluster-level maintenance configuration.
      * 
      * @param maintenanceConfiguration the maintenanceConfiguration value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    public ClusterProperties withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration) {
+    public ClusterCommonProperties withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration) {
         this.maintenanceConfiguration = maintenanceConfiguration;
         return this;
     }
 
     /**
-     * Get the hostName property: DNS name of the cluster endpoint.
+     * Get the hostname property: DNS name of the cluster endpoint.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
-     * Set the hostName property: DNS name of the cluster endpoint.
+     * Set the hostname property: DNS name of the cluster endpoint.
      * 
-     * @param hostName the hostName value to set.
-     * @return the ClusterProperties object itself.
+     * @param hostname the hostname value to set.
+     * @return the ClusterCommonProperties object itself.
      */
-    ClusterProperties withHostName(String hostName) {
-        this.hostName = hostName;
+    ClusterCommonProperties withHostname(String hostname) {
+        this.hostname = hostname;
         return this;
     }
 
@@ -202,9 +202,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * Set the provisioningState property: Current provisioning status of the cluster.
      * 
      * @param provisioningState the provisioningState value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    ClusterProperties withProvisioningState(ProvisioningState provisioningState) {
+    ClusterCommonProperties withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -224,9 +224,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * expected SLA.
      * 
      * @param redundancyMode the redundancyMode value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    ClusterProperties withRedundancyMode(RedundancyMode redundancyMode) {
+    ClusterCommonProperties withRedundancyMode(RedundancyMode redundancyMode) {
         this.redundancyMode = redundancyMode;
         return this;
     }
@@ -244,9 +244,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * Set the resourceState property: Current resource status of the cluster.
      * 
      * @param resourceState the resourceState value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    ClusterProperties withResourceState(ResourceState resourceState) {
+    ClusterCommonProperties withResourceState(ResourceState resourceState) {
         this.resourceState = resourceState;
         return this;
     }
@@ -264,9 +264,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * Set the redisVersion property: Version of redis the cluster supports, e.g. '6'.
      * 
      * @param redisVersion the redisVersion value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    ClusterProperties withRedisVersion(String redisVersion) {
+    ClusterCommonProperties withRedisVersion(String redisVersion) {
         this.redisVersion = redisVersion;
         return this;
     }
@@ -286,9 +286,10 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * Redis Enterprise cluster.
      * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    ClusterProperties withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    ClusterCommonProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
@@ -308,9 +309,9 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
      * resource as a result of an ACR/ACRE to AMR migration.
      * 
      * @param migratedEndpoint the migratedEndpoint value to set.
-     * @return the ClusterProperties object itself.
+     * @return the ClusterCommonProperties object itself.
      */
-    ClusterProperties withMigratedEndpoint(String migratedEndpoint) {
+    ClusterCommonProperties withMigratedEndpoint(String migratedEndpoint) {
         this.migratedEndpoint = migratedEndpoint;
         return this;
     }
@@ -331,50 +332,53 @@ public class ClusterProperties implements JsonSerializable<ClusterProperties> {
     }
 
     /**
-     * Reads an instance of ClusterProperties from the JsonReader.
+     * Reads an instance of ClusterCommonProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ClusterProperties.
+     * @return An instance of ClusterCommonProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterCommonProperties.
      */
-    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static ClusterCommonProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            ClusterCommonProperties deserializedClusterCommonProperties = new ClusterCommonProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("highAvailability".equals(fieldName)) {
-                    deserializedClusterProperties.highAvailability = HighAvailability.fromString(reader.getString());
+                    deserializedClusterCommonProperties.highAvailability
+                        = HighAvailability.fromString(reader.getString());
                 } else if ("minimumTlsVersion".equals(fieldName)) {
-                    deserializedClusterProperties.minimumTlsVersion = TlsVersion.fromString(reader.getString());
+                    deserializedClusterCommonProperties.minimumTlsVersion = TlsVersion.fromString(reader.getString());
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedClusterProperties.encryption = ClusterPropertiesEncryption.fromJson(reader);
+                    deserializedClusterCommonProperties.encryption = ClusterPropertiesEncryption.fromJson(reader);
                 } else if ("maintenanceConfiguration".equals(fieldName)) {
-                    deserializedClusterProperties.maintenanceConfiguration = MaintenanceConfiguration.fromJson(reader);
+                    deserializedClusterCommonProperties.maintenanceConfiguration
+                        = MaintenanceConfiguration.fromJson(reader);
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedClusterProperties.hostName = reader.getString();
+                    deserializedClusterCommonProperties.hostname = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                    deserializedClusterCommonProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("redundancyMode".equals(fieldName)) {
-                    deserializedClusterProperties.redundancyMode = RedundancyMode.fromString(reader.getString());
+                    deserializedClusterCommonProperties.redundancyMode = RedundancyMode.fromString(reader.getString());
                 } else if ("resourceState".equals(fieldName)) {
-                    deserializedClusterProperties.resourceState = ResourceState.fromString(reader.getString());
+                    deserializedClusterCommonProperties.resourceState = ResourceState.fromString(reader.getString());
                 } else if ("redisVersion".equals(fieldName)) {
-                    deserializedClusterProperties.redisVersion = reader.getString();
+                    deserializedClusterCommonProperties.redisVersion = reader.getString();
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
-                    deserializedClusterProperties.privateEndpointConnections = privateEndpointConnections;
+                    deserializedClusterCommonProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("migratedEndpoint".equals(fieldName)) {
-                    deserializedClusterProperties.migratedEndpoint = reader.getString();
+                    deserializedClusterCommonProperties.migratedEndpoint = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedClusterProperties;
+            return deserializedClusterCommonProperties;
         });
     }
 }

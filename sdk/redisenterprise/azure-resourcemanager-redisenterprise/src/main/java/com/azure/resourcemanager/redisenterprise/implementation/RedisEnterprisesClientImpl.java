@@ -55,25 +55,25 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
     /**
      * The service client containing this operation class.
      */
-    private final CacheClientImpl client;
+    private final RedisEnterpriseManagementClientImpl client;
 
     /**
      * Initializes an instance of RedisEnterprisesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    RedisEnterprisesClientImpl(CacheClientImpl client) {
+    RedisEnterprisesClientImpl(RedisEnterpriseManagementClientImpl client) {
         this.service
             = RestProxy.create(RedisEnterprisesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CacheClientRedisEnterprises to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for RedisEnterpriseManagementClientRedisEnterprises to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CacheClientRedisEnterprises")
+    @ServiceInterface(name = "RedisEnterpriseManagementClientRedisEnterprises")
     public interface RedisEnterprisesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}")

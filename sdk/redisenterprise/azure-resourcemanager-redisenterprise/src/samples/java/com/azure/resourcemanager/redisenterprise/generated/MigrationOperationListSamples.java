@@ -14,10 +14,10 @@ public final class MigrationOperationListSamples {
     /**
      * Sample code: RedisEnterpriseMigrationList.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseMigrationList(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseMigrationList(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.migrationOperations().list("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

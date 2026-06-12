@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionsListSamples {
     /**
      * Sample code: RedisEnterpriseListPrivateEndpointConnections.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseListPrivateEndpointConnections(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.privateEndpointConnections().list("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

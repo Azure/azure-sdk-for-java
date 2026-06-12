@@ -16,10 +16,10 @@ public final class AccessPolicyAssignmentCreateUpdateSamples {
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentCreateUpdate.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseAccessPolicyAssignmentCreateUpdate(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.accessPolicyAssignments()
             .define("defaultTestEntraApp1")
             .withExistingDatabase("rg1", "cache1", "default")

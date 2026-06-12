@@ -15,7 +15,7 @@ public final class AccessPolicyAssignmentImpl
     implements AccessPolicyAssignment, AccessPolicyAssignment.Definition, AccessPolicyAssignment.Update {
     private AccessPolicyAssignmentInner innerObject;
 
-    private final com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -53,7 +53,7 @@ public final class AccessPolicyAssignmentImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 
@@ -90,7 +90,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     AccessPolicyAssignmentImpl(String name,
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = new AccessPolicyAssignmentInner();
         this.serviceManager = serviceManager;
         this.accessPolicyAssignmentName = name;
@@ -117,7 +117,7 @@ public final class AccessPolicyAssignmentImpl
     }
 
     AccessPolicyAssignmentImpl(AccessPolicyAssignmentInner innerObject,
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

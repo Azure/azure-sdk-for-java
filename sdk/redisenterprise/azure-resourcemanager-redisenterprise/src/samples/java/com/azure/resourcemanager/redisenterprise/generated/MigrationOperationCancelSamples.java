@@ -14,10 +14,10 @@ public final class MigrationOperationCancelSamples {
     /**
      * Sample code: RedisEnterpriseMigrationCancel.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseMigrationCancel(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseMigrationCancel(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.migrationOperations().cancel("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

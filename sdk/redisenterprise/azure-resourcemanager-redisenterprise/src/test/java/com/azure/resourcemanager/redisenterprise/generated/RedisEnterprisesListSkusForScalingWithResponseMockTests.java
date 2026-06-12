@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.redisenterprise.RedisenterpriseManager;
+import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.SkuDetailsList;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -20,11 +20,11 @@ public final class RedisEnterprisesListSkusForScalingWithResponseMockTests {
     @Test
     public void testListSkusForScalingWithResponse() throws Exception {
         String responseStr
-            = "{\"skus\":[{\"name\":\"wfvovbv\",\"sizeInGB\":46.67335949895842},{\"name\":\"ivyhzceuojgjrwju\",\"sizeInGB\":44.41975084844496},{\"name\":\"mcdytdxwitxnrj\",\"sizeInGB\":88.06993457854095}]}";
+            = "{\"skus\":[{\"name\":\"wfvovbv\",\"sizeInGB\":46.67336},{\"name\":\"civyhzceuo\",\"sizeInGB\":67.35784},{\"name\":\"wjue\",\"sizeInGB\":18.602175}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        RedisenterpriseManager manager = RedisenterpriseManager.configure()
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));

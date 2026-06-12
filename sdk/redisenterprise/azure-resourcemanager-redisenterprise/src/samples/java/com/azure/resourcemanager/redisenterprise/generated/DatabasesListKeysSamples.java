@@ -14,10 +14,10 @@ public final class DatabasesListKeysSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesListKeys.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseDatabasesListKeys(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseDatabasesListKeys(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases().listKeysWithResponse("rg1", "cache1", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,15 +7,16 @@ package com.azure.resourcemanager.redisenterprise.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.redisenterprise.models.PrivateLinkResource;
-import com.azure.resourcemanager.redisenterprise.models.PrivateLinkResourceProperties;
+import java.util.Collections;
+import java.util.List;
 
 public final class PrivateLinkResourceImpl implements PrivateLinkResource {
     private PrivateLinkResourceInner innerObject;
 
-    private final com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
     PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,19 +33,37 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
         return this.innerModel().type();
     }
 
-    public PrivateLinkResourceProperties properties() {
-        return this.innerModel().properties();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public String groupId() {
+        return this.innerModel().groupId();
+    }
+
+    public List<String> requiredMembers() {
+        List<String> inner = this.innerModel().requiredMembers();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> requiredZoneNames() {
+        List<String> inner = this.innerModel().requiredZoneNames();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public PrivateLinkResourceInner innerModel() {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 }

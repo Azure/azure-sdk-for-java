@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.redisenterprise.RedisenterpriseManager;
+import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignment;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPropertiesUser;
 import java.nio.charset.StandardCharsets;
@@ -22,23 +22,23 @@ public final class AccessPolicyAssignmentsCreateUpdateMockTests {
     @Test
     public void testCreateUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"accessPolicyName\":\"knalaulppg\",\"user\":{\"objectId\":\"tpnapnyiropuhpig\"}},\"id\":\"gylgqgitxmedjvcs\",\"name\":\"ynqwwncwzzhxgk\",\"type\":\"rmgucnap\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"accessPolicyName\":\"xmedjvcsly\",\"user\":{\"objectId\":\"wwncwzzhxgk\"}},\"id\":\"mgucna\",\"name\":\"kteo\",\"type\":\"llwptfdy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        RedisenterpriseManager manager = RedisenterpriseManager.configure()
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessPolicyAssignment response = manager.accessPolicyAssignments()
-            .define("vbxwyjsflhh")
-            .withExistingDatabase("uusdttouwa", "oekqvk", "lns")
-            .withAccessPolicyName("n")
-            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("xisxyawjoyaqcsl"))
+            .define("xyawj")
+            .withExistingDatabase("lns", "vbxwyjsflhh", "aalnjixi")
+            .withAccessPolicyName("cslyjpk")
+            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("dzyexznelixh"))
             .create();
 
-        Assertions.assertEquals("knalaulppg", response.accessPolicyName());
-        Assertions.assertEquals("tpnapnyiropuhpig", response.user().objectId());
+        Assertions.assertEquals("xmedjvcsly", response.accessPolicyName());
+        Assertions.assertEquals("wwncwzzhxgk", response.user().objectId());
     }
 }

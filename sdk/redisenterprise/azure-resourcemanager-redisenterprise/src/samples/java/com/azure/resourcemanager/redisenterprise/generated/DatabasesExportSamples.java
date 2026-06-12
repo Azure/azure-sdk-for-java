@@ -16,10 +16,10 @@ public final class DatabasesExportSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesExport.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseDatabasesExport(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseDatabasesExport(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .export("rg1", "cache1", "default",
                 new ExportClusterParameters()

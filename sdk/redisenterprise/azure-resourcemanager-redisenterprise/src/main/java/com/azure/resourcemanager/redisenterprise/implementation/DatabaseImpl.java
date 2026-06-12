@@ -33,7 +33,7 @@ import java.util.List;
 public final class DatabaseImpl implements Database, Database.Definition, Database.Update {
     private DatabaseInner innerObject;
 
-    private final com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager;
+    private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -116,7 +116,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager() {
+    private com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager() {
         return this.serviceManager;
     }
 
@@ -148,7 +148,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this;
     }
 
-    DatabaseImpl(String name, com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager) {
+    DatabaseImpl(String name, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = new DatabaseInner();
         this.serviceManager = serviceManager;
         this.databaseName = name;
@@ -174,7 +174,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     DatabaseImpl(DatabaseInner innerObject,
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager serviceManager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

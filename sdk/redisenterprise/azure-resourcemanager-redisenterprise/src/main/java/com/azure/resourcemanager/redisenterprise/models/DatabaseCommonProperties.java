@@ -16,7 +16,7 @@ import java.util.List;
  * Properties of Redis Enterprise databases, as opposed to general resource properties like location, tags.
  */
 @Fluent
-public class DatabaseProperties implements JsonSerializable<DatabaseProperties> {
+public class DatabaseCommonProperties implements JsonSerializable<DatabaseCommonProperties> {
     /*
      * Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is
      * TLS-encrypted.
@@ -90,9 +90,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
     private String notifyKeyspaceEvents;
 
     /**
-     * Creates an instance of DatabaseProperties class.
+     * Creates an instance of DatabaseCommonProperties class.
      */
-    public DatabaseProperties() {
+    public DatabaseCommonProperties() {
     }
 
     /**
@@ -110,9 +110,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * redis protocols. Default is TLS-encrypted.
      * 
      * @param clientProtocol the clientProtocol value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withClientProtocol(Protocol clientProtocol) {
+    public DatabaseCommonProperties withClientProtocol(Protocol clientProtocol) {
         this.clientProtocol = clientProtocol;
         return this;
     }
@@ -132,9 +132,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * port.
      * 
      * @param port the port value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withPort(Integer port) {
+    public DatabaseCommonProperties withPort(Integer port) {
         this.port = port;
         return this;
     }
@@ -152,9 +152,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * Set the provisioningState property: Current provisioning status of the database.
      * 
      * @param provisioningState the provisioningState value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    DatabaseProperties withProvisioningState(ProvisioningState provisioningState) {
+    DatabaseCommonProperties withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -172,9 +172,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * Set the resourceState property: Current resource status of the database.
      * 
      * @param resourceState the resourceState value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    DatabaseProperties withResourceState(ResourceState resourceState) {
+    DatabaseCommonProperties withResourceState(ResourceState resourceState) {
         this.resourceState = resourceState;
         return this;
     }
@@ -196,9 +196,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * deleting the database.
      * 
      * @param clusteringPolicy the clusteringPolicy value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
+    public DatabaseCommonProperties withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
         this.clusteringPolicy = clusteringPolicy;
         return this;
     }
@@ -216,9 +216,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * Set the evictionPolicy property: Redis eviction policy - default is VolatileLRU.
      * 
      * @param evictionPolicy the evictionPolicy value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withEvictionPolicy(EvictionPolicy evictionPolicy) {
+    public DatabaseCommonProperties withEvictionPolicy(EvictionPolicy evictionPolicy) {
         this.evictionPolicy = evictionPolicy;
         return this;
     }
@@ -236,9 +236,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * Set the persistence property: Persistence settings.
      * 
      * @param persistence the persistence value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withPersistence(Persistence persistence) {
+    public DatabaseCommonProperties withPersistence(Persistence persistence) {
         this.persistence = persistence;
         return this;
     }
@@ -258,9 +258,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * creation time.
      * 
      * @param modules the modules value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withModules(List<Module> modules) {
+    public DatabaseCommonProperties withModules(List<Module> modules) {
         this.modules = modules;
         return this;
     }
@@ -278,9 +278,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * Set the geoReplication property: Optional set of properties to configure geo replication for this database.
      * 
      * @param geoReplication the geoReplication value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
+    public DatabaseCommonProperties withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
         this.geoReplication = geoReplication;
         return this;
     }
@@ -298,9 +298,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * Set the redisVersion property: Version of Redis the database is running on, e.g. '6.0'.
      * 
      * @param redisVersion the redisVersion value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    DatabaseProperties withRedisVersion(String redisVersion) {
+    DatabaseCommonProperties withRedisVersion(String redisVersion) {
         this.redisVersion = redisVersion;
         return this;
     }
@@ -320,9 +320,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * Learn more: https://aka.ms/redisversionupgrade.
      * 
      * @param deferUpgrade the deferUpgrade value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
+    public DatabaseCommonProperties withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
         this.deferUpgrade = deferUpgrade;
         return this;
     }
@@ -342,9 +342,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * current access keys. Can be updated even after database is created.
      * 
      * @param accessKeysAuthentication the accessKeysAuthentication value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
+    public DatabaseCommonProperties withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
         this.accessKeysAuthentication = accessKeysAuthentication;
         return this;
     }
@@ -368,9 +368,9 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
      * https://redis.io/docs/latest/develop/use/keyspace-notifications/ for the complete list of event types.
      * 
      * @param notifyKeyspaceEvents the notifyKeyspaceEvents value to set.
-     * @return the DatabaseProperties object itself.
+     * @return the DatabaseCommonProperties object itself.
      */
-    public DatabaseProperties withNotifyKeyspaceEvents(String notifyKeyspaceEvents) {
+    public DatabaseCommonProperties withNotifyKeyspaceEvents(String notifyKeyspaceEvents) {
         this.notifyKeyspaceEvents = notifyKeyspaceEvents;
         return this;
     }
@@ -399,54 +399,58 @@ public class DatabaseProperties implements JsonSerializable<DatabaseProperties> 
     }
 
     /**
-     * Reads an instance of DatabaseProperties from the JsonReader.
+     * Reads an instance of DatabaseCommonProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DatabaseProperties if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DatabaseProperties.
+     * @return An instance of DatabaseCommonProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseCommonProperties.
      */
-    public static DatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static DatabaseCommonProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DatabaseProperties deserializedDatabaseProperties = new DatabaseProperties();
+            DatabaseCommonProperties deserializedDatabaseCommonProperties = new DatabaseCommonProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("clientProtocol".equals(fieldName)) {
-                    deserializedDatabaseProperties.clientProtocol = Protocol.fromString(reader.getString());
+                    deserializedDatabaseCommonProperties.clientProtocol = Protocol.fromString(reader.getString());
                 } else if ("port".equals(fieldName)) {
-                    deserializedDatabaseProperties.port = reader.getNullable(JsonReader::getInt);
+                    deserializedDatabaseCommonProperties.port = reader.getNullable(JsonReader::getInt);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedDatabaseProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                    deserializedDatabaseCommonProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceState".equals(fieldName)) {
-                    deserializedDatabaseProperties.resourceState = ResourceState.fromString(reader.getString());
+                    deserializedDatabaseCommonProperties.resourceState = ResourceState.fromString(reader.getString());
                 } else if ("clusteringPolicy".equals(fieldName)) {
-                    deserializedDatabaseProperties.clusteringPolicy = ClusteringPolicy.fromString(reader.getString());
+                    deserializedDatabaseCommonProperties.clusteringPolicy
+                        = ClusteringPolicy.fromString(reader.getString());
                 } else if ("evictionPolicy".equals(fieldName)) {
-                    deserializedDatabaseProperties.evictionPolicy = EvictionPolicy.fromString(reader.getString());
+                    deserializedDatabaseCommonProperties.evictionPolicy = EvictionPolicy.fromString(reader.getString());
                 } else if ("persistence".equals(fieldName)) {
-                    deserializedDatabaseProperties.persistence = Persistence.fromJson(reader);
+                    deserializedDatabaseCommonProperties.persistence = Persistence.fromJson(reader);
                 } else if ("modules".equals(fieldName)) {
                     List<Module> modules = reader.readArray(reader1 -> Module.fromJson(reader1));
-                    deserializedDatabaseProperties.modules = modules;
+                    deserializedDatabaseCommonProperties.modules = modules;
                 } else if ("geoReplication".equals(fieldName)) {
-                    deserializedDatabaseProperties.geoReplication = DatabasePropertiesGeoReplication.fromJson(reader);
+                    deserializedDatabaseCommonProperties.geoReplication
+                        = DatabasePropertiesGeoReplication.fromJson(reader);
                 } else if ("redisVersion".equals(fieldName)) {
-                    deserializedDatabaseProperties.redisVersion = reader.getString();
+                    deserializedDatabaseCommonProperties.redisVersion = reader.getString();
                 } else if ("deferUpgrade".equals(fieldName)) {
-                    deserializedDatabaseProperties.deferUpgrade = DeferUpgradeSetting.fromString(reader.getString());
+                    deserializedDatabaseCommonProperties.deferUpgrade
+                        = DeferUpgradeSetting.fromString(reader.getString());
                 } else if ("accessKeysAuthentication".equals(fieldName)) {
-                    deserializedDatabaseProperties.accessKeysAuthentication
+                    deserializedDatabaseCommonProperties.accessKeysAuthentication
                         = AccessKeysAuthentication.fromString(reader.getString());
                 } else if ("notifyKeyspaceEvents".equals(fieldName)) {
-                    deserializedDatabaseProperties.notifyKeyspaceEvents = reader.getString();
+                    deserializedDatabaseCommonProperties.notifyKeyspaceEvents = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedDatabaseProperties;
+            return deserializedDatabaseCommonProperties;
         });
     }
 }

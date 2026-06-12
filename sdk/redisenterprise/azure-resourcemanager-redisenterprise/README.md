@@ -1,8 +1,8 @@
-# Azure Resource Manager redisenterprise client library for Java
+# Azure Resource Manager Redis Enterprise client library for Java
 
-Azure Resource Manager redisenterprise client library for Java.
+Azure Resource Manager Redis Enterprise client library for Java.
 
-This package contains Microsoft Azure SDK for redisenterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Redis Enterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -56,7 +56,7 @@ AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-RedisenterpriseManager manager = RedisenterpriseManager
+RedisEnterpriseManager manager = RedisEnterpriseManager
     .authenticate(credential, profile);
 ```
 

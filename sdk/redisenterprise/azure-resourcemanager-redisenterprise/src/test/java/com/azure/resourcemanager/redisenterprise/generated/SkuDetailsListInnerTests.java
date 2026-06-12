@@ -11,7 +11,7 @@ public final class SkuDetailsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuDetailsListInner model = BinaryData.fromString(
-            "{\"skus\":[{\"name\":\"xkrxdqmi\",\"sizeInGB\":15.739642632978468},{\"name\":\"rvqdra\",\"sizeInGB\":36.01818248206725},{\"name\":\"igeho\",\"sizeInGB\":29.260579613259274},{\"name\":\"skanyk\",\"sizeInGB\":83.54532649686008}]}")
+            "{\"skus\":[{\"name\":\"xkrxdqmi\",\"sizeInGB\":15.739637},{\"name\":\"zrvqdr\",\"sizeInGB\":78.99524},{\"name\":\"yb\",\"sizeInGB\":69.505775},{\"name\":\"oqfbowskanyk\",\"sizeInGB\":83.54532}]}")
             .toObject(SkuDetailsListInner.class);
     }
 }

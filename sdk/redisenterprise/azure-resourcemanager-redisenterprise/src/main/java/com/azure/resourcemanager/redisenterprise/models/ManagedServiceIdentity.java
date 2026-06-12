@@ -16,7 +16,7 @@ import java.util.Map;
  * Managed service identity (system assigned and/or user assigned identities).
  */
 @Fluent
-public final class ManagedServiceIdentityV4 implements JsonSerializable<ManagedServiceIdentityV4> {
+public final class ManagedServiceIdentity implements JsonSerializable<ManagedServiceIdentity> {
     /*
      * The service principal ID of the system assigned identity. This property will only be provided for a system
      * assigned identity.
@@ -40,9 +40,9 @@ public final class ManagedServiceIdentityV4 implements JsonSerializable<ManagedS
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
-     * Creates an instance of ManagedServiceIdentityV4 class.
+     * Creates an instance of ManagedServiceIdentity class.
      */
-    public ManagedServiceIdentityV4() {
+    public ManagedServiceIdentity() {
     }
 
     /**
@@ -78,9 +78,9 @@ public final class ManagedServiceIdentityV4 implements JsonSerializable<ManagedS
      * Set the type property: The type of managed identity assigned to this resource.
      * 
      * @param type the type value to set.
-     * @return the ManagedServiceIdentityV4 object itself.
+     * @return the ManagedServiceIdentity object itself.
      */
-    public ManagedServiceIdentityV4 withType(ManagedServiceIdentityType type) {
+    public ManagedServiceIdentity withType(ManagedServiceIdentityType type) {
         this.type = type;
         return this;
     }
@@ -98,10 +98,9 @@ public final class ManagedServiceIdentityV4 implements JsonSerializable<ManagedS
      * Set the userAssignedIdentities property: The identities assigned to this resource by the user.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
-     * @return the ManagedServiceIdentityV4 object itself.
+     * @return the ManagedServiceIdentity object itself.
      */
-    public ManagedServiceIdentityV4
-        withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+    public ManagedServiceIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -119,38 +118,37 @@ public final class ManagedServiceIdentityV4 implements JsonSerializable<ManagedS
     }
 
     /**
-     * Reads an instance of ManagedServiceIdentityV4 from the JsonReader.
+     * Reads an instance of ManagedServiceIdentity from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ManagedServiceIdentityV4 if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of ManagedServiceIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ManagedServiceIdentityV4.
+     * @throws IOException If an error occurs while reading the ManagedServiceIdentity.
      */
-    public static ManagedServiceIdentityV4 fromJson(JsonReader jsonReader) throws IOException {
+    public static ManagedServiceIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ManagedServiceIdentityV4 deserializedManagedServiceIdentityV4 = new ManagedServiceIdentityV4();
+            ManagedServiceIdentity deserializedManagedServiceIdentity = new ManagedServiceIdentity();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedManagedServiceIdentityV4.type
-                        = ManagedServiceIdentityType.fromString(reader.getString());
+                    deserializedManagedServiceIdentity.type = ManagedServiceIdentityType.fromString(reader.getString());
                 } else if ("principalId".equals(fieldName)) {
-                    deserializedManagedServiceIdentityV4.principalId = reader.getString();
+                    deserializedManagedServiceIdentity.principalId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedManagedServiceIdentityV4.tenantId = reader.getString();
+                    deserializedManagedServiceIdentity.tenantId = reader.getString();
                 } else if ("userAssignedIdentities".equals(fieldName)) {
                     Map<String, UserAssignedIdentity> userAssignedIdentities
                         = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
-                    deserializedManagedServiceIdentityV4.userAssignedIdentities = userAssignedIdentities;
+                    deserializedManagedServiceIdentity.userAssignedIdentities = userAssignedIdentities;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedManagedServiceIdentityV4;
+            return deserializedManagedServiceIdentity;
         });
     }
 }

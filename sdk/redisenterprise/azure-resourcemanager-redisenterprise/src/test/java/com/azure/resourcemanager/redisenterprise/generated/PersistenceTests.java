@@ -20,7 +20,7 @@ public final class PersistenceTests {
         Assertions.assertTrue(model.aofEnabled());
         Assertions.assertFalse(model.rdbEnabled());
         Assertions.assertEquals(AofFrequency.ALWAYS, model.aofFrequency());
-        Assertions.assertEquals(RdbFrequency.TWELVEH, model.rdbFrequency());
+        Assertions.assertEquals(RdbFrequency.ONE_TWOH, model.rdbFrequency());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,11 @@ public final class PersistenceTests {
         Persistence model = new Persistence().withAofEnabled(true)
             .withRdbEnabled(false)
             .withAofFrequency(AofFrequency.ALWAYS)
-            .withRdbFrequency(RdbFrequency.TWELVEH);
+            .withRdbFrequency(RdbFrequency.ONE_TWOH);
         model = BinaryData.fromObject(model).toObject(Persistence.class);
         Assertions.assertTrue(model.aofEnabled());
         Assertions.assertFalse(model.rdbEnabled());
         Assertions.assertEquals(AofFrequency.ALWAYS, model.aofFrequency());
-        Assertions.assertEquals(RdbFrequency.TWELVEH, model.rdbFrequency());
+        Assertions.assertEquals(RdbFrequency.ONE_TWOH, model.rdbFrequency());
     }
 }

@@ -19,10 +19,10 @@ public final class DatabasesForceLinkToReplicationGroupSamples {
     /**
      * Sample code: How to relink a database after a regional outage.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void howToRelinkADatabaseAfterARegionalOutage(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .forceLinkToReplicationGroup("rg1", "cache1", "default",
                 new ForceLinkParameters().withGeoReplication(new ForceLinkParametersGeoReplication()

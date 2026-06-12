@@ -10,7 +10,6 @@ import com.azure.resourcemanager.redisenterprise.models.SkuDetails;
 public final class SkuDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuDetails model = BinaryData.fromString("{\"name\":\"iywgqywgndrvynh\",\"sizeInGB\":56.96347001469731}")
-            .toObject(SkuDetails.class);
+        SkuDetails model = BinaryData.fromString("{\"name\":\"u\",\"sizeInGB\":29.401552}").toObject(SkuDetails.class);
     }
 }

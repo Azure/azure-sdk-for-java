@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.redisenterprise.RedisenterpriseManager;
+import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationInner;
 import com.azure.resourcemanager.redisenterprise.models.Migration;
 import com.azure.resourcemanager.redisenterprise.models.MigrationProperties;
@@ -22,17 +22,17 @@ public final class MigrationOperationsStartMockTests {
     @Test
     public void testStart() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"qaqtdoqmcbxvwvxy\",\"provisioningState\":\"Succeeded\",\"statusDetails\":\"hsfxoblytkb\",\"creationTime\":\"2021-09-21T19:24:42Z\",\"lastModifiedTime\":\"2021-02-10T08:31:36Z\"},\"id\":\"wfbkrvrns\",\"name\":\"shqjohxcrsbf\",\"type\":\"vasrruvwb\"}";
+            = "{\"properties\":{\"sourceType\":\"MigrationProperties\",\"targetResourceId\":\"crsbfovasr\",\"provisioningState\":\"Succeeded\",\"statusDetails\":\"bhsqfsubcgjbirxb\",\"creationTime\":\"2021-08-16T05:09:52Z\",\"lastModifiedTime\":\"2021-10-20T12:17:26Z\"},\"id\":\"bjf\",\"name\":\"twss\",\"type\":\"t\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        RedisenterpriseManager manager = RedisenterpriseManager.configure()
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Migration response = manager.migrationOperations()
-            .start("kdmoi", "postmgrcfbunrm", new MigrationInner().withProperties(new MigrationProperties()),
+            .start("szjfauvjfdxxivet", "t", new MigrationInner().withProperties(new MigrationProperties()),
                 com.azure.core.util.Context.NONE);
 
     }

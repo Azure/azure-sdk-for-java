@@ -33,7 +33,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
-    private ManagedServiceIdentityV4 identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
@@ -80,7 +80,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
      * 
      * @return the identity value.
      */
-    public ManagedServiceIdentityV4 identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -90,7 +90,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
      * @param identity the identity value to set.
      * @return the ClusterUpdate object itself.
      */
-    public ClusterUpdate withIdentity(ManagedServiceIdentityV4 identity) {
+    public ClusterUpdate withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -241,12 +241,12 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
     }
 
     /**
-     * Get the hostName property: DNS name of the cluster endpoint.
+     * Get the hostname property: DNS name of the cluster endpoint.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.innerProperties() == null ? null : this.innerProperties().hostName();
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -339,7 +339,7 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterUpdate.innerProperties = ClusterUpdateProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedClusterUpdate.identity = ManagedServiceIdentityV4.fromJson(reader);
+                    deserializedClusterUpdate.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedClusterUpdate.tags = tags;

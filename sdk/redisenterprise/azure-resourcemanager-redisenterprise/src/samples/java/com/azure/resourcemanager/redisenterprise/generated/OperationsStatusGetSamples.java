@@ -14,9 +14,9 @@ public final class OperationsStatusGetSamples {
     /**
      * Sample code: OperationsStatusGet.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
-    public static void operationsStatusGet(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+    public static void operationsStatusGet(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.operationsStatus().getWithResponse("West US", "testoperationid", com.azure.core.util.Context.NONE);
     }
 }

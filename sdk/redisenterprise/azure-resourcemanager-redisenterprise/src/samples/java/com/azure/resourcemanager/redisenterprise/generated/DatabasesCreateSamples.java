@@ -26,10 +26,10 @@ public final class DatabasesCreateSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesCreate No Cluster Cache.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDatabasesCreateNoClusterCache(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .define("default")
             .withExistingRedisEnterprise("rg1", "cache1")
@@ -47,10 +47,10 @@ public final class DatabasesCreateSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesCreate.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseDatabasesCreate(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseDatabasesCreate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .define("default")
             .withExistingRedisEnterprise("rg1", "cache1")
@@ -74,10 +74,10 @@ public final class DatabasesCreateSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesCreate With Active Geo Replication.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDatabasesCreateWithActiveGeoReplication(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .define("default")
             .withExistingRedisEnterprise("rg1", "cache1")

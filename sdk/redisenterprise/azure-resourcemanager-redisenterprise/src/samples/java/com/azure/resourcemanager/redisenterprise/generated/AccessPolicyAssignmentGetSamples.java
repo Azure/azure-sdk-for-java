@@ -14,10 +14,10 @@ public final class AccessPolicyAssignmentGetSamples {
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentGet.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseAccessPolicyAssignmentGet(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.accessPolicyAssignments()
             .getWithResponse("rg1", "cache1", "default", "accessPolicyAssignmentName1",
                 com.azure.core.util.Context.NONE);

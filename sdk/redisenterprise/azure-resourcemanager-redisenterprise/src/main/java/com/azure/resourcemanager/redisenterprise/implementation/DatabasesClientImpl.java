@@ -61,25 +61,25 @@ public final class DatabasesClientImpl implements DatabasesClient {
     /**
      * The service client containing this operation class.
      */
-    private final CacheClientImpl client;
+    private final RedisEnterpriseManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabasesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    DatabasesClientImpl(CacheClientImpl client) {
+    DatabasesClientImpl(RedisEnterpriseManagementClientImpl client) {
         this.service
             = RestProxy.create(DatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CacheClientDatabases to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for RedisEnterpriseManagementClientDatabases to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CacheClientDatabases")
+    @ServiceInterface(name = "RedisEnterpriseManagementClientDatabases")
     public interface DatabasesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}")

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.redisenterprise.models.ClusterProperties;
+import com.azure.resourcemanager.redisenterprise.models.ClusterCommonProperties;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceConfiguration;
@@ -24,7 +24,7 @@ import java.util.List;
  * Properties of Redis Enterprise clusters for create operations.
  */
 @Fluent
-public final class ClusterCreateProperties extends ClusterProperties {
+public final class ClusterCreateProperties extends ClusterCommonProperties {
     /*
      * Whether or not public network traffic can access the Redis cluster. Only 'Enabled' or 'Disabled' can be set. null
      * is returned only for clusters created using an old API version which do not have this property and cannot be set.
@@ -65,7 +65,7 @@ public final class ClusterCreateProperties extends ClusterProperties {
     /*
      * DNS name of the cluster endpoint
      */
-    private String hostName;
+    private String hostname;
 
     /**
      * Creates an instance of ClusterCreateProperties class.
@@ -161,13 +161,13 @@ public final class ClusterCreateProperties extends ClusterProperties {
     }
 
     /**
-     * Get the hostName property: DNS name of the cluster endpoint.
+     * Get the hostname property: DNS name of the cluster endpoint.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
     @Override
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
@@ -251,7 +251,7 @@ public final class ClusterCreateProperties extends ClusterProperties {
                     deserializedClusterCreateProperties
                         .withMaintenanceConfiguration(MaintenanceConfiguration.fromJson(reader));
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedClusterCreateProperties.hostName = reader.getString();
+                    deserializedClusterCreateProperties.hostname = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedClusterCreateProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

@@ -16,17 +16,17 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
     /**
      * 1.0.
      */
-    public static final TlsVersion ONE0 = fromString("1.0");
+    public static final TlsVersion ONE_ZERO = fromString("1.0");
 
     /**
      * 1.1.
      */
-    public static final TlsVersion ONE1 = fromString("1.1");
+    public static final TlsVersion ONE_ONE = fromString("1.1");
 
     /**
      * 1.2.
      */
-    public static final TlsVersion ONE2 = fromString("1.2");
+    public static final TlsVersion ONE_TWO = fromString("1.2");
 
     /**
      * Creates a new instance of TlsVersion value.

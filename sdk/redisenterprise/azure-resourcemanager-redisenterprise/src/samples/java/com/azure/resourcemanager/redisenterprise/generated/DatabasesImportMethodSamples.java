@@ -17,10 +17,10 @@ public final class DatabasesImportMethodSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesImport.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseDatabasesImport(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseDatabasesImport(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases()
             .importMethod("rg1", "cache1", "default",
                 new ImportClusterParameters().withSasUris(

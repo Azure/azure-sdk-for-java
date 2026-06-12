@@ -24,7 +24,7 @@ public final class SkuDetails implements JsonSerializable<SkuDetails> {
     /*
      * The cache size in GB.
      */
-    private Double sizeInGB;
+    private Float sizeInGB;
 
     /**
      * Creates an instance of SkuDetails class.
@@ -46,7 +46,7 @@ public final class SkuDetails implements JsonSerializable<SkuDetails> {
      * 
      * @return the sizeInGB value.
      */
-    public Double sizeInGB() {
+    public Float sizeInGB() {
         return this.sizeInGB;
     }
 
@@ -77,7 +77,7 @@ public final class SkuDetails implements JsonSerializable<SkuDetails> {
                 if ("name".equals(fieldName)) {
                     deserializedSkuDetails.name = reader.getString();
                 } else if ("sizeInGB".equals(fieldName)) {
-                    deserializedSkuDetails.sizeInGB = reader.getNullable(JsonReader::getDouble);
+                    deserializedSkuDetails.sizeInGB = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

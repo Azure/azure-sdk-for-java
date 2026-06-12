@@ -27,7 +27,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.redisenterprise.fluent.AccessPolicyAssignmentsClient;
-import com.azure.resourcemanager.redisenterprise.fluent.CacheClient;
 import com.azure.resourcemanager.redisenterprise.fluent.DatabasesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.MigrationOperationsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.MigrationsClient;
@@ -35,6 +34,7 @@ import com.azure.resourcemanager.redisenterprise.fluent.OperationsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.OperationsStatusClient;
 import com.azure.resourcemanager.redisenterprise.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.redisenterprise.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterpriseManagementClient;
 import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterprisesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -46,10 +46,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the CacheClientImpl type.
+ * Initializes a new instance of the RedisEnterpriseManagementClientImpl type.
  */
-@ServiceClient(builder = CacheClientBuilder.class)
-public final class CacheClientImpl implements CacheClient {
+@ServiceClient(builder = RedisEnterpriseManagementClientBuilder.class)
+public final class RedisEnterpriseManagementClientImpl implements RedisEnterpriseManagementClient {
     /**
      * Service host.
      */
@@ -261,7 +261,7 @@ public final class CacheClientImpl implements CacheClient {
     }
 
     /**
-     * Initializes an instance of CacheClient client.
+     * Initializes an instance of RedisEnterpriseManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -270,8 +270,8 @@ public final class CacheClientImpl implements CacheClient {
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    CacheClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String endpoint, String subscriptionId) {
+    RedisEnterpriseManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -432,5 +432,5 @@ public final class CacheClientImpl implements CacheClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(CacheClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RedisEnterpriseManagementClientImpl.class);
 }

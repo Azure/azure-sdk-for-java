@@ -16,10 +16,10 @@ public final class MigrationsValidateSamples {
     /**
      * Sample code: RedisEnterpriseMigrationValidate.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseMigrationValidate(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseMigrationValidate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.migrations()
             .validateWithResponse("rg1", "cache1", new MigrationValidationRequest().withSourceResourceId(
                 "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")

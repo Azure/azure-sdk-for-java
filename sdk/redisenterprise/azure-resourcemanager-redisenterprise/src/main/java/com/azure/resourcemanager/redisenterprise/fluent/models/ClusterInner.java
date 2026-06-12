@@ -14,7 +14,7 @@ import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncrypt
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.Kind;
 import com.azure.resourcemanager.redisenterprise.models.MaintenanceConfiguration;
-import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityV4;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
@@ -53,7 +53,7 @@ public final class ClusterInner extends Resource {
     /*
      * The managed service identities assigned to this resource.
      */
-    private ManagedServiceIdentityV4 identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -144,7 +144,7 @@ public final class ClusterInner extends Resource {
      * 
      * @return the identity value.
      */
-    public ManagedServiceIdentityV4 identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -154,7 +154,7 @@ public final class ClusterInner extends Resource {
      * @param identity the identity value to set.
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withIdentity(ManagedServiceIdentityV4 identity) {
+    public ClusterInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -342,12 +342,12 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the hostName property: DNS name of the cluster endpoint.
+     * Get the hostname property: DNS name of the cluster endpoint.
      * 
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.innerProperties() == null ? null : this.innerProperties().hostName();
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -459,7 +459,7 @@ public final class ClusterInner extends Resource {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedClusterInner.zones = zones;
                 } else if ("identity".equals(fieldName)) {
-                    deserializedClusterInner.identity = ManagedServiceIdentityV4.fromJson(reader);
+                    deserializedClusterInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedClusterInner.systemData = SystemData.fromJson(reader);
                 } else {

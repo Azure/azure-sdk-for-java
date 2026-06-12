@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessPolicyAssignmentPropertiesUserTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessPolicyAssignmentPropertiesUser model
-            = BinaryData.fromString("{\"objectId\":\"iuaod\"}").toObject(AccessPolicyAssignmentPropertiesUser.class);
-        Assertions.assertEquals("iuaod", model.objectId());
+        AccessPolicyAssignmentPropertiesUser model = BinaryData.fromString("{\"objectId\":\"ypvhezrkg\"}")
+            .toObject(AccessPolicyAssignmentPropertiesUser.class);
+        Assertions.assertEquals("ypvhezrkg", model.objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyAssignmentPropertiesUser model = new AccessPolicyAssignmentPropertiesUser().withObjectId("iuaod");
+        AccessPolicyAssignmentPropertiesUser model
+            = new AccessPolicyAssignmentPropertiesUser().withObjectId("ypvhezrkg");
         model = BinaryData.fromObject(model).toObject(AccessPolicyAssignmentPropertiesUser.class);
-        Assertions.assertEquals("iuaod", model.objectId());
+        Assertions.assertEquals("ypvhezrkg", model.objectId());
     }
 }

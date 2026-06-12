@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.redisenterprise.RedisenterpriseManager;
+import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignment;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,20 +21,21 @@ public final class AccessPolicyAssignmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"accessPolicyName\":\"ngmtsavjcb\",\"user\":{\"objectId\":\"xqpsrknftguv\"}},\"id\":\"uhprwmdyvxqt\",\"name\":\"yriwwroyqb\",\"type\":\"xrmcqibycnojvk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"accessPolicyName\":\"nojvknmefqsg\",\"user\":{\"objectId\":\"ah\"}},\"id\":\"jyzhpvgq\",\"name\":\"cjrvxdjzlmwlxkv\",\"type\":\"gfhzovawjvzunlut\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        RedisenterpriseManager manager = RedisenterpriseManager.configure()
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessPolicyAssignment response = manager.accessPolicyAssignments()
-            .getWithResponse("iebwwaloayqcgwrt", "j", "zg", "yzm", com.azure.core.util.Context.NONE)
+            .getWithResponse("mtsavjcbpwxqp", "rknftguvriuhprwm", "yvxqtayriwwroy", "bexrmcq",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ngmtsavjcb", response.accessPolicyName());
-        Assertions.assertEquals("xqpsrknftguv", response.user().objectId());
+        Assertions.assertEquals("nojvknmefqsg", response.accessPolicyName());
+        Assertions.assertEquals("ah", response.user().objectId());
     }
 }

@@ -51,25 +51,25 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     /**
      * The service client containing this operation class.
      */
-    private final CacheClientImpl client;
+    private final RedisEnterpriseManagementClientImpl client;
 
     /**
      * Initializes an instance of AccessPolicyAssignmentsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AccessPolicyAssignmentsClientImpl(CacheClientImpl client) {
+    AccessPolicyAssignmentsClientImpl(RedisEnterpriseManagementClientImpl client) {
         this.service = RestProxy.create(AccessPolicyAssignmentsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CacheClientAccessPolicyAssignments to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for RedisEnterpriseManagementClientAccessPolicyAssignments to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CacheClientAccessPolicyAssignments")
+    @ServiceInterface(name = "RedisEnterpriseManagementClientAccessPolicyAssignments")
     public interface AccessPolicyAssignmentsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}")

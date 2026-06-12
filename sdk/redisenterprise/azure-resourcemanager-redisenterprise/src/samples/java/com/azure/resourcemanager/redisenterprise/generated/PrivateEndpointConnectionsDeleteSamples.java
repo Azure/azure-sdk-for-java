@@ -14,10 +14,10 @@ public final class PrivateEndpointConnectionsDeleteSamples {
     /**
      * Sample code: RedisEnterpriseDeletePrivateEndpointConnection.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDeletePrivateEndpointConnection(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.privateEndpointConnections().delete("rg1", "cache1", "pectest01", com.azure.core.util.Context.NONE);
     }
 }

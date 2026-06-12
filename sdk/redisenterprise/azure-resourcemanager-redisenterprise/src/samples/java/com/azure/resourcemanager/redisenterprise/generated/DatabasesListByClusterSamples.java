@@ -14,10 +14,10 @@ public final class DatabasesListByClusterSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesListByCluster.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDatabasesListByCluster(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases().listByCluster("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

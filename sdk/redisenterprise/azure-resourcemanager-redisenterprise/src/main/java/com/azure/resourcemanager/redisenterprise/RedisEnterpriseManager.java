@@ -24,9 +24,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.redisenterprise.fluent.CacheClient;
+import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterpriseManagementClient;
 import com.azure.resourcemanager.redisenterprise.implementation.AccessPolicyAssignmentsImpl;
-import com.azure.resourcemanager.redisenterprise.implementation.CacheClientBuilder;
 import com.azure.resourcemanager.redisenterprise.implementation.DatabasesImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.MigrationOperationsImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.MigrationsImpl;
@@ -34,6 +33,7 @@ import com.azure.resourcemanager.redisenterprise.implementation.OperationsImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.OperationsStatusImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterpriseManagementClientBuilder;
 import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterprisesImpl;
 import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignments;
 import com.azure.resourcemanager.redisenterprise.models.Databases;
@@ -53,10 +53,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to RedisenterpriseManager.
+ * Entry point to RedisEnterpriseManager.
  * REST API for managing Redis Enterprise resources in Azure.
  */
-public final class RedisenterpriseManager {
+public final class RedisEnterpriseManager {
     private Operations operations;
 
     private Databases databases;
@@ -75,12 +75,12 @@ public final class RedisenterpriseManager {
 
     private OperationsStatus operationsStatus;
 
-    private final CacheClient clientObject;
+    private final RedisEnterpriseManagementClient clientObject;
 
-    private RedisenterpriseManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private RedisEnterpriseManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new CacheClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new RedisEnterpriseManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -88,38 +88,38 @@ public final class RedisenterpriseManager {
     }
 
     /**
-     * Creates an instance of redisenterprise service API entry point.
+     * Creates an instance of Redis Enterprise service API entry point.
      * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the redisenterprise service API instance.
+     * @return the Redis Enterprise service API instance.
      */
-    public static RedisenterpriseManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static RedisEnterpriseManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of redisenterprise service API entry point.
+     * Creates an instance of Redis Enterprise service API entry point.
      * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the redisenterprise service API instance.
+     * @return the Redis Enterprise service API instance.
      */
-    public static RedisenterpriseManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static RedisEnterpriseManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new RedisenterpriseManager(httpPipeline, profile, null);
+        return new RedisEnterpriseManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create RedisenterpriseManager with optional configuration.
+     * Gets a Configurable instance that can be used to create RedisEnterpriseManager with optional configuration.
      * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new RedisenterpriseManager.Configurable();
+        return new RedisEnterpriseManager.Configurable();
     }
 
     /**
@@ -227,13 +227,13 @@ public final class RedisenterpriseManager {
         }
 
         /**
-         * Creates an instance of redisenterprise service API entry point.
+         * Creates an instance of Redis Enterprise service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the redisenterprise service API instance.
+         * @return the Redis Enterprise service API instance.
          */
-        public RedisenterpriseManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public RedisEnterpriseManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -286,7 +286,7 @@ public final class RedisenterpriseManager {
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
-            return new RedisenterpriseManager(httpPipeline, profile, defaultPollInterval);
+            return new RedisEnterpriseManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
@@ -401,12 +401,12 @@ public final class RedisenterpriseManager {
     }
 
     /**
-     * Gets wrapped service client CacheClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client RedisEnterpriseManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client CacheClient.
+     * @return Wrapped service client RedisEnterpriseManagementClient.
      */
-    public CacheClient serviceClient() {
+    public RedisEnterpriseManagementClient serviceClient() {
         return this.clientObject;
     }
 }

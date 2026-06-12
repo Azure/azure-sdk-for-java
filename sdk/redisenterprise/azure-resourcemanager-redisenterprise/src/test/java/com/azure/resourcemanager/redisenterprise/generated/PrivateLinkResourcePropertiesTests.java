@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.redisenterprise.models.PrivateLinkResourceProperties;
+import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateLinkResourceProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class PrivateLinkResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceProperties model = BinaryData.fromString(
-            "{\"groupId\":\"vyvdcs\",\"requiredMembers\":[\"nnaamdectehfiqsc\",\"eypvhezrkg\"],\"requiredZoneNames\":[\"jrefovgmkqsle\"]}")
+            "{\"groupId\":\"v\",\"requiredMembers\":[\"gwdslfhotwm\",\"ynpwlbj\",\"pgacftadehxnlty\"],\"requiredZoneNames\":[\"ppusuesnzwdejba\",\"orxzdmohctbqvud\",\"xdn\"]}")
             .toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("jrefovgmkqsle", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("ppusuesnzwdejba", model.requiredZoneNames().get(0));
     }
 }

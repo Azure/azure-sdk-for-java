@@ -14,10 +14,10 @@ public final class DatabasesDeleteSamples {
     /**
      * Sample code: RedisEnterpriseDatabasesDelete.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseDatabasesDelete(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseDatabasesDelete(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.databases().delete("rg1", "cache1", "db1", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,10 +14,10 @@ public final class RedisEnterpriseListByResourceGroupSamples {
     /**
      * Sample code: RedisEnterpriseListByResourceGroup.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseListByResourceGroup(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseListByResourceGroup(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.redisEnterprises().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

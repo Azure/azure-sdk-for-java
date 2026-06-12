@@ -37,25 +37,25 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
     /**
      * The service client containing this operation class.
      */
-    private final CacheClientImpl client;
+    private final RedisEnterpriseManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsStatusClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsStatusClientImpl(CacheClientImpl client) {
+    OperationsStatusClientImpl(RedisEnterpriseManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CacheClientOperationsStatus to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for RedisEnterpriseManagementClientOperationsStatus to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CacheClientOperationsStatus")
+    @ServiceInterface(name = "RedisEnterpriseManagementClientOperationsStatus")
     public interface OperationsStatusService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cache/locations/{location}/operationsStatus/{operationId}")

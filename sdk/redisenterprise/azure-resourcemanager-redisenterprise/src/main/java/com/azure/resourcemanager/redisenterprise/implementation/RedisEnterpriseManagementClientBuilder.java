@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the CacheClientImpl type.
+ * A builder for creating a new instance of the RedisEnterpriseManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { CacheClientImpl.class })
-public final class CacheClientBuilder {
+@ServiceClientBuilder(serviceClients = { RedisEnterpriseManagementClientImpl.class })
+public final class RedisEnterpriseManagementClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class CacheClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the CacheClientBuilder.
+     * @return the RedisEnterpriseManagementClientBuilder.
      */
-    public CacheClientBuilder endpoint(String endpoint) {
+    public RedisEnterpriseManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class CacheClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the CacheClientBuilder.
+     * @return the RedisEnterpriseManagementClientBuilder.
      */
-    public CacheClientBuilder subscriptionId(String subscriptionId) {
+    public RedisEnterpriseManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class CacheClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the CacheClientBuilder.
+     * @return the RedisEnterpriseManagementClientBuilder.
      */
-    public CacheClientBuilder environment(AzureEnvironment environment) {
+    public RedisEnterpriseManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class CacheClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the CacheClientBuilder.
+     * @return the RedisEnterpriseManagementClientBuilder.
      */
-    public CacheClientBuilder pipeline(HttpPipeline pipeline) {
+    public RedisEnterpriseManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class CacheClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the CacheClientBuilder.
+     * @return the RedisEnterpriseManagementClientBuilder.
      */
-    public CacheClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public RedisEnterpriseManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class CacheClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the CacheClientBuilder.
+     * @return the RedisEnterpriseManagementClientBuilder.
      */
-    public CacheClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public RedisEnterpriseManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of CacheClientImpl with the provided parameters.
+     * Builds an instance of RedisEnterpriseManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of CacheClientImpl.
+     * @return an instance of RedisEnterpriseManagementClientImpl.
      */
-    public CacheClientImpl buildClient() {
+    public RedisEnterpriseManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,8 +131,8 @@ public final class CacheClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        CacheClientImpl client = new CacheClientImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
-            localEnvironment, localEndpoint, this.subscriptionId);
+        RedisEnterpriseManagementClientImpl client = new RedisEnterpriseManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }

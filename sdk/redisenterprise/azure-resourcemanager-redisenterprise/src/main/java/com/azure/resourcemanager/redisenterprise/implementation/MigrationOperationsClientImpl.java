@@ -51,25 +51,25 @@ public final class MigrationOperationsClientImpl implements MigrationOperationsC
     /**
      * The service client containing this operation class.
      */
-    private final CacheClientImpl client;
+    private final RedisEnterpriseManagementClientImpl client;
 
     /**
      * Initializes an instance of MigrationOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MigrationOperationsClientImpl(CacheClientImpl client) {
+    MigrationOperationsClientImpl(RedisEnterpriseManagementClientImpl client) {
         this.service = RestProxy.create(MigrationOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CacheClientMigrationOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for RedisEnterpriseManagementClientMigrationOperations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CacheClientMigrationOperations")
+    @ServiceInterface(name = "RedisEnterpriseManagementClientMigrationOperations")
     public interface MigrationOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default")

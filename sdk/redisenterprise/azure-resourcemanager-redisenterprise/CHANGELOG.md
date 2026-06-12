@@ -1,39 +1,33 @@
 # Release History
 
-## 2.2.0-beta.1 (2026-06-11)
+## 2.2.0-beta.1 (2026-06-12)
 
+- Azure Resource Manager Redis Enterprise client library for Java. This package contains Microsoft Azure SDK for Redis Enterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager redisenterprise client library for Java. This package contains Microsoft Azure SDK for redisenterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-#### `models.ManagedServiceIdentity` was removed
-
 #### `models.PrivateLinkResourceListResult` was removed
-
-#### `RedisEnterpriseManager` was removed
 
 #### `models.PrivateEndpointConnectionListResult` was removed
 
 #### `models.OperationListResult` was removed
 
-#### `RedisEnterpriseManager$Configurable` was removed
-
 #### `models.AccessPolicyAssignmentList` was removed
-
-#### `models.ClusterCommonProperties` was removed
-
-#### `models.DatabaseCommonProperties` was removed
 
 #### `models.ClusterList` was removed
 
 #### `models.DatabaseList` was removed
 
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
 #### `models.ClusterUpdate` was modified
 
-* `hostname()` was removed
-* `withIdentity(models.ManagedServiceIdentity)` was removed
 * `validate()` was removed
-* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentityV4 identity()`
 
 #### `models.ForceLinkParametersGeoReplication` was modified
 
@@ -49,12 +43,6 @@
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
-#### `models.PrivateLinkResource` was modified
-
-* `requiredMembers()` was removed
-* `requiredZoneNames()` was removed
-* `groupId()` was removed
-
 #### `models.DatabaseUpdate` was modified
 
 * `validate()` was removed
@@ -62,14 +50,6 @@
 #### `models.Module` was modified
 
 * `validate()` was removed
-
-#### `models.Cluster$Update` was modified
-
-* `withIdentity(models.ManagedServiceIdentity)` was removed
-
-#### `models.RdbFrequency` was modified
-
-* `ONE_TWOH` was removed
 
 #### `models.PrivateEndpoint` was modified
 
@@ -111,13 +91,9 @@
 
 * `validate()` was removed
 
-#### `models.Cluster$Definition` was modified
+#### `models.ClusterCommonProperties` was modified
 
-* `withIdentity(models.ManagedServiceIdentity)` was removed
-
-#### `models.ManagedServiceIdentityType` was modified
-
-* `SYSTEM_ASSIGNED_USER_ASSIGNED` was removed
+* `validate()` was removed
 
 #### `models.ForceLinkParameters` was modified
 
@@ -127,16 +103,14 @@
 
 * `validate()` was removed
 
+#### `models.DatabaseCommonProperties` was modified
+
+* `validate()` was removed
+
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
 * `validate()` was removed
-
-#### `models.TlsVersion` was modified
-
-* `ONE_ONE` was removed
-* `ONE_ZERO` was removed
-* `ONE_TWO` was removed
 
 #### `models.ExportClusterParameters` was modified
 
@@ -150,16 +124,10 @@
 
 * `validate()` was removed
 
-#### `models.Cluster` was modified
-
-* `models.ManagedServiceIdentity identity()` -> `models.ManagedServiceIdentityV4 identity()`
-* `hostname()` was removed
-
 #### `models.SkuDetails` was modified
 
 * `SkuDetails()` was changed to private access
 * `validate()` was removed
-* `java.lang.Float sizeInGB()` -> `java.lang.Double sizeInGB()`
 
 ### Features Added
 
@@ -173,17 +141,11 @@
 
 * `models.MaintenanceDayOfWeek` was added
 
-* `RedisenterpriseManager$Configurable` was added
-
-* `models.ManagedServiceIdentityV4` was added
-
 * `models.MigrationProvisioningState` was added
 
 * `models.MigrationValidationError` was added
 
 * `models.MaintenanceConfiguration` was added
-
-* `models.DatabaseProperties` was added
 
 * `models.MaintenanceWindow` was added
 
@@ -191,17 +153,11 @@
 
 * `models.MigrationProperties` was added
 
-* `models.PrivateLinkResourceProperties` was added
-
-* `models.ClusterProperties` was added
-
 * `models.MigrationOperations` was added
 
 * `models.Migration` was added
 
 * `models.MigrationValidationResponse` was added
-
-* `RedisenterpriseManager` was added
 
 * `models.Migrations` was added
 
@@ -211,16 +167,13 @@
 
 #### `models.ClusterUpdate` was modified
 
+* `migratedEndpoint()` was added
 * `maintenanceConfiguration()` was added
 * `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
-* `withIdentity(models.ManagedServiceIdentityV4)` was added
-* `migratedEndpoint()` was added
-* `hostName()` was added
 
 #### `models.PrivateLinkResource` was modified
 
 * `systemData()` was added
-* `properties()` was added
 
 #### `models.DatabaseUpdate` was modified
 
@@ -230,11 +183,11 @@
 #### `models.Cluster$Update` was modified
 
 * `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
-* `withIdentity(models.ManagedServiceIdentityV4)` was added
 
-#### `models.RdbFrequency` was modified
+#### `RedisEnterpriseManager` was modified
 
-* `TWELVEH` was added
+* `migrationOperations()` was added
+* `migrations()` was added
 
 #### `models.Database$Definition` was modified
 
@@ -242,16 +195,17 @@
 
 #### `models.Cluster$Definition` was modified
 
-* `withIdentity(models.ManagedServiceIdentityV4)` was added
 * `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+
+#### `models.ClusterCommonProperties` was modified
+
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+* `maintenanceConfiguration()` was added
+* `migratedEndpoint()` was added
 
 #### `models.Database$Update` was modified
 
 * `withNotifyKeyspaceEvents(java.lang.String)` was added
-
-#### `models.ManagedServiceIdentityType` was modified
-
-* `SYSTEM_AND_USER_ASSIGNED` was added
 
 #### `models.AccessPolicyAssignment` was modified
 
@@ -261,11 +215,10 @@
 
 * `notifyKeyspaceEvents()` was added
 
-#### `models.TlsVersion` was modified
+#### `models.DatabaseCommonProperties` was modified
 
-* `ONE2` was added
-* `ONE1` was added
-* `ONE0` was added
+* `notifyKeyspaceEvents()` was added
+* `withNotifyKeyspaceEvents(java.lang.String)` was added
 
 #### `models.PrivateEndpointConnection` was modified
 
@@ -274,10 +227,9 @@
 
 #### `models.Cluster` was modified
 
-* `migratedEndpoint()` was added
-* `hostName()` was added
-* `maintenanceConfiguration()` was added
 * `systemData()` was added
+* `maintenanceConfiguration()` was added
+* `migratedEndpoint()` was added
 
 ## 2.1.0 (2025-10-15)
 

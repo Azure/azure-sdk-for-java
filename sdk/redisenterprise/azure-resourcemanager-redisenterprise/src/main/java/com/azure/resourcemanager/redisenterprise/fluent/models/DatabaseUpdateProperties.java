@@ -10,7 +10,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
-import com.azure.resourcemanager.redisenterprise.models.DatabaseProperties;
+import com.azure.resourcemanager.redisenterprise.models.DatabaseCommonProperties;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
@@ -26,7 +26,7 @@ import java.util.List;
  * Properties for updating Redis Enterprise databases.
  */
 @Fluent
-public final class DatabaseUpdateProperties extends DatabaseProperties {
+public final class DatabaseUpdateProperties extends DatabaseCommonProperties {
     /*
      * This property can be Enabled/Disabled to allow or deny access with the current access keys. Can be updated even
      * after database is created. Default is Disabled.

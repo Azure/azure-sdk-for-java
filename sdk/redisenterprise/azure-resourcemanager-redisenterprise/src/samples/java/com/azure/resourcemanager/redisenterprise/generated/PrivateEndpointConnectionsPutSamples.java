@@ -17,10 +17,10 @@ public final class PrivateEndpointConnectionsPutSamples {
     /**
      * Sample code: RedisEnterprisePutPrivateEndpointConnection.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterprisePutPrivateEndpointConnection(
-        com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.privateEndpointConnections()
             .define("pectest01")
             .withExistingRedisEnterprise("rg1", "cache1")

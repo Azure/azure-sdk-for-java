@@ -28,9 +28,9 @@ public final class RedisEnterpriseUpdateSamples {
     /**
      * Sample code: RedisEnterpriseUpdate.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
-    public static void redisEnterpriseUpdate(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+    public static void redisEnterpriseUpdate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         Cluster resource = manager.redisEnterprises()
             .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE)
             .getValue();
@@ -38,7 +38,7 @@ public final class RedisEnterpriseUpdateSamples {
             .withTags(mapOf("tag1", "value1"))
             .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(9))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-            .withMinimumTlsVersion(TlsVersion.ONE2)
+            .withMinimumTlsVersion(TlsVersion.ONE_TWO)
             .withMaintenanceConfiguration(new MaintenanceConfiguration().withMaintenanceWindows(Arrays.asList(
                 new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
                     .withDuration("PT6H")

@@ -14,9 +14,9 @@ public final class RedisEnterpriseGetByResourceGroupSamples {
     /**
      * Sample code: RedisEnterpriseGet.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
-    public static void redisEnterpriseGet(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+    public static void redisEnterpriseGet(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.redisEnterprises().getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,10 +12,10 @@ public final class AccessPolicyAssignmentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessPolicyAssignmentList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"accessPolicyName\":\"vxodpu\",\"user\":{\"objectId\":\"myzydagfuaxbez\"}},\"id\":\"uokktwhrdxwz\",\"name\":\"wqsmbsur\",\"type\":\"xim\"}],\"nextLink\":\"yocf\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"accessPolicyName\":\"efovgmk\",\"user\":{\"objectId\":\"leyyvx\"}},\"id\":\"jpkcattpng\",\"name\":\"cr\",\"type\":\"czsqpjhvm\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"accessPolicyName\":\"nysounqe\",\"user\":{\"objectId\":\"noae\"}},\"id\":\"fhyhltrpmopjmcma\",\"name\":\"u\",\"type\":\"kthfui\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"accessPolicyName\":\"sfcpkvxodpuozm\",\"user\":{\"objectId\":\"ydagfuaxbe\"}},\"id\":\"iu\",\"name\":\"kktwhrdxw\",\"type\":\"ywqsmbsurexim\"}],\"nextLink\":\"yocf\"}")
             .toObject(AccessPolicyAssignmentList.class);
-        Assertions.assertEquals("vxodpu", model.value().get(0).accessPolicyName());
-        Assertions.assertEquals("myzydagfuaxbez", model.value().get(0).user().objectId());
+        Assertions.assertEquals("efovgmk", model.value().get(0).accessPolicyName());
+        Assertions.assertEquals("leyyvx", model.value().get(0).user().objectId());
         Assertions.assertEquals("yocf", model.nextLink());
     }
 }

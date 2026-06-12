@@ -5,27 +5,27 @@
 package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityV4;
 import com.azure.resourcemanager.redisenterprise.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
-public final class ManagedServiceIdentityV4Tests {
+public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentityV4 model = BinaryData.fromString(
+        ManagedServiceIdentity model = BinaryData.fromString(
             "{\"principalId\":\"dzxibqeojnxqbzvd\",\"tenantId\":\"t\",\"type\":\"None\",\"userAssignedIdentities\":{\"hjq\":{\"principalId\":\"cbtwnpzaoqvuh\",\"clientId\":\"cffcyddglmj\"}}}")
-            .toObject(ManagedServiceIdentityV4.class);
+            .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentityV4 model = new ManagedServiceIdentityV4().withType(ManagedServiceIdentityType.NONE)
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
             .withUserAssignedIdentities(mapOf("hjq", new UserAssignedIdentity()));
-        model = BinaryData.fromObject(model).toObject(ManagedServiceIdentityV4.class);
+        model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 

@@ -17,10 +17,10 @@ public final class MigrationOperationStartSamples {
     /**
      * Sample code: RedisEnterpriseMigrationStart.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseMigrationStart(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseMigrationStart(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.migrationOperations()
             .start("rg1", "cache1",
                 new MigrationInner().withProperties(new AzureCacheForRedisMigrationProperties().withSourceResourceId(

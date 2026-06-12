@@ -24,7 +24,7 @@ public final class RdbFrequency extends ExpandableStringEnum<RdbFrequency> {
     /**
      * 12h.
      */
-    public static final RdbFrequency TWELVEH = fromString("12h");
+    public static final RdbFrequency ONE_TWOH = fromString("12h");
 
     /**
      * Creates a new instance of RdbFrequency value.

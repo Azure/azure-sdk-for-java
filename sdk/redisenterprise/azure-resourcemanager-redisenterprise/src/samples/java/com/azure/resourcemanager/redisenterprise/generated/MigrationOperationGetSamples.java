@@ -14,10 +14,10 @@ public final class MigrationOperationGetSamples {
     /**
      * Sample code: RedisEnterpriseMigrationGet.
      * 
-     * @param manager Entry point to RedisenterpriseManager.
+     * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void
-        redisEnterpriseMigrationGet(com.azure.resourcemanager.redisenterprise.RedisenterpriseManager manager) {
+        redisEnterpriseMigrationGet(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.migrationOperations().getWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }
