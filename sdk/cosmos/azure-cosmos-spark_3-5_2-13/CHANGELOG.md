@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Added a defensive guard in bounded change feed reads (with `endLsn`) that fails the Spark task with `IllegalStateException` when the underlying paginator stops before the latest continuation token has advanced to `endLsn`. This surfaces SDK-side premature-termination bugs that previously manifested as silently missing rows. - See [PR 49393](https://github.com/Azure/azure-sdk-for-java/pull/49393)
 
 #### Other Changes
 
