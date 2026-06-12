@@ -95,4 +95,61 @@ public class ThinClientRoutingGateTests {
         Mockito.when(request.isAllVersionsAndDeletesChangeFeedMode()).thenReturn(false);
         assertThat(RxDocumentClientImpl.shouldUseThinClientStoreModel(true, true, true, request)).isTrue();
     }
+
+    // --- QueryPlan + Stored Procedure routing to Gateway V2 (PR #47759) ---
+
+    @Test(groups = "unit")
+    public void executeStoredProcedure_onStoredProcedureResource_routesToThinClient() {
+        // Sproc execute lives on ResourceType.StoredProcedure, not Document. The gate must
+        // make a carve-out via isExecuteStoredProcedureBasedRequest() so the request still
+        // reaches the proxy and gets routed to Gateway V2.
+        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.when(request.getResourceType()).thenReturn(ResourceType.StoredProcedure);
+        Mockito.when(request.getOperationType()).thenReturn(OperationType.ExecuteJavaScript);
+        Mockito.when(request.isExecuteStoredProcedureBasedRequest()).thenReturn(true);
+        assertThat(RxDocumentClientImpl.shouldUseThinClientStoreModel(true, true, true, request)).isTrue();
+    }
+
+    @Test(groups = "unit")
+    public void nonExecuteStoredProcedureResource_routesToGatewayV1() {
+        // CRUD on the StoredProcedure resource (create/replace/delete sproc definition) must
+        // continue to flow through Gateway V1 — only the execute path is proxied.
+        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.when(request.getResourceType()).thenReturn(ResourceType.StoredProcedure);
+        Mockito.when(request.getOperationType()).thenReturn(OperationType.Create);
+        Mockito.when(request.isExecuteStoredProcedureBasedRequest()).thenReturn(false);
+        assertThat(RxDocumentClientImpl.shouldUseThinClientStoreModel(true, true, true, request)).isFalse();
+    }
+
+    @Test(groups = "unit")
+    public void queryPlanOperation_routesToThinClient() {
+        // QueryPlan is fetched on the Document resource with a dedicated operation type.
+        // The gate explicitly enumerates OperationType.QueryPlan so plan retrieval is proxied.
+        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.when(request.getResourceType()).thenReturn(ResourceType.Document);
+        Mockito.when(request.getOperationType()).thenReturn(OperationType.QueryPlan);
+        Mockito.when(request.isExecuteStoredProcedureBasedRequest()).thenReturn(false);
+        assertThat(RxDocumentClientImpl.shouldUseThinClientStoreModel(true, true, true, request)).isTrue();
+    }
+
+    @Test(groups = "unit")
+    public void queryPlanOperation_probeUnhealthy_routesToGatewayV1() {
+        // Probe fallback must also gate QueryPlan traffic — when the proxy is unhealthy,
+        // plan fetches must fall back to Gateway V1 just like document reads.
+        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.when(request.getResourceType()).thenReturn(ResourceType.Document);
+        Mockito.when(request.getOperationType()).thenReturn(OperationType.QueryPlan);
+        assertThat(RxDocumentClientImpl.shouldUseThinClientStoreModel(true, true, false, request)).isFalse();
+    }
+
+    @Test(groups = "unit")
+    public void executeStoredProcedure_probeUnhealthy_routesToGatewayV1() {
+        // Sproc execute must also respect probe health — even with the resource-type carve-out,
+        // a RED probe forces fallback to Gateway V1.
+        RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.when(request.getResourceType()).thenReturn(ResourceType.StoredProcedure);
+        Mockito.when(request.getOperationType()).thenReturn(OperationType.ExecuteJavaScript);
+        Mockito.when(request.isExecuteStoredProcedureBasedRequest()).thenReturn(true);
+        assertThat(RxDocumentClientImpl.shouldUseThinClientStoreModel(true, true, false, request)).isFalse();
+    }
 }
