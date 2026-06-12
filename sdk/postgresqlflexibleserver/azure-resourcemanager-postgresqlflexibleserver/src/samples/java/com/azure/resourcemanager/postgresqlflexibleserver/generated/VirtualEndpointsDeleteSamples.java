@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class VirtualEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/VirtualEndpointDelete.json
+     * x-ms-original-file: 2026-04-01-preview/VirtualEndpointDelete.json
      */
     /**
      * Sample code: Delete a pair of virtual endpoints.
