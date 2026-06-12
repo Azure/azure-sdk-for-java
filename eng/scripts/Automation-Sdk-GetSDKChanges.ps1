@@ -78,7 +78,7 @@ function Invoke-RevapiCheck {
 
     $mvnCmd = Get-Command "mvn" -ErrorAction SilentlyContinue
     if (-not $mvnCmd) {
-        throw "Maven executable 'mvn' not found in PATH. Please ensure Maven is installed and available in your PATH."
+        throw "Maven executable 'mvn' not found in PATH. Please ensure Maven is installed and available in your PATH. See https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md for setup instructions."
     }
 
     $revapiArgs = @(
@@ -146,7 +146,7 @@ try {
     LogInfo ""
 
     # Create temporary directory for downloaded JAR
-    $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid().ToString())
+    $tempDir = Join-Path ([System.IO.Path]::GetTempPath()) "azure-sdk-changes-$([System.Guid]::NewGuid().ToString())"
     New-Item -ItemType Directory -Path $tempDir | Out-Null
 
     try {
@@ -180,7 +180,7 @@ try {
             }
         }
         catch {
-            LogWarning "Failed to generate changelog content: $_"
+            LogWarning "Failed to generate changelog content: $_. The output will include an empty changelog, which may indicate no detectable API changes or a comparison failure."
             LogWarning "Continuing with empty changelog."
         }
         LogInfo ""
