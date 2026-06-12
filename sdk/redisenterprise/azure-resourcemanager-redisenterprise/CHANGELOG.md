@@ -3,7 +3,6 @@
 ## 2.2.0-beta.1 (2026-06-12)
 
 - Azure Resource Manager Redis Enterprise client library for Java. This package contains Microsoft Azure SDK for Redis Enterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-- Azure Resource Manager redisenterprise client library for Java. This package contains Microsoft Azure SDK for redisenterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
