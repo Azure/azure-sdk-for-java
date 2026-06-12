@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-06-11)
+## 1.0.0 (Unreleased)
 
 ### Features Added
 
@@ -26,7 +26,7 @@
 - `StacItemProperties.getGsd()` return type changed from `Number` to `Double`.
 - `getItemCollection` method signature expanded with additional parameters.
 
-## 1.0.0-beta.1 (Unreleased)
+## 1.0.0-beta.1 (2026-06-08)
 
 - Azure PlanetaryComputer client library for Java. This package contains Microsoft Azure PlanetaryComputer client library.
 
