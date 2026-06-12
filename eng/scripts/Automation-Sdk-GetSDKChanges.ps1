@@ -9,11 +9,12 @@
 .DESCRIPTION
     This script:
     1. Reads the pom.xml from the package path to extract groupId and artifactId
-    2. Downloads the latest released JAR from Maven Central
-    3. Locates the built JAR file from the target directory
-    4. Runs the changelog automation tool to compare old vs new JAR and get changelog markdown
-    5. Runs mvn revapi:check to detect breaking changes
-    6. Writes the result as JSON to the specified output file (does NOT update CHANGELOG.md)
+    2. Builds the local package JAR
+    3. Downloads the latest released JAR from Maven Central
+    4. Locates the built JAR file from the target directory
+    5. Runs the changelog automation tool to compare old vs new JAR and get changelog markdown
+    6. Runs mvn revapi:check to detect breaking changes
+    7. Writes the result as JSON to the specified output file (does NOT update CHANGELOG.md)
 
     Output JSON format:
     {
@@ -81,6 +82,8 @@ function Invoke-RevapiCheck {
         throw "Maven executable 'mvn' not found in PATH. Please ensure Maven is installed and available in your PATH. See https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md for setup instructions."
     }
 
+    # Some management package poms explicitly set revapi.skip=true for regular builds.
+    # Force the check back on here because this script is the authoritative breaking-change signal.
     $revapiArgs = @(
         "--no-transfer-progress"
         "revapi:check"
@@ -89,6 +92,7 @@ function Invoke-RevapiCheck {
         "-Dgpg.skip"
         "-Dmaven.javadoc.skip=true"
         "-DskipTests"
+        "-Drevapi.skip=false"
     )
 
     LogInfo "Running: mvn $($revapiArgs -join ' ')"
@@ -109,15 +113,83 @@ function Invoke-RevapiCheck {
     $process.WaitForExit()
     $exitCode = $process.ExitCode
 
-    if ($exitCode -ne 0) {
+    if ($exitCode -eq 0) {
+        LogInfo "  revapi:check passed - no breaking changes detected"
+        return $false
+    }
+
+    $combinedOutput = @($stdout, $stderr) -join [Environment]::NewLine
+    # revapi:check uses a non-zero exit code for real API incompatibilities as well as infrastructure/tooling
+    # failures. Only treat the known API-difference failure shape as a breaking-change result; everything else
+    # should fail the script so callers don't get a misleading JSON payload.
+    $hasApiProblems = $combinedOutput -match "The following API problems caused the build to fail:"
+
+    if ($hasApiProblems) {
         LogWarning "revapi:check exited with code $exitCode"
         if ($stdout) { LogWarning $stdout }
         if ($stderr) { LogWarning $stderr }
-    } else {
-        LogInfo "  revapi:check passed - no breaking changes detected"
+        return $true
     }
 
-    return $exitCode -ne 0
+    LogError "revapi:check failed with exit code $exitCode"
+    if ($stdout) { LogError $stdout }
+    if ($stderr) { LogError $stderr }
+    throw "revapi:check failed to execute successfully."
+}
+
+function Invoke-PackageBuild {
+    param(
+        [string]$PackagePath
+    )
+
+    $mvnCmd = Get-Command "mvn" -ErrorAction SilentlyContinue
+    if (-not $mvnCmd) {
+        throw "Maven executable 'mvn' not found in PATH. Please ensure Maven is installed and available in your PATH. See https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md for setup instructions."
+    }
+
+    # Build the package JAR up front so changelog generation always has a local artifact to compare.
+    # Keep this aligned with the existing eng build command, while also skipping test execution because
+    # the goal here is just to produce the JAR needed by the comparison tooling.
+    $buildArgs = @(
+        "--no-transfer-progress"
+        "clean"
+        "package"
+        "-f"
+        $PackagePath
+        "-Dgpg.skip"
+        "-Dmaven.javadoc.skip=true"
+        "-DskipTests"
+        "-DskipTestCompile"
+        "-Djacoco.skip"
+        "-Drevapi.skip=true"
+    )
+
+    LogInfo "Running: mvn $($buildArgs -join ' ')"
+
+    $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+    $pinfo.FileName = $mvnCmd.Source
+    $pinfo.RedirectStandardError = $true
+    $pinfo.RedirectStandardOutput = $true
+    $pinfo.UseShellExecute = $false
+    $pinfo.Arguments = $buildArgs -join " "
+
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $pinfo
+    $process.Start() | Out-Null
+
+    $stdout = $process.StandardOutput.ReadToEnd()
+    $stderr = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+    $exitCode = $process.ExitCode
+
+    if ($exitCode -ne 0) {
+        LogError "Package build failed with exit code $exitCode"
+        if ($stdout) { LogError $stdout }
+        if ($stderr) { LogError $stderr }
+        throw "Failed to build package JAR."
+    }
+
+    LogInfo "  Package JAR built successfully"
 }
 
 try {
@@ -133,7 +205,11 @@ try {
     LogInfo "  Artifact ID: $($artifactInfo.ArtifactId)"
     LogInfo ""
 
-    LogInfo "Step 2: Fetching latest stable released version from Maven Central..."
+    LogInfo "Step 2: Building local package JAR..."
+    Invoke-PackageBuild -PackagePath $PackagePath
+    LogInfo ""
+
+    LogInfo "Step 3: Fetching latest stable released version from Maven Central..."
     $latestVersion = Get-LatestReleasedStableVersion -GroupId $artifactInfo.GroupId -ArtifactId $artifactInfo.ArtifactId
 
     if ($null -eq $latestVersion) {
@@ -150,7 +226,7 @@ try {
     New-Item -ItemType Directory -Path $tempDir | Out-Null
 
     try {
-        LogInfo "Step 3: Downloading released JAR from Maven Central..."
+        LogInfo "Step 4: Downloading released JAR from Maven Central..."
         $oldJarPath = Get-MavenJar -GroupId $artifactInfo.GroupId `
                                     -ArtifactId $artifactInfo.ArtifactId `
                                     -Version $latestVersion `
@@ -158,7 +234,7 @@ try {
         LogInfo "  Downloaded to: $oldJarPath"
         LogInfo ""
 
-        LogInfo "Step 4: Locating built JAR..."
+        LogInfo "Step 5: Locating built JAR..."
         $newJarPath = Get-BuiltJarPath -PackagePath $PackagePath -ArtifactId $artifactInfo.ArtifactId
         LogInfo "  New JAR: $newJarPath"
         if (-not (Test-Path $newJarPath)) {
@@ -166,7 +242,7 @@ try {
         }
         LogInfo ""
 
-        LogInfo "Step 5: Generating changelog content..."
+        LogInfo "Step 6: Generating changelog content..."
         $changelogMD = ""
         try {
             $changelogResult = Invoke-ChangelogGeneration -SdkRepoPath $SdkRepoPath `
@@ -185,7 +261,7 @@ try {
         }
         LogInfo ""
 
-        LogInfo "Step 6: Running revapi:check to detect breaking changes..."
+        LogInfo "Step 7: Running revapi:check to detect breaking changes..."
         $hasBreakingChange = Invoke-RevapiCheck -PackagePath $PackagePath
         if ($hasBreakingChange) {
             LogWarning "⚠️  Breaking changes detected by revapi:check"
@@ -194,7 +270,7 @@ try {
         }
         LogInfo ""
 
-        LogInfo "Step 7: Writing output JSON..."
+        LogInfo "Step 8: Writing output JSON..."
         Write-OutputJson -HasBreakingChange $hasBreakingChange -ChangelogMD $changelogMD
 
         LogInfo "✅ SDK changes computed successfully!"
