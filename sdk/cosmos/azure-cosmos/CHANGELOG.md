@@ -9,7 +9,6 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Enabled Gateway V2 (thin-client) data-plane routing by default for eligible Gateway-mode clients (`COSMOS.THINCLIENT_ENABLED=true`); gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1.
 
 ### 4.81.0 (2026-06-08)
 

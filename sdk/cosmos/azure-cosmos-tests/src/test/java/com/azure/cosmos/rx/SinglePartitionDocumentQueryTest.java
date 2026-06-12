@@ -98,24 +98,19 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                                              .getContainer(createdCollection.getId());
         RxDocumentClientImpl asyncDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
         RxStoreModel serverStoreModel = ReflectionUtils.getRxServerStoreModel(asyncDocumentClient);
-
-        // Spy on BOTH the gateway proxy and (when applicable) the thin-client proxy. At runtime the SDK
-        // routes through whichever proxy `useThinClientStoreModel(request)` selects; that gate depends on
-        // the probe-healthy state from GlobalEndpointManager, which races with this test. Spying on both
-        // makes the assertion robust regardless of which path is currently active.
-        RxStoreModel gatewayProxy = ReflectionUtils.getGatewayProxy(asyncDocumentClient);
-        RxStoreModel spyGatewayProxy = Mockito.spy(gatewayProxy);
-        ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyGatewayProxy);
-
-        RxStoreModel spyThinProxy = null;
-        if (asyncDocumentClient.useThinClient()) {
-            RxStoreModel thinProxy = ReflectionUtils.getThinProxy(asyncDocumentClient);
-            spyThinProxy = Mockito.spy(thinProxy);
-            ReflectionUtils.setThinProxy(asyncDocumentClient, spyThinProxy);
-        }
+        RxStoreModel proxy = asyncDocumentClient.useThinClient() ?
+            ReflectionUtils.getThinProxy(asyncDocumentClient) :
+            ReflectionUtils.getGatewayProxy(asyncDocumentClient);
 
         RxStoreModel spyServerStoreModel = Mockito.spy(serverStoreModel);
+        RxStoreModel spyProxy = Mockito.spy(proxy);
+
         ReflectionUtils.setServerStoreModel(asyncDocumentClient, spyServerStoreModel);
+        if (asyncDocumentClient.useThinClient()) {
+            ReflectionUtils.setThinProxy(asyncDocumentClient, spyProxy);
+        } else {
+            ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyProxy);
+        }
 
         CosmosPagedFlux<InternalObjectNode> queryFlux = container
                                                             .queryItems("select * from root", options,
@@ -128,14 +123,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         // In gateway mode, serverstoremodel is GatewayStoreModel/ThinClientStoreModel so below passes
         // In direct mode, serverStoreModel is ServerStoreModel. So queryPlan goes through gatewayProxy and the query
         // goes through the serverStoreModel
-        int gatewayInvocations = Mockito.mockingDetails(spyGatewayProxy).getInvocations().stream()
-            .filter(inv -> "processMessage".equals(inv.getMethod().getName())).toArray().length;
-        int thinInvocations = spyThinProxy == null ? 0
-            : Mockito.mockingDetails(spyThinProxy).getInvocations().stream()
-                .filter(inv -> "processMessage".equals(inv.getMethod().getName())).toArray().length;
-        assertThat(gatewayInvocations + thinInvocations)
-            .as("Exactly one of gateway/thin proxy should have processed the query")
-            .isEqualTo(1);
+        Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
         if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
         }

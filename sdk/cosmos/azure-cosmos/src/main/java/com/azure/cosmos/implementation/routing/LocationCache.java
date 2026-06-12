@@ -137,66 +137,6 @@ public class LocationCache {
         return this.locationInfo.availableReadRegionalRoutingContexts;
     }
 
-    /**
-     * Returns the set of non-null thin-client regional endpoints discovered in the most
-     * recent topology refresh. Used by the thin-client connectivity probe to fan out
-     * HTTP/2 probes after each topology update.
-     *
-     * <p><b>All-or-nothing semantics.</b> Probing requires every region in the resolved
-     * read/write topology to expose a thin-client endpoint. If any region is missing one,
-     * this method returns an empty set so the caller skips probing entirely (and the
-     * routing gate falls back to Gateway V1) rather than partially routing through a
-     * thin-client mesh that has gaps.
-     *
-     * @return immutable snapshot of thin-client regional endpoints, or an empty set when
-     *         no thin-client locations are present or when the resolved topology has a
-     *         region that does not expose a thin-client endpoint.
-     */
-    public Set<URI> getThinClientRegionalEndpoints() {
-        Set<URI> endpoints = new HashSet<>();
-        if (!collectThinClientEndpointsAllOrNothing(
-                this.locationInfo.availableReadRegionalRoutingContextsByRegionName, endpoints)) {
-            return Collections.emptySet();
-        }
-        // Also walk write regions: useThinClientStoreModel() routes writes (point ops, batch) through
-        // thin-client too, so a write-only region's thin-client endpoint must be probed as well.
-        // Set semantics dedupe the common case where a region is both readable and writable.
-        if (!collectThinClientEndpointsAllOrNothing(
-                this.locationInfo.availableWriteRegionalRoutingContextsByRegionName, endpoints)) {
-            return Collections.emptySet();
-        }
-        if (endpoints.isEmpty()) {
-            return Collections.emptySet();
-        }
-        return Collections.unmodifiableSet(endpoints);
-    }
-
-    /**
-     * Collects thin-client endpoints from {@code byRegion} into {@code sink}.
-     *
-     * @return {@code true} if every region in {@code byRegion} contributed a non-null
-     *         thin-client endpoint (or {@code byRegion} was empty/null); {@code false}
-     *         if any region was missing its thin-client endpoint, in which case the
-     *         caller must treat the entire topology as ineligible for probing.
-     */
-    private static boolean collectThinClientEndpointsAllOrNothing(
-        UnmodifiableMap<String, RegionalRoutingContext> byRegion, Set<URI> sink) {
-        if (byRegion == null || byRegion.isEmpty()) {
-            return true;
-        }
-        for (RegionalRoutingContext ctx : byRegion.values()) {
-            if (ctx == null) {
-                continue;
-            }
-            URI thinclientEndpoint = ctx.getThinclientRegionalEndpoint();
-            if (thinclientEndpoint == null) {
-                return false;
-            }
-            sink.add(thinclientEndpoint);
-        }
-        return true;
-    }
-
     public List<RegionalRoutingContext> getAvailableWriteRegionalRoutingContexts() {
         return this.locationInfo.availableWriteRegionalRoutingContexts;
     }
