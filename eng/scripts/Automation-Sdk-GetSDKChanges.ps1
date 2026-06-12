@@ -9,12 +9,13 @@
 .DESCRIPTION
     This script:
     1. Reads the pom.xml from the package path to extract groupId and artifactId
-    2. Builds the local package JAR
-    3. Downloads the latest released JAR from Maven Central
-    4. Locates the built JAR file from the target directory
-    5. Runs the changelog automation tool to compare old vs new JAR and get changelog markdown
-    6. Runs mvn revapi:check to detect breaking changes
-    7. Writes the result as JSON to the specified output file (does NOT update CHANGELOG.md)
+    2. Fetches the latest released JAR version from Maven Central
+    3. Builds the local package JAR
+    4. Downloads the latest released JAR from Maven Central
+    5. Locates the built JAR file from the target directory
+    6. Runs the changelog automation tool to compare old vs new JAR and get changelog markdown
+    7. Runs mvn revapi:check to detect breaking changes
+    8. Writes the result as JSON to the specified output file (does NOT update CHANGELOG.md)
 
     Output JSON format:
     {
@@ -98,21 +99,10 @@ function Invoke-RevapiCheck {
     $formattedArgs = ConvertTo-ProcessArgumentString -Arguments $revapiArgs
     LogInfo "Running: mvn $formattedArgs"
 
-    $pinfo = New-Object System.Diagnostics.ProcessStartInfo
-    $pinfo.FileName = $mvnCmd.Source
-    $pinfo.RedirectStandardError = $true
-    $pinfo.RedirectStandardOutput = $true
-    $pinfo.UseShellExecute = $false
-    $pinfo.Arguments = $formattedArgs
-
-    $process = New-Object System.Diagnostics.Process
-    $process.StartInfo = $pinfo
-    $process.Start() | Out-Null
-
-    $stdout = $process.StandardOutput.ReadToEnd()
-    $stderr = $process.StandardError.ReadToEnd()
-    $process.WaitForExit()
-    $exitCode = $process.ExitCode
+    $commandResult = Invoke-CommandAndCaptureOutput -FilePath $mvnCmd.Source -Arguments $revapiArgs
+    $stdout = $commandResult.StdOut
+    $stderr = $commandResult.StdErr
+    $exitCode = $commandResult.ExitCode
 
     if ($exitCode -eq 0) {
         LogInfo "  revapi:check passed - no breaking changes detected"
@@ -148,9 +138,10 @@ function Invoke-PackageBuild {
         throw "Maven executable 'mvn' not found in PATH. Please ensure Maven is installed and available in your PATH. See https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md for setup instructions."
     }
 
-    # Build the package JAR up front so changelog generation always has a local artifact to compare.
-    # Keep this aligned with the existing eng build command, while also skipping test execution because
-    # the goal here is just to produce the JAR needed by the comparison tooling.
+    # Build the package JAR after confirming that a released version exists to compare against.
+    # Keep this ahead of changelog generation and Revapi because both operations need the local artifact.
+    # Keep the command aligned with the existing eng build command, while also skipping test execution
+    # because the goal here is just to produce the JAR needed by the comparison tooling.
     $buildArgs = @(
         "--no-transfer-progress"
         "clean"
@@ -168,21 +159,10 @@ function Invoke-PackageBuild {
     $formattedArgs = ConvertTo-ProcessArgumentString -Arguments $buildArgs
     LogInfo "Running: mvn $formattedArgs"
 
-    $pinfo = New-Object System.Diagnostics.ProcessStartInfo
-    $pinfo.FileName = $mvnCmd.Source
-    $pinfo.RedirectStandardError = $true
-    $pinfo.RedirectStandardOutput = $true
-    $pinfo.UseShellExecute = $false
-    $pinfo.Arguments = $formattedArgs
-
-    $process = New-Object System.Diagnostics.Process
-    $process.StartInfo = $pinfo
-    $process.Start() | Out-Null
-
-    $stdout = $process.StandardOutput.ReadToEnd()
-    $stderr = $process.StandardError.ReadToEnd()
-    $process.WaitForExit()
-    $exitCode = $process.ExitCode
+    $commandResult = Invoke-CommandAndCaptureOutput -FilePath $mvnCmd.Source -Arguments $buildArgs
+    $stdout = $commandResult.StdOut
+    $stderr = $commandResult.StdErr
+    $exitCode = $commandResult.ExitCode
 
     if ($exitCode -ne 0) {
         LogError "Package build failed with exit code $exitCode"
@@ -207,11 +187,7 @@ try {
     LogInfo "  Artifact ID: $($artifactInfo.ArtifactId)"
     LogInfo ""
 
-    LogInfo "Step 2: Building local package JAR..."
-    Invoke-PackageBuild -PackagePath $PackagePath
-    LogInfo ""
-
-    LogInfo "Step 3: Fetching latest released version from Maven Central..."
+    LogInfo "Step 2: Fetching latest released version from Maven Central..."
     $latestVersion = Get-LatestReleasedStableVersion -GroupId $artifactInfo.GroupId -ArtifactId $artifactInfo.ArtifactId
 
     if ($null -eq $latestVersion) {
@@ -221,6 +197,10 @@ try {
     }
 
     LogInfo "  Latest released version: $latestVersion"
+    LogInfo ""
+
+    LogInfo "Step 3: Building local package JAR..."
+    Invoke-PackageBuild -PackagePath $PackagePath
     LogInfo ""
 
     # Create temporary directory for downloaded JAR
