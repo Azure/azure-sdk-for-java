@@ -204,7 +204,8 @@ poller.getFinalResult();
 Add render options to control how collection data is visualized on map tiles:
 
 ```java readme-sample-configureVisualization
-RenderOption renderOption = new RenderOption("natural-color", "Natural Color", RenderOptionType.RASTER_TILE)
+RenderOption renderOption = new RenderOption("natural-color", "Natural Color")
+    .setType(RenderOptionType.RASTER_TILE)
     .setOptions("assets=image&asset_bidx=image|1,2,3")
     .setMinZoom(6);
 RenderOption created = stacClient.createRenderOption("naip-atl", renderOption);
