@@ -20,9 +20,9 @@
 
 #### `models.ManagedServiceIdentity` was modified
 
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `validate()` was removed
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.ClusterUpdate` was modified
 
@@ -38,8 +38,8 @@
 
 #### `models.UserAssignedIdentity` was modified
 
-* `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `validate()` was removed
 
 #### `models.DatabaseUpdate` was modified
@@ -166,9 +166,9 @@
 
 #### `models.ClusterUpdate` was modified
 
-* `maintenanceConfiguration()` was added
-* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
 * `migratedEndpoint()` was added
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+* `maintenanceConfiguration()` was added
 
 #### `models.PrivateLinkResource` was modified
 
@@ -176,8 +176,8 @@
 
 #### `models.DatabaseUpdate` was modified
 
-* `withNotifyKeyspaceEvents(java.lang.String)` was added
 * `notifyKeyspaceEvents()` was added
+* `withNotifyKeyspaceEvents(java.lang.String)` was added
 
 #### `models.Cluster$Update` was modified
 
@@ -198,9 +198,9 @@
 
 #### `models.ClusterCommonProperties` was modified
 
-* `maintenanceConfiguration()` was added
-* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
 * `migratedEndpoint()` was added
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+* `maintenanceConfiguration()` was added
 
 #### `models.Database$Update` was modified
 
@@ -216,8 +216,8 @@
 
 #### `models.DatabaseCommonProperties` was modified
 
-* `withNotifyKeyspaceEvents(java.lang.String)` was added
 * `notifyKeyspaceEvents()` was added
+* `withNotifyKeyspaceEvents(java.lang.String)` was added
 
 #### `models.PrivateEndpointConnection` was modified
 
@@ -226,9 +226,9 @@
 
 #### `models.Cluster` was modified
 
-* `maintenanceConfiguration()` was added
 * `systemData()` was added
 * `migratedEndpoint()` was added
+* `maintenanceConfiguration()` was added
 
 ## 2.1.0 (2025-10-15)
 
