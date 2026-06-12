@@ -13,24 +13,25 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityV4;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.resourcemanager.test.utils.TestUtilities;
-import java.util.Random;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class RedisenterpriseManagerTests extends TestProxyTestBase {
+import java.util.Random;
+
+public class RedisEnterpriseManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
-    private RedisenterpriseManager redisEnterpriseManager;
+    private RedisEnterpriseManager redisEnterpriseManager;
     private ResourceManager resourceManager;
     private boolean testEnv;
 
@@ -44,7 +45,7 @@ public class RedisenterpriseManagerTests extends TestProxyTestBase {
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        redisEnterpriseManager = RedisenterpriseManager.configure()
+        redisEnterpriseManager = RedisEnterpriseManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
@@ -78,8 +79,8 @@ public class RedisenterpriseManagerTests extends TestProxyTestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new Sku().withName(SkuName.ENTERPRISE_E10).withCapacity(2))
-                .withIdentity(new ManagedServiceIdentityV4().withType(ManagedServiceIdentityType.NONE))
-                .withMinimumTlsVersion(TlsVersion.ONE2)
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
                 .create();
             // @embedmeEnd
             cluster.refresh();
