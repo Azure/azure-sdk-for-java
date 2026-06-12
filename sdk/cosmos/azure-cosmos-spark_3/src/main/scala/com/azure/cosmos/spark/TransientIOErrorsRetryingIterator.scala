@@ -203,17 +203,14 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
               s"Context: $operationContextString")
         }
 
-        val subRangeLsns = SparkBridgeImplementationInternal
+        val minLsn = SparkBridgeImplementationInternal
           .extractContinuationTokensFromChangeFeedStateJson(continuation)
-        val minLsn = subRangeLsns.minBy(_._2)._2
+          .minBy(_._2)._2
         if (minLsn < boundLsn) {
-          val rangesDescription = subRangeLsns
-            .map { case (range, lsn) => s"${range}:$lsn" }
-            .mkString(",")
           throw new IllegalStateException(
             s"Bounded change feed read terminated before reaching endLsn=$boundLsn. " +
-              s"Lowest sub-range LSN in latest continuation=$minLsn. Sub-ranges=[$rangesDescription]. " +
-              s"Context: $operationContextString")
+              s"Lowest sub-range LSN in latest continuation=$minLsn. " +
+              s"Continuation=$continuation. Context: $operationContextString")
         }
     }
   }
