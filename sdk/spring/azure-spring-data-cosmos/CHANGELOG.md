@@ -8,7 +8,7 @@
 
 #### Bugs Fixed
 
-* Fixed bug about no bean found of type `feign.codec.Encoder` in Spring Boot 4 by adding `spring-boot-data-commons` dependency ([49441](https://github.com/Azure/azure-sdk-for-java/issues/49441)).
+* Fixed a bug where using `azure-spring-data-cosmos` with OpenFeign on Spring Boot 4 failed at startup with `IllegalStateException: No bean found of type interface feign.codec.Encoder` by adding the `spring-boot-data-commons` dependency ([49441](https://github.com/Azure/azure-sdk-for-java/issues/49441)).
 
 #### Other Changes
 
