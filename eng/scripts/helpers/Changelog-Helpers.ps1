@@ -241,6 +241,36 @@ function Get-BuiltJarPath {
     return $selectedJar
 }
 
+function ConvertTo-ProcessArgumentString {
+    <#
+    .SYNOPSIS
+        Formats process arguments into a single command-line string.
+
+    .DESCRIPTION
+        Quotes individual arguments when they contain whitespace, quotes, or are empty,
+        so that ProcessStartInfo.Arguments preserves each token when launching a process.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string[]]$Arguments
+    )
+
+    $formattedArgs = foreach ($argument in $Arguments) {
+        if ([string]::IsNullOrEmpty($argument)) {
+            '""'
+        }
+        elseif ($argument -match '[\s"]') {
+            '"' + ($argument -replace '(\\*)"', '$1$1\"' -replace '(\\+)$', '$1$1') + '"'
+        }
+        else {
+            $argument
+        }
+    }
+
+    return $formattedArgs -join " "
+}
+
 function Invoke-ChangelogGeneration {
     <#
     .SYNOPSIS
@@ -319,8 +349,10 @@ function Invoke-ChangelogGeneration {
         "-DNEW_JAR=$NewJarPath"
     )
     
+    $formattedArgs = ConvertTo-ProcessArgumentString -Arguments $mvnArgs
+
     if (Get-Command LogDebug -ErrorAction SilentlyContinue) {
-        LogDebug "Executing Maven command: $($mvnPath.Source) $($mvnArgs -join ' ')"
+        LogDebug "Executing Maven command: $($mvnPath.Source) $formattedArgs"
     }
     
     # Execute the Maven command and capture output
@@ -329,7 +361,7 @@ function Invoke-ChangelogGeneration {
     $pinfo.RedirectStandardError = $true
     $pinfo.RedirectStandardOutput = $true
     $pinfo.UseShellExecute = $false
-    $pinfo.Arguments = $mvnArgs -join " "
+    $pinfo.Arguments = $formattedArgs
     
     $process = New-Object System.Diagnostics.Process
     $process.StartInfo = $pinfo

@@ -34,7 +34,7 @@
 
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateScript({Test-Path $_})]
+    [ValidateScript({ Test-Path $_ -PathType Container })]
     [string]$PackagePath,
 
     [Parameter(Mandatory = $true)]
@@ -95,14 +95,15 @@ function Invoke-RevapiCheck {
         "-Drevapi.skip=false"
     )
 
-    LogInfo "Running: mvn $($revapiArgs -join ' ')"
+    $formattedArgs = ConvertTo-ProcessArgumentString -Arguments $revapiArgs
+    LogInfo "Running: mvn $formattedArgs"
 
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.FileName = $mvnCmd.Source
     $pinfo.RedirectStandardError = $true
     $pinfo.RedirectStandardOutput = $true
     $pinfo.UseShellExecute = $false
-    $pinfo.Arguments = $revapiArgs -join " "
+    $pinfo.Arguments = $formattedArgs
 
     $process = New-Object System.Diagnostics.Process
     $process.StartInfo = $pinfo
@@ -164,14 +165,15 @@ function Invoke-PackageBuild {
         "-Drevapi.skip=true"
     )
 
-    LogInfo "Running: mvn $($buildArgs -join ' ')"
+    $formattedArgs = ConvertTo-ProcessArgumentString -Arguments $buildArgs
+    LogInfo "Running: mvn $formattedArgs"
 
     $pinfo = New-Object System.Diagnostics.ProcessStartInfo
     $pinfo.FileName = $mvnCmd.Source
     $pinfo.RedirectStandardError = $true
     $pinfo.RedirectStandardOutput = $true
     $pinfo.UseShellExecute = $false
-    $pinfo.Arguments = $buildArgs -join " "
+    $pinfo.Arguments = $formattedArgs
 
     $process = New-Object System.Diagnostics.Process
     $process.StartInfo = $pinfo
@@ -209,7 +211,7 @@ try {
     Invoke-PackageBuild -PackagePath $PackagePath
     LogInfo ""
 
-    LogInfo "Step 3: Fetching latest stable released version from Maven Central..."
+    LogInfo "Step 3: Fetching latest released version from Maven Central..."
     $latestVersion = Get-LatestReleasedStableVersion -GroupId $artifactInfo.GroupId -ArtifactId $artifactInfo.ArtifactId
 
     if ($null -eq $latestVersion) {
@@ -218,7 +220,7 @@ try {
         exit 0
     }
 
-    LogInfo "  Latest version: $latestVersion"
+    LogInfo "  Latest released version: $latestVersion"
     LogInfo ""
 
     # Create temporary directory for downloaded JAR
