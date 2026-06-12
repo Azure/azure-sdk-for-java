@@ -76,8 +76,8 @@ cluster = redisEnterpriseManager.redisEnterprises()
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroupName)
     .withSku(new Sku().withName(SkuName.ENTERPRISE_E10).withCapacity(2))
-    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
-    .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+    .withIdentity(new ManagedServiceIdentityV4().withType(ManagedServiceIdentityType.NONE))
+    .withMinimumTlsVersion(TlsVersion.ONE2)
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/redisenterprise/azure-resourcemanager-redisenterprise/SAMPLE.md)
