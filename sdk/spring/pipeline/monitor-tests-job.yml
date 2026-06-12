@@ -25,9 +25,6 @@ jobs:
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/spring'
       - script: |
-          python -m pip install termcolor
-        displayName: 'Python module install'
-      - script: |
             python ./sdk/spring/scripts/spring_monitor_version_substitution.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
       - task: Maven@4
