@@ -2007,7 +2007,7 @@
             "matcher": "regex",
             "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::createAgentVersion\\(.*\\)"
           },
-          "justification": "Breaking change in beta operation: createAgentVersion is retained on AgentsClient/AgentsAsyncClient but the overload taking AgentDefinitionOptInKeys was removed. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly. The AgentBlueprintReference capability is preserved via a new overload that drops the opt-in key."
+          "justification": "Breaking change in beta operation: the createAgentVersion overload taking AgentDefinitionOptInKeys (and AgentBlueprintReference) was removed from AgentsClient/AgentsAsyncClient. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly; callers that need to set a blueprint reference should supply the blueprint reference via the CreateAgentVersionInput model instead."
         },
         {
           "ignore": true,
