@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersGetCommandResultSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/RunCommandResultFailed.json
+     * x-ms-original-file: 2026-04-01/RunCommandResultFailed.json
      */
     /**
      * Sample code: commandFailedResult.
@@ -24,7 +24,7 @@ public final class ManagedClustersGetCommandResultSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-02-preview/RunCommandResultSucceed.json
+     * x-ms-original-file: 2026-04-01/RunCommandResultSucceed.json
      */
     /**
      * Sample code: commandSucceedResult.

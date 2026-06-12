@@ -169,15 +169,173 @@ public class ConfigsTests {
         }
     }
 
+    @Test(groups = { "unit" })
+    public void http2MaxFrameSizeInBytes() {
+        final String propName = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
+        final int defaultBytes = 64 * 1024;
+        final int minBytes = 64 * 1024;
+        final int maxBytes = 16_383 * 1024;
+
+        System.clearProperty(propName);
+
+        // Default (64 KB)
+        assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(defaultBytes);
+
+        // Valid value at lower bound
+        System.setProperty(propName, "64");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(minBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Valid value at upper bound (16383 KB)
+        System.setProperty(propName, "16383");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Valid value within range (1 MB)
+        System.setProperty(propName, "1024");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(1024 * 1024);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Below lower bound -> clamped up to 64 KB
+        System.setProperty(propName, "32");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(minBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Above upper bound -> clamped down to 16383 KB
+        System.setProperty(propName, String.valueOf(32 * 1024));
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Unparseable -> falls back to default
+        System.setProperty(propName, "not-a-number");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(defaultBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+    }
+
     @Test(groups = { "emulator" })
     public void thinClientEnabledTest() {
-        assertThat(isThinClientEnabled()).isFalse();
+        // Default flipped to true in the probe-flow work; explicit "false" must still opt out.
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        try {
+            assertThat(isThinClientEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "false");
+        try {
+            assertThat(isThinClientEnabled()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
             assertThat(isThinClientEnabled()).isTrue();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbeEnabledDefaultTest() {
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
+        try {
+            assertThat(Configs.isThinClientProbeEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbeEnabledOverrideTest() {
+        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
+        try {
+            assertThat(Configs.isThinClientProbeEnabled()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbeFailureThresholdDefaultTest() {
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        try {
+            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbeFailureThresholdOverrideTest() {
+        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "5");
+        try {
+            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(5);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbeFailureThresholdCoercionTest() {
+        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "0");
+        try {
+            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        }
+        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "-3");
+        try {
+            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbeFailureThresholdInvalidFallsBackToDefaultTest() {
+        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "not-a-number");
+        try {
+            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbePathDefaultTest() {
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
+        try {
+            assertThat(Configs.getThinClientProbePath()).isEqualTo("/connectivity-probe");
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientProbePathOverrideTest() {
+        System.setProperty("COSMOS.THINCLIENT_PROBE_PATH", "/custom-probe");
+        try {
+            assertThat(Configs.getThinClientProbePath()).isEqualTo("/custom-probe");
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
         }
     }
 

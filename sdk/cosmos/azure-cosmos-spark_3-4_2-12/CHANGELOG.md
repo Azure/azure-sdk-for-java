@@ -1,16 +1,24 @@
 ## Release History
 
-### 4.49.0-beta.1 (Unreleased)
+### 4.50.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Improved partition planning performance for change feed with large number of feed ranges. - See [PR 49086](https://github.com/Azure/azure-sdk-for-java/pull/49086)
-* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 
 #### Other Changes
+
+### 4.49.0 (2026-06-08)
+
+#### Bugs Fixed
+* Improved partition planning performance for change feed with large number of feed ranges. - See [PR 49086](https://github.com/Azure/azure-sdk-for-java/pull/49086)
+* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
+* Fixed `OperationCancelledException` ("End-to-end timeout hit") on sparse cross-partition queries by opting into the SDK's `allowEmptyPages` behavior, so the per-page timeout applies per page instead of being exceeded by serial empty-page drains. Note: this surfaces one iterator callback per empty page where previously a single callback could drain many. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.81.0`.
 
 ### 4.48.0 (2026-05-01)
 

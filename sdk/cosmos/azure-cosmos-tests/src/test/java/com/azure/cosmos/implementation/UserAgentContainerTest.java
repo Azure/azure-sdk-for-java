@@ -108,7 +108,11 @@ public class UserAgentContainerTest {
                 (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(gatewayClient);
             UserAgentContainer userAgentContainer = ReflectionUtils.getUserAgentContainer(documentClient);
             String expectedString = getUserAgentFixedPart() + SPACE + userProvidedSuffix;
-            assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+            // ThinClient (1 << 2) is included in the user-agent feature flags by default
+            // because COSMOS.THINCLIENT_ENABLED defaults to true. The suffix is added by
+            // RxDocumentClientImpl.addUserAgentSuffix at client construction.
+            String expectedStringWithFeatureFlags = expectedString + "|F4";
+            assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedStringWithFeatureFlags);
 
             directClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -119,7 +123,7 @@ public class UserAgentContainerTest {
                 .buildAsyncClient();
             documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(directClient);
             userAgentContainer = ReflectionUtils.getUserAgentContainer(documentClient);
-            assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+            assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedStringWithFeatureFlags);
         } finally {
             if (gatewayClient != null) {
                 gatewayClient.close();

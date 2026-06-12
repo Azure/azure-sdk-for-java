@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -172,7 +171,6 @@ public class CosmosItemRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return readConsistencyStrategy;
     }
@@ -206,11 +204,13 @@ public class CosmosItemRequestOptions {
      * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
      * NOTE: The `setConsistencyLevel` value specified is ignored when `setReadConsistencyStrategy` is used unless
      * `DEFAULT` is specified.
+     * <p>Honored across Direct, Gateway V1 (compute gateway), and Gateway V2 (thin client proxy) connection modes.
+     * {@code GLOBAL_STRONG} is rejected client-side with a {@link com.azure.cosmos.CosmosException} (HTTP 400)
+     * when the account's default consistency is not {@link ConsistencyLevel#STRONG}. Such failures must NOT be retried.</p>
      *
      * @param readConsistencyStrategy the consistency level.
      * @return the CosmosItemRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.readConsistencyStrategy = readConsistencyStrategy;
         return this;

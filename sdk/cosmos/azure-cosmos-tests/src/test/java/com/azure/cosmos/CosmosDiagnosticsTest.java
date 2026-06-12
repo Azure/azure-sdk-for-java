@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
@@ -1978,8 +1979,24 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     private String generateHttp2OptedInUserAgentIfRequired(String userAgent) {
+        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix:
+        // when HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
+        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in. ThinClient is set when
+        // COSMOS.THINCLIENT_ENABLED is true (default true after Gateway V2 default enablement).
+        // Tests here do not override Http2ConnectionConfig.setEnabled(...) so the per-client override branch
+        // in addUserAgentSuffix is a no-op for this helper.
+        int featureValue = 0;
+        if (Configs.isThinClientEnabled()) {
+            featureValue |= UserAgentFeatureFlags.ThinClient.getValue();
+        }
         if (Configs.isHttp2Enabled()) {
-            userAgent = userAgent + "|F10";
+            featureValue |= UserAgentFeatureFlags.Http2.getValue();
+            if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
+                featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
+            }
+        }
+        if (featureValue != 0) {
+            userAgent = userAgent + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
         }
 
         return userAgent;

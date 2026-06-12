@@ -312,7 +312,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SETUP_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -363,7 +363,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
         "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -576,14 +576,24 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .getCosmosAsyncClientAccessor()
             .getPreferredRegions(client).size() > 1;
         if (throughput > 6000 || isMultiRegional) {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            waitForCollectionToBeAvailableToRead();
         }
 
         return database.getContainer(cosmosContainerProperties.getId());
+    }
+
+    protected static void waitForCollectionToBeAvailableToRead() {
+        // Creating a container is an async task - especially with multiple regions it can
+        // take some time until the container is available in the remote regions as well.
+        // When the container does not exist yet, metadata reads or item operations can
+        // fail with 404/1013 "Collection is not yet available for read".
+        // So, adding this delay after container creation to minimize risk of hitting these errors.
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,

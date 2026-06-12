@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.Http2PingHandler;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
@@ -881,6 +882,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.reactorHttpClient,
                 this.additionalHeaders);
 
+            // Wire thin-client HttpClient into GEM so the connectivity-probe orchestrator
+            // can fan out probes after every topology refresh. Must happen BEFORE
+            // globalEndpointManager.init() so the first refresh probes immediately.
+            // Caveats — probe is only wired when:
+            //   1. Connection mode is GATEWAY (skip for Direct mode), AND
+            //   2. HTTP/2 is configured and effectively enabled, AND
+            //   3. Thin-client is enabled via Configs.
+            // All three are encoded in `this.useThinClient`. If false, no probe overhead
+            // is incurred and `isProxyProbeHealthy()` returns true by default (no-op gate).
+            // Wiring itself is guarded inside GEM so any failure cannot trip client init.
+            if (this.useThinClient) {
+                try {
+                    this.globalEndpointManager.setThinClientHttpClient(this.reactorHttpClient);
+                } catch (Throwable t) {
+                    // Defense in depth: GEM already swallows wiring failures, but if anything
+                    // does escape we must not fail CosmosClient construction over a probe.
+                    logger.warn("Failed to wire thin-client connectivity-probe HttpClient; continuing without probe gating.", t);
+                }
+            }
+
             this.perPartitionFailoverConfigModifier
                 = (databaseAccount -> {
                 this.initializePerPartitionFailover(databaseAccount);
@@ -1674,7 +1695,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.RegionScopedSessionCapturing);
         }
 
+        if (!isHttp2PingHealthEffectivelyEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2PingHealth);
+        }
+
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
+    }
+
+    /**
+     * Returns true when HTTP/2 PING keepalive is effectively enabled for this client,
+     * delegating to {@link Http2PingHandler#isPingHealthEffectivelyEnabled} so the
+     * user-agent feature flag stays in lockstep with the transport install gate in
+     * {@code ReactorNettyClient}.
+     */
+    private boolean isHttp2PingHealthEffectivelyEnabled() {
+        return Http2PingHandler.isPingHealthEffectivelyEnabled(
+            this.connectionPolicy.getHttp2ConnectionConfig());
     }
 
     @Override
@@ -1988,16 +2024,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
-            && readConsistencyStrategyName != null
-            && ! readConsistencyStrategyName.equalsIgnoreCase(ReadConsistencyStrategy.DEFAULT.toString())) {
-
-            logger.warn(
-                "ReadConsistencyStrategy {} defined in Gateway mode. "
-                    + "This version of the SDK only supports ReadConsistencyStrategy in DIRECT mode. "
-                    + "This setting will be ignored.",
-                readConsistencyStrategyName);
+    public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        if (readConsistencyStrategy == ReadConsistencyStrategy.GLOBAL_STRONG) {
+            ConsistencyLevel accountConsistency = this.getDefaultConsistencyLevelOfAccount();
+            if (accountConsistency != ConsistencyLevel.STRONG) {
+                throw new BadRequestException(
+                    String.format(
+                        RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
+                        readConsistencyStrategy,
+                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                        ConsistencyLevel.STRONG,
+                        accountConsistency));
+            }
         }
     }
 
@@ -2029,8 +2067,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = readConsistencyStrategy.toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(readConsistencyStrategy);
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
         if (options == null) {
@@ -2074,13 +2116,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(options.getReadConsistencyStrategy());
             headers.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
-        if (options.getConsistencyLevel() != null) {
+        if (options.getConsistencyLevel() != null
+            && !headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
+            // Only set ConsistencyLevel when ReadConsistencyStrategy is NOT already present.
+            // readConsistencyStrategy takes precedence — setting both causes gateway rejection.
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
         }
 
@@ -5498,8 +5547,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-                RxDocumentClientImpl.this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+                RxDocumentClientImpl.this.validateReadConsistencyStrategy(readConsistencyStrategy);
             }
 
             @Override
@@ -8958,8 +9007,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
+        return shouldUseThinClientStoreModel(
+            this.useThinClient,
+            this.globalEndpointManager.hasThinClientReadLocations(),
+            this.globalEndpointManager.isProxyProbeHealthy(),
+            request);
+    }
+
+    /**
+     * Pure-function gate predicate exposed at package visibility so unit tests can verify
+     * routing-fallback behavior (probe-unhealthy =&gt; gateway V1) without standing up a full
+     * {@link RxDocumentClientImpl}. All four inputs must be supplied by the caller; this
+     * method does not touch any client state.
+     */
+    static boolean shouldUseThinClientStoreModel(
+        boolean useThinClient,
+        boolean hasThinClientReadLocations,
+        boolean isProxyProbeHealthy,
+        RxDocumentServiceRequest request) {
+
         if (!useThinClient
-            || !this.globalEndpointManager.hasThinClientReadLocations()
+            || !hasThinClientReadLocations
+            || !isProxyProbeHealthy
             || (request.getResourceType() != ResourceType.Document && !request.isExecuteStoredProcedureBasedRequest())) {
 
             return false;

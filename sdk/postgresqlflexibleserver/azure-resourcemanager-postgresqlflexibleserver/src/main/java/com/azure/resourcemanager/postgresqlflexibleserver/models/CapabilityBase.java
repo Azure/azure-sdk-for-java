@@ -17,12 +17,12 @@ import java.io.IOException;
 @Immutable
 public class CapabilityBase implements JsonSerializable<CapabilityBase> {
     /*
-     * The status of the capability.
+     * Status of the capability.
      */
     private CapabilityStatus status;
 
     /*
-     * The reason for the capability not being available.
+     * Reason for the capability not being available.
      */
     private String reason;
 
@@ -33,7 +33,7 @@ public class CapabilityBase implements JsonSerializable<CapabilityBase> {
     }
 
     /**
-     * Get the status property: The status of the capability.
+     * Get the status property: Status of the capability.
      * 
      * @return the status value.
      */
@@ -42,7 +42,7 @@ public class CapabilityBase implements JsonSerializable<CapabilityBase> {
     }
 
     /**
-     * Set the status property: The status of the capability.
+     * Set the status property: Status of the capability.
      * 
      * @param status the status value to set.
      * @return the CapabilityBase object itself.
@@ -53,7 +53,7 @@ public class CapabilityBase implements JsonSerializable<CapabilityBase> {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being available.
+     * Get the reason property: Reason for the capability not being available.
      * 
      * @return the reason value.
      */
@@ -62,7 +62,7 @@ public class CapabilityBase implements JsonSerializable<CapabilityBase> {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being available.
+     * Set the reason property: Reason for the capability not being available.
      * 
      * @param reason the reason value to set.
      * @return the CapabilityBase object itself.
