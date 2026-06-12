@@ -9489,7 +9489,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Plain
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -9636,7 +9636,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Format
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified format.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -9783,7 +9783,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Scale
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -9929,7 +9929,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale and format.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -10075,7 +10075,7 @@ public final class DataAsyncClient {
     /**
      * Searches Assets For Tile
      * 
-     * The most basic operation.
+     * Return a list of assets which overlap a given tile for a mosaic search.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -24319,7 +24319,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Plain
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -24528,7 +24528,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Plain
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -24556,7 +24556,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Format
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified format.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -24763,7 +24763,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Format
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified format.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -24793,7 +24793,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Scale
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -25000,7 +25000,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile Scale
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -25030,7 +25030,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale and format.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -25235,7 +25235,7 @@ public final class DataAsyncClient {
     /**
      * Searches Tile
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale and format.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -25267,7 +25267,7 @@ public final class DataAsyncClient {
     /**
      * Searches Assets For Tile
      * 
-     * The most basic operation.
+     * Return a list of assets which overlap a given tile for a mosaic search.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -25367,7 +25367,7 @@ public final class DataAsyncClient {
     /**
      * Searches Assets For Tile
      * 
-     * The most basic operation.
+     * Return a list of assets which overlap a given tile for a mosaic search.
      * 
      * @param searchId Search Id (pgSTAC Search Hash).
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and

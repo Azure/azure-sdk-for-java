@@ -21075,7 +21075,7 @@ public final class DatasImpl {
     /**
      * Searches Tile Plain
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -21224,7 +21224,7 @@ public final class DatasImpl {
     /**
      * Searches Tile Plain
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -21373,7 +21373,7 @@ public final class DatasImpl {
     /**
      * Searches Tile Format
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified format.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -21521,7 +21521,7 @@ public final class DatasImpl {
     /**
      * Searches Tile Format
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified format.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -21670,7 +21670,7 @@ public final class DatasImpl {
     /**
      * Searches Tile Scale
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -21818,7 +21818,7 @@ public final class DatasImpl {
     /**
      * Searches Tile Scale
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -21967,7 +21967,7 @@ public final class DatasImpl {
     /**
      * Searches Tile
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale and format.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -22115,7 +22115,7 @@ public final class DatasImpl {
     /**
      * Searches Tile
      * 
-     * The most basic operation.
+     * Create a map tile for a mosaic search with specified scale and format.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -22263,7 +22263,7 @@ public final class DatasImpl {
     /**
      * Searches Assets For Tile
      * 
-     * The most basic operation.
+     * Return a list of assets which overlap a given tile for a mosaic search.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -22344,7 +22344,7 @@ public final class DatasImpl {
     /**
      * Searches Assets For Tile
      * 
-     * The most basic operation.
+     * Return a list of assets which overlap a given tile for a mosaic search.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
