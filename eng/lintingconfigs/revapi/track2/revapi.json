@@ -2062,6 +2062,18 @@
             "match": "method .* com\\.azure\\.ai\\.projects\\.EvaluationRules(Async)?Client::createOrUpdateEvaluationRule\\(.*FoundryFeaturesOptInKeys\\)"
           },
           "justification": "Breaking change in beta operation: EvaluationRulesClient/EvaluationRulesAsyncClient are retained; only the overload of createOrUpdateEvaluationRule that took FoundryFeaturesOptInKeys was removed. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
+        },
+        {
+          "regex": true,
+          "code": "java\\..*",
+          "old": ".*com\\.azure\\.ai\\.agents\\.Beta\\w*(Async)?Client.*",
+          "justification": "Breaking changes are accepted on the azure-ai-agents beta clients (Beta*Client/Beta*AsyncClient, e.g. BetaAgentsClient, BetaMemoryStoresClient, BetaToolboxesClient). These clients expose preview operations whose API surface is allowed to change until the operations are promoted to a stable client."
+        },
+        {
+          "regex": true,
+          "code": "java\\..*",
+          "old": ".*com\\.azure\\.ai\\.projects\\.Beta\\w*(Async)?Client.*",
+          "justification": "Breaking changes are accepted on the azure-ai-projects beta clients (Beta*Client/Beta*AsyncClient, e.g. BetaDatasetsClient, BetaEvaluatorsClient, BetaModelsClient, BetaRedTeamsClient, BetaSchedulesClient, BetaSkillsClient). These clients expose preview operations whose API surface is allowed to change until the operations are promoted to a stable client."
         }
       ]
     }
