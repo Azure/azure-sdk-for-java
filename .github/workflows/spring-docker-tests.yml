@@ -1,0 +1,54 @@
+name: Spring Docker Tests
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/spring-docker-tests.yml'
+      - 'pom.xml'
+      - 'sdk/spring/**'
+      - 'sdk/parents/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spring-docker-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Verify Docker
+        run: |
+          docker version
+          docker info
+
+      - name: Build spring docker test dependencies
+        run: >
+          mvn -f sdk/spring/pom.xml
+          -pl spring-cloud-azure-testcontainers,spring-cloud-azure-docker-compose
+          -am
+          install
+          -DskipTests
+          -DskipITs
+          -DfailIfNoTests=false
+
+      - name: Run spring docker-tagged tests
+        run: >
+          mvn -f sdk/spring/pom.xml
+          -pl spring-cloud-azure-testcontainers,spring-cloud-azure-docker-compose
+          test
+          -Pdocker-tests
+          -DfailIfNoTests=false
+          -DskipITs
+          -DskipTests=false
