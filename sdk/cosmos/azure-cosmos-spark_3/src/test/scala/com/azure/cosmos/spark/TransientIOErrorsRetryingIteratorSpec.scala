@@ -264,7 +264,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       Collections.emptyList[SparkRowItem](),
       new ConcurrentHashMap[String, String]())
     ModelBridgeInternal.setFeedResponseContinuationToken(continuationToken, response)
-    UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.just(response))
+    UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.fromArray(Array(response)))
   }
 
   "TransientIOErrors" should "drain long runs of empty pages without hitting the end-to-end timeout" in {
