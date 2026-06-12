@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0 (2026-06-10)
+## 1.0.0 (2026-06-12)
+
+### Other Changes
 
 - Initial GA release for the azure-resourcemanager-monitor-workspaces Java SDK. Package api-version 2025-10-03.
 
