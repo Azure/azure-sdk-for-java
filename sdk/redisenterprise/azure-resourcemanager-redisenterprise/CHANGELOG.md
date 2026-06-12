@@ -21,9 +21,9 @@
 
 #### `models.ManagedServiceIdentity` was modified
 
-* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
-* `validate()` was removed
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
 
 #### `models.ClusterUpdate` was modified
 
@@ -39,9 +39,9 @@
 
 #### `models.UserAssignedIdentity` was modified
 
-* `validate()` was removed
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
 
 #### `models.DatabaseUpdate` was modified
 
@@ -167,9 +167,9 @@
 
 #### `models.ClusterUpdate` was modified
 
-* `migratedEndpoint()` was added
 * `maintenanceConfiguration()` was added
 * `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+* `migratedEndpoint()` was added
 
 #### `models.PrivateLinkResource` was modified
 
@@ -186,8 +186,8 @@
 
 #### `RedisEnterpriseManager` was modified
 
-* `migrationOperations()` was added
 * `migrations()` was added
+* `migrationOperations()` was added
 
 #### `models.Database$Definition` was modified
 
@@ -199,8 +199,8 @@
 
 #### `models.ClusterCommonProperties` was modified
 
-* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
 * `maintenanceConfiguration()` was added
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
 * `migratedEndpoint()` was added
 
 #### `models.Database$Update` was modified
@@ -217,8 +217,8 @@
 
 #### `models.DatabaseCommonProperties` was modified
 
-* `notifyKeyspaceEvents()` was added
 * `withNotifyKeyspaceEvents(java.lang.String)` was added
+* `notifyKeyspaceEvents()` was added
 
 #### `models.PrivateEndpointConnection` was modified
 
@@ -227,8 +227,8 @@
 
 #### `models.Cluster` was modified
 
-* `systemData()` was added
 * `maintenanceConfiguration()` was added
+* `systemData()` was added
 * `migratedEndpoint()` was added
 
 ## 2.1.0 (2025-10-15)

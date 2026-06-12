@@ -24,7 +24,7 @@ import java.util.List;
  * Properties of Redis Enterprise clusters for create operations.
  */
 @Fluent
-public final class ClusterCreateProperties extends ClusterCommonProperties {
+public final class ClusterProperties extends ClusterCommonProperties {
     /*
      * Whether or not public network traffic can access the Redis cluster. Only 'Enabled' or 'Disabled' can be set. null
      * is returned only for clusters created using an old API version which do not have this property and cannot be set.
@@ -68,9 +68,9 @@ public final class ClusterCreateProperties extends ClusterCommonProperties {
     private String hostname;
 
     /**
-     * Creates an instance of ClusterCreateProperties class.
+     * Creates an instance of ClusterProperties class.
      */
-    public ClusterCreateProperties() {
+    public ClusterProperties() {
     }
 
     /**
@@ -90,9 +90,9 @@ public final class ClusterCreateProperties extends ClusterCommonProperties {
      * not have this property and cannot be set.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the ClusterCreateProperties object itself.
+     * @return the ClusterProperties object itself.
      */
-    public ClusterCreateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+    public ClusterProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
@@ -174,7 +174,7 @@ public final class ClusterCreateProperties extends ClusterCommonProperties {
      * {@inheritDoc}
      */
     @Override
-    public ClusterCreateProperties withHighAvailability(HighAvailability highAvailability) {
+    public ClusterProperties withHighAvailability(HighAvailability highAvailability) {
         super.withHighAvailability(highAvailability);
         return this;
     }
@@ -183,7 +183,7 @@ public final class ClusterCreateProperties extends ClusterCommonProperties {
      * {@inheritDoc}
      */
     @Override
-    public ClusterCreateProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+    public ClusterProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         super.withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
@@ -192,7 +192,7 @@ public final class ClusterCreateProperties extends ClusterCommonProperties {
      * {@inheritDoc}
      */
     @Override
-    public ClusterCreateProperties withEncryption(ClusterPropertiesEncryption encryption) {
+    public ClusterProperties withEncryption(ClusterPropertiesEncryption encryption) {
         super.withEncryption(encryption);
         return this;
     }
@@ -201,7 +201,7 @@ public final class ClusterCreateProperties extends ClusterCommonProperties {
      * {@inheritDoc}
      */
     @Override
-    public ClusterCreateProperties withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration) {
+    public ClusterProperties withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration) {
         super.withMaintenanceConfiguration(maintenanceConfiguration);
         return this;
     }
@@ -224,58 +224,55 @@ public final class ClusterCreateProperties extends ClusterCommonProperties {
     }
 
     /**
-     * Reads an instance of ClusterCreateProperties from the JsonReader.
+     * Reads an instance of ClusterProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ClusterCreateProperties if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ClusterCreateProperties.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
      */
-    public static ClusterCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ClusterCreateProperties deserializedClusterCreateProperties = new ClusterCreateProperties();
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("highAvailability".equals(fieldName)) {
-                    deserializedClusterCreateProperties
-                        .withHighAvailability(HighAvailability.fromString(reader.getString()));
+                    deserializedClusterProperties.withHighAvailability(HighAvailability.fromString(reader.getString()));
                 } else if ("minimumTlsVersion".equals(fieldName)) {
-                    deserializedClusterCreateProperties
-                        .withMinimumTlsVersion(TlsVersion.fromString(reader.getString()));
+                    deserializedClusterProperties.withMinimumTlsVersion(TlsVersion.fromString(reader.getString()));
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedClusterCreateProperties.withEncryption(ClusterPropertiesEncryption.fromJson(reader));
+                    deserializedClusterProperties.withEncryption(ClusterPropertiesEncryption.fromJson(reader));
                 } else if ("maintenanceConfiguration".equals(fieldName)) {
-                    deserializedClusterCreateProperties
+                    deserializedClusterProperties
                         .withMaintenanceConfiguration(MaintenanceConfiguration.fromJson(reader));
                 } else if ("hostName".equals(fieldName)) {
-                    deserializedClusterCreateProperties.hostname = reader.getString();
+                    deserializedClusterProperties.hostname = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedClusterCreateProperties.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("redundancyMode".equals(fieldName)) {
-                    deserializedClusterCreateProperties.redundancyMode = RedundancyMode.fromString(reader.getString());
+                    deserializedClusterProperties.redundancyMode = RedundancyMode.fromString(reader.getString());
                 } else if ("resourceState".equals(fieldName)) {
-                    deserializedClusterCreateProperties.resourceState = ResourceState.fromString(reader.getString());
+                    deserializedClusterProperties.resourceState = ResourceState.fromString(reader.getString());
                 } else if ("redisVersion".equals(fieldName)) {
-                    deserializedClusterCreateProperties.redisVersion = reader.getString();
+                    deserializedClusterProperties.redisVersion = reader.getString();
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
-                    deserializedClusterCreateProperties.privateEndpointConnections = privateEndpointConnections;
+                    deserializedClusterProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("migratedEndpoint".equals(fieldName)) {
-                    deserializedClusterCreateProperties.migratedEndpoint = reader.getString();
+                    deserializedClusterProperties.migratedEndpoint = reader.getString();
                 } else if ("publicNetworkAccess".equals(fieldName)) {
-                    deserializedClusterCreateProperties.publicNetworkAccess
+                    deserializedClusterProperties.publicNetworkAccess
                         = PublicNetworkAccess.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedClusterCreateProperties;
+            return deserializedClusterProperties;
         });
     }
 }

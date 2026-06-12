@@ -33,7 +33,7 @@ public final class ClusterInner extends Resource {
     /*
      * Other properties of the cluster.
      */
-    private ClusterCreateProperties innerProperties;
+    private ClusterProperties innerProperties;
 
     /*
      * Distinguishes the kind of cluster. Read-only.
@@ -86,7 +86,7 @@ public final class ClusterInner extends Resource {
      * 
      * @return the innerProperties value.
      */
-    private ClusterCreateProperties innerProperties() {
+    private ClusterProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -237,7 +237,7 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterCreateProperties();
+            this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
@@ -262,7 +262,7 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withHighAvailability(HighAvailability highAvailability) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterCreateProperties();
+            this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withHighAvailability(highAvailability);
         return this;
@@ -289,7 +289,7 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterCreateProperties();
+            this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
         return this;
@@ -312,7 +312,7 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withEncryption(ClusterPropertiesEncryption encryption) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterCreateProperties();
+            this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withEncryption(encryption);
         return this;
@@ -335,7 +335,7 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withMaintenanceConfiguration(MaintenanceConfiguration maintenanceConfiguration) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterCreateProperties();
+            this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withMaintenanceConfiguration(maintenanceConfiguration);
         return this;
@@ -452,7 +452,7 @@ public final class ClusterInner extends Resource {
                 } else if ("sku".equals(fieldName)) {
                     deserializedClusterInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedClusterInner.innerProperties = ClusterCreateProperties.fromJson(reader);
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedClusterInner.kind = Kind.fromString(reader.getString());
                 } else if ("zones".equals(fieldName)) {
