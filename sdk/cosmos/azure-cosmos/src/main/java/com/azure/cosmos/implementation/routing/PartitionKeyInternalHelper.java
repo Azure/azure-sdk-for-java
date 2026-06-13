@@ -332,7 +332,6 @@ public class PartitionKeyInternalHelper {
                 "Thin client proxy query plan response has missing or invalid '" + queryRangesProperty + "' property. "
                 + "Expected: JSON array of {min, max, isMinInclusive, isMaxInclusive} range objects. "
                 + "Actual node type: " + actualType + ". "
-                + "Raw value type: " + (queryRangesNode != null ? queryRangesNode.getNodeType() : "null") + ". "
                 + "Response keys: " + StreamSupport.stream(
                     Spliterators.spliteratorUnknownSize(queryPlanJson.fieldNames(), 0), false)
                     .collect(Collectors.joining(", ")) + ". "
@@ -347,7 +346,8 @@ public class PartitionKeyInternalHelper {
                 throw new IllegalStateException(
                     "Thin client proxy query plan response contains a non-object element in queryRanges array. "
                     + "Expected: JSON object with {min, max, isMinInclusive, isMaxInclusive}. "
-                    + "Actual node type: " + rangeNode.getNodeType().name() + ", value: " + rangeNode + ".");
+                    + "Array size: " + rawRanges.size() + ". "
+                    + "Actual node type: " + rangeNode.getNodeType().name() + ".");
             }
             ObjectNode rangeObj = (ObjectNode) rangeNode;
 
@@ -360,7 +360,9 @@ public class PartitionKeyInternalHelper {
                 throw new IllegalStateException(
                     "Thin client proxy query plan range missing required fields. "
                     + "Expected: isMinInclusive and isMaxInclusive. "
-                    + "Range object: " + rangeObj + ".");
+                    + "Range object fields: " + StreamSupport.stream(
+                        Spliterators.spliteratorUnknownSize(rangeObj.fieldNames(), 0), false)
+                        .collect(Collectors.joining(", ")) + ".");
             }
             boolean isMinInclusive = minInclusiveNode.asBoolean();
             boolean isMaxInclusive = maxInclusiveNode.asBoolean();
@@ -391,13 +393,14 @@ public class PartitionKeyInternalHelper {
             partitionKey = Utils.getSimpleObjectMapper().treeToValue(rangeBoundaryNode, PartitionKeyInternal.class);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(
-                "Failed to parse PartitionKeyInternal from range boundary: " + rangeBoundaryNode, e);
+                "Failed to parse PartitionKeyInternal from range boundary. "
+                    + "Boundary node type: " + rangeBoundaryNode.getNodeType().name() + ".", e);
         }
 
         if (partitionKey.getComponents() == null) {
             throw new IllegalStateException(
                 "Thin client proxy query plan range boundary deserialized to NonePartitionKey (null components). "
-                + "Raw JSON: " + rangeBoundaryNode + ".");
+                + "Boundary node type: " + rangeBoundaryNode.getNodeType().name() + ".");
         }
 
         return getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);

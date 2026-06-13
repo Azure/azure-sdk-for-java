@@ -48,7 +48,6 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        // If running locally, uncomment these lines
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         if (this.client != null) {
             this.client.close();

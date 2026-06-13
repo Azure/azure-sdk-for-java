@@ -118,7 +118,10 @@ class QueryPlanRetriever {
                                                                                  ResourceType.Document,
                                                                                  resourceLink,
                                                                                  requestHeaders);
-        queryPlanRequest.useGatewayMode = true;
+        // Validation callers do not have collection metadata, so keep those query-plan
+        // requests on Gateway V1. Normal query execution can route through thin client,
+        // where PartitionKeyDefinition is available to convert proxy query ranges.
+        queryPlanRequest.useGatewayMode = partitionKeyDefinition == null;
 
         // Create a defensive copy to prevent concurrent modification of the shared
         // SqlQuerySpec's internal ObjectNode when multiple threads retrieve the query
@@ -159,13 +162,13 @@ class QueryPlanRetriever {
                         // format (e.g., {"min": ["value"], "max": ["Infinity"]}). Convert to sorted
                         // List<Range<String>> with EPK hex strings and pass directly to the DTO —
                         // avoiding a redundant JSON round-trip.
-                        if (queryClient.useThinClient(req) && partitionKeyDefinition == null) {
+                        if (req.useThinClientMode && partitionKeyDefinition == null) {
                             throw new IllegalStateException(
                                 "PartitionKeyDefinition must not be null in thin client mode. "
                                 + "Ensure DocumentCollection is resolved before calling getQueryPlanThroughGatewayAsync.");
                         }
 
-                        if (queryClient.useThinClient(req) && partitionKeyDefinition != null) {
+                        if (req.useThinClientMode) {
                             partitionedQueryExecutionInfo = new PartitionedQueryExecutionInfo(
                                 responseBody, timeline, partitionKeyDefinition);
                         } else {
