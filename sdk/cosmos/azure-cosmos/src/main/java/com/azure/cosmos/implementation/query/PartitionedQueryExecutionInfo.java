@@ -25,7 +25,6 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
     private List<Range<String>> queryRanges;
     private RequestTimeline queryPlanRequestTimeline;
     private HybridSearchQueryInfo hybridSearchQueryInfo;
-    private final PartitionKeyDefinition partitionKeyDefinition;
 
     /**
      * Constructs with EPK hex string format expected for queryRanges.
@@ -33,7 +32,6 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
     public PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {
         super(content);
         this.queryPlanRequestTimeline = queryPlanRequestTimeline;
-        this.partitionKeyDefinition = null;
     }
 
     /**
@@ -49,7 +47,11 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
             throw new IllegalArgumentException("partitionKeyDefinition must not be null");
         }
         this.queryPlanRequestTimeline = queryPlanRequestTimeline;
-        this.partitionKeyDefinition = partitionKeyDefinition;
+        this.queryRanges = PartitionKeyInternalHelper.convertToSortedEpkRanges(
+            PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY,
+            content,
+            partitionKeyDefinition);
+        this.getPropertyBag().remove(PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY);
     }
 
     public int getVersion() {
@@ -70,21 +72,11 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
      *   <li>Gateway V1: {@code min}/{@code max} are EPK hex strings and are
      *       deserialized directly via {@code getList()}.</li>
      *   <li>Thin client proxy: {@code min}/{@code max} are PartitionKeyInternal
-     *       JSON arrays and are converted to EPK hex via
-     *       {@link PartitionKeyInternalHelper#convertToSortedEpkRanges} using the
-     *       constructor-supplied {@link PartitionKeyDefinition}.</li>
+     *       JSON arrays and are converted to EPK hex by the thin-client constructor.</li>
      * </ul>
      */
     public List<Range<String>> getQueryRanges() {
         if (this.queryRanges != null) {
-            return this.queryRanges;
-        }
-
-        if (this.partitionKeyDefinition != null) {
-            this.queryRanges = PartitionKeyInternalHelper.convertToSortedEpkRanges(
-                PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY,
-                this.getPropertyBag(),
-                this.partitionKeyDefinition);
             return this.queryRanges;
         }
 
