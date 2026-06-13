@@ -38,7 +38,7 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
     @BeforeClass(groups = {"thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_ThinClientTest() {
         assertThat(this.client).isNull();
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        enableThinClientForTest();
         this.client = getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
 
@@ -48,10 +48,18 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        clearThinClientForTest();
         if (this.client != null) {
             this.client.close();
         }
+    }
+
+    protected static void enableThinClientForTest() {
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+    }
+
+    protected static void clearThinClientForTest() {
+        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
     }
 
     /**
