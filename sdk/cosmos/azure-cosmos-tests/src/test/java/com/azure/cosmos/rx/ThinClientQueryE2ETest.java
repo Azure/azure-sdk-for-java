@@ -765,8 +765,12 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             fail("Expected exception for invalid query");
         } catch (CosmosException e) {
             assertThat(e.getStatusCode() == 400 || e.getStatusCode() == 0)
-                .as("Invalid query should return 400 (gateway) or 0 (transport-level rejection), got " + e.getStatusCode())
+                .as("Invalid query should return 400 Bad Request or a thin-client transport rejection, got "
+                    + e.getStatusCode())
                 .isTrue();
+            if (e.getStatusCode() == 0) {
+                assertThinClientEndpointUsed(e.getDiagnostics());
+            }
             logger.info("Expected error for invalid query: {} (status {})", e.getMessage(), e.getStatusCode());
         }
     }
