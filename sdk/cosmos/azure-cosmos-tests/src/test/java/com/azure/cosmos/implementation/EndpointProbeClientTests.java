@@ -63,7 +63,7 @@ public class EndpointProbeClientTests {
         assertThat(healthy).isTrue();
         assertThat(probeClient.isProxyHealthy()).isTrue();
         assertThat(sendCount.get()).isEqualTo(2);
-        EndpointProbeClient.DiagnosticsSnapshot snap = probeClient.getDiagnosticsSnapshot();
+        EndpointProbeDiagnosticsSnapshot snap = probeClient.getDiagnosticsSnapshot();
         assertThat(snap.getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
         assertThat(snap.getLastStateUpdatedAt()).isNotNull();
         assertThat(snap.getLastStateUpdatedAt()).isAfterOrEqualTo(before);

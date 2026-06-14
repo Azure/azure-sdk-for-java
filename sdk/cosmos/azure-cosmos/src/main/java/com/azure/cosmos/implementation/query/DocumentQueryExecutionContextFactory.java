@@ -349,6 +349,7 @@ public class DocumentQueryExecutionContextFactory {
         SqlQuerySpec sqlQuerySpec,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
+        DocumentCollection collection,
         boolean queryPlanCachingEnabled,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
 
@@ -358,7 +359,7 @@ public class DocumentQueryExecutionContextFactory {
             sqlQuerySpec,
             resourceLink,
             queryRequestOptions,
-            null,
+            collection,
             queryPlanCachingEnabled,
             queryPlanCache);
     }

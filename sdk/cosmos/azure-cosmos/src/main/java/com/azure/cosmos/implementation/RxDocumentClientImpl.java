@@ -4641,11 +4641,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     });
                 }
 
-                // First-call path: validate custom query, resolve routing map, build batches
+                // First-call path: validate custom query, resolve routing map, build batches.
+                // Pass the resolved DocumentCollection so the query-plan request is eligible to
+                // route through Gateway V2 (thin client) when enabled — the proxy needs the
+                // PartitionKeyDefinition to convert its queryRanges payload.
                 Mono<Void> queryValidationMono;
                 if (customQuery != null) {
                     queryValidationMono = validateCustomQueryForReadManyByPartitionKeys(
-                        customQuery, resourceLink, state.getQueryOptions());
+                        customQuery, resourceLink, state.getQueryOptions(), collection);
                 } else {
                     queryValidationMono = Mono.empty();
                 }
@@ -5094,7 +5097,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<Void> validateCustomQueryForReadManyByPartitionKeys(
         SqlQuerySpec customQuery,
         String resourceLink,
-        CosmosQueryRequestOptions queryRequestOptions) {
+        CosmosQueryRequestOptions queryRequestOptions,
+        DocumentCollection collection) {
 
         IDocumentQueryClient queryClient = documentQueryClientImpl(
             RxDocumentClientImpl.this, getOperationContextAndListenerTuple(queryRequestOptions));
@@ -5106,6 +5110,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 customQuery,
                 resourceLink,
                 queryRequestOptions,
+                collection,
                 Configs.isQueryPlanCachingEnabled(),
                 this.getQueryPlanCache())
             .doOnNext(RxDocumentClientImpl::validateQueryPlanForReadManyByPartitionKeys)

@@ -14,8 +14,6 @@ import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -57,7 +55,6 @@ class QueryPlanRetriever {
     // True to opt out of this new query feature, we will return the OLD query features to operate correctly.
     // TODO: Add ListAndSetAggregate after Java supports MAKELIST/MAKESET query aggregation.
     // TODO: Add HybridSearchSkipOrderByRewrite after the Java hybrid query pipeline can consume the optimized plan.
-    // See PR #47759 review.
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
@@ -118,9 +115,15 @@ class QueryPlanRetriever {
                                                                                  ResourceType.Document,
                                                                                  resourceLink,
                                                                                  requestHeaders);
-        // Validation callers do not have collection metadata, so keep those query-plan
-        // requests on Gateway V1. Normal query execution can route through thin client,
-        // where PartitionKeyDefinition is available to convert proxy query ranges.
+        // The Gateway V2 (thin client) proxy returns the query plan payload with
+        // `queryRanges` already serialized in PartitionKeyInternal format
+        // (e.g. {"min":["value"],"max":["Infinity"]}); the SDK needs the container's
+        // PartitionKeyDefinition to convert those into the sorted List<Range<String>>
+        // of effective-partition-key hex ranges that the query pipeline consumes.
+        // When the caller has not yet resolved the DocumentCollection (no
+        // PartitionKeyDefinition available), the conversion is impossible, so the
+        // query-plan request is pinned to Gateway V1 — where queryRanges come back
+        // already in the EPK-hex format that the pipeline expects.
         queryPlanRequest.useGatewayMode = partitionKeyDefinition == null;
 
         // Create a defensive copy to prevent concurrent modification of the shared

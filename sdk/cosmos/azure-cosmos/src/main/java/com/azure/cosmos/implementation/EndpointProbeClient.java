@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -81,7 +82,10 @@ public class EndpointProbeClient implements Closeable {
     private final AtomicReference<Instant> lastStateUpdatedAt = new AtomicReference<>(null);
 
     public EndpointProbeClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient, "httpClient");
+        this.httpClient = Objects.requireNonNull(
+            httpClient,
+            "EndpointProbeClient requires a non-null thin-client HttpClient (HTTP/2). "
+                + "Wire it via GlobalEndpointManager#setThinClientHttpClient before init().");
         this.failureThreshold = Configs.getThinClientProbeFailureThreshold();
         this.recoveryThreshold = Configs.getThinClientProbeRecoveryThreshold();
         this.perProbeTimeout = Duration.ofMillis(Configs.getThinClientConnectionTimeoutInMs());
@@ -148,7 +152,7 @@ public class EndpointProbeClient implements Closeable {
                     logger.warn(
                         "Thin-client probe cycle threw an unexpected error; counting as RED cycle.", t);
                     return Mono.just(applyCycleResult(
-                        Collections.singletonList(new ProbeResult(null, false, "exception:" + t.getClass().getSimpleName())),
+                        Collections.singletonList(new EndpointProbeResult(null, false, "exception:" + t.getClass().getSimpleName())),
                         endpoints,
                         cycleStart,
                         cycleId));
@@ -191,8 +195,8 @@ public class EndpointProbeClient implements Closeable {
     }
 
     /** @return read-only snapshot of probe state suitable for diagnostics. */
-    public DiagnosticsSnapshot getDiagnosticsSnapshot() {
-        return new DiagnosticsSnapshot(this.lastCycleSuccess.get(), this.lastStateUpdatedAt.get());
+    public EndpointProbeDiagnosticsSnapshot getDiagnosticsSnapshot() {
+        return new EndpointProbeDiagnosticsSnapshot(this.lastCycleSuccess.get(), this.lastStateUpdatedAt.get());
     }
 
     /**
@@ -213,13 +217,13 @@ public class EndpointProbeClient implements Closeable {
         }
     }
 
-    private Mono<ProbeResult> probeEndpoint(URI regionalEndpoint) {
+    private Mono<EndpointProbeResult> probeEndpoint(URI regionalEndpoint) {
         URI probeUri;
         try {
             probeUri = buildProbeUri(regionalEndpoint, this.probePath);
         } catch (URISyntaxException e) {
             logger.warn("Failed to build probe URI for {}: {}", regionalEndpoint, e.getMessage());
-            return Mono.just(new ProbeResult(regionalEndpoint, false, "bad-uri"));
+            return Mono.just(new EndpointProbeResult(regionalEndpoint, false, "bad-uri"));
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -248,7 +252,7 @@ public class EndpointProbeClient implements Closeable {
                 // outside `perProbeTimeout`. doFinally + onErrorResume guarantee that
                 // status-based RED/GREEN classification still wins regardless of how the
                 // drain stream terminates.
-                final ProbeResult result = new ProbeResult(regionalEndpoint, ok, "status:" + status);
+                final EndpointProbeResult result = new EndpointProbeResult(regionalEndpoint, ok, "status:" + status);
                 return response.body()
                     .doOnNext(buf -> {
                         if (buf != null) {
@@ -267,12 +271,12 @@ public class EndpointProbeClient implements Closeable {
             .onErrorResume(t -> {
                 logger.debug(
                     "Thin-client probe to {} failed: {}", regionalEndpoint, t.toString());
-                return Mono.just(new ProbeResult(regionalEndpoint, false, "transport:" + t.getClass().getSimpleName()));
+                return Mono.just(new EndpointProbeResult(regionalEndpoint, false, "transport:" + t.getClass().getSimpleName()));
             });
     }
 
     private Boolean applyCycleResult(
-        List<ProbeResult> results,
+        List<EndpointProbeResult> results,
         Set<URI> attemptedEndpoints,
         Instant cycleStart,
         long cycleId) {
@@ -286,19 +290,24 @@ public class EndpointProbeClient implements Closeable {
         }
 
         int successCount = 0;
+        // Use a list of EndpointProbeResult to preserve the failure reason for diagnostics.
+        List<EndpointProbeResult> failures = new ArrayList<>();
         Set<URI> failedEndpoints = new HashSet<>();
-        for (ProbeResult r : results) {
+        for (EndpointProbeResult r : results) {
             if (r.success) {
                 successCount++;
-            } else if (r.endpoint != null) {
-                failedEndpoints.add(r.endpoint);
+            } else {
+                failures.add(r);
+                if (r.endpoint != null) {
+                    failedEndpoints.add(r.endpoint);
+                }
             }
         }
         // Treat any endpoint that didn't produce a ProbeResult as failed (defensive).
         if (results.size() < attemptedEndpoints.size()) {
             for (URI attempted : attemptedEndpoints) {
                 boolean covered = false;
-                for (ProbeResult r : results) {
+                for (EndpointProbeResult r : results) {
                     if (attempted.equals(r.endpoint)) {
                         covered = true;
                         break;
@@ -306,6 +315,7 @@ public class EndpointProbeClient implements Closeable {
                 }
                 if (!covered) {
                     failedEndpoints.add(attempted);
+                    failures.add(new EndpointProbeResult(attempted, false, "missing-result"));
                 }
             }
         }
@@ -348,17 +358,17 @@ public class EndpointProbeClient implements Closeable {
                     logger.warn(
                         "Thin-client probe cycle RED ({} succeeded / {} failed) for {} consecutive cycles (threshold={}). "
                             + "Marking proxy UNHEALTHY; SDK will route data plane to Gateway V1 until {} consecutive GREEN cycle(s). "
-                            + "Failed endpoints: {}",
-                        successCount, failureCount, now, this.failureThreshold, this.recoveryThreshold, failedEndpoints);
+                            + "Failures: {}",
+                        successCount, failureCount, now, this.failureThreshold, this.recoveryThreshold, failures);
                 } else {
                     logger.warn(
-                        "Thin-client probe cycle RED ({} succeeded / {} failed); consecutive failures={} (threshold={}); proxy remains UNHEALTHY. Failed endpoints: {}",
-                        successCount, failureCount, now, this.failureThreshold, failedEndpoints);
+                        "Thin-client probe cycle RED ({} succeeded / {} failed); consecutive failures={} (threshold={}); proxy remains UNHEALTHY. Failures: {}",
+                        successCount, failureCount, now, this.failureThreshold, failures);
                 }
             } else {
                 logger.info(
-                    "Thin-client probe cycle RED ({} succeeded / {} failed); consecutive failures={} (threshold={}); proxy currently healthy={}. Failed endpoints: {}",
-                    successCount, failureCount, now, this.failureThreshold, this.proxyHealthy.get(), failedEndpoints);
+                    "Thin-client probe cycle RED ({} succeeded / {} failed); consecutive failures={} (threshold={}); proxy currently healthy={}. Failures: {}",
+                    successCount, failureCount, now, this.failureThreshold, this.proxyHealthy.get(), failures);
             }
         }
 
@@ -383,42 +393,5 @@ public class EndpointProbeClient implements Closeable {
         } catch (Exception ignored) {
             // best-effort
         }
-    }
-
-    private static final class ProbeResult {
-        final URI endpoint;
-        final boolean success;
-        @SuppressWarnings("unused")
-        final String reason;
-
-        ProbeResult(URI endpoint, boolean success, String reason) {
-            this.endpoint = endpoint;
-            this.success = success;
-            this.reason = reason;
-        }
-    }
-
-    /**
-     * Immutable, intentionally-lean snapshot of probe state for client diagnostics.
-     * Exposes only the outcome of the most recent probe cycle (or {@code null} if no
-     * cycle has run yet) and the wall-clock time at which that state was last updated.
-     * Richer details (per-endpoint failures, hysteresis counters, thresholds) are
-     * intentionally not surfaced here to keep the diagnostic shape stable across
-     * releases — consult the logs for those details.
-     */
-    public static final class DiagnosticsSnapshot {
-        private final Boolean lastCycleSuccess;
-        private final Instant lastStateUpdatedAt;
-
-        DiagnosticsSnapshot(Boolean lastCycleSuccess, Instant lastStateUpdatedAt) {
-            this.lastCycleSuccess = lastCycleSuccess;
-            this.lastStateUpdatedAt = lastStateUpdatedAt;
-        }
-
-        /** @return {@code true} if the most recent cycle was GREEN, {@code false} if RED, {@code null} if no cycle has completed yet. */
-        public Boolean getLastCycleSuccess() { return lastCycleSuccess; }
-
-        /** @return wall-clock instant at which {@link #getLastCycleSuccess()} was last updated, or {@code null} if never. */
-        public Instant getLastStateUpdatedAt() { return lastStateUpdatedAt; }
     }
 }

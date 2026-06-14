@@ -440,7 +440,7 @@ public class GlobalEndpointManager implements AutoCloseable {
      * @return a read-only diagnostics snapshot of the probe state, or {@code null} when
      *         no probe client has been wired.
      */
-    public EndpointProbeClient.DiagnosticsSnapshot getThinClientProbeDiagnostics() {
+    public EndpointProbeDiagnosticsSnapshot getThinClientProbeDiagnostics() {
         EndpointProbeClient probeClient = this.thinClientProbeClient.get();
         return probeClient == null ? null : probeClient.getDiagnosticsSnapshot();
     }
