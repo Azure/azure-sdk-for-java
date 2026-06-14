@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedNamespacesListCredentialSamples {
     /*
-     * x-ms-original-file: 2026-04-01/ManagedNamespacesListCredentialResult.json
+     * x-ms-original-file: 2026-04-02-preview/ManagedNamespacesListCredentialResult.json
      */
     /**
      * Sample code: List managed namespace credentials.
