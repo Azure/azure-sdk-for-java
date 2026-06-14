@@ -1106,6 +1106,93 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         }
     }
 
+    // ==================== readManyByPartitionKeys Tests ====================
+    // These exercise the validation QueryPlan path that bifurcates between Compute Gateway
+    // and the thin client (Gateway V2) based on the DocumentCollection being passed through.
+    // For the thin client container we expect the validation QueryPlan call itself to land on
+    // the :10250 endpoint, just like the per-batch query requests it precedes.
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testReadManyByPartitionKeysNoCustomQuery() {
+        // No custom query: no QueryPlan is fetched, but the per-batch reads must still
+        // route through the thin client endpoint.
+        ReadManyResult<ObjectNode> gwResult = drainReadMany(
+            directContainer, Collections.singletonList(new PartitionKey(commonPk)), null, ObjectNode.class);
+        ReadManyResult<ObjectNode> tcResult = drainReadMany(
+            thinClientContainer, Collections.singletonList(new PartitionKey(commonPk)), null, ObjectNode.class);
+
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size())
+            .as("readManyByPartitionKeys (no custom query) count mismatch")
+            .isEqualTo(gwResult.results.size());
+        assertThat(idsSorted(tcResult.results))
+            .as("readManyByPartitionKeys (no custom query) IDs mismatch")
+            .isEqualTo(idsSorted(gwResult.results));
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testReadManyByPartitionKeysWithCustomQuery() {
+        // Custom projection + filter triggers QueryPlan validation. With the bifurcation
+        // wiring in place the QueryPlan request must travel through Gateway V2 (:10250).
+        SqlQuerySpec customQuery = new SqlQuerySpec(
+            "SELECT c.id, c.category, c.status FROM c WHERE c.status = 'active'");
+
+        ReadManyResult<ObjectNode> gwResult = drainReadMany(
+            directContainer, Collections.singletonList(new PartitionKey(commonPk)), customQuery, ObjectNode.class);
+        ReadManyResult<ObjectNode> tcResult = drainReadMany(
+            thinClientContainer, Collections.singletonList(new PartitionKey(commonPk)), customQuery, ObjectNode.class);
+
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size())
+            .as("readManyByPartitionKeys (custom query) count mismatch")
+            .isEqualTo(gwResult.results.size());
+        assertThat(tcResult.results.size())
+            .as("readManyByPartitionKeys (custom query) expected at least one active doc")
+            .isGreaterThan(0);
+        assertThat(idsSorted(tcResult.results))
+            .as("readManyByPartitionKeys (custom query) IDs mismatch")
+            .isEqualTo(idsSorted(gwResult.results));
+
+        // Projection assertion: every returned doc has the requested fields only.
+        for (ObjectNode doc : tcResult.results) {
+            assertThat(doc.has("id")).isTrue();
+            assertThat(doc.has("category")).isTrue();
+            assertThat(doc.has("status")).isTrue();
+            assertThat(doc.get("status").asText()).isEqualTo("active");
+        }
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testReadManyByPartitionKeysWithParameterizedCustomQuery() {
+        // Parameterized custom query — same validation path, exercises SqlParameter binding.
+        SqlQuerySpec customQuery = new SqlQuerySpec(
+            "SELECT * FROM c WHERE c.category = @cat",
+            Collections.singletonList(new SqlParameter("@cat", "electronics")));
+
+        ReadManyResult<ObjectNode> gwResult = drainReadMany(
+            directContainer, Collections.singletonList(new PartitionKey(commonPk)), customQuery, ObjectNode.class);
+        ReadManyResult<ObjectNode> tcResult = drainReadMany(
+            thinClientContainer, Collections.singletonList(new PartitionKey(commonPk)), customQuery, ObjectNode.class);
+
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size())
+            .as("readManyByPartitionKeys (parameterized) count mismatch")
+            .isEqualTo(gwResult.results.size());
+        assertThat(tcResult.results.size())
+            .as("readManyByPartitionKeys (parameterized) expected at least one electronics doc")
+            .isGreaterThan(0);
+        assertThat(idsSorted(tcResult.results))
+            .as("readManyByPartitionKeys (parameterized) IDs mismatch")
+            .isEqualTo(idsSorted(gwResult.results));
+
+        for (ObjectNode doc : tcResult.results) {
+            assertThat(doc.get("category").asText()).isEqualTo("electronics");
+        }
+    }
+
     // ==================== Assertion & Drain Helpers ====================
 
     private static void safeDeleteContainer(CosmosAsyncContainer container) {
@@ -1118,6 +1205,35 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     private static class QueryResult<T> {
         final List<T> results = new ArrayList<>();
         final List<CosmosDiagnostics> diagnostics = new ArrayList<>();
+    }
+
+    /** Holds readManyByPartitionKeys results and per-page diagnostics. */
+    private static class ReadManyResult<T> {
+        final List<T> results = new ArrayList<>();
+        final List<CosmosDiagnostics> diagnostics = new ArrayList<>();
+    }
+
+    private <T> ReadManyResult<T> drainReadMany(
+        CosmosAsyncContainer c,
+        List<PartitionKey> partitionKeys,
+        SqlQuerySpec customQuery,
+        Class<T> type) {
+        ReadManyResult<T> result = new ReadManyResult<>();
+        for (FeedResponse<T> page : c.readManyByPartitionKeys(partitionKeys, customQuery, type)
+                                       .byPage()
+                                       .toIterable()) {
+            result.results.addAll(page.getResults());
+            result.diagnostics.add(page.getCosmosDiagnostics());
+        }
+        return result;
+    }
+
+    private static List<String> idsSorted(List<ObjectNode> docs) {
+        return docs.stream()
+            .filter(d -> d.has(ID_FIELD))
+            .map(d -> d.get(ID_FIELD).asText())
+            .sorted()
+            .collect(Collectors.toList());
     }
 
     private CosmosQueryRequestOptions partitionedOptions() {
