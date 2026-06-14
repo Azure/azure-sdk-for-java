@@ -9012,10 +9012,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
+        // When the probe kill switch is OFF (COSMOS.THINCLIENT_PROBE_ENABLED=false), routing
+        // must be driven solely by COSMOS.THINCLIENT_ENABLED (already folded into useThinClient
+        // at construction time) -- the probe-health signal becomes meaningless because no probe
+        // cycles run. Treat probe as healthy in that case so the gate behaves as a pure
+        // function of the kill switch.
+        boolean proxyProbeHealthy = !Configs.isThinClientProbeEnabled()
+            || this.globalEndpointManager.isProxyProbeHealthy();
+
         return shouldUseThinClientStoreModel(
             this.useThinClient,
             this.globalEndpointManager.hasThinClientReadLocations(),
-            this.globalEndpointManager.isProxyProbeHealthy(),
+            proxyProbeHealthy,
             request);
     }
 
