@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
