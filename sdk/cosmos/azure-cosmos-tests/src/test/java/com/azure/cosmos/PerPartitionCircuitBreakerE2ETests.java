@@ -240,6 +240,17 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master"})
     public void beforeClass() {
+        // The "fi-thinclient-multi-master" tests assert thinclient routing via
+        // assertThinClientEndpointUsed. The connectivity probe is ON by default in
+        // production, but the proxy-side /connectivity-probe endpoint is not deployed
+        // in every CI account yet, so with the default failure threshold of 1 it
+        // would flip routing to Gateway V1 and break those assertions. Disable here
+        // so the routing path under test is exercised deterministically; the kill
+        // switch in RxDocumentClientImpl.useThinClientStoreModel treats a disabled
+        // probe as healthy, so routing keys off the configured thin-client flag.
+        // Cleared in @AfterClass. Other groups in this class (circuit-breaker-* /
+        // multi-region) are unaffected.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
         try (CosmosAsyncClient testClient = getClientBuilder().buildAsyncClient()) {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
             GlobalEndpointManager globalEndpointManager = documentClient.getGlobalEndpointManager();
@@ -4597,6 +4608,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 safeClose(dummyClient);
             }
         }
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
     }
 
     private static class ResponseWrapper<T> {
