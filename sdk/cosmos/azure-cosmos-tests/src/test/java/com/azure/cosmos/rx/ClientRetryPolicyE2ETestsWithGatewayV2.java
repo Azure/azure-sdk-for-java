@@ -99,6 +99,18 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
         // Uncomment to enable thin client proxy for local testing
         // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+
+        // Fault-injected thin-client routing tests in this class (the "fi-thinclient-*" groups)
+        // assert that requests actually went through the proxy on port 10250 via
+        // assertThinClientEndpointUsed. The connectivity probe is enabled by default in
+        // production, but the proxy-side /connectivity-probe endpoint is not deployed in every
+        // CI test account yet. With the default failure threshold of 1, a single failed probe
+        // cycle flips routing from the proxy to Gateway V1, breaking these assertions. Disable
+        // the probe here so the routing path under test is exercised deterministically;
+        // production callers still get the probe ON by default. Cleared in @AfterClass to
+        // avoid leaking into other test classes.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
+
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(this.preferredRegions)
             .endpointDiscoveryEnabled(true)
@@ -117,6 +129,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
     @AfterClass(groups = {"fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         //System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
         safeClose(this.clientWithPreferredRegions);
         safeClose(this.clientWithoutPreferredRegions);
     }

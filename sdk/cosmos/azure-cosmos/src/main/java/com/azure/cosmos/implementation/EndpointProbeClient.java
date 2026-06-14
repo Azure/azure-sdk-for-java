@@ -182,6 +182,18 @@ public class EndpointProbeClient implements Closeable {
         if (this.closed.get()) {
             return;
         }
+        // Honor the COSMOS.THINCLIENT_PROBE_ENABLED kill switch end-to-end: when probing is
+        // disabled, no code path (HTTP cycle OR resolution-mismatch safeguard) is allowed to
+        // mutate the routing gate. This keeps proxyHealthy at its last user-observable value
+        // (the optimistic-startup default of true unless an earlier cycle flipped it) and
+        // preserves the invariant that the SDK behaves exactly as if the probe machinery did
+        // not exist when the flag is off.
+        if (!Configs.isThinClientProbeEnabled()) {
+            logger.debug(
+                "forceUnhealthy(reason='{}') skipped because COSMOS.THINCLIENT_PROBE_ENABLED is false.",
+                reason);
+            return;
+        }
         this.consecutiveSuccesses.set(0);
         int now = this.consecutiveFailures.incrementAndGet();
         this.lastCycleSuccess.set(Boolean.FALSE);
