@@ -43,6 +43,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
@@ -1126,15 +1127,19 @@ public final class BlobContainerAsyncClient {
                     finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
                         .setDetails(options.getDetails());
-                    if (Boolean.TRUE.equals(options.isApacheArrowEnabled())) {
-                        finalOptions.setApacheArrowEnabled(true).setEndBefore(options.getEndBefore());
+                    if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
+                        == StorageResponseSerializationFormat.ARROW) {
+                        finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                            .setEndBefore(options.getEndBefore());
                     }
                 }
             } else {
                 finalOptions = options;
             }
 
-            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.isApacheArrowEnabled())) {
+            if (finalOptions != null
+                && ModelHelper.resolveSerializationFormat(finalOptions.getStorageResponseSerializationFormat())
+                    == StorageResponseSerializationFormat.ARROW) {
                 return listBlobsFlatSegmentArrow(marker, finalOptions, timeout);
             }
 
@@ -1366,15 +1371,19 @@ public final class BlobContainerAsyncClient {
                         .setPrefix(options.getPrefix())
                         .setDetails(options.getDetails())
                         .setStartFrom(options.getStartFrom());
-                    if (Boolean.TRUE.equals(options.isApacheArrowEnabled())) {
-                        finalOptions.setApacheArrowEnabled(true).setEndBefore(options.getEndBefore());
+                    if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
+                        == StorageResponseSerializationFormat.ARROW) {
+                        finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                            .setEndBefore(options.getEndBefore());
                     }
                 }
             } else {
                 finalOptions = options;
             }
 
-            if (finalOptions != null && Boolean.TRUE.equals(finalOptions.isApacheArrowEnabled())) {
+            if (finalOptions != null
+                && ModelHelper.resolveSerializationFormat(finalOptions.getStorageResponseSerializationFormat())
+                    == StorageResponseSerializationFormat.ARROW) {
                 return listBlobsHierarchySegmentArrow(marker, delimiter, finalOptions, timeout);
             }
 

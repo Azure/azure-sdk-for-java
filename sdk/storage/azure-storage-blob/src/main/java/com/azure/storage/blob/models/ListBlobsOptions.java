@@ -19,7 +19,7 @@ public final class ListBlobsOptions {
     private String prefix;
     private String startFrom;
     private Integer maxResultsPerPage;
-    private Boolean apacheArrowEnabled;
+    private StorageResponseSerializationFormat storageResponseSerializationFormat;
     private String endBefore;
 
     /**
@@ -115,24 +115,25 @@ public final class ListBlobsOptions {
     }
 
     /**
-     * Gets whether the Apache Arrow response format is enabled for listing.
+     * Gets the response serialization format the service should use when listing blobs.
      *
-     * @return null by default, otherwise returns a Boolean indicating whether the Apache Arrow response format is
-     * enabled.
+     * @return the {@link StorageResponseSerializationFormat}, or {@code null} if unset
+     * (equivalent to {@link StorageResponseSerializationFormat#AUTO}).
      */
-    public Boolean isApacheArrowEnabled() {
-        return apacheArrowEnabled;
+    public StorageResponseSerializationFormat getStorageResponseSerializationFormat() {
+        return storageResponseSerializationFormat;
     }
 
     /**
-     * Sets whether to use the Apache Arrow response format for listing. When enabled, the service returns an Arrow IPC
-     * stream instead of XML, which can provide latency and scale improvements.
+     * Sets the response serialization format the service should use when listing blobs.
      *
-     * @param apacheArrowEnabled whether to use Arrow format.
-     * @return the updated ListBlobsOptions object.
+     * @param storageResponseSerializationFormat the format to request. {@code null} and
+     * {@link StorageResponseSerializationFormat#AUTO} both let the SDK pick.
+     * @return the updated {@link ListBlobsOptions} object.
      */
-    public ListBlobsOptions setApacheArrowEnabled(Boolean apacheArrowEnabled) {
-        this.apacheArrowEnabled = apacheArrowEnabled;
+    public ListBlobsOptions setStorageResponseSerializationFormat(
+        StorageResponseSerializationFormat storageResponseSerializationFormat) {
+        this.storageResponseSerializationFormat = storageResponseSerializationFormat;
         return this;
     }
 
