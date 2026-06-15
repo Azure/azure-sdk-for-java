@@ -55,6 +55,12 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    // Tri-state opt-in / kill-switch for cold-start metadata cache hedging. When unset (null),
+    // cold-start metadata hedging follows the account's PPAF state. "true" forces it on even when
+    // PPAF is disabled; "false" suppresses it regardless of PPAF.
+    private static final String METADATA_HEDGING_FOR_COLD_START_ENABLED = "COSMOS.METADATA_HEDGING_FOR_COLD_START_ENABLED";
+    private static final String METADATA_HEDGING_FOR_COLD_START_ENABLED_VARIABLE = "COSMOS_METADATA_HEDGING_FOR_COLD_START_ENABLED";
+
     private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
@@ -583,6 +589,25 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    /**
+     * Resolves the tri-state cold-start metadata hedging opt-in.
+     *
+     * @return {@code null} when unset (follow PPAF), otherwise the explicit {@link Boolean} value.
+     */
+    public static Boolean getMetadataHedgingForColdStartEnabled() {
+        String valueFromSystemProperty = System.getProperty(METADATA_HEDGING_FOR_COLD_START_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(METADATA_HEDGING_FOR_COLD_START_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return null;
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {

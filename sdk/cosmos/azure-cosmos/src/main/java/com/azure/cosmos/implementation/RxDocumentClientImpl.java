@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.metadatahedging.MetadataHedgingStrategy;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -282,6 +283,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final GlobalEndpointManager globalEndpointManager;
     private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+    private MetadataHedgingStrategy metadataHedgingStrategy;
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
@@ -895,6 +897,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
+            this.metadataHedgingStrategy = MetadataHedgingStrategy.createIfEnabled(
+                Configs.getMetadataHedgingForColdStartEnabled(),
+                this.globalEndpointManager,
+                () -> this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover != null
+                    && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled());
+
             if (metadataCachesSnapshot != null) {
                 AsyncCache<String, DocumentCollection> nameCache = metadataCachesSnapshot.getCollectionInfoByNameCache();
                 AsyncCache<String, DocumentCollection> idCache = metadataCachesSnapshot.getCollectionInfoByIdCache();
@@ -905,7 +913,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         this,
                         this.retryPolicy,
                         nameCache,
-                        idCache
+                        idCache,
+                        this.globalEndpointManager,
+                        this.metadataHedgingStrategy
                     );
                 } else {
                     // Cache data could not be deserialized (e.g., old format); fall back to fresh fetch
@@ -913,14 +923,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         this.sessionContainer,
                         this.gatewayProxy,
                         this,
-                        this.retryPolicy);
+                        this.retryPolicy,
+                        this.globalEndpointManager,
+                        this.metadataHedgingStrategy);
                 }
             } else {
                 this.collectionCache = new RxClientCollectionCache(this,
                     this.sessionContainer,
                     this.gatewayProxy,
                     this,
-                    this.retryPolicy);
+                    this.retryPolicy,
+                    this.globalEndpointManager,
+                    this.metadataHedgingStrategy);
             }
             this.resetSessionTokenRetryPolicy = new ResetSessionTokenRetryPolicyFactory(this.sessionContainer, this.collectionCache, this.retryPolicy);
 
