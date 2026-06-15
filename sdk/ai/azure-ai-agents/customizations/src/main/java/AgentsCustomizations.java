@@ -1,7 +1,9 @@
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import org.slf4j.Logger;
 
 
@@ -15,6 +17,7 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        annotateBetaFields(libraryCustomization, logger);
     }
 
     private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
@@ -52,5 +55,56 @@ public class AgentsCustomizations extends Customization {
 
                     clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"));
                 }));
+    }
+
+    private void annotateBetaFields(LibraryCustomization customization, Logger logger) {
+        for (BetaAnnotation entry : BetaAnnotationLoader.load()) {
+            String member = entry instanceof BetaMember ? ((BetaMember) entry).getMember() : null;
+            logger.info("Annotating {}{} with @Beta: {}", entry.getClassName(),
+                member == null ? "" : "#" + member, entry.getDescription());
+
+            int lastDot = entry.getClassName().lastIndexOf('.');
+            String packageName = entry.getClassName().substring(0, lastDot);
+            String simpleName = entry.getClassName().substring(lastDot + 1);
+
+            customization.getClass(packageName, simpleName).customizeAst(ast -> {
+                ast.addImport("com.azure.ai.agents.util.Beta");
+                ast.getPrimaryType().ifPresent(type -> {
+                    if (member == null) {
+                        type.addAnnotation(StaticJavaParser.parseAnnotation("@Beta"));
+                    } else {
+                        annotateMember(type, member);
+                    }
+                });
+            });
+        }
+    }
+
+    /**
+     * Annotates a field on the given type with {@code @Beta}, along with its associated getter and
+     * setter methods. The customization API only exposes class/method handles, but {@code customizeAst}
+     * gives full access to the JavaParser AST, so the field can be reached and annotated here.
+     */
+    private void annotateMember(TypeDeclaration<?> type, String member) {
+        boolean found = false;
+
+        for (FieldDeclaration field : type.getFields()) {
+            if (field.getVariables().stream().anyMatch(v -> v.getNameAsString().equals(member))) {
+                field.addAnnotation(StaticJavaParser.parseAnnotation("@Beta"));
+                found = true;
+            }
+        }
+
+        if (!found) {
+            throw new IllegalStateException(
+                "Could not find field '" + member + "' on type " + type.getNameAsString() + ".");
+        }
+
+        String capitalized = Character.toUpperCase(member.charAt(0)) + member.substring(1);
+        for (String accessor : new String[] { "get" + capitalized, "is" + capitalized, "set" + capitalized }) {
+            for (MethodDeclaration method : type.getMethodsByName(accessor)) {
+                method.addAnnotation(StaticJavaParser.parseAnnotation("@Beta"));
+            }
+        }
     }
 }
