@@ -219,6 +219,46 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     }
 
     @Test
+    void hasConsistencyLockTrueWhenIfMatchSet() {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        Mockito.when(client.getVersionId()).thenReturn(null);
+
+        BlobRequestConditions conditions = new BlobRequestConditions().setIfMatch("\"etag\"");
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, 0, conditions);
+
+        assertEquals(true, behavior.hasConsistencyLock());
+    }
+
+    @Test
+    void hasConsistencyLockTrueWhenVersionIdPinned() {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        Mockito.when(client.getVersionId()).thenReturn("2026-06-15T00:00:00Z");
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, 0, null);
+
+        assertEquals(true, behavior.hasConsistencyLock());
+    }
+
+    @Test
+    void hasConsistencyLockFalseWhenNoneApplied() {
+        // ConsistentReadControl.NONE: no If-Match, no version pin. Per issue #38070, the channel must then keep
+        // delegating to ReadBehavior.read until the service answers 416 instead of trusting the cached length.
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        Mockito.when(client.getVersionId()).thenReturn(null);
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, 0, null);
+
+        assertEquals(false, behavior.hasConsistencyLock());
+
+        StorageSeekableByteChannelBlobReadBehavior behaviorEmptyConds = new StorageSeekableByteChannelBlobReadBehavior(
+            client, ByteBuffer.allocate(0), -1, 0, new BlobRequestConditions());
+        assertEquals(false, behaviorEmptyConds.hasConsistencyLock());
+    }
+
+    @Test
     void readSwallowsExceptionWhenPastKnownEndOfBlob() throws IOException {
         // Regression test for issue #38070: when the seekable byte channel's behavior is asked to read past the
         // cached resource length and the underlying client throws (e.g. ReactiveException wrapping a connection

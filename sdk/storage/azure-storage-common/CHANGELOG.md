@@ -10,7 +10,12 @@
 - Fixed an issue in `StorageSeekableByteChannel` where a read after the cached resource length had been consumed
   would issue an unnecessary "probe past EOF" service round-trip whose 416 response could be corrupted by transient
   network faults (connection reset, premature close, channel timeout) into an `IOException`. The channel now reports
-  EOF using the cached `ReadBehavior.getResourceLength()` without invoking the behavior again.
+  EOF using the cached `ReadBehavior.getResourceLength()` without invoking the behavior again &mdash; **but only
+  when the behavior advertises a consistency lock** via the new `ReadBehavior.hasConsistencyLock()` accessor
+  (default `true`, overridden by the blob behavior to reflect actual `If-Match` / version-id state). When the
+  lock is absent (e.g. `BlobClient.openSeekableByteChannelRead` with `ConsistentReadControl.NONE`) the channel
+  keeps delegating to `ReadBehavior.read` so server-side growth can still be discovered, matching the GitHub
+  issue #38070 guidance: "If ETags are not used, then we should keep going until we get 416."
 - Fixed an issue in `StorageSeekableByteChannel.read(ByteBuffer)` where a destination buffer with no remaining
   capacity (e.g. `ByteBuffer.allocate(0)` or a buffer with `position() == limit()`) could either return `-1` in
   violation of the `ReadableByteChannel` contract or trigger a wasted service round-trip. The channel now

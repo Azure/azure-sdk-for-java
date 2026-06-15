@@ -486,4 +486,80 @@ public class StorageSeekableByteChannelTests {
             () -> new StorageSeekableByteChannel(Constants.KB, new MockReadBehavior(), 0L)
                 .write(ByteBuffer.allocate(Constants.KB)));
     }
+
+    /**
+     * Verifies that when ReadBehavior.hasConsistencyLock() == true (the typical openSeekableByteChannelRead path
+     * with ConsistentReadControl.ETAG or VERSION_ID), the channel short-circuits at the cached EOF without
+     * delegating to ReadBehavior.read again. This is the P1/P2 fix for GitHub issue #38070.
+     */
+    @Test
+    public void readWithConsistencyLockShortCircuitsAtCachedEof() throws IOException {
+        int resourceSize = 256;
+        byte[] data = getRandomData(resourceSize);
+        AtomicInteger readInvocations = new AtomicInteger();
+
+        StorageSeekableByteChannel.ReadBehavior behavior = new MockReadBehavior(resourceSize, (dst, sourceOffset) -> {
+            readInvocations.incrementAndGet();
+            int toRead = Math.min(dst.remaining(), resourceSize - sourceOffset.intValue());
+            if (toRead <= 0) {
+                return -1;
+            }
+            dst.put(data, sourceOffset.intValue(), toRead);
+            return toRead;
+        }, true);
+
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(resourceSize, behavior, 0L);
+
+        ByteBuffer dst = ByteBuffer.allocate(resourceSize);
+        assertEquals(resourceSize, channel.read(dst));
+        assertEquals(1, readInvocations.get());
+
+        // Past-EOF read with the lock in place: short-circuit, no extra behavior invocation.
+        dst.clear();
+        assertEquals(-1, channel.read(dst));
+        assertEquals(1, readInvocations.get(),
+            "with hasConsistencyLock() == true the channel must not call ReadBehavior.read past EOF");
+    }
+
+    /**
+     * Verifies the issue #38070 ETag-less guidance ("If ETags are not used, then we should keep going until we get
+     * 416"): when ReadBehavior.hasConsistencyLock() == false, the channel must NOT short-circuit on the cached
+     * length and must instead delegate to ReadBehavior.read so the service has a chance to return new bytes if the
+     * underlying resource has grown server-side.
+     */
+    @Test
+    public void readWithoutConsistencyLockRefillsPastCachedEof() throws IOException {
+        // Simulate a resource that the behavior initially knows as `originalSize` bytes but that has grown to
+        // `grownSize` bytes server-side between reads. The cached length reflects only what was last observed.
+        int originalSize = 128;
+        int grownSize = 192;
+        byte[] data = getRandomData(grownSize);
+        AtomicInteger readInvocations = new AtomicInteger();
+
+        StorageSeekableByteChannel.ReadBehavior behavior = new MockReadBehavior(originalSize, (dst, sourceOffset) -> {
+            readInvocations.incrementAndGet();
+            int available = grownSize - sourceOffset.intValue();
+            if (available <= 0) {
+                return -1;
+            }
+            int toRead = Math.min(dst.remaining(), available);
+            dst.put(data, sourceOffset.intValue(), toRead);
+            return toRead;
+        }, false);
+
+        StorageSeekableByteChannel channel = new StorageSeekableByteChannel(originalSize, behavior, 0L);
+
+        // First read drains the originally-known bytes.
+        ByteBuffer dst = ByteBuffer.allocate(originalSize);
+        assertEquals(originalSize, channel.read(dst));
+        assertEquals(1, readInvocations.get());
+
+        // With no consistency lock, asking for more past the originally-cached length must NOT short-circuit;
+        // the channel must delegate to the behavior, which now exposes the grown bytes.
+        ByteBuffer dst2 = ByteBuffer.allocate(grownSize - originalSize);
+        assertEquals(grownSize - originalSize, channel.read(dst2),
+            "without hasConsistencyLock() the channel must re-probe past cached EOF to detect growth");
+        assertEquals(2, readInvocations.get(),
+            "without hasConsistencyLock() the channel must call ReadBehavior.read past cached EOF");
+    }
 }

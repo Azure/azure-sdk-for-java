@@ -11,14 +11,21 @@ import java.util.function.BiFunction;
 public class MockReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
     private final long resourceLength;
     private final BiFunction<ByteBuffer, Long, Integer> readFunction;
+    private final boolean hasConsistencyLock;
 
     public MockReadBehavior() {
         this(0, (buffer, offset) -> 0);
     }
 
     public MockReadBehavior(long resourceLength, BiFunction<ByteBuffer, Long, Integer> readFunction) {
+        this(resourceLength, readFunction, true);
+    }
+
+    public MockReadBehavior(long resourceLength, BiFunction<ByteBuffer, Long, Integer> readFunction,
+        boolean hasConsistencyLock) {
         this.resourceLength = resourceLength;
         this.readFunction = readFunction;
+        this.hasConsistencyLock = hasConsistencyLock;
     }
 
     @Override
@@ -29,5 +36,10 @@ public class MockReadBehavior implements StorageSeekableByteChannel.ReadBehavior
     @Override
     public final long getResourceLength() {
         return resourceLength;
+    }
+
+    @Override
+    public boolean hasConsistencyLock() {
+        return hasConsistencyLock;
     }
 }

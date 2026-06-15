@@ -133,4 +133,27 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
     public long getResourceLength() {
         return resourceLength;
     }
+
+    /**
+     * Reports whether this behavior has a consistency control in effect that pins the backing blob to a single
+     * immutable view for the lifetime of the behavior. Returns {@code true} when an {@code If-Match} ETag
+     * precondition is set on the request conditions, or when the underlying client is pinned to a specific
+     * {@code versionId}. Both cases guarantee the blob length observed at construction (or from a prior
+     * {@code Content-Range} header) cannot change between subsequent reads, which is what
+     * {@link StorageSeekableByteChannel} requires to safely short-circuit a read at-or-past EOF without issuing
+     * the wasted past-EOF range request that GitHub issue #38070 was filed against.
+     * <p>
+     * Returns {@code false} for the {@code ConsistentReadControl.NONE} configuration; in that case the channel
+     * must keep delegating to {@link #read(ByteBuffer, long)} until the service answers 416 (or returns 0 bytes),
+     * matching the issue's guidance: "If ETags are not used, then we should keep going until we get 416."
+     *
+     * @return {@code true} iff the behavior holds an ETag or version-id consistency lock on the target blob.
+     */
+    @Override
+    public boolean hasConsistencyLock() {
+        if (requestConditions != null && requestConditions.getIfMatch() != null) {
+            return true;
+        }
+        return client.getVersionId() != null;
+    }
 }

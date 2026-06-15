@@ -53,6 +53,28 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
          * @return The length in bytes, or a negative value if not yet known.
          */
         long getResourceLength();
+
+        /**
+         * Indicates whether the backing resource is locked to a specific version for the lifetime of this behavior,
+         * such that the cached {@link #getResourceLength()} can be trusted as the authoritative end-of-resource and
+         * the channel may short-circuit a read at-or-past that length without issuing a service round-trip.
+         * <p>
+         * Implementations should return {@code true} only when they have applied a consistency control that
+         * prevents the underlying resource from changing between requests &mdash; for example, an {@code If-Match}
+         * ETag precondition, or a pin to an immutable version / snapshot. When this method returns {@code false},
+         * the channel will not short-circuit on cached length, and will instead delegate to
+         * {@link #read(ByteBuffer, long)} so the backing resource is re-probed (this matches the GitHub issue
+         * #38070 guidance: "If ETags are not used, then we should keep going until we get 416").
+         * <p>
+         * The default returns {@code true} to preserve the behavior of pre-existing implementations whose
+         * resource length, once cached, was always treated as authoritative.
+         *
+         * @return {@code true} if the cached resource length is authoritative; {@code false} if the backing
+         * resource may change underneath the channel and the length should not be used to short-circuit reads.
+         */
+        default boolean hasConsistencyLock() {
+            return true;
+        }
     }
 
     /**
@@ -178,9 +200,15 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
      * ultimately return 0.
      *
      * EOF short-circuit. When the internal buffer is empty, the implementation checks whether absolutePosition has
-     * already reached (or exceeded) the cached resource length and returns -1 directly. Without this short-circuit,
-     * an empty buffer would fall into refillReadBuffer(absolutePosition), which delegates to readBehavior.read(...)
-     * and issues a real HTTP range GET at an offset >= resourceLength.
+     * already reached (or exceeded) the cached resource length AND the behavior advertises a consistency lock via
+     * {@link ReadBehavior#hasConsistencyLock()} -- if both hold, it returns -1 directly. Without this
+     * short-circuit, an empty buffer would fall into refillReadBuffer(absolutePosition), which delegates to
+     * readBehavior.read(...) and issues a real HTTP range GET at an offset >= resourceLength (resulting in a 416
+     * response that the behavior then translates to -1). When the behavior does NOT advertise a consistency lock
+     * (e.g. {@code ConsistentReadControl.NONE} on the blob path), the cached length cannot be trusted -- the
+     * underlying resource may have grown server-side -- and the channel falls through to refillReadBuffer so the
+     * service has a chance to return new bytes. This matches the GitHub issue #38070 guidance:
+     * "If ETags are not used, then we should keep going until we get 416."
      *
      * Per the ReadBehavior#getResourceLength() contract, the call below is required to be a non-blocking accessor
      * that returns a negative value (conventionally -1) when the length is not yet known. On the very first read --
@@ -220,9 +248,12 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         if (buffer.remaining() == 0) {
             // See EOF short-circuit note in the comment block above this method. getResourceLength() is contracted
             // to be a non-blocking accessor that returns a negative value when the length is not yet known, so on
-            // the first read this guard simply falls through to the refill below.
+            // the first read this guard simply falls through to the refill below. The short-circuit is also gated
+            // on hasConsistencyLock() to honor the GitHub issue #38070 guidance: when no ETag/version-pin
+            // consistency control is in place, the resource may have grown server-side between reads, so we must
+            // re-probe via refillReadBuffer rather than trusting the cached length.
             long resourceLength = readBehavior.getResourceLength();
-            if (resourceLength >= 0 && absolutePosition >= resourceLength) {
+            if (resourceLength >= 0 && absolutePosition >= resourceLength && readBehavior.hasConsistencyLock()) {
                 absolutePosition = resourceLength;
                 return -1;
             }
