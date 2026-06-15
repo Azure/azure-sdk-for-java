@@ -137,16 +137,18 @@ public class Sample_Advanced_ToLlmInputTest extends ContentUnderstandingClientTe
             "'pages' value should be '2-3, 5' (original page numbers preserved)");
 
         // Page markers in the markdown body should use the original page numbers
-        // (<!-- page 2 -->, <!-- page 3 -->, <!-- page 5 -->), not renumbered (1, 2, 3).
-        assertFalse(text.contains("<!-- page 1 -->"),
-            "Page marker '<!-- page 1 -->' should not appear — we only requested pages 2-3, 5");
-        assertTrue(text.contains("<!-- page 2 -->"),
-            "Page marker '<!-- page 2 -->' should appear in the markdown body");
-        assertTrue(text.contains("<!-- page 3 -->"),
-            "Page marker '<!-- page 3 -->' should appear in the markdown body");
-        assertTrue(text.contains("<!-- page 5 -->"),
-            "Page marker '<!-- page 5 -->' should appear in the markdown body");
-        System.out.println("[PASS] Page markers verified: <!-- page 2 -->, <!-- page 3 -->, <!-- page 5 -->");
+        // (<!-- InputPageNumber: 2 -->, <!-- InputPageNumber: 3 -->, <!-- InputPageNumber: 5 -->),
+        // not renumbered (1, 2, 3).
+        assertFalse(text.contains("<!-- InputPageNumber: 1 -->"),
+            "Page marker '<!-- InputPageNumber: 1 -->' should not appear — we only requested pages 2-3, 5");
+        assertTrue(text.contains("<!-- InputPageNumber: 2 -->"),
+            "Page marker '<!-- InputPageNumber: 2 -->' should appear in the markdown body");
+        assertTrue(text.contains("<!-- InputPageNumber: 3 -->"),
+            "Page marker '<!-- InputPageNumber: 3 -->' should appear in the markdown body");
+        assertTrue(text.contains("<!-- InputPageNumber: 5 -->"),
+            "Page marker '<!-- InputPageNumber: 5 -->' should appear in the markdown body");
+        System.out.println(
+            "[PASS] Page markers verified: <!-- InputPageNumber: 2 -->, <!-- InputPageNumber: 3 -->, <!-- InputPageNumber: 5 -->");
 
         System.out
             .println("[PASS] toLlmInput output validated (" + text.length() + " chars, pages='2-3, 5' preserved)");
