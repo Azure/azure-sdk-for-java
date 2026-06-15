@@ -9,9 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
-
-#### Other Changes
-* Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor — the universal funnel for every partition key range the SDK deserializes from a service response (FeedResponse pages, change feed, etc.). The retained fields (`id`, `minInclusive`, `maxExclusive`, `parents`, `status`, `throughputFraction`) mirror the slots of Python's `PKRange` namedtuple in the equivalent [Python optimization](https://github.com/Azure/azure-sdk-for-python/pull/46297) so the cross-SDK choice stays aligned. The implementation is an allow-list — any field not on this list (including any field added by the service in the future) is dropped, keeping per-instance heap bounded against payload growth. Per-client routing-map heap reduction scales as `O(clients × collections × pkRanges)` and is material for accounts with many physical partitions.
+* Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
 
 ### 4.81.0 (2026-06-08)
 
