@@ -180,6 +180,68 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     factoryCallCount.get shouldEqual 1
   }
 
+  "TransientIOErrors" should "drain long runs of empty pages without hitting the end-to-end timeout" in {
+    // Regression test for the empty-page drain scenario: when the SDK is configured with
+    // emptyPagesAllowed=true the iterator must surface many consecutive empty
+    // pages without busy-waiting beyond the per-page end-to-end timeout. Even
+    // with hundreds of empty pages followed by real data, the iterator should
+    // return all real rows.
+    val emptyLeadingPages = 200
+    val realPages = 5
+    val totalPages = emptyLeadingPages + realPages
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => generateMockedCosmosPagedFluxWithEmptyPrefix(
+        continuationToken, totalPages, emptyLeadingPages),
+      pageSize,
+      1,
+      None,
+      None
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    // 2 producers (Left/Right) each emit realPages * pageSize rows
+    iterator.count(_ => true) shouldEqual (realPages * pageSize * 2)
+  }
+
+  private def generateMockedCosmosPagedFluxWithEmptyPrefix
+  (
+    continuationToken: String,
+    initialPageCount: Int,
+    leadingEmptyPageCount: Int
+  ) = {
+
+    val leftProducer = generateFeedResponseFluxWithEmptyPrefix(
+      "Left", initialPageCount, leadingEmptyPageCount, Option.apply(continuationToken))
+    val rightProducer = generateFeedResponseFluxWithEmptyPrefix(
+      "Right", initialPageCount, leadingEmptyPageCount, Option.apply(continuationToken))
+    val toBeMerged = Array(leftProducer, rightProducer).toIterable.asJava
+    val mergedFlux = Flux.mergeSequential(toBeMerged, 1, 2)
+    UtilBridgeInternal.createCosmosPagedFlux(_ => mergedFlux)
+  }
+
+  private def generateFeedResponseFluxWithEmptyPrefix
+  (
+    prefix: String,
+    pageCount: Int,
+    leadingEmptyPageCount: Int,
+    requestContinuationToken: Option[String]
+  ): Flux[FeedResponse[SparkRowItem]] = {
+
+    // generateFeedResponse uses documentStartIndex=-1 as the "emit an empty page" sentinel.
+    val emptyPageSentinel = -1
+    val firstDataPageStartIndex = 1
+
+    val responses = Array.range(1, pageCount + 1)
+      .map(i => generateFeedResponse(
+        prefix,
+        i,
+        if (i <= leadingEmptyPageCount) emptyPageSentinel else firstDataPageStartIndex))
+      .filter(response => requestContinuationToken.isEmpty ||
+        requestContinuationToken.get < response.getContinuationToken)
+
+    Flux.fromArray(responses)
+  }
+
   private val objectMapper = new ObjectMapper
 
   @throws[JsonProcessingException]

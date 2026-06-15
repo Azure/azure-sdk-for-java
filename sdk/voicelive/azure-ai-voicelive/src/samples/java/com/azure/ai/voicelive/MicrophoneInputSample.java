@@ -12,7 +12,7 @@ import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ResponseTextContentPart;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionResponseMessageItem;
-import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.util.BinaryData;
@@ -125,7 +125,7 @@ public final class MicrophoneInputSample {
 
         // Start session. Session lifetime is local to this reactive chain; the session
         // instance is captured only inside the flatMapMany lambda.
-        client.startSession("gpt-realtime")
+        client.startSession("gpt-realtime", null)
             .flatMapMany(session -> {
                 System.out.println("✓ Session started");
                 AudioProcessor audioProcessor = new AudioProcessor(session);
@@ -187,7 +187,7 @@ public final class MicrophoneInputSample {
      *
      * @param event The server event
      */
-    private static void handleEvent(SessionUpdate event) {
+    private static void handleEvent(SessionServerEvent event) {
         ServerEventType eventType = event.getType();
 
         if (eventType == ServerEventType.SESSION_CREATED) {

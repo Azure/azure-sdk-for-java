@@ -21,7 +21,12 @@ public enum MemoryStoreObjectType {
     /**
      * Enum value memory_store.scope.deleted.
      */
-    MEMORY_STORE_SCOPE_DELETED("memory_store.scope.deleted");
+    MEMORY_STORE_SCOPE_DELETED("memory_store.scope.deleted"),
+
+    /**
+     * Enum value memory_store.item.deleted.
+     */
+    MEMORY_DELETED("memory_store.item.deleted");
 
     /**
      * The actual serialized value for a MemoryStoreObjectType instance.

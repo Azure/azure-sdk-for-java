@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class VmSkusListSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ListAvailableContainerServiceVmSkusWithExtendedLocations.json
+     * x-ms-original-file: 2026-04-02-preview/ListAvailableContainerServiceVmSkusWithExtendedLocations.json
      */
     /**
      * Sample code: Lists all available Container Service VM SKUs with Extended Location information.
@@ -22,7 +22,7 @@ public final class VmSkusListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-02-preview/ListAvailableContainerServiceVmSkus.json
+     * x-ms-original-file: 2026-04-02-preview/ListAvailableContainerServiceVmSkus.json
      */
     /**
      * Sample code: Lists all available Container Service VM SKUs for a location.

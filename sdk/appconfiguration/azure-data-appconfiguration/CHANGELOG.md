@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added `checkConfigurationSettings` method to `ConfigurationClient` and `ConfigurationAsyncClient` that performs HEAD requests to efficiently check if configuration settings have changed by comparing page-level ETags without retrieving the full response body.
+- Added `description` property to `ConfigurationSetting` and `ConfigurationSnapshot`, along with corresponding `DESCRIPTION` values on `SettingFields` and `SnapshotFields`.
 
 ### Breaking Changes
 

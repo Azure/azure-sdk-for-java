@@ -99,8 +99,12 @@ public class Tool implements JsonSerializable<Tool> {
                     return A2APreviewTool.fromJson(readerToUse.reset());
                 } else if ("work_iq_preview".equals(discriminatorValue)) {
                     return WorkIqPreviewTool.fromJson(readerToUse.reset());
+                } else if ("fabric_iq_preview".equals(discriminatorValue)) {
+                    return FabricIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
+                } else if ("toolbox_search_preview".equals(discriminatorValue)) {
+                    return ToolboxSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterTool.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {

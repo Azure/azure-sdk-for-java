@@ -9,14 +9,15 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_ListByResourceGroup.
+     * Sample code: Fleets_ListByResourceGroup_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsListByResourceGroup(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void
+        fleetsListByResourceGroupMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().listByResourceGroup("rgazurefleet", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class LoadBalancersListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/LoadBalancers_List.json
+     * x-ms-original-file: 2026-04-02-preview/LoadBalancers_List.json
      */
     /**
      * Sample code: List Load Balancers by Managed Cluster.
