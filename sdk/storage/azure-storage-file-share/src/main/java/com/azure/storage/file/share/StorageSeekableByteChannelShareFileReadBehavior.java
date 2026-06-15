@@ -79,7 +79,13 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             // ReactiveException wrapping a NativeIoException rather than the ShareStorageException handled above.
             // If we already have all the bytes the caller asked for (sourceOffset is at or past the cached
             // resource length), the error is irrelevant -- log it and report EOF.
-            if (lastKnownResourceLength != UNKNOWN_LENGTH && sourceOffset >= lastKnownResourceLength) {
+            Throwable cause = e;
+            while (cause != null && !(cause instanceof IOException) && cause.getCause() != cause) {
+                cause = cause.getCause();
+            }
+            if (cause instanceof IOException
+                && lastKnownResourceLength != UNKNOWN_LENGTH
+                && sourceOffset >= lastKnownResourceLength) {
                 LOGGER.warning(
                     "Ignoring error from past-EOF range read (offset={}, length={}); treating as end of stream.",
                     sourceOffset, lastKnownResourceLength, e);

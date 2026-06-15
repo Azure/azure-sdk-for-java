@@ -102,7 +102,11 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             // ReactiveException wrapping a NativeIoException rather than the BlobStorageException handled above.
             // If we already have all the bytes the caller asked for (sourceOffset is at or past the cached
             // resource length), the error is irrelevant -- log it and report EOF.
-            if (resourceLength >= 0 && sourceOffset >= resourceLength) {
+            Throwable cause = e;
+            while (cause != null && !(cause instanceof IOException) && cause.getCause() != cause) {
+                cause = cause.getCause();
+            }
+            if (cause instanceof IOException && resourceLength >= 0 && sourceOffset >= resourceLength) {
                 LOGGER.warning(
                     "Ignoring error from past-EOF range read (offset={}, length={}); treating as end of stream.",
                     sourceOffset, resourceLength, e);
