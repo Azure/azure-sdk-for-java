@@ -103,24 +103,25 @@ public class RxClientCollectionCache extends RxCollectionCache {
         this.metadataHedgingStrategy = metadataHedgingStrategy;
     }
 
-    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties, boolean isColdStart) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties, isColdStart)
                 , retryPolicyInstance);
     }
 
-    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties, boolean isColdStart) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties),
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties, isColdStart),
                 retryPolicyInstance);
     }
 
     private Mono<DocumentCollection> readCollectionAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
                                                          String collectionLink,
                                                          DocumentClientRetryPolicy retryPolicyInstance,
-                                                         Map<String, Object> properties) {
+                                                         Map<String, Object> properties,
+                                                         boolean isColdStart) {
 
         String path = Utils.joinPath(collectionLink, null);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
@@ -167,8 +168,9 @@ public class RxClientCollectionCache extends RxCollectionCache {
 
         Instant addressCallStartTime = Instant.now();
         Mono<RxDocumentServiceResponse> responseObs;
-        if (this.metadataHedgingStrategy != null) {
-            // Cold-start metadata cache population: getByName/getByRid only execute on a cache miss.
+        if (this.metadataHedgingStrategy != null && isColdStart) {
+            // Only cold-start metadata cache population (first read on a cache miss) hedges.
+            // Forced refresh paths pass isColdStart=false and fall through to the direct send.
             MetadataHedgingContext hedgeContext = new MetadataHedgingContext();
             hedgeContext.setColdStart(true);
             responseObs = this.metadataHedgingStrategy

@@ -248,6 +248,37 @@ public class MetadataHedgingStrategyTest {
     }
 
     @Test(groups = "unit", timeOut = TIMEOUT)
+    public void executeAsync_fastPrimaryWinDoesNotLeakLateHedge() throws InterruptedException {
+        // Regression: the hedge timer must be cancelled when the primary wins before the
+        // threshold. With a hot/cached hedge pipeline the detached timer would dispatch a
+        // spurious hedge ~threshold after the operation already returned.
+        long thresholdMs = 200;
+        MetadataHedgingStrategy strategy = strategy(Boolean.TRUE, () -> true, thresholdMs);
+
+        AtomicInteger hedgeCalls = new AtomicInteger();
+        RxDocumentServiceResponse primaryOk = okResponse();
+        Function<RxDocumentServiceRequest, Mono<RxDocumentServiceResponse>> sender = req -> {
+            RegionalRoutingContext routed = req.requestContext.regionalRoutingContextToRoute;
+            if (routed != null && routed.equals(this.west)) {
+                hedgeCalls.incrementAndGet();
+                return Mono.just(okResponse());
+            }
+            return Mono.just(primaryOk);
+        };
+
+        StepVerifier.create(strategy.executeAsync(collectionReadRequest(), sender, coldStartContext()))
+            .assertNext(result -> {
+                assertThat(result.isHedgeFired()).isFalse();
+                assertThat(result.getResponse()).isSameAs(primaryOk);
+            })
+            .verifyComplete();
+
+        // Wait well past the threshold; a leaked timer would have fired the hedge by now.
+        Thread.sleep(thresholdMs * 4);
+        assertThat(hedgeCalls.get()).isZero();
+    }
+
+    @Test(groups = "unit", timeOut = TIMEOUT)
     public void executeAsync_hedgeWinsWhenPrimaryRegionalFailure() {
         MetadataHedgingStrategy strategy = strategy(Boolean.TRUE, () -> true, 2000);
 

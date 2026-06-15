@@ -239,26 +239,38 @@ public final class MetadataHedgingStrategy {
                 return this.primaryOnly(request, primaryEndpoint, sender, hedgeContext, diag);
             }
 
-            RegionalRoutingContext hedgeEndpoint = this.resolveHedgeEndpoint(request, primaryEndpoint);
-            if (hedgeEndpoint == null) {
-                this.hedgeBudget.release();
-                diag.setEligible(false);
-                diag.setSkipReason(MetadataHedgeSkipReason.SINGLE_REGION);
-                return this.primaryOnly(request, primaryEndpoint, sender, hedgeContext, diag);
-            }
-
-            diag.setHedgeRegion(this.safeGetRegion(hedgeEndpoint));
-            if (primaryEndpoint != null) {
-                hedgeContext.getAttemptedEndpoints().putIfAbsent(endpointKey(primaryEndpoint), (byte) 0);
-            }
-
+            // From here a permit is held. The single AtomicBoolean guard guarantees the permit is
+            // released exactly once across every exit path: the no-hedge-endpoint fast-return, the
+            // race pipeline's doFinally (success / error / cancel), and an assembly-time throw.
             AtomicBoolean budgetReleased = new AtomicBoolean(false);
-            return this.raceWithHedge(request, sender, hedgeContext, diag, primaryEndpoint, hedgeEndpoint)
-                .doFinally(signalType -> {
+            try {
+                RegionalRoutingContext hedgeEndpoint = this.resolveHedgeEndpoint(request, primaryEndpoint);
+                if (hedgeEndpoint == null) {
                     if (budgetReleased.compareAndSet(false, true)) {
                         this.hedgeBudget.release();
                     }
-                });
+                    diag.setEligible(false);
+                    diag.setSkipReason(MetadataHedgeSkipReason.SINGLE_REGION);
+                    return this.primaryOnly(request, primaryEndpoint, sender, hedgeContext, diag);
+                }
+
+                diag.setHedgeRegion(this.safeGetRegion(hedgeEndpoint));
+                if (primaryEndpoint != null) {
+                    hedgeContext.getAttemptedEndpoints().putIfAbsent(endpointKey(primaryEndpoint), (byte) 0);
+                }
+
+                return this.raceWithHedge(request, sender, hedgeContext, diag, primaryEndpoint, hedgeEndpoint)
+                    .doFinally(signalType -> {
+                        if (budgetReleased.compareAndSet(false, true)) {
+                            this.hedgeBudget.release();
+                        }
+                    });
+            } catch (Throwable assemblyError) {
+                if (budgetReleased.compareAndSet(false, true)) {
+                    this.hedgeBudget.release();
+                }
+                throw assemblyError;
+            }
         });
     }
 
@@ -272,6 +284,11 @@ public final class MetadataHedgingStrategy {
 
         long startNanos = System.nanoTime();
 
+        // primaryOutcome is cached because it has three consumers (the merge, the primary-fault
+        // arm that fires the hedge early, and the switchIfEmpty fallback) and must be sent exactly
+        // once. A consequence is that when the hedge wins, the primary loser drains in the
+        // background rather than being cancelled -- this mirrors the .NET design's loser drain and
+        // is harmless for a body-less metadata GET.
         Mono<HedgeOutcome> primaryOutcome =
             this.sendOutcome(sender, request, primaryEndpoint, HedgeBranch.PRIMARY).cache();
 
@@ -290,7 +307,13 @@ public final class MetadataHedgingStrategy {
             logger.debug("Metadata hedge fired (primary: {}, hedge: {}, elapsedMs: {})",
                 diag.getPrimaryRegion(), diag.getHedgeRegion(), diag.getHedgeFiredElapsedMs());
             return this.sendOutcome(sender, request, hedgeEndpoint, HedgeBranch.HEDGE);
-        }).cache();
+        });
+        // NOTE: hedgeOutcome is intentionally NOT cached. It has a single consumer (the merge
+        // below), so when the primary wins acceptably before the threshold, Flux.merge cancels
+        // this subscription and the cancellation propagates into hedgeTrigger -- cancelling the
+        // pending Mono.delay timer so the hedge is never dispatched. Caching would make the timer
+        // hot and detach it from downstream cancellation, letting a spurious hedge fire ~threshold
+        // after the primary already won (extra cross-region load + post-completion diag writes).
 
         Mono<HedgeOutcome> winner = Flux.merge(primaryOutcome, hedgeOutcome)
             .filter(HedgeOutcome::isAcceptable)
