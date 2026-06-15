@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 
-
 /**
  * This class contains the customization code to customize the AutoRest generated code for the Agents Client library
  * Reference: https://github.com/Azure/autorest.java/blob/main/customization-base/README.md
