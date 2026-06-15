@@ -1538,6 +1538,16 @@
       ]
     },
     {
+      "filename": "sdk/confidentialledger/azure-confidentialledger/**",
+      "words": [
+        "mrenclave",
+        "MRENCLAVE",
+        "Mrenclave",
+        "oeverify",
+        "TESTJS"
+      ]
+    },
+    {
       "filename": "sdk/core/**",
       "words": [
         "reta",
