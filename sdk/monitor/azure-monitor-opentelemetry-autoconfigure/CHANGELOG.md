@@ -1,14 +1,25 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (2026-06-11)
 
 ### Features Added
 
-### Breaking Changes
+- Support stable database semconv ([#46957](https://github.com/Azure/azure-sdk-for-java/pull/46957))
+- Export database query parameters ([#47526](https://github.com/Azure/azure-sdk-for-java/pull/47526))
+- Add customer-facing SDKStats metrics (Item_Success_Count, Item_Dropped_Count, Item_Retry_Count) ([#48077](https://github.com/Azure/azure-sdk-for-java/pull/48077))
+- Honor APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL kill-switch in autoconfigure ([#49451](https://github.com/Azure/azure-sdk-for-java/pull/49451))
 
 ### Bugs Fixed
 
+- Avoid ERROR log when Azure Metadata Service connection times out ([#47814](https://github.com/Azure/azure-sdk-for-java/pull/47814))
+- Fix stats beat failure count metrics reporting incorrect values ([#47884](https://github.com/Azure/azure-sdk-for-java/pull/47884))
+- Don't truncate gen ai custom dimensions ([#48385](https://github.com/Azure/azure-sdk-for-java/pull/48385))
+- Truncate gen_ai attributes to 256KB instead of exempting from truncation ([#48454](https://github.com/Azure/azure-sdk-for-java/pull/48454))
+
 ### Other Changes
+
+- Update OpenTelemetry SDK to 1.58.0 ([#44950](https://github.com/Azure/azure-sdk-for-java/pull/44950)))
+- Clean up checkstyle suppressions for io.opentelemetry* imports ([#49040](https://github.com/Azure/azure-sdk-for-java/pull/49040)))
 
 ## 1.4.0 (2025-09-24)
 

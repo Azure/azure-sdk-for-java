@@ -97,6 +97,11 @@
       <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-persistence;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-data-commons</artifactId>
+      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-data-commons;external_dependency} -->
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.81.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
@@ -133,6 +138,15 @@
     </dependency>
 
     <!-- Test -->
+    <!-- Used to verify the fix for https://github.com/Azure/azure-sdk-for-java/issues/49441: with
+         azure-spring-data-cosmos on the classpath, OpenFeign must still register a feign.codec.Encoder bean
+         on Spring Boot 4. See OpenFeignEncoderBeanRegistrationUnitTest. -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+      <version>5.0.1</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-starter-openfeign;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -261,6 +275,7 @@
                 <include>org.springframework:spring-core:[7.0.7]</include> <!-- {x-include-update;springboot4_org.springframework:spring-core;external_dependency} -->
                 <include>org.springframework:spring-context:[7.0.7]</include> <!-- {x-include-update;springboot4_org.springframework:spring-context;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-persistence:[4.0.6]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-persistence;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-data-commons:[4.0.6]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-data-commons;external_dependency} -->
                 <include>org.springframework.data:spring-data-commons:[4.0.5]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;springboot4_org.javatuples:javatuples;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.21]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
