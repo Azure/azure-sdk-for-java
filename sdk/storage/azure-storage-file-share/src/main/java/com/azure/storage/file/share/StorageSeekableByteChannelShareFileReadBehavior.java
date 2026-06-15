@@ -57,23 +57,15 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             lastKnownResourceLength
                 = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
-        } catch (RuntimeException e) {
-            // Non-storage failure path. The stress-test scenario observed in issue #38070 is a connection reset
-            // while the 416 error-body is being streamed back: downloadWithResponse surfaces it as a
-            // ReactiveException wrapping a NativeIoException rather than the ShareStorageException handled above.
-            // If we already have all the bytes the caller asked for (sourceOffset is at or past the cached
-            // resource length), the error is irrelevant -- log it and report EOF.
-            Throwable cause = e;
-            while (cause != null && !(cause instanceof IOException) && cause.getCause() != cause) {
-                cause = cause.getCause();
-            }
-            if (cause instanceof IOException
-                && lastKnownResourceLength != UNKNOWN_LENGTH
-                && sourceOffset >= lastKnownResourceLength) {
-                LOGGER.warning(
-                    "Ignoring error from past-EOF range read (offset={}, length={}); treating as end of stream.",
-                    sourceOffset, lastKnownResourceLength, e);
-                return -1;
+        } catch (ShareStorageException e) {
+            if (e.getErrorCode() == ShareErrorCode.INVALID_RANGE) {
+                String contentRange = e.getResponse().getHeaderValue("Content-Range");
+                if (contentRange != null) {
+                    lastKnownResourceLength = CoreUtils.extractSizeFromContentRange(contentRange);
+                }
+                // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
+                // that zero bytes were read
+                return sourceOffset < lastKnownResourceLength ? 0 : -1;
             }
             throw LOGGER.logExceptionAsError(e);
         }
@@ -81,6 +73,9 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
 
     @Override
     public long getResourceLength() {
+        if (lastKnownResourceLength == UNKNOWN_LENGTH) {
+            lastKnownResourceLength = client.getProperties().getContentLength();
+        }
         return lastKnownResourceLength;
     }
 

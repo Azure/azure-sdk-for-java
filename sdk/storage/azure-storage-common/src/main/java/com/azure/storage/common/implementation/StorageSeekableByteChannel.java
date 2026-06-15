@@ -41,30 +41,9 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         /**
          * Gets the length of the resource. The returned value may have been cached from previous operations on this
          * instance.
+         * @return The length in bytes.
          */
         long getResourceLength();
-
-        /**
-         * Indicates whether the backing resource is locked to a specific version for the lifetime of this behavior,
-         * such that the cached {@link #getResourceLength()} can be trusted as the authoritative end-of-resource and
-         * the channel may short-circuit a read at-or-past that length without issuing a service round-trip.
-         * <p>
-         * Implementations should return {@code true} only when they have applied a consistency control that
-         * prevents the underlying resource from changing between requests &mdash; for example, an {@code If-Match}
-         * ETag precondition, or a pin to an immutable version / snapshot. When this method returns {@code false},
-         * the channel will not short-circuit on cached length, and will instead delegate to
-         * {@link #read(ByteBuffer, long)} so the backing resource is re-probed (this matches the GitHub issue
-         * #38070 guidance: "If ETags are not used, then we should keep going until we get 416").
-         * <p>
-         * The default returns {@code true} to preserve the behavior of pre-existing implementations whose
-         * resource length, once cached, was always treated as authoritative.
-         *
-         * @return {@code true} if the cached resource length is authoritative; {@code false} if the backing
-         * resource may change underneath the channel and the length should not be used to short-circuit reads.
-         */
-        default boolean hasConsistencyLock() {
-            return true;
-        }
     }
 
     /**
@@ -185,8 +164,15 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
 
         if (buffer.remaining() == 0) {
             if (refillReadBuffer(absolutePosition) == -1) {
+                // cap any position overshooting if channel is at end
+                absolutePosition = readBehavior.getResourceLength();
                 return -1;
             }
+        }
+
+        // buffer still empty, no EOF signal, no exception: just return zero
+        if (buffer.remaining() == 0) {
+            return 0;
         }
 
         int read = Math.min(buffer.remaining(), dst.remaining());
@@ -203,6 +189,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         int read = readBehavior.read(buffer, newBufferAbsolutePosition);
         buffer.rewind();
         buffer.limit(Math.max(read, 0));
+        bufferAbsolutePosition = Math.min(newBufferAbsolutePosition, readBehavior.getResourceLength());
         return read;
     }
 
