@@ -24,20 +24,22 @@ public class PartitionKeyRange extends Resource {
      * Fields of the Cosmos DB service partition key range payload that the SDK retains in heap
      * for the lifetime of the {@link com.azure.cosmos.implementation.routing.CollectionRoutingMap}.
      *
-     * <p>The set is kept in lock-step with the equivalent Python optimization in
+     * <p>The set is broadly aligned with the equivalent Python optimization in
      * <a href="https://github.com/Azure/azure-sdk-for-python/pull/46297">azure-sdk-for-python#46297</a>
-     * (item #2 — "Strip unused fields → compact PKRange"). Cross-SDK alignment is intentional:
-     * the call about which fields are needed is made once across SDKs rather than re-derived
-     * per-language, and both SDKs make the same memory-vs-future-flexibility trade-off.</p>
+     * (item #2 — "Strip unused fields → compact PKRange"), which retains
+     * {@code id}, {@code minInclusive}, {@code maxExclusive}, {@code parents},
+     * {@code status}, and {@code throughputFraction}. Java additionally keeps {@code _rid}
+     * because {@link com.azure.cosmos.implementation.directconnectivity.AddressResolver#isSameCollection}
+     * calls {@code getResourceId()} on {@code PartitionKeyRange} instances during target-change
+     * detection on retry — stripping it would surface as {@code "INVALID resource id null"}
+     * from {@code ResourceId.parse(null)} the next time the SDK retries an address-staleness
+     * check (e.g. after a 410/Gone). Python's address-resolution path does not have the
+     * equivalent dependency, so the SDKs intentionally diverge on this one field.</p>
      *
      * <p>This is an <b>allow-list</b>: any field the service returns that is not in this set
      * (including any field added by the service in the future) is dropped at construction.
      * That keeps per-instance heap bounded against server-side payload growth. Adding a new
      * field to the allow-list is a one-line change here when a consumer needs it.</p>
-     *
-     * <p>The retained fields mirror the slots of Python's {@code PKRange} namedtuple:
-     * {@code id}, {@code minInclusive}, {@code maxExclusive}, {@code parents},
-     * {@code status}, {@code throughputFraction}.</p>
      */
     private static final Set<String> KEPT_FIELDS = Collections.unmodifiableSet(
         new HashSet<>(Arrays.asList(
@@ -46,7 +48,8 @@ public class PartitionKeyRange extends Resource {
             "maxExclusive",
             Constants.Properties.PARENTS,
             "status",
-            "throughputFraction"
+            "throughputFraction",
+            Constants.Properties.R_ID
         )));
 
     /**

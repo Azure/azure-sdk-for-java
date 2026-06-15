@@ -46,16 +46,20 @@ public class PartitionKeyRangeTest {
             + "}";
 
     /**
-     * Allow-list aligned with Python's {@code PKRange} namedtuple slots
+     * Allow-list kept in heap on every deserialized {@link PartitionKeyRange}.
+     *
+     * <p>Includes Python's {@code PKRange} namedtuple slots
      * ({@code id}, {@code minInclusive}, {@code maxExclusive}, {@code parents},
-     * {@code status}, {@code throughputFraction}).
+     * {@code status}, {@code throughputFraction}) plus {@code _rid} — Java-specific because
+     * {@code AddressResolver.isSameCollection} reads {@code getResourceId()} on a
+     * {@code PartitionKeyRange} during retry target-change detection.</p>
      */
     private static final List<String> KEPT_FIELDS = Arrays.asList(
-        "id", "minInclusive", "maxExclusive", "parents", "status", "throughputFraction");
+        "id", "minInclusive", "maxExclusive", "parents", "status", "throughputFraction", "_rid");
 
     /** All non-kept fields present in the full payload above; everything here must be stripped. */
     private static final List<String> STRIPPED_FIELDS = Arrays.asList(
-        "_rid", "_etag", "ridPrefix", "_self", "ownedArchivalPKRangeIds", "_ts", "lsn", "_lsn");
+        "_etag", "ridPrefix", "_self", "ownedArchivalPKRangeIds", "_ts", "lsn", "_lsn");
 
     private static ObjectNode fullPkRangeNode() throws Exception {
         return (ObjectNode) MAPPER.readTree(FULL_PK_RANGE_JSON);
@@ -84,6 +88,12 @@ public class PartitionKeyRangeTest {
         assertEquals(range.getMaxExclusive(), "FF");
         assertNotNull(range.getParents());
         assertEquals(range.getParents().size(), 0);
+
+        // _rid is on the allow-list specifically so AddressResolver.isSameCollection
+        // can call getResourceId() on a deserialized PartitionKeyRange during retry
+        // target-change detection. Without this, ResourceId.parse(null) throws
+        // "INVALID resource id null" on the first retry after a 410/Gone.
+        assertEquals(range.getResourceId(), "90t-ALzvP44CAAAAAAAAUA==");
 
         for (String kept : KEPT_FIELDS) {
             assertTrue(range.has(kept), kept + " must be preserved (on allow-list)");
@@ -122,10 +132,10 @@ public class PartitionKeyRangeTest {
         assertNotNull(range.getParents());
         assertEquals(range.getParents().size(), 1);
         assertEquals(range.getParents().get(0), "0");
-        // Dropped fields still gone.
-        assertEquals(range.has("_rid"), false);
+        // Dropped fields still gone. _rid stays now that it's on the allow-list.
         assertEquals(range.has("_self"), false);
         assertEquals(range.has("lsn"), false);
+        assertEquals(range.getResourceId(), "X==");
     }
 
     @Test(groups = "unit")
