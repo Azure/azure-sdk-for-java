@@ -341,6 +341,7 @@ springboot4_org.springframework.boot:spring-boot-actuator;4.0.6
 springboot4_org.springframework.boot:spring-boot-autoconfigure;4.0.6
 springboot4_org.springframework.boot:spring-boot-configuration-metadata;4.0.6
 springboot4_org.springframework.boot:spring-boot-configuration-processor;4.0.6
+springboot4_org.springframework.boot:spring-boot-data-commons;4.0.6
 springboot4_org.springframework.boot:spring-boot-data-redis;4.0.6
 springboot4_org.springframework.boot:spring-boot-docker-compose;4.0.6
 springboot4_org.springframework.boot:spring-boot-health;4.0.6
@@ -366,6 +367,7 @@ springboot4_org.springframework.boot:spring-boot-test;4.0.6
 springboot4_org.springframework.boot:spring-boot-testcontainers;4.0.6
 springboot4_org.springframework.cloud:spring-cloud-bus;5.0.1
 springboot4_org.springframework.cloud:spring-cloud-context;5.0.1
+springboot4_org.springframework.cloud:spring-cloud-starter-openfeign;5.0.1
 springboot4_org.springframework.cloud:spring-cloud-starter-stream-kafka;5.0.1
 springboot4_org.springframework.cloud:spring-cloud-stream-test-binder;5.0.1
 springboot4_org.springframework.cloud:spring-cloud-stream;5.0.1
