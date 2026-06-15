@@ -6,7 +6,11 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represent a partition key range in the Azure Cosmos DB database service.
@@ -17,32 +21,38 @@ public class PartitionKeyRange extends Resource {
     public static final String MASTER_PARTITION_KEY_RANGE_ID = "M";
 
     /**
-     * Fields the Cosmos DB service returns on every partition key range that the SDK does not
-     * need to retain in heap for the lifetime of the {@link com.azure.cosmos.implementation.routing.CollectionRoutingMap}.
+     * Fields of the Cosmos DB service partition key range payload that the SDK retains in heap
+     * for the lifetime of the {@link com.azure.cosmos.implementation.routing.CollectionRoutingMap}.
      *
      * <p>The set is kept in lock-step with the equivalent Python optimization in
      * <a href="https://github.com/Azure/azure-sdk-for-python/pull/46297">azure-sdk-for-python#46297</a>
      * (item #2 — "Strip unused fields → compact PKRange"). Cross-SDK alignment is intentional:
-     * a field that Java does not consume today may be wired up tomorrow, so the call about
-     * what is safe to drop is made once across the SDKs rather than re-derived per-language.</p>
+     * the call about which fields are needed is made once across SDKs rather than re-derived
+     * per-language, and both SDKs make the same memory-vs-future-flexibility trade-off.</p>
      *
-     * <p>The list is a deny-list, not an allow-list, so any future field added by the service is
-     * preserved automatically with no SDK change.</p>
+     * <p>This is an <b>allow-list</b>: any field the service returns that is not in this set
+     * (including any field added by the service in the future) is dropped at construction.
+     * That keeps per-instance heap bounded against server-side payload growth. Adding a new
+     * field to the allow-list is a one-line change here when a consumer needs it.</p>
+     *
+     * <p>The retained fields mirror the slots of Python's {@code PKRange} namedtuple:
+     * {@code id}, {@code minInclusive}, {@code maxExclusive}, {@code parents},
+     * {@code status}, {@code throughputFraction}.</p>
      */
-    private static final String[] DROPPED_FIELDS = new String[] {
-        "_rid",
-        "_etag",
-        "ridPrefix",
-        "_self",
-        "ownedArchivalPKRangeIds",
-        "_ts",
-        "lsn"
-    };
+    private static final Set<String> KEPT_FIELDS = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList(
+            Constants.Properties.ID,
+            "minInclusive",
+            "maxExclusive",
+            Constants.Properties.PARENTS,
+            "status",
+            "throughputFraction"
+        )));
 
     /**
      * Constructor.
      *
-     * <p>Fields listed in {@link #DROPPED_FIELDS} are removed from {@code objectNode} as part of
+     * <p>Fields not listed in {@link #KEPT_FIELDS} are removed from {@code objectNode} as part of
      * construction so the resulting instance retains only the fields the SDK actually needs.
      * This is the universal funnel for every {@code PartitionKeyRange} the SDK deserializes from
      * a service response (see {@link JsonSerializable#instantiateFromObjectNodeAndType}), so the
@@ -57,14 +67,12 @@ public class PartitionKeyRange extends Resource {
      * @param objectNode the {@link ObjectNode} that represents the {@link JsonSerializable}
      */
     public PartitionKeyRange(ObjectNode objectNode) {
-        super(stripUnusedFields(objectNode));
+        super(stripToKeptFields(objectNode));
     }
 
-    private static ObjectNode stripUnusedFields(ObjectNode objectNode) {
+    private static ObjectNode stripToKeptFields(ObjectNode objectNode) {
         if (objectNode != null) {
-            for (String field : DROPPED_FIELDS) {
-                objectNode.remove(field);
-            }
+            objectNode.retain(KEPT_FIELDS);
         }
         return objectNode;
     }

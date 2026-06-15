@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -17,9 +18,9 @@ import static org.testng.Assert.assertTrue;
  * Tests for {@link PartitionKeyRange}, focused on the memory-saving "strip unused fields" behavior
  * applied when constructing from a Jackson {@link ObjectNode}.
  *
- * <p>The strip set is intentionally kept aligned with
- * <a href="https://github.com/Azure/azure-sdk-for-python/pull/46297">azure-sdk-for-python#46297</a>.
- * These tests pin that contract.</p>
+ * <p>The retained-field set is intentionally kept aligned with
+ * <a href="https://github.com/Azure/azure-sdk-for-python/pull/46297">azure-sdk-for-python#46297</a>
+ * (Python's {@code PKRange} namedtuple). These tests pin that contract.</p>
  */
 public class PartitionKeyRangeTest {
 
@@ -44,31 +45,36 @@ public class PartitionKeyRangeTest {
             + "\"_lsn\":87"
             + "}";
 
+    /**
+     * Allow-list aligned with Python's {@code PKRange} namedtuple slots
+     * ({@code id}, {@code minInclusive}, {@code maxExclusive}, {@code parents},
+     * {@code status}, {@code throughputFraction}).
+     */
+    private static final List<String> KEPT_FIELDS = Arrays.asList(
+        "id", "minInclusive", "maxExclusive", "parents", "status", "throughputFraction");
+
+    /** All non-kept fields present in the full payload above; everything here must be stripped. */
+    private static final List<String> STRIPPED_FIELDS = Arrays.asList(
+        "_rid", "_etag", "ridPrefix", "_self", "ownedArchivalPKRangeIds", "_ts", "lsn", "_lsn");
+
     private static ObjectNode fullPkRangeNode() throws Exception {
         return (ObjectNode) MAPPER.readTree(FULL_PK_RANGE_JSON);
     }
 
     @Test(groups = "unit")
-    public void objectNodeConstructor_stripsPythonAlignedFieldSet() throws Exception {
-        // Pin the deny-list to the exact set agreed across SDKs (Python PR 46297).
+    public void objectNodeConstructor_stripsEverythingNotOnAllowList() throws Exception {
+        // Pin the allow-list: every field not on Python's PKRange namedtuple must be dropped.
         ObjectNode node = fullPkRangeNode();
         PartitionKeyRange range = new PartitionKeyRange(node);
 
-        // Fields that MUST be dropped.
-        assertEquals(range.has("_rid"), false, "_rid must be stripped");
-        assertEquals(range.has("_etag"), false, "_etag must be stripped");
-        assertEquals(range.has("ridPrefix"), false, "ridPrefix must be stripped");
-        assertEquals(range.has("_self"), false, "_self must be stripped");
-        assertEquals(range.has("ownedArchivalPKRangeIds"), false, "ownedArchivalPKRangeIds must be stripped");
-        assertEquals(range.has("_ts"), false, "_ts must be stripped");
-        assertEquals(range.has("lsn"), false, "lsn must be stripped");
+        for (String dropped : STRIPPED_FIELDS) {
+            assertEquals(range.has(dropped), false, dropped + " must be stripped (not on allow-list)");
+        }
     }
 
     @Test(groups = "unit")
-    public void objectNodeConstructor_preservesFieldsNotOnDropList() throws Exception {
-        // Forward-compat: fields not on the deny-list pass through even if the Java SDK
-        // does not currently consume them. This matches Python's choice and protects
-        // future usage.
+    public void objectNodeConstructor_preservesAllowListedFields() throws Exception {
+        // Every field on the allow-list must survive the strip.
         ObjectNode node = fullPkRangeNode();
         PartitionKeyRange range = new PartitionKeyRange(node);
 
@@ -79,29 +85,27 @@ public class PartitionKeyRangeTest {
         assertNotNull(range.getParents());
         assertEquals(range.getParents().size(), 0);
 
-        // Not currently consumed but kept (mirrors Python).
-        assertTrue(range.has("throughputFraction"), "throughputFraction should be preserved");
-        assertTrue(range.has("status"), "status should be preserved");
-        assertTrue(range.has("_lsn"), "_lsn should be preserved");
-        assertTrue(range.has("parents"), "parents should be preserved");
+        for (String kept : KEPT_FIELDS) {
+            assertTrue(range.has(kept), kept + " must be preserved (on allow-list)");
+        }
     }
 
     @Test(groups = "unit")
-    public void objectNodeConstructor_passesThroughUnknownFutureField() throws Exception {
-        // Deny-list (not allow-list) semantics: a new server-side field tomorrow is preserved
-        // automatically with zero SDK change.
+    public void objectNodeConstructor_dropsUnknownFutureField() throws Exception {
+        // Allow-list (not deny-list) semantics: a new server-side field tomorrow is dropped
+        // by default so per-instance heap stays bounded against payload growth. Mirrors
+        // Python's PKRange namedtuple, which has no slot for unknown fields.
         String json = "{"
             + "\"id\":\"0\",\"minInclusive\":\"\",\"maxExclusive\":\"FF\","
-            + "\"_rid\":\"X==\","                       // dropped
-            + "\"futureFieldA\":\"hello\","             // not on drop list -> kept
-            + "\"futureFieldB\":{\"nested\":42}"        // not on drop list -> kept
+            + "\"futureFieldA\":\"hello\","
+            + "\"futureFieldB\":{\"nested\":42}"
             + "}";
         ObjectNode node = (ObjectNode) MAPPER.readTree(json);
         PartitionKeyRange range = new PartitionKeyRange(node);
 
-        assertEquals(range.has("_rid"), false);
-        assertTrue(range.has("futureFieldA"), "unknown future field must pass through");
-        assertTrue(range.has("futureFieldB"), "unknown future nested field must pass through");
+        assertEquals(range.getId(), "0");
+        assertEquals(range.has("futureFieldA"), false, "unknown future field must be dropped by allow-list");
+        assertEquals(range.has("futureFieldB"), false, "unknown future nested field must be dropped by allow-list");
     }
 
     @Test(groups = "unit")
@@ -165,8 +169,7 @@ public class PartitionKeyRangeTest {
 
         assertTrue(result instanceof PartitionKeyRange);
         PartitionKeyRange range = (PartitionKeyRange) result;
-        for (String dropped : Arrays.asList(
-            "_rid", "_etag", "ridPrefix", "_self", "ownedArchivalPKRangeIds", "_ts", "lsn")) {
+        for (String dropped : STRIPPED_FIELDS) {
             assertEquals(range.has(dropped), false, dropped + " must be stripped via FeedResponse funnel");
         }
         assertEquals(range.getId(), "0");
