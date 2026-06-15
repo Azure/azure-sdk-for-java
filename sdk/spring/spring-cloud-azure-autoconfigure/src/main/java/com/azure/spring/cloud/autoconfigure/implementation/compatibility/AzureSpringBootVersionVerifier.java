@@ -22,7 +22,7 @@ public class AzureSpringBootVersionVerifier {
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_1 = "org.springframework.boot.autoconfigure.task.DefaultTaskSchedulerConfiguration";
 
     /**
-     * Versions supported by Spring Cloud Azure, for present is [4.0,4.1]. Update this value if needed.
+     * Versions supported by Spring Cloud Azure, at present is [4.0, 4.1]. Update this value if needed.
      */
     private final Map<String, String> supportedVersions = new HashMap<>();
 
