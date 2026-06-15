@@ -200,29 +200,23 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           throw new IllegalStateException(
             s"Bounded change feed read terminated before any page was returned. " +
               s"Expected to reach endLsn=$boundLsn but no continuation was produced. " +
-              s"ContainerRid=unknown, feedRange=unknown. " +
               s"Context: $operationContextString")
         }
 
-        val containerRid = SparkBridgeImplementationInternal.extractCollectionRid(continuation)
         val tokens = SparkBridgeImplementationInternal
           .extractContinuationTokensFromChangeFeedStateJson(continuation)
         if (tokens.isEmpty) {
           throw new IllegalStateException(
             s"Bounded change feed read terminated with a continuation that has no sub-range tokens. " +
-              s"Expected to reach endLsn=$boundLsn. " +
-              s"ContainerRid=$containerRid, feedRange=unknown. " +
-              s"Continuation=$continuation. " +
+              s"Expected to reach endLsn=$boundLsn. Continuation=$continuation. " +
               s"Context: $operationContextString")
         }
-        val (minFeedRange, minLsn) = tokens.minBy(_._2)
+        val minLsn = tokens.minBy(_._2)._2
         if (minLsn < boundLsn) {
           throw new IllegalStateException(
             s"Bounded change feed read terminated before reaching endLsn=$boundLsn. " +
-              s"Lowest sub-range LSN in latest continuation=$minLsn (feedRange=$minFeedRange). " +
-              s"ContainerRid=$containerRid, allSubRangeLsns=${tokens.mkString("[", ",", "]")}. " +
-              s"Continuation=$continuation. " +
-              s"Context: $operationContextString")
+              s"Lowest sub-range LSN in latest continuation=$minLsn. " +
+              s"Continuation=$continuation. Context: $operationContextString")
         }
     }
   }
