@@ -169,7 +169,6 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
                 return -1;
             }
         }
-
         // buffer still empty, no EOF signal, no exception: just return zero
         if (buffer.remaining() == 0) {
             return 0;
