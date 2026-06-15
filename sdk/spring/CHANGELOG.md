@@ -11,8 +11,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 
-- Fixed Redis Lettuce passwordless autoconfiguration so a user-defined `LettuceClientConfigurationBuilderCustomizer` no longer suppresses the Azure customizer bean that configures Azure Redis credentials and RESP2 support.
-- Applied `jwt-connect-timeout` and `jwt-read-timeout` properties to the RestTemplate used by the JWT decoder in AAD and B2C resource server configurations, preventing indefinite hanging when fetching JWK keys ([#49329](https://github.com/Azure/azure-sdk-for-java/pull/49329)).
+- Fixed the AAD and B2C OpenID Connect login (`oauth2Login`) ID token decoders not validating the `iss` (issuer) and `aud` (audience) claims. `AadOidcIdTokenDecoderFactory` and `AadB2cOidcIdTokenDecoderFactory` now validate the standard OIDC ID token claims (audience, expiry, issued-at and subject) and the issuer. For single tenant applications the issuer must belong to the configured tenant, and for multi-tenant applications (the `common`, `organizations` or `consumers` endpoints) the issuer must be a trusted Microsoft identity platform issuer consistent with the token's own `tid` claim. This prevents users from unauthorized tenants from signing in to multi-tenant applications that rely on the issuer/tenant claim for tenant restriction  ([#49423](https://github.com/Azure/azure-sdk-for-java/pull/49423)).
+- Fixed the missing bean name in `@ConditionalOnMissingBean` for `LettuceClientConfigurationBuilderCustomizer` ([#49290](https://github.com/Azure/azure-sdk-for-java/issues/49290)).
+- Fixed the AAD and B2C resource server JWT decoder not honoring the `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, and `spring.cloud.azure.active-directory.b2c.jwt-read-timeout` configuration properties ([#49329](https://github.com/Azure/azure-sdk-for-java/pull/49329)).
+- Fixed AAD resource server JWK retrieval not honoring the `spring.cloud.azure.active-directory.jwk-set-cache-lifespan` and `spring.cloud.azure.active-directory.jwk-set-cache-refresh-time` configuration properties ([#42159](https://github.com/Azure/azure-sdk-for-java/issues/42159)).
 
 #### Other Changes
 

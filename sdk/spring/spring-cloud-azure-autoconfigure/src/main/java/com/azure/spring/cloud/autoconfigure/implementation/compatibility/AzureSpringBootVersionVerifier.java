@@ -19,9 +19,10 @@ public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
 
     static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_0 = "org.springframework.boot.autoconfigure.preinitialize.BackgroundPreinitializer";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_1 = "org.springframework.boot.autoconfigure.task.DefaultTaskSchedulerConfiguration";
 
     /**
-     * Versions supported by Spring Cloud Azure, for present is [4.0]. Update this value if needed.
+     * Versions supported by Spring Cloud Azure, for present is [4.0, 4.1]. Update this value if needed.
      */
     private final Map<String, String> supportedVersions = new HashMap<>();
 
@@ -44,6 +45,7 @@ public class AzureSpringBootVersionVerifier {
      */
     private void initDefaultSupportedBootVersionCheckMeta() {
         supportedVersions.put("4.0", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_0);
+        supportedVersions.put("4.1", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_1);
     }
 
     /**

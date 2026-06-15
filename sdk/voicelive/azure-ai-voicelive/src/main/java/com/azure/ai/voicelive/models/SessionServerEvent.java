@@ -106,9 +106,7 @@ public class SessionServerEvent implements JsonSerializable<SessionServerEvent> 
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("error".equals(discriminatorValue)) {
-                    return SessionUpdateError.fromJson(readerToUse.reset());
-                } else if ("warning".equals(discriminatorValue)) {
+                if ("warning".equals(discriminatorValue)) {
                     return ServerEventWarning.fromJson(readerToUse.reset());
                 } else if ("session.created".equals(discriminatorValue)) {
                     return SessionUpdateSessionCreated.fromJson(readerToUse.reset());
@@ -226,6 +224,8 @@ public class SessionServerEvent implements JsonSerializable<SessionServerEvent> 
                     return ServerEventOutputAudioBufferStarted.fromJson(readerToUse.reset());
                 } else if ("output_audio_buffer.stopped".equals(discriminatorValue)) {
                     return ServerEventOutputAudioBufferStopped.fromJson(readerToUse.reset());
+                } else if ("error".equals(discriminatorValue)) {
+                    return SessionUpdateError.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

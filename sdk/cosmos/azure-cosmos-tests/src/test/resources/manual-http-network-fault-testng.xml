@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="manual-http-network-fault" parallel="false" thread-count="1">
+  <listeners>
+    <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+  </listeners>
+  <test name="manual-http-network-fault" group-by-instances="true">
+    <groups>
+      <run>
+        <include name="manual-http-network-fault"/>
+      </run>
+    </groups>
+    <packages>
+      <package name="com.azure.cosmos.*"/>
+    </packages>
+  </test>
+</suite>

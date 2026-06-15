@@ -15,6 +15,7 @@ import com.azure.resourcemanager.containerservice.fluent.JWTAuthenticatorsClient
 import com.azure.resourcemanager.containerservice.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.containerservice.fluent.MachinesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
+import com.azure.resourcemanager.containerservice.fluent.MaintenanceWindowsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClusterSnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedNamespacesClient;
@@ -161,6 +162,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
         return this.maintenanceConfigurations;
+    }
+
+    /**
+     * The MaintenanceWindowsClient object to access its operations.
+     */
+    private final MaintenanceWindowsClient maintenanceWindows;
+
+    /**
+     * Gets the MaintenanceWindowsClient object to access its operations.
+     * 
+     * @return the MaintenanceWindowsClient object.
+     */
+    public MaintenanceWindowsClient getMaintenanceWindows() {
+        return this.maintenanceWindows;
     }
 
     /**
@@ -405,10 +420,11 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-02-preview";
+        this.apiVersion = "2026-04-02-preview";
         this.agentPools = new AgentPoolsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
+        this.maintenanceWindows = new MaintenanceWindowsClientImpl(this);
         this.managedNamespaces = new ManagedNamespacesClientImpl(this);
         this.machines = new MachinesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);

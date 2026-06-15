@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class CapabilitiesByServerListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/CapabilitiesByServerList.json
+     * x-ms-original-file: 2026-04-01-preview/CapabilitiesByServerList.json
      */
     /**
      * Sample code: List the capabilities available for a given server.

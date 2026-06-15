@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
@@ -344,9 +343,123 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             });
     }
 
+    /**
+     * Resolves contention between the {@code x-ms-consistency-level} and
+     * {@code x-ms-cosmos-read-consistency-strategy} request headers so that, after this method runs,
+     * the request carries <b>at most one</b> of the two.
+     *
+     * <p>Both Gateway transports reject requests that carry both headers simultaneously:</p>
+     * <ul>
+     *   <li>Gateway V1 (HTTP) — rejects with HTTP 400.</li>
+     *   <li>Gateway V2 / thin-client proxy (RNTBD) — rejects with HTTP 400.</li>
+     * </ul>
+     *
+     * <p><b>Priority rules</b> (highest to lowest):</p>
+     * <ol>
+     *   <li><b>Request-level {@code ReadConsistencyStrategy}</b> on {@code requestContext}
+     *       beats the client-level value carried in the header.</li>
+     *   <li><b>{@code ReadConsistencyStrategy}</b> beats {@code ConsistencyLevel} —
+     *       when a non-{@code DEFAULT} {@code ReadConsistencyStrategy} is effective, the
+     *       {@code ConsistencyLevel} header is stripped.</li>
+     *   <li><b>{@code DEFAULT} {@code ReadConsistencyStrategy} is transparent</b> —
+     *       the {@code ConsistencyLevel} header is left untouched.</li>
+     * </ol>
+     *
+     * <p>Once resolved, GW V1 serializes the surviving header as HTTP; GW V2
+     * ({@code ThinClientStoreModel}) encodes it as RNTBD.</p>
+     *
+     * <p><b>Java SDK-specific behavior.</b> When a non-{@code DEFAULT} {@code ReadConsistencyStrategy}
+     * is effective, the {@code ConsistencyLevel} header is proactively stripped from the request.
+     * The .NET SDK does <em>not</em> strip this header. This divergence is intentional —
+     * it prevents the dual-header HTTP 400 rejection described above, which the compute gateway and
+     * thin-client proxy enforce.</p>
+     *
+     * <p><b>Thread safety.</b> Availability-strategy clones each receive their own deep-copied
+     * {@link java.util.HashMap} of headers (see {@link RxDocumentServiceRequest#clone()}), so
+     * concurrent hedged requests do not race on the same map instance. The mutations performed
+     * here ({@code remove(CONSISTENCY_LEVEL)} and {@code put(READ_CONSISTENCY_STRATEGY, ...)})
+     * are therefore safe by isolation — each clone mutates its own map.</p>
+     *
+     * @param request the in-flight request whose consistency headers are normalized in place.
+     */
+    private void resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest request) {
+        resolveEffectiveConsistencyHeaders(
+            request.getHeaders(),
+            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null);
+    }
+
+    /**
+     * Core normalization logic — {@code public static} for direct unit testing from cross-package
+     * test classes (e.g. {@code RntbdReadConsistencyStrategyHeaderTests} in {@code azure-cosmos-tests}).
+     * Avoids test drift from duplicated simulation logic.
+     *
+     * <p>Behavior is identical to the instance overload {@link #resolveEffectiveConsistencyHeaders(RxDocumentServiceRequest)};
+     * see that method's javadoc for the priority rules.</p>
+     */
+    public static void resolveEffectiveConsistencyHeaders(
+        Map<String, String> headers,
+        ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
+
+        ReadConsistencyStrategy effectiveRCS =
+            resolveEffectiveReadConsistencyStrategy(headers, requestContextReadConsistencyStrategy);
+
+        if (effectiveRCS != null) {
+            // Non-DEFAULT RCS wins — strip ConsistencyLevel to prevent dual-header rejection
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+            // Ensure the RCS header is set (requestContext-level may not have been written to headers yet)
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, effectiveRCS.toString());
+        } else {
+            // No effective RCS — clean up any DEFAULT sentinel header, let ConsistencyLevel govern
+            String rcsHeader = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            if (!Strings.isNullOrEmpty(rcsHeader)) {
+                headers.remove(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+            }
+        }
+    }
+
+    /**
+     * Resolves the effective non-DEFAULT {@link ReadConsistencyStrategy} for a request.
+     *
+     * <p>Priority: requestContext RCS (request-level) &gt; header RCS (client-level).
+     * Returns {@code null} when no non-DEFAULT RCS is active — callers should fall through
+     * to {@code ConsistencyLevel} or account-default logic.</p>
+     *
+     * <p>This is the single source of truth for "which RCS wins?" and is consumed by both
+     * {@link #resolveEffectiveConsistencyHeaders(Map, ReadConsistencyStrategy)} (header mutation) and
+     * {@link #isEffectiveSessionConsistency} (session-token decision).</p>
+     */
+    private static ReadConsistencyStrategy resolveEffectiveReadConsistencyStrategy(
+        Map<String, String> headers,
+        ReadConsistencyStrategy requestContextReadConsistencyStrategy) {
+
+        // Request-level (requestContext) takes priority over client-level (header)
+        if (requestContextReadConsistencyStrategy != null
+            && requestContextReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT) {
+            return requestContextReadConsistencyStrategy;
+        }
+
+        // Client-level from header
+        String rcsHeader = headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+        if (!Strings.isNullOrEmpty(rcsHeader)) {
+            for (ReadConsistencyStrategy candidate : ReadConsistencyStrategy.values()) {
+                if (candidate != ReadConsistencyStrategy.DEFAULT
+                    && candidate.toString().equals(rcsHeader)) {
+                    return candidate;
+                }
+            }
+        }
+
+        return null;
+    }
+
     private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, URI requestUri) {
 
         try {
+            // Canonicalize consistency headers before wire serialization.
+            // Both GW V1 (HTTP) and GW V2 (RNTBD via ThinClientStoreModel) read from
+            // request.getHeaders() — this ensures only the winning header reaches the wire.
+            resolveEffectiveConsistencyHeaders(request);
+
             HttpRequest httpRequest = request
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);
@@ -637,7 +750,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
 
                 if (WebExceptionUtility.isNetworkFailure(dce)) {
-                    if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    if (WebExceptionUtility.isHttp2PingTimeoutClose(dce)) {
+                        // PING-keepalive-driven close is a LOCAL transport failure (NAT idle reap, LB
+                        // shedding, etc.); the regional gateway is NOT known to be unhealthy. Stamp a
+                        // dedicated subStatusCode so ClientRetryPolicy can route this to in-region retry
+                        // WITHOUT marking the endpoint unavailable. Check BEFORE the read-timeout
+                        // branch -- a PING ACK timeout is not the same thing as an HTTP response read
+                        // timeout, and the two branches lead to different (though similar) retry paths.
+                        BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED);
+                    } else if (WebExceptionUtility.isReadTimeoutException(dce)) {
                         BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
                     } else {
                         BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
@@ -1044,6 +1165,33 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
        });
     }
 
+    /**
+     * Determines if the effective consistency for this request is Session — needed by
+     * {@link #applySessionToken} to decide whether to attach/remove session tokens.
+     * <p>
+     * Pure read — no side effects, no header mutation.
+     * Uses {@link #resolveEffectiveReadConsistencyStrategy} for the RCS priority chain,
+     * then falls through to ConsistencyLevel / account-default if no RCS is active.
+     */
+    private boolean isEffectiveSessionConsistency(RxDocumentServiceRequest request) {
+        ReadConsistencyStrategy effectiveRCS = resolveEffectiveReadConsistencyStrategy(
+            request.getHeaders(),
+            request.requestContext != null ? request.requestContext.readConsistencyStrategy : null);
+
+        if (effectiveRCS != null) {
+            return effectiveRCS == ReadConsistencyStrategy.SESSION;
+        }
+
+        // No RCS active — fall through to ConsistencyLevel header
+        String clHeader = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        if (!Strings.isNullOrEmpty(clHeader)) {
+            return ConsistencyLevel.SESSION.toString().equalsIgnoreCase(clHeader);
+        }
+
+        // Fall back to account default
+        return this.gatewayServiceConfigurationReader.getDefaultConsistencyLevel() == ConsistencyLevel.SESSION;
+    }
+
     private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
@@ -1056,8 +1204,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return Mono.empty();
         }
 
-        boolean sessionConsistency = (RequestHelper.getReadConsistencyStrategyToUse(this.gatewayServiceConfigurationReader,
-            request) == ReadConsistencyStrategy.SESSION);
+        // Determine if the effective consistency is Session — needed to decide whether to
+        // attach/remove session tokens. This is a pure read with no side-effects; it does NOT
+        // call RequestHelper.getReadConsistencyStrategyToUse() which mutates x-ms-consistency-level
+        // (a Direct-mode telemetry concern that is harmful in Gateway mode).
+        boolean sessionConsistency = isEffectiveSessionConsistency(request);
 
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (!sessionConsistency ||

@@ -1,20 +1,34 @@
 ## Release History
 
-### 4.81.0-beta.1 (Unreleased)
+### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
-* Promoted the Full Fidelity Change Feed (AllVersionsAndDeletes) APIs to GA - See [PR 49283](https://github.com/Azure/azure-sdk-for-java/pull/49283)
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
-* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
 
 #### Other Changes
+
+### 4.81.0 (2026-06-08)
+
+#### Features Added
+* Added support for creating Global Secondary Index (GSI) containers via `CosmosContainerProperties.setGlobalSecondaryIndexDefinition()` / `getGlobalSecondaryIndexDefinition()`, the new `CosmosGlobalSecondaryIndexDefinition` model, and the `CosmosGlobalSecondaryIndexBuildStatus` enum returned by `getStatus()`. - See [PR 48480](https://github.com/Azure/azure-sdk-for-java/pull/48480)
+* Promoted the Full Fidelity Change Feed (AllVersionsAndDeletes) APIs to GA - See [PR 49283](https://github.com/Azure/azure-sdk-for-java/pull/49283)
+* Enabled `ReadConsistencyStrategy` for Gateway V1 (compute gateway) and Gateway V2 (thin client proxy). Previously only supported in Direct mode. - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
+
+#### Bugs Fixed
+* Fixed region name normalization for preferred and excluded regions — non-canonical inputs (e.g., `"westus3"`, `"WEST US 3"`) are now mapped to the canonical form. Also fixed a case-sensitive exclude-region check in PPCB reevaluate logic. - See [PR 49090](https://github.com/Azure/azure-sdk-for-java/pull/49090)
+* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
+* Fixed silent drift in `CosmosChangeFeedRequestOptions` when resuming from a continuation token via `byPage(savedContinuation)`. Previously only `maxPrefetchPageCount` and `throughputControlGroupName` were inherited onto the rebuilt impl; `endLSN`, `customSerializer`, `excludeRegions`, `readConsistencyStrategy`, `completeAfterAllCurrentChangesRetrieved`, and other caller-supplied configuration were silently dropped. All non-token-encoded fields are now propagated. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+
+#### Other Changes
+* Added HTTP/2 PING keepalive (default ON) for Gateway service endpoints to detect silently-broken connections. - See [PR 49095](https://github.com/Azure/azure-sdk-for-java/pull/49095)
 * Replaced per-client `Schedulers.newSingle()` schedulers in `GlobalEndpointManager` and `GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker` with shared `BoundedElastic` schedulers in `CosmosSchedulers` to prevent thread count from scaling linearly with client/tenant count. - See [PR 49062](https://github.com/Azure/azure-sdk-for-java/pull/49062)
+* Promoted the `ReadConsistencyStrategy` and `Http2ConnectionConfig` related `@Beta` APIs to GA. - See [PR 49345](https://github.com/Azure/azure-sdk-for-java/pull/49345)
 * Fixed a sporadic `NullPointerException` in `JsonSerializable.getWithMapping` triggered by concurrent first-time calls to `DatabaseAccount.getConsistencyPolicy()` and its sibling lazy getters (`getReplicationPolicy`, `getSystemReplicationPolicy`, `getQueryEngineConfiguration`). The fix makes `JsonSerializable.propertyBag` `final`, closing an unsafe-publication race in the lazy-initialisation pattern. - See [Issue 49256](https://github.com/Azure/azure-sdk-for-java/issues/49256) and [PR #49258](https://github.com/Azure/azure-sdk-for-java/pull/49258)
 * Changed 449 (`Retry With`) retries in Gateway V1 and Gateway V2 to be consistently orchestrated client-side. - See [PR 49332](https://github.com/Azure/azure-sdk-for-java/pull/49332)
+* Added client-side fast-fail validation for `ReadConsistencyStrategy.GLOBAL_STRONG`: requests that specify `GLOBAL_STRONG` against an account whose default consistency is not `STRONG` are now rejected client-side with a `BadRequestException` (HTTP 400). - See [PR 48787](https://github.com/Azure/azure-sdk-for-java/pull/48787)
 
 ### 4.80.0 (2026-05-01)
 
