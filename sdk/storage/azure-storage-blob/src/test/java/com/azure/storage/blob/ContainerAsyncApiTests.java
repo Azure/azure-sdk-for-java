@@ -10,8 +10,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -41,6 +47,7 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
 import java.net.URL;
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -2144,6 +2151,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowBasic() {
         // Upload a test blob
         String blobName = generateBlobName();
@@ -2166,6 +2174,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowWithMetadata() {
         String blobName = generateBlobName();
         Map<String, String> metadata = new HashMap<>();
@@ -2186,9 +2195,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowPagination() {
-        // Upload 3 blobs
-        Flux<BlockBlobItem> uploads = Flux.range(0, 3)
+        // Upload 4 blobs
+        Flux<BlockBlobItem> uploads = Flux.range(0, 4)
             .flatMap(i -> ccAsync.getBlobAsyncClient("blob" + i)
                 .getBlockBlobAsyncClient()
                 .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
@@ -2199,10 +2209,17 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertTrue(page.getValue().size() <= 1);
         }).flatMap(page -> Flux.fromIterable(page.getValue())).collectList());
 
-        StepVerifier.create(result).assertNext(allBlobs -> assertEquals(3, allBlobs.size())).verifyComplete();
+        StepVerifier.create(result).assertNext(allBlobs -> assertEquals(4, allBlobs.size())).verifyComplete();
+
+        // Mirror the sync test's secondary assertion: requesting page size 2 yields exactly 2 blobs per page.
+        StepVerifier.create(ccAsync.listBlobs().byPage(2)).thenConsumeWhile(page -> {
+            assertEquals(2, page.getValue().size());
+            return true;
+        }).verifyComplete();
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowNullUseArrowUsesXml() {
         // Default apacheArrowEnabled is null — should use XML path without error
         String blobName = generateBlobName();
@@ -2220,6 +2237,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @LiveOnly
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowEncryptedBlob() {
         // Upload a blob with CPK (customer-provided key)
         String blobName = generateBlobName();
@@ -2239,7 +2257,106 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             }).verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
+
+        Mono<Response<Void>> rehydrate = Mono.empty();
+
+        if (rehydratePriority != null) {
+            rehydrate = bc.setAccessTier(AccessTier.ARCHIVE)
+                .then(bc.setAccessTierWithResponse(
+                    new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority)));
+        }
+
+        ListBlobsOptions options = new ListBlobsOptions().setApacheArrowEnabled(true);
+
+        Flux<BlobItem> response = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(rehydrate)
+            .thenMany(ccAsync.listBlobs(options, null));
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertEquals(rehydratePriority, r.getProperties().getRehydratePriority()))
+            .verifyComplete();
+    }
+
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowDeserializer() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+
+        BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
+
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(ccAsync.getHttpPipeline())
+            .url(ccAsync.getAccountUrl())
+            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .buildClient();
+
+        List<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono = bc
+            .uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
+            .then(impl.getContainers()
+                .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, null, null, null, include, null, null,
+                    null, null))
+            .flatMap(response -> {
+                // Verify Content-Type is Arrow
+                String contentType = response.getDeserializedHeaders().getContentType();
+                assertTrue(contentType.contains("application/vnd.apache.arrow.stream"),
+                    "Expected Arrow content type but got: " + contentType);
+
+                // Collect the Flux<ByteBuffer> body into a byte[] and feed it to the deserializer.
+                return FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                    .map(bytes -> ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes)));
+            });
+
+        StepVerifier.create(testMono).assertNext(result -> {
+            // Verify pagination — single blob, no next page
+            assertNull(result.getNextMarker());
+
+            // Verify we got exactly one blob
+            assertEquals(1, result.getBlobItems().size());
+
+            BlobItemInternal item = result.getBlobItems().get(0);
+
+            // Name
+            assertNotNull(item.getName());
+            assertEquals(blobName, item.getName().getContent());
+
+            // Properties
+            assertNotNull(item.getProperties());
+            assertEquals(7L, (long) item.getProperties().getContentLength());
+            assertEquals("application/octet-stream", item.getProperties().getContentType());
+            assertNotNull(item.getProperties().getETag());
+            assertNotNull(item.getProperties().getLastModified());
+            assertNotNull(item.getProperties().getCreationTime());
+            assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
+            assertEquals(AccessTier.HOT, item.getProperties().getAccessTier());
+            assertTrue(item.getProperties().isAccessTierInferred());
+            assertTrue(item.getProperties().isServerEncrypted());
+            assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());
+            assertEquals(LeaseStatusType.UNLOCKED, item.getProperties().getLeaseStatus());
+            assertNotNull(item.getProperties().getContentMd5());
+
+            // Metadata
+            assertNotNull(item.getMetadata());
+            assertEquals("testvalue", item.getMetadata().get("testkey"));
+
+            // Verify ModelHelper can convert to public BlobItem
+            BlobItem publicItem = ModelHelper.populateBlobItem(item);
+            assertEquals(blobName, publicItem.getName());
+            assertEquals(7L, (long) publicItem.getProperties().getContentLength());
+        }).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsByHierarchyArrowBasic() {
         // Upload blobs in a directory structure
         Flux<BlockBlobItem> uploads = Flux.concat(
@@ -2281,6 +2398,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsByHierarchyArrowWithMetadata() {
         String blobName = generateBlobName();
         Map<String, String> metadata = new HashMap<>();
@@ -2305,6 +2423,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsByHierarchyArrowPagination() {
         // Upload blobs across multiple directories
         Flux<BlockBlobItem> uploads = Flux.concat(
@@ -2328,6 +2447,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowWithTags() {
         // Upload a blob and set tags
         String blobName = generateBlobName();
