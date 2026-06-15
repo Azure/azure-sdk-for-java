@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentPoolsUpgradeNodeImageVersionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/AgentPoolsUpgradeNodeImageVersion.json
+     * x-ms-original-file: 2026-04-02-preview/AgentPoolsUpgradeNodeImageVersion.json
      */
     /**
      * Sample code: Upgrade Agent Pool Node Image Version.

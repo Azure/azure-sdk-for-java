@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListMeshRevisionProfilesSamples {
     /*
-     * x-ms-original-file: 2026-04-01/ManagedClustersList_MeshRevisionProfiles.json
+     * x-ms-original-file: 2026-04-02-preview/ManagedClustersList_MeshRevisionProfiles.json
      */
     /**
      * Sample code: List mesh revision profiles in a location.
