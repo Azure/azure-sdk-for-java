@@ -147,6 +147,16 @@
       <version>5.0.2</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-starter-openfeign;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <!-- On Spring Boot 4, OpenFeign's FeignClientsConfiguration registers a feignHttpMessageConverters bean
+         that depends on org.springframework.boot.http.converter.autoconfigure.ClientHttpMessageConvertersCustomizer.
+         That class lives in spring-boot-http-converter, which must be on the classpath for the context to start.
+         See OpenFeignEncoderBeanRegistrationUnitTest. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-http-converter</artifactId>
+      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-http-converter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
