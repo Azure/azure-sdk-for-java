@@ -728,6 +728,13 @@ public class GatewayReadConsistencyStrategySpyWireTest {
             String uri = request.uri().toString();
             if (isGatewayV2(mode)) {
                 if ("POST".equalsIgnoreCase(request.httpMethod().toString()) && uri.contains(":10250")) {
+                    // Skip query-plan precursor requests: thin-client routes QueryPlan via V2 too, and those
+                    // RNTBD frames intentionally carry no ReadConsistencyStrategy / ConsistencyLevel tokens
+                    // because QueryPlan generation doesn't depend on read-consistency. Mirror the V1 filter
+                    // below by inspecting the RNTBD operation type encoded in the framed body.
+                    if (isRntbdQueryPlanFrame(collectHttpBody(request))) {
+                        continue;
+                    }
                     return request;
                 }
             } else {
@@ -795,6 +802,24 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         int expectedLength = buffer.getIntLE(buffer.readerIndex());
         ByteBuf sliced = buffer.slice(buffer.readerIndex(), expectedLength);
         return RntbdRequest.decode(sliced);
+    }
+
+    /**
+     * Peeks at an RNTBD frame's operation-type token (offset 6 LE after the 4-byte length prefix
+     * and 2-byte resource type) to detect QueryPlan precursor frames. QueryPlan == 0x0042 in
+     * {@link RntbdConstants.RntbdOperationType}.
+     */
+    private static boolean isRntbdQueryPlanFrame(byte[] rntbdFrame) {
+        if (rntbdFrame == null || rntbdFrame.length < 8) {
+            return false;
+        }
+        ByteBuf buffer = Unpooled.wrappedBuffer(rntbdFrame);
+        try {
+            short operationType = buffer.getShortLE(buffer.readerIndex() + Integer.BYTES + Short.BYTES);
+            return operationType == RntbdConstants.RntbdOperationType.QueryPlan.id();
+        } catch (RuntimeException ignored) {
+            return false;
+        }
     }
 
     // endregion
