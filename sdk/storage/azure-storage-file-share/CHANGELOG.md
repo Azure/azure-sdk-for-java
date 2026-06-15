@@ -7,6 +7,13 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a stress-test issue (#38070) parallel to the blob `openSeekableByteChannelRead` fix:
+  `StorageSeekableByteChannelShareFileReadBehavior` now logs a warning and reports end-of-stream instead of
+  propagating an exception when a range request fails (e.g. connection reset while streaming a 416 error body)
+  for an offset that is already at or past the cached resource length (populated from a prior response's
+  `Content-Range` header). The behavior's `getResourceLength()` also no longer issues a lazy
+  `getProperties()` HEAD request; the contract now requires a non-blocking accessor and
+  `StorageSeekableByteChannel.size()` seeds the length via a minimal range probe when needed.
 
 ### Other Changes
 

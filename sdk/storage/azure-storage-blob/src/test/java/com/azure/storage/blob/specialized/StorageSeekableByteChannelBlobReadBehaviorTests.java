@@ -219,6 +219,44 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     }
 
     @Test
+    void readSwallowsExceptionWhenPastKnownEndOfBlob() throws IOException {
+        // Regression test for issue #38070: when the seekable byte channel's behavior is asked to read past the
+        // cached resource length and the underlying client throws (e.g. ReactiveException wrapping a connection
+        // reset while the 416 error body is streamed back), the behavior should treat it as EOF instead of
+        // propagating the failure, because the caller has already received all bytes the blob contains.
+        long blobSize = 1024;
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenThrow(new RuntimeException(
+                new java.io.IOException("simulated connection reset while reading 416 error body")));
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, blobSize, null);
+
+        // Reading at-or-past the cached resource length should be reported as EOF, not as an exception.
+        int read = behavior.read(ByteBuffer.allocate(Constants.KB), blobSize);
+        assertEquals(-1, read);
+    }
+
+    @Test
+    void readPropagatesExceptionBeforeKnownEndOfBlob() {
+        // Companion to the past-EOF test: failures inside the valid range must still propagate so they can be
+        // retried / surfaced to the caller.
+        long blobSize = 1024;
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        RuntimeException failure = new RuntimeException(new java.io.IOException("simulated network failure"));
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenThrow(failure);
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, blobSize, null);
+
+        // Reading before the cached resource length must still throw.
+        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class,
+            () -> behavior.read(ByteBuffer.allocate(Constants.KB), 0));
+    }
+
+    @Test
     void readDetectsBlobGrowth() throws IOException {
         // Given: data
         int halfLength = 512;

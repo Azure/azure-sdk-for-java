@@ -71,6 +71,12 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             initialBufferPosition = null;
         }
 
+        // Note: this layer intentionally does NOT short-circuit when sourceOffset is at or past the cached
+        // resourceLength. The StorageSeekableByteChannel EOF short-circuit handles that for channel-based
+        // callers, while leaving this method free to discover server-side file growth (see file-share tests
+        // and the parallel behavior in StorageSeekableByteChannelShareFileReadBehavior). Direct callers that
+        // want to detect growth need this method to actually issue the range GET.
+
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
@@ -88,6 +94,19 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
                 // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
                 // that zero bytes were read
                 return sourceOffset < resourceLength ? 0 : -1;
+            }
+            throw LOGGER.logExceptionAsError(e);
+        } catch (RuntimeException e) {
+            // Non-storage failure path. The stress-test scenario observed in issue #38070 is a connection reset
+            // while the 416 error-body is being streamed back: downloadStreamWithResponse surfaces it as a
+            // ReactiveException wrapping a NativeIoException rather than the BlobStorageException handled above.
+            // If we already have all the bytes the caller asked for (sourceOffset is at or past the cached
+            // resource length), the error is irrelevant -- log it and report EOF.
+            if (resourceLength >= 0 && sourceOffset >= resourceLength) {
+                LOGGER.warning(
+                    "Ignoring error from past-EOF range read (offset={}, length={}); treating as end of stream.",
+                    sourceOffset, resourceLength, e);
+                return -1;
             }
             throw LOGGER.logExceptionAsError(e);
         }

@@ -7,6 +7,14 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a stress-test issue (#38070) where `BlobClient.openSeekableByteChannelRead` could surface a
+  connection-reset (or similar transient network failure) that happened while streaming the 416 error body
+  of a wasted past-EOF range request as an exception even though all blob content had already been delivered
+  to the caller. `StorageSeekableByteChannelBlobReadBehavior` now logs a warning and reports end-of-stream
+  instead of propagating the exception when the failed range request's offset is already at or past the
+  cached resource length (populated from the initial `BlobProperties` or a prior response's `Content-Range`
+  header). Note: the wasted past-EOF request itself is suppressed by the corresponding
+  `StorageSeekableByteChannel` EOF short-circuit in `azure-storage-common`.
 
 ### Other Changes
 

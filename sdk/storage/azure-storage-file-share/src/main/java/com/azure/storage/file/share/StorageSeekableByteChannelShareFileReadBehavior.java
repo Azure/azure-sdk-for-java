@@ -46,6 +46,11 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dst.remaining()' must be positive."));
         }
 
+        // Note: this layer intentionally does NOT short-circuit when sourceOffset is at or past the cached
+        // resourceLength. The StorageSeekableByteChannel EOF short-circuit handles that for channel-based
+        // callers, while leaving this method free to discover server-side file growth (see the
+        // readDetectsFileGrowth unit test). Direct callers rely on this method to actually issue the range GET.
+
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
@@ -68,14 +73,33 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
                 return sourceOffset < lastKnownResourceLength ? 0 : -1;
             }
             throw LOGGER.logExceptionAsError(e);
+        } catch (RuntimeException e) {
+            // Non-storage failure path. The stress-test scenario observed in issue #38070 is a connection reset
+            // while the 416 error-body is being streamed back: downloadWithResponse surfaces it as a
+            // ReactiveException wrapping a NativeIoException rather than the ShareStorageException handled above.
+            // If we already have all the bytes the caller asked for (sourceOffset is at or past the cached
+            // resource length), the error is irrelevant -- log it and report EOF.
+            if (lastKnownResourceLength != UNKNOWN_LENGTH && sourceOffset >= lastKnownResourceLength) {
+                LOGGER.warning(
+                    "Ignoring error from past-EOF range read (offset={}, length={}); treating as end of stream.",
+                    sourceOffset, lastKnownResourceLength, e);
+                return -1;
+            }
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
     @Override
     public long getResourceLength() {
-        if (lastKnownResourceLength == UNKNOWN_LENGTH) {
-            lastKnownResourceLength = client.getProperties().getContentLength();
-        }
+        // Returns the cached length as populated by {@link #read(ByteBuffer, long)} from the Content-Range header,
+        // or {@link #UNKNOWN_LENGTH} (-1) if no read has happened yet.
+        //
+        // Intentionally does NOT issue a service call (such as the historical lazy
+        // client.getProperties() fallback). The ReadBehavior contract on StorageSeekableByteChannel requires
+        // getResourceLength() to be a cheap accessor; performing I/O here would cause a spurious HEAD on the
+        // channel's first read(...) call (the channel's EOF short-circuit consults this method before any refill
+        // has had a chance to populate the cache). StorageSeekableByteChannel#size() seeds this value on demand
+        // via a minimal range probe when callers need it before any read has happened.
         return lastKnownResourceLength;
     }
 

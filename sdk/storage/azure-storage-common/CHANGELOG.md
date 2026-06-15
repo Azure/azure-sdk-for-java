@@ -11,6 +11,17 @@
   would issue an unnecessary "probe past EOF" service round-trip whose 416 response could be corrupted by transient
   network faults (connection reset, premature close, channel timeout) into an `IOException`. The channel now reports
   EOF using the cached `ReadBehavior.getResourceLength()` without invoking the behavior again.
+- Fixed an issue in `StorageSeekableByteChannel.read(ByteBuffer)` where a destination buffer with no remaining
+  capacity (e.g. `ByteBuffer.allocate(0)` or a buffer with `position() == limit()`) could either return `-1` in
+  violation of the `ReadableByteChannel` contract or trigger a wasted service round-trip. The channel now
+  short-circuits and returns `0` per contract.
+- Fixed an issue where the EOF short-circuit could cause `ShareFileClient.getFileSeekableByteChannelRead` to issue
+  a spurious HEAD (`getProperties`) request on the very first `read(...)` call. The
+  `ReadBehavior.getResourceLength()` contract has been tightened to require a non-blocking accessor that returns a
+  negative value when the length is not yet known, the file-share `ReadBehavior` no longer performs a lazy HEAD
+  from `getResourceLength()`, and `StorageSeekableByteChannel.size()` now seeds the length on demand via a minimal
+  one-byte range probe so the JDK `SeekableByteChannel.size()` contract continues to hold for callers who query
+  the size before any read.
 
 ### Other Changes
 
