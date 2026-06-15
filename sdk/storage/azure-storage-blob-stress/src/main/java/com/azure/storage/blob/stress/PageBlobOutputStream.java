@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -30,11 +31,9 @@ public class PageBlobOutputStream extends PageBlobScenarioBase<StorageStressOpti
     private final PageBlobAsyncClient tempSetupPageBlobClient;
 
     public PageBlobOutputStream(StorageStressOptions options) {
-        // Page blob writes go in 512 B chunks, so even a 10 KB blob fires ~20
-        // page-write requests per op (plus scenario-level retry-from-scratch on
-        // failure). Default per-tier mapping based on options.getSize() (1 KB or
-        // 10 KB) gives a far-too-aggressive 5 s timeout. Force the 30 s tier.
-        super(options, 50L * 1024L * 1024L);
+        // Page blob writes happen in many 512 B chunks per logical op; use an
+        // explicit timeout for this multi-request path.
+        super(options, Duration.ofSeconds(30));
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();
 

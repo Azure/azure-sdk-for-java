@@ -211,10 +211,10 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
                 absolutePosition = readBehavior.getResourceLength();
                 return -1;
             }
-        }
-        // buffer still empty, no EOF signal, no exception: just return zero
-        if (buffer.remaining() == 0) {
-            return 0;
+            // buffer still empty after refill, no EOF signal, no exception: just return zero
+            if (buffer.remaining() == 0) {
+                return 0;
+            }
         }
 
         int read = Math.min(buffer.remaining(), dst.remaining());

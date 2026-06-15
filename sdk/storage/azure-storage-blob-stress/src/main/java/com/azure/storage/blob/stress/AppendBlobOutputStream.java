@@ -15,6 +15,7 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -27,12 +28,9 @@ public class AppendBlobOutputStream extends BlobScenarioBase<StorageStressOption
     private final BlobAsyncClient tempSetupBlobClient;
 
     public AppendBlobOutputStream(StorageStressOptions options) {
-        // Each logical op writes the blob through many small appendBlock requests
-        // plus scenario-level retry-from-scratch on failure. The 2026-06-04
-        // 18:15 UTC stress run showed that the default per-tier mapping based on
-        // options.getSize() (1 KB or 10 KB) gives a far-too-aggressive 5 s
-        // timeout for this scenario. Force the 30 s tier instead.
-        super(options, 50L * 1024L * 1024L);
+        // Each logical op writes through many appendBlock requests plus
+        // scenario-level retry-from-scratch on failure; use an explicit timeout.
+        super(options, Duration.ofSeconds(30));
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();
 

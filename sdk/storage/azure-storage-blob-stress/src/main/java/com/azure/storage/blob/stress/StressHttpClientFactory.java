@@ -32,32 +32,26 @@ import java.time.Duration;
  *       catches upload faults that stall the request body mid-stream.</li>
  * </ul>
  *
- * <p>Note that scenarios whose single logical iteration issues many small writes
+ * <p>Scenarios whose single logical iteration issues many small writes
  * (e.g. {@code AppendBlobOutputStream}, {@code PageBlobOutputStream}, or stream-based
- * uploads) should pass a deliberately larger {@code effectivePayloadBytes} than their
- * {@code --size} CLI argument suggests, because each op's wall-clock cost includes
- * many requests plus the scenario-level retry-from-scratch behavior.</p>
+ * uploads) can either pass a deliberately larger {@code effectivePayloadBytes} to use
+ * tiered mapping or provide an explicit {@link Duration} timeout override.</p>
  */
-public final class StressHttpClients {
+public final class StressHttpClientFactory {
 
     private static final long ONE_MB = 1024L * 1024L;
 
-    private StressHttpClients() {
+    private StressHttpClientFactory() {
     }
 
     /**
      * Builds a Netty HTTP client whose {@code responseTimeout}, {@code readTimeout},
-     * and {@code writeTimeout} are all sized to the supplied effective payload.
+     * and {@code writeTimeout} are all set to the supplied timeout.
      *
-     * @param effectivePayloadBytes the per-operation payload size to map to a timeout
-     *                              tier; pass {@code options.getSize()} for the
-     *                              default mapping, or a larger value for scenarios
-     *                              whose logical iterations are wider than a single
-     *                              request.
-     * @return a Netty {@link HttpClient} with the per-tier idle timeouts applied.
+     * @param timeout timeout value applied to response/read/write timeouts.
+     * @return a Netty {@link HttpClient} with the supplied timeout applied.
      */
-    public static HttpClient buildHttpClient(long effectivePayloadBytes) {
-        Duration timeout = suggestedTimeout(effectivePayloadBytes);
+    public static HttpClient buildHttpClient(Duration timeout) {
         return new NettyAsyncHttpClientBuilder()
             .responseTimeout(timeout)
             .readTimeout(timeout)

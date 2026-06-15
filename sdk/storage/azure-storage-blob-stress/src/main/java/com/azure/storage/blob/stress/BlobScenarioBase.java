@@ -38,26 +38,19 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     private Instant startTime;
 
     public BlobScenarioBase(TOptions options) {
-        this(options, options.getSize());
+        this(options, StressHttpClientFactory.suggestedTimeout(options.getSize()));
     }
 
     /**
-     * Secondary constructor that lets a subclass override the payload size used to
-     * pick a per-tier I/O timeout (see {@link StressHttpClients}). Useful for
-     * scenarios whose single logical iteration issues many HTTP requests &mdash;
-     * e.g. {@code AppendBlobOutputStream}, where {@code options.getSize()} is the
-     * total blob size but each op pays for many appended writes plus scenario-level
-     * retry-from-scratch on failure. Passing a deliberately larger value moves the
-     * scenario into a longer-timeout tier.
+     * Secondary constructor that lets a subclass provide an explicit I/O timeout.
+     * Useful for scenarios whose single logical iteration issues many HTTP requests
+     * (for example {@code AppendBlobOutputStream}) where timeout intent is clearer
+     * as a fixed duration than as a synthetic payload-size tier.
      *
-     * @param options                         scenario options.
-     * @param effectivePayloadBytesForTimeout payload size used by
-     *                                        {@link StressHttpClients#buildHttpClient(long)}
-     *                                        to choose the tier. Pass
-     *                                        {@code options.getSize()} for the
-     *                                        default behavior.
+     * @param options        scenario options.
+     * @param requestTimeout timeout applied to response/read/write I/O timeouts.
      */
-    protected BlobScenarioBase(TOptions options, long effectivePayloadBytesForTimeout) {
+    protected BlobScenarioBase(TOptions options, Duration requestTimeout) {
         super(options);
 
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -66,7 +59,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
             .credential(defaultAzureCredential)
             .endpoint(endpoint)
-            .httpClient(StressHttpClients.buildHttpClient(effectivePayloadBytesForTimeout))
+            .httpClient(StressHttpClientFactory.buildHttpClient(requestTimeout))
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
