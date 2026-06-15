@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
 import java.io.IOException;
@@ -71,18 +70,12 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             initialBufferPosition = null;
         }
 
-        // Note: this layer intentionally does NOT short-circuit when sourceOffset is at or past the cached
-        // resourceLength. The StorageSeekableByteChannel EOF short-circuit handles that for channel-based
-        // callers, while leaving this method free to discover server-side file growth (see file-share tests
-        // and the parallel behavior in StorageSeekableByteChannelShareFileReadBehavior). Direct callers that
-        // want to detect growth need this method to actually issue the range GET.
-
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
             BlobDownloadResponse response
                 = client.downloadStreamWithResponse(dstStream, new BlobRange(sourceOffset, (long) dst.remaining()),
-                    new DownloadRetryOptions(), requestConditions, false, null, null);
+                null /*downloadRetryOptions*/, requestConditions, false, null, null);
             resourceLength = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (BlobStorageException e) {
@@ -94,23 +87,6 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
                 // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
                 // that zero bytes were read
                 return sourceOffset < resourceLength ? 0 : -1;
-            }
-            throw LOGGER.logExceptionAsError(e);
-        } catch (RuntimeException e) {
-            // Non-storage failure path. The stress-test scenario observed in issue #38070 is a connection reset
-            // while the 416 error-body is being streamed back: downloadStreamWithResponse surfaces it as a
-            // ReactiveException wrapping a NativeIoException rather than the BlobStorageException handled above.
-            // If we already have all the bytes the caller asked for (sourceOffset is at or past the cached
-            // resource length), the error is irrelevant -- log it and report EOF.
-            Throwable cause = e;
-            while (cause != null && !(cause instanceof IOException) && cause.getCause() != cause) {
-                cause = cause.getCause();
-            }
-            if (cause instanceof IOException && resourceLength >= 0 && sourceOffset >= resourceLength) {
-                LOGGER.warning(
-                    "Ignoring error from past-EOF range read (offset={}, length={}); treating as end of stream.",
-                    sourceOffset, resourceLength, e);
-                return -1;
             }
             throw LOGGER.logExceptionAsError(e);
         }
@@ -136,28 +112,5 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
     @Override
     public long getResourceLength() {
         return resourceLength;
-    }
-
-    /**
-     * Reports whether this behavior has a consistency control in effect that pins the backing blob to a single
-     * immutable view for the lifetime of the behavior. Returns {@code true} when an {@code If-Match} ETag
-     * precondition is set on the request conditions, or when the underlying client is pinned to a specific
-     * {@code versionId}. Both cases guarantee the blob length observed at construction (or from a prior
-     * {@code Content-Range} header) cannot change between subsequent reads, which is what
-     * {@link StorageSeekableByteChannel} requires to safely short-circuit a read at-or-past EOF without issuing
-     * the wasted past-EOF range request that GitHub issue #38070 was filed against.
-     * <p>
-     * Returns {@code false} for the {@code ConsistentReadControl.NONE} configuration; in that case the channel
-     * must keep delegating to {@link #read(ByteBuffer, long)} until the service answers 416 (or returns 0 bytes),
-     * matching the issue's guidance: "If ETags are not used, then we should keep going until we get 416."
-     *
-     * @return {@code true} iff the behavior holds an ETag or version-id consistency lock on the target blob.
-     */
-    @Override
-    public boolean hasConsistencyLock() {
-        if (requestConditions != null && requestConditions.getIfMatch() != null) {
-            return true;
-        }
-        return client.getVersionId() != null;
     }
 }

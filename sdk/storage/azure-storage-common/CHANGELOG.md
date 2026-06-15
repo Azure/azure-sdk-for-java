@@ -7,26 +7,6 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed an issue in `StorageSeekableByteChannel` where a read after the cached resource length had been consumed
-  would issue an unnecessary "probe past EOF" service round-trip whose 416 response could be corrupted by transient
-  network faults (connection reset, premature close, channel timeout) into an `IOException`. The channel now reports
-  EOF using the cached `ReadBehavior.getResourceLength()` without invoking the behavior again &mdash; **but only
-  when the behavior advertises a consistency lock** via the new `ReadBehavior.hasConsistencyLock()` accessor
-  (default `true`, overridden by the blob behavior to reflect actual `If-Match` / version-id state). When the
-  lock is absent (e.g. `BlobClient.openSeekableByteChannelRead` with `ConsistentReadControl.NONE`) the channel
-  keeps delegating to `ReadBehavior.read` so server-side growth can still be discovered, matching the GitHub
-  issue #38070 guidance: "If ETags are not used, then we should keep going until we get 416."
-- Fixed an issue in `StorageSeekableByteChannel.read(ByteBuffer)` where a destination buffer with no remaining
-  capacity (e.g. `ByteBuffer.allocate(0)` or a buffer with `position() == limit()`) could either return `-1` in
-  violation of the `ReadableByteChannel` contract or trigger a wasted service round-trip. The channel now
-  short-circuits and returns `0` per contract.
-- Fixed an issue where the EOF short-circuit could cause `ShareFileClient.getFileSeekableByteChannelRead` to issue
-  a spurious HEAD (`getProperties`) request on the very first `read(...)` call. The
-  `ReadBehavior.getResourceLength()` contract has been tightened to require a non-blocking accessor that returns a
-  negative value when the length is not yet known, the file-share `ReadBehavior` no longer performs a lazy HEAD
-  from `getResourceLength()`, and `StorageSeekableByteChannel.size()` now seeds the length on demand via a minimal
-  one-byte range probe so the JDK `SeekableByteChannel.size()` contract continues to hold for callers who query
-  the size before any read.
 
 ### Other Changes
 

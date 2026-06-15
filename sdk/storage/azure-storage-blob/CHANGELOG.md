@@ -7,20 +7,6 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed a stress-test issue (#38070) where `BlobClient.openSeekableByteChannelRead` could surface a
-  connection-reset (or similar transient network failure) that happened while streaming the 416 error body
-  of a wasted past-EOF range request as an exception even though all blob content had already been delivered
-  to the caller. `StorageSeekableByteChannelBlobReadBehavior` now logs a warning and reports end-of-stream
-  instead of propagating the exception when the failed range request's offset is already at or past the
-  cached resource length (populated from the initial `BlobProperties` or a prior response's `Content-Range`
-  header).
-- `StorageSeekableByteChannelBlobReadBehavior` now implements
-  `StorageSeekableByteChannel.ReadBehavior.hasConsistencyLock()`, returning `true` when an `If-Match`
-  precondition is set on the request conditions or when the client is pinned to a specific `versionId`. This
-  allows the `azure-storage-common` channel to safely short-circuit past-EOF reads only when a consistency
-  control is in effect (`ConsistentReadControl.ETAG` &mdash; the default &mdash; or `VERSION_ID`). For
-  `ConsistentReadControl.NONE` the channel keeps delegating to the behavior so server-side growth can still
-  be discovered, matching the GitHub issue #38070 guidance.
 
 ### Other Changes
 

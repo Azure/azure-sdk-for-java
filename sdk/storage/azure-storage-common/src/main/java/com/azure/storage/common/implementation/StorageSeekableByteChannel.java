@@ -41,16 +41,6 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         /**
          * Gets the length of the resource. The returned value may have been cached from previous operations on this
          * instance.
-         * <p>
-         * Implementations <strong>must not</strong> perform I/O from this method. If the resource length is not yet
-         * known, implementations should return a negative value (conventionally {@code -1}); the channel's
-         * {@code read(...)} path treats a negative return as "unknown" and falls through to its normal refill, which
-         * is expected to populate the length as a side-effect (e.g. from a range-GET's {@code Content-Range}
-         * header). {@link StorageSeekableByteChannel#size()} seeds the length on demand via a minimal range probe
-         * when callers need it before any read has happened, so implementations never need to perform I/O from this
-         * accessor to satisfy {@link java.nio.channels.SeekableByteChannel#size()}.
-         *
-         * @return The length in bytes, or a negative value if not yet known.
          */
         long getResourceLength();
 
@@ -184,53 +174,6 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
         return buffer.capacity();
     }
 
-    /*
-     * Implementation notes for read(ByteBuffer):
-     *
-     * Caller pattern. The typical caller drives a loop:
-     *     while (channel.read(dst) != -1) { ... }
-     * After the final bytes are drained from the internal buffer, absolutePosition equals
-     * readBehavior.getResourceLength() and the next read() call is expected to return -1.
-     *
-     * Zero-remaining destination. Per the ReadableByteChannel/SeekableByteChannel contract, if dst.remaining() == 0
-     * (e.g. dst = ByteBuffer.allocate(0) or a previously-filled buffer with position() == limit()), the channel must
-     * make no attempt to read and must return 0 -- NOT -1 -- even when the underlying resource has already reached
-     * end-of-stream. Without an explicit short-circuit, the cached-EOF fast-path would return -1 in violation of the
-     * contract, and the not-yet-EOF path would issue a wasted refillReadBuffer() service round-trip only to
-     * ultimately return 0.
-     *
-     * EOF short-circuit. When the internal buffer is empty, the implementation checks whether absolutePosition has
-     * already reached (or exceeded) the cached resource length AND the behavior advertises a consistency lock via
-     * {@link ReadBehavior#hasConsistencyLock()} -- if both hold, it returns -1 directly. Without this
-     * short-circuit, an empty buffer would fall into refillReadBuffer(absolutePosition), which delegates to
-     * readBehavior.read(...) and issues a real HTTP range GET at an offset >= resourceLength (resulting in a 416
-     * response that the behavior then translates to -1). When the behavior does NOT advertise a consistency lock
-     * (e.g. {@code ConsistentReadControl.NONE} on the blob path), the cached length cannot be trusted -- the
-     * underlying resource may have grown server-side -- and the channel falls through to refillReadBuffer so the
-     * service has a chance to return new bytes. This matches the GitHub issue #38070 guidance:
-     * "If ETags are not used, then we should keep going until we get 416."
-     *
-     * Per the ReadBehavior#getResourceLength() contract, the call below is required to be a non-blocking accessor
-     * that returns a negative value (conventionally -1) when the length is not yet known. On the very first read --
-     * before any refill has populated the implementation's cached length -- the call returns -1, the guard
-     * `resourceLength >= 0` fails, and execution falls through to refillReadBuffer(...) as on main. The first refill
-     * populates the implementation's cache as a side-effect (typically from the response's Content-Range header),
-     * so on subsequent reads the short-circuit becomes effective and prevents the wasted EOF-probe round-trip after
-     * a sequential drain. {@link #size()} seeds the length on demand so the JDK {@link SeekableByteChannel#size()}
-     * contract is preserved even before any read has happened.
-     *
-     * How absolutePosition can reach (or exceed) resourceLength:
-     *   1. Normal sequential drain: after the last bytes are consumed, the refill branch sets
-     *      absolutePosition = resourceLength, and the caller's loop re-enters read() once more expecting -1.
-     *      This is the dominant case and produces absolutePosition == resourceLength.
-     *   2. Construction with startingPosition >= resourceLength -- the constructor only validates >= 0 and does not
-     *      clamp against the resource length.
-     *   3. position(newPosition) -> readModeSeek(newPosition) performs no upper-bound check against resourceLength,
-     *      so a caller can seek strictly past EOF (absolutePosition > resourceLength).
-     *   4. getResourceLength() is documented as possibly cached; if it is later refreshed (or the underlying blob is
-     *      replaced with a shorter blob), a previously-valid absolutePosition can become strictly greater than the
-     *      refreshed resourceLength without the channel doing anything wrong.
-     */
     @Override
     public int read(ByteBuffer dst) throws IOException {
         assertOpen();
@@ -240,35 +183,9 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
                 .logExceptionAsError(new IllegalArgumentException("'dst' is read-only and cannot be written to."));
         }
 
-        // See contract note (zero-remaining destination) in the comment block above this method.
-        if (!dst.hasRemaining()) {
-            return 0;
-        }
-
         if (buffer.remaining() == 0) {
-            // See EOF short-circuit note in the comment block above this method. getResourceLength() is contracted
-            // to be a non-blocking accessor that returns a negative value when the length is not yet known, so on
-            // the first read this guard simply falls through to the refill below. The short-circuit is also gated
-            // on hasConsistencyLock() to honor the GitHub issue #38070 guidance: when no ETag/version-pin
-            // consistency control is in place, the resource may have grown server-side between reads, so we must
-            // re-probe via refillReadBuffer rather than trusting the cached length.
-            long resourceLength = readBehavior.getResourceLength();
-            if (resourceLength >= 0 && absolutePosition >= resourceLength && readBehavior.hasConsistencyLock()) {
-                absolutePosition = resourceLength;
-                return -1;
-            }
             if (refillReadBuffer(absolutePosition) == -1) {
-                // cap any position overshooting if channel is at end. Skip if length is still unknown (corner
-                // case: very first refill returned -1 without a Content-Range to seed the behavior's cache).
-                long endOfStream = readBehavior.getResourceLength();
-                if (endOfStream >= 0) {
-                    absolutePosition = endOfStream;
-                }
                 return -1;
-            }
-            // buffer still empty after refill, no EOF signal, no exception: just return zero
-            if (buffer.remaining() == 0) {
-                return 0;
             }
         }
 
@@ -283,16 +200,9 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
 
     private int refillReadBuffer(long newBufferAbsolutePosition) throws IOException {
         buffer.clear();
-        // This delegates to the backing behavior and may issue a service range read from newBufferAbsolutePosition.
         int read = readBehavior.read(buffer, newBufferAbsolutePosition);
         buffer.rewind();
         buffer.limit(Math.max(read, 0));
-        // After read(...), shipped ReadBehavior implementations have populated their resource length from the
-        // response's Content-Range header. Guard against the corner case where the length is still unknown
-        // (returned -1) so we don't clobber bufferAbsolutePosition with a negative value.
-        long observedLength = readBehavior.getResourceLength();
-        bufferAbsolutePosition
-            = observedLength >= 0 ? Math.min(newBufferAbsolutePosition, observedLength) : newBufferAbsolutePosition;
         return read;
     }
 
@@ -386,19 +296,7 @@ public final class StorageSeekableByteChannel implements SeekableByteChannel {
     public long size() throws IOException {
         assertOpen();
         if (readBehavior != null) {
-            long length = readBehavior.getResourceLength();
-            if (length < 0) {
-                // ReadBehavior#getResourceLength() is contracted to be a non-blocking accessor and returns a
-                // negative value when no read has populated the length yet. To preserve the
-                // SeekableByteChannel#size() contract for callers who query size before reading, seed the cache
-                // here via a minimal one-byte range probe -- this triggers exactly one service round-trip
-                // (typically the same round-trip a HEAD would cost) and lets the behavior parse the resource
-                // length out of the response's Content-Range header. Subsequent size() calls hit the cache.
-                ByteBuffer probe = ByteBuffer.allocate(1);
-                readBehavior.read(probe, 0);
-                length = readBehavior.getResourceLength();
-            }
-            return length;
+            return readBehavior.getResourceLength();
         } else {
             return absolutePosition;
         }

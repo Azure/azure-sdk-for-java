@@ -46,11 +46,6 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'dst.remaining()' must be positive."));
         }
 
-        // Note: this layer intentionally does NOT short-circuit when sourceOffset is at or past the cached
-        // resourceLength. The StorageSeekableByteChannel EOF short-circuit handles that for channel-based
-        // callers, while leaving this method free to discover server-side file growth (see the
-        // readDetectsFileGrowth unit test). Direct callers rely on this method to actually issue the range GET.
-
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
@@ -62,17 +57,6 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             lastKnownResourceLength
                 = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
-        } catch (ShareStorageException e) {
-            if (e.getErrorCode() == ShareErrorCode.INVALID_RANGE) {
-                String contentRange = e.getResponse().getHeaderValue("Content-Range");
-                if (contentRange != null) {
-                    lastKnownResourceLength = CoreUtils.extractSizeFromContentRange(contentRange);
-                }
-                // if requested offset is past updated end of file, then signal end of file. Otherwise, only signal
-                // that zero bytes were read
-                return sourceOffset < lastKnownResourceLength ? 0 : -1;
-            }
-            throw LOGGER.logExceptionAsError(e);
         } catch (RuntimeException e) {
             // Non-storage failure path. The stress-test scenario observed in issue #38070 is a connection reset
             // while the 416 error-body is being streamed back: downloadWithResponse surfaces it as a
@@ -97,15 +81,6 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
 
     @Override
     public long getResourceLength() {
-        // Returns the cached length as populated by {@link #read(ByteBuffer, long)} from the Content-Range header,
-        // or {@link #UNKNOWN_LENGTH} (-1) if no read has happened yet.
-        //
-        // Intentionally does NOT issue a service call (such as the historical lazy
-        // client.getProperties() fallback). The ReadBehavior contract on StorageSeekableByteChannel requires
-        // getResourceLength() to be a cheap accessor; performing I/O here would cause a spurious HEAD on the
-        // channel's first read(...) call (the channel's EOF short-circuit consults this method before any refill
-        // has had a chance to populate the cache). StorageSeekableByteChannel#size() seeds this value on demand
-        // via a minimal range probe when callers need it before any read has happened.
         return lastKnownResourceLength;
     }
 
