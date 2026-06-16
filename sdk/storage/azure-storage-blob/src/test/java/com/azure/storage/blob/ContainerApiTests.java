@@ -2153,7 +2153,8 @@ public class ContainerApiTests extends BlobTestBase {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2177,8 +2178,9 @@ public class ContainerApiTests extends BlobTestBase {
         cc.getBlobClient(blobName).setTags(tags);
 
         // List with Arrow + retrieveTags
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-            .setDetails(new BlobListDetails().setRetrieveTags(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveTags(true));
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2202,7 +2204,8 @@ public class ContainerApiTests extends BlobTestBase {
                 null, null);
         }
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
         BlobItem item = cc.listBlobs(options, null).iterator().next();
 
         assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
@@ -2219,8 +2222,9 @@ public class ContainerApiTests extends BlobTestBase {
             .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
                 null, null, null);
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2238,7 +2242,9 @@ public class ContainerApiTests extends BlobTestBase {
                 .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         }
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW).setMaxResultsPerPage(1);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
         List<BlobItem> allBlobs = new ArrayList<>();
         for (PagedResponse<BlobItem> page : cc.listBlobs(options, null).iterableByPage()) {
             assertTrue(page.getValue().size() <= 1);
@@ -2277,7 +2283,8 @@ public class ContainerApiTests extends BlobTestBase {
         BlobClient cpkClient = cc.getBlobClient(blobName).getCustomerProvidedKeyClient(cpk);
         cpkClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
         List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2371,7 +2378,8 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
         List<BlobItem> items = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
 
         // Root level: one prefix "dir/" and one blob "topblob"
@@ -2408,9 +2416,10 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-            .setPrefix("dir/")
-            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setPrefix("dir/")
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
         List<BlobItem> blobs = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
 
         assertEquals(1, blobs.size());
@@ -2432,7 +2441,9 @@ public class ContainerApiTests extends BlobTestBase {
             .getBlockBlobClient()
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW).setMaxResultsPerPage(1);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
         List<BlobItem> allItems = new ArrayList<>();
         for (PagedResponse<BlobItem> page : cc.listBlobsByHierarchy("/", options, null).iterableByPage()) {
             assertTrue(page.getValue().size() <= 1);

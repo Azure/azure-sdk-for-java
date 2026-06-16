@@ -2157,7 +2157,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String blobName = generateBlobName();
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
 
         StepVerifier
             .create(
@@ -2181,8 +2182,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         metadata.put("testkey", "testvalue");
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
 
         StepVerifier.create(
             bc.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, metadata, null, null, null)
@@ -2203,7 +2205,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .getBlockBlobAsyncClient()
                 .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW).setMaxResultsPerPage(1);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
 
         Mono<List<BlobItem>> result = uploads.then(ccAsync.listBlobs(options, null).byPage().doOnNext(page -> {
             assertTrue(page.getValue().size() <= 1);
@@ -2245,7 +2249,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         BlockBlobAsyncClient cpkClient
             = ccAsync.getBlobAsyncClient(blobName).getCustomerProvidedKeyAsyncClient(cpk).getBlockBlobAsyncClient();
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
 
         StepVerifier.create(cpkClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
             .thenMany(ccAsync.listBlobs(options, null))).assertNext(item -> {
@@ -2272,7 +2277,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                     new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority)));
         }
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
 
         Flux<BlobItem> response = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
             .then(rehydrate)
@@ -2370,7 +2376,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .getBlockBlobAsyncClient()
                 .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
 
         Mono<List<BlobItem>> items
             = uploads.then(ccAsync.listBlobsByHierarchy("/", options).collect(Collectors.toList()));
@@ -2411,9 +2418,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .getBlockBlobAsyncClient()
                 .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-            .setPrefix("dir/")
-            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setPrefix("dir/")
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
 
         StepVerifier.create(uploads.thenMany(ccAsync.listBlobsByHierarchy("/", options))).assertNext(item -> {
             assertFalse(item.isPrefix());
@@ -2435,7 +2443,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .getBlockBlobAsyncClient()
                 .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()));
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW).setMaxResultsPerPage(1);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
 
         Mono<List<BlobItem>> result
             = uploads.then(ccAsync.listBlobsByHierarchy("/", options).byPage().doOnNext(page -> {
@@ -2456,8 +2466,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         Map<String, String> tags = new HashMap<>();
         tags.put("tagkey", "tagvalue");
 
-        ListBlobsOptions options = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
-            .setDetails(new BlobListDetails().setRetrieveTags(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveTags(true));
 
         Mono<?> upload = bc.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
             .then(ccAsync.getBlobAsyncClient(blobName).setTags(tags));

@@ -131,8 +131,8 @@ public final class ListBlobsOptions {
      * {@link StorageResponseSerializationFormat#AUTO} both let the SDK pick.
      * @return the updated {@link ListBlobsOptions} object.
      */
-    public ListBlobsOptions setStorageResponseSerializationFormat(
-        StorageResponseSerializationFormat storageResponseSerializationFormat) {
+    public ListBlobsOptions
+        setStorageResponseSerializationFormat(StorageResponseSerializationFormat storageResponseSerializationFormat) {
         this.storageResponseSerializationFormat = storageResponseSerializationFormat;
         return this;
     }
