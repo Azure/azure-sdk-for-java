@@ -4,7 +4,7 @@
 package com.azure.ai.agents.memory;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.MemoryStoresClient;
+import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.core.util.Configuration;
@@ -18,10 +18,11 @@ public class CreateMemoryStore {
         String embeddingModel = configuration.get("AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME");
 
         // Code sample for creating a memory store
-        MemoryStoresClient memoryStoresClient = new AgentsClientBuilder()
+        BetaMemoryStoresClient memoryStoresClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildMemoryStoresClient();
+                .beta()
+                .buildBetaMemoryStoresClient();
 
         String memoryStoreName = "my_memory_store_java";
         String description = "Example memory store for conversations";

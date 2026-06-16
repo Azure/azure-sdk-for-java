@@ -49,22 +49,25 @@ Various documentation is available to help you get started
 The Azure AI Foundry provides a centralized spot to manage your AI Foundry resources. In order to access each feature you need to initialize your builder and access the corresponding sub-client like it's shown in the following code snippet:
 
 ```java com.azure.ai.projects.clientInitialization
-AIProjectClientBuilder builder = new AIProjectClientBuilder();
+AIProjectClientBuilder builder = new AIProjectClientBuilder()
+    .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
 
 ConnectionsClient connectionsClient = builder.buildConnectionsClient();
-DataGenerationJobsClient dataGenerationJobsClient = builder.buildDataGenerationJobsClient();
+// Beta* clients automatically opt in to their preview service area.
+BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
-EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
+BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
+    = builder.beta().buildBetaEvaluationTaxonomiesClient();
+BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
-InsightsClient insightsClient = builder.buildInsightsClient();
-ModelsClient modelsClient = builder.buildModelsClient();
-RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
-RoutinesClient routinesClient = builder.buildRoutinesClient();
-SchedulesClient schedulesClient = builder.buildSchedulesClient();
-SkillsClient skillsClient = builder.buildSkillsClient();
+BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();
+BetaModelsClient modelsClient = builder.beta().buildBetaModelsClient();
+BetaRedTeamsClient redTeamsClient = builder.beta().buildBetaRedTeamsClient();
+BetaRoutinesClient routinesClient = builder.beta().buildBetaRoutinesClient();
+BetaSchedulesClient schedulesClient = builder.beta().buildBetaSchedulesClient();
+BetaSkillsClient skillsClient = builder.beta().buildBetaSkillsClient();
 ```
 
 In the particular case of the `Evals` feature, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
@@ -98,7 +101,7 @@ For the Agents operation, you can use the `azure-ai-agents` package which is ava
 AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
 
 AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
-MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
+BetaMemoryStoresClient memoryStoresClient = agentsClientBuilder.beta().buildBetaMemoryStoresClient();
 ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
 ```
 
@@ -109,22 +112,34 @@ OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
 ```
 
-### Preview operation groups and opt-in flags
+### Preview operation groups and beta clients
 
-Several operation groups in the AI Projects client library are in **preview** and require the `Foundry-Features` HTTP header for opt-in. The SDK automatically sets this header on every request for the following sub-clients:
+Several operation groups in the AI Projects client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.
 
-| Sub-client | Opt-in flag |
+Use `AIProjectClientBuilder.allowPreview(true)` when building non-Beta clients that support preview service behavior. For example, `EvaluationRulesClient` and `EvaluationRulesAsyncClient` use this builder setting to allow the service to return preview response types:
+
+```java
+AIProjectClientBuilder builder = new AIProjectClientBuilder()
+    .allowPreview(true);
+
+EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
+```
+
+Clients whose names start with `Beta` always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
+
+| Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `EvaluatorsClient` | `Evaluations=V1Preview` |
-| `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
-| `ModelsClient` | `Models=V1Preview` |
-| `RedTeamsClient` | `RedTeams=V1Preview` |
-| `SchedulesClient` | `Schedules=V1Preview` |
-| `SkillsClient` | `Skills=V1Preview` |
+| `BetaDatasetsClient` | `DataGenerationJobs=V1Preview` |
+| `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
+| `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
+| `BetaInsightsClient` | `Insights=V1Preview` |
+| `BetaModelsClient` | `Models=V1Preview` |
+| `BetaRedTeamsClient` | `RedTeams=V1Preview` |
+| `BetaRoutinesClient` | `Routines=V1Preview` |
+| `BetaSchedulesClient` | `Schedules=V1Preview` |
+| `BetaSkillsClient` | `Skills=V1Preview` |
 
-The `DataGenerationJobsClient`, `RoutinesClient`, `EvaluationRulesClient`, and `InsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling methods that accept it (e.g., `FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW`, `FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW`, `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
-
-The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`, `ROUTINES_V1_PREVIEW`, `TOOLBOXES_V1_PREVIEW`, `SKILLS_V1_PREVIEW`, `DATA_GENERATION_JOBS_V1_PREVIEW`, `MODELS_V1_PREVIEW`, `AGENTS_OPTIMIZATION_V1_PREVIEW`.
+The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
@@ -652,7 +667,7 @@ return indexesAsyncClient.deleteIndexVersion(indexName, indexVersion)
 
 ### Skills operations
 
-Skills are a preview feature. The `SkillsClient` automatically sets the `Skills=V1Preview` opt-in flag on every request.
+Skills are a preview feature. The `BetaSkillsClient` automatically sets the `Skills=V1Preview` opt-in flag on every request.
 
 #### Create a skill
 
@@ -675,7 +690,7 @@ System.out.println("Version: " + skillVersion.getVersion());
 ```java com.azure.ai.projects.SkillsSample.getSkill
 
 String skillName = "product-support-skill";
-Skill skill = skillsClient.getSkill(skillName);
+SkillDetails skill = skillsClient.getSkill(skillName);
 
 System.out.println("Skill name: " + skill.getName());
 System.out.println("Description: " + skill.getDescription());
@@ -689,7 +704,7 @@ System.out.println("Default version: " + skill.getDefaultVersion());
 
 String skillName = "product-support-skill";
 
-Skill updated = skillsClient.updateSkill(skillName, "2");
+SkillDetails updated = skillsClient.updateSkill(skillName, "2");
 
 System.out.println("Updated skill: " + updated.getName());
 System.out.println("Default version: " + updated.getDefaultVersion());
@@ -700,8 +715,8 @@ System.out.println("Default version: " + updated.getDefaultVersion());
 
 ```java com.azure.ai.projects.SkillsSample.listSkills
 
-PagedIterable<Skill> skills = skillsClient.listSkills();
-for (Skill skill : skills) {
+PagedIterable<SkillDetails> skills = skillsClient.listSkills();
+for (SkillDetails skill : skills) {
     System.out.println("Skill name: " + skill.getName());
     System.out.println("Description: " + skill.getDescription());
     System.out.println("-------------------------------------------------");
