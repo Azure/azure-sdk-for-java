@@ -661,11 +661,11 @@ public final class CallConnectionAsync {
                     .setSource(CommunicationIdentifierConverter.convert(teamsPhoneSourceDetails.getSource()));
                 teamsPhoneSourceDetailsInternal.setLanguage(teamsPhoneSourceDetails.getLanguage());
                 teamsPhoneSourceDetailsInternal.setStatus(teamsPhoneSourceDetails.getStatus());
-                teamsPhoneSourceDetailsInternal.setIntendedTargets(teamsPhoneSourceDetails.getIntendedTargets()
-                    .entrySet()
-                    .stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey,
-                        entry -> CommunicationIdentifierConverter.convert(entry.getValue()))));
+                teamsPhoneSourceDetailsInternal.setIntendedTargets(teamsPhoneSourceDetails.getIntendedTargets() == null
+                    ? null
+                    : teamsPhoneSourceDetails.getIntendedTargets().entrySet().stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey,
+                            entry -> CommunicationIdentifierConverter.convert(entry.getValue()))));
             }
 
         }
