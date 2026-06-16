@@ -8,6 +8,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
@@ -109,15 +110,15 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .addPolicy(new BearerTokenAuthenticationPolicy(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)), "https://confidential-ledger.azure.com/.default"));
             addSanitizers();
         } else if (getTestMode() == TestMode.RECORD) {
             confidentialLedgerClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(httpClient)
-                .credential(new DefaultAzureCredentialBuilder().build());
+                .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"));
             addSanitizers();
         } else if (getTestMode() == TestMode.LIVE) {
-            confidentialLedgerClientBuilder.credential(new DefaultAzureCredentialBuilder().build())
+            confidentialLedgerClientBuilder.addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
                 .httpClient(httpClient);
         }
         confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
