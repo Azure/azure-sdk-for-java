@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.6.5 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Jackson from `2.18.6` to `2.18.7`.
+
 ## 1.6.4 (2026-04-28)
 
 ### Other Changes

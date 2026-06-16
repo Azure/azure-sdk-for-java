@@ -1,6 +1,18 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.2 (2026-06-09)
+
+- Please note, this package has been deprecated and will no longer be maintained after 2026-02-10. We encourage you to upgrade to the replacement package, azure-resourcemanager-artifactsigning, to continue receiving updates. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 - Azure Resource Manager Trusted Signing client library for Java. This package contains Microsoft Azure SDK for Trusted Signing Management SDK. Code Signing resource provider api. Package api-version 2025-10-13. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 

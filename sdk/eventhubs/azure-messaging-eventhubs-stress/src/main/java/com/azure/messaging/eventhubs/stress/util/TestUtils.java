@@ -41,12 +41,6 @@ public final class TestUtils {
             .consumerGroup(options.getEventHubsConsumerGroup())
             .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
 
-        if (options.useV2Stack()) {
-            Configuration configuration
-                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
-
-            builder.configuration(configuration);
-        }
         return builder;
     }
 
@@ -67,13 +61,6 @@ public final class TestUtils {
             .eventHubName(options.getEventHubsEventHubName())
             .transportType(options.getAmqpTransportType())
             .consumerGroup(options.getEventHubsConsumerGroup());
-
-        if (options.useV2Stack()) {
-            Configuration configuration
-                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
-
-            builder.configuration(configuration);
-        }
 
         return builder;
     }

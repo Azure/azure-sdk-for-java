@@ -22,6 +22,14 @@ public final class ScaleProfile implements JsonSerializable<ScaleProfile> {
      */
     private List<ManualScaleProfile> manual;
 
+    /*
+     * Specifications on how to auto-scale the VirtualMachines agent pool within a predefined size range.
+     * Each profile targets a specific VM SKU and is evaluated independently.
+     * Scaling decisions across profiles are governed by the cluster autoscaler expander,
+     * configurable via `ManagedCluster.properties.autoScalerProfile.expander`.
+     */
+    private List<AutoScaleProfile> autoscale;
+
     /**
      * Creates an instance of ScaleProfile class.
      */
@@ -49,6 +57,34 @@ public final class ScaleProfile implements JsonSerializable<ScaleProfile> {
     }
 
     /**
+     * Get the autoscale property: Specifications on how to auto-scale the VirtualMachines agent pool within a
+     * predefined size range.
+     * Each profile targets a specific VM SKU and is evaluated independently.
+     * Scaling decisions across profiles are governed by the cluster autoscaler expander,
+     * configurable via `ManagedCluster.properties.autoScalerProfile.expander`.
+     * 
+     * @return the autoscale value.
+     */
+    public List<AutoScaleProfile> autoscale() {
+        return this.autoscale;
+    }
+
+    /**
+     * Set the autoscale property: Specifications on how to auto-scale the VirtualMachines agent pool within a
+     * predefined size range.
+     * Each profile targets a specific VM SKU and is evaluated independently.
+     * Scaling decisions across profiles are governed by the cluster autoscaler expander,
+     * configurable via `ManagedCluster.properties.autoScalerProfile.expander`.
+     * 
+     * @param autoscale the autoscale value to set.
+     * @return the ScaleProfile object itself.
+     */
+    public ScaleProfile withAutoscale(List<AutoScaleProfile> autoscale) {
+        this.autoscale = autoscale;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,6 +92,9 @@ public final class ScaleProfile implements JsonSerializable<ScaleProfile> {
     public void validate() {
         if (manual() != null) {
             manual().forEach(e -> e.validate());
+        }
+        if (autoscale() != null) {
+            autoscale().forEach(e -> e.validate());
         }
     }
 
@@ -66,6 +105,7 @@ public final class ScaleProfile implements JsonSerializable<ScaleProfile> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("manual", this.manual, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("autoscale", this.autoscale, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +127,9 @@ public final class ScaleProfile implements JsonSerializable<ScaleProfile> {
                 if ("manual".equals(fieldName)) {
                     List<ManualScaleProfile> manual = reader.readArray(reader1 -> ManualScaleProfile.fromJson(reader1));
                     deserializedScaleProfile.manual = manual;
+                } else if ("autoscale".equals(fieldName)) {
+                    List<AutoScaleProfile> autoscale = reader.readArray(reader1 -> AutoScaleProfile.fromJson(reader1));
+                    deserializedScaleProfile.autoscale = autoscale;
                 } else {
                     reader.skipChildren();
                 }

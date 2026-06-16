@@ -443,11 +443,18 @@ public final class CosmosChangeFeedRequestOptions {
         CosmosChangeFeedRequestOptions effectiveRequestOptions = this;
 
         if (pagedFluxOptions.getRequestContinuation() != null) {
+            // Rebuild from the saved continuation token (this produces the 4 token-encoded
+            // fields: continuationState, feedRangeInternal, mode, startFromInternal) and then
+            // inherit every other field from the caller's original options. Without this
+            // inheritance, a byPage(savedContinuation) round-trip would silently drop
+            // caller-supplied configuration like endLSN, customSerializer, excludeRegions,
+            // readConsistencyStrategy, etc. See
+            // CosmosChangeFeedRequestOptionsImpl.inheritNonContinuationFieldsFrom for the
+            // exhaustive field-by-field rationale.
             effectiveRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
                     pagedFluxOptions.getRequestContinuation());
-            effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
-            effectiveRequestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
+            effectiveRequestOptions.getImpl().inheritNonContinuationFieldsFrom(this.actualRequestOptions);
         }
 
         if (pagedFluxOptions.getMaxItemCount() != null) {
