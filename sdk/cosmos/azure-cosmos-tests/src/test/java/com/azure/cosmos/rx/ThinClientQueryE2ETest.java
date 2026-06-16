@@ -34,6 +34,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -45,7 +46,10 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -752,6 +756,13 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
         assertThat(pageCount).as("Should have multiple pages with page size 3").isGreaterThan(1);
         assertThat(tcAll.size()).as("Continuation draining count mismatch").isEqualTo(gwResult.results.size());
+
+        List<String> tcDrainedIds = idsSorted(tcAll);
+        List<String> gwDrainedIds = idsSorted(gwResult.results);
+        assertThat(tcDrainedIds).as("Continuation draining ID-set mismatch").isEqualTo(gwDrainedIds);
+        assertThat(new HashSet<>(tcDrainedIds).size())
+            .as("Duplicate IDs encountered across drained continuation pages")
+            .isEqualTo(tcDrainedIds.size());
     }
 
     // ==================== Invalid Query ====================
@@ -763,13 +774,11 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                 .byPage().blockFirst();
             fail("Expected exception for invalid query");
         } catch (CosmosException e) {
-            assertThat(e.getStatusCode() == 400 || e.getStatusCode() == 0)
-                .as("Invalid query should return 400 Bad Request or a thin-client transport rejection, got "
-                    + e.getStatusCode())
-                .isTrue();
-            if (e.getStatusCode() == 0) {
-                assertThinClientEndpointUsed(e.getDiagnostics());
-            }
+            assertThat(e.getStatusCode())
+                .as("Invalid query must return 400 Bad Request (statusCode 0 indicates the thin-client "
+                    + "decode regression), got " + e.getStatusCode())
+                .isEqualTo(400);
+            assertThinClientEndpointUsed(e.getDiagnostics());
             logger.info("Expected error for invalid query: {} (status {})", e.getMessage(), e.getStatusCode());
         }
     }
@@ -1262,7 +1271,8 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     /**
      * Direct vs thin client comparison: run query via both Direct TCP and thin client.
-     * Assert: (1) thin client used :10250, (2) same count, (3) same document IDs in order.
+     * Assert: (1) thin client used :10250, (2) same count, (3) same document IDs — compared in
+     * sequence for ORDER BY queries and as sorted sets otherwise (cross-partition order is undefined).
      */
     private void assertDirectAndThinClientMatch(String query) {
         assertDirectAndThinClientMatch(query, partitionedOptions());
@@ -1274,10 +1284,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
 
         assertThat(tcResult.results.size()).as("Count mismatch: " + query).isEqualTo(gwResult.results.size());
-
-        List<String> gwIds = gwResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        List<String> tcIds = tcResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        assertThat(tcIds).as("IDs mismatch: " + query).isEqualTo(gwIds);
+        assertSameDocumentIds(gwResult.results, tcResult.results, isOrderedQuery(query), query);
     }
 
     private void assertDirectAndThinClientMatch(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
@@ -1286,10 +1293,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
 
         assertThat(tcResult.results.size()).as("Count mismatch: " + querySpec.getQueryText()).isEqualTo(gwResult.results.size());
-
-        List<String> gwIds = gwResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        List<String> tcIds = tcResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        assertThat(tcIds).as("IDs mismatch: " + querySpec.getQueryText()).isEqualTo(gwIds);
+        assertSameDocumentIds(gwResult.results, tcResult.results, isOrderedQuery(querySpec.getQueryText()), querySpec.getQueryText());
     }
 
     private <T> void assertScalarDirectAndThinClientMatch(String query, Class<T> resultType) {
@@ -1303,8 +1307,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
         assertThat(tcResult.results.size()).as("Scalar count mismatch: " + query).isEqualTo(gwResult.results.size());
         for (int i = 0; i < gwResult.results.size(); i++) {
-            assertThat(tcResult.results.get(i).toString()).as("Scalar value mismatch at " + i + ": " + query)
-                .isEqualTo(gwResult.results.get(i).toString());
+            assertScalarValueEquals(tcResult.results.get(i), gwResult.results.get(i), i + ": " + query);
         }
     }
 
@@ -1318,8 +1321,98 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         for (ObjectNode gwRow : gwResult.results) {
             String key = gwRow.get(groupField).asText();
             boolean found = tcResult.results.stream().anyMatch(tc -> tc.get(groupField).asText().equals(key)
-                && tc.toString().equals(gwRow.toString()));
+                && jsonEqualsWithTolerance(tc, gwRow));
             assertThat(found).as("GROUP BY row not found in thin client results: " + key).isTrue();
         }
+    }
+
+    private static final double NUMERIC_TOLERANCE = 1e-6;
+
+    private static boolean isOrderedQuery(String queryText) {
+        return queryText != null && queryText.toUpperCase(Locale.ROOT).contains("ORDER BY");
+    }
+
+    /**
+     * Compares document IDs between the Direct (baseline) and thin client results. For ORDER BY
+     * queries the sequence is significant, so IDs are compared in order. For all other queries the
+     * cross-partition / cross-page ordering is undefined, so IDs are compared as sorted sets.
+     */
+    private static void assertSameDocumentIds(List<ObjectNode> gwDocs, List<ObjectNode> tcDocs, boolean ordered, String desc) {
+        List<String> gwIds = gwDocs.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+        List<String> tcIds = tcDocs.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+        if (ordered) {
+            assertThat(tcIds).as("IDs mismatch (ordered): " + desc).isEqualTo(gwIds);
+        } else {
+            assertThat(tcIds.stream().sorted().collect(Collectors.toList()))
+                .as("IDs mismatch (unordered): " + desc)
+                .isEqualTo(gwIds.stream().sorted().collect(Collectors.toList()));
+        }
+    }
+
+    /**
+     * Compares scalar aggregate values, treating two numeric values as equal when they fall within
+     * NUMERIC_TOLERANCE. Avoids false mismatches from floating-point formatting differences (e.g.
+     * SUM/AVG) between the Direct and thin client paths; falls back to string equality otherwise.
+     */
+    private static <T> void assertScalarValueEquals(T tcValue, T gwValue, String desc) {
+        String tcStr = String.valueOf(tcValue);
+        String gwStr = String.valueOf(gwValue);
+        Double tcNum = tryParseDouble(tcStr);
+        Double gwNum = tryParseDouble(gwStr);
+        if (tcNum != null && gwNum != null) {
+            assertThat(Math.abs(tcNum - gwNum)).as("Scalar numeric mismatch at " + desc).isLessThan(NUMERIC_TOLERANCE);
+        } else {
+            assertThat(tcStr).as("Scalar value mismatch at " + desc).isEqualTo(gwStr);
+        }
+    }
+
+    private static Double tryParseDouble(String value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            return Double.parseDouble(value.trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Recursively compares two JSON nodes, treating numeric leaves as equal when they fall within
+     * NUMERIC_TOLERANCE. Prevents false GROUP BY mismatches caused by floating-point formatting
+     * differences in aggregate values (e.g. SUM/AVG) between the Direct and thin client paths.
+     */
+    private static boolean jsonEqualsWithTolerance(JsonNode a, JsonNode b) {
+        if (a == null || b == null) {
+            return a == b;
+        }
+        if (a.isNumber() && b.isNumber()) {
+            return Math.abs(a.asDouble() - b.asDouble()) < NUMERIC_TOLERANCE;
+        }
+        if (a.isObject() && b.isObject()) {
+            if (a.size() != b.size()) {
+                return false;
+            }
+            Iterator<String> fieldNames = a.fieldNames();
+            while (fieldNames.hasNext()) {
+                String field = fieldNames.next();
+                if (!b.has(field) || !jsonEqualsWithTolerance(a.get(field), b.get(field))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        if (a.isArray() && b.isArray()) {
+            if (a.size() != b.size()) {
+                return false;
+            }
+            for (int i = 0; i < a.size(); i++) {
+                if (!jsonEqualsWithTolerance(a.get(i), b.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return a.equals(b);
     }
 }
