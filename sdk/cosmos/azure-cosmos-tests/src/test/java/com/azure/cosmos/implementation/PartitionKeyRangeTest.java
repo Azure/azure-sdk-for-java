@@ -159,16 +159,6 @@ public class PartitionKeyRangeTest {
     }
 
     @Test(groups = "unit")
-    public void stringConstructor_isUnaffectedByStrip() {
-        // The (String) ctor goes through a different superclass path (JsonSerializable(String))
-        // and is used by tests/samples that may want full fidelity for round-trip JSON. It is
-        // intentionally NOT touched by the strip optimization; this test pins that.
-        PartitionKeyRange range = new PartitionKeyRange(FULL_PK_RANGE_JSON);
-        assertEquals(range.has("_rid"), true, "string-ctor PKR retains full fidelity");
-        assertEquals(range.has("_self"), true, "string-ctor PKR retains full fidelity");
-    }
-
-    @Test(groups = "unit")
     public void deserializationFunnelStripsForFeedResponsePath() throws Exception {
         // JsonSerializable.instantiateFromObjectNodeAndType is the funnel every FeedResponse
         // page uses when deserializing pkranges. Confirm it routes through the

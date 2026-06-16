@@ -88,17 +88,6 @@ public class PartitionKeyRange extends Resource {
     }
 
     /**
-     * Initialize a partition key range object from json string.
-     *
-     * @param jsonString
-     *            the json string that represents the partition key range
-     *            object.
-     */
-    public PartitionKeyRange(String jsonString) {
-        super(jsonString);
-    }
-
-    /**
      * Set id of partition key range
      * @param id the name of the resource.
      * @return the partition key range
