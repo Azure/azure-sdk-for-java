@@ -9,12 +9,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.json.models.JsonObject;
 import org.junit.jupiter.api.Assertions;
-import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Test;
 
 public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTestBase {
-    @LiveOnly
-
     @Test
     public void testGetConsortiumMembersTests() {
         RequestOptions requestOptions = new RequestOptions();

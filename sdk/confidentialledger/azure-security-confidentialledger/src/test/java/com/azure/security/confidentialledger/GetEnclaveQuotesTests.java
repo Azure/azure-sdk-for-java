@@ -10,12 +10,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Assertions;
-import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Test;
 
 public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBase {
-
-    @LiveOnly
 
     @Test
     public void testGetEnclaveQuotes() throws Exception {

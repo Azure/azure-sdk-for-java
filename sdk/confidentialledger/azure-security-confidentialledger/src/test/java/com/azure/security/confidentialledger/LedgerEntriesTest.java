@@ -11,7 +11,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.models.JsonObject;
 import com.azure.json.models.JsonString;
 import org.junit.jupiter.api.Assertions;
-import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 
@@ -23,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Isolated("There is an assumption in post ledger entries that checks it is latest entry.")
 public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
-    @LiveOnly
-
     @Test
     public void testPostLedgerEntryTests() throws Exception {
         // Arrange
@@ -57,8 +54,6 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
             assertTrue(jsonTransactionId <= Double.parseDouble(transactionId));
         }
     }
-
-    @LiveOnly
 
     @Test
     public void testGetCollectionIdsTests() throws Exception {
