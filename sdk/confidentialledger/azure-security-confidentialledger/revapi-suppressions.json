@@ -1,0 +1,20 @@
+[
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder::credential(com.azure.core.credential.TokenCredential)",
+          "justification": "TypeSpec regeneration removed credential() in favor of addPolicy() for auth configuration. Package is beta."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.security.confidentialledger.ConfidentialLedgerServiceVersion.V2022_05_13",
+          "justification": "Old API version removed in TypeSpec regeneration for stable 2026-02-23. Package is beta."
+        }
+      ]
+    }
+  }
+]

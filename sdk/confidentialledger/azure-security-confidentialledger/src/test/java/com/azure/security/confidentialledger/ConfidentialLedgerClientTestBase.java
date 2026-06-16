@@ -9,9 +9,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -138,6 +135,8 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
             new TestProxySanitizer("(?<=/ledgerIdentity/)([^/?]+)", "java-sdk-live-tests-ledger",
                 TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=/app/users/)([^/?]+)", "d958292f-5b70-4b66-9502-562217cc7eaa",
+                TestProxySanitizerType.URL),
+            new TestProxySanitizer("(?<=/app/ledgerUsers/)([^/?]+)", "sanitized-user-oid",
                 TestProxySanitizerType.URL)));
     }
 
