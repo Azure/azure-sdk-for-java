@@ -18,7 +18,7 @@ public class DeviceManagementListDeploymentsForGroup {
                 .instanceId("blue")
                 .buildDeviceManagementClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-deployments-for-group.device-management-list-deployments-for-group
-        PagedIterable<Deployment> response = deviceManagementClient.listDeploymentsForGroup("TestGroup", null);
+        PagedIterable<Deployment> response = deviceManagementClient.listDeploymentsForGroup("TestGroup");
         // END:com.azure.iot.deviceupdate.generated.device-management-list-deployments-for-group.device-management-list-deployments-for-group
     }
 }

@@ -17,7 +17,7 @@ public class DeviceUpdateListVersions {
                 .instanceId("blue")
                 .buildDeviceUpdateClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.device-update-list-versions.device-update-list-versions
-        PagedIterable<String> response = deviceUpdateClient.listVersions("microsoft", "adu", null);
+        PagedIterable<String> response = deviceUpdateClient.listVersions("microsoft", "adu");
         // END:com.azure.iot.deviceupdate.generated.device-update-list-versions.device-update-list-versions
     }
 }

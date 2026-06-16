@@ -25,7 +25,7 @@ public class ImportUpdateSample {
             .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
+            .buildDeviceUpdateClient();
 
         try {
             String payloadFile = Configuration.getGlobalConfiguration().get("DEVICEUPDATE_PAYLOAD_FILE");

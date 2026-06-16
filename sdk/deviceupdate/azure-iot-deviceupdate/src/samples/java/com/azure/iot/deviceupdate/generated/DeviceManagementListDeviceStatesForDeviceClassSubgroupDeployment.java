@@ -19,7 +19,7 @@ public class DeviceManagementListDeviceStatesForDeviceClassSubgroupDeployment {
                 .buildDeviceManagementClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-device-states-for-device-class-subgroup-deployment.device-management-list-device-states-for-device-class-subgroup-deployment
         PagedIterable<DeploymentDeviceState> response = deviceManagementClient
-            .listDeviceStatesForDeviceClassSubgroupDeployment("TestGroup", "deviceClassId", "deploymentId", null);
+            .listDeviceStatesForDeviceClassSubgroupDeployment("TestGroup", "deviceClassId", "deploymentId");
         // END:com.azure.iot.deviceupdate.generated.device-management-list-device-states-for-device-class-subgroup-deployment.device-management-list-device-states-for-device-class-subgroup-deployment
     }
 }

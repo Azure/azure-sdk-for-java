@@ -19,7 +19,7 @@ public class DeviceManagementListDeploymentsForDeviceClassSubgroup {
                 .buildDeviceManagementClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-deployments-for-device-class-subgroup.device-management-list-deployments-for-device-class-subgroup
         PagedIterable<Deployment> response
-            = deviceManagementClient.listDeploymentsForDeviceClassSubgroup("TestGroup", "deviceClassId1", null);
+            = deviceManagementClient.listDeploymentsForDeviceClassSubgroup("TestGroup", "deviceClassId1");
         // END:com.azure.iot.deviceupdate.generated.device-management-list-deployments-for-device-class-subgroup.device-management-list-deployments-for-device-class-subgroup
     }
 }

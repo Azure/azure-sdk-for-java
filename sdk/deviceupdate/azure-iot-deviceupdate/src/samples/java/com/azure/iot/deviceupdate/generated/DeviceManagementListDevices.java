@@ -18,7 +18,7 @@ public class DeviceManagementListDevices {
                 .instanceId("blue")
                 .buildDeviceManagementClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-devices.device-management-list-devices
-        PagedIterable<Device> response = deviceManagementClient.listDevices(null);
+        PagedIterable<Device> response = deviceManagementClient.listDevices();
         // END:com.azure.iot.deviceupdate.generated.device-management-list-devices.device-management-list-devices
     }
 }
