@@ -663,7 +663,9 @@ public final class CallConnectionAsync {
                 teamsPhoneSourceDetailsInternal.setStatus(teamsPhoneSourceDetails.getStatus());
                 teamsPhoneSourceDetailsInternal.setIntendedTargets(teamsPhoneSourceDetails.getIntendedTargets() == null
                     ? null
-                    : teamsPhoneSourceDetails.getIntendedTargets().entrySet().stream()
+                    : teamsPhoneSourceDetails.getIntendedTargets()
+                        .entrySet()
+                        .stream()
                         .collect(Collectors.toMap(Map.Entry::getKey,
                             entry -> CommunicationIdentifierConverter.convert(entry.getValue()))));
             }
