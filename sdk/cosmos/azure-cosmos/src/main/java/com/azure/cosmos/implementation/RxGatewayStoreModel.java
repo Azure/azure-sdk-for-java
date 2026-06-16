@@ -861,7 +861,21 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             safeSilentRelease(retainedBodyAsByteBuf);
 
             CosmosError cosmosError;
-            cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
+            if (StringUtils.isNotEmpty(body)) {
+                try {
+                    cosmosError = new CosmosError(body);
+                } catch (IllegalArgumentException jsonParseError) {
+                    // Gateway V2 / thin-client error responses (notably query-plan generation
+                    // failures) can carry a raw, non-JSON body (optionally NUL-padded) instead of a
+                    // serialized CosmosError. Parsing it as JSON throws and, upstream, the real HTTP
+                    // status code is lost and the failure surfaces as statusCode 0. Fall back to the
+                    // raw (sanitized) body as the message so the actual status code is preserved on
+                    // the thrown CosmosException.
+                    cosmosError = new CosmosError(statusCodeString, sanitizeErrorBody(body));
+                }
+            } else {
+                cosmosError = new CosmosError();
+            }
             cosmosError = new CosmosError(statusCodeString,
                 String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                 cosmosError.getPartitionedQueryExecutionInfo());
@@ -870,6 +884,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
+    }
+
+    private static String sanitizeErrorBody(String body) {
+        // Proxies may NUL-pad fixed-size buffers; strip padding and surrounding whitespace so the
+        // preserved error message is readable. If stripping leaves nothing, keep the original body.
+        String sanitized = body.replace("\u0000", "").trim();
+        return sanitized.isEmpty() ? body : sanitized;
     }
 
     private static HttpMethod getHttpMethod(RxDocumentServiceRequest request) {
