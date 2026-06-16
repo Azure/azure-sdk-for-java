@@ -15,7 +15,7 @@ public final class DeviceUpdateListVersionsTests extends DeviceUpdateClientTestB
     @Disabled
     public void testDeviceUpdateListVersionsTests() {
         // method invocation
-        PagedIterable<String> response = deviceUpdateClient.listVersions("microsoft", "adu", null);
+        PagedIterable<String> response = deviceUpdateClient.listVersions("microsoft", "adu");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

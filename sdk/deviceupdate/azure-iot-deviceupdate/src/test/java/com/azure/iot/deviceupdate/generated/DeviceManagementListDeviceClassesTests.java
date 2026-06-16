@@ -20,7 +20,7 @@ public final class DeviceManagementListDeviceClassesTests extends DeviceUpdateCl
     @Disabled
     public void testDeviceManagementListDeviceClassesTests() {
         // method invocation
-        PagedIterable<DeviceClass> response = deviceManagementClient.listDeviceClasses(null);
+        PagedIterable<DeviceClass> response = deviceManagementClient.listDeviceClasses();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

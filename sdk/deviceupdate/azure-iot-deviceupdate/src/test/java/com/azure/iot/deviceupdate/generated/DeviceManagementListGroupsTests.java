@@ -18,7 +18,7 @@ public final class DeviceManagementListGroupsTests extends DeviceUpdateClientTes
     @Disabled
     public void testDeviceManagementListGroupsTests() {
         // method invocation
-        PagedIterable<Group> response = deviceManagementClient.listGroups(null);
+        PagedIterable<Group> response = deviceManagementClient.listGroups();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

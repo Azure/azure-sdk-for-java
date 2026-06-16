@@ -21,7 +21,7 @@ public final class DeviceManagementListDeploymentsForGroupTests extends DeviceUp
     @Disabled
     public void testDeviceManagementListDeploymentsForGroupTests() {
         // method invocation
-        PagedIterable<Deployment> response = deviceManagementClient.listDeploymentsForGroup("TestGroup", null);
+        PagedIterable<Deployment> response = deviceManagementClient.listDeploymentsForGroup("TestGroup");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

@@ -17,7 +17,7 @@ public final class DeviceManagementListDeviceClassSubgroupsForGroupTests extends
     public void testDeviceManagementListDeviceClassSubgroupsForGroupTests() {
         // method invocation
         PagedIterable<DeviceClassSubgroup> response
-            = deviceManagementClient.listDeviceClassSubgroupsForGroup("group1", null);
+            = deviceManagementClient.listDeviceClassSubgroupsForGroup("group1");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

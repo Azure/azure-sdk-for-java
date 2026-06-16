@@ -21,7 +21,7 @@ public final class DeviceManagementListDeploymentsForDeviceClassSubgroupTests ex
     public void testDeviceManagementListDeploymentsForDeviceClassSubgroupTests() {
         // method invocation
         PagedIterable<Deployment> response
-            = deviceManagementClient.listDeploymentsForDeviceClassSubgroup("TestGroup", "deviceClassId1", null);
+            = deviceManagementClient.listDeploymentsForDeviceClassSubgroup("TestGroup", "deviceClassId1");
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
