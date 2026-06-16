@@ -1,6 +1,6 @@
 # Release History
 
-## 12.31.0-beta.2 (Unreleased)
+## 12.32.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.31.0 (2026-06-11)
+
+### Features Added
+- Added support for uploading up to 4 MiB of data with create file APIs.
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
 
 ## 12.30.0 (2026-05-14)
 
