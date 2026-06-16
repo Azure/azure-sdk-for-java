@@ -21,6 +21,7 @@
 - [ListByL3IsolationDomain](#externalnetworks_listbyl3isolationdomain)
 - [Update](#externalnetworks_update)
 - [UpdateAdministrativeState](#externalnetworks_updateadministrativestate)
+- [UpdateBfdAdministrativeState](#externalnetworks_updatebfdadministrativestate)
 - [UpdateStaticRouteBfdAdministrativeState](#externalnetworks_updatestaticroutebfdadministrativestate)
 
 ## InternalNetworks
@@ -31,6 +32,7 @@
 - [ListByL3IsolationDomain](#internalnetworks_listbyl3isolationdomain)
 - [Update](#internalnetworks_update)
 - [UpdateAdministrativeState](#internalnetworks_updateadministrativestate)
+- [UpdateBfdAdministrativeState](#internalnetworks_updatebfdadministrativestate)
 - [UpdateBgpAdministrativeState](#internalnetworks_updatebgpadministrativestate)
 - [UpdateStaticRouteBfdAdministrativeState](#internalnetworks_updatestaticroutebfdadministrativestate)
 
@@ -110,7 +112,31 @@
 - [GetByResourceGroup](#neighborgroups_getbyresourcegroup)
 - [List](#neighborgroups_list)
 - [ListByResourceGroup](#neighborgroups_listbyresourcegroup)
+- [Resync](#neighborgroups_resync)
 - [Update](#neighborgroups_update)
+
+## NetworkBootstrapDevices
+
+- [Create](#networkbootstrapdevices_create)
+- [Delete](#networkbootstrapdevices_delete)
+- [GetByResourceGroup](#networkbootstrapdevices_getbyresourcegroup)
+- [List](#networkbootstrapdevices_list)
+- [ListByResourceGroup](#networkbootstrapdevices_listbyresourcegroup)
+- [Reboot](#networkbootstrapdevices_reboot)
+- [RefreshConfiguration](#networkbootstrapdevices_refreshconfiguration)
+- [ResyncPasswords](#networkbootstrapdevices_resyncpasswords)
+- [Update](#networkbootstrapdevices_update)
+- [UpdateAdministrativeState](#networkbootstrapdevices_updateadministrativestate)
+- [Upgrade](#networkbootstrapdevices_upgrade)
+
+## NetworkBootstrapInterfaces
+
+- [Create](#networkbootstrapinterfaces_create)
+- [Delete](#networkbootstrapinterfaces_delete)
+- [Get](#networkbootstrapinterfaces_get)
+- [ListByNetworkBootstrapDevice](#networkbootstrapinterfaces_listbynetworkbootstrapdevice)
+- [Update](#networkbootstrapinterfaces_update)
+- [UpdateAdministrativeState](#networkbootstrapinterfaces_updateadministrativestate)
 
 ## NetworkDeviceSkus
 
@@ -126,6 +152,10 @@
 - [ListByResourceGroup](#networkdevices_listbyresourcegroup)
 - [Reboot](#networkdevices_reboot)
 - [RefreshConfiguration](#networkdevices_refreshconfiguration)
+- [ResyncCertificates](#networkdevices_resynccertificates)
+- [ResyncPasswords](#networkdevices_resyncpasswords)
+- [RunRoCommand](#networkdevices_runrocommand)
+- [RunRwCommand](#networkdevices_runrwcommand)
 - [Update](#networkdevices_update)
 - [UpdateAdministrativeState](#networkdevices_updateadministrativestate)
 - [Upgrade](#networkdevices_upgrade)
@@ -146,21 +176,30 @@
 
 ## NetworkFabrics
 
+- [ArmConfigurationDiff](#networkfabrics_armconfigurationdiff)
+- [CommitBatchStatus](#networkfabrics_commitbatchstatus)
 - [CommitConfiguration](#networkfabrics_commitconfiguration)
 - [Create](#networkfabrics_create)
 - [Delete](#networkfabrics_delete)
 - [Deprovision](#networkfabrics_deprovision)
+- [DiscardCommitBatch](#networkfabrics_discardcommitbatch)
 - [GetByResourceGroup](#networkfabrics_getbyresourcegroup)
 - [GetTopology](#networkfabrics_gettopology)
 - [List](#networkfabrics_list)
 - [ListByResourceGroup](#networkfabrics_listbyresourcegroup)
+- [LockFabric](#networkfabrics_lockfabric)
 - [Provision](#networkfabrics_provision)
 - [RefreshConfiguration](#networkfabrics_refreshconfiguration)
+- [ResyncCertificates](#networkfabrics_resynccertificates)
+- [ResyncPasswords](#networkfabrics_resyncpasswords)
+- [RotateCertificates](#networkfabrics_rotatecertificates)
+- [RotatePasswords](#networkfabrics_rotatepasswords)
 - [Update](#networkfabrics_update)
 - [UpdateInfraManagementBfdConfiguration](#networkfabrics_updateinframanagementbfdconfiguration)
 - [UpdateWorkloadManagementBfdConfiguration](#networkfabrics_updateworkloadmanagementbfdconfiguration)
 - [Upgrade](#networkfabrics_upgrade)
 - [ValidateConfiguration](#networkfabrics_validateconfiguration)
+- [ViewDeviceConfiguration](#networkfabrics_viewdeviceconfiguration)
 
 ## NetworkInterfaces
 
@@ -170,6 +209,16 @@
 - [ListByNetworkDevice](#networkinterfaces_listbynetworkdevice)
 - [Update](#networkinterfaces_update)
 - [UpdateAdministrativeState](#networkinterfaces_updateadministrativestate)
+
+## NetworkMonitors
+
+- [Create](#networkmonitors_create)
+- [Delete](#networkmonitors_delete)
+- [GetByResourceGroup](#networkmonitors_getbyresourcegroup)
+- [List](#networkmonitors_list)
+- [ListByResourceGroup](#networkmonitors_listbyresourcegroup)
+- [Update](#networkmonitors_update)
+- [UpdateAdministrativeState](#networkmonitors_updateadministrativestate)
 
 ## NetworkPacketBrokers
 
@@ -220,6 +269,7 @@
 - [ListByNetworkFabric](#networktonetworkinterconnects_listbynetworkfabric)
 - [Update](#networktonetworkinterconnects_update)
 - [UpdateAdministrativeState](#networktonetworkinterconnects_updateadministrativestate)
+- [UpdateBfdAdministrativeState](#networktonetworkinterconnects_updatebfdadministrativestate)
 - [UpdateNpbStaticRouteBfdAdministrativeState](#networktonetworkinterconnects_updatenpbstaticroutebfdadministrativestate)
 
 ## Operations
@@ -245,13 +295,34 @@ import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMa
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPortCondition;
 import com.azure.resourcemanager.managednetworkfabric.models.AclActionType;
+import com.azure.resourcemanager.managednetworkfabric.models.AclType;
+import com.azure.resourcemanager.managednetworkfabric.models.BitRate;
+import com.azure.resourcemanager.managednetworkfabric.models.BitRateUnit;
+import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
+import com.azure.resourcemanager.managednetworkfabric.models.BurstSize;
+import com.azure.resourcemanager.managednetworkfabric.models.BurstSizeUnit;
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlanAclIpMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclAction;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclActionType;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclMatchConfigurationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclPortCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclPortMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclPortMatchType;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclTtlMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.ControlPlaneAclTtlMatchType;
+import com.azure.resourcemanager.managednetworkfabric.models.DeviceRole;
+import com.azure.resourcemanager.managednetworkfabric.models.GlobalAccessControlListActionProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IcmpConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.IpMatchCondition;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer4Protocol;
+import com.azure.resourcemanager.managednetworkfabric.models.PoliceRateConfigurationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PortGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PortType;
 import com.azure.resourcemanager.managednetworkfabric.models.PrefixType;
@@ -267,9 +338,7 @@ import java.util.Map;
  */
 public final class AccessControlListsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_Create.json
      */
     /**
      * Sample code: AccessControlLists_Create_MaximumSet_Gen.
@@ -282,36 +351,42 @@ public final class AccessControlListsCreateSamples {
             .define("example-acl")
             .withRegion("eastUs")
             .withExistingResourceGroup("example-rg")
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withConfigurationType(ConfigurationType.FILE)
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withAnnotation("annotation")
             .withAclsUrl("https://ACL-Storage-URL")
             .withDefaultAction(CommunityActionTypes.PERMIT)
             .withMatchConfigurations(
-                Arrays
-                    .asList(new AccessControlListMatchConfiguration().withMatchConfigurationName("example-match")
-                        .withSequenceNumber(123L)
-                        .withIpAddressType(IpAddressType.IPV4)
-                        .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()
-                            .withProtocolTypes(Arrays.asList("TCP"))
-                            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("20-30"))
-                                .withInnerVlans(Arrays.asList("30"))
-                                .withVlanGroupNames(Arrays.asList("example-vlanGroup")))
-                            .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
-                                .withPrefixType(PrefixType.PREFIX)
-                                .withIpPrefixValues(Arrays.asList("10.20.20.20/12"))
-                                .withIpGroupNames(Arrays.asList("example-ipGroup")))
-                            .withEtherTypes(Arrays.asList("0x1"))
-                            .withFragments(Arrays.asList("0xff00-0xffff"))
-                            .withIpLengths(Arrays.asList("4094-9214"))
-                            .withTtlValues(Arrays.asList("23"))
-                            .withDscpMarkings(Arrays.asList("32"))
-                            .withPortCondition(new AccessControlListPortCondition().withPortType(PortType.SOURCE_PORT)
-                                .withLayer4Protocol(Layer4Protocol.TCP)
-                                .withPorts(Arrays.asList("1-20"))
-                                .withPortGroupNames(Arrays.asList("example-portGroup"))
-                                .withFlags(Arrays.asList("established")))))
-                        .withActions(Arrays.asList(new AccessControlListAction().withType(AclActionType.COUNT)
-                            .withCounterName("example-counter")))))
+                Arrays.asList(new AccessControlListMatchConfiguration().withMatchConfigurationName("example-match")
+                    .withSequenceNumber(123L)
+                    .withIpAddressType(IpAddressType.IPV4)
+                    .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()
+                        .withProtocolTypes(Arrays.asList("TCP"))
+                        .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("20-30"))
+                            .withInnerVlans(Arrays.asList("30"))
+                            .withVlanGroupNames(Arrays.asList("example-vlanGroup")))
+                        .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
+                            .withPrefixType(PrefixType.PREFIX)
+                            .withIpPrefixValues(Arrays.asList("10.20.20.20/12"))
+                            .withIpGroupNames(Arrays.asList("example-ipGroup")))
+                        .withEtherTypes(Arrays.asList("0x1"))
+                        .withFragments(Arrays.asList("0xff00-0xffff"))
+                        .withIpLengths(Arrays.asList("4094-9214"))
+                        .withTtlValues(Arrays.asList("23"))
+                        .withDscpMarkings(Arrays.asList("32"))
+                        .withProtocolNeighbors(Arrays.asList("example-neighbor"))
+                        .withPortCondition(new AccessControlListPortCondition().withPortType(PortType.SOURCE_PORT)
+                            .withLayer4Protocol(Layer4Protocol.TCP)
+                            .withPorts(Arrays.asList("1-20"))
+                            .withPortGroupNames(Arrays.asList("example-portGroup"))
+                            .withFlags(Arrays.asList("established")))
+                        .withIcmpConfiguration(new IcmpConfigurationProperties().withIcmpTypes(Arrays.asList("echo")))))
+                    .withActions(Arrays.asList(new AccessControlListAction().withType(AclActionType.COUNT)
+                        .withCounterName("example-counter")
+                        .withRemarkComment("example-remark")
+                        .withPoliceRateConfiguration(new PoliceRateConfigurationProperties()
+                            .withBitRate(new BitRate().withRate(15L).withUnit(BitRateUnit.BPS))
+                            .withBurstSize(new BurstSize().withSize(2L).withUnit(BurstSizeUnit.BYTES)))))))
             .withDynamicMatchConfigurations(Arrays.asList(new CommonDynamicMatchConfiguration()
                 .withIpGroups(Arrays.asList(new IpGroupProperties().withName("example-ipGroup")
                     .withIpAddressType(IpAddressType.IPV4)
@@ -320,7 +395,54 @@ public final class AccessControlListsCreateSamples {
                     .asList(new VlanGroupProperties().withName("example-vlanGroup").withVlans(Arrays.asList("20-30"))))
                 .withPortGroups(Arrays.asList(
                     new PortGroupProperties().withName("example-portGroup").withPorts(Arrays.asList("100-200"))))))
+            .withAclType(AclType.CP)
+            .withDeviceRole(DeviceRole.CE)
+            .withGlobalAccessControlListActions(
+                new GlobalAccessControlListActionProperties().withEnableCount(BooleanEnumProperty.TRUE))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/AccessControlLists_Create_ControlPlaneAcl.json
+     */
+    /**
+     * Sample code: AccessControlLists_Create_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void accessControlListsCreateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.accessControlLists()
+            .define("example-acl")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-resource-group")
+            .withConfigurationType(ConfigurationType.INLINE)
+            .withTags(mapOf("key5032", "fakeTokenPlaceholder"))
             .withAnnotation("annotation")
+            .withAclsUrl("https://microsoft.com/a")
+            .withDefaultAction(CommunityActionTypes.PERMIT)
+            .withAclType(AclType.CP)
+            .withDeviceRole(DeviceRole.CE)
+            .withControlPlaneAclConfiguration(
+                Arrays.asList(new ControlPlaneAclProperties().withIpAddressType(IpAddressType.IPV4)
+                    .withMatchConfigurations(Arrays.asList(new ControlPlaneAclMatchConfigurationProperties()
+                        .withMatchConfigurationName("example-match-config")
+                        .withSequenceNumber(3779271459L)
+                        .withMatchCondition(new ControlPlaneAclMatchCondition().withProtocolTypes("tcp")
+                            .withIpCondition(new ControlPlanAclIpMatchCondition().withSourceIpPrefix("10.0.0.0/24")
+                                .withDestinationIpPrefix("10.0.0.0/24"))
+                            .withTtlMatchCondition(new ControlPlaneAclTtlMatchCondition().withTtlValue("1")
+                                .withTtlMatchType(ControlPlaneAclTtlMatchType.EQUALS))
+                            .withPortCondition(new ControlPlaneAclPortMatchCondition()
+                                .withSourcePorts(new ControlPlaneAclPortCondition().withPorts(Arrays.asList("100"))
+                                    .withPortMatchType(ControlPlaneAclPortMatchType.EQUALS))
+                                .withDestinationPorts(new ControlPlaneAclPortCondition().withPorts(Arrays.asList("200"))
+                                    .withPortMatchType(ControlPlaneAclPortMatchType.EQUALS)))
+                            .withFlags(Arrays.asList("established"))
+                            .withIcmpConfiguration(
+                                new IcmpConfigurationProperties().withIcmpTypes(Arrays.asList("icmp"))))
+                        .withAction(new ControlPlaneAclAction().withType(ControlPlaneAclActionType.fromString("Drop"))
+                            .withRemarkComment("remark"))))))
             .create();
     }
 
@@ -346,9 +468,7 @@ public final class AccessControlListsCreateSamples {
  */
 public final class AccessControlListsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_Delete.json
      */
     /**
      * Sample code: AccessControlLists_Delete_MaximumSet_Gen.
@@ -370,9 +490,7 @@ public final class AccessControlListsDeleteSamples {
  */
 public final class AccessControlListsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_Get.json
      */
     /**
      * Sample code: AccessControlLists_Get_MaximumSet_Gen.
@@ -395,9 +513,7 @@ public final class AccessControlListsGetByResourceGroupSamples {
  */
 public final class AccessControlListsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_ListBySubscription.json
      */
     /**
      * Sample code: AccessControlLists_ListBySubscription_MaximumSet_Gen.
@@ -419,9 +535,7 @@ public final class AccessControlListsListSamples {
  */
 public final class AccessControlListsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_ListByResourceGroup.json
      */
     /**
      * Sample code: AccessControlLists_ListByResourceGroup_MaximumSet_Gen.
@@ -443,9 +557,7 @@ public final class AccessControlListsListByResourceGroupSamples {
  */
 public final class AccessControlListsResyncSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_Resync_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_Resync.json
      */
     /**
      * Sample code: AccessControlLists_Resync_MaximumSet_Gen.
@@ -463,24 +575,34 @@ public final class AccessControlListsResyncSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlList;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListAction;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchCondition;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPortCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListActionPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConditionPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfigurationPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPortConditionPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.AclActionType;
-import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.AclType;
+import com.azure.resourcemanager.managednetworkfabric.models.BitRate;
+import com.azure.resourcemanager.managednetworkfabric.models.BitRateUnit;
+import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
+import com.azure.resourcemanager.managednetworkfabric.models.BurstSize;
+import com.azure.resourcemanager.managednetworkfabric.models.BurstSizeUnit;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfigurationPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
+import com.azure.resourcemanager.managednetworkfabric.models.DeviceRole;
+import com.azure.resourcemanager.managednetworkfabric.models.GlobalAccessControlListActionPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IcmpConfigurationPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
-import com.azure.resourcemanager.managednetworkfabric.models.IpGroupProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.IpMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.IpGroupPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IpMatchConditionPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer4Protocol;
-import com.azure.resourcemanager.managednetworkfabric.models.PortGroupProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.PoliceRateConfigurationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.PortGroupPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PortType;
 import com.azure.resourcemanager.managednetworkfabric.models.PrefixType;
 import com.azure.resourcemanager.managednetworkfabric.models.SourceDestinationType;
-import com.azure.resourcemanager.managednetworkfabric.models.VlanGroupProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.VlanMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.VlanGroupPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.VlanMatchConditionPatch;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -490,9 +612,7 @@ import java.util.Map;
  */
 public final class AccessControlListsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_Update.json
      */
     /**
      * Sample code: AccessControlLists_Update_MaximumSet_Gen.
@@ -505,45 +625,53 @@ public final class AccessControlListsUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-acl", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
-            .withAnnotation("annotation")
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
             .withConfigurationType(ConfigurationType.FILE)
             .withAclsUrl("https://microsoft.com/a")
             .withDefaultAction(CommunityActionTypes.PERMIT)
-            .withMatchConfigurations(
-                Arrays
-                    .asList(new AccessControlListMatchConfiguration().withMatchConfigurationName("example-match")
-                        .withSequenceNumber(123L)
-                        .withIpAddressType(IpAddressType.IPV4)
-                        .withMatchConditions(Arrays.asList(new AccessControlListMatchCondition()
-                            .withProtocolTypes(Arrays.asList("TCP"))
-                            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("20-30"))
-                                .withInnerVlans(Arrays.asList("30"))
-                                .withVlanGroupNames(Arrays.asList("example-vlanGroup")))
-                            .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
-                                .withPrefixType(PrefixType.PREFIX)
-                                .withIpPrefixValues(Arrays.asList("10.20.20.20/12"))
-                                .withIpGroupNames(Arrays.asList("example-ipGroup")))
-                            .withEtherTypes(Arrays.asList("0x1"))
-                            .withFragments(Arrays.asList("0xff00-0xffff"))
-                            .withIpLengths(Arrays.asList("4094-9214"))
-                            .withTtlValues(Arrays.asList("23"))
-                            .withDscpMarkings(Arrays.asList("32"))
-                            .withPortCondition(new AccessControlListPortCondition().withPortType(PortType.SOURCE_PORT)
-                                .withLayer4Protocol(Layer4Protocol.TCP)
-                                .withPorts(Arrays.asList("1-20"))
-                                .withPortGroupNames(Arrays.asList("example-portGroup"))
-                                .withFlags(Arrays.asList("established")))))
-                        .withActions(Arrays.asList(new AccessControlListAction().withType(AclActionType.COUNT)
-                            .withCounterName("example-counter")))))
-            .withDynamicMatchConfigurations(Arrays.asList(new CommonDynamicMatchConfiguration()
-                .withIpGroups(Arrays.asList(new IpGroupProperties().withName("example-ipGroup")
+            .withMatchConfigurationsForUpdate(
+                Arrays.asList(new AccessControlListMatchConfigurationPatch().withMatchConfigurationName("example-match")
+                    .withSequenceNumber(123L)
+                    .withIpAddressType(IpAddressType.IPV4)
+                    .withMatchConditions(Arrays.asList(new AccessControlListMatchConditionPatch()
+                        .withProtocolTypes(Arrays.asList("TCP"))
+                        .withVlanMatchCondition(new VlanMatchConditionPatch().withVlans(Arrays.asList("20-30"))
+                            .withInnerVlans(Arrays.asList("30"))
+                            .withVlanGroupNames(Arrays.asList("example-vlanGroup")))
+                        .withIpCondition(new IpMatchConditionPatch().withType(SourceDestinationType.SOURCE_IP)
+                            .withPrefixType(PrefixType.PREFIX)
+                            .withIpPrefixValues(Arrays.asList("10.20.20.20/12"))
+                            .withIpGroupNames(Arrays.asList("example-ipGroup")))
+                        .withEtherTypes(Arrays.asList("0x1"))
+                        .withFragments(Arrays.asList("0xff00-0xffff"))
+                        .withIpLengths(Arrays.asList("4094-9214"))
+                        .withTtlValues(Arrays.asList("23"))
+                        .withDscpMarkings(Arrays.asList("32"))
+                        .withPortCondition(new AccessControlListPortConditionPatch().withPortType(PortType.SOURCE_PORT)
+                            .withLayer4Protocol(Layer4Protocol.TCP)
+                            .withPorts(Arrays.asList("1-20"))
+                            .withPortGroupNames(Arrays.asList("example-portGroup"))
+                            .withFlags(Arrays.asList("established")))
+                        .withProtocolNeighbors(Arrays.asList("example-neighbor"))
+                        .withIcmpConfiguration(
+                            new IcmpConfigurationPatchProperties().withIcmpTypes(Arrays.asList("echo")))))
+                    .withActions(Arrays.asList(new AccessControlListActionPatch().withType(AclActionType.POLICE_RATE)
+                        .withPoliceRateConfiguration(new PoliceRateConfigurationProperties()
+                            .withBitRate(new BitRate().withRate(15L).withUnit(BitRateUnit.BPS))
+                            .withBurstSize(new BurstSize().withSize(2L).withUnit(BurstSizeUnit.BYTES)))))))
+            .withDynamicMatchConfigurationsForUpdate(Arrays.asList(new CommonDynamicMatchConfigurationPatch()
+                .withIpGroups(Arrays.asList(new IpGroupPatchProperties().withName("example-ipGroup")
                     .withIpAddressType(IpAddressType.IPV4)
                     .withIpPrefixes(Arrays.asList("10.20.3.1/20"))))
-                .withVlanGroups(Arrays
-                    .asList(new VlanGroupProperties().withName("example-vlanGroup").withVlans(Arrays.asList("20-30"))))
+                .withVlanGroups(Arrays.asList(
+                    new VlanGroupPatchProperties().withName("example-vlanGroup").withVlans(Arrays.asList("20-30"))))
                 .withPortGroups(Arrays.asList(
-                    new PortGroupProperties().withName("example-portGroup").withPorts(Arrays.asList("100-200"))))))
+                    new PortGroupPatchProperties().withName("example-portGroup").withPorts(Arrays.asList("100-200"))))))
+            .withAclType(AclType.CP)
+            .withDeviceRole(DeviceRole.CE)
+            .withGlobalAccessControlListActions(
+                new GlobalAccessControlListActionPatchProperties().withEnableCount(BooleanEnumProperty.TRUE))
+            .withAnnotation("annotation")
             .apply();
     }
 
@@ -573,9 +701,7 @@ import java.util.Arrays;
  */
 public final class AccessControlListsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_UpdateAdministrativeState.json
      */
     /**
      * Sample code: AccessControlLists_UpdateAdministrativeState_MaximumSet_Gen.
@@ -600,9 +726,7 @@ public final class AccessControlListsUpdateAdministrativeStateSamples {
  */
 public final class AccessControlListsValidateConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * AccessControlLists_ValidateConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/AccessControlLists_ValidateConfiguration.json
      */
     /**
      * Sample code: AccessControlLists_ValidateConfiguration_MaximumSet_Gen.
@@ -621,12 +745,21 @@ public final class AccessControlListsValidateConfigurationSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkBmpProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPropertiesOptionAProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkStaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.L3OptionBProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv4PrefixLimitProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv6PrefixLimitProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
+import com.azure.resourcemanager.managednetworkfabric.models.PrefixLimitProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.V4OverV6BgpSessionState;
+import com.azure.resourcemanager.managednetworkfabric.models.V6OverV4BgpSessionState;
 import java.util.Arrays;
 
 /**
@@ -634,9 +767,7 @@ import java.util.Arrays;
  */
 public final class ExternalNetworksCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ExternalNetworks_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_Create.json
      */
     /**
      * Sample code: ExternalNetworks_Create_MaximumSet_Gen.
@@ -646,33 +777,12 @@ public final class ExternalNetworksCreateSamples {
     public static void externalNetworksCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.externalNetworks()
-            .define("example-externalnetwork")
-            .withExistingL3IsolationDomain("example-rg", "example-l3domain")
+            .define("example-ext")
+            .withExistingL3IsolationDomain("example-rg", "example-externalnetwork")
             .withPeeringOption(PeeringOption.OPTIONA)
-            .withOptionBProperties(new L3OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10039"))
-                .withExportRouteTargets(Arrays.asList("65046:10039"))
-                .withRouteTargets(new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                    .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
-                    .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                    .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
-            .withOptionAProperties(new ExternalNetworkPropertiesOptionAProperties().withPrimaryIpv4Prefix("10.1.1.0/30")
-                .withPrimaryIpv6Prefix("3FFE:FFFF:0:CD30::a0/126")
-                .withSecondaryIpv4Prefix("10.1.1.4/30")
-                .withSecondaryIpv6Prefix("3FFE:FFFF:0:CD30::a4/126")
-                .withMtu(1500)
-                .withVlanId(1001)
-                .withPeerAsn(65047L)
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(15))
-                .withIngressAclId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
-                .withEgressAclId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"))
+            .withAnnotation("annotation")
             .withNetworkToNetworkInterconnectId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
-            .withImportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-            .withExportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
             .withImportRoutePolicy(new ImportRoutePolicy().withImportIpv4RoutePolicyId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
                 .withImportIpv6RoutePolicyId(
@@ -681,7 +791,38 @@ public final class ExternalNetworksCreateSamples {
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
                 .withExportIpv6RoutePolicyId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"))
-            .withAnnotation("annotation")
+            .withOptionBProperties(new L3OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10039"))
+                .withExportRouteTargets(Arrays.asList("65046:10039"))
+                .withRouteTargets(new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                    .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
+                    .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                    .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
+            .withOptionAProperties(new ExternalNetworkPropertiesOptionAProperties().withPrimaryIpv4Prefix("10.1.1.0/30")
+                .withPrimaryIpv6Prefix("3FFE:FFFF:0:CD30::a0/126")
+                .withSecondaryIpv4Prefix("10.1.1.4/30")
+                .withSecondaryIpv6Prefix("3FFE:FFFF:0:CD30::a4/126")
+                .withMtu(1500)
+                .withVlanId(1001)
+                .withPeerAsn(65047L)
+                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIngressAclId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
+                .withBmpConfiguration(
+                    new ExternalNetworkBmpProperties().withConfigurationState(BmpConfigurationState.ENABLED))
+                .withEgressAclId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
+                .withV4OverV6BgpSession(V4OverV6BgpSessionState.ENABLED)
+                .withV6OverV4BgpSession(V6OverV4BgpSessionState.ENABLED)
+                .withNativeIpv4PrefixLimit(new NativeIpv4PrefixLimitProperties().withPrefixLimits(Arrays
+                    .asList(new PrefixLimitProperties().withMaximumRoutes(14).withThreshold(17).withIdleTimeExpiry(7))))
+                .withNativeIpv6PrefixLimit(new NativeIpv6PrefixLimitProperties().withPrefixLimits(Arrays.asList(
+                    new PrefixLimitProperties().withMaximumRoutes(14).withThreshold(17).withIdleTimeExpiry(7)))))
+            .withStaticRouteConfiguration(new ExternalNetworkStaticRouteConfiguration()
+                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRouteProperties().withPrefix("10.0.0.1/24").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays
+                    .asList(new StaticRouteProperties().withPrefix("2fff::/64").withNextHop(Arrays.asList("3ffe::1")))))
             .create();
     }
 }
@@ -695,9 +836,7 @@ public final class ExternalNetworksCreateSamples {
  */
 public final class ExternalNetworksDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ExternalNetworks_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_Delete.json
      */
     /**
      * Sample code: ExternalNetworks_Delete_MaximumSet_Gen.
@@ -707,7 +846,7 @@ public final class ExternalNetworksDeleteSamples {
     public static void externalNetworksDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.externalNetworks()
-            .delete("example-rg", "example-l3domain", "example-externalnetwork", com.azure.core.util.Context.NONE);
+            .delete("example-rg", "example-externalnetwork", "example-ext", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -720,9 +859,7 @@ public final class ExternalNetworksDeleteSamples {
  */
 public final class ExternalNetworksGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ExternalNetworks_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_Get.json
      */
     /**
      * Sample code: ExternalNetworks_Get_MaximumSet_Gen.
@@ -732,7 +869,7 @@ public final class ExternalNetworksGetSamples {
     public static void externalNetworksGetMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.externalNetworks()
-            .getWithResponse("rgL3IsolationDomains", "yhtr", "fltpszzikbalrzaqq", com.azure.core.util.Context.NONE);
+            .getWithResponse("example-rg", "example-externalnetwork", "example-ext", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -745,9 +882,7 @@ public final class ExternalNetworksGetSamples {
  */
 public final class ExternalNetworksListByL3IsolationDomainSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ExternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_ListByL3IsolationDomain.json
      */
     /**
      * Sample code: ExternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.
@@ -757,7 +892,7 @@ public final class ExternalNetworksListByL3IsolationDomainSamples {
     public static void externalNetworksListByL3IsolationDomainMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.externalNetworks()
-            .listByL3IsolationDomain("example-rg", "example-l3domain", com.azure.core.util.Context.NONE);
+            .listByL3IsolationDomain("example-rg", "example-externalnetwork", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -765,14 +900,23 @@ public final class ExternalNetworksListByL3IsolationDomainSamples {
 ### ExternalNetworks_Update
 
 ```java
-import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.BfdPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetwork;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkBmpPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPatchPropertiesOptionAProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
-import com.azure.resourcemanager.managednetworkfabric.models.L3OptionBProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkStaticRoutePatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.L3OptionBPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv4PrefixLimitPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv6PrefixLimitPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
-import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.PrefixLimitPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetPatchInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRoutePatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.V4OverV6BgpSessionState;
+import com.azure.resourcemanager.managednetworkfabric.models.V6OverV4BgpSessionState;
 import java.util.Arrays;
 
 /**
@@ -780,9 +924,7 @@ import java.util.Arrays;
  */
 public final class ExternalNetworksUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ExternalNetworks_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_Update.json
      */
     /**
      * Sample code: ExternalNetworks_Update_MaximumSet_Gen.
@@ -792,17 +934,28 @@ public final class ExternalNetworksUpdateSamples {
     public static void externalNetworksUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         ExternalNetwork resource = manager.externalNetworks()
-            .getWithResponse("example-rg", "example-l3domain", "example-externalnetwork",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("example-rg", "example-externalnetwork", "example-ext", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withAnnotation("annotation1")
+            .withNetworkToNetworkInterconnectId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
+            .withImportRoutePolicy(new ImportRoutePolicyPatch().withImportIpv4RoutePolicyId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
+                .withImportIpv6RoutePolicyId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"))
+            .withExportRoutePolicy(new ExportRoutePolicyPatch().withExportIpv4RoutePolicyId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
+                .withExportIpv6RoutePolicyId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"))
             .withPeeringOption(PeeringOption.OPTIONA)
-            .withOptionBProperties(new L3OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10039"))
+            .withOptionBProperties(new L3OptionBPatchProperties().withImportRouteTargets(Arrays.asList("65046:10039"))
                 .withExportRouteTargets(Arrays.asList("65046:10039"))
-                .withRouteTargets(new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                    .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
-                    .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                    .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
+                .withRouteTargets(
+                    new RouteTargetPatchInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                        .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
+                        .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                        .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
             .withOptionAProperties(new ExternalNetworkPatchPropertiesOptionAProperties()
                 .withPrimaryIpv4Prefix("10.1.1.0/30")
                 .withPrimaryIpv6Prefix("3FFE:FFFF:0:CD30::a0/126")
@@ -811,24 +964,25 @@ public final class ExternalNetworksUpdateSamples {
                 .withMtu(1500)
                 .withVlanId(1001)
                 .withPeerAsn(65047L)
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(15))
+                .withBfdConfiguration(new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
                 .withIngressAclId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
                 .withEgressAclId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"))
-            .withImportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-            .withExportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-            .withImportRoutePolicy(new ImportRoutePolicy().withImportIpv4RoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-                .withImportIpv6RoutePolicyId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"))
-            .withExportRoutePolicy(new ExportRoutePolicy().withExportIpv4RoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-                .withExportIpv6RoutePolicyId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"))
-            .withAnnotation("annotation1")
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
+                .withBmpConfiguration(
+                    new ExternalNetworkBmpPatchProperties().withConfigurationState(BmpConfigurationState.ENABLED))
+                .withV4OverV6BgpSession(V4OverV6BgpSessionState.ENABLED)
+                .withV6OverV4BgpSession(V6OverV4BgpSessionState.ENABLED)
+                .withNativeIpv4PrefixLimit(new NativeIpv4PrefixLimitPatchProperties().withPrefixLimits(Arrays.asList(
+                    new PrefixLimitPatchProperties().withMaximumRoutes(13).withThreshold(24).withIdleTimeExpiry(8))))
+                .withNativeIpv6PrefixLimit(new NativeIpv6PrefixLimitPatchProperties().withPrefixLimits(Arrays.asList(
+                    new PrefixLimitPatchProperties().withMaximumRoutes(13).withThreshold(24).withIdleTimeExpiry(8)))))
+            .withStaticRouteConfiguration(new ExternalNetworkStaticRoutePatchConfiguration()
+                .withBfdConfiguration(new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRoutePatchProperties().withPrefix("10.0.0.1/14").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays.asList(
+                    new StaticRoutePatchProperties().withPrefix("2fff::/64").withNextHop(Arrays.asList("3ffe::1")))))
             .apply();
     }
 }
@@ -846,9 +1000,7 @@ import java.util.Arrays;
  */
 public final class ExternalNetworksUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ExternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_UpdateAdministrativeState.json
      */
     /**
      * Sample code: ExternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.
@@ -858,8 +1010,38 @@ public final class ExternalNetworksUpdateAdministrativeStateSamples {
     public static void externalNetworksUpdateAdministrativeStateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.externalNetworks()
-            .updateAdministrativeState("example-rg", "example-l3domain", "example-externalnetwork",
+            .updateAdministrativeState("example-rg", "example-externalnetwork", "example-ext",
                 new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExternalNetworks_UpdateBfdAdministrativeState
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.BfdAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkRouteType;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkUpdateBfdAdministrativeStateRequest;
+
+/**
+ * Samples for ExternalNetworks UpdateBfdAdministrativeState.
+ */
+public final class ExternalNetworksUpdateBfdAdministrativeStateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_UpdateBfdAdministrativeState.json
+     */
+    /**
+     * Sample code: ExternalNetworks_UpdateBfdAdministrativeState.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void externalNetworksUpdateBfdAdministrativeState(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.externalNetworks()
+            .updateBfdAdministrativeState("example-rg", "example-externalnetwork", "example-ext",
+                new ExternalNetworkUpdateBfdAdministrativeStateRequest().withRouteType(ExternalNetworkRouteType.STATIC)
+                    .withAdministrativeState(BfdAdministrativeState.fromString("Enable")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -877,16 +1059,14 @@ import java.util.Arrays;
  */
 public final class ExternalNetworksUpdateStaticRouteBfdAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ExternalNetworks_UpdateStaticRouteBfdAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/ExternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
      */
     /**
-     * Sample code: ExternalNetworks_UpdateStaticRouteBfdAdministrativeState_MaximumSet_Gen.
+     * Sample code: ExternalNetworks_UpdateStaticRouteBfdAdministrativeState.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
-    public static void externalNetworksUpdateStaticRouteBfdAdministrativeStateMaximumSetGen(
+    public static void externalNetworksUpdateStaticRouteBfdAdministrativeState(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.externalNetworks()
             .updateStaticRouteBfdAdministrativeState("example-rg", "example-l3domain", "example-externalnetwork",
@@ -901,16 +1081,25 @@ public final class ExternalNetworksUpdateStaticRouteBfdAdministrativeStateSample
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.AllowASOverride;
 import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicyProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnet;
 import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.Extension;
 import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
-import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesBgpConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesStaticRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkBmpProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv4PrefixLimitProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv6PrefixLimitProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborAddress;
+import com.azure.resourcemanager.managednetworkfabric.models.PrefixLimitProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.V4OverV6BgpSessionState;
+import com.azure.resourcemanager.managednetworkfabric.models.V6OverV4BgpSessionState;
 import java.util.Arrays;
 
 /**
@@ -918,9 +1107,7 @@ import java.util.Arrays;
  */
 public final class InternalNetworksCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_Create.json
      */
     /**
      * Sample code: InternalNetworks_Create_MaximumSet_Gen.
@@ -931,34 +1118,15 @@ public final class InternalNetworksCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.internalNetworks()
             .define("example-internalnetwork")
-            .withExistingL3IsolationDomain("example-rg", "example-l3domain")
+            .withExistingL3IsolationDomain("example-rg", "example-l3isd")
             .withVlanId(755)
-            .withBgpConfiguration(new InternalNetworkPropertiesBgpConfiguration().withAnnotation("annotation")
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5))
-                .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
-                .withAllowAS(10)
-                .withAllowASOverride(AllowASOverride.ENABLE)
-                .withPeerAsn(61234L)
-                .withIpv4ListenRangePrefixes(Arrays.asList("10.1.0.0/25"))
-                .withIpv6ListenRangePrefixes(Arrays.asList("2fff::/66"))
-                .withIpv4NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("10.1.0.0")))
-                .withIpv6NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("2fff::"))))
-            .withStaticRouteConfiguration(new InternalNetworkPropertiesStaticRouteConfiguration()
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(15))
-                .withIpv4Routes(Arrays
-                    .asList(new StaticRouteProperties().withPrefix("jffgck").withNextHop(Arrays.asList("10.0.0.1"))))
-                .withIpv6Routes(Arrays
-                    .asList(new StaticRouteProperties().withPrefix("2fff::/64").withNextHop(Arrays.asList("3ffe::1"))))
-                .withExtension(Extension.NO_EXTENSION))
+            .withAnnotation("annotation")
+            .withExtension(Extension.NO_EXTENSION)
             .withMtu(1500)
             .withConnectedIPv4Subnets(
                 Arrays.asList(new ConnectedSubnet().withAnnotation("annotation").withPrefix("10.0.0.0/24")))
             .withConnectedIPv6Subnets(
                 Arrays.asList(new ConnectedSubnet().withAnnotation("annotation").withPrefix("3FFE:FFFF:0:CD30::a0/29")))
-            .withImportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-            .withExportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
             .withImportRoutePolicy(new ImportRoutePolicy().withImportIpv4RoutePolicyId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
                 .withImportIpv6RoutePolicyId(
@@ -972,8 +1140,34 @@ public final class InternalNetworksCreateSamples {
             .withEgressAclId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
             .withIsMonitoringEnabled(IsMonitoringEnabled.TRUE)
-            .withExtension(Extension.NO_EXTENSION)
-            .withAnnotation("annotation")
+            .withBgpConfiguration(new BgpConfiguration().withAnnotation("annotation")
+                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
+                .withAllowAS(10)
+                .withAllowASOverride(AllowASOverride.ENABLE)
+                .withPeerAsn(61234L)
+                .withIpv4ListenRangePrefixes(Arrays.asList("10.1.0.0/25"))
+                .withIpv6ListenRangePrefixes(Arrays.asList("2fff::/66"))
+                .withIpv4NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("10.1.0.0")))
+                .withIpv6NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("2fff::")))
+                .withBmpConfiguration(
+                    new InternalNetworkBmpProperties().withNeighborIpExclusions(Arrays.asList("10.0.0.1"))
+                        .withBmpConfigurationState(BmpConfigurationState.ENABLED)
+                        .withExportPolicyConfiguration(new BmpExportPolicyProperties()
+                            .withExportPolicies(Arrays.asList(BmpExportPolicy.PRE_POLICY))))
+                .withV4OverV6BgpSession(V4OverV6BgpSessionState.ENABLED)
+                .withV6OverV4BgpSession(V6OverV4BgpSessionState.ENABLED))
+            .withStaticRouteConfiguration(new StaticRouteConfiguration()
+                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRouteProperties().withPrefix("10.0.0.1/24").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays
+                    .asList(new StaticRouteProperties().withPrefix("2fff::/64").withNextHop(Arrays.asList("3ffe::1"))))
+                .withExtension(Extension.NO_EXTENSION))
+            .withNativeIpv4PrefixLimit(new NativeIpv4PrefixLimitProperties().withPrefixLimits(Arrays
+                .asList(new PrefixLimitProperties().withMaximumRoutes(23).withThreshold(7).withIdleTimeExpiry(28))))
+            .withNativeIpv6PrefixLimit(new NativeIpv6PrefixLimitProperties().withPrefixLimits(Arrays
+                .asList(new PrefixLimitProperties().withMaximumRoutes(23).withThreshold(7).withIdleTimeExpiry(28))))
             .create();
     }
 }
@@ -987,9 +1181,7 @@ public final class InternalNetworksCreateSamples {
  */
 public final class InternalNetworksDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_Delete.json
      */
     /**
      * Sample code: InternalNetworks_Delete_MaximumSet_Gen.
@@ -999,7 +1191,7 @@ public final class InternalNetworksDeleteSamples {
     public static void internalNetworksDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.internalNetworks()
-            .delete("example-rg", "example-l3domain", "example-internalnetwork", com.azure.core.util.Context.NONE);
+            .delete("example-rg", "example-l3isd", "example-internalnetwork", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1012,9 +1204,7 @@ public final class InternalNetworksDeleteSamples {
  */
 public final class InternalNetworksGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_Get.json
      */
     /**
      * Sample code: InternalNetworks_Get_MaximumSet_Gen.
@@ -1024,7 +1214,7 @@ public final class InternalNetworksGetSamples {
     public static void internalNetworksGetMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.internalNetworks()
-            .getWithResponse("example-rg", "example-l3domain", "example-internalnetwork",
+            .getWithResponse("example-rg", "example-l3isd", "example-internalnetwork",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1038,9 +1228,7 @@ public final class InternalNetworksGetSamples {
  */
 public final class InternalNetworksListByL3IsolationDomainSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_ListByL3IsolationDomain.json
      */
     /**
      * Sample code: InternalNetworks_ListByL3IsolationDomain_MaximumSet_Gen.
@@ -1050,7 +1238,7 @@ public final class InternalNetworksListByL3IsolationDomainSamples {
     public static void internalNetworksListByL3IsolationDomainMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.internalNetworks()
-            .listByL3IsolationDomain("example-rg", "example-l3domain", com.azure.core.util.Context.NONE);
+            .listByL3IsolationDomain("example-rg", "example-l3isd", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1059,17 +1247,24 @@ public final class InternalNetworksListByL3IsolationDomainSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.AllowASOverride;
-import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.BgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BfdPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BgpPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
-import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnet;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.InternalNetwork;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkBmpPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
-import com.azure.resourcemanager.managednetworkfabric.models.NeighborAddress;
-import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv4PrefixLimitPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NativeIpv6PrefixLimitPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NeighborAddressPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.PrefixLimitPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRoutePatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRoutePatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.V4OverV6BgpSessionState;
+import com.azure.resourcemanager.managednetworkfabric.models.V6OverV4BgpSessionState;
 import java.util.Arrays;
 
 /**
@@ -1077,9 +1272,7 @@ import java.util.Arrays;
  */
 public final class InternalNetworksUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_Update.json
      */
     /**
      * Sample code: InternalNetworks_Update_MaximumSet_Gen.
@@ -1089,35 +1282,15 @@ public final class InternalNetworksUpdateSamples {
     public static void internalNetworksUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         InternalNetwork resource = manager.internalNetworks()
-            .getWithResponse("example-rg", "example-l3domain", "example-internalnetwork",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("example-rg", "example-l3isd", "example-internalnetwork", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withBgpConfiguration(new BgpConfiguration().withAnnotation("annotation")
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5))
-                .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
-                .withAllowAS(10)
-                .withAllowASOverride(AllowASOverride.ENABLE)
-                .withPeerAsn(61234L)
-                .withIpv4ListenRangePrefixes(Arrays.asList("10.1.0.0/25"))
-                .withIpv6ListenRangePrefixes(Arrays.asList("2fff::/66"))
-                .withIpv4NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("10.1.0.0")))
-                .withIpv6NeighborAddress(Arrays.asList(new NeighborAddress().withAddress("2fff::"))))
-            .withStaticRouteConfiguration(new StaticRouteConfiguration()
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(15))
-                .withIpv4Routes(Arrays.asList(
-                    new StaticRouteProperties().withPrefix("20.20.20.20/25").withNextHop(Arrays.asList("10.0.0.1"))))
-                .withIpv6Routes(Arrays
-                    .asList(new StaticRouteProperties().withPrefix("2fff::/64").withNextHop(Arrays.asList("3ffe::1")))))
+            .withAnnotation("annotation")
             .withMtu(1500)
-            .withConnectedIPv4Subnets(
-                Arrays.asList(new ConnectedSubnet().withAnnotation("annotation").withPrefix("10.0.0.0/24")))
-            .withConnectedIPv6Subnets(
-                Arrays.asList(new ConnectedSubnet().withAnnotation("annotation").withPrefix("3FFE:FFFF:0:CD30::a0/29")))
-            .withImportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-            .withExportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
+            .withConnectedIPv4SubnetsForUpdate(
+                Arrays.asList(new ConnectedSubnetPatch().withAnnotation("annotation").withPrefix("10.0.0.0/24")))
+            .withConnectedIPv6SubnetsForUpdate(
+                Arrays.asList(new ConnectedSubnetPatch().withAnnotation("annotation").withPrefix("10.0.0.0/24")))
             .withImportRoutePolicy(new ImportRoutePolicy().withImportIpv4RoutePolicyId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
                 .withImportIpv6RoutePolicyId(
@@ -1131,7 +1304,31 @@ public final class InternalNetworksUpdateSamples {
             .withEgressAclId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
             .withIsMonitoringEnabled(IsMonitoringEnabled.TRUE)
-            .withAnnotation("annotation")
+            .withBgpConfiguration(new BgpPatchConfiguration().withAnnotation("annotation")
+                .withBfdConfiguration(new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
+                .withAllowAS(10)
+                .withAllowASOverride(AllowASOverride.ENABLE)
+                .withPeerAsn(61234L)
+                .withIpv4ListenRangePrefixes(Arrays.asList("10.1.0.0/25"))
+                .withIpv6ListenRangePrefixes(Arrays.asList("2fff::/66"))
+                .withIpv4NeighborAddress(Arrays.asList(new NeighborAddressPatch().withAddress("10.1.0.0")))
+                .withIpv6NeighborAddress(Arrays.asList(new NeighborAddressPatch().withAddress("10.1.0.0")))
+                .withBmpConfiguration(
+                    new InternalNetworkBmpPatchProperties().withNeighborIpExclusions(Arrays.asList("10.0.0.10"))
+                        .withBmpConfigurationState(BmpConfigurationState.ENABLED))
+                .withV4OverV6BgpSession(V4OverV6BgpSessionState.ENABLED)
+                .withV6OverV4BgpSession(V6OverV4BgpSessionState.ENABLED))
+            .withStaticRouteConfiguration(new StaticRoutePatchConfiguration()
+                .withBfdConfiguration(new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRoutePatchProperties().withPrefix("jffgck").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays.asList(
+                    new StaticRoutePatchProperties().withPrefix("jffgck").withNextHop(Arrays.asList("10.0.0.1")))))
+            .withNativeIpv4PrefixLimit(new NativeIpv4PrefixLimitPatchProperties().withPrefixLimits(Arrays.asList(
+                new PrefixLimitPatchProperties().withMaximumRoutes(24).withThreshold(6).withIdleTimeExpiry(20))))
+            .withNativeIpv6PrefixLimit(new NativeIpv6PrefixLimitPatchProperties().withPrefixLimits(Arrays.asList(
+                new PrefixLimitPatchProperties().withMaximumRoutes(24).withThreshold(6).withIdleTimeExpiry(20))))
             .apply();
     }
 }
@@ -1149,9 +1346,7 @@ import java.util.Arrays;
  */
 public final class InternalNetworksUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_UpdateAdministrativeState.json
      */
     /**
      * Sample code: InternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.
@@ -1161,8 +1356,39 @@ public final class InternalNetworksUpdateAdministrativeStateSamples {
     public static void internalNetworksUpdateAdministrativeStateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.internalNetworks()
-            .updateAdministrativeState("example-rg", "example-l3domain", "example-internalnetwork",
+            .updateAdministrativeState("example-rg", "example-l3isd", "example-internalnetwork",
                 new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### InternalNetworks_UpdateBfdAdministrativeState
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.BfdAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkRouteType;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkUpdateBfdAdministrativeStateRequest;
+
+/**
+ * Samples for InternalNetworks UpdateBfdAdministrativeState.
+ */
+public final class InternalNetworksUpdateBfdAdministrativeStateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/InternalNetworks_UpdateBfdAdministrativeState.json
+     */
+    /**
+     * Sample code: InternalNetworks_UpdateBfdAdministrativeState.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void internalNetworksUpdateBfdAdministrativeState(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.internalNetworks()
+            .updateBfdAdministrativeState("example-rg", "example-l3isd", "example-internalnetwork",
+                new InternalNetworkUpdateBfdAdministrativeStateRequest().withRouteType(InternalNetworkRouteType.STATIC)
+                    .withNeighborAddress("10.10.1.10")
+                    .withAdministrativeState(BfdAdministrativeState.fromString("Enable")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1171,18 +1397,15 @@ public final class InternalNetworksUpdateAdministrativeStateSamples {
 ### InternalNetworks_UpdateBgpAdministrativeState
 
 ```java
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import java.util.Arrays;
+import com.azure.resourcemanager.managednetworkfabric.models.BgpAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkUpdateBgpAdministrativeStateRequest;
 
 /**
  * Samples for InternalNetworks UpdateBgpAdministrativeState.
  */
 public final class InternalNetworksUpdateBgpAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_UpdateBgpAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_UpdateBgpAdministrativeState.json
      */
     /**
      * Sample code: InternalNetworks_UpdateBgpAdministrativeState_MaximumSet_Gen.
@@ -1192,8 +1415,9 @@ public final class InternalNetworksUpdateBgpAdministrativeStateSamples {
     public static void internalNetworksUpdateBgpAdministrativeStateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.internalNetworks()
-            .updateBgpAdministrativeState("example-rg", "example-l3domain", "example-internalNetwork",
-                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
+            .updateBgpAdministrativeState("example-rg", "example-l3isd", "example-internalnetwork",
+                new InternalNetworkUpdateBgpAdministrativeStateRequest().withNeighborAddress("10.10.10.10")
+                    .withAdministrativeState(BgpAdministrativeState.fromString("Enable")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1211,16 +1435,14 @@ import java.util.Arrays;
  */
 public final class InternalNetworksUpdateStaticRouteBfdAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternalNetworks_UpdateStaticRouteBfdAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
      */
     /**
-     * Sample code: InternalNetworks_UpdateStaticRouteBfdAdministrativeState_MaximumSet_Gen.
+     * Sample code: InternalNetworks_UpdateStaticRouteBfdAdministrativeState.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
-    public static void internalNetworksUpdateStaticRouteBfdAdministrativeStateMaximumSetGen(
+    public static void internalNetworksUpdateStaticRouteBfdAdministrativeState(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.internalNetworks()
             .updateStaticRouteBfdAdministrativeState("example-rg", "example-l3domain", "example-internalNetwork",
@@ -1234,6 +1456,8 @@ public final class InternalNetworksUpdateStaticRouteBfdAdministrativeStateSample
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.Action;
+import com.azure.resourcemanager.managednetworkfabric.models.HeaderAddressProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.RuleCondition;
 import com.azure.resourcemanager.managednetworkfabric.models.RuleProperties;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1244,9 +1468,7 @@ import java.util.Map;
  */
 public final class InternetGatewayRulesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGatewayRules_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGatewayRules_Create.json
      */
     /**
      * Sample code: InternetGatewayRules_Create_MaximumSet_Gen.
@@ -1259,9 +1481,14 @@ public final class InternetGatewayRulesCreateSamples {
             .define("example-internetGatewayRule")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
-            .withRuleProperties(
-                new RuleProperties().withAction(Action.ALLOW).withAddressList(Arrays.asList("10.10.10.10")))
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withRuleProperties(new RuleProperties().withAction(Action.ALLOW)
+                .withAddressList(Arrays.asList("10.10.10.10"))
+                .withCondition(RuleCondition.OR)
+                .withDestinationAddressList(Arrays.asList("11.11.10.11"))
+                .withSourceAddressList(Arrays.asList("10.10.10.10"))
+                .withHeaderAddressList(Arrays.asList(new HeaderAddressProperties().withHeaderName("abcHeader")
+                    .withAddressList(Arrays.asList("10.10.10.10")))))
+            .withTags(mapOf("KeyID", "fakeTokenPlaceholder"))
             .withAnnotation("annotationValue")
             .create();
     }
@@ -1288,9 +1515,7 @@ public final class InternetGatewayRulesCreateSamples {
  */
 public final class InternetGatewayRulesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGatewayRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGatewayRules_Delete.json
      */
     /**
      * Sample code: InternetGatewayRules_Delete_MaximumSet_Gen.
@@ -1313,9 +1538,7 @@ public final class InternetGatewayRulesDeleteSamples {
  */
 public final class InternetGatewayRulesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGatewayRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGatewayRules_Get.json
      */
     /**
      * Sample code: InternetGatewayRules_Get_MaximumSet_Gen.
@@ -1339,9 +1562,7 @@ public final class InternetGatewayRulesGetByResourceGroupSamples {
  */
 public final class InternetGatewayRulesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGatewayRules_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGatewayRules_ListBySubscription.json
      */
     /**
      * Sample code: InternetGatewayRules_ListBySubscription_MaximumSet_Gen.
@@ -1363,9 +1584,7 @@ public final class InternetGatewayRulesListSamples {
  */
 public final class InternetGatewayRulesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGatewayRules_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGatewayRules_ListByResourceGroup.json
      */
     /**
      * Sample code: InternetGatewayRules_ListByResourceGroup_MaximumSet_Gen.
@@ -1392,9 +1611,7 @@ import java.util.Map;
  */
 public final class InternetGatewayRulesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGatewayRules_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGatewayRules_Update.json
      */
     /**
      * Sample code: InternetGatewayRules_Update_MaximumSet_Gen.
@@ -1407,7 +1624,7 @@ public final class InternetGatewayRulesUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-internetGatewayRule",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("key3311", "fakeTokenPlaceholder")).apply();
+        resource.update().withTags(mapOf("KeyID", "fakeTokenPlaceholder")).apply();
     }
 
     // Use "Map.of" if available
@@ -1436,9 +1653,7 @@ import java.util.Map;
  */
 public final class InternetGatewaysCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGateways_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGateways_Create.json
      */
     /**
      * Sample code: InternetGateways_Create_MaximumSet_Gen.
@@ -1451,13 +1666,14 @@ public final class InternetGatewaysCreateSamples {
             .define("example-internetGateway")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
-            .withTypePropertiesType(GatewayType.INFRASTRUCTURE)
             .withNetworkFabricControllerId(
                 "/subscriptions/xxxx-xxxx-xxxx-xxxx/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/example-networkFabricController")
-            .withTags(mapOf("key3540", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withAnnotation("annotation")
             .withInternetGatewayRuleId(
                 "/subscriptions/xxxx-xxxx-xxxx-xxxx/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/example-internetGatewayRule")
-            .withAnnotation("annotation")
+            .withTypePropertiesType(GatewayType.INFRASTRUCTURE)
+            .withInternetGatewayType(GatewayType.INFRASTRUCTURE)
             .create();
     }
 
@@ -1483,9 +1699,7 @@ public final class InternetGatewaysCreateSamples {
  */
 public final class InternetGatewaysDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGateways_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGateways_Delete.json
      */
     /**
      * Sample code: InternetGateways_Delete_MaximumSet_Gen.
@@ -1507,9 +1721,7 @@ public final class InternetGatewaysDeleteSamples {
  */
 public final class InternetGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGateways_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGateways_Get.json
      */
     /**
      * Sample code: InternetGateways_Get_MaximumSet_Gen.
@@ -1532,9 +1744,7 @@ public final class InternetGatewaysGetByResourceGroupSamples {
  */
 public final class InternetGatewaysListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGateways_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGateways_ListBySubscription.json
      */
     /**
      * Sample code: InternetGateways_ListBySubscription_MaximumSet_Gen.
@@ -1556,9 +1766,7 @@ public final class InternetGatewaysListSamples {
  */
 public final class InternetGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGateways_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGateways_ListByResourceGroup.json
      */
     /**
      * Sample code: InternetGateways_ListByResourceGroup_MaximumSet_Gen.
@@ -1584,9 +1792,7 @@ import java.util.Map;
  */
 public final class InternetGatewaysUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * InternetGateways_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/InternetGateways_Update.json
      */
     /**
      * Sample code: InternetGateways_Update_MaximumSet_Gen.
@@ -1599,7 +1805,7 @@ public final class InternetGatewaysUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-internetGateway", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key81", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
             .withInternetGatewayRuleId(
                 "/subscriptions/xxxx-xxxx-xxxx-xxxx/providers/Microsoft.ManagedNetworkFabric/internetGatewayRules/example-internetGatewayRule")
             .apply();
@@ -1634,9 +1840,7 @@ import java.util.Map;
  */
 public final class IpCommunitiesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpCommunities_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpCommunities_Create.json
      */
     /**
      * Sample code: IpCommunities_Create_MaximumSet_Gen.
@@ -1649,11 +1853,11 @@ public final class IpCommunitiesCreateSamples {
             .define("example-ipcommunity")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
-            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
             .withIpCommunityRules(Arrays.asList(new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
                 .withSequenceNumber(4155123341L)
                 .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET))
                 .withCommunityMembers(Arrays.asList("1:1"))))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
             .withAnnotation("annotation")
             .create();
     }
@@ -1680,9 +1884,7 @@ public final class IpCommunitiesCreateSamples {
  */
 public final class IpCommunitiesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpCommunities_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpCommunities_Delete.json
      */
     /**
      * Sample code: IpCommunities_Delete_MaximumSet_Gen.
@@ -1704,9 +1906,7 @@ public final class IpCommunitiesDeleteSamples {
  */
 public final class IpCommunitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpCommunities_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpCommunities_Get.json
      */
     /**
      * Sample code: IpCommunities_Get_MaximumSet_Gen.
@@ -1729,9 +1929,7 @@ public final class IpCommunitiesGetByResourceGroupSamples {
  */
 public final class IpCommunitiesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpCommunities_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpCommunities_ListBySubscription.json
      */
     /**
      * Sample code: IpCommunities_ListBySubscription_MaximumSet_Gen.
@@ -1753,9 +1951,7 @@ public final class IpCommunitiesListSamples {
  */
 public final class IpCommunitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpCommunities_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpCommunities_ListByResourceGroup.json
      */
     /**
      * Sample code: IpCommunities_ListByResourceGroup_MaximumSet_Gen.
@@ -1777,15 +1973,15 @@ import com.azure.resourcemanager.managednetworkfabric.models.IpCommunity;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for IpCommunities Update.
  */
 public final class IpCommunitiesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpCommunities_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpCommunities_Update.json
      */
     /**
      * Sample code: IpCommunities_Update_MaximumSet_Gen.
@@ -1798,11 +1994,24 @@ public final class IpCommunitiesUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-ipcommunity", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withIpCommunityRules(Arrays.asList(new IpCommunityRule().withAction(CommunityActionTypes.PERMIT)
                 .withSequenceNumber(4155123341L)
                 .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.INTERNET))
                 .withCommunityMembers(Arrays.asList("1:1"))))
             .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -1821,9 +2030,7 @@ import java.util.Map;
  */
 public final class IpExtendedCommunitiesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpExtendedCommunities_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_Create.json
      */
     /**
      * Sample code: IpExtendedCommunities_Create_MaximumSet_Gen.
@@ -1840,7 +2047,7 @@ public final class IpExtendedCommunitiesCreateSamples {
                 Arrays.asList(new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
                     .withSequenceNumber(4155123341L)
                     .withRouteTargets(Arrays.asList("1234:2345"))))
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
             .withAnnotation("annotation")
             .create();
     }
@@ -1867,9 +2074,7 @@ public final class IpExtendedCommunitiesCreateSamples {
  */
 public final class IpExtendedCommunitiesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpExtendedCommunities_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_Delete.json
      */
     /**
      * Sample code: IpExtendedCommunities_Delete_MaximumSet_Gen.
@@ -1892,9 +2097,7 @@ public final class IpExtendedCommunitiesDeleteSamples {
  */
 public final class IpExtendedCommunitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpExtendedCommunities_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_Get.json
      */
     /**
      * Sample code: IpExtendedCommunities_Get_MaximumSet_Gen.
@@ -1918,9 +2121,7 @@ public final class IpExtendedCommunitiesGetByResourceGroupSamples {
  */
 public final class IpExtendedCommunitiesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpExtendedCommunities_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_ListBySubscription.json
      */
     /**
      * Sample code: IpExtendedCommunities_ListBySubscription_MaximumSet_Gen.
@@ -1942,9 +2143,7 @@ public final class IpExtendedCommunitiesListSamples {
  */
 public final class IpExtendedCommunitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpExtendedCommunities_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_ListByResourceGroup.json
      */
     /**
      * Sample code: IpExtendedCommunities_ListByResourceGroup_MaximumSet_Gen.
@@ -1973,9 +2172,7 @@ import java.util.Map;
  */
 public final class IpExtendedCommunitiesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpExtendedCommunities_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpExtendedCommunities_Update.json
      */
     /**
      * Sample code: IpExtendedCommunities_Update_MaximumSet_Gen.
@@ -1989,7 +2186,8 @@ public final class IpExtendedCommunitiesUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withAnnotation("annotation")
             .withIpExtendedCommunityRules(
                 Arrays.asList(new IpExtendedCommunityRule().withAction(CommunityActionTypes.PERMIT)
                     .withSequenceNumber(4155123341L)
@@ -2026,9 +2224,7 @@ import java.util.Map;
  */
 public final class IpPrefixesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpPrefixes_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpPrefixes_Create.json
      */
     /**
      * Sample code: IpPrefixes_Create_MaximumSet_Gen.
@@ -2041,12 +2237,12 @@ public final class IpPrefixesCreateSamples {
             .define("example-ipPrefix")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withIpPrefixRules(Arrays.asList(new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
                 .withSequenceNumber(4155123341L)
                 .withNetworkPrefix("10.10.10.10/30")
                 .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
                 .withSubnetMaskLength("10")))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
             .withAnnotation("annotation")
             .create();
     }
@@ -2073,9 +2269,7 @@ public final class IpPrefixesCreateSamples {
  */
 public final class IpPrefixesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpPrefixes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpPrefixes_Delete.json
      */
     /**
      * Sample code: IpPrefixes_Delete_MaximumSet_Gen.
@@ -2097,9 +2291,7 @@ public final class IpPrefixesDeleteSamples {
  */
 public final class IpPrefixesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpPrefixes_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpPrefixes_Get.json
      */
     /**
      * Sample code: IpPrefixes_Get_MaximumSet_Gen.
@@ -2122,9 +2314,7 @@ public final class IpPrefixesGetByResourceGroupSamples {
  */
 public final class IpPrefixesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpPrefixes_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpPrefixes_ListBySubscription.json
      */
     /**
      * Sample code: IpPrefixes_ListBySubscription_MaximumSet_Gen.
@@ -2146,9 +2336,7 @@ public final class IpPrefixesListSamples {
  */
 public final class IpPrefixesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpPrefixes_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpPrefixes_ListByResourceGroup.json
      */
     /**
      * Sample code: IpPrefixes_ListByResourceGroup_MaximumSet_Gen.
@@ -2178,9 +2366,7 @@ import java.util.Map;
  */
 public final class IpPrefixesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * IpPrefixes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/IpPrefixes_Update.json
      */
     /**
      * Sample code: IpPrefixes_Update_MaximumSet_Gen.
@@ -2193,13 +2379,13 @@ public final class IpPrefixesUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-ipPrefix", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withAnnotation("annotation")
             .withIpPrefixRules(Arrays.asList(new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
                 .withSequenceNumber(4155123341L)
                 .withNetworkPrefix("10.10.10.10/30")
                 .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
                 .withSubnetMaskLength("10")))
-            .withAnnotation("annotation")
             .apply();
     }
 
@@ -2225,9 +2411,7 @@ public final class IpPrefixesUpdateSamples {
  */
 public final class L2IsolationDomainsCommitConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_CommitConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_CommitConfiguration.json
      */
     /**
      * Sample code: L2IsolationDomains_CommitConfiguration_MaximumSet_Gen.
@@ -2245,6 +2429,10 @@ public final class L2IsolationDomainsCommitConfigurationSamples {
 ### L2IsolationDomains_Create
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.ExtendedVlan;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -2253,9 +2441,7 @@ import java.util.Map;
  */
 public final class L2IsolationDomainsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_Create.json
      */
     /**
      * Sample code: L2IsolationDomains_Create_MaximumSet_Gen.
@@ -2271,8 +2457,13 @@ public final class L2IsolationDomainsCreateSamples {
             .withNetworkFabricId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
             .withVlanId(501)
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key3673", new UserAssignedIdentity())))
             .withMtu(1500)
+            .withExtendedVlan(ExtendedVlan.ENABLED)
+            .withNetworkToNetworkInterconnectId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
             .withAnnotation("annotation")
             .create();
     }
@@ -2299,9 +2490,7 @@ public final class L2IsolationDomainsCreateSamples {
  */
 public final class L2IsolationDomainsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_Delete.json
      */
     /**
      * Sample code: L2IsolationDomains_Delete_MaximumSet_Gen.
@@ -2310,7 +2499,7 @@ public final class L2IsolationDomainsDeleteSamples {
      */
     public static void l2IsolationDomainsDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.l2IsolationDomains().delete("example-rg", "example-l2Domain", com.azure.core.util.Context.NONE);
+        manager.l2IsolationDomains().delete("example-rg", "example-l2domain", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2323,9 +2512,7 @@ public final class L2IsolationDomainsDeleteSamples {
  */
 public final class L2IsolationDomainsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_Get.json
      */
     /**
      * Sample code: L2IsolationDomains_Get_MaximumSet_Gen.
@@ -2335,7 +2522,7 @@ public final class L2IsolationDomainsGetByResourceGroupSamples {
     public static void l2IsolationDomainsGetMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.l2IsolationDomains()
-            .getByResourceGroupWithResponse("example-rg", "example-l2Domain", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("example-rg", "example-l2domain", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2348,9 +2535,7 @@ public final class L2IsolationDomainsGetByResourceGroupSamples {
  */
 public final class L2IsolationDomainsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_ListBySubscription.json
      */
     /**
      * Sample code: L2IsolationDomains_ListBySubscription_MaximumSet_Gen.
@@ -2372,9 +2557,7 @@ public final class L2IsolationDomainsListSamples {
  */
 public final class L2IsolationDomainsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_ListByResourceGroup.json
      */
     /**
      * Sample code: L2IsolationDomains_ListByResourceGroup_MaximumSet_Gen.
@@ -2392,6 +2575,9 @@ public final class L2IsolationDomainsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomain;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -2400,9 +2586,7 @@ import java.util.Map;
  */
 public final class L2IsolationDomainsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_Update.json
      */
     /**
      * Sample code: L2IsolationDomains_Update_MaximumSet_Gen.
@@ -2412,11 +2596,15 @@ public final class L2IsolationDomainsUpdateSamples {
     public static void l2IsolationDomainsUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         L2IsolationDomain resource = manager.l2IsolationDomains()
-            .getByResourceGroupWithResponse("example-rg", "example-l2Domain", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("example-rg", "example-l2domain", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8793", new UserAssignedIdentity())))
             .withMtu(6000)
+            .withNetworkToNetworkInterconnectId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
             .withAnnotation("annotation1")
             .apply();
     }
@@ -2447,19 +2635,17 @@ import java.util.Arrays;
  */
 public final class L2IsolationDomainsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_UpdateAdministrativeState.json
      */
     /**
-     * Sample code: L2IsolationDomains_updateAdministrativeState_MaximumSet_Gen.
+     * Sample code: L2IsolationDomains_UpdateAdministrativeState_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void l2IsolationDomainsUpdateAdministrativeStateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.l2IsolationDomains()
-            .updateAdministrativeState("example-rg", "example-l2Domain",
+            .updateAdministrativeState("example-rg", "example-l2domain",
                 new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
                 com.azure.core.util.Context.NONE);
     }
@@ -2474,9 +2660,7 @@ public final class L2IsolationDomainsUpdateAdministrativeStateSamples {
  */
 public final class L2IsolationDomainsValidateConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L2IsolationDomains_ValidateConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L2IsolationDomains_ValidateConfiguration.json
      */
     /**
      * Sample code: L2IsolationDomains_ValidateConfiguration_MaximumSet_Gen.
@@ -2499,9 +2683,7 @@ public final class L2IsolationDomainsValidateConfigurationSamples {
  */
 public final class L3IsolationDomainsCommitConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_CommitConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_CommitConfiguration.json
      */
     /**
      * Sample code: L3IsolationDomains_CommitConfiguration_MaximumSet_Gen.
@@ -2523,8 +2705,14 @@ import com.azure.resourcemanager.managednetworkfabric.models.AggregateRoute;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.L3ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3UniqueRouteDistinguisherProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePrefixLimitProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -2534,9 +2722,7 @@ import java.util.Map;
  */
 public final class L3IsolationDomainsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_Create.json
      */
     /**
      * Sample code: L3IsolationDomains_Create_MaximumSet_Gen.
@@ -2551,19 +2737,28 @@ public final class L3IsolationDomainsCreateSamples {
             .withExistingResourceGroup("example-rg")
             .withNetworkFabricId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key3673", new UserAssignedIdentity())))
+            .withAnnotation("annotation")
             .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
-            .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
+            .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
             .withAggregateRouteConfiguration(new AggregateRouteConfiguration()
                 .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("10.0.0.0/24")))
                 .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("3FFE:FFFF:0:CD30::a0/29"))))
-            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy().withExportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
+            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy()
                 .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
                     .withExportIpv6RoutePolicyId(
                         "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")))
-            .withAnnotation("annotation")
+            .withStaticRouteRoutePolicy(new StaticRouteRoutePolicy().withExportRoutePolicy(new L3ExportRoutePolicy()
+                .withExportIpv4RoutePolicyId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
+                .withExportIpv6RoutePolicyId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")))
+            .withUniqueRdConfiguration(new L3UniqueRouteDistinguisherProperties())
+            .withV4routePrefixLimit(new RoutePrefixLimitProperties().withHardLimit(1000).withThreshold(90))
+            .withV6routePrefixLimit(new RoutePrefixLimitProperties().withHardLimit(1000).withThreshold(90))
             .create();
     }
 
@@ -2589,9 +2784,7 @@ public final class L3IsolationDomainsCreateSamples {
  */
 public final class L3IsolationDomainsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_Delete.json
      */
     /**
      * Sample code: L3IsolationDomains_Delete_MaximumSet_Gen.
@@ -2613,9 +2806,7 @@ public final class L3IsolationDomainsDeleteSamples {
  */
 public final class L3IsolationDomainsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_Get.json
      */
     /**
      * Sample code: L3IsolationDomains_Get_MaximumSet_Gen.
@@ -2638,9 +2829,7 @@ public final class L3IsolationDomainsGetByResourceGroupSamples {
  */
 public final class L3IsolationDomainsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_ListBySubscription.json
      */
     /**
      * Sample code: L3IsolationDomains_ListBySubscription_MaximumSet_Gen.
@@ -2662,9 +2851,7 @@ public final class L3IsolationDomainsListSamples {
  */
 public final class L3IsolationDomainsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_ListByResourceGroup.json
      */
     /**
      * Sample code: L3IsolationDomains_ListByResourceGroup_MaximumSet_Gen.
@@ -2682,12 +2869,19 @@ public final class L3IsolationDomainsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRoute;
-import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
-import com.azure.resourcemanager.managednetworkfabric.models.L3ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.AggregateRoutePatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicyPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicyPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.L3ExportRoutePolicyPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomain;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePrefixLimitPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteRoutePolicyPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -2697,9 +2891,7 @@ import java.util.Map;
  */
 public final class L3IsolationDomainsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_Update.json
      */
     /**
      * Sample code: L3IsolationDomains_Update_MaximumSet_Gen.
@@ -2712,19 +2904,29 @@ public final class L3IsolationDomainsUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-l3domain", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key4953", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8793", new UserAssignedIdentity())))
+            .withAnnotation("annotation1")
             .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
-            .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
-            .withAggregateRouteConfiguration(new AggregateRouteConfiguration()
+            .withRedistributeStaticRoutes(RedistributeStaticRoutes.TRUE)
+            .withAggregateRouteConfiguration(new AggregateRoutePatchConfiguration()
                 .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("10.0.0.0/24")))
                 .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("3FFE:FFFF:0:CD30::a0/29"))))
-            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicy().withExportRoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
-                .withExportRoutePolicy(new L3ExportRoutePolicy().withExportIpv4RoutePolicyId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1")
+            .withConnectedSubnetRoutePolicy(new ConnectedSubnetRoutePolicyPatch()
+                .withExportRoutePolicy(new L3ExportRoutePolicyPatch().withExportIpv4RoutePolicyId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
                     .withExportIpv6RoutePolicyId(
-                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1")))
-            .withAnnotation("annotation1")
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")))
+            .withStaticRouteRoutePolicy(new StaticRouteRoutePolicyPatch()
+                .withExportRoutePolicy(new L3ExportRoutePolicyPatch().withExportIpv4RoutePolicyId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
+                    .withExportIpv6RoutePolicyId(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")))
+            .withV4routePrefixLimit(new RoutePrefixLimitPatchProperties().withHardLimit(1000).withThreshold(50))
+            .withV6routePrefixLimit(new RoutePrefixLimitPatchProperties().withHardLimit(1000).withThreshold(50))
+            .withExportPolicyConfiguration(
+                new BmpExportPolicyPatchProperties().withExportPolicies(Arrays.asList(BmpExportPolicy.PRE_POLICY)))
             .apply();
     }
 
@@ -2754,12 +2956,10 @@ import java.util.Arrays;
  */
 public final class L3IsolationDomainsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_updateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_UpdateAdministrativeState.json
      */
     /**
-     * Sample code: L3IsolationDomains_updateAdministrativeState_MaximumSet_Gen.
+     * Sample code: L3IsolationDomains_UpdateAdministrativeState_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
@@ -2781,9 +2981,7 @@ public final class L3IsolationDomainsUpdateAdministrativeStateSamples {
  */
 public final class L3IsolationDomainsValidateConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * L3IsolationDomains_ValidateConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/L3IsolationDomains_ValidateConfiguration.json
      */
     /**
      * Sample code: L3IsolationDomains_ValidateConfiguration_MaximumSet_Gen.
@@ -2801,7 +2999,10 @@ public final class L3IsolationDomainsValidateConfigurationSamples {
 ### NeighborGroups_Create
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroupDestination;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -2811,9 +3012,7 @@ import java.util.Map;
  */
 public final class NeighborGroupsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NeighborGroups_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NeighborGroups_Create.json
      */
     /**
      * Sample code: NeighborGroups_Create_MaximumSet_Gen.
@@ -2826,11 +3025,13 @@ public final class NeighborGroupsCreateSamples {
             .define("example-neighborGroup")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
-            .withTags(mapOf("key8107", "fakeTokenPlaceholder"))
             .withDestination(new NeighborGroupDestination()
                 .withIpv4Addresses(Arrays.asList("10.10.10.10", "20.10.10.10", "30.10.10.10", "40.10.10.10",
                     "50.10.10.10", "60.10.10.10", "70.10.10.10", "80.10.10.10", "90.10.10.10"))
                 .withIpv6Addresses(Arrays.asList("2F::/100")))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key3673", new UserAssignedIdentity())))
             .withAnnotation("annotation")
             .create();
     }
@@ -2857,9 +3058,7 @@ public final class NeighborGroupsCreateSamples {
  */
 public final class NeighborGroupsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NeighborGroups_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NeighborGroups_Delete.json
      */
     /**
      * Sample code: NeighborGroups_Delete_MaximumSet_Gen.
@@ -2881,9 +3080,7 @@ public final class NeighborGroupsDeleteSamples {
  */
 public final class NeighborGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NeighborGroups_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NeighborGroups_Get.json
      */
     /**
      * Sample code: NeighborGroups_Get_MaximumSet_Gen.
@@ -2906,9 +3103,7 @@ public final class NeighborGroupsGetByResourceGroupSamples {
  */
 public final class NeighborGroupsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NeighborGroups_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NeighborGroups_ListBySubscription.json
      */
     /**
      * Sample code: NeighborGroups_ListBySubscription_MaximumSet_Gen.
@@ -2930,9 +3125,7 @@ public final class NeighborGroupsListSamples {
  */
 public final class NeighborGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NeighborGroups_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NeighborGroups_ListByResourceGroup.json
      */
     /**
      * Sample code: NeighborGroups_ListByResourceGroup_MaximumSet_Gen.
@@ -2946,11 +3139,36 @@ public final class NeighborGroupsListByResourceGroupSamples {
 }
 ```
 
+### NeighborGroups_Resync
+
+```java
+/**
+ * Samples for NeighborGroups Resync.
+ */
+public final class NeighborGroupsResyncSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NeighborGroups_Resync.json
+     */
+    /**
+     * Sample code: NeighborGroups_Resync.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        neighborGroupsResync(com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.neighborGroups().resync("example-rg", "example-neighborgroup", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NeighborGroups_Update
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroup;
-import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroupDestination;
+import com.azure.resourcemanager.managednetworkfabric.models.NeighborGroupDestinationPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -2960,9 +3178,7 @@ import java.util.Map;
  */
 public final class NeighborGroupsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NeighborGroups_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NeighborGroups_Update.json
      */
     /**
      * Sample code: NeighborGroups_Update_MaximumSet_Gen.
@@ -2975,12 +3191,14 @@ public final class NeighborGroupsUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-neighborGroup", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key8107", "fakeTokenPlaceholder"))
-            .withDestination(new NeighborGroupDestination()
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8793", new UserAssignedIdentity())))
+            .withAnnotation("Updating")
+            .withDestination(new NeighborGroupDestinationPatch()
                 .withIpv4Addresses(Arrays.asList("10.10.10.10", "20.10.10.10", "30.10.10.10", "40.10.10.10",
                     "50.10.10.10", "60.10.10.10", "70.10.10.10", "80.10.10.10", "90.10.10.10"))
                 .withIpv6Addresses(Arrays.asList("2F::/100")))
-            .withAnnotation("Updating")
             .apply();
     }
 
@@ -2998,6 +3216,498 @@ public final class NeighborGroupsUpdateSamples {
 }
 ```
 
+### NetworkBootstrapDevices_Create
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for NetworkBootstrapDevices Create.
+ */
+public final class NetworkBootstrapDevicesCreateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_Create.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_Create_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapDevicesCreateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices()
+            .define("example-device")
+            .withRegion("eastuseuap")
+            .withExistingResourceGroup("example-rg")
+            .withTags(mapOf())
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key3673", new UserAssignedIdentity())))
+            .withAnnotation("annotation")
+            .withHostName("NFA-Device")
+            .withSerialNumber("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX")
+            .withNetworkDeviceSku("DeviceSku")
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### NetworkBootstrapDevices_Delete
+
+```java
+/**
+ * Samples for NetworkBootstrapDevices Delete.
+ */
+public final class NetworkBootstrapDevicesDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_Delete.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_Delete_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapDevicesDeleteMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices().delete("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_GetByResourceGroup
+
+```java
+/**
+ * Samples for NetworkBootstrapDevices GetByResourceGroup.
+ */
+public final class NetworkBootstrapDevicesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_Get.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_Get_MaximumSet - generated by [MaximumSet] rule - generated by [MaximumSet]
+     * rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapDevicesGetMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices()
+            .getByResourceGroupWithResponse("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_List
+
+```java
+/**
+ * Samples for NetworkBootstrapDevices List.
+ */
+public final class NetworkBootstrapDevicesListSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_ListBySubscription.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_ListBySubscription.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapDevicesListBySubscription(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_ListByResourceGroup
+
+```java
+/**
+ * Samples for NetworkBootstrapDevices ListByResourceGroup.
+ */
+public final class NetworkBootstrapDevicesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_ListByResourceGroup_MaximumSet - generated by [MaximumSet] rule - generated
+     * by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        networkBootstrapDevicesListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+            com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_Reboot
+
+```java
+/**
+ * Samples for NetworkBootstrapDevices Reboot.
+ */
+public final class NetworkBootstrapDevicesRebootSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_Reboot.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_Reboot_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapDevicesRebootMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices().reboot("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_RefreshConfiguration
+
+```java
+/**
+ * Samples for NetworkBootstrapDevices RefreshConfiguration.
+ */
+public final class NetworkBootstrapDevicesRefreshConfigurationSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_RefreshConfiguration.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_RefreshConfiguration_MaximumSet - generated by [MaximumSet] rule - generated
+     * by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        networkBootstrapDevicesRefreshConfigurationMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+            com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices()
+            .refreshConfiguration("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_ResyncPasswords
+
+```java
+/**
+ * Samples for NetworkBootstrapDevices ResyncPasswords.
+ */
+public final class NetworkBootstrapDevicesResyncPasswordsSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_ResyncPasswords.json
+     */
+    /**
+     * Sample code: Resync the latest passwords to the Network Bootstrap Device. - generated by [MaximumSet] rule -
+     * generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        resyncTheLatestPasswordsToTheNetworkBootstrapDeviceGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+            com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices()
+            .resyncPasswords("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_Update
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapDevice;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for NetworkBootstrapDevices Update.
+ */
+public final class NetworkBootstrapDevicesUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_Update.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_Update_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapDevicesUpdateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        NetworkBootstrapDevice resource = manager.networkBootstrapDevices()
+            .getByResourceGroupWithResponse("example-rg", "example-device", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf())
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8793", new UserAssignedIdentity())))
+            .withAnnotation("annotation")
+            .withHostName("NFA-Device")
+            .withSerialNumber("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX")
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### NetworkBootstrapDevices_UpdateAdministrativeState
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.DeviceAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateDeviceAdministrativeState;
+import java.util.Arrays;
+
+/**
+ * Samples for NetworkBootstrapDevices UpdateAdministrativeState.
+ */
+public final class NetworkBootstrapDevicesUpdateAdministrativeStateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_UpdateAdministrativeState.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_UpdateAdministrativeState_MaximumSet - generated by [MaximumSet] rule -
+     * generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        networkBootstrapDevicesUpdateAdministrativeStateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+            com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices()
+            .updateAdministrativeState("example-rg", "example-device",
+                new UpdateDeviceAdministrativeState().withResourceIds(Arrays.asList(
+                    "/Subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/example-device-1"))
+                    .withState(DeviceAdministrativeState.RMA),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapDevices_Upgrade
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+
+/**
+ * Samples for NetworkBootstrapDevices Upgrade.
+ */
+public final class NetworkBootstrapDevicesUpgradeSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapDevices_Upgrade.json
+     */
+    /**
+     * Sample code: NetworkBootstrapDevices_Upgrade_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapDevicesUpgradeMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapDevices()
+            .upgrade("example-rg", "example-device", new UpdateVersion().withVersion("1.0"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapInterfaces_Create
+
+```java
+/**
+ * Samples for NetworkBootstrapInterfaces Create.
+ */
+public final class NetworkBootstrapInterfacesCreateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapInterfaces_Create.json
+     */
+    /**
+     * Sample code: NetworkBootstrapInterfaces_Create_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapInterfacesCreateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapInterfaces()
+            .define("example-interface")
+            .withExistingNetworkBootstrapDevice("example-rg", "example-device")
+            .withAdditionalDescription("additionalDescription")
+            .withSerialNumber("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX")
+            .withAnnotation("annotation")
+            .create();
+    }
+}
+```
+
+### NetworkBootstrapInterfaces_Delete
+
+```java
+/**
+ * Samples for NetworkBootstrapInterfaces Delete.
+ */
+public final class NetworkBootstrapInterfacesDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapInterfaces_Delete.json
+     */
+    /**
+     * Sample code: NetworkBootstrapInterfaces_Delete_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapInterfacesDeleteMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapInterfaces()
+            .delete("example-rg", "example-device", "example-interface", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapInterfaces_Get
+
+```java
+/**
+ * Samples for NetworkBootstrapInterfaces Get.
+ */
+public final class NetworkBootstrapInterfacesGetSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapInterfaces_Get.json
+     */
+    /**
+     * Sample code: NetworkBootstrapInterfaces_Get_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapInterfacesGetMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapInterfaces()
+            .getWithResponse("example-rg", "example-device", "example-interface", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapInterfaces_ListByNetworkBootstrapDevice
+
+```java
+/**
+ * Samples for NetworkBootstrapInterfaces ListByNetworkBootstrapDevice.
+ */
+public final class NetworkBootstrapInterfacesListByNetworkBootstrapDeviceSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapInterfaces_ListByNetworkBootstrapDevice.json
+     */
+    /**
+     * Sample code: NetworkBootstrapInterfaces_ListByNetworkBootstrapDevice_MaximumSet - generated by [MaximumSet] rule
+     * - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        networkBootstrapInterfacesListByNetworkBootstrapDeviceMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+            com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapInterfaces()
+            .listByNetworkBootstrapDevice("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkBootstrapInterfaces_Update
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkBootstrapInterface;
+
+/**
+ * Samples for NetworkBootstrapInterfaces Update.
+ */
+public final class NetworkBootstrapInterfacesUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapInterfaces_Update.json
+     */
+    /**
+     * Sample code: NetworkBootstrapInterfaces_Update_MaximumSet - generated by [MaximumSet] rule - generated by
+     * [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapInterfacesUpdateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        NetworkBootstrapInterface resource = manager.networkBootstrapInterfaces()
+            .getWithResponse("example-rg", "example-device", "example-interface", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withSerialNumber("Vendor;Model;HardwareRevisionId;SerialNumber")
+            .withAnnotation("annotation")
+            .apply();
+    }
+}
+```
+
+### NetworkBootstrapInterfaces_UpdateAdministrativeState
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import java.util.Arrays;
+
+/**
+ * Samples for NetworkBootstrapInterfaces UpdateAdministrativeState.
+ */
+public final class NetworkBootstrapInterfacesUpdateAdministrativeStateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkBootstrapInterfaces_UpdateAdministrativeState.json
+     */
+    /**
+     * Sample code: NetworkBootstrapInterfaces_UpdateAdministrativeState_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkBootstrapInterfacesUpdateAdministrativeStateMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkBootstrapInterfaces()
+            .updateAdministrativeState("example-rg", "example-device", "example-interface",
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NetworkDeviceSkus_Get
 
 ```java
@@ -3006,9 +3716,7 @@ public final class NeighborGroupsUpdateSamples {
  */
 public final class NetworkDeviceSkusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDeviceSkus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDeviceSkus_Get.json
      */
     /**
      * Sample code: NetworkDeviceSkus_Get_MaximumSet_Gen.
@@ -3030,9 +3738,7 @@ public final class NetworkDeviceSkusGetSamples {
  */
 public final class NetworkDeviceSkusListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDeviceSkus_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDeviceSkus_ListBySubscription.json
      */
     /**
      * Sample code: NetworkDeviceSkus_ListBySubscription_MaximumSet_Gen.
@@ -3049,6 +3755,11 @@ public final class NetworkDeviceSkusListSamples {
 ### NetworkDevices_Create
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelector;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentitySelectorType;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -3057,9 +3768,7 @@ import java.util.Map;
  */
 public final class NetworkDevicesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_Create.json
      */
     /**
      * Sample code: NetworkDevices_Create_MaximumSet_Gen.
@@ -3072,11 +3781,19 @@ public final class NetworkDevicesCreateSamples {
             .define("example-device")
             .withRegion("eastuseuap")
             .withExistingResourceGroup("example-rg")
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
-            .withNetworkDeviceSku("DeviceSku")
-            .withHostname("NFA-Device")
             .withSerialNumber("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX")
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity",
+                    new UserAssignedIdentity())))
             .withAnnotation("annotation")
+            .withHostname("NFA-Device")
+            .withIdentitySelector(new IdentitySelector()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"))
+            .withNetworkDeviceSku("DeviceSku")
             .create();
     }
 
@@ -3102,9 +3819,7 @@ public final class NetworkDevicesCreateSamples {
  */
 public final class NetworkDevicesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_Delete.json
      */
     /**
      * Sample code: NetworkDevices_Delete_MaximumSet_Gen.
@@ -3126,9 +3841,7 @@ public final class NetworkDevicesDeleteSamples {
  */
 public final class NetworkDevicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_Get.json
      */
     /**
      * Sample code: NetworkDevices_Get_MaximumSet_Gen.
@@ -3151,9 +3864,7 @@ public final class NetworkDevicesGetByResourceGroupSamples {
  */
 public final class NetworkDevicesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_ListBySubscription.json
      */
     /**
      * Sample code: NetworkDevices_ListBySubscription_MaximumSet_Gen.
@@ -3175,9 +3886,7 @@ public final class NetworkDevicesListSamples {
  */
 public final class NetworkDevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkDevices_ListByResourceGroup_MaximumSet_Gen.
@@ -3202,9 +3911,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.RebootType;
  */
 public final class NetworkDevicesRebootSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_Reboot_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_Reboot.json
      */
     /**
      * Sample code: NetworkDevices_Reboot_MaximumSet_Gen.
@@ -3229,9 +3936,7 @@ public final class NetworkDevicesRebootSamples {
  */
 public final class NetworkDevicesRefreshConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_RefreshConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_RefreshConfiguration.json
      */
     /**
      * Sample code: NetworkDevices_RefreshConfiguration_MaximumSet_Gen.
@@ -3245,10 +3950,139 @@ public final class NetworkDevicesRefreshConfigurationSamples {
 }
 ```
 
+### NetworkDevices_ResyncCertificates
+
+```java
+/**
+ * Samples for NetworkDevices ResyncCertificates.
+ */
+public final class NetworkDevicesResyncCertificatesSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncCertificates.json
+     */
+    /**
+     * Sample code: Successful certificate resync.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void successfulCertificateResync(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkDevices().resyncCertificates("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncCertificates_Error.json
+     */
+    /**
+     * Sample code: Error while performing certificate resync.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void errorWhilePerformingCertificateResync(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkDevices().resyncCertificates("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkDevices_ResyncPasswords
+
+```java
+/**
+ * Samples for NetworkDevices ResyncPasswords.
+ */
+public final class NetworkDevicesResyncPasswordsSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncPasswords.json
+     */
+    /**
+     * Sample code: Successful password resync.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        successfulPasswordResync(com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkDevices().resyncPasswords("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkDevices_ResyncPasswords_Error.json
+     */
+    /**
+     * Sample code: Error while performing password resync.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void errorWhilePerformingPasswordResync(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkDevices().resyncPasswords("example-rg", "example-device", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkDevices_RunRoCommand
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.DeviceRoCommand;
+
+/**
+ * Samples for NetworkDevices RunRoCommand.
+ */
+public final class NetworkDevicesRunRoCommandSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkDevices_RunRoCommand.json
+     */
+    /**
+     * Sample code: NetworkDevices_RunRoCommand_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkDevicesRunRoCommandMaximumSetGen(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkDevices()
+            .runRoCommand("example-rg", "example-device", new DeviceRoCommand().withCommand("show version"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkDevices_RunRwCommand
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.DeviceRwCommand;
+
+/**
+ * Samples for NetworkDevices RunRwCommand.
+ */
+public final class NetworkDevicesRunRwCommandSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkDevices_RunRwCommand.json
+     */
+    /**
+     * Sample code: NetworkDevices_RunRwCommand_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkDevicesRunRwCommandMaximumSetGen(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkDevices()
+            .runRwCommand("example-rg", "example-device",
+                new DeviceRwCommand().withCommand("show running-config")
+                    .withCommandUrl("https://example.blob.core.windows.net/commands/config.txt"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NetworkDevices_Update
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelectorPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentitySelectorType;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDevice;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -3257,9 +4091,7 @@ import java.util.Map;
  */
 public final class NetworkDevicesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_Update.json
      */
     /**
      * Sample code: NetworkDevices_Update_MaximumSet_Gen.
@@ -3272,10 +4104,18 @@ public final class NetworkDevicesUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-device", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("KeyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity",
+                    new UserAssignedIdentity())))
+            .withAnnotation("annotation")
             .withHostname("NFA-Device")
             .withSerialNumber("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX")
-            .withAnnotation("annotation")
+            .withIdentitySelector(new IdentitySelectorPatch()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"))
             .apply();
     }
 
@@ -3305,9 +4145,7 @@ import java.util.Arrays;
  */
 public final class NetworkDevicesUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_UpdateAdministrativeState.json
      */
     /**
      * Sample code: NetworkDevices_UpdateAdministrativeState_MaximumSet_Gen.
@@ -3328,26 +4166,25 @@ public final class NetworkDevicesUpdateAdministrativeStateSamples {
 ### NetworkDevices_Upgrade
 
 ```java
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceUpgradeRequest;
 
 /**
  * Samples for NetworkDevices Upgrade.
  */
 public final class NetworkDevicesUpgradeSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkDevices_Upgrade_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkDevices_Upgrade.json
      */
     /**
-     * Sample code: NetworkDevices_Upgrade_MaximumSet_Gen.
+     * Sample code: NetworkDevices_Upgrade_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
-    public static void networkDevicesUpgradeMaximumSetGen(
+    public static void networkDevicesUpgradeMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkDevices()
-            .upgrade("example-rg", "example-device", new UpdateVersion().withVersion("1.0.0"),
+            .upgrade("rgmanagednetworkfabric", "example-device",
+                new NetworkDeviceUpgradeRequest().withVersion("1.0.0").withRwDeviceConfigUrl("https://microsoft.com/a"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -3359,17 +4196,20 @@ public final class NetworkDevicesUpgradeSamples {
 import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnectionInformation;
 import com.azure.resourcemanager.managednetworkfabric.models.IsWorkloadManagementNetworkEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedResourceGroupConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for NetworkFabricControllers Create.
  */
 public final class NetworkFabricControllersCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricControllers_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricControllers_Create.json
      */
     /**
      * Sample code: NetworkFabricControllers_Create_MaximumSet_Gen.
@@ -3382,12 +4222,10 @@ public final class NetworkFabricControllersCreateSamples {
             .define("example-networkController")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
-            .withManagedResourceGroupConfiguration(
-                new ManagedResourceGroupConfiguration().withName("managedResourceGroupName").withLocation("eastus"))
-            .withIsWorkloadManagementNetworkEnabled(IsWorkloadManagementNetworkEnabled.TRUE)
-            .withIpv4AddressSpace("172.253.0.0/19")
-            .withIpv6AddressSpace("::/60")
-            .withNfcSku(NfcSku.STANDARD)
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key4876", new UserAssignedIdentity())))
+            .withAnnotation("annotation")
             .withInfrastructureExpressRouteConnections(Arrays.asList(new ExpressRouteConnectionInformation()
                 .withExpressRouteCircuitId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
@@ -3396,8 +4234,25 @@ public final class NetworkFabricControllersCreateSamples {
                 .withExpressRouteCircuitId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
                 .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
-            .withAnnotation("annotation")
+            .withManagedResourceGroupConfiguration(
+                new ManagedResourceGroupConfiguration().withName("managedResourceGroupName").withLocation("eastus"))
+            .withIsWorkloadManagementNetworkEnabled(IsWorkloadManagementNetworkEnabled.TRUE)
+            .withIpv4AddressSpace("172.253.0.0/19")
+            .withIpv6AddressSpace("::/60")
+            .withNfcSku(NfcSku.STANDARD)
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -3410,9 +4265,7 @@ public final class NetworkFabricControllersCreateSamples {
  */
 public final class NetworkFabricControllersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricControllers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricControllers_Delete.json
      */
     /**
      * Sample code: NetworkFabricControllers_Delete_MaximumSet_Gen.
@@ -3435,9 +4288,7 @@ public final class NetworkFabricControllersDeleteSamples {
  */
 public final class NetworkFabricControllersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricControllers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricControllers_Get.json
      */
     /**
      * Sample code: NetworkFabricControllers_Get_MaximumSet_Gen.
@@ -3461,9 +4312,7 @@ public final class NetworkFabricControllersGetByResourceGroupSamples {
  */
 public final class NetworkFabricControllersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricControllers_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricControllers_ListBySubscription.json
      */
     /**
      * Sample code: NetworkFabricControllers_ListBySubscription_MaximumSet_Gen.
@@ -3485,9 +4334,7 @@ public final class NetworkFabricControllersListSamples {
  */
 public final class NetworkFabricControllersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricControllers_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricControllers_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkFabricControllers_ListByResourceGroup_MaximumSet_Gen.
@@ -3505,17 +4352,20 @@ public final class NetworkFabricControllersListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnectionInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricController;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for NetworkFabricControllers Update.
  */
 public final class NetworkFabricControllersUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricControllers_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricControllers_Update.json
      */
     /**
      * Sample code: NetworkFabricControllers_Update_MaximumSet_Gen.
@@ -3528,6 +4378,9 @@ public final class NetworkFabricControllersUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-networkController", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key1402", new UserAssignedIdentity())))
             .withInfrastructureExpressRouteConnections(Arrays.asList(new ExpressRouteConnectionInformation()
                 .withExpressRouteCircuitId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
@@ -3537,6 +4390,18 @@ public final class NetworkFabricControllersUpdateSamples {
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Network/expressRouteCircuits/expressRouteCircuitName")
                 .withExpressRouteAuthorizationKey("fakeTokenPlaceholder")))
             .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -3549,9 +4414,7 @@ public final class NetworkFabricControllersUpdateSamples {
  */
 public final class NetworkFabricSkusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricSkus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricSkus_Get.json
      */
     /**
      * Sample code: NetworkFabricSkus_Get_MaximumSet_Gen.
@@ -3573,9 +4436,7 @@ public final class NetworkFabricSkusGetSamples {
  */
 public final class NetworkFabricSkusListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabricSkus_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabricSkus_ListBySubscription.json
      */
     /**
      * Sample code: NetworkFabricSkus_ListBySubscription_MaximumSet_Gen.
@@ -3589,17 +4450,64 @@ public final class NetworkFabricSkusListSamples {
 }
 ```
 
+### NetworkFabrics_ArmConfigurationDiff
+
+```java
+/**
+ * Samples for NetworkFabrics ArmConfigurationDiff.
+ */
+public final class NetworkFabricsArmConfigurationDiffSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ArmConfigurationDiff.json
+     */
+    /**
+     * Sample code: NetworkFabrics_ArmConfigurationDiff_MaximumSet.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkFabricsArmConfigurationDiffMaximumSet(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().armConfigurationDiff("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkFabrics_CommitBatchStatus
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.CommitBatchStatusRequest;
+
+/**
+ * Samples for NetworkFabrics CommitBatchStatus.
+ */
+public final class NetworkFabricsCommitBatchStatusSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_CommitBatchStatus.json
+     */
+    /**
+     * Sample code: NetworkFabrics_CommitBatchStatus_MaximumSet.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkFabricsCommitBatchStatusMaximumSet(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics()
+            .commitBatchStatus("example-rg", "example-fabric",
+                new CommitBatchStatusRequest().withCommitBatchId("batch-id"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NetworkFabrics_CommitConfiguration
 
 ```java
+
 /**
  * Samples for NetworkFabrics CommitConfiguration.
  */
 public final class NetworkFabricsCommitConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_CommitConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_CommitConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_CommitConfiguration_MaximumSet_Gen.
@@ -3608,7 +4516,8 @@ public final class NetworkFabricsCommitConfigurationSamples {
      */
     public static void networkFabricsCommitConfigurationMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkFabrics().commitConfiguration("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+        manager.networkFabrics()
+            .commitConfiguration("example-rg", "example-networkFabric", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3616,14 +4525,24 @@ public final class NetworkFabricsCommitConfigurationSamples {
 ### NetworkFabrics_Create
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.AuthorizedTransceiverProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelector;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentitySelectorType;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.OptionBProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NNIDerivedUniqueRouteDistinguisherConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
 import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationPropertiesOptionAProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.VpnOptionAProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.VpnOptionBProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -3633,9 +4552,7 @@ import java.util.Map;
  */
 public final class NetworkFabricsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Create.json
      */
     /**
      * Sample code: NetworkFabrics_Create_MaximumSet_Gen.
@@ -3659,49 +4576,72 @@ public final class NetworkFabricsCreateSamples {
                 .withSerialNumber("123456")
                 .withPrimaryIpv4Prefix("10.0.0.12/30")
                 .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
-                .withSecondaryIpv4Prefix("20.0.0.13/30")
+                .withSecondaryIpv4Prefix("40.0.0.14/30")
                 .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127"))
             .withManagementNetworkConfiguration(new ManagementNetworkConfigurationProperties()
                 .withInfrastructureVpnConfiguration(new VpnConfigurationProperties().withNetworkToNetworkInterconnectId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
                     .withPeeringOption(PeeringOption.OPTIONA)
-                    .withOptionBProperties(new OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
-                        .withExportRouteTargets(Arrays.asList("65046:10050"))
-                        .withRouteTargets(
-                            new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
-                                .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
-                    .withOptionAProperties(new VpnConfigurationPropertiesOptionAProperties().withMtu(1501)
-                        .withVlanId(3001)
-                        .withPeerAsn(1235L)
-                        .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
-                        .withPrimaryIpv4Prefix("10.0.0.12/30")
+                    .withOptionBProperties(
+                        new VpnOptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
+                            .withExportRouteTargets(Arrays.asList("65046:10050"))
+                            .withRouteTargets(
+                                new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                    .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
+                                    .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                    .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
+                    .withOptionAProperties(new VpnOptionAProperties().withPrimaryIpv4Prefix("10.0.0.12/30")
                         .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
                         .withSecondaryIpv4Prefix("20.0.0.13/30")
-                        .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")))
+                        .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")
+                        .withMtu(1501)
+                        .withVlanId(3001)
+                        .withPeerASN(1235L)
+                        .withBfdConfiguration(
+                            new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))))
                 .withWorkloadVpnConfiguration(new VpnConfigurationProperties().withNetworkToNetworkInterconnectId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
                     .withPeeringOption(PeeringOption.OPTIONA)
-                    .withOptionBProperties(new OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
-                        .withExportRouteTargets(Arrays.asList("65046:10050"))
-                        .withRouteTargets(
-                            new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
-                                .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
-                    .withOptionAProperties(new VpnConfigurationPropertiesOptionAProperties().withMtu(1500)
-                        .withVlanId(3000)
-                        .withPeerAsn(61234L)
-                        .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5))
-                        .withPrimaryIpv4Prefix("10.0.0.14/30")
+                    .withOptionBProperties(
+                        new VpnOptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
+                            .withExportRouteTargets(Arrays.asList("65046:10050"))
+                            .withRouteTargets(
+                                new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                    .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
+                                    .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                    .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
+                    .withOptionAProperties(new VpnOptionAProperties().withPrimaryIpv4Prefix("10.0.0.14/30")
                         .withPrimaryIpv6Prefix("2FFE:FFFF:0:CD30::a7/126")
                         .withSecondaryIpv4Prefix("10.0.0.15/30")
-                        .withSecondaryIpv6Prefix("2FFE:FFFF:0:CD30::ac/126"))))
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
-            .withFabricVersion("1.x.x")
+                        .withSecondaryIpv6Prefix("2FFE:FFFF:0:CD30::ac/126")
+                        .withMtu(1500)
+                        .withVlanId(3000)
+                        .withPeerASN(61234L)
+                        .withBfdConfiguration(
+                            new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5)))))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key872", new UserAssignedIdentity())))
+            .withFabricVersion("version1")
+            .withStorageAccountConfiguration(new StorageAccountConfiguration().withStorageAccountId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Storage/storageAccounts/nfStorage")
+                .withStorageAccountIdentity(new IdentitySelector()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-id")))
             .withRackCount(4)
             .withIpv6Prefix("3FFE:FFFF:0:CD40::/59")
+            .withHardwareAlertThreshold(74)
+            .withControlPlaneAcls(Arrays.asList(
+                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"))
+            .withTrustedIpPrefixes(Arrays.asList(
+                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-prefix"))
+            .withUniqueRdConfiguration(new UniqueRouteDistinguisherProperties()
+                .withUniqueRdConfigurationState(UniqueRouteDistinguisherConfigurationState.ENABLED)
+                .withNniDerivedUniqueRdConfigurationState(NNIDerivedUniqueRouteDistinguisherConfigurationState.ENABLED))
+            .withStorageArrayCount(1)
+            .withAuthorizedTransceiver(
+                new AuthorizedTransceiverProperties().withVendor("vendorX").withKey("fakeTokenPlaceholder"))
             .withAnnotation("annotation")
             .create();
     }
@@ -3728,9 +4668,7 @@ public final class NetworkFabricsCreateSamples {
  */
 public final class NetworkFabricsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Delete.json
      */
     /**
      * Sample code: NetworkFabrics_Delete_MaximumSet_Gen.
@@ -3752,18 +4690,42 @@ public final class NetworkFabricsDeleteSamples {
  */
 public final class NetworkFabricsDeprovisionSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_deprovision_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Deprovision.json
      */
     /**
-     * Sample code: NetworkFabrics_deprovision_MaximumSet_Gen.
+     * Sample code: NetworkFabrics_Deprovision_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkFabricsDeprovisionMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkFabrics().deprovision("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkFabrics_DiscardCommitBatch
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.DiscardCommitBatchRequest;
+
+/**
+ * Samples for NetworkFabrics DiscardCommitBatch.
+ */
+public final class NetworkFabricsDiscardCommitBatchSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_DiscardCommitBatch.json
+     */
+    /**
+     * Sample code: NetworkFabrics_DiscardCommitBatch.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkFabricsDiscardCommitBatch(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics()
+            .discardCommitBatch("example-rg", "example-fabric",
+                new DiscardCommitBatchRequest().withCommitBatchId("batchId1"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3776,9 +4738,7 @@ public final class NetworkFabricsDeprovisionSamples {
  */
 public final class NetworkFabricsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Get.json
      */
     /**
      * Sample code: NetworkFabrics_Get_MaximumSet_Gen.
@@ -3801,9 +4761,7 @@ public final class NetworkFabricsGetByResourceGroupSamples {
  */
 public final class NetworkFabricsGetTopologySamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_GetTopology_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_GetTopology.json
      */
     /**
      * Sample code: NetworkFabrics_GetTopology_MaximumSet_Gen.
@@ -3825,9 +4783,7 @@ public final class NetworkFabricsGetTopologySamples {
  */
 public final class NetworkFabricsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ListBySubscription.json
      */
     /**
      * Sample code: NetworkFabrics_ListBySubscription_MaximumSet_Gen.
@@ -3849,9 +4805,7 @@ public final class NetworkFabricsListSamples {
  */
 public final class NetworkFabricsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkFabrics_ListByResourceGroup_MaximumSet_Gen.
@@ -3865,6 +4819,36 @@ public final class NetworkFabricsListByResourceGroupSamples {
 }
 ```
 
+### NetworkFabrics_LockFabric
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricLockAction;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricLockRequest;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricLockType;
+
+/**
+ * Samples for NetworkFabrics LockFabric.
+ */
+public final class NetworkFabricsLockFabricSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_LockFabric.json
+     */
+    /**
+     * Sample code: NetworkFabrics_LockFabric_MaximumSet.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkFabricsLockFabricMaximumSet(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics()
+            .lockFabric("example-rg", "example-networkFabric",
+                new NetworkFabricLockRequest().withLockType(NetworkFabricLockType.ADMINISTRATIVE)
+                    .withAction(NetworkFabricLockAction.LOCK),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NetworkFabrics_Provision
 
 ```java
@@ -3873,12 +4857,10 @@ public final class NetworkFabricsListByResourceGroupSamples {
  */
 public final class NetworkFabricsProvisionSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_provision_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Provision.json
      */
     /**
-     * Sample code: NetworkFabrics_provision_MaximumSet_Gen.
+     * Sample code: NetworkFabrics_Provision_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
@@ -3897,12 +4879,10 @@ public final class NetworkFabricsProvisionSamples {
  */
 public final class NetworkFabricsRefreshConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_refreshConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_RefreshConfiguration.json
      */
     /**
-     * Sample code: NetworkFabrics_refreshConfiguration_MaximumSet_Gen.
+     * Sample code: NetworkFabrics_RefreshConfiguration_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
@@ -3913,18 +4893,222 @@ public final class NetworkFabricsRefreshConfigurationSamples {
 }
 ```
 
+### NetworkFabrics_ResyncCertificates
+
+```java
+/**
+ * Samples for NetworkFabrics ResyncCertificates.
+ */
+public final class NetworkFabricsResyncCertificatesSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncCertificates.json
+     */
+    /**
+     * Sample code: Successful certificate resync for all Network Devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void successfulCertificateResyncForAllNetworkDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().resyncCertificates("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncCertificates_Error.json
+     */
+    /**
+     * Sample code: Total failure to resync certificates.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void totalFailureToResyncCertificates(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().resyncCertificates("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncCertificates_PartialSuccess.json
+     */
+    /**
+     * Sample code: Partial failure to resync certificates for some devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void partialFailureToResyncCertificatesForSomeDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().resyncCertificates("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkFabrics_ResyncPasswords
+
+```java
+/**
+ * Samples for NetworkFabrics ResyncPasswords.
+ */
+public final class NetworkFabricsResyncPasswordsSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncPasswords_PartialSuccess.json
+     */
+    /**
+     * Sample code: Partial failure to resync passwords for some devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void partialFailureToResyncPasswordsForSomeDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().resyncPasswords("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncPasswords_Error.json
+     */
+    /**
+     * Sample code: Total failure to resync passwords.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void totalFailureToResyncPasswords(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().resyncPasswords("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ResyncPasswords.json
+     */
+    /**
+     * Sample code: Successful password resync for the Terminal Server and all Network Devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void successfulPasswordResyncForTheTerminalServerAndAllNetworkDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().resyncPasswords("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkFabrics_RotateCertificates
+
+```java
+/**
+ * Samples for NetworkFabrics RotateCertificates.
+ */
+public final class NetworkFabricsRotateCertificatesSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotateCertificates_Error.json
+     */
+    /**
+     * Sample code: Total failure to rotate certificates.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void totalFailureToRotateCertificates(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().rotateCertificates("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotateCertificates_PartialSuccess.json
+     */
+    /**
+     * Sample code: Partial failure to rotate certificates for some devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void partialFailureToRotateCertificatesForSomeDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().rotateCertificates("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotateCertificates.json
+     */
+    /**
+     * Sample code: Successful certificate rotation for all Network Devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void successfulCertificateRotationForAllNetworkDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().rotateCertificates("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkFabrics_RotatePasswords
+
+```java
+/**
+ * Samples for NetworkFabrics RotatePasswords.
+ */
+public final class NetworkFabricsRotatePasswordsSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotatePasswords.json
+     */
+    /**
+     * Sample code: Successful password rotation for the Terminal Server and all Network Devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void successfulPasswordRotationForTheTerminalServerAndAllNetworkDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().rotatePasswords("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotatePasswords_Error.json
+     */
+    /**
+     * Sample code: Total failure to rotate passwords.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void totalFailureToRotatePasswords(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().rotatePasswords("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_RotatePasswords_PartialSuccess.json
+     */
+    /**
+     * Sample code: Partial failure to rotate passwords for some devices.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void partialFailureToRotatePasswordsForSomeDevices(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics().rotatePasswords("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NetworkFabrics_Update
 
 ```java
-import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationPatchableProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.BfdPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.FeatureFlagProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelectorPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentitySelectorType;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.NNIDerivedUniqueRouteDistinguisherConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabric;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatchablePropertiesTerminalServerConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.OptionBProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
-import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.QosConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.QosPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetPatchInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.StorageAccountPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.UniqueRouteDistinguisherPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationPatchableProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationPatchablePropertiesOptionAProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.VpnOptionAPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.VpnOptionBPatchProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -3934,9 +5118,25 @@ import java.util.Map;
  */
 public final class NetworkFabricsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Update_QoS.json
+     */
+    /**
+     * Sample code: NetworkFabrics_Update_QoS_Enable.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkFabricsUpdateQoSEnable(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        NetworkFabric resource = manager.networkFabrics()
+            .getByResourceGroupWithResponse("example-rg", "example-fabric", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withQosConfiguration(new QosPatchProperties().withQosConfigurationState(QosConfigurationState.ENABLED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Update.json
      */
     /**
      * Sample code: NetworkFabrics_Update_MaximumSet_Gen.
@@ -3949,60 +5149,82 @@ public final class NetworkFabricsUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-fabric", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key872", new UserAssignedIdentity())))
+            .withAnnotation("annotation1")
             .withRackCount(6)
             .withServerCountPerRack(10)
             .withIpv4Prefix("10.18.0.0/17")
             .withIpv6Prefix("3FFE:FFFF:0:CD40::/60")
             .withFabricAsn(12345L)
-            .withTerminalServerConfiguration(
-                new NetworkFabricPatchablePropertiesTerminalServerConfiguration().withUsername("username1")
-                    .withPassword("fakeTokenPlaceholder")
-                    .withSerialNumber("1234567")
-                    .withPrimaryIpv4Prefix("10.0.0.12/30")
-                    .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
-                    .withSecondaryIpv4Prefix("40.0.0.14/30")
-                    .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127"))
-            .withManagementNetworkConfiguration(new ManagementNetworkConfigurationPatchableProperties()
+            .withTerminalServerConfiguration(new TerminalServerPatchConfiguration().withUsername("username1")
+                .withPassword("fakeTokenPlaceholder")
+                .withSerialNumber("1234567")
+                .withPrimaryIpv4Prefix("10.0.0.12/30")
+                .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
+                .withSecondaryIpv4Prefix("40.0.0.14/30")
+                .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127"))
+            .withManagementNetworkConfiguration(new ManagementNetworkPatchConfiguration()
                 .withInfrastructureVpnConfiguration(new VpnConfigurationPatchableProperties()
                     .withNetworkToNetworkInterconnectId(
                         "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
-                    .withPeeringOption(PeeringOption.OPTIONB)
-                    .withOptionBProperties(new OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
-                        .withExportRouteTargets(Arrays.asList("65046:10050"))
-                        .withRouteTargets(
-                            new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                    .withPeeringOption(PeeringOption.OPTIONA)
+                    .withOptionBProperties(
+                        new VpnOptionBPatchProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
+                            .withExportRouteTargets(Arrays.asList("65046:10050"))
+                            .withRouteTargets(new RouteTargetPatchInformation()
+                                .withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
                                 .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
                                 .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
                                 .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
-                    .withOptionAProperties(new VpnConfigurationPatchablePropertiesOptionAProperties().withMtu(1501)
-                        .withVlanId(3001)
-                        .withPeerAsn(1235L)
-                        .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
-                        .withPrimaryIpv4Prefix("10.0.0.12/30")
+                    .withOptionAProperties(new VpnOptionAPatchProperties().withPrimaryIpv4Prefix("10.0.0.12/30")
                         .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
                         .withSecondaryIpv4Prefix("20.0.0.13/30")
-                        .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")))
+                        .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")
+                        .withMtu(1501)
+                        .withVlanId(3001)
+                        .withPeerASN(1235L)
+                        .withBfdConfiguration(
+                            new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))))
                 .withWorkloadVpnConfiguration(new VpnConfigurationPatchableProperties()
                     .withNetworkToNetworkInterconnectId(
                         "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
                     .withPeeringOption(PeeringOption.OPTIONA)
-                    .withOptionBProperties(new OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
-                        .withExportRouteTargets(Arrays.asList("65046:10050"))
-                        .withRouteTargets(
-                            new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                    .withOptionBProperties(
+                        new VpnOptionBPatchProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
+                            .withExportRouteTargets(Arrays.asList("65046:10050"))
+                            .withRouteTargets(new RouteTargetPatchInformation()
+                                .withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
                                 .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
                                 .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
                                 .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
-                    .withOptionAProperties(new VpnConfigurationPatchablePropertiesOptionAProperties().withMtu(1500)
-                        .withVlanId(3000)
-                        .withPeerAsn(61234L)
-                        .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5))
-                        .withPrimaryIpv4Prefix("10.0.0.14/30")
+                    .withOptionAProperties(new VpnOptionAPatchProperties().withPrimaryIpv4Prefix("10.0.0.14/30")
                         .withPrimaryIpv6Prefix("2FFE:FFFF:0:CD30::a7/126")
                         .withSecondaryIpv4Prefix("10.0.0.15/30")
-                        .withSecondaryIpv6Prefix("2FFE:FFFF:0:CD30::ac/126"))))
-            .withAnnotation("annotation1")
+                        .withSecondaryIpv6Prefix("2FFE:FFFF:0:CD30::ac/126")
+                        .withMtu(1500)
+                        .withVlanId(3000)
+                        .withPeerASN(61234L)
+                        .withBfdConfiguration(
+                            new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10)))))
+            .withStorageAccountConfiguration(new StorageAccountPatchConfiguration().withStorageAccountId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.Storage/storageAccounts/nfStorage")
+                .withStorageAccountIdentity(new IdentitySelectorPatch()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/my-id")))
+            .withHardwareAlertThreshold(43)
+            .withControlPlaneAcls(Arrays.asList(
+                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"))
+            .withTrustedIpPrefixes(Arrays.asList(
+                "/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-prefix"))
+            .withUniqueRdConfiguration(new UniqueRouteDistinguisherPatchProperties()
+                .withUniqueRdConfigurationState(UniqueRouteDistinguisherConfigurationState.ENABLED)
+                .withNniDerivedUniqueRdConfigurationState(NNIDerivedUniqueRouteDistinguisherConfigurationState.ENABLED))
+            .withQosConfiguration(new QosPatchProperties().withQosConfigurationState(QosConfigurationState.ENABLED))
+            .withFeatureFlags(Arrays.asList(new FeatureFlagProperties().withFeatureFlagName("uniqueRdConfiguration")
+                .withFeatureFlagValue("Enabled")))
             .apply();
     }
 
@@ -4032,9 +5254,7 @@ import java.util.Arrays;
  */
 public final class NetworkFabricsUpdateInfraManagementBfdConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_UpdateInfraManagementBfdConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_UpdateInfraManagementBfdConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_UpdateInfraManagementBfdConfiguration_MaximumSet_Gen.
@@ -4063,9 +5283,7 @@ import java.util.Arrays;
  */
 public final class NetworkFabricsUpdateWorkloadManagementBfdConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_UpdateWorkloadManagementBfdConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_UpdateWorkloadManagementBfdConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_UpdateWorkloadManagementBfdConfiguration_MaximumSet_Gen.
@@ -4093,12 +5311,10 @@ import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabri
  */
 public final class NetworkFabricsUpgradeSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_upgrade_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_Upgrade.json
      */
     /**
-     * Sample code: NetworkFabrics_upgrade_MaximumSet_Gen.
+     * Sample code: NetworkFabrics_Upgrade_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
@@ -4123,9 +5339,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurati
  */
 public final class NetworkFabricsValidateConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkFabrics_ValidateConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ValidateConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_ValidateConfiguration_MaximumSet_Gen.
@@ -4142,6 +5356,29 @@ public final class NetworkFabricsValidateConfigurationSamples {
 }
 ```
 
+### NetworkFabrics_ViewDeviceConfiguration
+
+```java
+/**
+ * Samples for NetworkFabrics ViewDeviceConfiguration.
+ */
+public final class NetworkFabricsViewDeviceConfigurationSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkFabrics_ViewDeviceConfiguration.json
+     */
+    /**
+     * Sample code: NetworkFabrics_ViewDeviceConfiguration_MaximumSet.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkFabricsViewDeviceConfigurationMaximumSet(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkFabrics()
+            .viewDeviceConfiguration("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NetworkInterfaces_Create
 
 ```java
@@ -4150,9 +5387,7 @@ public final class NetworkFabricsValidateConfigurationSamples {
  */
 public final class NetworkInterfacesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkInterfaces_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkInterfaces_Create.json
      */
     /**
      * Sample code: NetworkInterfaces_Create_MaximumSet_Gen.
@@ -4164,6 +5399,7 @@ public final class NetworkInterfacesCreateSamples {
         manager.networkInterfaces()
             .define("example-interface")
             .withExistingNetworkDevice("example-rg", "example-device")
+            .withAdditionalDescription("device 1")
             .withAnnotation("annotation")
             .create();
     }
@@ -4178,9 +5414,7 @@ public final class NetworkInterfacesCreateSamples {
  */
 public final class NetworkInterfacesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkInterfaces_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkInterfaces_Delete.json
      */
     /**
      * Sample code: NetworkInterfaces_Delete_MaximumSet_Gen.
@@ -4189,7 +5423,8 @@ public final class NetworkInterfacesDeleteSamples {
      */
     public static void networkInterfacesDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkInterfaces().delete("rgNetworkDevices", "sjzd", "emrgu", com.azure.core.util.Context.NONE);
+        manager.networkInterfaces()
+            .delete("example-rg", "example-device", "example-interface", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -4202,9 +5437,7 @@ public final class NetworkInterfacesDeleteSamples {
  */
 public final class NetworkInterfacesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkInterfaces_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkInterfaces_Get.json
      */
     /**
      * Sample code: NetworkInterfaces_Get_MaximumSet_Gen.
@@ -4227,9 +5460,7 @@ public final class NetworkInterfacesGetSamples {
  */
 public final class NetworkInterfacesListByNetworkDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkInterfaces_ListByNetworkDevice_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkInterfaces_ListByNetworkDevice.json
      */
     /**
      * Sample code: NetworkInterfaces_ListByNetworkDevice_MaximumSet_Gen.
@@ -4254,9 +5485,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterface;
  */
 public final class NetworkInterfacesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkInterfaces_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkInterfaces_Update.json
      */
     /**
      * Sample code: NetworkInterfaces_Update_MaximumSet_Gen.
@@ -4268,7 +5497,7 @@ public final class NetworkInterfacesUpdateSamples {
         NetworkInterface resource = manager.networkInterfaces()
             .getWithResponse("example-rg", "example-device", "example-interface", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withAnnotation("annotation").apply();
+        resource.update().withAdditionalDescription("device 1").withAnnotation("annotation").apply();
     }
 }
 ```
@@ -4285,9 +5514,7 @@ import java.util.Arrays;
  */
 public final class NetworkInterfacesUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkInterfaces_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkInterfaces_UpdateAdministrativeState.json
      */
     /**
      * Sample code: NetworkInterfaces_UpdateAdministrativeState_MaximumSet_Gen.
@@ -4304,9 +5531,270 @@ public final class NetworkInterfacesUpdateAdministrativeStateSamples {
 }
 ```
 
+### NetworkMonitors_Create
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicyProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpMonitoredAddressFamily;
+import com.azure.resourcemanager.managednetworkfabric.models.StationConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.StationConnectionMode;
+import com.azure.resourcemanager.managednetworkfabric.models.StationConnectionProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for NetworkMonitors Create.
+ */
+public final class NetworkMonitorsCreateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkMonitors_Create.json
+     */
+    /**
+     * Sample code: NetworkMonitors_Create.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        networkMonitorsCreate(com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkMonitors()
+            .define("example-monitor")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-rg")
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
+            .withBmpConfiguration(new BmpConfigurationProperties()
+                .withStationConfigurationState(StationConfigurationState.ENABLED)
+                .withScopeResourceId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
+                .withStationName("name")
+                .withStationIp("10.0.0.1")
+                .withStationPort(62695)
+                .withStationConnectionMode(StationConnectionMode.ACTIVE)
+                .withStationConnectionProperties(new StationConnectionProperties().withKeepaliveIdleTime(49)
+                    .withProbeInterval(3558)
+                    .withProbeCount(43))
+                .withStationNetwork(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/internalNetworks/example-internalnetwork")
+                .withMonitoredNetworks(Arrays.asList(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"))
+                .withExportPolicy(BmpExportPolicy.PRE_POLICY)
+                .withExportPolicyConfiguration(
+                    new BmpExportPolicyProperties().withExportPolicies(Arrays.asList(BmpExportPolicy.PRE_POLICY)))
+                .withMonitoredAddressFamilies(Arrays.asList(BmpMonitoredAddressFamily.IPV4UNICAST)))
+            .withAnnotation("annotation")
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### NetworkMonitors_Delete
+
+```java
+/**
+ * Samples for NetworkMonitors Delete.
+ */
+public final class NetworkMonitorsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkMonitors_Delete.json
+     */
+    /**
+     * Sample code: NetworkMonitors_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkMonitorsDeleteMaximumSet(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkMonitors().delete("rgmanagednetworkfabric", "example-monitor", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkMonitors_GetByResourceGroup
+
+```java
+/**
+ * Samples for NetworkMonitors GetByResourceGroup.
+ */
+public final class NetworkMonitorsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkMonitors_Get.json
+     */
+    /**
+     * Sample code: NetworkMonitors_Get_MaximumSet.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkMonitorsGetMaximumSet(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkMonitors()
+            .getByResourceGroupWithResponse("example-rg", "example-monitor", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkMonitors_List
+
+```java
+/**
+ * Samples for NetworkMonitors List.
+ */
+public final class NetworkMonitorsListSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkMonitors_ListBySubscription.json
+     */
+    /**
+     * Sample code: NetworkMonitors_ListBySubscription.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkMonitorsListBySubscription(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkMonitors().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkMonitors_ListByResourceGroup
+
+```java
+/**
+ * Samples for NetworkMonitors ListByResourceGroup.
+ */
+public final class NetworkMonitorsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkMonitors_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: NetworkMonitors_ListByResourceGroup.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkMonitorsListByResourceGroup(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkMonitors().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkMonitors_Update
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpExportPolicyPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpMonitoredAddressFamily;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkMonitor;
+import com.azure.resourcemanager.managednetworkfabric.models.StationConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.StationConnectionMode;
+import com.azure.resourcemanager.managednetworkfabric.models.StationConnectionPatchProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for NetworkMonitors Update.
+ */
+public final class NetworkMonitorsUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkMonitors_Update.json
+     */
+    /**
+     * Sample code: NetworkMonitors_Update.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void
+        networkMonitorsUpdate(com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        NetworkMonitor resource = manager.networkMonitors()
+            .getByResourceGroupWithResponse("example-rg", "example-monitor", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
+            .withBmpConfiguration(new BmpConfigurationPatchProperties()
+                .withStationConfigurationState(StationConfigurationState.ENABLED)
+                .withScopeResourceId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
+                .withStationName("name")
+                .withStationIp("10.0.0.1")
+                .withStationPort(64685)
+                .withStationConnectionMode(StationConnectionMode.ACTIVE)
+                .withStationConnectionProperties(new StationConnectionPatchProperties().withKeepaliveIdleTime(49)
+                    .withProbeInterval(3558)
+                    .withProbeCount(43))
+                .withStationNetwork(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain/internalNetworks/example-internalnetwork")
+                .withMonitoredNetworks(Arrays.asList(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/example-l3domain"))
+                .withExportPolicy(BmpExportPolicy.PRE_POLICY)
+                .withExportPolicyConfiguration(
+                    new BmpExportPolicyPatchProperties().withExportPolicies(Arrays.asList(BmpExportPolicy.PRE_POLICY)))
+                .withMonitoredAddressFamilies(Arrays.asList(BmpMonitoredAddressFamily.IPV4UNICAST)))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### NetworkMonitors_UpdateAdministrativeState
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import java.util.Arrays;
+
+/**
+ * Samples for NetworkMonitors UpdateAdministrativeState.
+ */
+public final class NetworkMonitorsUpdateAdministrativeStateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkMonitors_UpdateAdministrativeState.json
+     */
+    /**
+     * Sample code: NetworkMonitors_UpdateAdministrativeState.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkMonitorsUpdateAdministrativeState(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkMonitors()
+            .updateAdministrativeState("example-rg", "example-monitor",
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### NetworkPacketBrokers_Create
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -4315,9 +5803,7 @@ import java.util.Map;
  */
 public final class NetworkPacketBrokersCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkPacketBrokers_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_Create.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Create_MaximumSet_Gen.
@@ -4332,7 +5818,9 @@ public final class NetworkPacketBrokersCreateSamples {
             .withExistingResourceGroup("example-rg")
             .withNetworkFabricId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric")
-            .withTags(mapOf("key2806", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key3673", new UserAssignedIdentity())))
             .create();
     }
 
@@ -4358,9 +5846,7 @@ public final class NetworkPacketBrokersCreateSamples {
  */
 public final class NetworkPacketBrokersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkPacketBrokers_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_Delete.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Delete_MaximumSet_Gen.
@@ -4383,9 +5869,7 @@ public final class NetworkPacketBrokersDeleteSamples {
  */
 public final class NetworkPacketBrokersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkPacketBrokers_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_Get.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Get_MaximumSet_Gen.
@@ -4409,9 +5893,7 @@ public final class NetworkPacketBrokersGetByResourceGroupSamples {
  */
 public final class NetworkPacketBrokersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkPacketBrokers_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_ListBySubscription.json
      */
     /**
      * Sample code: NetworkPacketBrokers_ListBySubscription_MaximumSet_Gen.
@@ -4433,9 +5915,7 @@ public final class NetworkPacketBrokersListSamples {
  */
 public final class NetworkPacketBrokersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkPacketBrokers_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkPacketBrokers_ListByResourceGroup_MaximumSet_Gen.
@@ -4452,7 +5932,10 @@ public final class NetworkPacketBrokersListByResourceGroupSamples {
 ### NetworkPacketBrokers_Update
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkPacketBroker;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -4461,9 +5944,7 @@ import java.util.Map;
  */
 public final class NetworkPacketBrokersUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkPacketBrokers_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkPacketBrokers_Update.json
      */
     /**
      * Sample code: NetworkPacketBrokers_Update_MaximumSet_Gen.
@@ -4476,7 +5957,11 @@ public final class NetworkPacketBrokersUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-networkPacketBroker",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("key8772", "fakeTokenPlaceholder")).apply();
+        resource.update()
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8793", new UserAssignedIdentity())))
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -4505,9 +5990,7 @@ import java.util.Map;
  */
 public final class NetworkRacksCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkRacks_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkRacks_Create.json
      */
     /**
      * Sample code: NetworkRacks_Create_MaximumSet_Gen.
@@ -4522,7 +6005,7 @@ public final class NetworkRacksCreateSamples {
             .withExistingResourceGroup("example-rg")
             .withNetworkFabricId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric")
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
             .withNetworkRackType(NetworkRackType.AGGREGATE)
             .withAnnotation("annotation")
             .create();
@@ -4550,9 +6033,7 @@ public final class NetworkRacksCreateSamples {
  */
 public final class NetworkRacksDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkRacks_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkRacks_Delete.json
      */
     /**
      * Sample code: NetworkRacks_Delete_MaximumSet_Gen.
@@ -4574,9 +6055,7 @@ public final class NetworkRacksDeleteSamples {
  */
 public final class NetworkRacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkRacks_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkRacks_Get.json
      */
     /**
      * Sample code: NetworkRacks_Get_MaximumSet_Gen.
@@ -4599,9 +6078,7 @@ public final class NetworkRacksGetByResourceGroupSamples {
  */
 public final class NetworkRacksListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkRacks_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkRacks_ListBySubscription.json
      */
     /**
      * Sample code: NetworkRacks_ListBySubscription_MaximumSet_Gen.
@@ -4623,9 +6100,7 @@ public final class NetworkRacksListSamples {
  */
 public final class NetworkRacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkRacks_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkRacks_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkRacks_ListByResourceGroup_MaximumSet_Gen.
@@ -4651,9 +6126,7 @@ import java.util.Map;
  */
 public final class NetworkRacksUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkRacks_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkRacks_Update.json
      */
     /**
      * Sample code: NetworkRacks_Update_MaximumSet_Gen.
@@ -4665,7 +6138,7 @@ public final class NetworkRacksUpdateSamples {
         NetworkRack resource = manager.networkRacks()
             .getByResourceGroupWithResponse("example-rg", "example-rack", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("keyID", "fakeTokenPlaceholder")).apply();
+        resource.update().withTags(mapOf("keyId", "fakeTokenPlaceholder")).apply();
     }
 
     // Use "Map.of" if available
@@ -4689,20 +6162,25 @@ import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty
 import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.EncapsulationType;
+import com.azure.resourcemanager.managednetworkfabric.models.GlobalNetworkTapRuleActionProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelector;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.IpMatchCondition;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer4Protocol;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentitySelectorType;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleAction;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchCondition;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.PollingIntervalInSeconds;
 import com.azure.resourcemanager.managednetworkfabric.models.PortCondition;
 import com.azure.resourcemanager.managednetworkfabric.models.PortGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PortType;
 import com.azure.resourcemanager.managednetworkfabric.models.PrefixType;
 import com.azure.resourcemanager.managednetworkfabric.models.SourceDestinationType;
 import com.azure.resourcemanager.managednetworkfabric.models.TapRuleActionType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.VlanGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.VlanMatchCondition;
 import java.util.Arrays;
@@ -4714,9 +6192,7 @@ import java.util.Map;
  */
 public final class NetworkTapRulesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_Create.json
      */
     /**
      * Sample code: NetworkTapRules_Create_MaximumSet_Gen.
@@ -4727,12 +6203,18 @@ public final class NetworkTapRulesCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkTapRules()
             .define("example-tapRule")
-            .withRegion("eastus")
+            .withRegion("eastuseuap")
             .withExistingResourceGroup("example-rg")
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
-            .withPollingIntervalInSeconds(PollingIntervalInSeconds.THREE_ZERO)
             .withConfigurationType(ConfigurationType.FILE)
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("key872", new UserAssignedIdentity())))
+            .withAnnotation("annotation")
             .withTapRulesUrl("https://microsoft.com/a")
+            .withIdentitySelector(new IdentitySelector()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"))
             .withMatchConfigurations(
                 Arrays
                     .asList(new NetworkTapRuleMatchConfiguration().withMatchConfigurationName("config1")
@@ -4740,12 +6222,12 @@ public final class NetworkTapRulesCreateSamples {
                         .withIpAddressType(IpAddressType.IPV4)
                         .withMatchConditions(Arrays.asList(new NetworkTapRuleMatchCondition()
                             .withProtocolTypes(Arrays.asList("TCP"))
-                            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("10"))
-                                .withInnerVlans(Arrays.asList("11-20"))
-                                .withVlanGroupNames(Arrays.asList("exmaple-vlanGroup")))
+                            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("20-30"))
+                                .withInnerVlans(Arrays.asList("30"))
+                                .withVlanGroupNames(Arrays.asList("example-vlanGroup")))
                             .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
                                 .withPrefixType(PrefixType.PREFIX)
-                                .withIpPrefixValues(Arrays.asList("10.10.10.10/20"))
+                                .withIpPrefixValues(Arrays.asList("10.20.20.20/12"))
                                 .withIpGroupNames(Arrays.asList("example-ipGroup")))
                             .withEncapsulationType(EncapsulationType.NONE)
                             .withPortCondition(new PortCondition()
@@ -4760,16 +6242,17 @@ public final class NetworkTapRulesCreateSamples {
                                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")
                             .withMatchConfigurationName("match1")))))
             .withDynamicMatchConfigurations(Arrays.asList(new CommonDynamicMatchConfiguration()
-                .withIpGroups(Arrays.asList(new IpGroupProperties().withName("example-ipGroup1")
+                .withIpGroups(Arrays.asList(new IpGroupProperties().withName("example-ipGroup")
                     .withIpAddressType(IpAddressType.IPV4)
-                    .withIpPrefixes(Arrays.asList("10.10.10.10/30"))))
-                .withVlanGroups(Arrays.asList(
-                    new VlanGroupProperties().withName("exmaple-vlanGroup").withVlans(Arrays.asList("10", "100-200"))))
+                    .withIpPrefixes(Arrays.asList("10.20.3.1/20"))))
+                .withVlanGroups(Arrays
+                    .asList(new VlanGroupProperties().withName("example-vlanGroup").withVlans(Arrays.asList("20-30"))))
                 .withPortGroups(Arrays.asList(
-                    new PortGroupProperties().withName("example-portGroup1").withPorts(Arrays.asList("100-200")),
-                    new PortGroupProperties().withName("example-portGroup2")
-                        .withPorts(Arrays.asList("900", "1000-2000"))))))
-            .withAnnotation("annotation")
+                    new PortGroupProperties().withName("example-portGroup").withPorts(Arrays.asList("100-200"))))))
+            .withPollingIntervalInSeconds(30)
+            .withGlobalNetworkTapRuleActions(
+                new GlobalNetworkTapRuleActionProperties().withEnableCount(BooleanEnumProperty.TRUE)
+                    .withTruncate("truncate-name"))
             .create();
     }
 
@@ -4795,9 +6278,7 @@ public final class NetworkTapRulesCreateSamples {
  */
 public final class NetworkTapRulesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_Delete.json
      */
     /**
      * Sample code: NetworkTapRules_Delete_MaximumSet_Gen.
@@ -4819,9 +6300,7 @@ public final class NetworkTapRulesDeleteSamples {
  */
 public final class NetworkTapRulesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_Get.json
      */
     /**
      * Sample code: NetworkTapRules_Get_MaximumSet_Gen.
@@ -4844,9 +6323,7 @@ public final class NetworkTapRulesGetByResourceGroupSamples {
  */
 public final class NetworkTapRulesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_ListBySubscription.json
      */
     /**
      * Sample code: NetworkTapRules_ListBySubscription_MaximumSet_Gen.
@@ -4868,9 +6345,7 @@ public final class NetworkTapRulesListSamples {
  */
 public final class NetworkTapRulesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkTapRules_ListByResourceGroup_MaximumSet_Gen.
@@ -4892,9 +6367,7 @@ public final class NetworkTapRulesListByResourceGroupSamples {
  */
 public final class NetworkTapRulesResyncSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_Resync_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_Resync.json
      */
     /**
      * Sample code: NetworkTapRules_Resync_MaximumSet_Gen.
@@ -4912,25 +6385,31 @@ public final class NetworkTapRulesResyncSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
-import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfigurationPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.azure.resourcemanager.managednetworkfabric.models.EncapsulationType;
+import com.azure.resourcemanager.managednetworkfabric.models.GlobalNetworkTapRuleActionPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IdentitySelectorPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.IpAddressType;
-import com.azure.resourcemanager.managednetworkfabric.models.IpGroupProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.IpMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.IpGroupPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IpMatchConditionPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer4Protocol;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentitySelectorType;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRule;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleAction;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchCondition;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.PortCondition;
-import com.azure.resourcemanager.managednetworkfabric.models.PortGroupProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleActionPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchConditionPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRuleMatchConfigurationPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.PortConditionPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.PortGroupPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PortType;
 import com.azure.resourcemanager.managednetworkfabric.models.PrefixType;
 import com.azure.resourcemanager.managednetworkfabric.models.SourceDestinationType;
 import com.azure.resourcemanager.managednetworkfabric.models.TapRuleActionType;
-import com.azure.resourcemanager.managednetworkfabric.models.VlanGroupProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.VlanMatchCondition;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.VlanGroupPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.VlanMatchConditionPatch;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -4940,9 +6419,7 @@ import java.util.Map;
  */
 public final class NetworkTapRulesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_Update.json
      */
     /**
      * Sample code: NetworkTapRules_Update_MaximumSet_Gen.
@@ -4955,44 +6432,53 @@ public final class NetworkTapRulesUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-tapRule", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("key872", new UserAssignedIdentity())))
+            .withAnnotation("annotation")
             .withConfigurationType(ConfigurationType.FILE)
             .withTapRulesUrl("https://microsoft.com/amdsdx")
-            .withMatchConfigurations(
+            .withMatchConfigurationsForUpdate(
                 Arrays
-                    .asList(new NetworkTapRuleMatchConfiguration().withMatchConfigurationName("config1")
+                    .asList(new NetworkTapRuleMatchConfigurationPatch().withMatchConfigurationName("config1")
                         .withSequenceNumber(10L)
                         .withIpAddressType(IpAddressType.IPV4)
-                        .withMatchConditions(Arrays.asList(new NetworkTapRuleMatchCondition()
+                        .withMatchConditions(Arrays.asList(new NetworkTapRuleMatchConditionPatch()
                             .withProtocolTypes(Arrays.asList("TCP"))
-                            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("10"))
-                                .withInnerVlans(Arrays.asList("11-20"))
-                                .withVlanGroupNames(Arrays.asList("exmaple-vlanGroup")))
-                            .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
+                            .withVlanMatchCondition(new VlanMatchConditionPatch().withVlans(Arrays.asList("20-30"))
+                                .withInnerVlans(Arrays.asList("30"))
+                                .withVlanGroupNames(Arrays.asList("example-vlanGroup")))
+                            .withIpCondition(new IpMatchConditionPatch().withType(SourceDestinationType.SOURCE_IP)
                                 .withPrefixType(PrefixType.PREFIX)
-                                .withIpPrefixValues(Arrays.asList("10.10.10.10/20"))
+                                .withIpPrefixValues(Arrays.asList("10.20.20.20/12"))
                                 .withIpGroupNames(Arrays.asList("example-ipGroup")))
                             .withEncapsulationType(EncapsulationType.NONE)
-                            .withPortCondition(new PortCondition()
+                            .withPortCondition(new PortConditionPatch()
                                 .withPortType(PortType.SOURCE_PORT)
                                 .withLayer4Protocol(Layer4Protocol.TCP)
                                 .withPorts(Arrays.asList("100"))
                                 .withPortGroupNames(Arrays.asList("example-portGroup1")))))
-                        .withActions(Arrays.asList(new NetworkTapRuleAction().withType(TapRuleActionType.GOTO)
+                        .withActions(Arrays.asList(new NetworkTapRuleActionPatch().withType(TapRuleActionType.DROP)
                             .withTruncate("100")
                             .withIsTimestampEnabled(BooleanEnumProperty.TRUE)
                             .withDestinationId(
                                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")
                             .withMatchConfigurationName("match1")))))
-            .withDynamicMatchConfigurations(Arrays.asList(new CommonDynamicMatchConfiguration()
-                .withIpGroups(Arrays.asList(new IpGroupProperties().withName("example-ipGroup1")
+            .withDynamicMatchConfigurationsForUpdate(Arrays.asList(new CommonDynamicMatchConfigurationPatch()
+                .withIpGroups(Arrays.asList(new IpGroupPatchProperties().withName("example-ipGroup")
                     .withIpAddressType(IpAddressType.IPV4)
-                    .withIpPrefixes(Arrays.asList("10.10.10.10/30"))))
+                    .withIpPrefixes(Arrays.asList("10.20.3.1/20"))))
                 .withVlanGroups(Arrays.asList(
-                    new VlanGroupProperties().withName("exmaple-vlanGroup").withVlans(Arrays.asList("10", "100-200"))))
+                    new VlanGroupPatchProperties().withName("example-vlanGroup").withVlans(Arrays.asList("20-30"))))
                 .withPortGroups(Arrays.asList(
-                    new PortGroupProperties().withName("example-portGroup1").withPorts(Arrays.asList("100-200"))))))
-            .withAnnotation("annotation")
+                    new PortGroupPatchProperties().withName("example-portGroup").withPorts(Arrays.asList("100-200"))))))
+            .withIdentitySelector(new IdentitySelectorPatch()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"))
+            .withGlobalNetworkTapRuleActions(
+                new GlobalNetworkTapRuleActionPatchProperties().withEnableCount(BooleanEnumProperty.TRUE)
+                    .withTruncate("truncate-name"))
             .apply();
     }
 
@@ -5022,9 +6508,7 @@ import java.util.Arrays;
  */
 public final class NetworkTapRulesUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_UpdateAdministrativeState.json
      */
     /**
      * Sample code: NetworkTapRules_UpdateAdministrativeState_MaximumSet_Gen.
@@ -5035,7 +6519,9 @@ public final class NetworkTapRulesUpdateAdministrativeStateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkTapRules()
             .updateAdministrativeState("example-rg", "example-tapRule",
-                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-tapRule"))
+                    .withState(EnableDisableState.ENABLE),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -5049,9 +6535,7 @@ public final class NetworkTapRulesUpdateAdministrativeStateSamples {
  */
 public final class NetworkTapRulesValidateConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTapRules_ValidateConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTapRules_ValidateConfiguration.json
      */
     /**
      * Sample code: NetworkTapRules_ValidateConfiguration_MaximumSet_Gen.
@@ -5069,11 +6553,14 @@ public final class NetworkTapRulesValidateConfigurationSamples {
 ### NetworkTaps_Create
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.DestinationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.DestinationType;
 import com.azure.resourcemanager.managednetworkfabric.models.Encapsulation;
 import com.azure.resourcemanager.managednetworkfabric.models.IsolationDomainProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapPropertiesDestinationsItem;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -5083,9 +6570,7 @@ import java.util.Map;
  */
 public final class NetworkTapsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_Create.json
      */
     /**
      * Sample code: NetworkTaps_Create_MaximumSet_Gen.
@@ -5100,8 +6585,7 @@ public final class NetworkTapsCreateSamples {
             .withExistingResourceGroup("example-rg")
             .withNetworkPacketBrokerId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/example-networkPacketBroker")
-            .withDestinations(Arrays.asList(new NetworkTapPropertiesDestinationsItem()
-                .withName("example-destinaionName")
+            .withDestinations(Arrays.asList(new DestinationProperties().withName("example-destinaionName")
                 .withDestinationType(DestinationType.ISOLATION_DOMAIN)
                 .withDestinationId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsloationDomains/example-l3Domain/internalNetworks/example-internalNetwork")
@@ -5110,7 +6594,9 @@ public final class NetworkTapsCreateSamples {
                         "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")))
                 .withDestinationTapRuleId(
                     "/subscriptions/xxxx-xxxx-xxxx-xxxx/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-destinationTapRule")))
-            .withTags(mapOf("key6024", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key3673", new UserAssignedIdentity())))
             .withPollingType(PollingType.PULL)
             .withAnnotation("annotation")
             .create();
@@ -5138,9 +6624,7 @@ public final class NetworkTapsCreateSamples {
  */
 public final class NetworkTapsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_Delete.json
      */
     /**
      * Sample code: NetworkTaps_Delete_MaximumSet_Gen.
@@ -5162,9 +6646,7 @@ public final class NetworkTapsDeleteSamples {
  */
 public final class NetworkTapsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_Get.json
      */
     /**
      * Sample code: NetworkTaps_Get_MaximumSet_Gen.
@@ -5187,9 +6669,7 @@ public final class NetworkTapsGetByResourceGroupSamples {
  */
 public final class NetworkTapsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_ListBySubscription.json
      */
     /**
      * Sample code: NetworkTaps_ListBySubscription_MaximumSet_Gen.
@@ -5211,9 +6691,7 @@ public final class NetworkTapsListSamples {
  */
 public final class NetworkTapsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkTaps_ListByResourceGroup_MaximumSet_Gen.
@@ -5235,9 +6713,7 @@ public final class NetworkTapsListByResourceGroupSamples {
  */
 public final class NetworkTapsResyncSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_Resync_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_Resync.json
      */
     /**
      * Sample code: NetworkTaps_Resync_MaximumSet_Gen.
@@ -5254,12 +6730,15 @@ public final class NetworkTapsResyncSamples {
 ### NetworkTaps_Update
 
 ```java
+import com.azure.resourcemanager.managednetworkfabric.models.DestinationPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.DestinationType;
 import com.azure.resourcemanager.managednetworkfabric.models.Encapsulation;
-import com.azure.resourcemanager.managednetworkfabric.models.IsolationDomainProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.IsolationDomainPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTap;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapPatchableParametersDestinationsItem;
 import com.azure.resourcemanager.managednetworkfabric.models.PollingType;
+import com.azure.resourcemanager.managednetworkfabric.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -5269,9 +6748,7 @@ import java.util.Map;
  */
 public final class NetworkTapsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_Update.json
      */
     /**
      * Sample code: NetworkTaps_Update_MaximumSet_Gen.
@@ -5284,14 +6761,16 @@ public final class NetworkTapsUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-networkTap", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key6024", "fakeTokenPlaceholder"))
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8793", new UserAssignedIdentity())))
             .withPollingType(PollingType.PULL)
-            .withDestinationsForUpdate(Arrays.asList(new NetworkTapPatchableParametersDestinationsItem()
-                .withName("example-destinaionName")
+            .withDestinationsForUpdate(Arrays.asList(new DestinationPatchProperties().withName("example-destinaionName")
                 .withDestinationType(DestinationType.ISOLATION_DOMAIN)
                 .withDestinationId(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsloationDomains/example-l3Domain/internalNetworks/example-internalNetwork")
-                .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                .withIsolationDomainProperties(new IsolationDomainPatchProperties()
+                    .withEncapsulation(Encapsulation.NONE)
                     .withNeighborGroupIds(Arrays.asList(
                         "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")))
                 .withDestinationTapRuleId(
@@ -5326,9 +6805,7 @@ import java.util.Arrays;
  */
 public final class NetworkTapsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkTaps_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkTaps_UpdateAdministrativeState.json
      */
     /**
      * Sample code: NetworkTaps_UpdateAdministrativeState_MaximumSet_Gen.
@@ -5349,14 +6826,20 @@ public final class NetworkTapsUpdateAdministrativeStateSamples {
 
 ```java
 import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
+import com.azure.resourcemanager.managednetworkfabric.models.ConditionalDefaultRouteProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyInformation;
 import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyInformation;
 import com.azure.resourcemanager.managednetworkfabric.models.IsManagementType;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer2Configuration;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration;
+import com.azure.resourcemanager.managednetworkfabric.models.MicroBfdState;
+import com.azure.resourcemanager.managednetworkfabric.models.NniBmpProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NniStaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.NniType;
 import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.OptionBLayer3Configuration;
+import com.azure.resourcemanager.managednetworkfabric.models.OptionBLayer3PrefixLimitProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteProperties;
 import java.util.Arrays;
 
@@ -5365,9 +6848,7 @@ import java.util.Arrays;
  */
 public final class NetworkToNetworkInterconnectsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkToNetworkInterconnects_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_Create.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_Create_MaximumSet_Gen.
@@ -5378,26 +6859,34 @@ public final class NetworkToNetworkInterconnectsCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkToNetworkInterconnects()
             .define("example-nni")
-            .withExistingNetworkFabric("example-rg", "example-fabric")
+            .withExistingNetworkFabric("example-rg", "example-nf")
             .withUseOptionB(BooleanEnumProperty.TRUE)
             .withNniType(NniType.CE)
             .withIsManagementType(IsManagementType.TRUE)
             .withLayer2Configuration(new Layer2Configuration().withMtu(1500)
                 .withInterfaces(Arrays.asList(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice/networkInterfaces/example-networkInterface")))
-            .withOptionBLayer3Configuration(new NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration()
-                .withPrimaryIpv4Prefix("10.0.0.12/30")
+            .withOptionBLayer3Configuration(new OptionBLayer3Configuration().withPrimaryIpv4Prefix("10.0.0.12/30")
                 .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
                 .withSecondaryIpv4Prefix("40.0.0.14/30")
                 .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")
                 .withPeerAsn(61234L)
-                .withVlanId(1234))
+                .withVlanId(1234)
+                .withPeLoopbackIpAddress(Arrays.asList("10.0.0.1"))
+                .withBmpConfiguration(new NniBmpProperties().withConfigurationState(BmpConfigurationState.ENABLED))
+                .withPrefixLimits(Arrays.asList(new OptionBLayer3PrefixLimitProperties().withMaximumRoutes(24))))
             .withNpbStaticRouteConfiguration(new NpbStaticRouteConfiguration()
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(25))
-                .withIpv4Routes(Arrays.asList(
-                    new StaticRouteProperties().withPrefix("20.0.0.12/30").withNextHop(Arrays.asList("21.20.20.20"))))
-                .withIpv6Routes(Arrays.asList(new StaticRouteProperties().withPrefix("3FFE:FFFF:0:CD30::ac/127")
-                    .withNextHop(Arrays.asList("4FFE:FFFF:0:CD30::ac")))))
+                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIpv4Routes(Arrays
+                    .asList(new StaticRouteProperties().withPrefix("jffgck").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays
+                    .asList(new StaticRouteProperties().withPrefix("jffgck").withNextHop(Arrays.asList("10.0.0.1")))))
+            .withStaticRouteConfiguration(new NniStaticRouteConfiguration()
+                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIpv4Routes(Arrays
+                    .asList(new StaticRouteProperties().withPrefix("jffgck").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays
+                    .asList(new StaticRouteProperties().withPrefix("2fff::/64").withNextHop(Arrays.asList("3ffe::1")))))
             .withImportRoutePolicy(new ImportRoutePolicyInformation().withImportIpv4RoutePolicyId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
                 .withImportIpv6RoutePolicyId(
@@ -5410,6 +6899,12 @@ public final class NetworkToNetworkInterconnectsCreateSamples {
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
             .withIngressAclId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
+            .withMicroBfdState(MicroBfdState.ENABLED)
+            .withConditionalDefaultRouteConfiguration(new ConditionalDefaultRouteProperties()
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRouteProperties().withPrefix("10.0.0.1/24").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays.asList(
+                    new StaticRouteProperties().withPrefix("fe08:00/64").withNextHop(Arrays.asList("fe01::1")))))
             .create();
     }
 }
@@ -5423,9 +6918,7 @@ public final class NetworkToNetworkInterconnectsCreateSamples {
  */
 public final class NetworkToNetworkInterconnectsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkToNetworkInterconnects_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_Delete.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_Delete_MaximumSet_Gen.
@@ -5435,7 +6928,7 @@ public final class NetworkToNetworkInterconnectsDeleteSamples {
     public static void networkToNetworkInterconnectsDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkToNetworkInterconnects()
-            .delete("example-rg", "example-fabric", "example-nni", com.azure.core.util.Context.NONE);
+            .delete("example-rg", "example-nf", "example-nni", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5448,9 +6941,7 @@ public final class NetworkToNetworkInterconnectsDeleteSamples {
  */
 public final class NetworkToNetworkInterconnectsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkToNetworkInterconnects_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_Get.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_Get_MaximumSet_Gen.
@@ -5460,7 +6951,7 @@ public final class NetworkToNetworkInterconnectsGetSamples {
     public static void networkToNetworkInterconnectsGetMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkToNetworkInterconnects()
-            .getWithResponse("example-rg", "example-fabric", "example-nni", com.azure.core.util.Context.NONE);
+            .getWithResponse("example-rg", "example-nf", "example-nni", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5473,9 +6964,7 @@ public final class NetworkToNetworkInterconnectsGetSamples {
  */
 public final class NetworkToNetworkInterconnectsListByNetworkFabricSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkToNetworkInterconnects_ListByNetworkFabric_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_ListByNetworkFabric.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_ListByNetworkFabric_MaximumSet_Gen.
@@ -5485,7 +6974,7 @@ public final class NetworkToNetworkInterconnectsListByNetworkFabricSamples {
     public static void networkToNetworkInterconnectsListByNetworkFabricMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkToNetworkInterconnects()
-            .listByNetworkFabric("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
+            .listByNetworkFabric("example-rg", "example-nf", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -5493,14 +6982,19 @@ public final class NetworkToNetworkInterconnectsListByNetworkFabricSamples {
 ### NetworkToNetworkInterconnects_Update
 
 ```java
-import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyInformation;
-import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyInformation;
-import com.azure.resourcemanager.managednetworkfabric.models.Layer2Configuration;
+import com.azure.resourcemanager.managednetworkfabric.models.BfdPatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.BmpConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyInformationPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyInformationPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.Layer2ConfigurationPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.MicroBfdState;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnect;
-import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.OptionBLayer3Configuration;
-import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NniBmpPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NniStaticRoutePatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfigurationPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.OptionBLayer3ConfigurationPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.OptionBLayer3PrefixLimitPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StaticRoutePatchProperties;
 import java.util.Arrays;
 
 /**
@@ -5508,9 +7002,7 @@ import java.util.Arrays;
  */
 public final class NetworkToNetworkInterconnectsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkToNetworkInterconnects_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_Update.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_Update_MaximumSet_Gen.
@@ -5520,36 +7012,47 @@ public final class NetworkToNetworkInterconnectsUpdateSamples {
     public static void networkToNetworkInterconnectsUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         NetworkToNetworkInterconnect resource = manager.networkToNetworkInterconnects()
-            .getWithResponse("example-rg", "example-fabric", "example-nni", com.azure.core.util.Context.NONE)
+            .getWithResponse("example-rg", "example-nf", "example-nni", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withLayer2Configuration(new Layer2Configuration().withMtu(1500)
+            .withLayer2Configuration(new Layer2ConfigurationPatch().withMtu(1500)
                 .withInterfaces(Arrays.asList(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice/networkInterfaces/example-networkInterface")))
-            .withOptionBLayer3Configuration(new OptionBLayer3Configuration().withPrimaryIpv4Prefix("20.0.0.12/29")
+            .withOptionBLayer3Configuration(new OptionBLayer3ConfigurationPatchProperties()
+                .withPrimaryIpv4Prefix("20.0.0.12/29")
                 .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
                 .withSecondaryIpv4Prefix("20.0.0.14/29")
                 .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")
                 .withPeerAsn(2345L)
-                .withVlanId(1235))
-            .withNpbStaticRouteConfiguration(new NpbStaticRouteConfiguration()
-                .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(310).withMultiplier(15))
+                .withVlanId(1235)
+                .withPeLoopbackIpAddress(Arrays.asList("10.0.0.1"))
+                .withBmpConfiguration(new NniBmpPatchProperties().withConfigurationState(BmpConfigurationState.ENABLED))
+                .withPrefixLimits(Arrays.asList(new OptionBLayer3PrefixLimitPatchProperties().withMaximumRoutes(1))))
+            .withNpbStaticRouteConfiguration(new NpbStaticRouteConfigurationPatch()
+                .withBfdConfiguration(new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
                 .withIpv4Routes(Arrays.asList(
-                    new StaticRouteProperties().withPrefix("20.0.0.11/30").withNextHop(Arrays.asList("21.20.20.10"))))
-                .withIpv6Routes(Arrays.asList(new StaticRouteProperties().withPrefix("4FFE:FFFF:0:CD30::ac/127")
-                    .withNextHop(Arrays.asList("5FFE:FFFF:0:CD30::ac")))))
-            .withImportRoutePolicy(new ImportRoutePolicyInformation().withImportIpv4RoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1")
+                    new StaticRoutePatchProperties().withPrefix("10.0.0.1/24").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays.asList(
+                    new StaticRoutePatchProperties().withPrefix("fe80::/64").withNextHop(Arrays.asList("fe80::1")))))
+            .withStaticRouteConfiguration(new NniStaticRoutePatchConfiguration()
+                .withBfdConfiguration(new BfdPatchConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRoutePatchProperties().withPrefix("10.0.0.1").withNextHop(Arrays.asList("10.0.0.1"))))
+                .withIpv6Routes(Arrays.asList(
+                    new StaticRoutePatchProperties().withPrefix("2fff::/64").withNextHop(Arrays.asList("3ffe::1")))))
+            .withImportRoutePolicy(new ImportRoutePolicyInformationPatch().withImportIpv4RoutePolicyId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
                 .withImportIpv6RoutePolicyId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1"))
-            .withExportRoutePolicy(new ExportRoutePolicyInformation().withExportIpv4RoutePolicyId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1")
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"))
+            .withExportRoutePolicy(new ExportRoutePolicyInformationPatch().withExportIpv4RoutePolicyId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy")
                 .withExportIpv6RoutePolicyId(
-                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1"))
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy"))
             .withEgressAclId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
             .withIngressAclId(
                 "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl")
+            .withMicroBfdState(MicroBfdState.ENABLED)
             .apply();
     }
 }
@@ -5567,20 +7070,50 @@ import java.util.Arrays;
  */
 public final class NetworkToNetworkInterconnectsUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkToNetworkInterconnects_updateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_UpdateAdministrativeState.json
      */
     /**
-     * Sample code: NetworkToNetworkInterconnects_updateAdministrativeState_MaximumSet_Gen.
+     * Sample code: NetworkToNetworkInterconnects_UpdateAdministrativeState_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkToNetworkInterconnectsUpdateAdministrativeStateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkToNetworkInterconnects()
-            .updateAdministrativeState("example-rg", "example-fabric", "example-nni",
-                new UpdateAdministrativeState().withResourceIds(Arrays.asList("")).withState(EnableDisableState.ENABLE),
+            .updateAdministrativeState("example-rg", "example-nf", "example-nni",
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList(
+                    "/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-nf/networkToNetworkInterconnects/example-nni"))
+                    .withState(EnableDisableState.ENABLE),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkToNetworkInterconnects_UpdateBfdAdministrativeState
+
+```java
+import com.azure.resourcemanager.managednetworkfabric.models.BfdAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.NniUpdateBfdAdministrativeStateRequest;
+import com.azure.resourcemanager.managednetworkfabric.models.RouteType;
+
+/**
+ * Samples for NetworkToNetworkInterconnects UpdateBfdAdministrativeState.
+ */
+public final class NetworkToNetworkInterconnectsUpdateBfdAdministrativeStateSamples {
+    /*
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_UpdateBfdAdministrativeState.json
+     */
+    /**
+     * Sample code: NetworkToNetworkInterconnects_UpdateBfdAdministrativeState.
+     * 
+     * @param manager Entry point to ManagedNetworkFabricManager.
+     */
+    public static void networkToNetworkInterconnectsUpdateBfdAdministrativeState(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+        manager.networkToNetworkInterconnects()
+            .updateBfdAdministrativeState("example-rg", "example-nf", "example-nni",
+                new NniUpdateBfdAdministrativeStateRequest().withRouteType(RouteType.STATIC)
+                    .withAdministrativeState(BfdAdministrativeState.fromString("Enable")),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -5596,18 +7129,16 @@ import java.util.Arrays;
 /**
  * Samples for NetworkToNetworkInterconnects UpdateNpbStaticRouteBfdAdministrativeState.
  */
-public final class NetworkToNetworkInterconnectsUpdateNpbStaticRouteBfdAdministrativeState {
+public final class NetworkToNetworkInterconnectsUpdateNpbStaticRouteBfdAdministrativeStSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * NetworkToNetworkInterconnects_updateNpbStaticRouteBfdAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_UpdateNpbStaticRouteBfdAdministrativeState.json
      */
     /**
-     * Sample code: NetworkToNetworkInterconnects_updateNpbStaticRouteBfdAdministrativeState_MaximumSet_Gen.
+     * Sample code: NetworkToNetworkInterconnects_UpdateNpbStaticRouteBfdAdministrativeState.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
-    public static void networkToNetworkInterconnectsUpdateNpbStaticRouteBfdAdministrativeStateMaximumSetGen(
+    public static void networkToNetworkInterconnectsUpdateNpbStaticRouteBfdAdministrativeState(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.networkToNetworkInterconnects()
             .updateNpbStaticRouteBfdAdministrativeState("example-rg", "example-fabric", "example-nni",
@@ -5625,17 +7156,15 @@ public final class NetworkToNetworkInterconnectsUpdateNpbStaticRouteBfdAdministr
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * ListOperations.json
+     * x-ms-original-file: 2025-07-15/Operations_List.json
      */
     /**
-     * Sample code: ListOperations.
+     * Sample code: Operations_List_MaximumSet_Gen.
      * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
-    public static void
-        listOperations(com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
+    public static void operationsListMaximumSetGen(
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -5649,9 +7178,7 @@ public final class OperationsListSamples {
  */
 public final class RoutePoliciesCommitConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_CommitConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_CommitConfiguration.json
      */
     /**
      * Sample code: RoutePolicies_CommitConfiguration_MaximumSet_Gen.
@@ -5689,9 +7216,7 @@ import java.util.Map;
  */
 public final class RoutePoliciesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_Create.json
      */
     /**
      * Sample code: RoutePolicies_Create_MaximumSet_Gen.
@@ -5704,20 +7229,15 @@ public final class RoutePoliciesCreateSamples {
             .define("example-routePolicy")
             .withRegion("eastus")
             .withExistingResourceGroup("example-rg")
-            .withNetworkFabricId(
-                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
-            .withAddressFamilyType(AddressFamilyType.IPV4)
-            .withDefaultAction(CommunityActionTypes.DENY)
             .withStatements(Arrays.asList(new RoutePolicyStatementProperties().withAnnotation("annotation")
                 .withSequenceNumber(7L)
                 .withCondition(new StatementConditionProperties().withIpCommunityIds(Arrays.asList(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"))
+                    .withIpExtendedCommunityIds(Arrays.asList(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity"))
                     .withType(RoutePolicyConditionType.OR)
                     .withIpPrefixId(
-                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix")
-                    .withIpExtendedCommunityIds(Arrays.asList(
-                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"))
                 .withAction(new StatementActionProperties().withLocalPreference(20L)
                     .withActionType(RoutePolicyActionType.PERMIT)
                     .withIpCommunityProperties(new ActionIpCommunityProperties()
@@ -5734,7 +7254,12 @@ public final class RoutePoliciesCreateSamples {
                             "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))
                         .withSet(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(Arrays.asList(
                             "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))))))
+            .withNetworkFabricId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
             .withAnnotation("annotation")
+            .withDefaultAction(CommunityActionTypes.PERMIT)
+            .withAddressFamilyType(AddressFamilyType.IPV4)
             .create();
     }
 
@@ -5760,9 +7285,7 @@ public final class RoutePoliciesCreateSamples {
  */
 public final class RoutePoliciesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_Delete.json
      */
     /**
      * Sample code: RoutePolicies_Delete_MaximumSet_Gen.
@@ -5784,9 +7307,7 @@ public final class RoutePoliciesDeleteSamples {
  */
 public final class RoutePoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_Get.json
      */
     /**
      * Sample code: RoutePolicies_Get_MaximumSet_Gen.
@@ -5809,9 +7330,7 @@ public final class RoutePoliciesGetByResourceGroupSamples {
  */
 public final class RoutePoliciesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_ListBySubscription.json
      */
     /**
      * Sample code: RoutePolicies_ListBySubscription_MaximumSet_Gen.
@@ -5833,9 +7352,7 @@ public final class RoutePoliciesListSamples {
  */
 public final class RoutePoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_ListByResourceGroup.json
      */
     /**
      * Sample code: RoutePolicies_ListByResourceGroup_MaximumSet_Gen.
@@ -5852,17 +7369,17 @@ public final class RoutePoliciesListByResourceGroupSamples {
 ### RoutePolicies_Update
 
 ```java
-import com.azure.resourcemanager.managednetworkfabric.models.ActionIpCommunityProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.ActionIpExtendedCommunityProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ActionIpCommunityPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ActionIpExtendedCommunityPatchProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityIdList;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityIdList;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyActionType;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyConditionType;
-import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.StatementActionProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.StatementConditionProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StatementActionPatchProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StatementConditionPatchProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -5872,9 +7389,7 @@ import java.util.Map;
  */
 public final class RoutePoliciesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_Update.json
      */
     /**
      * Sample code: RoutePolicies_Update_MaximumSet_Gen.
@@ -5887,27 +7402,28 @@ public final class RoutePoliciesUpdateSamples {
             .getByResourceGroupWithResponse("example-rg", "example-routePolicy", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
-            .withDefaultAction(CommunityActionTypes.DENY)
-            .withStatements(Arrays.asList(new RoutePolicyStatementProperties().withAnnotation("annotation")
+            .withTags(mapOf("keyId", "fakeTokenPlaceholder"))
+            .withDefaultAction(CommunityActionTypes.PERMIT)
+            .withStatementsForUpdate(Arrays.asList(new RoutePolicyStatementPatchProperties()
+                .withAnnotation("annotation")
                 .withSequenceNumber(7L)
-                .withCondition(new StatementConditionProperties().withIpCommunityIds(Arrays.asList(
+                .withCondition(new StatementConditionPatchProperties().withIpCommunityIds(Arrays.asList(
                     "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"))
+                    .withIpExtendedCommunityIds(Arrays.asList(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity"))
                     .withType(RoutePolicyConditionType.OR)
                     .withIpPrefixId(
-                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix")
-                    .withIpExtendedCommunityIds(Arrays.asList(
-                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))
-                .withAction(new StatementActionProperties().withLocalPreference(20L)
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix"))
+                .withAction(new StatementActionPatchProperties().withLocalPreference(20L)
                     .withActionType(RoutePolicyActionType.PERMIT)
-                    .withIpCommunityProperties(new ActionIpCommunityProperties()
+                    .withIpCommunityProperties(new ActionIpCommunityPatchProperties()
                         .withAdd(new IpCommunityIdList().withIpCommunityIds(Arrays.asList(
                             "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity")))
                         .withDelete(new IpCommunityIdList().withIpCommunityIds(Arrays.asList(
                             "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity")))
                         .withSet(new IpCommunityIdList().withIpCommunityIds(Arrays.asList(
                             "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"))))
-                    .withIpExtendedCommunityProperties(new ActionIpExtendedCommunityProperties()
+                    .withIpExtendedCommunityProperties(new ActionIpExtendedCommunityPatchProperties()
                         .withAdd(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(Arrays.asList(
                             "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))
                         .withDelete(new IpExtendedCommunityIdList().withIpExtendedCommunityIds(Arrays.asList(
@@ -5943,9 +7459,7 @@ import java.util.Arrays;
  */
 public final class RoutePoliciesUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_UpdateAdministrativeState_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_UpdateAdministrativeState.json
      */
     /**
      * Sample code: RoutePolicies_UpdateAdministrativeState_MaximumSet_Gen.
@@ -5970,9 +7484,7 @@ public final class RoutePoliciesUpdateAdministrativeStateSamples {
  */
 public final class RoutePoliciesValidateConfigurationSamples {
     /*
-     * x-ms-original-file:
-     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
-     * RoutePolicies_ValidateConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-07-15/RoutePolicies_ValidateConfiguration.json
      */
     /**
      * Sample code: RoutePolicies_ValidateConfiguration_MaximumSet_Gen.

@@ -4,13 +4,13 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.ai.agents.models.ToolboxDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * This sample demonstrates how to list all toolboxes using the ToolboxesClient.
+ * This sample demonstrates how to list all toolboxes using the BetaToolboxesClient.
  *
  * <p>The {@code listToolboxes} method returns a paginated list of all toolboxes
  * in the project.</p>
@@ -24,10 +24,10 @@ public class ListToolboxes {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         // Code sample for listing all toolboxes
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildToolboxesClient();
+                .beta().buildBetaToolboxesClient();
 
         System.out.println("Listing all toolboxes:");
         for (ToolboxDetails toolbox : toolboxesClient.listToolboxes()) {

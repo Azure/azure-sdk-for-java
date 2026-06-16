@@ -6,7 +6,12 @@
 
 ### Breaking Changes
 
+- Preview operation group clients now use beta-prefixed names and are built through `AIProjectClientBuilder.beta()`. `DataGenerationJobsClient` / `DataGenerationJobsAsyncClient` renamed to `BetaDatasetsClient` / `BetaDatasetsAsyncClient`; `EvaluationTaxonomies`, `Evaluators`, `Insights`, `Models`, `RedTeams`, `Routines`, `Schedules`, and `Skills` clients were renamed to their corresponding `Beta*Client` / `Beta*AsyncClient` names.
+- `Skill` renamed to `SkillDetails`. `SkillsClient` and `SkillsAsyncClient` methods such as `getSkill`, `listSkills`, and `updateSkill` now return `SkillDetails` / `PagedIterable<SkillDetails>` / `PagedFlux<SkillDetails>` instead of `Skill`.
+
 ### Bugs Fixed
+
+- Fixed OpenAI clients built from `AIProjectClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
 
 ### Other Changes
 
