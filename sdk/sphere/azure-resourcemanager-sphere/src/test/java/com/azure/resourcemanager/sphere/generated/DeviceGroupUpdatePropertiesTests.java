@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupUpdateProperties;
 import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
+import com.azure.resourcemanager.sphere.models.DeviceGroupUpdateProperties;
 import com.azure.resourcemanager.sphere.models.OSFeedType;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
 import com.azure.resourcemanager.sphere.models.UpdatePolicy;

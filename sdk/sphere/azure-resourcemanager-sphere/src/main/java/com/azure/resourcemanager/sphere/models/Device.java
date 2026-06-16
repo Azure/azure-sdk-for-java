@@ -140,7 +140,7 @@ public interface Device {
     /**
      * The template for Device update.
      */
-    interface Update extends UpdateStages.WithDeviceGroupId {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -162,16 +162,16 @@ public interface Device {
      */
     interface UpdateStages {
         /**
-         * The stage of the Device update allowing to specify deviceGroupId.
+         * The stage of the Device update allowing to specify properties.
          */
-        interface WithDeviceGroupId {
+        interface WithProperties {
             /**
-             * Specifies the deviceGroupId property: Device group id.
+             * Specifies the properties property: The updatable properties of the Device..
              * 
-             * @param deviceGroupId Device group id.
+             * @param properties The updatable properties of the Device.
              * @return the next definition stage.
              */
-            Update withDeviceGroupId(String deviceGroupId);
+            Update withProperties(DeviceUpdateProperties properties);
         }
     }
 

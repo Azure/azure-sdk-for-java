@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sphere.fluent.models.ProductUpdateProperties;
 import java.io.IOException;
 
 /**
@@ -20,7 +19,7 @@ public final class ProductUpdate implements JsonSerializable<ProductUpdate> {
     /*
      * The updatable properties of the Product.
      */
-    private ProductUpdateProperties innerProperties;
+    private ProductUpdateProperties properties;
 
     /**
      * Creates an instance of ProductUpdate class.
@@ -29,34 +28,22 @@ public final class ProductUpdate implements JsonSerializable<ProductUpdate> {
     }
 
     /**
-     * Get the innerProperties property: The updatable properties of the Product.
+     * Get the properties property: The updatable properties of the Product.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private ProductUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public ProductUpdateProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the description property: Description of the product.
+     * Set the properties property: The updatable properties of the Product.
      * 
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: Description of the product.
-     * 
-     * @param description the description value to set.
+     * @param properties the properties value to set.
      * @return the ProductUpdate object itself.
      */
-    public ProductUpdate withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ProductUpdateProperties();
-        }
-        this.innerProperties().withDescription(description);
+    public ProductUpdate withProperties(ProductUpdateProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -66,7 +53,7 @@ public final class ProductUpdate implements JsonSerializable<ProductUpdate> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -86,7 +73,7 @@ public final class ProductUpdate implements JsonSerializable<ProductUpdate> {
                 reader.nextToken();
 
                 if ("properties".equals(fieldName)) {
-                    deserializedProductUpdate.innerProperties = ProductUpdateProperties.fromJson(reader);
+                    deserializedProductUpdate.properties = ProductUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.sphere.fluent.models.DeviceUpdateProperties;
 import java.io.IOException;
 
 /**
@@ -20,7 +19,7 @@ public final class DeviceUpdate implements JsonSerializable<DeviceUpdate> {
     /*
      * The updatable properties of the Device.
      */
-    private DeviceUpdateProperties innerProperties;
+    private DeviceUpdateProperties properties;
 
     /**
      * Creates an instance of DeviceUpdate class.
@@ -29,34 +28,22 @@ public final class DeviceUpdate implements JsonSerializable<DeviceUpdate> {
     }
 
     /**
-     * Get the innerProperties property: The updatable properties of the Device.
+     * Get the properties property: The updatable properties of the Device.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private DeviceUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public DeviceUpdateProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the deviceGroupId property: Device group id.
+     * Set the properties property: The updatable properties of the Device.
      * 
-     * @return the deviceGroupId value.
-     */
-    public String deviceGroupId() {
-        return this.innerProperties() == null ? null : this.innerProperties().deviceGroupId();
-    }
-
-    /**
-     * Set the deviceGroupId property: Device group id.
-     * 
-     * @param deviceGroupId the deviceGroupId value to set.
+     * @param properties the properties value to set.
      * @return the DeviceUpdate object itself.
      */
-    public DeviceUpdate withDeviceGroupId(String deviceGroupId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceUpdateProperties();
-        }
-        this.innerProperties().withDeviceGroupId(deviceGroupId);
+    public DeviceUpdate withProperties(DeviceUpdateProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -66,7 +53,7 @@ public final class DeviceUpdate implements JsonSerializable<DeviceUpdate> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -86,7 +73,7 @@ public final class DeviceUpdate implements JsonSerializable<DeviceUpdate> {
                 reader.nextToken();
 
                 if ("properties".equals(fieldName)) {
-                    deserializedDeviceUpdate.innerProperties = DeviceUpdateProperties.fromJson(reader);
+                    deserializedDeviceUpdate.properties = DeviceUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

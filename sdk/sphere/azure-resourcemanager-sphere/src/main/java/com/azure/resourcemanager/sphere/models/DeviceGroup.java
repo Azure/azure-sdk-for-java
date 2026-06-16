@@ -139,8 +139,7 @@ public interface DeviceGroup {
     /**
      * The template for DeviceGroup update.
      */
-    interface Update extends UpdateStages.WithDescription, UpdateStages.WithOsFeedType, UpdateStages.WithUpdatePolicy,
-        UpdateStages.WithAllowCrashDumpsCollection, UpdateStages.WithRegionalDataBoundary {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -162,69 +161,16 @@ public interface DeviceGroup {
      */
     interface UpdateStages {
         /**
-         * The stage of the DeviceGroup update allowing to specify description.
+         * The stage of the DeviceGroup update allowing to specify properties.
          */
-        interface WithDescription {
+        interface WithProperties {
             /**
-             * Specifies the description property: Description of the device group..
+             * Specifies the properties property: The updatable properties of the DeviceGroup..
              * 
-             * @param description Description of the device group.
+             * @param properties The updatable properties of the DeviceGroup.
              * @return the next definition stage.
              */
-            Update withDescription(String description);
-        }
-
-        /**
-         * The stage of the DeviceGroup update allowing to specify osFeedType.
-         */
-        interface WithOsFeedType {
-            /**
-             * Specifies the osFeedType property: Operating system feed type of the device group..
-             * 
-             * @param osFeedType Operating system feed type of the device group.
-             * @return the next definition stage.
-             */
-            Update withOsFeedType(OSFeedType osFeedType);
-        }
-
-        /**
-         * The stage of the DeviceGroup update allowing to specify updatePolicy.
-         */
-        interface WithUpdatePolicy {
-            /**
-             * Specifies the updatePolicy property: Update policy of the device group..
-             * 
-             * @param updatePolicy Update policy of the device group.
-             * @return the next definition stage.
-             */
-            Update withUpdatePolicy(UpdatePolicy updatePolicy);
-        }
-
-        /**
-         * The stage of the DeviceGroup update allowing to specify allowCrashDumpsCollection.
-         */
-        interface WithAllowCrashDumpsCollection {
-            /**
-             * Specifies the allowCrashDumpsCollection property: Flag to define if the user allows for crash dump
-             * collection..
-             * 
-             * @param allowCrashDumpsCollection Flag to define if the user allows for crash dump collection.
-             * @return the next definition stage.
-             */
-            Update withAllowCrashDumpsCollection(AllowCrashDumpCollection allowCrashDumpsCollection);
-        }
-
-        /**
-         * The stage of the DeviceGroup update allowing to specify regionalDataBoundary.
-         */
-        interface WithRegionalDataBoundary {
-            /**
-             * Specifies the regionalDataBoundary property: Regional data boundary for the device group..
-             * 
-             * @param regionalDataBoundary Regional data boundary for the device group.
-             * @return the next definition stage.
-             */
-            Update withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary);
+            Update withProperties(DeviceGroupUpdateProperties properties);
         }
     }
 

@@ -8,15 +8,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
-import com.azure.resourcemanager.sphere.models.AllowCrashDumpCollection;
 import com.azure.resourcemanager.sphere.models.ClaimDevicesRequest;
 import com.azure.resourcemanager.sphere.models.CountDevicesResponse;
 import com.azure.resourcemanager.sphere.models.DeviceGroup;
 import com.azure.resourcemanager.sphere.models.DeviceGroupProperties;
 import com.azure.resourcemanager.sphere.models.DeviceGroupUpdate;
-import com.azure.resourcemanager.sphere.models.OSFeedType;
-import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
-import com.azure.resourcemanager.sphere.models.UpdatePolicy;
+import com.azure.resourcemanager.sphere.models.DeviceGroupUpdateProperties;
 
 public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definition, DeviceGroup.Update {
     private DeviceGroupInner innerObject;
@@ -161,28 +158,8 @@ public final class DeviceGroupImpl implements DeviceGroup, DeviceGroup.Definitio
         return this;
     }
 
-    public DeviceGroupImpl withDescription(String description) {
-        this.updateProperties.withDescription(description);
-        return this;
-    }
-
-    public DeviceGroupImpl withOsFeedType(OSFeedType osFeedType) {
-        this.updateProperties.withOsFeedType(osFeedType);
-        return this;
-    }
-
-    public DeviceGroupImpl withUpdatePolicy(UpdatePolicy updatePolicy) {
-        this.updateProperties.withUpdatePolicy(updatePolicy);
-        return this;
-    }
-
-    public DeviceGroupImpl withAllowCrashDumpsCollection(AllowCrashDumpCollection allowCrashDumpsCollection) {
-        this.updateProperties.withAllowCrashDumpsCollection(allowCrashDumpsCollection);
-        return this;
-    }
-
-    public DeviceGroupImpl withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary) {
-        this.updateProperties.withRegionalDataBoundary(regionalDataBoundary);
+    public DeviceGroupImpl withProperties(DeviceGroupUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 }

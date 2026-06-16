@@ -10,6 +10,7 @@ import com.azure.resourcemanager.sphere.fluent.models.DeviceInner;
 import com.azure.resourcemanager.sphere.models.Device;
 import com.azure.resourcemanager.sphere.models.DeviceProperties;
 import com.azure.resourcemanager.sphere.models.DeviceUpdate;
+import com.azure.resourcemanager.sphere.models.DeviceUpdateProperties;
 import com.azure.resourcemanager.sphere.models.GenerateCapabilityImageRequest;
 import com.azure.resourcemanager.sphere.models.SignedCapabilityImageResponse;
 
@@ -159,8 +160,8 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
         return this;
     }
 
-    public DeviceImpl withDeviceGroupId(String deviceGroupId) {
-        this.updateProperties.withDeviceGroupId(deviceGroupId);
+    public DeviceImpl withProperties(DeviceUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 }

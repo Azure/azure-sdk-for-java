@@ -14,6 +14,7 @@ import com.azure.resourcemanager.sphere.models.DeviceGroup;
 import com.azure.resourcemanager.sphere.models.Product;
 import com.azure.resourcemanager.sphere.models.ProductProperties;
 import com.azure.resourcemanager.sphere.models.ProductUpdate;
+import com.azure.resourcemanager.sphere.models.ProductUpdateProperties;
 
 public final class ProductImpl implements Product, Product.Definition, Product.Update {
     private ProductInner innerObject;
@@ -151,8 +152,8 @@ public final class ProductImpl implements Product, Product.Definition, Product.U
         return this;
     }
 
-    public ProductImpl withDescription(String description) {
-        this.updateProperties.withDescription(description);
+    public ProductImpl withProperties(ProductUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 }

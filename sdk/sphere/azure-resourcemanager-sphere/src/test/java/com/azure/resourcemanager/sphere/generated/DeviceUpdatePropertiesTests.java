@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.DeviceUpdateProperties;
+import com.azure.resourcemanager.sphere.models.DeviceUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeviceUpdatePropertiesTests {

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.models.DeviceUpdate;
+import com.azure.resourcemanager.sphere.models.DeviceUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeviceUpdateTests {
@@ -13,13 +14,14 @@ public final class DeviceUpdateTests {
     public void testDeserialize() throws Exception {
         DeviceUpdate model = BinaryData.fromString("{\"properties\":{\"deviceGroupId\":\"micykvceoveilo\"}}")
             .toObject(DeviceUpdate.class);
-        Assertions.assertEquals("micykvceoveilo", model.deviceGroupId());
+        Assertions.assertEquals("micykvceoveilo", model.properties().deviceGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceUpdate model = new DeviceUpdate().withDeviceGroupId("micykvceoveilo");
+        DeviceUpdate model
+            = new DeviceUpdate().withProperties(new DeviceUpdateProperties().withDeviceGroupId("micykvceoveilo"));
         model = BinaryData.fromObject(model).toObject(DeviceUpdate.class);
-        Assertions.assertEquals("micykvceoveilo", model.deviceGroupId());
+        Assertions.assertEquals("micykvceoveilo", model.properties().deviceGroupId());
     }
 }

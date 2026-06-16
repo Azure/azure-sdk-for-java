@@ -139,7 +139,7 @@ public interface Product {
     /**
      * The template for Product update.
      */
-    interface Update extends UpdateStages.WithDescription {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -161,16 +161,16 @@ public interface Product {
      */
     interface UpdateStages {
         /**
-         * The stage of the Product update allowing to specify description.
+         * The stage of the Product update allowing to specify properties.
          */
-        interface WithDescription {
+        interface WithProperties {
             /**
-             * Specifies the description property: Description of the product.
+             * Specifies the properties property: The updatable properties of the Product..
              * 
-             * @param description Description of the product.
+             * @param properties The updatable properties of the Product.
              * @return the next definition stage.
              */
-            Update withDescription(String description);
+            Update withProperties(ProductUpdateProperties properties);
         }
     }
 
