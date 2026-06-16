@@ -110,15 +110,20 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                .addPolicy(new BearerTokenAuthenticationPolicy(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)), "https://confidential-ledger.azure.com/.default"));
+                .addPolicy(new BearerTokenAuthenticationPolicy(
+                    request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                    "https://confidential-ledger.azure.com/.default"));
             addSanitizers();
         } else if (getTestMode() == TestMode.RECORD) {
             confidentialLedgerClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(httpClient)
-                .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"));
+                .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
+                    "https://confidential-ledger.azure.com/.default"));
             addSanitizers();
         } else if (getTestMode() == TestMode.LIVE) {
-            confidentialLedgerClientBuilder.addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
+            confidentialLedgerClientBuilder
+                .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
+                    "https://confidential-ledger.azure.com/.default"))
                 .httpClient(httpClient);
         }
         confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
