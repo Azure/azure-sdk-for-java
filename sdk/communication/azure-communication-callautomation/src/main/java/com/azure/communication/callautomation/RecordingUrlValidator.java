@@ -74,11 +74,11 @@ final class RecordingUrlValidator {
         if (!isValidEndpoint) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "%s host '%s' is not a valid Azure Communication Services recording endpoint. "
-                    + "Only URLs pointing to *.asm.skype.com, *.asyncgw.teams.microsoft.com are allowed.",
+                    + "Only URLs pointing to *.asm.skype.com, *.asyncgw.teams.microsoft.com, *.ams.gov.teams.microsoft.us are allowed.",
                 parameterName, host)));
         }
 
         // Log successful validation
-        LOGGER.verbose("Recording URL validated successfully: {}", recordingUrl);
+        LOGGER.verbose("Recording URL host validated successfully: {}", hostLowerCase);
     }
 }
