@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedObserverContextImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.changefeed.common.ExceptionClassifier;
 import com.azure.cosmos.implementation.changefeed.common.StatusCodeErrorType;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
@@ -208,16 +209,18 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn(
-                        "CosmosException: partition {} from thread {} with owner {} {}",
-                        this.lease.getLeaseToken(),
-                        Thread.currentThread().getId(),
-                        this.lease.getOwner(),
-                        clientException.getShortMessage());
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "CosmosException: partition" + this.lease.getLeaseToken()
-                                + "from thread " + Thread.currentThread().getId() + " with owner " + this.lease.getOwner(),
+                    if (Exceptions.isCommonlyExpectedExceptionPossiblyCausingNoisyLogs(
+                        clientException.getStatusCode(), clientException.getSubStatusCode())) {
+                        logger.warn(
+                            "CosmosException: partition {} from thread {} with owner {} {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner(),
+                            clientException.getShortMessage());
+                    } else {
+                        logger.warn(
+                            "CosmosException: partition " + this.lease.getLeaseToken()
+                                + " from thread " + Thread.currentThread().getId() + " with owner " + this.lease.getOwner(),
                             clientException);
                     }
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
