@@ -1,14 +1,238 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
-
-### Features Added
+## 1.1.0-beta.4 (2026-06-16)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `ConfidentialLedgerClientBuilder` was modified
 
-### Other Changes
+* `credential(com.azure.core.credential.TokenCredential)` was removed
+
+#### `ConfidentialLedgerServiceVersion` was modified
+
+* `V2022_05_13` was removed
+
+### Features Added
+
+* `models.ReceiptLeafComponents` was added
+
+* `models.UserDefinedFunctionHook` was added
+
+* `models.UserDefinedRole` was added
+
+* `models.Collection` was added
+
+* `models.LedgerUser` was added
+
+* `models.ConfidentialLedgerEnclaves` was added
+
+* `models.Metadata` was added
+
+* `models.ApplicationClaim` was added
+
+* `models.UserDefinedFunctionExecutionResponse` was added
+
+* `models.Role` was added
+
+* `models.LedgerUserMultipleRoles` was added
+
+* `models.JsRuntimeOptions` was added
+
+* `models.ClaimDigest` was added
+
+* `models.TransactionState` was added
+
+* `models.Bundle` was added
+
+* `models.LedgerQueryResult` was added
+
+* `models.UserDefinedFunction` was added
+
+* `models.UserDefinedFunctionExecutionStatus` was added
+
+* `models.UserDefinedRoles` was added
+
+* `models.ModuleDef` was added
+
+* `models.ReceiptElement` was added
+
+* `models.EnclaveQuote` was added
+
+* `models.TransactionStatus` was added
+
+* `models.ForwardingRequired` was added
+
+* `models.UserDefinedFunctionExecutionProperties` was added
+
+* `models.ConfidentialLedgerQueryState` was added
+
+* `models.RedirectionStrategy` was added
+
+* `models.InterpreterReusePolicy` was added
+
+* `models.LedgerEntry` was added
+
+* `models.UserDefinedFunctionExecutionError` was added
+
+* `models.UserDefinedFunctionExecutionResult` was added
+
+* `models.ApplicationClaimProtocol` was added
+
+* `models.ConsortiumMember` was added
+
+* `models.MethodToEndpointProperties` was added
+
+* `models.ReceiptContents` was added
+
+* `models.LedgerEntryClaim` was added
+
+* `models.Mode` was added
+
+* `models.TransactionReceipt` was added
+
+* `models.ApplicationClaimKind` was added
+
+* `ConfidentialLedgerRedirectPolicy` was added
+
+* `models.EndpointProperties` was added
+
+* `models.ConfidentialLedgerUserRoleName` was added
+
+* `models.Constitution` was added
+
+* `models.LedgerWriteResult` was added
+
+#### `ConfidentialLedgerAsyncClient` was modified
+
+* `getUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `createUserDefinedFunction(java.lang.String,models.UserDefinedFunction)` was added
+* `createOrUpdateUser(java.lang.String,models.LedgerUser)` was added
+* `updateUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getRuntimeOptionsWithResponse(com.azure.core.http.rest.RequestOptions)` was added
+* `createOrUpdateLedgerUserWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `listLedgerEntries(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listTags(com.azure.core.http.rest.RequestOptions)` was added
+* `executeUserDefinedFunction(java.lang.String,models.UserDefinedFunctionExecutionProperties)` was added
+* `listTags()` was added
+* `createUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `createLedgerEntry(models.LedgerEntry,java.lang.String,java.lang.String)` was added
+* `createUserDefinedRoleStable(models.UserDefinedRoles)` was added
+* `deleteLedgerUser(java.lang.String)` was added
+* `updateRuntimeOptionsStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `createUserDefinedEndpoint(models.Bundle)` was added
+* `getLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listLedgerEntries()` was added
+* `getUserDefinedEndpoint()` was added
+* `executeUserDefinedFunction(java.lang.String)` was added
+* `listUsers(com.azure.core.http.rest.RequestOptions)` was added
+* `getLedgerUser(java.lang.String)` was added
+* `getCurrentLedgerEntry()` was added
+* `deleteUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getEnclaveQuotes()` was added
+* `getUser(java.lang.String)` was added
+* `getUserDefinedFunction(java.lang.String)` was added
+* `updateRuntimeOptionsStable(models.JsRuntimeOptions)` was added
+* `getLedgerEntry(java.lang.String,java.lang.String)` was added
+* `getConstitution()` was added
+* `listCollections()` was added
+* `deleteLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `createOrUpdateLedgerUser(java.lang.String,models.LedgerUserMultipleRoles)` was added
+* `deleteUserDefinedRoleStableWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getCurrentLedgerEntry(java.lang.String)` was added
+* `executeUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUserDefinedEndpointWithResponse(com.azure.core.http.rest.RequestOptions)` was added
+* `getTransactionStatus(java.lang.String)` was added
+* `getReceipt(java.lang.String)` was added
+* `listTags(java.lang.String)` was added
+* `createUserDefinedEndpointWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteUser(java.lang.String)` was added
+* `getUserDefinedRole(java.lang.String)` was added
+* `getUserDefinedEndpointsModuleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listUserDefinedFunctions()` was added
+* `getLedgerEntry(java.lang.String)` was added
+* `getUserDefinedRoleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteUserDefinedRoleStable(java.lang.String)` was added
+* `getUserDefinedEndpointsModule(java.lang.String)` was added
+* `listUsers()` was added
+* `getRuntimeOptions()` was added
+* `createUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `listConsortiumMembers()` was added
+* `listLedgerUsers(com.azure.core.http.rest.RequestOptions)` was added
+* `listUserDefinedFunctions(com.azure.core.http.rest.RequestOptions)` was added
+* `updateUserDefinedRoleStable(models.UserDefinedRoles)` was added
+* `createLedgerEntry(models.LedgerEntry)` was added
+* `listLedgerUsers()` was added
+* `deleteUserDefinedFunction(java.lang.String)` was added
+
+#### `ConfidentialLedgerServiceVersion` was modified
+
+* `V2026_02_23` was added
+
+#### `ConfidentialLedgerClient` was modified
+
+* `deleteLedgerUser(java.lang.String)` was added
+* `getUserDefinedRoleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUserDefinedEndpointsModule(java.lang.String)` was added
+* `listTags()` was added
+* `listUserDefinedFunctions(com.azure.core.http.rest.RequestOptions)` was added
+* `updateRuntimeOptionsStable(models.JsRuntimeOptions)` was added
+* `deleteUserDefinedFunction(java.lang.String)` was added
+* `getLedgerEntry(java.lang.String,java.lang.String)` was added
+* `listLedgerEntries()` was added
+* `getUserDefinedEndpointWithResponse(com.azure.core.http.rest.RequestOptions)` was added
+* `updateRuntimeOptionsStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getCurrentLedgerEntry()` was added
+* `getTransactionStatus(java.lang.String)` was added
+* `listCollections()` was added
+* `listLedgerUsers()` was added
+* `getCurrentLedgerEntry(java.lang.String)` was added
+* `getReceipt(java.lang.String)` was added
+* `createOrUpdateLedgerUserWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `deleteUserDefinedRoleStable(java.lang.String)` was added
+* `executeUserDefinedFunction(java.lang.String,models.UserDefinedFunctionExecutionProperties)` was added
+* `getUserDefinedFunction(java.lang.String)` was added
+* `deleteUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `listLedgerUsers(com.azure.core.http.rest.RequestOptions)` was added
+* `getLedgerEntry(java.lang.String)` was added
+* `deleteLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getUser(java.lang.String)` was added
+* `deleteUser(java.lang.String)` was added
+* `getUserDefinedEndpoint()` was added
+* `createOrUpdateLedgerUser(java.lang.String,models.LedgerUserMultipleRoles)` was added
+* `getLedgerUser(java.lang.String)` was added
+* `getEnclaveQuotes()` was added
+* `listTags(java.lang.String)` was added
+* `createUserDefinedEndpoint(models.Bundle)` was added
+* `createUserDefinedEndpointWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `getUserDefinedEndpointsModuleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `createUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `listUserDefinedFunctions()` was added
+* `getConstitution()` was added
+* `updateUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `createOrUpdateUser(java.lang.String,models.LedgerUser)` was added
+* `createUserDefinedRoleStable(models.UserDefinedRoles)` was added
+* `executeUserDefinedFunction(java.lang.String)` was added
+* `getUserDefinedRole(java.lang.String)` was added
+* `listTags(com.azure.core.http.rest.RequestOptions)` was added
+* `deleteUserDefinedRoleStableWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getRuntimeOptionsWithResponse(com.azure.core.http.rest.RequestOptions)` was added
+* `executeUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
+* `getRuntimeOptions()` was added
+* `listUsers()` was added
+* `listConsortiumMembers()` was added
+* `listLedgerEntries(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `updateUserDefinedRoleStable(models.UserDefinedRoles)` was added
+* `createUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `createUserDefinedFunction(java.lang.String,models.UserDefinedFunction)` was added
+* `createLedgerEntry(models.LedgerEntry,java.lang.String,java.lang.String)` was added
+* `listUsers(com.azure.core.http.rest.RequestOptions)` was added
+* `createLedgerEntry(models.LedgerEntry)` was added
+
+#### `certificate.ConfidentialLedgerCertificateServiceVersion` was modified
+
+* `V2024_12_09_PREVIEW` was added
 
 ## 1.1.0-beta.3 (2026-06-05)
 
