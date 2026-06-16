@@ -10,9 +10,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Assertions;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Test;
 
 public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBase {
+
+    @LiveOnly
 
     @Test
     public void testGetEnclaveQuotes() throws Exception {
@@ -27,6 +30,6 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
 
         JsonNode enclaveQuotes = responseBodyJson.get("enclaveQuotes");
         String enclaveQuotesKey = enclaveQuotes.fields().next().getKey();
-        Assertions.assertEquals("OE_SGX_v1", enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText());
+        Assertions.assertEquals("AMD_SEV_SNP_v1", enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText());
     }
 }

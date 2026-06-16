@@ -5,12 +5,18 @@
 package com.azure.security.confidentialledger;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -110,15 +116,13 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                .addPolicy(new BearerTokenAuthenticationPolicy(
-                    request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    "https://confidential-ledger.azure.com/.default"));
+                .addPolicy(
+                    createTestAuthPolicy(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX))));
             addSanitizers();
         } else if (getTestMode() == TestMode.RECORD) {
             confidentialLedgerClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(httpClient)
-                .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
-                    "https://confidential-ledger.azure.com/.default"));
+                .addPolicy(createTestAuthPolicy(new DefaultAzureCredentialBuilder().build()));
             addSanitizers();
         } else if (getTestMode() == TestMode.LIVE) {
             confidentialLedgerClientBuilder
@@ -166,5 +170,21 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
         assertNotNull(transactionId, "transaction id should exist on headers.");
 
         return transactionId;
+    }
+
+    /**
+     * Creates an auth policy that adds a Bearer token without checking the HTTPS scheme.
+     * This is needed because the test proxy runs on HTTP, and BearerTokenAuthenticationPolicy
+     * refuses to send tokens over non-HTTPS connections.
+     */
+    private static HttpPipelinePolicy createTestAuthPolicy(TokenCredential credential) {
+        return (context, next) -> {
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes("https://confidential-ledger.azure.com/.default");
+            return credential.getToken(tokenRequestContext).flatMap(token -> {
+                context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer " + token.getToken());
+                return next.process();
+            });
+        };
     }
 }
