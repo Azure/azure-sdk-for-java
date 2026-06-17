@@ -6,19 +6,24 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Reference to a registered dataset in the Foundry Dataset Service.
+ * Reference to a registered Foundry dataset.
  */
 @Fluent
-public final class DatasetRef implements JsonSerializable<DatasetRef> {
+public final class OptimizationReferenceDatasetInput extends OptimizationDatasetInput {
 
     /*
-     * Dataset name.
+     * Dataset input type discriminator.
+     */
+    @Generated
+    private OptimizationDatasetInputType type = OptimizationDatasetInputType.REFERENCE;
+
+    /*
+     * Registered dataset name.
      */
     @Generated
     private final String name;
@@ -30,17 +35,28 @@ public final class DatasetRef implements JsonSerializable<DatasetRef> {
     private String version;
 
     /**
-     * Creates an instance of DatasetRef class.
+     * Creates an instance of OptimizationReferenceDatasetInput class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public DatasetRef(String name) {
+    public OptimizationReferenceDatasetInput(String name) {
         this.name = name;
     }
 
     /**
-     * Get the name property: Dataset name.
+     * Get the type property: Dataset input type discriminator.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OptimizationDatasetInputType getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: Registered dataset name.
      *
      * @return the name value.
      */
@@ -63,10 +79,10 @@ public final class DatasetRef implements JsonSerializable<DatasetRef> {
      * Set the version property: Dataset version. If not specified, the latest version is used.
      *
      * @param version the version value to set.
-     * @return the DatasetRef object itself.
+     * @return the OptimizationReferenceDatasetInput object itself.
      */
     @Generated
-    public DatasetRef setVersion(String version) {
+    public OptimizationReferenceDatasetInput setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -79,38 +95,44 @@ public final class DatasetRef implements JsonSerializable<DatasetRef> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("version", this.version);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of DatasetRef from the JsonReader.
+     * Reads an instance of OptimizationReferenceDatasetInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DatasetRef if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     * @return An instance of OptimizationReferenceDatasetInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DatasetRef.
+     * @throws IOException If an error occurs while reading the OptimizationReferenceDatasetInput.
      */
     @Generated
-    public static DatasetRef fromJson(JsonReader jsonReader) throws IOException {
+    public static OptimizationReferenceDatasetInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
+            OptimizationDatasetInputType type = OptimizationDatasetInputType.REFERENCE;
             String version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = OptimizationDatasetInputType.fromString(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     version = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            DatasetRef deserializedDatasetRef = new DatasetRef(name);
-            deserializedDatasetRef.version = version;
-            return deserializedDatasetRef;
+            OptimizationReferenceDatasetInput deserializedOptimizationReferenceDatasetInput
+                = new OptimizationReferenceDatasetInput(name);
+            deserializedOptimizationReferenceDatasetInput.type = type;
+            deserializedOptimizationReferenceDatasetInput.version = version;
+            return deserializedOptimizationReferenceDatasetInput;
         });
     }
 }

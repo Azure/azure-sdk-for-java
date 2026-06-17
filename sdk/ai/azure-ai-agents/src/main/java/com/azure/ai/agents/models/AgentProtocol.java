@@ -72,4 +72,10 @@ public final class AgentProtocol extends ExpandableStringEnum<AgentProtocol> {
      */
     @Generated
     public static final AgentProtocol INVOCATIONS_WS = fromString("invocations_ws");
+
+    /**
+     * Static value a2a for AgentProtocol.
+     */
+    @Generated
+    public static final AgentProtocol A2A = fromString("a2a");
 }

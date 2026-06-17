@@ -60,13 +60,13 @@ import java.util.stream.Stream;
 @ServiceClientBuilder(
     serviceClients = {
         BetaMemoryStoresClient.class,
-        BetaToolboxesClient.class,
         BetaAgentsClient.class,
         AgentsClient.class,
+        ToolboxesClient.class,
         BetaMemoryStoresAsyncClient.class,
-        BetaToolboxesAsyncClient.class,
         BetaAgentsAsyncClient.class,
-        AgentsAsyncClient.class })
+        AgentsAsyncClient.class,
+        ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -85,13 +85,11 @@ public final class AgentsClientBuilder
 
     private static final String AGENT_PREVIEW_FEATURES = Stream
         .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW.toString()))
+            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
         .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
-
-    private static final String TOOLBOXES_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW.toString();
 
     private boolean allowPreview;
 
@@ -540,10 +538,8 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
-            BetaToolboxesClient.class,
             BetaAgentsAsyncClient.class,
-            BetaMemoryStoresAsyncClient.class,
-            BetaToolboxesAsyncClient.class })
+            BetaMemoryStoresAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
@@ -572,15 +568,6 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an instance of BetaToolboxesAsyncClient class.
-         *
-         * @return an instance of BetaToolboxesAsyncClient.
-         */
-        public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-            return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
-        }
-
-        /**
          * Builds an instance of BetaAgentsClient class.
          *
          * @return an instance of BetaAgentsClient.
@@ -596,15 +583,6 @@ public final class AgentsClientBuilder
          */
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
-        }
-
-        /**
-         * Builds an instance of BetaToolboxesClient class.
-         *
-         * @return an instance of BetaToolboxesClient.
-         */
-        public BetaToolboxesClient buildBetaToolboxesClient() {
-            return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
     }
 
@@ -627,15 +605,6 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of BetaToolboxesAsyncClient class.
-     *
-     * @return an instance of BetaToolboxesAsyncClient.
-     */
-    private BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
-        return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
-    }
-
-    /**
      * Builds an instance of BetaAgentsClient class.
      *
      * @return an instance of BetaAgentsClient.
@@ -654,11 +623,22 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of BetaToolboxesClient class.
+     * Builds an instance of ToolboxesAsyncClient class.
      *
-     * @return an instance of BetaToolboxesClient.
+     * @return an instance of ToolboxesAsyncClient.
      */
-    private BetaToolboxesClient buildBetaToolboxesClient() {
-        return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
+    @Generated
+    public ToolboxesAsyncClient buildToolboxesAsyncClient() {
+        return new ToolboxesAsyncClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of ToolboxesClient class.
+     *
+     * @return an instance of ToolboxesClient.
+     */
+    @Generated
+    public ToolboxesClient buildToolboxesClient() {
+        return new ToolboxesClient(buildInnerClient().getToolboxes());
     }
 }

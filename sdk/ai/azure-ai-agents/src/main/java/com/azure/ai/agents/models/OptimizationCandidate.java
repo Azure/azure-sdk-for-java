@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,34 +32,10 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     private final String name;
 
     /*
-     * The agent configuration that produced this candidate.
-     */
-    @Generated
-    private final OptimizationAgentDefinition config;
-
-    /*
      * What was mutated from the baseline (e.g., {system_prompt: 'new prompt'}).
      */
     @Generated
-    private final Map<String, BinaryData> mutations;
-
-    /*
-     * Fraction of tasks that met the pass threshold.
-     */
-    @Generated
-    private final double passRate;
-
-    /*
-     * Individual task-level scores.
-     */
-    @Generated
-    private final List<OptimizationTaskResult> taskScores;
-
-    /*
-     * Whether this candidate is on the Pareto frontier (score vs cost).
-     */
-    @Generated
-    private final boolean isParetoOptimal;
+    private Map<String, BinaryData> mutations;
 
     /**
      * Get the candidateId property: Server-assigned candidate identifier. Use with GET /candidates/{id} sub-endpoints.
@@ -83,16 +58,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the config property: The agent configuration that produced this candidate.
-     *
-     * @return the config value.
-     */
-    @Generated
-    public OptimizationAgentDefinition getConfig() {
-        return this.config;
-    }
-
-    /**
      * Get the mutations property: What was mutated from the baseline (e.g., {system_prompt: 'new prompt'}).
      *
      * @return the mutations value.
@@ -103,36 +68,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Get the passRate property: Fraction of tasks that met the pass threshold.
-     *
-     * @return the passRate value.
-     */
-    @Generated
-    public double getPassRate() {
-        return this.passRate;
-    }
-
-    /**
-     * Get the taskScores property: Individual task-level scores.
-     *
-     * @return the taskScores value.
-     */
-    @Generated
-    public List<OptimizationTaskResult> getTaskScores() {
-        return this.taskScores;
-    }
-
-    /**
-     * Get the isParetoOptimal property: Whether this candidate is on the Pareto frontier (score vs cost).
-     *
-     * @return the isParetoOptimal value.
-     */
-    @Generated
-    public boolean isParetoOptimal() {
-        return this.isParetoOptimal;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -140,7 +75,9 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeJsonField("config", this.config);
+        jsonWriter.writeDoubleField("avg_score", this.averageScore);
+        jsonWriter.writeDoubleField("avg_tokens", this.averageTokens);
+        jsonWriter.writeStringField("candidate_id", this.candidateId);
         jsonWriter.writeMapField("mutations", this.mutations, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
@@ -148,12 +85,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 element.writeTo(writer);
             }
         });
-        jsonWriter.writeDoubleField("avg_score", this.averageScore);
-        jsonWriter.writeDoubleField("avg_tokens", this.averageTokens);
-        jsonWriter.writeDoubleField("pass_rate", this.passRate);
-        jsonWriter.writeArrayField("task_scores", this.taskScores, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeBooleanField("is_pareto_optimal", this.isParetoOptimal);
-        jsonWriter.writeStringField("candidate_id", this.candidateId);
         jsonWriter.writeStringField("eval_id", this.evaluationId);
         jsonWriter.writeStringField("eval_run_id", this.evaluationRunId);
         jsonWriter.writeJsonField("promotion", this.promotion);
@@ -173,14 +104,10 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     public static OptimizationCandidate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            OptimizationAgentDefinition config = null;
-            Map<String, BinaryData> mutations = null;
             double averageScore = 0.0;
             double averageTokens = 0.0;
-            double passRate = 0.0;
-            List<OptimizationTaskResult> taskScores = null;
-            boolean isParetoOptimal = false;
             String candidateId = null;
+            Map<String, BinaryData> mutations = null;
             String evaluationId = null;
             String evaluationRunId = null;
             PromotionInfo promotion = null;
@@ -189,23 +116,15 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
-                } else if ("config".equals(fieldName)) {
-                    config = OptimizationAgentDefinition.fromJson(reader);
-                } else if ("mutations".equals(fieldName)) {
-                    mutations = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("avg_score".equals(fieldName)) {
                     averageScore = reader.getDouble();
                 } else if ("avg_tokens".equals(fieldName)) {
                     averageTokens = reader.getDouble();
-                } else if ("pass_rate".equals(fieldName)) {
-                    passRate = reader.getDouble();
-                } else if ("task_scores".equals(fieldName)) {
-                    taskScores = reader.readArray(reader1 -> OptimizationTaskResult.fromJson(reader1));
-                } else if ("is_pareto_optimal".equals(fieldName)) {
-                    isParetoOptimal = reader.getBoolean();
                 } else if ("candidate_id".equals(fieldName)) {
                     candidateId = reader.getString();
+                } else if ("mutations".equals(fieldName)) {
+                    mutations = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("eval_id".equals(fieldName)) {
                     evaluationId = reader.getString();
                 } else if ("eval_run_id".equals(fieldName)) {
@@ -216,9 +135,10 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                     reader.skipChildren();
                 }
             }
-            OptimizationCandidate deserializedOptimizationCandidate = new OptimizationCandidate(name, config, mutations,
-                averageScore, averageTokens, passRate, taskScores, isParetoOptimal);
+            OptimizationCandidate deserializedOptimizationCandidate
+                = new OptimizationCandidate(name, averageScore, averageTokens);
             deserializedOptimizationCandidate.candidateId = candidateId;
+            deserializedOptimizationCandidate.mutations = mutations;
             deserializedOptimizationCandidate.evaluationId = evaluationId;
             deserializedOptimizationCandidate.evaluationRunId = evaluationRunId;
             deserializedOptimizationCandidate.promotion = promotion;
@@ -231,32 +151,6 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
      */
     @Generated
     private PromotionInfo promotion;
-
-    /**
-     * Creates an instance of OptimizationCandidate class.
-     *
-     * @param name the name value to set.
-     * @param config the config value to set.
-     * @param mutations the mutations value to set.
-     * @param averageScore the averageScore value to set.
-     * @param averageTokens the averageTokens value to set.
-     * @param passRate the passRate value to set.
-     * @param taskScores the taskScores value to set.
-     * @param isParetoOptimal the isParetoOptimal value to set.
-     */
-    @Generated
-    private OptimizationCandidate(String name, OptimizationAgentDefinition config, Map<String, BinaryData> mutations,
-        double averageScore, double averageTokens, double passRate, List<OptimizationTaskResult> taskScores,
-        boolean isParetoOptimal) {
-        this.name = name;
-        this.config = config;
-        this.mutations = mutations;
-        this.averageScore = averageScore;
-        this.averageTokens = averageTokens;
-        this.passRate = passRate;
-        this.taskScores = taskScores;
-        this.isParetoOptimal = isParetoOptimal;
-    }
 
     /**
      * Get the promotion property: Promotion metadata. Null if the candidate has not been promoted.
@@ -330,5 +224,19 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     @Generated
     public String getEvaluationRunId() {
         return this.evaluationRunId;
+    }
+
+    /**
+     * Creates an instance of OptimizationCandidate class.
+     *
+     * @param name the name value to set.
+     * @param averageScore the averageScore value to set.
+     * @param averageTokens the averageTokens value to set.
+     */
+    @Generated
+    private OptimizationCandidate(String name, double averageScore, double averageTokens) {
+        this.name = name;
+        this.averageScore = averageScore;
+        this.averageTokens = averageTokens;
     }
 }
