@@ -575,25 +575,37 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .CosmosAsyncClientHelper
             .getCosmosAsyncClientAccessor()
             .getPreferredRegions(client).size() > 1;
+        CosmosAsyncContainer createdContainer = database.getContainer(cosmosContainerProperties.getId());
         if (throughput > 6000 || isMultiRegional) {
-            waitForCollectionToBeAvailableToRead();
+            waitForCollectionToBeAvailableToRead(createdContainer);
         }
 
-        return database.getContainer(cosmosContainerProperties.getId());
+        return createdContainer;
     }
 
-    protected static void waitForCollectionToBeAvailableToRead() {
-        // Creating a container is an async task - especially with multiple regions it can
-        // take some time until the container is available in the remote regions as well.
-        // When the container does not exist yet, metadata reads or item operations can
-        // fail with 404/1013 "Collection is not yet available for read".
-        // So, adding this delay after container creation to minimize risk of hitting these errors.
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
+    private static final int COLLECTION_NOT_AVAILABLE_FOR_READ_SUBSTATUS = 1013;
+    private static final int COLLECTION_AVAILABILITY_MAX_POLL_ATTEMPTS = 20;
+    private static final Duration COLLECTION_AVAILABILITY_POLL_DELAY = Duration.ofSeconds(3);
+
+    protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container) {
+        // Creating a container is an async task - especially on multi-region/multi-writer accounts it can take
+        // some time until the collection is available for reads in all regions. Until then, metadata reads or
+        // item operations fail with 404/1013 "Collection is not yet available for read".
+        // Instead of a blind fixed delay, actively wait-and-poll: read the collection metadata and, on a
+        // 404/1013, retry with a fixed delay until the read succeeds or the bounded attempts are exhausted.
+        container.read()
+            .retryWhen(Retry.fixedDelay(COLLECTION_AVAILABILITY_MAX_POLL_ATTEMPTS, COLLECTION_AVAILABILITY_POLL_DELAY)
+                .filter(TestSuiteBase::isCollectionNotYetAvailableForRead))
+            .block();
+    }
+
+    private static boolean isCollectionNotYetAvailableForRead(Throwable throwable) {
+        if (throwable instanceof CosmosException) {
+            CosmosException cosmosException = (CosmosException) throwable;
+            return cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+                && cosmosException.getSubStatusCode() == COLLECTION_NOT_AVAILABLE_FOR_READ_SUBSTATUS;
         }
+        return false;
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,

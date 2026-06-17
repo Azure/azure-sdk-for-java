@@ -9,6 +9,8 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosFullTextIndex;
@@ -309,6 +311,65 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         assertDirectAndThinClientMatch("SELECT * FROM c ORDER BY c.price DESC");
     }
 
+    /**
+     * Multi-property ORDER BY (composite ordering). A multi-key ORDER BY can only be served when a
+     * matching composite index exists, so this test provisions a dedicated container with a
+     * (category ASC, age DESC) composite index, seeds documents on a single logical partition, and
+     * asserts the thin client returns the exact same strictly-ordered sequence as Direct. This
+     * exercises the multi-component ORDER BY composition / merge path, which single-key ORDER BY
+     * does not. Mirrors the multi-ORDER-BY coverage in the .NET SDK.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
+    public void testMultipleOrderBy() {
+        String containerId = "multiOrderBy_" + UUID.randomUUID().toString().substring(0, 8);
+        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
+        CosmosAsyncContainer directTestContainer = db.getContainer(containerId);
+
+        try {
+            PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+            pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
+            CosmosContainerProperties props = new CosmosContainerProperties(containerId, pkDef);
+
+            // Multi-property ORDER BY requires a matching composite index.
+            IndexingPolicy idxPolicy = new IndexingPolicy();
+            List<CompositePath> composite = new ArrayList<>();
+            composite.add(new CompositePath().setPath("/category").setOrder(CompositePathSortOrder.ASCENDING));
+            composite.add(new CompositePath().setPath("/age").setOrder(CompositePathSortOrder.DESCENDING));
+            idxPolicy.setCompositeIndexes(Collections.singletonList(composite));
+            props.setIndexingPolicy(idxPolicy);
+            db.createContainer(props, ThroughputProperties.createManualThroughput(400)).block();
+
+            CosmosAsyncContainer tcContainer = thinClient.getDatabase(db.getId()).getContainer(containerId);
+
+            String pk = "mob-" + UUID.randomUUID().toString().substring(0, 8);
+            String[] categories = {"alpha", "beta", "alpha", "gamma", "beta", "alpha"};
+            int[] ages = {30, 25, 20, 40, 35, 50};
+            for (int i = 0; i < categories.length; i++) {
+                ObjectNode doc = OBJECT_MAPPER.createObjectNode();
+                doc.put(ID_FIELD, "mob-" + i + "-" + UUID.randomUUID().toString().substring(0, 8));
+                doc.put(PK_FIELD, pk);
+                doc.put("category", categories[i]);
+                doc.put("age", ages[i]);
+                directTestContainer.createItem(doc, new PartitionKey(pk), null).block();
+            }
+
+            String query = "SELECT * FROM c ORDER BY c.category ASC, c.age DESC";
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(pk));
+
+            QueryResult<ObjectNode> directResult = drainQuery(directTestContainer, query, options, ObjectNode.class);
+            QueryResult<ObjectNode> tcResult = drainQuery(tcContainer, query, options, ObjectNode.class);
+
+            for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+            assertThat(tcResult.results.size()).as("Multi-ORDER-BY count mismatch: " + query).isEqualTo(directResult.results.size());
+            assertThat(tcResult.results.size()).isEqualTo(categories.length);
+            // Strict sequence parity — the multi-key ORDER BY ordering must be identical to Direct.
+            assertSameDocumentIds(directResult.results, tcResult.results, true, query);
+        } finally {
+            safeDeleteContainer(directTestContainer);
+        }
+    }
+
     // ==================== DISTINCT Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
@@ -358,6 +419,20 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testMax() {
         assertScalarDirectAndThinClientMatch("SELECT VALUE MAX(c.age) FROM c", Integer.class);
+    }
+
+    /**
+     * DCount (distinct count). Validates the thin client serves the distinct-count aggregate identically
+     * to Direct. Cosmos SQL does not accept the standard {@code COUNT(DISTINCT ...)} form; the canonical
+     * DCount idiom is {@code COUNT(1)} over a {@code SELECT DISTINCT VALUE} subquery, which the query
+     * engine folds into a DCount aggregate. DCount is a distinct query feature that must be advertised in
+     * SupportedQueryFeatures for the proxy-generated query plan; this guards that negotiation path.
+     * The .NET SDK has equivalent DCount coverage.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testDCount() {
+        assertScalarDirectAndThinClientMatch(
+            "SELECT VALUE COUNT(1) FROM (SELECT DISTINCT VALUE c.category FROM c) AS t", Integer.class);
     }
 
     // ==================== GROUP BY Tests ====================
@@ -633,14 +708,19 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     }
 
     // ==================== Multi-EPK-Range Tests (Sort Validation) ====================
-    // These tests use a dedicated 24,000 RU/s container (3 physical partitions) to ensure
-    // documents with different partition keys land on different physical partitions.
-    // After PartitionKeyInternal → EPK hash conversion, the sort in
-    // parseQueryRangesForThinClient() ensures RoutingMapProviderHelper.getOverlappingRanges()
-    // doesn't throw IllegalArgumentException for unsorted ranges.
+    // These tests use a dedicated higher-throughput (24,000 RU/s) container so that metadata
+    // exposes multiple EPK (effective partition key) ranges. Note: on the emulator / single-box
+    // backend these ranges are typically served by a single physical process (no true multi-box
+    // partitioning), so this does not guarantee documents physically land on separate partitions.
+    // It does, however, exercise the SDK-side routing and sort pipeline: documents with different
+    // partition keys map to different EPK ranges, and after PartitionKeyInternal → EPK hash
+    // conversion, the sort in parseQueryRangesForThinClient() ensures
+    // RoutingMapProviderHelper.getOverlappingRanges() doesn't throw IllegalArgumentException for
+    // unsorted ranges.
 
     /**
-     * Helper: creates a 24K RU container, runs the test, deletes the container.
+     * Helper: creates a higher-throughput (24K RU) container exposing multiple EPK ranges, runs the
+     * test, deletes the container.
      */
     private void runMultiRangeTest(String[] pkValues, String queryTemplate, int expectedCount) {
         String containerId = "multiRange_" + UUID.randomUUID().toString().substring(0, 8);
@@ -1272,7 +1352,9 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     /**
      * Direct vs thin client comparison: run query via both Direct TCP and thin client.
      * Assert: (1) thin client used :10250, (2) same count, (3) same document IDs — compared in
-     * sequence for ORDER BY queries and as sorted sets otherwise (cross-partition order is undefined).
+     * strict sequence for ORDER BY queries and for single-partition queries (partition key set on
+     * the options), and as sorted sets only for cross-partition non-ORDER-BY queries where ordering
+     * is undefined. See {@link #isStrictlyOrdered}.
      */
     private void assertDirectAndThinClientMatch(String query) {
         assertDirectAndThinClientMatch(query, partitionedOptions());
@@ -1284,7 +1366,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
 
         assertThat(tcResult.results.size()).as("Count mismatch: " + query).isEqualTo(gwResult.results.size());
-        assertSameDocumentIds(gwResult.results, tcResult.results, isOrderedQuery(query), query);
+        assertSameDocumentIds(gwResult.results, tcResult.results, isStrictlyOrdered(query, options), query);
     }
 
     private void assertDirectAndThinClientMatch(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
@@ -1293,7 +1375,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
 
         assertThat(tcResult.results.size()).as("Count mismatch: " + querySpec.getQueryText()).isEqualTo(gwResult.results.size());
-        assertSameDocumentIds(gwResult.results, tcResult.results, isOrderedQuery(querySpec.getQueryText()), querySpec.getQueryText());
+        assertSameDocumentIds(gwResult.results, tcResult.results, isStrictlyOrdered(querySpec.getQueryText(), options), querySpec.getQueryText());
     }
 
     private <T> void assertScalarDirectAndThinClientMatch(String query, Class<T> resultType) {
@@ -1333,9 +1415,23 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     }
 
     /**
-     * Compares document IDs between the Direct (baseline) and thin client results. For ORDER BY
-     * queries the sequence is significant, so IDs are compared in order. For all other queries the
-     * cross-partition / cross-page ordering is undefined, so IDs are compared as sorted sets.
+     * Decides whether Direct and thin client document IDs must match in strict sequence. Per query
+     * test best practice we validate order for as many queries as possible to flush out hidden
+     * ordering/paging bugs, and relax to a sorted-set comparison only when order is genuinely
+     * undefined: a cross-partition query (no partition key on the options) that lacks an ORDER BY.
+     * Single-partition queries (partitionedOptions sets a partition key) and any ORDER BY query are
+     * therefore always compared strictly.
+     */
+    private static boolean isStrictlyOrdered(String queryText, CosmosQueryRequestOptions options) {
+        boolean crossPartition = options == null || options.getPartitionKey() == null;
+        return isOrderedQuery(queryText) || !crossPartition;
+    }
+
+    /**
+     * Compares document IDs between the Direct (baseline) and thin client results. When {@code
+     * ordered} is true the sequence is significant, so IDs are compared in order; otherwise (a
+     * cross-partition non-ORDER-BY query, where cross-partition / cross-page ordering is undefined)
+     * IDs are compared as sorted sets. See {@link #isStrictlyOrdered}.
      */
     private static void assertSameDocumentIds(List<ObjectNode> gwDocs, List<ObjectNode> tcDocs, boolean ordered, String desc) {
         List<String> gwIds = gwDocs.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
