@@ -60,6 +60,11 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     private String identityValidationId;
 
     /*
+     * Indicates whether the resource is intended for a specific usage scenario.
+     */
+    private String programType;
+
+    /*
      * Status of the current operation on certificate profile.
      */
     private ProvisioningState provisioningState;
@@ -227,6 +232,26 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
     }
 
     /**
+     * Get the programType property: Indicates whether the resource is intended for a specific usage scenario.
+     * 
+     * @return the programType value.
+     */
+    public String programType() {
+        return this.programType;
+    }
+
+    /**
+     * Set the programType property: Indicates whether the resource is intended for a specific usage scenario.
+     * 
+     * @param programType the programType value to set.
+     * @return the CertificateProfileProperties object itself.
+     */
+    public CertificateProfileProperties withProgramType(String programType) {
+        this.programType = programType;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Status of the current operation on certificate profile.
      * 
      * @return the provisioningState value.
@@ -266,6 +291,7 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
         jsonWriter.writeBooleanField("includeState", this.includeState);
         jsonWriter.writeBooleanField("includeCountry", this.includeCountry);
         jsonWriter.writeBooleanField("includePostalCode", this.includePostalCode);
+        jsonWriter.writeStringField("programType", this.programType);
         return jsonWriter.writeEndObject();
     }
 
@@ -302,6 +328,8 @@ public final class CertificateProfileProperties implements JsonSerializable<Cert
                 } else if ("includePostalCode".equals(fieldName)) {
                     deserializedCertificateProfileProperties.includePostalCode
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("programType".equals(fieldName)) {
+                    deserializedCertificateProfileProperties.programType = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedCertificateProfileProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
