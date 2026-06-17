@@ -282,43 +282,42 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
      * HTTP 416 response).
      */
     @Test
-@Test
-public void readPastEndShortCircuitsWhenETagLocked() throws IOException {
-    BlobClientBase client = Mockito.mock(BlobClientBase.class);
+    public void readPastEndShortCircuitsWhenETagLocked() throws IOException {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
 
-    long resourceLength = Constants.KB;
-    BlobRequestConditions conditions = new BlobRequestConditions().setIfMatch("0xETAG");
-    StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(client,
-        ByteBuffer.allocate(0), -1, resourceLength, conditions);
+        long resourceLength = Constants.KB;
+        BlobRequestConditions conditions = new BlobRequestConditions().setIfMatch("0xETAG");
+        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(client,
+            ByteBuffer.allocate(0), -1, resourceLength, conditions);
 
-    // when: "Reading at the known end of the resource"
-    int readAtEnd = behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength);
+        // when: "Reading at the known end of the resource"
+        int readAtEnd = behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength);
 
-    // then: "EOF is signaled without any service call"
-    assertEquals(-1, readAtEnd);
-    verify(client, never()).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+        // then: "EOF is signaled without any service call"
+        assertEquals(-1, readAtEnd);
+        verify(client, never()).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
 
-    // when: "Reading past the known end of the resource"
-    int readPastEnd = behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength + Constants.KB);
+        // when: "Reading past the known end of the resource"
+        int readPastEnd = behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength + Constants.KB);
 
-    // then: "EOF is still signaled without any service call"
-    assertEquals(-1, readPastEnd);
-    verify(client, never()).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+        // then: "EOF is still signaled without any service call"
+        assertEquals(-1, readPastEnd);
+        verify(client, never()).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
 
-    // If-Match="*" is an existence precondition (not a specific ETag lock), so growth-detection behavior should be
-    // preserved and a request should still be issued.
-    Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
-        .thenReturn(createMockDownloadResponse(
-            "bytes " + resourceLength + "-" + (resourceLength + Constants.KB - 1) + "/" + 2 * Constants.KB));
+        // If-Match="*" is an existence precondition (not a specific ETag lock), so growth-detection behavior should be
+        // preserved and a request should still be issued.
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenReturn(createMockDownloadResponse(
+                "bytes " + resourceLength + "-" + (resourceLength + Constants.KB - 1) + "/" + 2 * Constants.KB));
 
-    BlobRequestConditions ifMatchStar = new BlobRequestConditions().setIfMatch("*");
-    StorageSeekableByteChannelBlobReadBehavior starBehavior = new StorageSeekableByteChannelBlobReadBehavior(client,
-        ByteBuffer.allocate(0), -1, resourceLength, ifMatchStar);
+        BlobRequestConditions ifMatchStar = new BlobRequestConditions().setIfMatch("*");
+        StorageSeekableByteChannelBlobReadBehavior starBehavior = new StorageSeekableByteChannelBlobReadBehavior(client,
+            ByteBuffer.allocate(0), -1, resourceLength, ifMatchStar);
 
-    starBehavior.read(ByteBuffer.allocate(Constants.KB), resourceLength);
+        starBehavior.read(ByteBuffer.allocate(Constants.KB), resourceLength);
 
-    verify(client, times(1)).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
-}
+        verify(client, times(1)).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+    }
 
     /**
      * When the blob is not ETag-locked, a read past the end must still issue a request so the behavior can
