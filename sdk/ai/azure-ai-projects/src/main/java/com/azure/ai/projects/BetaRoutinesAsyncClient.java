@@ -335,7 +335,7 @@ public final class BetaRoutinesAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     status: String (Optional)
+     *     status: BinaryData (Optional)
      *     phase: String(queued/dispatching/completed/failed) (Optional)
      *     trigger_type: String(custom/github_issue/schedule/timer) (Optional)
      *     trigger_name: String (Optional)
