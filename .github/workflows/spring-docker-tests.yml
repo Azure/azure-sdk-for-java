@@ -62,4 +62,3 @@ jobs:
           -Dspotbugs.skip=true
           -T 4
           -ntp
-          -DfailIfNoTests=false
