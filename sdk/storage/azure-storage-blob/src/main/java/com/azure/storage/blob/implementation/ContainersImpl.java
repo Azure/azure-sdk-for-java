@@ -6255,7 +6255,7 @@ public final class ContainersImpl {
             String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
-        final String accept = "application/vnd.apache.arrow.stream";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
         String includeConverted = (include == null)
             ? null
             : include.stream()
@@ -6426,7 +6426,7 @@ public final class ContainersImpl {
         String startFrom, String endBefore, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
-        final String accept = "application/vnd.apache.arrow.stream";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
         String includeConverted = (include == null)
             ? null
             : include.stream()
@@ -6478,7 +6478,7 @@ public final class ContainersImpl {
         try {
             final String restype = "container";
             final String comp = "list";
-            final String accept = "application/vnd.apache.arrow.stream";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
             String includeConverted = (include == null)
                 ? null
                 : include.stream()
@@ -6572,7 +6572,7 @@ public final class ContainersImpl {
         try {
             final String restype = "container";
             final String comp = "list";
-            final String accept = "application/vnd.apache.arrow.stream";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
             String includeConverted = (include == null)
                 ? null
                 : include.stream()
@@ -7089,7 +7089,7 @@ public final class ContainersImpl {
             String endBefore, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
-        final String accept = "application/vnd.apache.arrow.stream";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
         String includeConverted = (include == null)
             ? null
             : include.stream()
@@ -7273,7 +7273,7 @@ public final class ContainersImpl {
         Context context) {
         final String restype = "container";
         final String comp = "list";
-        final String accept = "application/vnd.apache.arrow.stream";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
         String includeConverted = (include == null)
             ? null
             : include.stream()
@@ -7328,7 +7328,7 @@ public final class ContainersImpl {
         try {
             final String restype = "container";
             final String comp = "list";
-            final String accept = "application/vnd.apache.arrow.stream";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
             String includeConverted = (include == null)
                 ? null
                 : include.stream()
@@ -7428,7 +7428,7 @@ public final class ContainersImpl {
         try {
             final String restype = "container";
             final String comp = "list";
-            final String accept = "application/vnd.apache.arrow.stream";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
             String includeConverted = (include == null)
                 ? null
                 : include.stream()
