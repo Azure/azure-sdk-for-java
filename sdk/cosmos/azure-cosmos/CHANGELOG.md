@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
 
 ### 4.81.0 (2026-06-08)
 
