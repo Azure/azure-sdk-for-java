@@ -12,7 +12,7 @@ public final class DeploymentStackTemplateDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentStackTemplateDefinitionInner model = BinaryData.fromString(
-            "{\"template\":\"datalaulppg\",\"templateLink\":{\"uri\":\"pnapnyiropuh\",\"id\":\"gvpgy\",\"relativePath\":\"qgitxmed\",\"queryString\":\"c\",\"contentVersion\":\"ynqwwncwzzhxgk\"}}")
+            "{\"template\":\"\\\"datalaulppg\\\"\",\"templateLink\":{\"uri\":\"pnapnyiropuh\",\"id\":\"gvpgy\",\"relativePath\":\"qgitxmed\",\"queryString\":\"c\",\"contentVersion\":\"ynqwwncwzzhxgk\"}}")
             .toObject(DeploymentStackTemplateDefinitionInner.class);
         Assertions.assertEquals("pnapnyiropuh", model.templateLink().uri());
         Assertions.assertEquals("gvpgy", model.templateLink().id());

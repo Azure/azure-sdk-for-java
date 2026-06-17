@@ -21,7 +21,7 @@ public final class DeploymentStacksExportTemplateAtManagementGroupWithResponseMo
     @Test
     public void testExportTemplateAtManagementGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"template\":\"datakopkwhojvpajqgx\",\"templateLink\":{\"uri\":\"ocmbqfqvmkcxoza\",\"id\":\"helxprglya\",\"relativePath\":\"dckcbc\",\"queryString\":\"jrjxgciqibrhosx\",\"contentVersion\":\"qrhzoymibmrqyib\"}}";
+            = "{\"template\":\"\\\"datakopkwhojvpajqgx\\\"\",\"templateLink\":{\"uri\":\"ocmbqfqvmkcxoza\",\"id\":\"helxprglya\",\"relativePath\":\"dckcbc\",\"queryString\":\"jrjxgciqibrhosx\",\"contentVersion\":\"qrhzoymibmrqyib\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

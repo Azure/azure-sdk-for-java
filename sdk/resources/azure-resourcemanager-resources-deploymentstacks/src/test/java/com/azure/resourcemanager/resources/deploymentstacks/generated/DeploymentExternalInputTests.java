@@ -11,12 +11,12 @@ public final class DeploymentExternalInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentExternalInput model
-            = BinaryData.fromString("{\"value\":\"dataeitjz\"}").toObject(DeploymentExternalInput.class);
+            = BinaryData.fromString("{\"value\":\"\\\"dataeitjz\\\"\"}").toObject(DeploymentExternalInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentExternalInput model = new DeploymentExternalInput().withValue("dataeitjz");
+        DeploymentExternalInput model = new DeploymentExternalInput().withValue("\"dataeitjz\"");
         model = BinaryData.fromObject(model).toObject(DeploymentExternalInput.class);
     }
 }

@@ -10,7 +10,8 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.ErrorAddition
 public final class ErrorAdditionalInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ErrorAdditionalInfo model = BinaryData.fromString("{\"type\":\"bejhphoycmsxa\",\"info\":\"datahdxbmtqio\"}")
-            .toObject(ErrorAdditionalInfo.class);
+        ErrorAdditionalInfo model
+            = BinaryData.fromString("{\"type\":\"bejhphoycmsxa\",\"info\":\"\\\"datahdxbmtqio\\\"\"}")
+                .toObject(ErrorAdditionalInfo.class);
     }
 }

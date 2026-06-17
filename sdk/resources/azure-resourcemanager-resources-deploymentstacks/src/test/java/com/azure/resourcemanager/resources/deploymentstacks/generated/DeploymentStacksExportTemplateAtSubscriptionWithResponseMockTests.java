@@ -21,7 +21,7 @@ public final class DeploymentStacksExportTemplateAtSubscriptionWithResponseMockT
     @Test
     public void testExportTemplateAtSubscriptionWithResponse() throws Exception {
         String responseStr
-            = "{\"template\":\"dataka\",\"templateLink\":{\"uri\":\"tiiswacffg\",\"id\":\"zzewkfvhqcrai\",\"relativePath\":\"pnppfuf\",\"queryString\":\"wdmhdlxyjrxs\",\"contentVersion\":\"afcnih\"}}";
+            = "{\"template\":\"\\\"dataka\\\"\",\"templateLink\":{\"uri\":\"tiiswacffg\",\"id\":\"zzewkfvhqcrai\",\"relativePath\":\"pnppfuf\",\"queryString\":\"wdmhdlxyjrxs\",\"contentVersion\":\"afcnih\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
