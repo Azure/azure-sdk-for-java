@@ -21,21 +21,6 @@ public class PartitionKeyRange extends Resource {
     public static final String MASTER_PARTITION_KEY_RANGE_ID = "M";
 
     /**
-     * Fields of the Cosmos DB service partition key range payload that the SDK retains in heap
-     * for the lifetime of the {@link com.azure.cosmos.implementation.routing.CollectionRoutingMap}.
-     *
-     * <p>The set is broadly aligned with the equivalent Python optimization in
-     * <a href="https://github.com/Azure/azure-sdk-for-python/pull/46297">azure-sdk-for-python#46297</a>
-     * (item #2 — "Strip unused fields → compact PKRange"), which retains
-     * {@code id}, {@code minInclusive}, {@code maxExclusive}, {@code parents},
-     * {@code status}, and {@code throughputFraction}. Java additionally keeps {@code _rid}
-     * because {@link com.azure.cosmos.implementation.directconnectivity.AddressResolver#isSameCollection}
-     * calls {@code getResourceId()} on {@code PartitionKeyRange} instances during target-change
-     * detection on retry — stripping it would surface as {@code "INVALID resource id null"}
-     * from {@code ResourceId.parse(null)} the next time the SDK retries an address-staleness
-     * check (e.g. after a 410/Gone). Python's address-resolution path does not have the
-     * equivalent dependency, so the SDKs intentionally diverge on this one field.</p>
-     *
      * <p>This is an <b>allow-list</b>: any field the service returns that is not in this set
      * (including any field added by the service in the future) is dropped at construction.
      * That keeps per-instance heap bounded against server-side payload growth. Adding a new
