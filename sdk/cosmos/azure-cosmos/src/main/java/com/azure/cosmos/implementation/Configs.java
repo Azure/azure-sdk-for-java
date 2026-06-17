@@ -426,6 +426,16 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    // Config to indicate the SETTINGS_MAX_FRAME_SIZE advertised by the HTTP/2 client to the remote peer.
+    // The value is expressed in kilobytes (KB) and is clamped to [64 KB, 16383 KB] — the lower bound matches
+    // the SDK's historical default so users can only grow the frame size, and the upper bound is the
+    // largest whole-KB value below the HTTP/2 spec max (RFC 7540: 2^24 - 1 bytes).
+    private static final int MIN_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;            // 64 KB
+    private static final int MAX_HTTP2_MAX_FRAME_SIZE_IN_KB = 16_383;        // 16383 KB
+    private static final int DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;        // 64 KB
+    private static final String HTTP2_MAX_FRAME_SIZE_IN_KB = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
+    private static final String HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE = "COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB";
+
     private static final boolean DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = false;
     private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = "COSMOS.IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
     private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE = "COSMOS_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
@@ -1483,6 +1493,54 @@ public class Configs {
                 String.valueOf(DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS)));
 
         return Integer.parseInt(http2MaxConcurrentStreams);
+    }
+
+    /**
+     * Returns the HTTP/2 SETTINGS_MAX_FRAME_SIZE to advertise to the remote peer, in bytes.
+     *
+     * The customer-facing configuration is expressed in kilobytes (KB) via system property
+     * {@code COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB} or environment variable
+     * {@code COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB}. Resolution order is system property, then environment
+     * variable, then the SDK default of 64 KB. The configured value is clamped to the inclusive range
+     * [64 KB, 16383 KB]; an unparseable or out-of-range value falls back to the default (or is clamped)
+     * and a warning is logged. The returned value is converted to bytes for downstream Netty
+     * consumption.
+     */
+    public static int getHttp2MaxFrameSizeInBytes() {
+        String configuredValue = System.getProperty(
+            HTTP2_MAX_FRAME_SIZE_IN_KB,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB)));
+
+        int parsedInKb;
+        try {
+            parsedInKb = Integer.parseInt(configuredValue);
+        } catch (NumberFormatException ex) {
+            logger.warn(
+                "Invalid value '{}' for {} / {}; falling back to default {} KB.",
+                configuredValue,
+                HTTP2_MAX_FRAME_SIZE_IN_KB,
+                HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE,
+                DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB);
+            return DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB * 1024;
+        }
+
+        if (parsedInKb < MIN_HTTP2_MAX_FRAME_SIZE_IN_KB || parsedInKb > MAX_HTTP2_MAX_FRAME_SIZE_IN_KB) {
+            int clampedInKb = Math.min(
+                MAX_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                Math.max(MIN_HTTP2_MAX_FRAME_SIZE_IN_KB, parsedInKb));
+            logger.warn(
+                "Configured HTTP/2 max frame size {} KB is outside the allowed range [{}, {}] KB; "
+                    + "clamping to {} KB.",
+                parsedInKb,
+                MIN_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                MAX_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                clampedInKb);
+            return clampedInKb * 1024;
+        }
+
+        return parsedInKb * 1024;
     }
 
     public static boolean isEmulatorServerCertValidationDisabled() {
