@@ -6,8 +6,7 @@ package com.azure.ai.agents.implementation.models;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
-import com.azure.ai.agents.models.AgentEndpoint;
+import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import java.util.Map;
@@ -17,12 +16,6 @@ import java.util.Map;
  */
 @Fluent
 public final class CreateAgentOptions {
-
-    /*
-     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     */
-    @Generated
-    private AgentDefinitionOptInKeys foundryFeatures;
 
     /*
      * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
@@ -66,7 +59,7 @@ public final class CreateAgentOptions {
      * An optional endpoint configuration. If not specified, a default endpoint configuration will be set for the agent
      */
     @Generated
-    private AgentEndpoint agentEndpoint;
+    private AgentEndpointConfig agentEndpoint;
 
     /*
      * Optional agent card for the agent
@@ -84,30 +77,6 @@ public final class CreateAgentOptions {
     public CreateAgentOptions(String agentName, AgentDefinition definition) {
         this.agentName = agentName;
         this.definition = definition;
-    }
-
-    /**
-     * Get the foundryFeatures property: A feature flag opt-in required when using preview operations or modifying
-     * persisted preview resources.
-     *
-     * @return the foundryFeatures value.
-     */
-    @Generated
-    public AgentDefinitionOptInKeys getFoundryFeatures() {
-        return this.foundryFeatures;
-    }
-
-    /**
-     * Set the foundryFeatures property: A feature flag opt-in required when using preview operations or modifying
-     * persisted preview resources.
-     *
-     * @param foundryFeatures the foundryFeatures value to set.
-     * @return the CreateAgentOptions object itself.
-     */
-    @Generated
-    public CreateAgentOptions setFoundryFeatures(AgentDefinitionOptInKeys foundryFeatures) {
-        this.foundryFeatures = foundryFeatures;
-        return this;
     }
 
     /**
@@ -218,21 +187,8 @@ public final class CreateAgentOptions {
      * @return the agentEndpoint value.
      */
     @Generated
-    public AgentEndpoint getAgentEndpoint() {
+    public AgentEndpointConfig getAgentEndpoint() {
         return this.agentEndpoint;
-    }
-
-    /**
-     * Set the agentEndpoint property: An optional endpoint configuration. If not specified, a default endpoint
-     * configuration will be set for the agent.
-     *
-     * @param agentEndpoint the agentEndpoint value to set.
-     * @return the CreateAgentOptions object itself.
-     */
-    @Generated
-    public CreateAgentOptions setAgentEndpoint(AgentEndpoint agentEndpoint) {
-        this.agentEndpoint = agentEndpoint;
-        return this;
     }
 
     /**
@@ -254,6 +210,19 @@ public final class CreateAgentOptions {
     @Generated
     public CreateAgentOptions setAgentCard(AgentCard agentCard) {
         this.agentCard = agentCard;
+        return this;
+    }
+
+    /**
+     * Set the agentEndpoint property: An optional endpoint configuration. If not specified, a default endpoint
+     * configuration will be set for the agent.
+     *
+     * @param agentEndpoint the agentEndpoint value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setAgentEndpoint(AgentEndpointConfig agentEndpoint) {
+        this.agentEndpoint = agentEndpoint;
         return this;
     }
 }

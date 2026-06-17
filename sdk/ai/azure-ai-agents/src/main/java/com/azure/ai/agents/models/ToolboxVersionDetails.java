@@ -200,6 +200,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("policies", this.policies);
         return jsonWriter.writeEndObject();
     }
@@ -223,6 +224,7 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
             OffsetDateTime createdAt = null;
             List<Tool> tools = null;
             String description = null;
+            List<ToolboxSkill> skills = null;
             ToolboxPolicies policies = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -241,6 +243,8 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
                     tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("skills".equals(fieldName)) {
+                    skills = reader.readArray(reader1 -> ToolboxSkill.fromJson(reader1));
                 } else if ("policies".equals(fieldName)) {
                     policies = ToolboxPolicies.fromJson(reader);
                 } else {
@@ -250,8 +254,25 @@ public final class ToolboxVersionDetails implements JsonSerializable<ToolboxVers
             ToolboxVersionDetails deserializedToolboxVersionDetails
                 = new ToolboxVersionDetails(metadata, id, name, version, createdAt, tools);
             deserializedToolboxVersionDetails.description = description;
+            deserializedToolboxVersionDetails.skills = skills;
             deserializedToolboxVersionDetails.policies = policies;
             return deserializedToolboxVersionDetails;
         });
+    }
+
+    /*
+     * The list of skill sources included in this toolbox version.
+     */
+    @Generated
+    private List<ToolboxSkill> skills;
+
+    /**
+     * Get the skills property: The list of skill sources included in this toolbox version.
+     *
+     * @return the skills value.
+     */
+    @Generated
+    public List<ToolboxSkill> getSkills() {
+        return this.skills;
     }
 }

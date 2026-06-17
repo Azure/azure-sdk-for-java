@@ -9,7 +9,10 @@ public enum AuthenticationType {
     SQL("SQL"),
 
     /** Enum value ADPassword. */
-    ADPASSWORD("ADPassword");
+    ADPASSWORD("ADPassword"),
+
+    /** Enum value ManagedIdentity. */
+    MANAGED_IDENTITY("ManagedIdentity");
 
     /** The actual serialized value for a AuthenticationType instance. */
     private final String value;

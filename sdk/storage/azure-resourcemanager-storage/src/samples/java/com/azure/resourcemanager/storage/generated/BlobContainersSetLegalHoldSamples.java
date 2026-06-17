@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BlobContainersSetLegalHoldSamples {
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersSetLegalHold.json
+     * x-ms-original-file: 2026-04-01/BlobContainersSetLegalHold.json
      */
     /**
      * Sample code: SetLegalHoldContainers.
@@ -27,7 +27,7 @@ public final class BlobContainersSetLegalHoldSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersSetLegalHoldAllowProtectedAppendWritesAll.json
+     * x-ms-original-file: 2026-04-01/BlobContainersSetLegalHoldAllowProtectedAppendWritesAll.json
      */
     /**
      * Sample code: SetLegalHoldContainersWithAllowProtectedAppendWritesAll.

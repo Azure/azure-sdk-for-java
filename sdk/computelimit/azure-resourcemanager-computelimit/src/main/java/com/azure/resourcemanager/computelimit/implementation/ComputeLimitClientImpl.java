@@ -217,7 +217,7 @@ public final class ComputeLimitClientImpl implements ComputeLimitClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-04-30";
+        this.apiVersion = "2026-06-01";
         this.operations = new OperationsClientImpl(this);
         this.guestSubscriptions = new GuestSubscriptionsClientImpl(this);
         this.sharedLimits = new SharedLimitsClientImpl(this);

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.fluent.models.StorageQueueInner;
  */
 public final class QueueUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/QueueOperationPatch.json
+     * x-ms-original-file: 2026-04-01/QueueOperationPatch.json
      */
     /**
      * Sample code: QueueOperationPatch.

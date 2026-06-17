@@ -206,6 +206,34 @@ class FeatureFlagClient {
         for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
             tracing.updateFeatureFilterTelemetry(filter.getName());
         }
+
+        // Track telemetry and seed usage from the feature flag value
+        try {
+            JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(featureFlag.getValue());
+
+            // Check for telemetry enabled
+            JsonNode telemetryNode = node.get(TELEMETRY);
+            if (telemetryNode != null && !telemetryNode.isEmpty()) {
+                JsonNode enabledNode = telemetryNode.get("enabled");
+                if (enabledNode != null && enabledNode.asBoolean()) {
+                    tracing.setUsesTelemetry();
+                }
+            }
+
+            // Check for allocation seed
+            JsonNode allocationNode = node.get("allocation");
+            if (allocationNode != null && allocationNode.has("seed")) {
+                tracing.setUsesSeed();
+            }
+
+            // Track max variants
+            JsonNode variantsNode = node.get("variants");
+            if (variantsNode != null && variantsNode.isArray()) {
+                tracing.updateMaxVariants(variantsNode.size());
+            }
+        } catch (JsonProcessingException e) {
+            LOGGER.warn("Error parsing feature flag telemetry for key: {}", featureFlag.getKey(), e);
+        }
     }
 
     /**

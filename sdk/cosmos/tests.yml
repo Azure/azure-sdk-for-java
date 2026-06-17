@@ -69,6 +69,44 @@ extends:
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          TestName: 'Cosmos_Live_Test_Http2NetworkFault'
+          PreSteps:
+            - script: |
+                sudo apt-get update -qq && sudo apt-get install -y -qq iptables
+                echo \"iptables $(sudo iptables --version 2>/dev/null || echo 'not found')\"
+              displayName: 'Install iptables for network fault injection'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_http2_network_fault
+              Path: sdk/cosmos/live-http2-network-fault-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.2(1|5)/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+          TimeoutInMinutes: 30
+          MaxParallel: 1
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              # COSMOS.THINCLIENT_ENABLED / HTTP2_* are driven by the per-profile
+              # <systemPropertyVariables> in azure-cosmos-tests/pom.xml so the Compute
+              # matrix leg can route to the regional gateway on :443 instead of :10250.
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thinclient-test-endpoint) -DACCOUNT_KEY=$(thinclient-test-key)'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
           TestName: 'Cosmos_Live_Test_ThinClient'
           CloudConfig:
             Public:
@@ -162,6 +200,38 @@ extends:
           AdditionalVariables:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thin-client-canary-multi-writer-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-writer-session-key)  -DCOSMOS.THINCLIENT_ENABLED=true -DCOSMOS.HTTP2_ENABLED=true'
+
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          TestName: 'Cosmos_Live_Test_GSI'
+          CloudConfig:
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
+          MatrixConfigs:
+            - Name: Cosmos_live_test_gsi
+              Path: sdk/cosmos/live-gsi-platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          MatrixReplace:
+            - .*Version=1.2(1|5)/1.17
+          ServiceDirectory: cosmos
+          Artifacts:
+            - name: azure-cosmos
+              groupId: com.azure
+              safeName: azurecosmos
+          AdditionalModules:
+            - name: azure-cosmos-tests
+              groupId: com.azure
+            - name: azure-cosmos-benchmark
+              groupId: com.azure
+          TimeoutInMinutes: 210
+          MaxParallel: 20
+          TestGoals: 'verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
+          TestResultsFiles: '**/junitreports/TEST-*.xml'
+          AdditionalVariables:
+            - name: AdditionalArgs
+              value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(gsi-pipeline-uri) -DACCOUNT_KEY=$(gsi-pipeline-key)'
 
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:

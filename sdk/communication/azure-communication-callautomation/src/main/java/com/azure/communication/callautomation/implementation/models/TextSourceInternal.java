@@ -32,7 +32,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
     private String sourceLocale;
 
     /*
-     * Voice kind type
+     * Audio kind type
      */
     @Generated
     private VoiceKindInternal voiceKind;
@@ -109,7 +109,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
     }
 
     /**
-     * Get the voiceKind property: Voice kind type.
+     * Get the voiceKind property: Audio kind type.
      * 
      * @return the voiceKind value.
      */
@@ -119,7 +119,7 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
     }
 
     /**
-     * Set the voiceKind property: Voice kind type.
+     * Set the voiceKind property: Audio kind type.
      * 
      * @param voiceKind the voiceKind value to set.
      * @return the TextSourceInternal object itself.
