@@ -7,7 +7,6 @@ import com.azure.ai.projects.models.ApiError;
 import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DatasetDataGenerationJobOutput;
 import com.azure.ai.projects.models.DatasetVersion;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.projects.models.JobStatus;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -31,18 +30,15 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class DataGenerationJobsClientTests extends ClientTestBase {
-    private static final FoundryFeaturesOptInKeys DATA_GENERATION_PREVIEW
-        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW;
 
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
+        BetaDatasetsClient dataGenerationJobsClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
 
-        Iterable<DataGenerationJob> jobs
-            = dataGenerationJobsClient.listGenerationJobs(DATA_GENERATION_PREVIEW, 5, PageOrder.DESC, null, null);
+        Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;
@@ -61,8 +57,8 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobWithEvaluationSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws InterruptedException {
-        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
-        DataGenerationJobsClient dataGenerationJobsClient = projectClientBuilder.buildDataGenerationJobsClient();
+        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion).allowPreview(true);
+        BetaDatasetsClient dataGenerationJobsClient = projectClientBuilder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();
 
@@ -71,7 +67,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
 
         DataGenerationJob job = dataGenerationJobsClient.createGenerationJob(
             DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
-            DATA_GENERATION_PREVIEW, testResourceNamer.randomUuid());
+            testResourceNamer.randomUuid());
 
         job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), 5, 180);
         if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
@@ -111,16 +107,16 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         Assertions.assertTrue(outputItemCount > 0);
 
         openAIClient.evals().delete(EvalDeleteParams.builder().evalId(eval.id()).build());
-        dataGenerationJobsClient.deleteGenerationJob(job.getId(), DATA_GENERATION_PREVIEW);
+        dataGenerationJobsClient.deleteGenerationJob(job.getId());
     }
 
-    private DataGenerationJob waitForDataGenerationJob(DataGenerationJobsClient dataGenerationJobsClient, String jobId,
+    private DataGenerationJob waitForDataGenerationJob(BetaDatasetsClient dataGenerationJobsClient, String jobId,
         int pollIntervalSeconds, int maxAttempts) throws InterruptedException {
         DataGenerationJob job;
         int attempts = 0;
         do {
             sleepIfRunningAgainstService(pollIntervalSeconds * 1000L);
-            job = dataGenerationJobsClient.getGenerationJob(jobId, DATA_GENERATION_PREVIEW);
+            job = dataGenerationJobsClient.getGenerationJob(jobId);
             attempts++;
         } while (!DataGenerationJobWithEvaluationSample.isTerminalStatus(job.getStatus()) && attempts < maxAttempts);
         return job;

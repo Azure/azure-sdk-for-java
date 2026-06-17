@@ -4,14 +4,14 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * This sample demonstrates how to list all versions of a toolbox using the
- * ToolboxesClient.
+ * BetaToolboxesClient.
  *
  * <p>The {@code listToolboxVersions} method returns a paginated list of all
  * immutable versions that have been created for a given toolbox.</p>
@@ -26,10 +26,10 @@ public class ListToolboxVersions {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String toolboxName = "toolbox_created_from_java";
         // Code sample for listing all versions of a toolbox
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildToolboxesClient();
+                .beta().buildBetaToolboxesClient();
 
         System.out.println("Listing all versions of toolbox '" + toolboxName + "':");
         for (ToolboxVersionDetails version : toolboxesClient.listToolboxVersions(toolboxName)) {
