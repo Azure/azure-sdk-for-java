@@ -36,8 +36,17 @@ jobs:
           -pl spring-cloud-azure-testcontainers,spring-cloud-azure-docker-compose
           -am
           install
+          -Dcheckstyle.skip=true
+          -Dcodesnippet.skip
+          -Denforcer.skip
+          -Djacoco.skip=true
+          -Dmaven.javadoc.skip=true
+          -Drevapi.skip=true
           -DskipTests
-          -DskipITs
+          -Dspotbugs.skip=true
+          -Pdev
+          -T 4
+          -ntp
           -DfailIfNoTests=false
 
       - name: Run spring docker-tagged tests
