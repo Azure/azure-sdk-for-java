@@ -31,7 +31,7 @@ public class MemoryStoresTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicMemoryStoresCrud(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        MemoryStoresClient memoryStoreClient = getMemoryStoresSyncClient(httpClient, serviceVersion);
+        BetaMemoryStoresClient memoryStoreClient = getMemoryStoresSyncClient(httpClient, serviceVersion);
 
         String memoryStoreName = "my_memory_store_java";
         String initialDescription = "Example memory store for conversations";
@@ -90,7 +90,7 @@ public class MemoryStoresTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicMemoryStores(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        MemoryStoresClient memoryStoreClient = getMemoryStoresSyncClient(httpClient, serviceVersion);
+        BetaMemoryStoresClient memoryStoreClient = getMemoryStoresSyncClient(httpClient, serviceVersion);
 
         String memoryStoreName = "my_memory_store";
         String description = "Example memory store for conversations";
@@ -158,7 +158,7 @@ public class MemoryStoresTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void advancedMemoryStores(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        MemoryStoresClient memoryStoreClient = getMemoryStoresSyncClient(httpClient, serviceVersion);
+        BetaMemoryStoresClient memoryStoreClient = getMemoryStoresSyncClient(httpClient, serviceVersion);
 
         String memoryStoreName = "my_memory_store";
         String description = "Example memory store for conversations";
@@ -259,7 +259,7 @@ public class MemoryStoresTests extends ClientTestBase {
         memoryStoreClient.deleteMemoryStore(memoryStoreName);
     }
 
-    private void cleanupBeforeTest(MemoryStoresClient memoryStoreClient, String memoryStoreName) {
+    private void cleanupBeforeTest(BetaMemoryStoresClient memoryStoreClient, String memoryStoreName) {
         try {
             memoryStoreClient.deleteMemoryStore(memoryStoreName);
         } catch (ResourceNotFoundException ex) {

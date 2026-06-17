@@ -31,10 +31,12 @@ public final class ReadmeSamples {
         AgentsClientBuilder builder = new AgentsClientBuilder();
 
         AgentsClient agentsClient = builder.buildAgentsClient();
+        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationService conversationsClient = builder.buildOpenAIClient().conversations();
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 
         String agentName = "my-agent";
         String agentVersion = "0.1.0";
@@ -90,7 +92,7 @@ public final class ReadmeSamples {
         // END: com.azure.ai.agents.openai_official_library
 
         // BEGIN: com.azure.ai.agents.session_logs_async
-        agentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
+        betaAgentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
             .take(100)
             .doOnNext(event -> System.out.printf("[%s] %s%n", event.getEvent(), event.getData()))
             .blockLast();
@@ -98,7 +100,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.ai.agents.session_logs_sync
         IterableStream<SessionLogEvent> sessionLogs =
-            agentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
+            betaAgentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
 
         int logsRead = 0;
         for (SessionLogEvent event : sessionLogs) {

@@ -1197,6 +1197,7 @@
     {
       "filename": "sdk/spring/scripts/**",
       "words": [
+        "ascopes",
         "agroal",
         "alluxio",
         "antlr",
@@ -1240,6 +1241,7 @@
         "gimap",
         "ginq",
         "groovysh",
+        "grpclb",
         "guice",
         "Hikari",
         "hikaricp",
@@ -1254,6 +1256,7 @@
         "inmemory",
         "infinispan",
         "informix",
+        "inprocess",
         "integ",
         "iostreams",
         "istack",
