@@ -1,14 +1,49 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-06-17)
+
+- Azure Resource Manager ComputeLimit client library for Java. This package contains Microsoft Azure SDK for ComputeLimit Management SDK. Microsoft Azure Compute Limit Resource Provider. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.SharedLimitCap$DefinitionStages` was added
 
-### Bugs Fixed
+* `models.MemberCapOverride$UpdateStages` was added
 
-### Other Changes
+* `models.MemberCapOverride$Update` was added
+
+* `models.MemberCapOverrides` was added
+
+* `models.MemberCapOverride$DefinitionStages` was added
+
+* `models.SetMemberCapOverridesRequest` was added
+
+* `models.MemberCapOverrideProperties` was added
+
+* `models.SharedLimitCap$Update` was added
+
+* `models.MemberCapOverride$Definition` was added
+
+* `models.SharedLimitCap$Definition` was added
+
+* `models.SharedLimitCaps` was added
+
+* `models.SharedLimitCapProperties` was added
+
+* `models.MemberCap` was added
+
+* `models.SetMemberCapOverridesResult` was added
+
+* `models.MemberCapOverride` was added
+
+* `models.SharedLimitCap$UpdateStages` was added
+
+* `models.SharedLimitCap` was added
+
+#### `ComputeLimitManager` was modified
+
+* `sharedLimitCaps()` was added
+* `memberCapOverrides()` was added
 
 ## 1.1.0 (2026-05-26)
 
