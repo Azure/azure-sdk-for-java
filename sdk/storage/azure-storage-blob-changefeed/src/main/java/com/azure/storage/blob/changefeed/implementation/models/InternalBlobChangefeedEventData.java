@@ -118,12 +118,10 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
             ChangefeedTypeValidator.nullOr("sequencer", sequencer, String.class),
             ChangefeedTypeValidator.isNull(createTime)
                 ? null
-                : OffsetDateTime.parse(
-                    Objects.requireNonNull(ChangefeedTypeValidator.nullOr("createTime", createTime, String.class))),
+                : OffsetDateTime.parse(ChangefeedTypeValidator.nullOr("createTime", createTime, String.class)),
             ChangefeedTypeValidator.isNull(lastAccessTime)
                 ? null
-                : OffsetDateTime.parse(Objects
-                    .requireNonNull(ChangefeedTypeValidator.nullOr("lastAccessTime", lastAccessTime, String.class))),
+                : OffsetDateTime.parse(ChangefeedTypeValidator.nullOr("lastAccessTime", lastAccessTime, String.class)),
             ChangefeedTypeValidator.nullOr("restoredContainerVersion", restoredContainerVersion, String.class));
     }
 

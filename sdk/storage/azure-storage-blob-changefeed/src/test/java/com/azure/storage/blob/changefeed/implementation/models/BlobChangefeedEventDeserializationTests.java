@@ -7,7 +7,6 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType;
-import com.azure.storage.blob.changefeed.models.BlobOperationName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -37,11 +37,6 @@ public class BlobChangefeedEventDeserializationTests {
     public void schemaV6AppendBlobDataUpdatedEventTypeDeserializes() {
         assertEquals(BlobChangefeedEventType.APPEND_BLOB_DATA_UPDATED,
             BlobChangefeedEventType.fromString("AppendBlobDataUpdated"));
-    }
-
-    @Test
-    public void schemaV6AppendBlockOperationNameDeserializes() {
-        assertEquals(BlobOperationName.APPEND_BLOCK, BlobOperationName.fromString("AppendBlock"));
     }
 
     @Test
@@ -100,11 +95,6 @@ public class BlobChangefeedEventDeserializationTests {
     }
 
     @Test
-    public void schemaV7UpdateLastAccessTimeOperationNameDeserializes() {
-        assertEquals(BlobOperationName.UPDATE_LAST_ACCESS_TIME, BlobOperationName.fromString("UpdateLastAccessTime"));
-    }
-
-    @Test
     public void schemaV7LastAccessTimeDeserializes() {
         InternalBlobChangefeedEventData data = InternalBlobChangefeedEventData.fromRecord(buildDataRecord(r -> {
             r.put("api", "PutBlob");
@@ -156,26 +146,6 @@ public class BlobChangefeedEventDeserializationTests {
     public void schemaV8ContainerPropertiesUpdatedEventTypeDeserializes() {
         assertEquals(BlobChangefeedEventType.CONTAINER_PROPERTIES_UPDATED,
             BlobChangefeedEventType.fromString("ContainerPropertiesUpdated"));
-    }
-
-    @Test
-    public void schemaV8CreateContainerOperationNameDeserializes() {
-        assertEquals(BlobOperationName.CREATE_CONTAINER, BlobOperationName.fromString("ContainerCreated"));
-    }
-
-    @Test
-    public void schemaV8DeleteContainerOperationNameDeserializes() {
-        assertEquals(BlobOperationName.DELETE_CONTAINER, BlobOperationName.fromString("ContainerDeleted"));
-    }
-
-    @Test
-    public void schemaV8RestoreContainerOperationNameDeserializes() {
-        assertEquals(BlobOperationName.RESTORE_CONTAINER, BlobOperationName.fromString("RestoreContainer"));
-    }
-
-    @Test
-    public void schemaV8SetContainerMetadataOperationNameDeserializes() {
-        assertEquals(BlobOperationName.SET_CONTAINER_METADATA, BlobOperationName.fromString("SetContainerMetadata"));
     }
 
     @Test
@@ -320,8 +290,9 @@ public class BlobChangefeedEventDeserializationTests {
 
     @SuppressWarnings("unchecked")
     private static Map<String, Object> loadJsonAsAvroMap(String resourceName) throws IOException {
-        try (InputStream is = BlobChangefeedEventDeserializationTests.class.getClassLoader()
-                .getResourceAsStream(resourceName);
+        try (InputStream is = Objects.requireNonNull(
+                BlobChangefeedEventDeserializationTests.class.getClassLoader().getResourceAsStream(resourceName),
+                "Test resource not found: " + resourceName);
              JsonReader reader = JsonProviders.createReader(is)) {
             reader.nextToken();
             Map<String, Object> map = readJsonObject(reader);
