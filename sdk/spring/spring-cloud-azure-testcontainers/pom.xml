@@ -300,6 +300,7 @@
     <profile>
       <id>docker-tests</id>
       <properties>
+        <parallelizeTests>same_thread</parallelizeTests>
         <surefire.test.groups>docker</surefire.test.groups>
         <surefire.excluded.test.groups/>
       </properties>
