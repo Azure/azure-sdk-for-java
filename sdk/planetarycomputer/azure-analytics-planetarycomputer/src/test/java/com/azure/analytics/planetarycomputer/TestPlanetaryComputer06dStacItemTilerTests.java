@@ -75,7 +75,8 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         requestOptions.addQueryParam("assets", "image", false);
         requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
         BinaryData imageData = dataClient
-            .getTileByFormatWithResponse(collectionId, itemId, "WebMercatorQuad", 14, 4349, 6564, "png", requestOptions)
+            .getTileWithTmsByFormatWithResponse(collectionId, itemId, "WebMercatorQuad", 14, 4349, 6564, "png",
+                requestOptions)
             .getValue();
 
         byte[] imageBytes = imageData.toBytes();

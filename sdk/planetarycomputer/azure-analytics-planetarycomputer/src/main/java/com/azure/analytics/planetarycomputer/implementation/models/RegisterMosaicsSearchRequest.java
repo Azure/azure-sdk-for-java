@@ -5,7 +5,7 @@
 package com.azure.analytics.planetarycomputer.implementation.models;
 
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
-import com.azure.analytics.planetarycomputer.models.Geometry;
+import com.azure.analytics.planetarycomputer.models.GeoJsonGeometry;
 import com.azure.analytics.planetarycomputer.models.MosaicMetadata;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
 import com.azure.core.annotation.Fluent;
@@ -46,7 +46,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * GeoJSON geometry to spatially filter items by intersection
      */
     @Generated
-    private Geometry intersects;
+    private GeoJsonGeometry intersects;
 
     /*
      * Query
@@ -177,7 +177,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the intersects value.
      */
     @Generated
-    public Geometry getIntersects() {
+    public GeoJsonGeometry getIntersects() {
         return this.intersects;
     }
 
@@ -188,7 +188,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the RegisterMosaicsSearchRequest object itself.
      */
     @Generated
-    public RegisterMosaicsSearchRequest setIntersects(Geometry intersects) {
+    public RegisterMosaicsSearchRequest setIntersects(GeoJsonGeometry intersects) {
         this.intersects = intersects;
         return this;
     }
@@ -411,7 +411,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
                     List<Double> boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                     deserializedRegisterMosaicsSearchRequest.boundingBox = boundingBox;
                 } else if ("intersects".equals(fieldName)) {
-                    deserializedRegisterMosaicsSearchRequest.intersects = Geometry.fromJson(reader);
+                    deserializedRegisterMosaicsSearchRequest.intersects = GeoJsonGeometry.fromJson(reader);
                 } else if ("query".equals(fieldName)) {
                     Map<String, BinaryData> query = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));

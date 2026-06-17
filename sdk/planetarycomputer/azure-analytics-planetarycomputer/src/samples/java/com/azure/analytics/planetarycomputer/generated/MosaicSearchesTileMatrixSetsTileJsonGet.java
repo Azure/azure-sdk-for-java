@@ -19,12 +19,12 @@ public class MosaicSearchesTileMatrixSetsTileJsonGet {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-tile-json-by-tms.mosaic-searches-tile-matrix-sets-tile-json-get
-        TileJsonMetadata response = dataClient.getSearchTileJsonByTms("ba13fc7947b9b585690d84ee61aaa653",
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-tile-json-with-tms.mosaic-searches-tile-matrix-sets-tile-json-get
+        TileJsonMetadata response = dataClient.getSearchTileJsonWithTms("ba13fc7947b9b585690d84ee61aaa653",
             "WebMercatorQuad", Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null,
             null, null, WarpKernelResampling.NEAREST, null, null, null, null, null, null, null, "epsg:4326",
             "2024-01-01T00:00:00Z", Arrays.asList("band=1"), SelMethod.NEAREST, null, null, null, null, null, null,
             null, null, null, null, null, null, null, null, null, 2);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-search-tile-json-by-tms.mosaic-searches-tile-matrix-sets-tile-json-get
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-search-tile-json-with-tms.mosaic-searches-tile-matrix-sets-tile-json-get
     }
 }

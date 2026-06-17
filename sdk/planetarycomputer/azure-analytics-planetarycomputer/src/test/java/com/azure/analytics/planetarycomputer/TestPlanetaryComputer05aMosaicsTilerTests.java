@@ -85,7 +85,8 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         tileOptions.addQueryParam("assets", "image", false);
         tileOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
         BinaryData imageData = dataClient
-            .getSearchTileByFormatWithResponse(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, "png", tileOptions)
+            .getSearchTileWithTmsByFormatWithResponse(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, "png",
+                tileOptions)
             .getValue();
 
         byte[] imageBytes = imageData.toBytes();
@@ -116,7 +117,7 @@ public class TestPlanetaryComputer05aMosaicsTilerTests extends PlanetaryComputer
         requestOptions.addQueryParam("assets", "image", false);
         requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
         byte[] xmlBytes
-            = dataClient.getSearchWmtsCapabilitiesByTmsWithResponse(searchId, "WebMercatorQuad", requestOptions)
+            = dataClient.getSearchWmtsCapabilitiesWithTmsWithResponse(searchId, "WebMercatorQuad", requestOptions)
                 .getValue()
                 .toBytes();
 

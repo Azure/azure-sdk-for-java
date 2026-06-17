@@ -19,12 +19,12 @@ public class MosaicItemsWmtsTileMatrixSetsGetCapabilitiesXml {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-wmts-capabilities-by-tms.mosaic-items-wmts-tile-matrix-sets-get-capabilities-xml
-        byte[] response = dataClient.getItemWmtsCapabilitiesByTms("naip-atl", "ga_m_3308421_se_16_060_20211114",
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-wmts-capabilities-with-tms.mosaic-items-wmts-tile-matrix-sets-get-capabilities-xml
+        byte[] response = dataClient.getItemWmtsCapabilitiesWithTms("naip-atl", "ga_m_3308421_se_16_060_20211114",
             "WebMercatorQuad", Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null,
             null, null, WarpKernelResampling.NEAREST, null, null, TilerImageFormat.PNG, 1, 7, 14, null, null, null,
             null, null, null, null, 2, null, null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"),
             SelMethod.NEAREST);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-item-wmts-capabilities-by-tms.mosaic-items-wmts-tile-matrix-sets-get-capabilities-xml
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-item-wmts-capabilities-with-tms.mosaic-items-wmts-tile-matrix-sets-get-capabilities-xml
     }
 }

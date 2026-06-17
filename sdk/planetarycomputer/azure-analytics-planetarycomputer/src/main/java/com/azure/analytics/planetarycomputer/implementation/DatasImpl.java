@@ -244,7 +244,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTile(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTileWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -256,7 +256,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTileSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTileWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -268,7 +268,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTileByFormat(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTileWithTmsByFormat(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -281,7 +281,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTileByFormatSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTileWithTmsByFormatSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -294,7 +294,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTileByScale(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTileWithTmsByScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -307,7 +307,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTileByScaleSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTileWithTmsByScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -320,7 +320,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTileByScaleAndFormat(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getTileWithTmsByScaleAndFormat(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -333,7 +333,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getTileByScaleAndFormatSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getTileWithTmsByScaleAndFormatSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -694,7 +694,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getItemTileJsonByTms(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getItemTileJsonWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -705,7 +705,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getItemTileJsonByTmsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getItemTileJsonWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -738,7 +738,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getItemWmtsCapabilitiesByTms(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getItemWmtsCapabilitiesWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -749,7 +749,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getItemWmtsCapabilitiesByTmsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getItemWmtsCapabilitiesWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("itemId") String itemId, @PathParam("tileMatrixSetId") String tileMatrixSetId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
@@ -920,7 +920,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionTileByScaleAndFormat(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionTileWithTmsByScaleAndFormat(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @PathParam("format") String format,
@@ -932,7 +932,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionTileByScaleAndFormatSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionTileWithTmsByScaleAndFormatSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @PathParam("format") String format,
@@ -944,7 +944,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionTile(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionTileWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -956,7 +956,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionTileSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionTileWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -968,7 +968,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionTileByFormat(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionTileWithTmsByFormat(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("format") String format, @HeaderParam("Accept") String accept,
@@ -980,7 +980,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionTileByFormatSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionTileWithTmsByFormatSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("format") String format, @HeaderParam("Accept") String accept,
@@ -992,7 +992,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionTileByScale(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionTileWithTmsByScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @HeaderParam("Accept") String accept,
@@ -1004,7 +1004,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionTileByScaleSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionTileWithTmsByScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @HeaderParam("Accept") String accept,
@@ -1130,7 +1130,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionTileJsonByTms(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionTileJsonWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1141,7 +1141,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionTileJsonByTmsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionTileJsonWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1172,7 +1172,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionWmtsCapabilitiesByTms(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionWmtsCapabilitiesWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1183,7 +1183,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionWmtsCapabilitiesByTmsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionWmtsCapabilitiesWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1194,7 +1194,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCollectionAssetsForTile(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getCollectionAssetsForTileWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1206,7 +1206,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCollectionAssetsForTileSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getCollectionAssetsForTileWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("collectionId") String collectionId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1490,7 +1490,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSearchTileByScaleAndFormat(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSearchTileWithTmsByScaleAndFormat(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @PathParam("format") String format,
@@ -1502,7 +1502,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSearchTileByScaleAndFormatSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSearchTileWithTmsByScaleAndFormatSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @PathParam("format") String format,
@@ -1514,7 +1514,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSearchTile(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSearchTileWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1526,7 +1526,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSearchTileSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSearchTileWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
@@ -1538,7 +1538,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSearchTileByFormat(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSearchTileWithTmsByFormat(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("format") String format, @HeaderParam("Accept") String accept,
@@ -1550,7 +1550,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSearchTileByFormatSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSearchTileWithTmsByFormatSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("format") String format, @HeaderParam("Accept") String accept,
@@ -1562,7 +1562,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSearchTileByScale(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSearchTileWithTmsByScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @HeaderParam("Accept") String accept,
@@ -1574,7 +1574,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSearchTileByScaleSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSearchTileWithTmsByScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @PathParam("z") double z, @PathParam("x") double x,
             @PathParam("y") double y, @PathParam("scale") double scale, @HeaderParam("Accept") String accept,
@@ -1586,7 +1586,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSearchAssetsForTile(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSearchAssetsForTileWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @QueryParam("collection") String collectionId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -1598,7 +1598,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSearchAssetsForTileSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSearchAssetsForTileWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @QueryParam("collection") String collectionId,
             @PathParam("z") double z, @PathParam("x") double x, @PathParam("y") double y,
@@ -1610,7 +1610,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSearchTileJsonByTms(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSearchTileJsonWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1621,7 +1621,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSearchTileJsonByTmsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSearchTileJsonWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1632,7 +1632,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSearchWmtsCapabilitiesByTms(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getSearchWmtsCapabilitiesWithTms(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1643,7 +1643,7 @@ public final class DatasImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSearchWmtsCapabilitiesByTmsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSearchWmtsCapabilitiesWithTmsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("searchId") String searchId,
             @PathParam("tileMatrixSetId") String tileMatrixSetId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -3243,12 +3243,12 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileWithResponseAsync(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getTileWithTmsWithResponseAsync(String collectionId, String itemId,
         String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
         return FluxUtil.withContext(
-            context -> service.getTile(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            context -> service.getTileWithTms(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
                 collectionId, itemId, tileMatrixSetId, z, x, y, accept, requestOptions, context));
     }
 
@@ -3377,11 +3377,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTileWithResponse(String collectionId, String itemId, String tileMatrixSetId,
+    public Response<BinaryData> getTileWithTmsWithResponse(String collectionId, String itemId, String tileMatrixSetId,
         double z, double x, double y, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getTileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getTileWithTmsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             collectionId, itemId, tileMatrixSetId, z, x, y, accept, requestOptions, Context.NONE);
     }
 
@@ -3509,13 +3509,13 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileByFormatWithResponseAsync(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getTileWithTmsByFormatWithResponseAsync(String collectionId, String itemId,
         String tileMatrixSetId, double z, double x, double y, String format, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(
-            context -> service.getTileByFormat(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                collectionId, itemId, tileMatrixSetId, z, x, y, format, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTileWithTmsByFormat(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, z, x, y, format,
+            accept, requestOptions, context));
     }
 
     /**
@@ -3642,12 +3642,13 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTileByFormatWithResponse(String collectionId, String itemId, String tileMatrixSetId,
-        double z, double x, double y, String format, RequestOptions requestOptions) {
+    public Response<BinaryData> getTileWithTmsByFormatWithResponse(String collectionId, String itemId,
+        String tileMatrixSetId, double z, double x, double y, String format, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getTileByFormatSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            collectionId, itemId, tileMatrixSetId, z, x, y, format, accept, requestOptions, Context.NONE);
+        return service.getTileWithTmsByFormatSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, z, x, y, format,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -3774,13 +3775,13 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileByScaleWithResponseAsync(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getTileWithTmsByScaleWithResponseAsync(String collectionId, String itemId,
         String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(
-            context -> service.getTileByScale(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                collectionId, itemId, tileMatrixSetId, z, x, y, scale, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getTileWithTmsByScale(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, z, x, y, scale, accept,
+            requestOptions, context));
     }
 
     /**
@@ -3907,12 +3908,13 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTileByScaleWithResponse(String collectionId, String itemId, String tileMatrixSetId,
-        double z, double x, double y, double scale, RequestOptions requestOptions) {
+    public Response<BinaryData> getTileWithTmsByScaleWithResponse(String collectionId, String itemId,
+        String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getTileByScaleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            collectionId, itemId, tileMatrixSetId, z, x, y, scale, accept, requestOptions, Context.NONE);
+        return service.getTileWithTmsByScaleSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, z, x, y, scale, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -4038,12 +4040,12 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileByScaleAndFormatWithResponseAsync(String collectionId, String itemId,
-        String tileMatrixSetId, double z, double x, double y, double scale, String format,
+    public Mono<Response<BinaryData>> getTileWithTmsByScaleAndFormatWithResponseAsync(String collectionId,
+        String itemId, String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getTileByScaleAndFormat(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getTileWithTmsByScaleAndFormat(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, z, x, y, scale, format,
             accept, requestOptions, context));
     }
@@ -4171,12 +4173,12 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTileByScaleAndFormatWithResponse(String collectionId, String itemId,
+    public Response<BinaryData> getTileWithTmsByScaleAndFormatWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getTileByScaleAndFormatSync(this.client.getEndpoint(),
+        return service.getTileWithTmsByScaleAndFormatSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, z, x, y, scale, format,
             accept, requestOptions, Context.NONE);
     }
@@ -8169,10 +8171,10 @@ public final class DatasImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getItemTileJsonByTmsWithResponseAsync(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getItemTileJsonWithTmsWithResponseAsync(String collectionId, String itemId,
         String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getItemTileJsonByTms(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getItemTileJsonWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, accept, requestOptions,
             context));
     }
@@ -8327,11 +8329,12 @@ public final class DatasImpl {
      * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getItemTileJsonByTmsWithResponse(String collectionId, String itemId,
+    public Response<BinaryData> getItemTileJsonWithTmsWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getItemTileJsonByTmsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            collectionId, itemId, tileMatrixSetId, accept, requestOptions, Context.NONE);
+        return service.getItemTileJsonWithTmsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, accept, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -8719,10 +8722,10 @@ public final class DatasImpl {
      * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getItemWmtsCapabilitiesByTmsWithResponseAsync(String collectionId, String itemId,
-        String tileMatrixSetId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getItemWmtsCapabilitiesWithTmsWithResponseAsync(String collectionId,
+        String itemId, String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getItemWmtsCapabilitiesByTms(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getItemWmtsCapabilitiesWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, accept, requestOptions,
             context));
     }
@@ -8848,10 +8851,10 @@ public final class DatasImpl {
      * @return represent a byte array along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getItemWmtsCapabilitiesByTmsWithResponse(String collectionId, String itemId,
+    public Response<BinaryData> getItemWmtsCapabilitiesWithTmsWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.getItemWmtsCapabilitiesByTmsSync(this.client.getEndpoint(),
+        return service.getItemWmtsCapabilitiesWithTmsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, itemId, tileMatrixSetId, accept, requestOptions,
             Context.NONE);
     }
@@ -10553,14 +10556,15 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileByScaleAndFormatWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsByScaleAndFormatWithResponseAsync(String collectionId,
         String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getCollectionTileByScaleAndFormat(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, scale, format, accept,
-            requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getCollectionTileWithTmsByScaleAndFormat(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, scale, format,
+                accept, requestOptions, context));
     }
 
     /**
@@ -10703,12 +10707,12 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionTileByScaleAndFormatWithResponse(String collectionId,
+    public Response<BinaryData> getCollectionTileWithTmsByScaleAndFormatWithResponse(String collectionId,
         String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getCollectionTileByScaleAndFormatSync(this.client.getEndpoint(),
+        return service.getCollectionTileWithTmsByScaleAndFormatSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, scale, format, accept,
             requestOptions, Context.NONE);
     }
@@ -10855,11 +10859,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileWithResponseAsync(String collectionId, String tileMatrixSetId,
-        double z, double x, double y, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsWithResponseAsync(String collectionId,
+        String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getCollectionTile(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollectionTileWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, accept,
             requestOptions, context));
     }
@@ -11006,12 +11010,13 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionTileWithResponse(String collectionId, String tileMatrixSetId, double z,
-        double x, double y, RequestOptions requestOptions) {
+    public Response<BinaryData> getCollectionTileWithTmsWithResponse(String collectionId, String tileMatrixSetId,
+        double z, double x, double y, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getCollectionTileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            collectionId, tileMatrixSetId, z, x, y, accept, requestOptions, Context.NONE);
+        return service.getCollectionTileWithTmsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -11155,11 +11160,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileByFormatWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsByFormatWithResponseAsync(String collectionId,
         String tileMatrixSetId, double z, double x, double y, String format, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getCollectionTileByFormat(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollectionTileWithTmsByFormat(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, format, accept,
             requestOptions, context));
     }
@@ -11305,11 +11310,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionTileByFormatWithResponse(String collectionId, String tileMatrixSetId,
-        double z, double x, double y, String format, RequestOptions requestOptions) {
+    public Response<BinaryData> getCollectionTileWithTmsByFormatWithResponse(String collectionId,
+        String tileMatrixSetId, double z, double x, double y, String format, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getCollectionTileByFormatSync(this.client.getEndpoint(),
+        return service.getCollectionTileWithTmsByFormatSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, format, accept,
             requestOptions, Context.NONE);
     }
@@ -11455,11 +11460,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileByScaleWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsByScaleWithResponseAsync(String collectionId,
         String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getCollectionTileByScale(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollectionTileWithTmsByScale(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, scale, accept,
             requestOptions, context));
     }
@@ -11605,11 +11610,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionTileByScaleWithResponse(String collectionId, String tileMatrixSetId,
+    public Response<BinaryData> getCollectionTileWithTmsByScaleWithResponse(String collectionId, String tileMatrixSetId,
         double z, double x, double y, double scale, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getCollectionTileByScaleSync(this.client.getEndpoint(),
+        return service.getCollectionTileWithTmsByScaleSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, scale, accept,
             requestOptions, Context.NONE);
     }
@@ -13368,10 +13373,10 @@ public final class DatasImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileJsonByTmsWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionTileJsonWithTmsWithResponseAsync(String collectionId,
         String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCollectionTileJsonByTms(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollectionTileJsonWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, accept, requestOptions,
             context));
     }
@@ -13543,10 +13548,10 @@ public final class DatasImpl {
      * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionTileJsonByTmsWithResponse(String collectionId, String tileMatrixSetId,
+    public Response<BinaryData> getCollectionTileJsonWithTmsWithResponse(String collectionId, String tileMatrixSetId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCollectionTileJsonByTmsSync(this.client.getEndpoint(),
+        return service.getCollectionTileJsonWithTmsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, accept, requestOptions,
             Context.NONE);
     }
@@ -13777,10 +13782,10 @@ public final class DatasImpl {
      * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionWmtsCapabilitiesByTmsWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionWmtsCapabilitiesWithTmsWithResponseAsync(String collectionId,
         String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getCollectionWmtsCapabilitiesByTms(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollectionWmtsCapabilitiesWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, accept, requestOptions,
             context));
     }
@@ -13853,10 +13858,10 @@ public final class DatasImpl {
      * @return represent a byte array along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionWmtsCapabilitiesByTmsWithResponse(String collectionId,
+    public Response<BinaryData> getCollectionWmtsCapabilitiesWithTmsWithResponse(String collectionId,
         String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.getCollectionWmtsCapabilitiesByTmsSync(this.client.getEndpoint(),
+        return service.getCollectionWmtsCapabilitiesWithTmsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, accept, requestOptions,
             Context.NONE);
     }
@@ -13864,7 +13869,9 @@ public final class DatasImpl {
     /**
      * Collection Assets For Tile Tilematrixsetid As Path
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (with TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route with TileMatrixSetId in the path
+     * (/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets). Use this operation when you need an explicit tile matrix set in
+     * the URL.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -13975,10 +13982,10 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionAssetsForTileWithResponseAsync(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionAssetsForTileWithTmsWithResponseAsync(String collectionId,
         String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCollectionAssetsForTile(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getCollectionAssetsForTileWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, accept,
             requestOptions, context));
     }
@@ -13986,7 +13993,9 @@ public final class DatasImpl {
     /**
      * Collection Assets For Tile Tilematrixsetid As Path
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (with TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route with TileMatrixSetId in the path
+     * (/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets). Use this operation when you need an explicit tile matrix set in
+     * the URL.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -14097,10 +14106,10 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionAssetsForTileWithResponse(String collectionId, String tileMatrixSetId,
-        double z, double x, double y, RequestOptions requestOptions) {
+    public Response<BinaryData> getCollectionAssetsForTileWithTmsWithResponse(String collectionId,
+        String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCollectionAssetsForTileSync(this.client.getEndpoint(),
+        return service.getCollectionAssetsForTileWithTmsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), collectionId, tileMatrixSetId, z, x, y, accept,
             requestOptions, Context.NONE);
     }
@@ -14108,7 +14117,8 @@ public final class DatasImpl {
     /**
      * Collection Assets For Tile
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (without TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route without TileMatrixSetId in the path
+     * (/tiles/{z}/{x}/{y}/assets). This operation uses the default tile matrix set when none is specified.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -14194,7 +14204,8 @@ public final class DatasImpl {
     /**
      * Collection Assets For Tile
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (without TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route without TileMatrixSetId in the path
+     * (/tiles/{z}/{x}/{y}/assets). This operation uses the default tile matrix set when none is specified.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -17075,12 +17086,12 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileByScaleAndFormatWithResponseAsync(String searchId,
+    public Mono<Response<BinaryData>> getSearchTileWithTmsByScaleAndFormatWithResponseAsync(String searchId,
         String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getSearchTileByScaleAndFormat(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSearchTileWithTmsByScaleAndFormat(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, scale, format, accept,
             requestOptions, context));
     }
@@ -17221,11 +17232,12 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSearchTileByScaleAndFormatWithResponse(String searchId, String tileMatrixSetId,
-        double z, double x, double y, double scale, String format, RequestOptions requestOptions) {
+    public Response<BinaryData> getSearchTileWithTmsByScaleAndFormatWithResponse(String searchId,
+        String tileMatrixSetId, double z, double x, double y, double scale, String format,
+        RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getSearchTileByScaleAndFormatSync(this.client.getEndpoint(),
+        return service.getSearchTileWithTmsByScaleAndFormatSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, scale, format, accept,
             requestOptions, Context.NONE);
     }
@@ -17368,13 +17380,13 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileWithResponseAsync(String searchId, String tileMatrixSetId, double z,
-        double x, double y, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSearchTileWithTmsWithResponseAsync(String searchId, String tileMatrixSetId,
+        double z, double x, double y, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(
-            context -> service.getSearchTile(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                searchId, tileMatrixSetId, z, x, y, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getSearchTileWithTms(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, accept, requestOptions,
+            context));
     }
 
     /**
@@ -17515,11 +17527,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSearchTileWithResponse(String searchId, String tileMatrixSetId, double z, double x,
-        double y, RequestOptions requestOptions) {
+    public Response<BinaryData> getSearchTileWithTmsWithResponse(String searchId, String tileMatrixSetId, double z,
+        double x, double y, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getSearchTileSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.getSearchTileWithTmsSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             searchId, tileMatrixSetId, z, x, y, accept, requestOptions, Context.NONE);
     }
 
@@ -17660,11 +17672,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileByFormatWithResponseAsync(String searchId, String tileMatrixSetId,
-        double z, double x, double y, String format, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSearchTileWithTmsByFormatWithResponseAsync(String searchId,
+        String tileMatrixSetId, double z, double x, double y, String format, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getSearchTileByFormat(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSearchTileWithTmsByFormat(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, format, accept,
             requestOptions, context));
     }
@@ -17806,11 +17818,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSearchTileByFormatWithResponse(String searchId, String tileMatrixSetId, double z,
-        double x, double y, String format, RequestOptions requestOptions) {
+    public Response<BinaryData> getSearchTileWithTmsByFormatWithResponse(String searchId, String tileMatrixSetId,
+        double z, double x, double y, String format, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getSearchTileByFormatSync(this.client.getEndpoint(),
+        return service.getSearchTileWithTmsByFormatSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, format, accept,
             requestOptions, Context.NONE);
     }
@@ -17952,11 +17964,11 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileByScaleWithResponseAsync(String searchId, String tileMatrixSetId,
-        double z, double x, double y, double scale, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSearchTileWithTmsByScaleWithResponseAsync(String searchId,
+        String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return FluxUtil.withContext(context -> service.getSearchTileByScale(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSearchTileWithTmsByScale(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, scale, accept,
             requestOptions, context));
     }
@@ -18098,12 +18110,13 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSearchTileByScaleWithResponse(String searchId, String tileMatrixSetId, double z,
-        double x, double y, double scale, RequestOptions requestOptions) {
+    public Response<BinaryData> getSearchTileWithTmsByScaleWithResponse(String searchId, String tileMatrixSetId,
+        double z, double x, double y, double scale, RequestOptions requestOptions) {
         final String accept
             = "image/png, image/jpeg, image/jpg, image/webp, image/jp2, image/tiff; application=geotiff, application/x-binary";
-        return service.getSearchTileByScaleSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            searchId, tileMatrixSetId, z, x, y, scale, accept, requestOptions, Context.NONE);
+        return service.getSearchTileWithTmsByScaleSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, z, x, y, scale, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -18217,10 +18230,10 @@ public final class DatasImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchAssetsForTileWithResponseAsync(String searchId, String tileMatrixSetId,
-        String collectionId, double z, double x, double y, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSearchAssetsForTileWithTmsWithResponseAsync(String searchId,
+        String tileMatrixSetId, String collectionId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSearchAssetsForTile(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSearchAssetsForTileWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, collectionId, z, x, y, accept,
             requestOptions, context));
     }
@@ -18336,10 +18349,10 @@ public final class DatasImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSearchAssetsForTileWithResponse(String searchId, String tileMatrixSetId,
+    public Response<BinaryData> getSearchAssetsForTileWithTmsWithResponse(String searchId, String tileMatrixSetId,
         String collectionId, double z, double x, double y, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSearchAssetsForTileSync(this.client.getEndpoint(),
+        return service.getSearchAssetsForTileWithTmsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, collectionId, z, x, y, accept,
             requestOptions, Context.NONE);
     }
@@ -18508,10 +18521,10 @@ public final class DatasImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileJsonByTmsWithResponseAsync(String searchId, String tileMatrixSetId,
+    public Mono<Response<BinaryData>> getSearchTileJsonWithTmsWithResponseAsync(String searchId, String tileMatrixSetId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSearchTileJsonByTms(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSearchTileJsonWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, accept, requestOptions, context));
     }
 
@@ -18678,10 +18691,10 @@ public final class DatasImpl {
      * Based on https://github.com/mapbox/tilejson-spec/tree/master/2.2.0 along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSearchTileJsonByTmsWithResponse(String searchId, String tileMatrixSetId,
+    public Response<BinaryData> getSearchTileJsonWithTmsWithResponse(String searchId, String tileMatrixSetId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSearchTileJsonByTmsSync(this.client.getEndpoint(),
+        return service.getSearchTileJsonWithTmsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, accept, requestOptions,
             Context.NONE);
     }
@@ -18734,10 +18747,10 @@ public final class DatasImpl {
      * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchWmtsCapabilitiesByTmsWithResponseAsync(String searchId,
+    public Mono<Response<BinaryData>> getSearchWmtsCapabilitiesWithTmsWithResponseAsync(String searchId,
         String tileMatrixSetId, RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.getSearchWmtsCapabilitiesByTms(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.getSearchWmtsCapabilitiesWithTms(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, accept, requestOptions, context));
     }
 
@@ -18789,10 +18802,10 @@ public final class DatasImpl {
      * @return represent a byte array along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSearchWmtsCapabilitiesByTmsWithResponse(String searchId, String tileMatrixSetId,
+    public Response<BinaryData> getSearchWmtsCapabilitiesWithTmsWithResponse(String searchId, String tileMatrixSetId,
         RequestOptions requestOptions) {
         final String accept = "application/xml";
-        return service.getSearchWmtsCapabilitiesByTmsSync(this.client.getEndpoint(),
+        return service.getSearchWmtsCapabilitiesWithTmsSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), searchId, tileMatrixSetId, accept, requestOptions,
             Context.NONE);
     }

@@ -6,8 +6,8 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.analytics.planetarycomputer.models.Operation;
-import com.azure.analytics.planetarycomputer.models.Polygon;
 import com.azure.analytics.planetarycomputer.models.StacAsset;
 import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.analytics.planetarycomputer.models.StacItemProperties;
@@ -35,9 +35,10 @@ public class StacItemsCreate {
                 .setType(StacLinkType.APPLICATION_JSON)
                 .setHref("https://planetarycomputer.microsoft.com/api/stac/v1/collections/naip-atl")))
             .setStacExtensions(Arrays.asList("https://stac-extensions.github.io/projection/v1.0.0/schema.json"))
-            .setGeometry(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.372943, 33.621853),
-                Arrays.asList(-84.370894, 33.689211), Arrays.asList(-84.439575, 33.690654),
-                Arrays.asList(-84.44157, 33.623293), Arrays.asList(-84.372943, 33.621853)))))
+            .setGeometry(
+                new GeoJsonPolygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.372943, 33.621853),
+                    Arrays.asList(-84.370894, 33.689211), Arrays.asList(-84.439575, 33.690654),
+                    Arrays.asList(-84.44157, 33.623293), Arrays.asList(-84.372943, 33.621853)))))
             .setCollection("naip-atl")
             .setBoundingBox(Arrays.asList(-84.44157, 33.621853, -84.370894, 33.690654))
             .setProperties(

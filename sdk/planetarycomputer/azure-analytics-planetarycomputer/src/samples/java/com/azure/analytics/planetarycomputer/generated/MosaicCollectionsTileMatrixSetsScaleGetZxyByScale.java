@@ -20,12 +20,13 @@ public class MosaicCollectionsTileMatrixSetsScaleGetZxyByScale {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-tile-by-scale.mosaic-collections-tile-matrix-sets-scale-get-zxy-by-scale
-        BinaryData response = dataClient.getCollectionTileByScale("naip-atl", "WebMercatorQuad", 13.0, 2174.0, 3282.0,
-            1.0, Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null, null, null,
-            WarpKernelResampling.NEAREST, null, null, null, null, null, "item-id-1,item-id-2", "-180,-90,180,90", "{}",
-            "-datetime", "2024-01-01T00:00:00Z", null, null, "epsg:4326", Arrays.asList("band=1"), SelMethod.NEAREST,
-            null, null, TilerImageFormat.PNG, null, null, "naip-atl", null, null, null, null, null, null, 2);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-tile-by-scale.mosaic-collections-tile-matrix-sets-scale-get-zxy-by-scale
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-tile-with-tms-by-scale.mosaic-collections-tile-matrix-sets-scale-get-zxy-by-scale
+        BinaryData response = dataClient.getCollectionTileWithTmsByScale("naip-atl", "WebMercatorQuad", 13.0, 2174.0,
+            3282.0, 1.0, Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null, null,
+            null, WarpKernelResampling.NEAREST, null, null, null, null, null, "item-id-1,item-id-2", "-180,-90,180,90",
+            "{}", "-datetime", "2024-01-01T00:00:00Z", null, null, "epsg:4326", Arrays.asList("band=1"),
+            SelMethod.NEAREST, null, null, TilerImageFormat.PNG, null, null, "naip-atl", null, null, null, null, null,
+            null, 2);
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-tile-with-tms-by-scale.mosaic-collections-tile-matrix-sets-scale-get-zxy-by-scale
     }
 }

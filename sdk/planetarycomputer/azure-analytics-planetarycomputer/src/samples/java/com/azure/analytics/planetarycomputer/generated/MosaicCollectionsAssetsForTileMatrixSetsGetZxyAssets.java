@@ -17,10 +17,10 @@ public class MosaicCollectionsAssetsForTileMatrixSetsGetZxyAssets {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-assets-for-tile.mosaic-collections-assets-for-tile-matrix-sets-get-zxy-assets
-        List<TilerAssetGeoJson> response = dataClient.getCollectionAssetsForTile("naip-atl", "WebMercatorQuad", 13.0,
-            2174.0, 3282.0, null, null, null, null, null, "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime",
-            null, null, null, null, null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-assets-for-tile.mosaic-collections-assets-for-tile-matrix-sets-get-zxy-assets
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-assets-for-tile-with-tms.mosaic-collections-assets-for-tile-matrix-sets-get-zxy-assets
+        List<TilerAssetGeoJson> response = dataClient.getCollectionAssetsForTileWithTms("naip-atl", "WebMercatorQuad",
+            13.0, 2174.0, 3282.0, null, null, null, null, null, "item-id-1,item-id-2", "-180,-90,180,90", "{}",
+            "-datetime", null, null, null, null, null, null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-assets-for-tile-with-tms.mosaic-collections-assets-for-tile-matrix-sets-get-zxy-assets
     }
 }

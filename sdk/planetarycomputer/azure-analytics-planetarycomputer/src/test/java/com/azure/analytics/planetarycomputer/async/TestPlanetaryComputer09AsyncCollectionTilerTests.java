@@ -4,9 +4,9 @@
 package com.azure.analytics.planetarycomputer.async;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerTestBase;
-import com.azure.analytics.planetarycomputer.models.Feature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
-import com.azure.analytics.planetarycomputer.models.Polygon;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
@@ -72,8 +72,8 @@ public class TestPlanetaryComputer09AsyncCollectionTilerTests extends PlanetaryC
         requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
 
         StepVerifier.create(dataAsyncClient
-            .getCollectionTileByScaleAndFormatWithResponse(collectionId, "WebMercatorQuad", 14.0, 4349.0, 6564.0, 1.0,
-                "png", requestOptions)
+            .getCollectionTileWithTmsByScaleAndFormatWithResponse(collectionId, "WebMercatorQuad", 14.0, 4349.0, 6564.0,
+                1.0, "png", requestOptions)
             .map(response -> response.getValue().toBytes())).assertNext(imageBytes -> {
                 assertTrue(imageBytes.length > 0, "Tile image should not be empty");
 
@@ -147,8 +147,8 @@ public class TestPlanetaryComputer09AsyncCollectionTilerTests extends PlanetaryC
         List<List<List<Double>>> coordinates
             = Arrays.asList(Arrays.asList(Arrays.asList(-84.39, 33.68), Arrays.asList(-84.385, 33.68),
                 Arrays.asList(-84.385, 33.685), Arrays.asList(-84.39, 33.685), Arrays.asList(-84.39, 33.68)));
-        Polygon geometry = new Polygon().setCoordinates(coordinates);
-        Feature feature = new Feature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
+        GeoJsonPolygon geometry = new GeoJsonPolygon().setCoordinates(coordinates);
+        GeoJsonFeature feature = new GeoJsonFeature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("assets", "image", false);
@@ -179,7 +179,8 @@ public class TestPlanetaryComputer09AsyncCollectionTilerTests extends PlanetaryC
         String collectionId = testEnvironment.getCollectionId();
 
         StepVerifier
-            .create(dataAsyncClient.getCollectionAssetsForTile(collectionId, "WebMercatorQuad", 13.0, 2174.0, 3282.0))
+            .create(dataAsyncClient.getCollectionAssetsForTileWithTms(collectionId, "WebMercatorQuad", 13.0, 2174.0,
+                3282.0))
             .assertNext(assets -> {
                 assertNotNull(assets, "Tile assets should not be null");
                 System.out.println("Async: Number of tile assets: " + assets.size());

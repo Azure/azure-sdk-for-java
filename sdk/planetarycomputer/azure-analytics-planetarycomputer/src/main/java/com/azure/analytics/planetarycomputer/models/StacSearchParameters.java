@@ -44,7 +44,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * GeoJSON geometry for spatial filtering.
      */
     @Generated
-    private Geometry intersects;
+    private GeoJsonGeometry intersects;
 
     /*
      * Either a date-time or an interval, open or closed. Date and time expressions
@@ -209,7 +209,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the intersects value.
      */
     @Generated
-    public Geometry getIntersects() {
+    public GeoJsonGeometry getIntersects() {
         return this.intersects;
     }
 
@@ -220,7 +220,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
      * @return the StacSearchParameters object itself.
      */
     @Generated
-    public StacSearchParameters setIntersects(Geometry intersects) {
+    public StacSearchParameters setIntersects(GeoJsonGeometry intersects) {
         this.intersects = intersects;
         return this;
     }
@@ -561,7 +561,7 @@ public final class StacSearchParameters implements JsonSerializable<StacSearchPa
                     List<Double> boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                     deserializedStacSearchParameters.boundingBox = boundingBox;
                 } else if ("intersects".equals(fieldName)) {
-                    deserializedStacSearchParameters.intersects = Geometry.fromJson(reader);
+                    deserializedStacSearchParameters.intersects = GeoJsonGeometry.fromJson(reader);
                 } else if ("datetime".equals(fieldName)) {
                     deserializedStacSearchParameters.datetime = reader.getString();
                 } else if ("limit".equals(fieldName)) {

@@ -17,10 +17,10 @@ public class MosaicSearchesAssetsForTileMatrixSetsGetZxyAssets {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-assets-for-tile.mosaic-searches-assets-for-tile-matrix-sets-get-zxy-assets
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-assets-for-tile-with-tms.mosaic-searches-assets-for-tile-matrix-sets-get-zxy-assets
         List<TilerAssetGeoJson> response
-            = dataClient.getSearchAssetsForTile("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad", "naip-atl", 13.0,
-                2174.0, 3282.0, null, null, null, null, null, null, null, null, null, null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-search-assets-for-tile.mosaic-searches-assets-for-tile-matrix-sets-get-zxy-assets
+            = dataClient.getSearchAssetsForTileWithTms("ba13fc7947b9b585690d84ee61aaa653", "WebMercatorQuad",
+                "naip-atl", 13.0, 2174.0, 3282.0, null, null, null, null, null, null, null, null, null, null, null);
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-search-assets-for-tile-with-tms.mosaic-searches-assets-for-tile-matrix-sets-get-zxy-assets
     }
 }

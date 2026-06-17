@@ -4,9 +4,9 @@
 package com.azure.analytics.planetarycomputer.async;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerTestBase;
-import com.azure.analytics.planetarycomputer.models.Feature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
-import com.azure.analytics.planetarycomputer.models.Polygon;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Covers: getTileMatrixDefinitions, getTileMatrices, getItemAvailableAssets,
  * getItemBounds, getItemPreview, getItemInfoGeoJson, getItemStatistics,
  * getItemWmtsCapabilities, cropFeature, getItemBboxCrop, getItemPoint,
- * getItemPreviewWithFormat, getItemTileJson, getTileByFormat.
+ * getItemPreviewWithFormat, getItemTileJson, getTileWithTmsByFormat.
  */
 @Tag("ItemTiler")
 @Tag("Async")
@@ -181,7 +181,7 @@ public class TestPlanetaryComputer06AsyncItemTilerTests extends PlanetaryCompute
 
         StepVerifier
             .create(dataAsyncClient
-                .getItemWmtsCapabilitiesByTmsWithResponse(collectionId, itemId, "WebMercatorQuad", requestOptions)
+                .getItemWmtsCapabilitiesWithTmsWithResponse(collectionId, itemId, "WebMercatorQuad", requestOptions)
                 .map(response -> new String(response.getValue().toBytes(), StandardCharsets.UTF_8)))
             .assertNext(xmlString -> {
                 assertTrue(xmlString.length() > 0, "XML should not be empty");
@@ -198,10 +198,10 @@ public class TestPlanetaryComputer06AsyncItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        Polygon geometry = new Polygon().setCoordinates(
+        GeoJsonPolygon geometry = new GeoJsonPolygon().setCoordinates(
             Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714), Arrays.asList(-84.3814, 33.6714),
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
-        Feature feature = new Feature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
+        GeoJsonFeature feature = new GeoJsonFeature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("assets", "image", false);
@@ -321,7 +321,8 @@ public class TestPlanetaryComputer06AsyncItemTilerTests extends PlanetaryCompute
         requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
 
         StepVerifier.create(dataAsyncClient
-            .getTileByFormatWithResponse(collectionId, itemId, "WebMercatorQuad", 14, 4349, 6564, "png", requestOptions)
+            .getTileWithTmsByFormatWithResponse(collectionId, itemId, "WebMercatorQuad", 14, 4349, 6564, "png",
+                requestOptions)
             .map(response -> response.getValue().toBytes())).assertNext(imageBytes -> {
                 byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
                 assertTrue(imageBytes.length > 100, "Image should be substantial");

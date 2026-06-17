@@ -3,9 +3,9 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.models.Feature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
-import com.azure.analytics.planetarycomputer.models.Polygon;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
@@ -60,10 +60,10 @@ public class TestPlanetaryComputer05cMosaicsTilerTests extends TestPlanetaryComp
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
 
-        Polygon geometry = new Polygon()
+        GeoJsonPolygon geometry = new GeoJsonPolygon()
             .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.39, 33.68), Arrays.asList(-84.385, 33.68),
                 Arrays.asList(-84.385, 33.685), Arrays.asList(-84.39, 33.685), Arrays.asList(-84.39, 33.68))));
-        Feature feature = new Feature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
+        GeoJsonFeature feature = new GeoJsonFeature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
 
         System.out.println("Testing cropSearchFeature with polygon");
 

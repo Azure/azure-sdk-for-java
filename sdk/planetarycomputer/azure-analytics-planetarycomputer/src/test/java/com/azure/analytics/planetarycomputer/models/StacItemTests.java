@@ -53,7 +53,7 @@ public final class StacItemTests {
     public void testSerialize() throws Exception {
         StacItem model = new StacItem().setCollection("sentinel-2-l2a")
             .setBoundingBox(Arrays.asList(-180.0, -90.0, 180.0, 90.0))
-            .setGeometry(new Geometry().setBoundingBox(Arrays.asList(-73.99, 40.71)))
+            .setGeometry(new GeoJsonGeometry().setBoundingBox(Arrays.asList(-73.99, 40.71)))
             .setProperties(new StacItemProperties().setDatetime("2021-06-15T14:30:00Z").setPlatform("sentinel-2"))
             .setAssets(mapOf("B04", new StacAsset().setHref("https://example.com/B04.tif").setType("image/tiff")))
             .setStacVersion("1.0.0")

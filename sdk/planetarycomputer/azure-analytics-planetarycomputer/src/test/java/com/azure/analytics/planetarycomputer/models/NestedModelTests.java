@@ -16,7 +16,7 @@ import java.util.List;
  * Unit tests for nested model types used across the STAC API:
  * {@link StacProvider}, {@link StacContextExtension}, {@link StacExtensionExtent},
  * {@link StacExtensionSpatialExtent}, {@link StacCollectionTemporalExtent},
- * {@link Geometry}, {@link StacSortExtension}, {@link SearchOptionsFields},
+ * {@link GeoJsonGeometry}, {@link StacSortExtension}, {@link SearchOptionsFields},
  * {@link StacItemAsset}.
  */
 public final class NestedModelTests {
@@ -67,15 +67,16 @@ public final class NestedModelTests {
 
     @Test
     public void testGeometryRoundTrip() throws Exception {
-        Geometry model = new Geometry().setBoundingBox(Arrays.asList(-73.99, 40.71, -73.98, 40.72));
-        model = BinaryData.fromObject(model).toObject(Geometry.class);
+        GeoJsonGeometry model = new GeoJsonGeometry().setBoundingBox(Arrays.asList(-73.99, 40.71, -73.98, 40.72));
+        model = BinaryData.fromObject(model).toObject(GeoJsonGeometry.class);
         Assertions.assertNotNull(model.getBoundingBox());
         Assertions.assertEquals(4, model.getBoundingBox().size());
     }
 
     @Test
     public void testGeometryDeserialize() throws Exception {
-        Geometry model = BinaryData.fromString("{\"type\":\"Point\",\"bbox\":[-73.99,40.71]}").toObject(Geometry.class);
+        GeoJsonGeometry model
+            = BinaryData.fromString("{\"type\":\"Point\",\"bbox\":[-73.99,40.71]}").toObject(GeoJsonGeometry.class);
         Assertions.assertEquals(GeometryType.POINT, model.getType());
         Assertions.assertNotNull(model.getBoundingBox());
         Assertions.assertEquals(2, model.getBoundingBox().size());

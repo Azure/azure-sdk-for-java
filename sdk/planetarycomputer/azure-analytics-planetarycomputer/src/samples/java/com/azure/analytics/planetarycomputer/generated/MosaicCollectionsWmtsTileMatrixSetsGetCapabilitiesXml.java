@@ -15,10 +15,10 @@ public class MosaicCollectionsWmtsTileMatrixSetsGetCapabilitiesXml {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-wmts-capabilities-by-tms.mosaic-collections-wmts-tile-matrix-sets-get-capabilities-xml
-        byte[] response = dataClient.getCollectionWmtsCapabilitiesByTms("naip-atl", "WebMercatorQuad",
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-collection-wmts-capabilities-with-tms.mosaic-collections-wmts-tile-matrix-sets-get-capabilities-xml
+        byte[] response = dataClient.getCollectionWmtsCapabilitiesWithTms("naip-atl", "WebMercatorQuad",
             "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null, null, null, null, null,
             null, null, null, null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-wmts-capabilities-by-tms.mosaic-collections-wmts-tile-matrix-sets-get-capabilities-xml
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-collection-wmts-capabilities-with-tms.mosaic-collections-wmts-tile-matrix-sets-get-capabilities-xml
     }
 }

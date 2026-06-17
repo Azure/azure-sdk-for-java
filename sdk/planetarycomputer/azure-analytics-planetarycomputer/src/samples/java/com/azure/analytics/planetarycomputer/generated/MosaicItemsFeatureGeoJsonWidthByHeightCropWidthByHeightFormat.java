@@ -6,9 +6,9 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
-import com.azure.analytics.planetarycomputer.models.Feature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
-import com.azure.analytics.planetarycomputer.models.Polygon;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
@@ -25,14 +25,18 @@ public class MosaicItemsFeatureGeoJsonWidthByHeightCropWidthByHeightFormat {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-crop-feature-width-by-height.mosaic-items-feature-geo-json-width-by-height-crop-width-by-height-format
-        BinaryData response = dataClient.cropFeatureWidthByHeight("naip-atl", "ga_m_3308421_se_16_060_20211114", 256,
-            256, "png",
-            new Feature(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
-                Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806),
-                Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()),
-            Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null, null, null,
-            WarpKernelResampling.NEAREST, null, null, null, null, null, null, null, null, null, null, null, null, null,
-            "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"), SelMethod.NEAREST);
+        BinaryData response
+            = dataClient
+                .cropFeatureWidthByHeight("naip-atl", "ga_m_3308421_se_16_060_20211114", 256, 256, "png",
+                    new GeoJsonFeature(
+                        new GeoJsonPolygon()
+                            .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
+                                Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806),
+                                Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)))),
+                        FeatureType.FEATURE).setProperties(mapOf()),
+                    Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null, null,
+                    null, WarpKernelResampling.NEAREST, null, null, null, null, null, null, null, null, null, null,
+                    null, null, null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"), SelMethod.NEAREST);
         // END:com.azure.analytics.planetarycomputer.generated.data-crop-feature-width-by-height.mosaic-items-feature-geo-json-width-by-height-crop-width-by-height-format
     }
 

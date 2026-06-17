@@ -20,12 +20,12 @@ public class MosaicItemsTileMatrixSetsScaleGetZxyByScale {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tile-by-scale.mosaic-items-tile-matrix-sets-scale-get-zxy-by-scale
-        BinaryData response = dataClient.getTileByScale("naip-atl", "ga_m_3308421_se_16_060_20211114",
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tile-with-tms-by-scale.mosaic-items-tile-matrix-sets-scale-get-zxy-by-scale
+        BinaryData response = dataClient.getTileWithTmsByScale("naip-atl", "ga_m_3308421_se_16_060_20211114",
             "WebMercatorQuad", 14.0, 4349.0, 6564.0, 2.0, Arrays.asList(1, 2, 3), Arrays.asList("image"), null,
             Arrays.asList("image|1,2,3"), null, null, null, WarpKernelResampling.NEAREST, null, null,
             TilerImageFormat.PNG, null, null, null, null, null, null, null, 2, null, null, "epsg:4326",
             "2024-01-01T00:00:00Z", Arrays.asList("band=1"), SelMethod.NEAREST);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-tile-by-scale.mosaic-items-tile-matrix-sets-scale-get-zxy-by-scale
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-tile-with-tms-by-scale.mosaic-items-tile-matrix-sets-scale-get-zxy-by-scale
     }
 }

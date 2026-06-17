@@ -4,9 +4,9 @@
 package com.azure.analytics.planetarycomputer.async;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerTestBase;
-import com.azure.analytics.planetarycomputer.models.Feature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
-import com.azure.analytics.planetarycomputer.models.Polygon;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.analytics.planetarycomputer.models.TilerMosaicSearchRegistrationResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -113,7 +113,7 @@ public class TestPlanetaryComputer05AsyncMosaicsTilerTests extends PlanetaryComp
             tileOptions.addQueryParam("assets", "image", false);
             tileOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
             return dataAsyncClient
-                .getSearchTileByFormatWithResponse(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, "png",
+                .getSearchTileWithTmsByFormatWithResponse(searchId, "WebMercatorQuad", 13.0, 2174.0, 3282.0, "png",
                     tileOptions)
                 .map(response -> response.getValue().toBytes());
         });
@@ -141,7 +141,7 @@ public class TestPlanetaryComputer05AsyncMosaicsTilerTests extends PlanetaryComp
             requestOptions.addQueryParam("assets", "image", false);
             requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
             return dataAsyncClient
-                .getSearchWmtsCapabilitiesByTmsWithResponse(searchId, "WebMercatorQuad", requestOptions)
+                .getSearchWmtsCapabilitiesWithTmsWithResponse(searchId, "WebMercatorQuad", requestOptions)
                 .map(response -> new String(response.getValue().toBytes(), StandardCharsets.UTF_8));
         });
 
@@ -182,7 +182,7 @@ public class TestPlanetaryComputer05AsyncMosaicsTilerTests extends PlanetaryComp
 
         StepVerifier
             .create(registerSearchAsync(collectionId).flatMap(searchId -> dataAsyncClient
-                .getSearchAssetsForTile(searchId, "WebMercatorQuad", collectionId, 13.0, 2174.0, 3282.0)))
+                .getSearchAssetsForTileWithTms(searchId, "WebMercatorQuad", collectionId, 13.0, 2174.0, 3282.0)))
             .assertNext(assets -> {
                 assertNotNull(assets, "Assets list should not be null");
             })
@@ -219,10 +219,10 @@ public class TestPlanetaryComputer05AsyncMosaicsTilerTests extends PlanetaryComp
     public void test05_09_CropSearchFeatureAsync() {
         String collectionId = testEnvironment.getCollectionId();
 
-        Polygon geometry = new Polygon()
+        GeoJsonPolygon geometry = new GeoJsonPolygon()
             .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.39, 33.68), Arrays.asList(-84.385, 33.68),
                 Arrays.asList(-84.385, 33.685), Arrays.asList(-84.39, 33.685), Arrays.asList(-84.39, 33.68))));
-        Feature feature = new Feature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
+        GeoJsonFeature feature = new GeoJsonFeature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
 
         Mono<byte[]> pipeline = registerSearchAsync(collectionId).flatMap(searchId -> {
             RequestOptions requestOptions = new RequestOptions();

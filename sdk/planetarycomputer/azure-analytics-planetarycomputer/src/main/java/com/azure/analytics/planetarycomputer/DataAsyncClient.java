@@ -9,7 +9,7 @@ import com.azure.analytics.planetarycomputer.implementation.models.RegisterMosai
 import com.azure.analytics.planetarycomputer.models.AssetStatisticsResponse;
 import com.azure.analytics.planetarycomputer.models.ClassMapLegendResponse;
 import com.azure.analytics.planetarycomputer.models.ColorMapNames;
-import com.azure.analytics.planetarycomputer.models.Feature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.PixelSelection;
 import com.azure.analytics.planetarycomputer.models.RegisterMosaicsSearchOptions;
 import com.azure.analytics.planetarycomputer.models.Resampling;
@@ -742,9 +742,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileWithResponse(String collectionId, String itemId, String tileMatrixSetId,
-        double z, double x, double y, RequestOptions requestOptions) {
-        return this.serviceClient.getTileWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x, y,
+    public Mono<Response<BinaryData>> getTileWithTmsWithResponse(String collectionId, String itemId,
+        String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions) {
+        return this.serviceClient.getTileWithTmsWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x, y,
             requestOptions);
     }
 
@@ -873,10 +873,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileByFormatWithResponse(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getTileWithTmsByFormatWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, double z, double x, double y, String format, RequestOptions requestOptions) {
-        return this.serviceClient.getTileByFormatWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x, y,
-            format, requestOptions);
+        return this.serviceClient.getTileWithTmsByFormatWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x,
+            y, format, requestOptions);
     }
 
     /**
@@ -1004,10 +1004,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileByScaleWithResponse(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getTileWithTmsByScaleWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions) {
-        return this.serviceClient.getTileByScaleWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x, y, scale,
-            requestOptions);
+        return this.serviceClient.getTileWithTmsByScaleWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x, y,
+            scale, requestOptions);
     }
 
     /**
@@ -1134,11 +1134,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTileByScaleAndFormatWithResponse(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getTileWithTmsByScaleAndFormatWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
-        return this.serviceClient.getTileByScaleAndFormatWithResponseAsync(collectionId, itemId, tileMatrixSetId, z, x,
-            y, scale, format, requestOptions);
+        return this.serviceClient.getTileWithTmsByScaleAndFormatWithResponseAsync(collectionId, itemId, tileMatrixSetId,
+            z, x, y, scale, format, requestOptions);
     }
 
     /**
@@ -3187,9 +3187,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getItemTileJsonByTmsWithResponse(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getItemTileJsonWithTmsWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, RequestOptions requestOptions) {
-        return this.serviceClient.getItemTileJsonByTmsWithResponseAsync(collectionId, itemId, tileMatrixSetId,
+        return this.serviceClient.getItemTileJsonWithTmsWithResponseAsync(collectionId, itemId, tileMatrixSetId,
             requestOptions);
     }
 
@@ -3446,9 +3446,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getItemWmtsCapabilitiesByTmsWithResponse(String collectionId, String itemId,
+    public Mono<Response<BinaryData>> getItemWmtsCapabilitiesWithTmsWithResponse(String collectionId, String itemId,
         String tileMatrixSetId, RequestOptions requestOptions) {
-        return this.serviceClient.getItemWmtsCapabilitiesByTmsWithResponseAsync(collectionId, itemId, tileMatrixSetId,
+        return this.serviceClient.getItemWmtsCapabilitiesWithTmsWithResponseAsync(collectionId, itemId, tileMatrixSetId,
             requestOptions);
     }
 
@@ -4363,11 +4363,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileByScaleAndFormatWithResponse(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsByScaleAndFormatWithResponse(String collectionId,
         String tileMatrixSetId, double z, double x, double y, double scale, String format,
         RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionTileByScaleAndFormatWithResponseAsync(collectionId, tileMatrixSetId, z,
-            x, y, scale, format, requestOptions);
+        return this.serviceClient.getCollectionTileWithTmsByScaleAndFormatWithResponseAsync(collectionId,
+            tileMatrixSetId, z, x, y, scale, format, requestOptions);
     }
 
     /**
@@ -4513,9 +4513,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileWithResponse(String collectionId, String tileMatrixSetId,
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsWithResponse(String collectionId, String tileMatrixSetId,
         double z, double x, double y, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionTileWithResponseAsync(collectionId, tileMatrixSetId, z, x, y,
+        return this.serviceClient.getCollectionTileWithTmsWithResponseAsync(collectionId, tileMatrixSetId, z, x, y,
             requestOptions);
     }
 
@@ -4661,10 +4661,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileByFormatWithResponse(String collectionId, String tileMatrixSetId,
-        double z, double x, double y, String format, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionTileByFormatWithResponseAsync(collectionId, tileMatrixSetId, z, x, y,
-            format, requestOptions);
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsByFormatWithResponse(String collectionId,
+        String tileMatrixSetId, double z, double x, double y, String format, RequestOptions requestOptions) {
+        return this.serviceClient.getCollectionTileWithTmsByFormatWithResponseAsync(collectionId, tileMatrixSetId, z, x,
+            y, format, requestOptions);
     }
 
     /**
@@ -4809,10 +4809,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileByScaleWithResponse(String collectionId, String tileMatrixSetId,
-        double z, double x, double y, double scale, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionTileByScaleWithResponseAsync(collectionId, tileMatrixSetId, z, x, y,
-            scale, requestOptions);
+    public Mono<Response<BinaryData>> getCollectionTileWithTmsByScaleWithResponse(String collectionId,
+        String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions) {
+        return this.serviceClient.getCollectionTileWithTmsByScaleWithResponseAsync(collectionId, tileMatrixSetId, z, x,
+            y, scale, requestOptions);
     }
 
     /**
@@ -5769,9 +5769,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionTileJsonByTmsWithResponse(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionTileJsonWithTmsWithResponse(String collectionId,
         String tileMatrixSetId, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionTileJsonByTmsWithResponseAsync(collectionId, tileMatrixSetId,
+        return this.serviceClient.getCollectionTileJsonWithTmsWithResponseAsync(collectionId, tileMatrixSetId,
             requestOptions);
     }
 
@@ -5922,16 +5922,18 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionWmtsCapabilitiesByTmsWithResponse(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionWmtsCapabilitiesWithTmsWithResponse(String collectionId,
         String tileMatrixSetId, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionWmtsCapabilitiesByTmsWithResponseAsync(collectionId, tileMatrixSetId,
+        return this.serviceClient.getCollectionWmtsCapabilitiesWithTmsWithResponseAsync(collectionId, tileMatrixSetId,
             requestOptions);
     }
 
     /**
      * Collection Assets For Tile Tilematrixsetid As Path
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (with TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route with TileMatrixSetId in the path
+     * (/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets). Use this operation when you need an explicit tile matrix set in
+     * the URL.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -6043,16 +6045,17 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionAssetsForTileWithResponse(String collectionId,
+    public Mono<Response<BinaryData>> getCollectionAssetsForTileWithTmsWithResponse(String collectionId,
         String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionAssetsForTileWithResponseAsync(collectionId, tileMatrixSetId, z, x, y,
-            requestOptions);
+        return this.serviceClient.getCollectionAssetsForTileWithTmsWithResponseAsync(collectionId, tileMatrixSetId, z,
+            x, y, requestOptions);
     }
 
     /**
      * Collection Assets For Tile
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (without TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route without TileMatrixSetId in the path
+     * (/tiles/{z}/{x}/{y}/assets). This operation uses the default tile matrix set when none is specified.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -7584,10 +7587,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileByScaleAndFormatWithResponse(String searchId, String tileMatrixSetId,
-        double z, double x, double y, double scale, String format, RequestOptions requestOptions) {
-        return this.serviceClient.getSearchTileByScaleAndFormatWithResponseAsync(searchId, tileMatrixSetId, z, x, y,
-            scale, format, requestOptions);
+    public Mono<Response<BinaryData>> getSearchTileWithTmsByScaleAndFormatWithResponse(String searchId,
+        String tileMatrixSetId, double z, double x, double y, double scale, String format,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getSearchTileWithTmsByScaleAndFormatWithResponseAsync(searchId, tileMatrixSetId, z, x,
+            y, scale, format, requestOptions);
     }
 
     /**
@@ -7729,9 +7733,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileWithResponse(String searchId, String tileMatrixSetId, double z,
-        double x, double y, RequestOptions requestOptions) {
-        return this.serviceClient.getSearchTileWithResponseAsync(searchId, tileMatrixSetId, z, x, y, requestOptions);
+    public Mono<Response<BinaryData>> getSearchTileWithTmsWithResponse(String searchId, String tileMatrixSetId,
+        double z, double x, double y, RequestOptions requestOptions) {
+        return this.serviceClient.getSearchTileWithTmsWithResponseAsync(searchId, tileMatrixSetId, z, x, y,
+            requestOptions);
     }
 
     /**
@@ -7872,10 +7877,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileByFormatWithResponse(String searchId, String tileMatrixSetId,
+    public Mono<Response<BinaryData>> getSearchTileWithTmsByFormatWithResponse(String searchId, String tileMatrixSetId,
         double z, double x, double y, String format, RequestOptions requestOptions) {
-        return this.serviceClient.getSearchTileByFormatWithResponseAsync(searchId, tileMatrixSetId, z, x, y, format,
-            requestOptions);
+        return this.serviceClient.getSearchTileWithTmsByFormatWithResponseAsync(searchId, tileMatrixSetId, z, x, y,
+            format, requestOptions);
     }
 
     /**
@@ -8016,10 +8021,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileByScaleWithResponse(String searchId, String tileMatrixSetId,
+    public Mono<Response<BinaryData>> getSearchTileWithTmsByScaleWithResponse(String searchId, String tileMatrixSetId,
         double z, double x, double y, double scale, RequestOptions requestOptions) {
-        return this.serviceClient.getSearchTileByScaleWithResponseAsync(searchId, tileMatrixSetId, z, x, y, scale,
-            requestOptions);
+        return this.serviceClient.getSearchTileWithTmsByScaleWithResponseAsync(searchId, tileMatrixSetId, z, x, y,
+            scale, requestOptions);
     }
 
     /**
@@ -8134,10 +8139,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchAssetsForTileWithResponse(String searchId, String tileMatrixSetId,
+    public Mono<Response<BinaryData>> getSearchAssetsForTileWithTmsWithResponse(String searchId, String tileMatrixSetId,
         String collectionId, double z, double x, double y, RequestOptions requestOptions) {
-        return this.serviceClient.getSearchAssetsForTileWithResponseAsync(searchId, tileMatrixSetId, collectionId, z, x,
-            y, requestOptions);
+        return this.serviceClient.getSearchAssetsForTileWithTmsWithResponseAsync(searchId, tileMatrixSetId,
+            collectionId, z, x, y, requestOptions);
     }
 
     /**
@@ -8305,9 +8310,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchTileJsonByTmsWithResponse(String searchId, String tileMatrixSetId,
+    public Mono<Response<BinaryData>> getSearchTileJsonWithTmsWithResponse(String searchId, String tileMatrixSetId,
         RequestOptions requestOptions) {
-        return this.serviceClient.getSearchTileJsonByTmsWithResponseAsync(searchId, tileMatrixSetId, requestOptions);
+        return this.serviceClient.getSearchTileJsonWithTmsWithResponseAsync(searchId, tileMatrixSetId, requestOptions);
     }
 
     /**
@@ -8359,9 +8364,9 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSearchWmtsCapabilitiesByTmsWithResponse(String searchId,
+    public Mono<Response<BinaryData>> getSearchWmtsCapabilitiesWithTmsWithResponse(String searchId,
         String tileMatrixSetId, RequestOptions requestOptions) {
-        return this.serviceClient.getSearchWmtsCapabilitiesByTmsWithResponseAsync(searchId, tileMatrixSetId,
+        return this.serviceClient.getSearchWmtsCapabilitiesWithTmsWithResponseAsync(searchId, tileMatrixSetId,
             requestOptions);
     }
 
@@ -10953,14 +10958,14 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTile(String collectionId, String itemId, String tileMatrixSetId, double z, double x,
-        double y, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
+    public Mono<BinaryData> getTileWithTms(String collectionId, String itemId, String tileMatrixSetId, double z,
+        double x, double y, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
         Boolean assetAsBand, String noData, Boolean unscale, WarpKernelResampling reproject, TerrainAlgorithm algorithm,
         String algorithmParams, TilerImageFormat format, Integer scale, Double buffer, String colorFormula,
         Resampling resampling, List<String> rescale, ColorMapNames colorMapName, String colorMap, Boolean returnMask,
         Integer padding, String subdatasetName, List<Integer> subdatasetBands, String crs, String datetime,
         List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getTileWithResponse
+        // Generated convenience method for getTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -11059,7 +11064,7 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getTileWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, requestOptions)
+        return getTileWithTmsWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -11087,11 +11092,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTile(String collectionId, String itemId, String tileMatrixSetId, double z, double x,
-        double y) {
-        // Generated convenience method for getTileWithResponse
+    public Mono<BinaryData> getTileWithTms(String collectionId, String itemId, String tileMatrixSetId, double z,
+        double x, double y) {
+        // Generated convenience method for getTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTileWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, requestOptions)
+        return getTileWithTmsWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -11163,14 +11168,14 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTileByFormat(String collectionId, String itemId, String tileMatrixSetId, double z,
+    public Mono<BinaryData> getTileWithTmsByFormat(String collectionId, String itemId, String tileMatrixSetId, double z,
         double x, double y, String format, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, TerrainAlgorithm algorithm, String algorithmParams, Integer scale,
         Double buffer, String colorFormula, Resampling resampling, List<String> rescale, ColorMapNames colorMapName,
         String colorMap, Boolean returnMask, Integer padding, String subdatasetName, List<Integer> subdatasetBands,
         String crs, String datetime, List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getTileByFormatWithResponse
+        // Generated convenience method for getTileWithTmsByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -11266,8 +11271,8 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getTileByFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, format, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getTileWithTmsByFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, format,
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -11295,12 +11300,12 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTileByFormat(String collectionId, String itemId, String tileMatrixSetId, double z,
+    public Mono<BinaryData> getTileWithTmsByFormat(String collectionId, String itemId, String tileMatrixSetId, double z,
         double x, double y, String format) {
-        // Generated convenience method for getTileByFormatWithResponse
+        // Generated convenience method for getTileWithTmsByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTileByFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, format, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getTileWithTmsByFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, format,
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -11371,14 +11376,14 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTileByScale(String collectionId, String itemId, String tileMatrixSetId, double z,
+    public Mono<BinaryData> getTileWithTmsByScale(String collectionId, String itemId, String tileMatrixSetId, double z,
         double x, double y, double scale, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, TerrainAlgorithm algorithm, String algorithmParams, TilerImageFormat format,
         Double buffer, String colorFormula, Resampling resampling, List<String> rescale, ColorMapNames colorMapName,
         String colorMap, Boolean returnMask, Integer padding, String subdatasetName, List<Integer> subdatasetBands,
         String crs, String datetime, List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getTileByScaleWithResponse
+        // Generated convenience method for getTileWithTmsByScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -11474,7 +11479,7 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getTileByScaleWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, requestOptions)
+        return getTileWithTmsByScaleWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -11503,11 +11508,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTileByScale(String collectionId, String itemId, String tileMatrixSetId, double z,
+    public Mono<BinaryData> getTileWithTmsByScale(String collectionId, String itemId, String tileMatrixSetId, double z,
         double x, double y, double scale) {
-        // Generated convenience method for getTileByScaleWithResponse
+        // Generated convenience method for getTileWithTmsByScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTileByScaleWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, requestOptions)
+        return getTileWithTmsByScaleWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -11579,14 +11584,14 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTileByScaleAndFormat(String collectionId, String itemId, String tileMatrixSetId,
+    public Mono<BinaryData> getTileWithTmsByScaleAndFormat(String collectionId, String itemId, String tileMatrixSetId,
         double z, double x, double y, double scale, String format, List<Integer> bidx, List<String> assets,
         String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, TerrainAlgorithm algorithm, String algorithmParams, Double buffer,
         String colorFormula, Resampling resampling, List<String> rescale, ColorMapNames colorMapName, String colorMap,
         Boolean returnMask, Integer padding, String subdatasetName, List<Integer> subdatasetBands, String crs,
         String datetime, List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getTileByScaleAndFormatWithResponse
+        // Generated convenience method for getTileWithTmsByScaleAndFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -11679,7 +11684,7 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getTileByScaleAndFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format,
+        return getTileWithTmsByScaleAndFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format,
             requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -11709,11 +11714,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getTileByScaleAndFormat(String collectionId, String itemId, String tileMatrixSetId,
+    public Mono<BinaryData> getTileWithTmsByScaleAndFormat(String collectionId, String itemId, String tileMatrixSetId,
         double z, double x, double y, double scale, String format) {
-        // Generated convenience method for getTileByScaleAndFormatWithResponse
+        // Generated convenience method for getTileWithTmsByScaleAndFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTileByScaleAndFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format,
+        return getTileWithTmsByScaleAndFormatWithResponse(collectionId, itemId, tileMatrixSetId, z, x, y, scale, format,
             requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -12620,7 +12625,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropFeature(String collectionId, String itemId, Feature body, List<Integer> bidx,
+    public Mono<BinaryData> cropFeature(String collectionId, String itemId, GeoJsonFeature body, List<Integer> bidx,
         List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData,
         Boolean unscale, WarpKernelResampling reproject, TerrainAlgorithm algorithm, String algorithmParams,
         String colorFormula, String coordinateReferenceSystem, Resampling resampling, Integer maxSize, Integer height,
@@ -12754,7 +12759,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropFeature(String collectionId, String itemId, Feature body) {
+    public Mono<BinaryData> cropFeature(String collectionId, String itemId, GeoJsonFeature body) {
         // Generated convenience method for cropFeatureWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropFeatureWithResponse(collectionId, itemId, BinaryData.fromObject(body), requestOptions)
@@ -12822,7 +12827,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropFeatureByFormat(String collectionId, String itemId, String format, Feature body,
+    public Mono<BinaryData> cropFeatureByFormat(String collectionId, String itemId, String format, GeoJsonFeature body,
         List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
         String noData, Boolean unscale, WarpKernelResampling reproject, TerrainAlgorithm algorithm,
         String algorithmParams, String colorFormula, String coordinateReferenceSystem, Resampling resampling,
@@ -12954,7 +12959,8 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropFeatureByFormat(String collectionId, String itemId, String format, Feature body) {
+    public Mono<BinaryData> cropFeatureByFormat(String collectionId, String itemId, String format,
+        GeoJsonFeature body) {
         // Generated convenience method for cropFeatureByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropFeatureByFormatWithResponse(collectionId, itemId, format, BinaryData.fromObject(body),
@@ -13023,7 +13029,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropFeatureWidthByHeight(String collectionId, String itemId, int width, int height,
-        String format, Feature body, List<Integer> bidx, List<String> assets, String expression,
+        String format, GeoJsonFeature body, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, TerrainAlgorithm algorithm, String algorithmParams, String colorFormula,
         String coordinateReferenceSystem, Resampling resampling, Integer maxSize, List<String> rescale,
@@ -13151,7 +13157,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropFeatureWidthByHeight(String collectionId, String itemId, int width, int height,
-        String format, Feature body) {
+        String format, GeoJsonFeature body) {
         // Generated convenience method for cropFeatureWidthByHeightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropFeatureWidthByHeightWithResponse(collectionId, itemId, width, height, format,
@@ -14014,13 +14020,14 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StacItemStatisticsGeoJson> getItemFeatureStatistics(String collectionId, String itemId, Feature body,
-        List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
-        String noData, Boolean unscale, WarpKernelResampling reproject, String coordinateReferenceSystem,
-        Resampling resampling, Integer maxSize, Boolean categorical, List<Integer> categoriesPixels,
-        List<Integer> percentiles, String histogramBins, String histogramRange, String destinationCrs,
-        String subdatasetName, List<Integer> subdatasetBands, String crs, String datetime, List<String> sel,
-        SelMethod selMethod, String algorithm, String algorithmParams, Integer height, Integer width) {
+    public Mono<StacItemStatisticsGeoJson> getItemFeatureStatistics(String collectionId, String itemId,
+        GeoJsonFeature body, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
+        Boolean assetAsBand, String noData, Boolean unscale, WarpKernelResampling reproject,
+        String coordinateReferenceSystem, Resampling resampling, Integer maxSize, Boolean categorical,
+        List<Integer> categoriesPixels, List<Integer> percentiles, String histogramBins, String histogramRange,
+        String destinationCrs, String subdatasetName, List<Integer> subdatasetBands, String crs, String datetime,
+        List<String> sel, SelMethod selMethod, String algorithm, String algorithmParams, Integer height,
+        Integer width) {
         // Generated convenience method for getItemFeatureStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
@@ -14146,7 +14153,8 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StacItemStatisticsGeoJson> getItemFeatureStatistics(String collectionId, String itemId, Feature body) {
+    public Mono<StacItemStatisticsGeoJson> getItemFeatureStatistics(String collectionId, String itemId,
+        GeoJsonFeature body) {
         // Generated convenience method for getItemFeatureStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getItemFeatureStatisticsWithResponse(collectionId, itemId, BinaryData.fromObject(body), requestOptions)
@@ -14436,14 +14444,14 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetadata> getItemTileJsonByTms(String collectionId, String itemId, String tileMatrixSetId,
+    public Mono<TileJsonMetadata> getItemTileJsonWithTms(String collectionId, String itemId, String tileMatrixSetId,
         List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
         String noData, Boolean unscale, WarpKernelResampling reproject, TerrainAlgorithm algorithm,
         String algorithmParams, TilerImageFormat tileFormat, Integer tileScale, Integer minZoom, Integer maxZoom,
         Double buffer, String colorFormula, Resampling resampling, List<String> rescale, ColorMapNames colorMapName,
         String colorMap, Boolean returnMask, Integer padding, String subdatasetName, List<Integer> subdatasetBands,
         String crs, String datetime, List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getItemTileJsonByTmsWithResponse
+        // Generated convenience method for getItemTileJsonWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -14548,7 +14556,7 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getItemTileJsonByTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
+        return getItemTileJsonWithTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
@@ -14573,10 +14581,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetadata> getItemTileJsonByTms(String collectionId, String itemId, String tileMatrixSetId) {
-        // Generated convenience method for getItemTileJsonByTmsWithResponse
+    public Mono<TileJsonMetadata> getItemTileJsonWithTms(String collectionId, String itemId, String tileMatrixSetId) {
+        // Generated convenience method for getItemTileJsonWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getItemTileJsonByTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
+        return getItemTileJsonWithTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
@@ -14855,14 +14863,14 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getItemWmtsCapabilitiesByTms(String collectionId, String itemId, String tileMatrixSetId,
+    public Mono<byte[]> getItemWmtsCapabilitiesWithTms(String collectionId, String itemId, String tileMatrixSetId,
         List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
         String noData, Boolean unscale, WarpKernelResampling reproject, TerrainAlgorithm algorithm,
         String algorithmParams, TilerImageFormat tileFormat, Integer tileScale, Integer minZoom, Integer maxZoom,
         Double buffer, String colorFormula, Resampling resampling, List<String> rescale, ColorMapNames colorMapName,
         String colorMap, Boolean returnMask, Integer padding, String subdatasetName, List<Integer> subdatasetBands,
         String crs, String datetime, List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getItemWmtsCapabilitiesByTmsWithResponse
+        // Generated convenience method for getItemWmtsCapabilitiesWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -14967,7 +14975,7 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getItemWmtsCapabilitiesByTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
+        return getItemWmtsCapabilitiesWithTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
@@ -14990,10 +14998,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getItemWmtsCapabilitiesByTms(String collectionId, String itemId, String tileMatrixSetId) {
-        // Generated convenience method for getItemWmtsCapabilitiesByTmsWithResponse
+    public Mono<byte[]> getItemWmtsCapabilitiesWithTms(String collectionId, String itemId, String tileMatrixSetId) {
+        // Generated convenience method for getItemWmtsCapabilitiesWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getItemWmtsCapabilitiesByTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
+        return getItemWmtsCapabilitiesWithTmsWithResponse(collectionId, itemId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
@@ -16250,16 +16258,16 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTileByScaleAndFormat(String collectionId, String tileMatrixSetId, double z,
-        double x, double y, double scale, String format, List<Integer> bidx, List<String> assets, String expression,
-        List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
+    public Mono<BinaryData> getCollectionTileWithTmsByScaleAndFormat(String collectionId, String tileMatrixSetId,
+        double z, double x, double y, double scale, String format, List<Integer> bidx, List<String> assets,
+        String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
         Boolean skipCovered, String ids, String bbox, String query, String sortby, String datetime,
         String subdatasetName, List<Integer> subdatasetBands, String crs, List<String> sel, SelMethod selMethod,
         TerrainAlgorithm algorithm, String algorithmParams, Double buffer, String colorFormula, String collection,
         Resampling resampling, PixelSelection pixelSelection, List<String> rescale, ColorMapNames colorMapName,
         String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getCollectionTileByScaleAndFormatWithResponse
+        // Generated convenience method for getCollectionTileWithTmsByScaleAndFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -16385,8 +16393,8 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getCollectionTileByScaleAndFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, scale, format,
-            requestOptions).flatMap(FluxUtil::toMono);
+        return getCollectionTileWithTmsByScaleAndFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, scale,
+            format, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -16414,12 +16422,12 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTileByScaleAndFormat(String collectionId, String tileMatrixSetId, double z,
-        double x, double y, double scale, String format) {
-        // Generated convenience method for getCollectionTileByScaleAndFormatWithResponse
+    public Mono<BinaryData> getCollectionTileWithTmsByScaleAndFormat(String collectionId, String tileMatrixSetId,
+        double z, double x, double y, double scale, String format) {
+        // Generated convenience method for getCollectionTileWithTmsByScaleAndFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionTileByScaleAndFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, scale, format,
-            requestOptions).flatMap(FluxUtil::toMono);
+        return getCollectionTileWithTmsByScaleAndFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, scale,
+            format, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -16501,16 +16509,16 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTile(String collectionId, String tileMatrixSetId, double z, double x, double y,
-        List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
-        String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit,
-        Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String ids, String bbox, String query,
-        String sortby, String datetime, String subdatasetName, List<Integer> subdatasetBands, String crs,
+    public Mono<BinaryData> getCollectionTileWithTms(String collectionId, String tileMatrixSetId, double z, double x,
+        double y, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
+        Boolean assetAsBand, String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit,
+        Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String ids, String bbox,
+        String query, String sortby, String datetime, String subdatasetName, List<Integer> subdatasetBands, String crs,
         List<String> sel, SelMethod selMethod, TerrainAlgorithm algorithm, String algorithmParams,
         TilerImageFormat format, Integer scale, Double buffer, String colorFormula, String collection,
         Resampling resampling, PixelSelection pixelSelection, List<String> rescale, ColorMapNames colorMapName,
         String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getCollectionTileWithResponse
+        // Generated convenience method for getCollectionTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -16642,7 +16650,7 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getCollectionTileWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
+        return getCollectionTileWithTmsWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -16669,11 +16677,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTile(String collectionId, String tileMatrixSetId, double z, double x,
+    public Mono<BinaryData> getCollectionTileWithTms(String collectionId, String tileMatrixSetId, double z, double x,
         double y) {
-        // Generated convenience method for getCollectionTileWithResponse
+        // Generated convenience method for getCollectionTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionTileWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
+        return getCollectionTileWithTmsWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -16756,8 +16764,8 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTileByFormat(String collectionId, String tileMatrixSetId, double z, double x,
-        double y, String format, List<Integer> bidx, List<String> assets, String expression,
+    public Mono<BinaryData> getCollectionTileWithTmsByFormat(String collectionId, String tileMatrixSetId, double z,
+        double x, double y, String format, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
         Boolean skipCovered, String ids, String bbox, String query, String sortby, String datetime,
@@ -16765,7 +16773,7 @@ public final class DataAsyncClient {
         TerrainAlgorithm algorithm, String algorithmParams, Integer scale, Double buffer, String colorFormula,
         String collection, Resampling resampling, PixelSelection pixelSelection, List<String> rescale,
         ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getCollectionTileByFormatWithResponse
+        // Generated convenience method for getCollectionTileWithTmsByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -16894,8 +16902,8 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getCollectionTileByFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, format, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getCollectionTileWithTmsByFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, format,
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -16922,12 +16930,12 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTileByFormat(String collectionId, String tileMatrixSetId, double z, double x,
-        double y, String format) {
-        // Generated convenience method for getCollectionTileByFormatWithResponse
+    public Mono<BinaryData> getCollectionTileWithTmsByFormat(String collectionId, String tileMatrixSetId, double z,
+        double x, double y, String format) {
+        // Generated convenience method for getCollectionTileWithTmsByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionTileByFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, format, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getCollectionTileWithTmsByFormatWithResponse(collectionId, tileMatrixSetId, z, x, y, format,
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -17009,8 +17017,8 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTileByScale(String collectionId, String tileMatrixSetId, double z, double x,
-        double y, double scale, List<Integer> bidx, List<String> assets, String expression,
+    public Mono<BinaryData> getCollectionTileWithTmsByScale(String collectionId, String tileMatrixSetId, double z,
+        double x, double y, double scale, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
         Boolean skipCovered, String ids, String bbox, String query, String sortby, String datetime,
@@ -17018,7 +17026,7 @@ public final class DataAsyncClient {
         TerrainAlgorithm algorithm, String algorithmParams, TilerImageFormat format, Double buffer, String colorFormula,
         String collection, Resampling resampling, PixelSelection pixelSelection, List<String> rescale,
         ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getCollectionTileByScaleWithResponse
+        // Generated convenience method for getCollectionTileWithTmsByScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -17147,8 +17155,8 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getCollectionTileByScaleWithResponse(collectionId, tileMatrixSetId, z, x, y, scale, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getCollectionTileWithTmsByScaleWithResponse(collectionId, tileMatrixSetId, z, x, y, scale,
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -17175,12 +17183,12 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionTileByScale(String collectionId, String tileMatrixSetId, double z, double x,
-        double y, double scale) {
-        // Generated convenience method for getCollectionTileByScaleWithResponse
+    public Mono<BinaryData> getCollectionTileWithTmsByScale(String collectionId, String tileMatrixSetId, double z,
+        double x, double y, double scale) {
+        // Generated convenience method for getCollectionTileWithTmsByScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionTileByScaleWithResponse(collectionId, tileMatrixSetId, z, x, y, scale, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getCollectionTileWithTmsByScaleWithResponse(collectionId, tileMatrixSetId, z, x, y, scale,
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -18542,7 +18550,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetadata> getCollectionTileJsonByTms(String collectionId, String tileMatrixSetId,
+    public Mono<TileJsonMetadata> getCollectionTileJsonWithTms(String collectionId, String tileMatrixSetId,
         List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
         String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit,
         Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String ids, String bbox, String query,
@@ -18551,7 +18559,7 @@ public final class DataAsyncClient {
         TilerImageFormat tileFormat, Integer tileScale, Integer minZoom, Integer maxZoom, Double buffer,
         String colorFormula, String collection, Resampling resampling, PixelSelection pixelSelection,
         List<String> rescale, ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getCollectionTileJsonByTmsWithResponse
+        // Generated convenience method for getCollectionTileJsonWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -18689,7 +18697,7 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getCollectionTileJsonByTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
+        return getCollectionTileJsonWithTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
@@ -18713,10 +18721,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetadata> getCollectionTileJsonByTms(String collectionId, String tileMatrixSetId) {
-        // Generated convenience method for getCollectionTileJsonByTmsWithResponse
+    public Mono<TileJsonMetadata> getCollectionTileJsonWithTms(String collectionId, String tileMatrixSetId) {
+        // Generated convenience method for getCollectionTileJsonWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionTileJsonByTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
+        return getCollectionTileJsonWithTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
@@ -18920,12 +18928,12 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getCollectionWmtsCapabilitiesByTms(String collectionId, String tileMatrixSetId, String ids,
+    public Mono<byte[]> getCollectionWmtsCapabilitiesWithTms(String collectionId, String tileMatrixSetId, String ids,
         String bbox, String query, String sortby, String datetime, TilerImageFormat tileFormat, Integer tileScale,
         Integer minZoom, Integer maxZoom, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject) {
-        // Generated convenience method for getCollectionWmtsCapabilitiesByTmsWithResponse
+        // Generated convenience method for getCollectionWmtsCapabilitiesWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (ids != null) {
             requestOptions.addQueryParam("ids", ids, false);
@@ -18988,7 +18996,7 @@ public final class DataAsyncClient {
         if (reproject != null) {
             requestOptions.addQueryParam("reproject", reproject.toString(), false);
         }
-        return getCollectionWmtsCapabilitiesByTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
+        return getCollectionWmtsCapabilitiesWithTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
@@ -19010,10 +19018,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getCollectionWmtsCapabilitiesByTms(String collectionId, String tileMatrixSetId) {
-        // Generated convenience method for getCollectionWmtsCapabilitiesByTmsWithResponse
+    public Mono<byte[]> getCollectionWmtsCapabilitiesWithTms(String collectionId, String tileMatrixSetId) {
+        // Generated convenience method for getCollectionWmtsCapabilitiesWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionWmtsCapabilitiesByTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
+        return getCollectionWmtsCapabilitiesWithTmsWithResponse(collectionId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
@@ -19021,7 +19029,9 @@ public final class DataAsyncClient {
     /**
      * Collection Assets For Tile Tilematrixsetid As Path
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (with TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route with TileMatrixSetId in the path
+     * (/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets). Use this operation when you need an explicit tile matrix set in
+     * the URL.
      * 
      * @param collectionId STAC Collection Identifier.
      * @param tileMatrixSetId Identifier selecting one of the TileMatrixSetId supported.
@@ -19071,11 +19081,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TilerAssetGeoJson>> getCollectionAssetsForTile(String collectionId, String tileMatrixSetId,
+    public Mono<List<TilerAssetGeoJson>> getCollectionAssetsForTileWithTms(String collectionId, String tileMatrixSetId,
         double z, double x, double y, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
         Boolean skipCovered, String ids, String bbox, String query, String sortby, String datetime,
         String subdatasetName, List<Integer> subdatasetBands, String crs, List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getCollectionAssetsForTileWithResponse
+        // Generated convenience method for getCollectionAssetsForTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (scanLimit != null) {
             requestOptions.addQueryParam("scan_limit", String.valueOf(scanLimit), false);
@@ -19127,7 +19137,7 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getCollectionAssetsForTileWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
+        return getCollectionAssetsForTileWithTmsWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
     }
@@ -19135,7 +19145,9 @@ public final class DataAsyncClient {
     /**
      * Collection Assets For Tile Tilematrixsetid As Path
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (with TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route with TileMatrixSetId in the path
+     * (/tiles/{tileMatrixSetId}/{z}/{x}/{y}/assets). Use this operation when you need an explicit tile matrix set in
+     * the URL.
      * 
      * @param collectionId STAC Collection Identifier.
      * @param tileMatrixSetId Identifier selecting one of the TileMatrixSetId supported.
@@ -19155,11 +19167,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TilerAssetGeoJson>> getCollectionAssetsForTile(String collectionId, String tileMatrixSetId,
+    public Mono<List<TilerAssetGeoJson>> getCollectionAssetsForTileWithTms(String collectionId, String tileMatrixSetId,
         double z, double x, double y) {
-        // Generated convenience method for getCollectionAssetsForTileWithResponse
+        // Generated convenience method for getCollectionAssetsForTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCollectionAssetsForTileWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
+        return getCollectionAssetsForTileWithTmsWithResponse(collectionId, tileMatrixSetId, z, x, y, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
     }
@@ -19167,7 +19179,8 @@ public final class DataAsyncClient {
     /**
      * Collection Assets For Tile
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (without TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route without TileMatrixSetId in the path
+     * (/tiles/{z}/{x}/{y}/assets). This operation uses the default tile matrix set when none is specified.
      * 
      * @param collectionId STAC Collection Identifier.
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -19285,7 +19298,8 @@ public final class DataAsyncClient {
     /**
      * Collection Assets For Tile
      * 
-     * Return a list of assets which overlap a given tile for a STAC collection (without TileMatrixSetId).
+     * Return assets overlapping a tile for a collection using the route without TileMatrixSetId in the path
+     * (/tiles/{z}/{x}/{y}/assets). This operation uses the default tile matrix set when none is specified.
      * 
      * @param collectionId STAC Collection Identifier.
      * @param z Identifier (Z) selecting one of the scales defined in the TileMatrixSet and
@@ -20053,7 +20067,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropCollectionFeature(String collectionId, Feature body, List<Integer> bidx,
+    public Mono<BinaryData> cropCollectionFeature(String collectionId, GeoJsonFeature body, List<Integer> bidx,
         List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData,
         Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit,
         Boolean exitWhenFull, Boolean skipCovered, String ids, String bbox, String query, String sortby,
@@ -20221,7 +20235,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropCollectionFeature(String collectionId, Feature body) {
+    public Mono<BinaryData> cropCollectionFeature(String collectionId, GeoJsonFeature body) {
         // Generated convenience method for cropCollectionFeatureWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropCollectionFeatureWithResponse(collectionId, BinaryData.fromObject(body), requestOptions)
@@ -20300,7 +20314,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropCollectionFeatureByFormat(String collectionId, String format, Feature body,
+    public Mono<BinaryData> cropCollectionFeatureByFormat(String collectionId, String format, GeoJsonFeature body,
         List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
         String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit,
         Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String ids, String bbox, String query,
@@ -20466,7 +20480,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropCollectionFeatureByFormat(String collectionId, String format, Feature body) {
+    public Mono<BinaryData> cropCollectionFeatureByFormat(String collectionId, String format, GeoJsonFeature body) {
         // Generated convenience method for cropCollectionFeatureByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropCollectionFeatureByFormatWithResponse(collectionId, format, BinaryData.fromObject(body),
@@ -20546,7 +20560,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropCollectionFeatureWidthByHeight(String collectionId, int width, int height,
-        String format, Feature body, List<Integer> bidx, List<String> assets, String expression,
+        String format, GeoJsonFeature body, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
         Boolean skipCovered, String ids, String bbox, String query, String sortby, String datetime,
@@ -20708,7 +20722,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropCollectionFeatureWidthByHeight(String collectionId, int width, int height,
-        String format, Feature body) {
+        String format, GeoJsonFeature body) {
         // Generated convenience method for cropCollectionFeatureWidthByHeightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropCollectionFeatureWidthByHeightWithResponse(collectionId, width, height, format,
@@ -21308,15 +21322,15 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTileByScaleAndFormat(String searchId, String tileMatrixSetId, double z, double x,
-        double y, double scale, String format, List<Integer> bidx, List<String> assets, String expression,
+    public Mono<BinaryData> getSearchTileWithTmsByScaleAndFormat(String searchId, String tileMatrixSetId, double z,
+        double x, double y, double scale, String format, List<Integer> bidx, List<String> assets, String expression,
         List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
         WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
         Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs, String datetime,
         List<String> sel, SelMethod selMethod, TerrainAlgorithm algorithm, String algorithmParams, Double buffer,
         String colorFormula, String collection, Resampling resampling, PixelSelection pixelSelection,
         List<String> rescale, ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getSearchTileByScaleAndFormatWithResponse
+        // Generated convenience method for getSearchTileWithTmsByScaleAndFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -21430,7 +21444,7 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getSearchTileByScaleAndFormatWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format,
+        return getSearchTileWithTmsByScaleAndFormatWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format,
             requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -21459,11 +21473,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTileByScaleAndFormat(String searchId, String tileMatrixSetId, double z, double x,
-        double y, double scale, String format) {
-        // Generated convenience method for getSearchTileByScaleAndFormatWithResponse
+    public Mono<BinaryData> getSearchTileWithTmsByScaleAndFormat(String searchId, String tileMatrixSetId, double z,
+        double x, double y, double scale, String format) {
+        // Generated convenience method for getSearchTileWithTmsByScaleAndFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSearchTileByScaleAndFormatWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format,
+        return getSearchTileWithTmsByScaleAndFormatWithResponse(searchId, tileMatrixSetId, z, x, y, scale, format,
             requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -21542,7 +21556,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTile(String searchId, String tileMatrixSetId, double z, double x, double y,
+    public Mono<BinaryData> getSearchTileWithTms(String searchId, String tileMatrixSetId, double z, double x, double y,
         List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
         String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit,
         Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String subdatasetName,
@@ -21550,7 +21564,7 @@ public final class DataAsyncClient {
         TerrainAlgorithm algorithm, String algorithmParams, TilerImageFormat format, Integer scale, Double buffer,
         String colorFormula, String collection, Resampling resampling, PixelSelection pixelSelection,
         List<String> rescale, ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getSearchTileWithResponse
+        // Generated convenience method for getSearchTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -21670,7 +21684,8 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getSearchTileWithResponse(searchId, tileMatrixSetId, z, x, y, requestOptions).flatMap(FluxUtil::toMono);
+        return getSearchTileWithTmsWithResponse(searchId, tileMatrixSetId, z, x, y, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -21696,10 +21711,12 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTile(String searchId, String tileMatrixSetId, double z, double x, double y) {
-        // Generated convenience method for getSearchTileWithResponse
+    public Mono<BinaryData> getSearchTileWithTms(String searchId, String tileMatrixSetId, double z, double x,
+        double y) {
+        // Generated convenience method for getSearchTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSearchTileWithResponse(searchId, tileMatrixSetId, z, x, y, requestOptions).flatMap(FluxUtil::toMono);
+        return getSearchTileWithTmsWithResponse(searchId, tileMatrixSetId, z, x, y, requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -21777,15 +21794,15 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTileByFormat(String searchId, String tileMatrixSetId, double z, double x, double y,
-        String format, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
-        Boolean assetAsBand, String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit,
-        Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String subdatasetName,
-        List<Integer> subdatasetBands, String crs, String datetime, List<String> sel, SelMethod selMethod,
-        TerrainAlgorithm algorithm, String algorithmParams, Integer scale, Double buffer, String colorFormula,
-        String collection, Resampling resampling, PixelSelection pixelSelection, List<String> rescale,
-        ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getSearchTileByFormatWithResponse
+    public Mono<BinaryData> getSearchTileWithTmsByFormat(String searchId, String tileMatrixSetId, double z, double x,
+        double y, String format, List<Integer> bidx, List<String> assets, String expression,
+        List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
+        WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
+        Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs, String datetime,
+        List<String> sel, SelMethod selMethod, TerrainAlgorithm algorithm, String algorithmParams, Integer scale,
+        Double buffer, String colorFormula, String collection, Resampling resampling, PixelSelection pixelSelection,
+        List<String> rescale, ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
+        // Generated convenience method for getSearchTileWithTmsByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -21902,7 +21919,7 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getSearchTileByFormatWithResponse(searchId, tileMatrixSetId, z, x, y, format, requestOptions)
+        return getSearchTileWithTmsByFormatWithResponse(searchId, tileMatrixSetId, z, x, y, format, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -21930,11 +21947,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTileByFormat(String searchId, String tileMatrixSetId, double z, double x, double y,
-        String format) {
-        // Generated convenience method for getSearchTileByFormatWithResponse
+    public Mono<BinaryData> getSearchTileWithTmsByFormat(String searchId, String tileMatrixSetId, double z, double x,
+        double y, String format) {
+        // Generated convenience method for getSearchTileWithTmsByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSearchTileByFormatWithResponse(searchId, tileMatrixSetId, z, x, y, format, requestOptions)
+        return getSearchTileWithTmsByFormatWithResponse(searchId, tileMatrixSetId, z, x, y, format, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -22013,15 +22030,16 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTileByScale(String searchId, String tileMatrixSetId, double z, double x, double y,
-        double scale, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
-        Boolean assetAsBand, String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit,
-        Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String subdatasetName,
-        List<Integer> subdatasetBands, String crs, String datetime, List<String> sel, SelMethod selMethod,
-        TerrainAlgorithm algorithm, String algorithmParams, TilerImageFormat format, Double buffer, String colorFormula,
-        String collection, Resampling resampling, PixelSelection pixelSelection, List<String> rescale,
-        ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getSearchTileByScaleWithResponse
+    public Mono<BinaryData> getSearchTileWithTmsByScale(String searchId, String tileMatrixSetId, double z, double x,
+        double y, double scale, List<Integer> bidx, List<String> assets, String expression,
+        List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
+        WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
+        Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs, String datetime,
+        List<String> sel, SelMethod selMethod, TerrainAlgorithm algorithm, String algorithmParams,
+        TilerImageFormat format, Double buffer, String colorFormula, String collection, Resampling resampling,
+        PixelSelection pixelSelection, List<String> rescale, ColorMapNames colorMapName, String colorMap,
+        Boolean returnMask, Integer padding) {
+        // Generated convenience method for getSearchTileWithTmsByScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -22138,7 +22156,7 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getSearchTileByScaleWithResponse(searchId, tileMatrixSetId, z, x, y, scale, requestOptions)
+        return getSearchTileWithTmsByScaleWithResponse(searchId, tileMatrixSetId, z, x, y, scale, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -22166,11 +22184,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getSearchTileByScale(String searchId, String tileMatrixSetId, double z, double x, double y,
-        double scale) {
-        // Generated convenience method for getSearchTileByScaleWithResponse
+    public Mono<BinaryData> getSearchTileWithTmsByScale(String searchId, String tileMatrixSetId, double z, double x,
+        double y, double scale) {
+        // Generated convenience method for getSearchTileWithTmsByScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSearchTileByScaleWithResponse(searchId, tileMatrixSetId, z, x, y, scale, requestOptions)
+        return getSearchTileWithTmsByScaleWithResponse(searchId, tileMatrixSetId, z, x, y, scale, requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -22224,11 +22242,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TilerAssetGeoJson>> getSearchAssetsForTile(String searchId, String tileMatrixSetId,
+    public Mono<List<TilerAssetGeoJson>> getSearchAssetsForTileWithTms(String searchId, String tileMatrixSetId,
         String collectionId, double z, double x, double y, Integer scanLimit, Integer itemsLimit, Integer timeLimit,
         Boolean exitWhenFull, Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs,
         String datetime, List<String> sel, SelMethod selMethod) {
-        // Generated convenience method for getSearchAssetsForTileWithResponse
+        // Generated convenience method for getSearchAssetsForTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (scanLimit != null) {
             requestOptions.addQueryParam("scan_limit", String.valueOf(scanLimit), false);
@@ -22268,9 +22286,9 @@ public final class DataAsyncClient {
         if (selMethod != null) {
             requestOptions.addQueryParam("sel_method", selMethod.toString(), false);
         }
-        return getSearchAssetsForTileWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
+        return getSearchAssetsForTileWithTmsWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y,
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
     }
 
     /**
@@ -22297,13 +22315,13 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<TilerAssetGeoJson>> getSearchAssetsForTile(String searchId, String tileMatrixSetId,
+    public Mono<List<TilerAssetGeoJson>> getSearchAssetsForTileWithTms(String searchId, String tileMatrixSetId,
         String collectionId, double z, double x, double y) {
-        // Generated convenience method for getSearchAssetsForTileWithResponse
+        // Generated convenience method for getSearchAssetsForTileWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSearchAssetsForTileWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
+        return getSearchAssetsForTileWithTmsWithResponse(searchId, tileMatrixSetId, collectionId, z, x, y,
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TILER_ASSET_GEO_JSON));
     }
 
     /**
@@ -22381,7 +22399,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetadata> getSearchTileJsonByTms(String searchId, String tileMatrixSetId, List<Integer> bidx,
+    public Mono<TileJsonMetadata> getSearchTileJsonWithTms(String searchId, String tileMatrixSetId, List<Integer> bidx,
         List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData,
         Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit,
         Boolean exitWhenFull, Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs,
@@ -22389,7 +22407,7 @@ public final class DataAsyncClient {
         Integer minZoom, Integer maxZoom, TilerImageFormat tileFormat, Integer tileScale, Double buffer,
         String colorFormula, String collection, Resampling resampling, PixelSelection pixelSelection,
         List<String> rescale, ColorMapNames colorMapName, String colorMap, Boolean returnMask, Integer padding) {
-        // Generated convenience method for getSearchTileJsonByTmsWithResponse
+        // Generated convenience method for getSearchTileJsonWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
             for (int paramItemValue : bidx) {
@@ -22515,7 +22533,7 @@ public final class DataAsyncClient {
         if (padding != null) {
             requestOptions.addQueryParam("padding", String.valueOf(padding), false);
         }
-        return getSearchTileJsonByTmsWithResponse(searchId, tileMatrixSetId, requestOptions).flatMap(FluxUtil::toMono)
+        return getSearchTileJsonWithTmsWithResponse(searchId, tileMatrixSetId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
 
@@ -22538,10 +22556,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TileJsonMetadata> getSearchTileJsonByTms(String searchId, String tileMatrixSetId) {
-        // Generated convenience method for getSearchTileJsonByTmsWithResponse
+    public Mono<TileJsonMetadata> getSearchTileJsonWithTms(String searchId, String tileMatrixSetId) {
+        // Generated convenience method for getSearchTileJsonWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSearchTileJsonByTmsWithResponse(searchId, tileMatrixSetId, requestOptions).flatMap(FluxUtil::toMono)
+        return getSearchTileJsonWithTmsWithResponse(searchId, tileMatrixSetId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TileJsonMetadata.class));
     }
 
@@ -22576,11 +22594,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getSearchWmtsCapabilitiesByTms(String searchId, String tileMatrixSetId,
+    public Mono<byte[]> getSearchWmtsCapabilitiesWithTms(String searchId, String tileMatrixSetId,
         TilerImageFormat tileFormat, Integer tileScale, Integer minZoom, Integer maxZoom, List<Integer> bidx,
         List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData,
         Boolean unscale, WarpKernelResampling reproject) {
-        // Generated convenience method for getSearchWmtsCapabilitiesByTmsWithResponse
+        // Generated convenience method for getSearchWmtsCapabilitiesWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (tileFormat != null) {
             requestOptions.addQueryParam("tile_format", tileFormat.toString(), false);
@@ -22628,7 +22646,7 @@ public final class DataAsyncClient {
         if (reproject != null) {
             requestOptions.addQueryParam("reproject", reproject.toString(), false);
         }
-        return getSearchWmtsCapabilitiesByTmsWithResponse(searchId, tileMatrixSetId, requestOptions)
+        return getSearchWmtsCapabilitiesWithTmsWithResponse(searchId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
@@ -22650,10 +22668,10 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<byte[]> getSearchWmtsCapabilitiesByTms(String searchId, String tileMatrixSetId) {
-        // Generated convenience method for getSearchWmtsCapabilitiesByTmsWithResponse
+    public Mono<byte[]> getSearchWmtsCapabilitiesWithTms(String searchId, String tileMatrixSetId) {
+        // Generated convenience method for getSearchWmtsCapabilitiesWithTmsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSearchWmtsCapabilitiesByTmsWithResponse(searchId, tileMatrixSetId, requestOptions)
+        return getSearchWmtsCapabilitiesWithTmsWithResponse(searchId, tileMatrixSetId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
     }
@@ -23345,11 +23363,11 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropSearchFeature(String searchId, Feature body, List<Integer> bidx, List<String> assets,
-        String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData, Boolean unscale,
-        WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull,
-        Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs, String datetime,
-        List<String> sel, SelMethod selMethod, TerrainAlgorithm algorithm, String algorithmParams,
+    public Mono<BinaryData> cropSearchFeature(String searchId, GeoJsonFeature body, List<Integer> bidx,
+        List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData,
+        Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit,
+        Boolean exitWhenFull, Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs,
+        String datetime, List<String> sel, SelMethod selMethod, TerrainAlgorithm algorithm, String algorithmParams,
         String coordinateReferenceSystem, Integer maxSize, Integer height, Integer width, String colorFormula,
         String collection, Resampling resampling, PixelSelection pixelSelection, List<String> rescale,
         ColorMapNames colorMapName, String colorMap, Boolean returnMask, String destinationCrs,
@@ -23501,7 +23519,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropSearchFeature(String searchId, Feature body) {
+    public Mono<BinaryData> cropSearchFeature(String searchId, GeoJsonFeature body) {
         // Generated convenience method for cropSearchFeatureWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropSearchFeatureWithResponse(searchId, BinaryData.fromObject(body), requestOptions)
@@ -23576,14 +23594,15 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropSearchFeatureByFormat(String searchId, String format, Feature body, List<Integer> bidx,
-        List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand, String noData,
-        Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit, Integer timeLimit,
-        Boolean exitWhenFull, Boolean skipCovered, String subdatasetName, List<Integer> subdatasetBands, String crs,
-        String datetime, List<String> sel, SelMethod selMethod, TerrainAlgorithm algorithm, String algorithmParams,
-        String coordinateReferenceSystem, Integer maxSize, Integer height, Integer width, String colorFormula,
-        String collection, Resampling resampling, PixelSelection pixelSelection, List<String> rescale,
-        ColorMapNames colorMapName, String colorMap, Boolean returnMask, String destinationCrs) {
+    public Mono<BinaryData> cropSearchFeatureByFormat(String searchId, String format, GeoJsonFeature body,
+        List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices, Boolean assetAsBand,
+        String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit, Integer itemsLimit,
+        Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String subdatasetName,
+        List<Integer> subdatasetBands, String crs, String datetime, List<String> sel, SelMethod selMethod,
+        TerrainAlgorithm algorithm, String algorithmParams, String coordinateReferenceSystem, Integer maxSize,
+        Integer height, Integer width, String colorFormula, String collection, Resampling resampling,
+        PixelSelection pixelSelection, List<String> rescale, ColorMapNames colorMapName, String colorMap,
+        Boolean returnMask, String destinationCrs) {
         // Generated convenience method for cropSearchFeatureByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (bidx != null) {
@@ -23729,7 +23748,7 @@ public final class DataAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cropSearchFeatureByFormat(String searchId, String format, Feature body) {
+    public Mono<BinaryData> cropSearchFeatureByFormat(String searchId, String format, GeoJsonFeature body) {
         // Generated convenience method for cropSearchFeatureByFormatWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropSearchFeatureByFormatWithResponse(searchId, format, BinaryData.fromObject(body), requestOptions)
@@ -23805,7 +23824,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropSearchFeatureWidthByHeight(String searchId, int width, int height, String format,
-        Feature body, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
+        GeoJsonFeature body, List<Integer> bidx, List<String> assets, String expression, List<String> assetBandIndices,
         Boolean assetAsBand, String noData, Boolean unscale, WarpKernelResampling reproject, Integer scanLimit,
         Integer itemsLimit, Integer timeLimit, Boolean exitWhenFull, Boolean skipCovered, String subdatasetName,
         List<Integer> subdatasetBands, String crs, String datetime, List<String> sel, SelMethod selMethod,
@@ -23954,7 +23973,7 @@ public final class DataAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> cropSearchFeatureWidthByHeight(String searchId, int width, int height, String format,
-        Feature body) {
+        GeoJsonFeature body) {
         // Generated convenience method for cropSearchFeatureWidthByHeightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cropSearchFeatureWidthByHeightWithResponse(searchId, width, height, format, BinaryData.fromObject(body),

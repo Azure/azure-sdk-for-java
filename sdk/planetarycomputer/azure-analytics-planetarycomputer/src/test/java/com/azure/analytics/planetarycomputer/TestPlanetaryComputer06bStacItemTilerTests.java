@@ -82,7 +82,7 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         requestOptions.addQueryParam("minzoom", "7", false);
         requestOptions.addQueryParam("maxzoom", "14", false);
         byte[] xmlBytes = dataClient
-            .getItemWmtsCapabilitiesByTmsWithResponse(collectionId, itemId, "WebMercatorQuad", requestOptions)
+            .getItemWmtsCapabilitiesWithTmsWithResponse(collectionId, itemId, "WebMercatorQuad", requestOptions)
             .getValue()
             .toBytes();
 
@@ -131,8 +131,9 @@ public class TestPlanetaryComputer06bStacItemTilerTests extends PlanetaryCompute
         List<List<List<Double>>> coordinates
             = Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714), Arrays.asList(-84.3814, 33.6714),
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)));
-        Polygon geometry = new Polygon().setCoordinates(coordinates);
-        Feature feature = new Feature(geometry, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
+        GeoJsonPolygon geometry = new GeoJsonPolygon().setCoordinates(coordinates);
+        GeoJsonFeature feature
+            = new GeoJsonFeature(geometry, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
         System.out.println("Input - collection_id: " + collectionId);
         System.out.println("Input - item_id: " + itemId);

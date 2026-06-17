@@ -15,9 +15,9 @@ public class MosaicSearchesWmtsTileMatrixSetsGetCapabilitiesXml {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-wmts-capabilities-by-tms.mosaic-searches-wmts-tile-matrix-sets-get-capabilities-xml
-        byte[] response = dataClient.getSearchWmtsCapabilitiesByTms("ba13fc7947b9b585690d84ee61aaa653",
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-wmts-capabilities-with-tms.mosaic-searches-wmts-tile-matrix-sets-get-capabilities-xml
+        byte[] response = dataClient.getSearchWmtsCapabilitiesWithTms("ba13fc7947b9b585690d84ee61aaa653",
             "WebMercatorQuad", null, null, null, null, null, null, null, null, null, null, null, null);
-        // END:com.azure.analytics.planetarycomputer.generated.data-get-search-wmts-capabilities-by-tms.mosaic-searches-wmts-tile-matrix-sets-get-capabilities-xml
+        // END:com.azure.analytics.planetarycomputer.generated.data-get-search-wmts-capabilities-with-tms.mosaic-searches-wmts-tile-matrix-sets-get-capabilities-xml
     }
 }

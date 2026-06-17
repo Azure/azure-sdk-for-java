@@ -3,9 +3,9 @@
 
 package com.azure.analytics.planetarycomputer;
 
-import com.azure.analytics.planetarycomputer.models.Feature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
-import com.azure.analytics.planetarycomputer.models.Polygon;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import com.azure.analytics.planetarycomputer.models.TileSetList;
 import com.azure.analytics.planetarycomputer.models.TileSetMetadata;
@@ -87,15 +87,15 @@ public class TestPlanetaryComputer09CollectionTilerTests extends PlanetaryComput
         DataClient dataClient = getDataClient();
         String collectionId = testEnvironment.getCollectionId();
 
-        System.out.println("Testing getCollectionTileByScaleAndFormat: z=14, x=4349, y=6564");
+        System.out.println("Testing getCollectionTileWithTmsByScaleAndFormat: z=14, x=4349, y=6564");
 
         // Use protocol method to pass required assets parameter
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("assets", "image", false);
         requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
         BinaryData imageData = dataClient
-            .getCollectionTileByScaleAndFormatWithResponse(collectionId, "WebMercatorQuad", 14.0, 4349.0, 6564.0, 1.0,
-                "png", requestOptions)
+            .getCollectionTileWithTmsByScaleAndFormatWithResponse(collectionId, "WebMercatorQuad", 14.0, 4349.0, 6564.0,
+                1.0, "png", requestOptions)
             .getValue();
 
         byte[] imageBytes = imageData.toBytes();
@@ -208,8 +208,8 @@ public class TestPlanetaryComputer09CollectionTilerTests extends PlanetaryComput
         List<List<List<Double>>> coordinates
             = Arrays.asList(Arrays.asList(Arrays.asList(-84.39, 33.68), Arrays.asList(-84.385, 33.68),
                 Arrays.asList(-84.385, 33.685), Arrays.asList(-84.39, 33.685), Arrays.asList(-84.39, 33.68)));
-        Polygon geometry = new Polygon().setCoordinates(coordinates);
-        Feature feature = new Feature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
+        GeoJsonPolygon geometry = new GeoJsonPolygon().setCoordinates(coordinates);
+        GeoJsonFeature feature = new GeoJsonFeature(geometry, FeatureType.FEATURE).setProperties(new HashMap<>());
 
         System.out.println("Testing cropCollectionFeature for collection: " + collectionId);
 
@@ -262,7 +262,7 @@ public class TestPlanetaryComputer09CollectionTilerTests extends PlanetaryComput
         System.out.println("Testing getCollectionAssetsForTile: z=13, x=2174, y=3282");
 
         List<TilerAssetGeoJson> assets
-            = dataClient.getCollectionAssetsForTile(collectionId, "WebMercatorQuad", 13.0, 2174.0, 3282.0);
+            = dataClient.getCollectionAssetsForTileWithTms(collectionId, "WebMercatorQuad", 13.0, 2174.0, 3282.0);
 
         assertNotNull(assets, "Tile assets should not be null");
         System.out.println("Number of tile assets: " + assets.size());

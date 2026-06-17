@@ -27,10 +27,11 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        Polygon polygon = new Polygon().setCoordinates(
+        GeoJsonPolygon polygon = new GeoJsonPolygon().setCoordinates(
             Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714), Arrays.asList(-84.3814, 33.6714),
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
-        Feature feature = new Feature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
+        GeoJsonFeature feature
+            = new GeoJsonFeature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
         // Use protocol method to pass assets
         RequestOptions requestOptions = new RequestOptions();
@@ -57,10 +58,11 @@ public class TestPlanetaryComputer06cStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        Polygon polygon = new Polygon().setCoordinates(
+        GeoJsonPolygon polygon = new GeoJsonPolygon().setCoordinates(
             Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714), Arrays.asList(-84.3814, 33.6714),
                 Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714))));
-        Feature feature = new Feature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
+        GeoJsonFeature feature
+            = new GeoJsonFeature(polygon, FeatureType.FEATURE).setProperties(new java.util.HashMap<>());
 
         // Use protocol method to avoid deserialization issues with null statistics fields
         RequestOptions requestOptions = new RequestOptions();

@@ -37,7 +37,7 @@ public final class RegisterMosaicsSearchOptions {
      * GeoJSON geometry to spatially filter items by intersection
      */
     @Generated
-    private Geometry intersects;
+    private GeoJsonGeometry intersects;
 
     /*
      * Query
@@ -168,7 +168,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the intersects value.
      */
     @Generated
-    public Geometry getIntersects() {
+    public GeoJsonGeometry getIntersects() {
         return this.intersects;
     }
 
@@ -179,7 +179,7 @@ public final class RegisterMosaicsSearchOptions {
      * @return the RegisterMosaicsSearchOptions object itself.
      */
     @Generated
-    public RegisterMosaicsSearchOptions setIntersects(Geometry intersects) {
+    public RegisterMosaicsSearchOptions setIntersects(GeoJsonGeometry intersects) {
         this.intersects = intersects;
         return this;
     }

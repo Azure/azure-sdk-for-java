@@ -6,9 +6,9 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
-import com.azure.analytics.planetarycomputer.models.Feature;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
-import com.azure.analytics.planetarycomputer.models.Polygon;
+import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
+import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,13 +23,17 @@ public class MosaicItemsGeoJsonStatisticsGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-feature-statistics.mosaic-items-geo-json-statistics-get
-        StacItemStatisticsGeoJson response = dataClient.getItemFeatureStatistics("naip-atl",
-            "ga_m_3308421_se_16_060_20211114",
-            new Feature(new Polygon().setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
-                Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806), Arrays.asList(-84.3906, 33.6806),
-                Arrays.asList(-84.3906, 33.6714)))), FeatureType.FEATURE).setProperties(mapOf()),
-            null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null);
+        StacItemStatisticsGeoJson response
+            = dataClient
+                .getItemFeatureStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114",
+                    new GeoJsonFeature(
+                        new GeoJsonPolygon()
+                            .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-84.3906, 33.6714),
+                                Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806),
+                                Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)))),
+                        FeatureType.FEATURE).setProperties(mapOf()),
+                    null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null,
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-feature-statistics.mosaic-items-geo-json-statistics-get
     }
 

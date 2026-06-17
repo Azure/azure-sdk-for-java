@@ -58,7 +58,7 @@ public class TestPlanetaryComputer05bMosaicsTilerTests extends TestPlanetaryComp
         System.out.println("Using search ID: " + searchId);
 
         List<TilerAssetGeoJson> assets
-            = dataClient.getSearchAssetsForTile(searchId, "WebMercatorQuad", collectionId, 13.0, 2174.0, 3282.0);
+            = dataClient.getSearchAssetsForTileWithTms(searchId, "WebMercatorQuad", collectionId, 13.0, 2174.0, 3282.0);
 
         assertNotNull(assets, "Assets list should not be null");
         System.out.println("Number of assets: " + assets.size());

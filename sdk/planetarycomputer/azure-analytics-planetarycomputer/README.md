@@ -249,7 +249,7 @@ Retrieve a map tile for a specific item:
 RequestOptions options = new RequestOptions();
 options.addQueryParam("assets", "image", false);
 options.addQueryParam("asset_bidx", "image|1,2,3", false);
-BinaryData tile = dataClient.getTileByFormatWithResponse(
+BinaryData tile = dataClient.getTileWithTmsByFormatWithResponse(
     "naip-atl", "ga_m_3308421_se_16_060_20211114",
     "WebMercatorQuad", 14, 4349, 6564, "png", options).getValue();
 System.out.printf("Tile size: %d bytes%n", tile.toBytes().length);
