@@ -35,9 +35,11 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -272,5 +274,97 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         // buffer correctly filled
         assertEquals(buffer.capacity(), buffer.position());
         TestUtils.assertArraysEqual(data, halfLength, buffer.array(), 0, data.length - halfLength);
+    }
+
+    /**
+     * When the request conditions lock the blob via an If-Match ETag, a read at or past the known end of the
+     * resource must short-circuit to EOF without issuing a service call (which the service would reject with an
+     * HTTP 416 response).
+     */
+    @Test
+    public void readPastEndShortCircuitsWhenETagLocked() throws IOException {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        BlobRequestConditions conditions = new BlobRequestConditions().setIfMatch("\"0xETAG\"");
+
+        long resourceLength = Constants.KB;
+        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(client,
+            ByteBuffer.allocate(0), -1, resourceLength, conditions);
+
+        // when: "Reading at the known end of the resource"
+        int readAtEnd = behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength);
+
+        // then: "EOF is signaled without any service call"
+        assertEquals(-1, readAtEnd);
+        verify(client, never()).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+
+        // when: "Reading past the known end of the resource"
+        int readPastEnd = behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength + Constants.KB);
+
+        // then: "EOF is still signaled without any service call"
+        assertEquals(-1, readPastEnd);
+        verify(client, never()).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+    }
+
+    /**
+     * When the blob is not ETag-locked, a read past the end must still issue a request so the behavior can
+     * detect blob growth (existing contract preserved).
+     */
+    @Test
+    public void readPastEndIssuesRequestWhenNotETagLocked() throws IOException {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        long resourceLength = Constants.KB;
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenReturn(createMockDownloadResponse(
+                "bytes " + resourceLength + "-" + (resourceLength + Constants.KB - 1) + "/" + 2 * Constants.KB));
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, resourceLength, null);
+
+        // when: "Reading past the known end of the resource without an ETag lock"
+        behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength);
+
+        // then: "A service call is issued (existing growth-detection behavior preserved)"
+        verify(client, times(1)).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+    }
+
+    /**
+     * If the underlying download throws a non-{@code BlobStorageException} (for example, the connection is
+     * reset while streaming the body of a 416 response) and the caller is already at or past the known end of
+     * the resource, the behavior should swallow the error, log a warning, and signal EOF rather than throwing.
+     */
+    @Test
+    public void readPastEndSwallowsTransportErrorAndSignalsEof() throws IOException {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        long resourceLength = Constants.KB;
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenThrow(new RuntimeException("Connection reset by peer"));
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, resourceLength, null);
+
+        // when: "Reading past the known end and the download fails with a transport-level error"
+        int read = behavior.read(ByteBuffer.allocate(Constants.KB), resourceLength);
+
+        // then: "EOF is signaled instead of the exception propagating"
+        assertEquals(-1, read);
+        verify(client, times(1)).downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any());
+    }
+
+    /**
+     * Non-{@code BlobStorageException} failures that occur while reading within the known bounds of the resource
+     * must continue to surface as exceptions, since some bytes the caller asked for could not be retrieved.
+     */
+    @Test
+    public void readWithinResourcePropagatesTransportError() {
+        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        long resourceLength = Constants.KB;
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenThrow(new RuntimeException("Connection reset by peer"));
+
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, resourceLength, null);
+
+        // Reading within the known resource range should still surface the error.
+        assertThrows(RuntimeException.class, () -> behavior.read(ByteBuffer.allocate(Constants.KB), 0));
     }
 }
