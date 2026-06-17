@@ -4,11 +4,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/spring-docker-tests.yml'
-      - 'pom.xml'
-      - 'sdk/parents/**'
-      - 'sdk/spring/pom.xml'
-      - 'sdk/spring/spring-cloud-azure-testcontainers/**'
-      - 'sdk/spring/spring-cloud-azure-docker-compose/**'
+      - 'sdk/spring/**'
   workflow_dispatch:
 
 permissions:
