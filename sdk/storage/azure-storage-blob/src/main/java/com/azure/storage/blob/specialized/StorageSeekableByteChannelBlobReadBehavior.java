@@ -117,14 +117,14 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
     /**
      * @return Whether the request conditions on this behavior lock the blob's content via an If-Match ETag.
      */
-private boolean isEtagLocked() {
-    if (requestConditions == null) {
-        return false;
-    }
+    private boolean isEtagLocked() {
+        if (requestConditions == null) {
+            return false;
+        }
 
-    String ifMatch = requestConditions.getIfMatch();
-    return !CoreUtils.isNullOrEmpty(ifMatch) && !"*".equals(ifMatch.trim());
-}
+        String ifMatch = requestConditions.getIfMatch();
+        return !CoreUtils.isNullOrEmpty(ifMatch) && !"*".equals(ifMatch.trim());
+    }
 
     /**
      * Reads the cached byte buffer into the provided byte buffer and clears the cache.
