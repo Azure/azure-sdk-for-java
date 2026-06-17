@@ -7,7 +7,7 @@ import com.azure.communication.callautomation.implementation.models.MoveParticip
 import com.azure.communication.callautomation.models.MoveParticipantsResult;
 
 /**
- * Helper class to access private values of {@link MoveParticipantsResult} across package boundaries.
+ * Helper class to access private values of {@link MoveParticipantsResponse} across package boundaries.
  */
 public final class MoveParticipantsResponseConstructorProxy {
     private static MoveParticipantsResponseConstructorAccessor accessor;
@@ -22,7 +22,7 @@ public final class MoveParticipantsResponseConstructorProxy {
     public interface MoveParticipantsResponseConstructorAccessor {
         /**
          * Creates a new instance of {@link MoveParticipantsResult} backed by an internal instance of
-         * {@link MoveParticipantsResult}.
+         * {@link MoveParticipantsResponse}.
          *
          * @param internalResponse The internal response.
          * @return A new instance of {@link MoveParticipantsResult}.
@@ -31,7 +31,7 @@ public final class MoveParticipantsResponseConstructorProxy {
     }
 
     /**
-     * The method called from {@link MoveParticipantsResult} to set it's accessor.
+     * The method called from {@link MoveParticipantsResponse} to set it's accessor.
      *
      * @param accessor The accessor.
      */
