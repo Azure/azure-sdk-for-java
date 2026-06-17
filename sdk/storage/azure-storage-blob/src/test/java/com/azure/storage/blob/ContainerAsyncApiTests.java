@@ -2300,7 +2300,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(ccAsync.getHttpPipeline())
             .url(ccAsync.getAccountUrl())
-            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .version(BlobServiceVersion.getLatest().getVersion())
             .buildClient();
 
         List<ListBlobsIncludeItem> include = new ArrayList<>();

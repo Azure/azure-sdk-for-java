@@ -5,7 +5,16 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
+import com.azure.storage.blob.implementation.models.BlobListArrowParseException;
 import com.azure.storage.blob.implementation.models.BlobName;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.Batch;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.BoolColumn;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.Column;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.IntColumn;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.MapColumn;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.Parsed;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.StringColumn;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.TimestampColumn;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
@@ -15,28 +24,13 @@ import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.RehydratePriority;
-import org.apache.arrow.memory.BufferAllocator;
-import org.apache.arrow.memory.RootAllocator;
-import org.apache.arrow.vector.BitVector;
-import org.apache.arrow.vector.BigIntVector;
-import org.apache.arrow.vector.FieldVector;
-import org.apache.arrow.vector.TimeStampSecVector;
-import org.apache.arrow.vector.UInt8Vector;
-import org.apache.arrow.vector.VarCharVector;
-import org.apache.arrow.vector.VectorSchemaRoot;
-import org.apache.arrow.vector.complex.MapVector;
-import org.apache.arrow.vector.complex.impl.UnionMapReader;
-import org.apache.arrow.vector.ipc.ArrowStreamReader;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,57 +90,56 @@ public final class ArrowBlobListDeserializer {
      *
      * @param arrowStream the Arrow IPC input stream from the service response
      * @return the deserialized result containing blob items and next marker
-     * @throws RuntimeException if deserialization fails
+     * @throws BlobListArrowParseException if deserialization fails
      */
     public static ArrowListBlobsResult deserialize(InputStream arrowStream) {
+        if (arrowStream == null) {
+            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: input stream is null.");
+        }
+
         List<BlobItemInternal> results = new ArrayList<>();
         String nextMarker = null;
         Integer numberOfRecords = null;
 
-        try (BufferAllocator allocator = new RootAllocator();
-            ArrowStreamReader reader = new ArrowStreamReader(arrowStream, allocator)) {
+        Parsed parsed = BlobListArrowStreamReader.read(arrowStream);
 
-            VectorSchemaRoot root = reader.getVectorSchemaRoot();
+        Map<String, String> schemaMetadata = parsed.getSchemaMetadata();
+        if (schemaMetadata != null) {
+            nextMarker = schemaMetadata.get("NextMarker");
+            if (nextMarker != null && nextMarker.isEmpty()) {
+                nextMarker = null;
+            }
 
-            // Extract pagination metadata from schema
-            Map<String, String> schemaMetadata = root.getSchema().getCustomMetadata();
-            if (schemaMetadata != null) {
-                nextMarker = schemaMetadata.get("NextMarker");
-                if (nextMarker != null && nextMarker.isEmpty()) {
-                    nextMarker = null;
-                }
-
-                String numberOfRecordsStr = schemaMetadata.get("NumberOfRecords");
-                if (numberOfRecordsStr != null && !numberOfRecordsStr.isEmpty()) {
+            String numberOfRecordsStr = schemaMetadata.get("NumberOfRecords");
+            if (numberOfRecordsStr != null && !numberOfRecordsStr.isEmpty()) {
+                try {
                     numberOfRecords = Integer.parseInt(numberOfRecordsStr);
+                } catch (NumberFormatException e) {
+                    throw new BlobListArrowParseException(
+                        "ListBlobs Arrow parse failure: schema metadata 'NumberOfRecords' isn't a valid integer.", e);
                 }
             }
+        }
 
-            // Read all batches
-            while (reader.loadNextBatch()) {
-                int rowCount = root.getRowCount();
-                for (int i = 0; i < rowCount; i++) {
-                    results.add(readRow(root, i));
-                }
+        for (Batch batch : parsed.getBatches()) {
+            int rowCount = batch.getRowCount();
+            for (int i = 0; i < rowCount; i++) {
+                results.add(readRow(batch, i));
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to deserialize Arrow IPC response", e);
         }
 
         return new ArrowListBlobsResult(results, nextMarker, numberOfRecords);
     }
 
-    private static BlobItemInternal readRow(VectorSchemaRoot root, int index) {
+    private static BlobItemInternal readRow(Batch batch, int index) {
         BlobItemInternal item = new BlobItemInternal();
 
-        // Name
-        String name = getVarChar(root, "Name", index);
+        String name = getVarChar(batch, "Name", index);
         if (name != null) {
             item.setName(new BlobName().setContent(name));
         }
 
-        // ResourceType — hierarchy listings use "blobprefix" for virtual directory rows
-        String resourceType = getVarChar(root, "ResourceType", index);
+        String resourceType = getVarChar(batch, "ResourceType", index);
         if ("blobprefix".equals(resourceType)) {
             item.setIsPrefix(true);
             return item;
@@ -154,158 +147,130 @@ public final class ArrowBlobListDeserializer {
 
         BlobItemPropertiesInternal properties = new BlobItemPropertiesInternal();
 
-        // Deleted
-        Boolean deleted = getBit(root, "Deleted", index);
+        Boolean deleted = getBit(batch, "Deleted", index);
         if (deleted != null) {
             item.setDeleted(deleted);
         }
 
-        // Snapshot
-        item.setSnapshot(getVarChar(root, "Snapshot", index));
+        item.setSnapshot(getVarChar(batch, "Snapshot", index));
+        item.setVersionId(getVarChar(batch, "VersionId", index));
+        item.setIsCurrentVersion(getBit(batch, "IsCurrentVersion", index));
+        item.setHasVersionsOnly(getBit(batch, "HasVersionsOnly", index));
 
-        // VersionId
-        item.setVersionId(getVarChar(root, "VersionId", index));
-
-        // IsCurrentVersion
-        item.setIsCurrentVersion(getBit(root, "IsCurrentVersion", index));
-
-        // HasVersionsOnly
-        item.setHasVersionsOnly(getBit(root, "HasVersionsOnly", index));
-
-        // Metadata
-        Map<String, String> metadata = getMap(root, "Metadata", index);
+        Map<String, String> metadata = getMap(batch, "Metadata", index);
         if (metadata != null) {
             item.setMetadata(metadata);
         }
 
-        // OrMetadata
-        Map<String, String> orMetadata = getMap(root, "OrMetadata", index);
+        Map<String, String> orMetadata = getMap(batch, "OrMetadata", index);
         if (orMetadata != null) {
             item.setObjectReplicationMetadata(orMetadata);
         }
 
-        // Tags
-        Map<String, String> tags = getMap(root, "Tags", index);
+        Map<String, String> tags = getMap(batch, "Tags", index);
         if (tags != null) {
             item.setBlobTags(ModelHelper.toBlobTags(tags));
         }
 
-        // Encrypted — indicates metadata is encrypted with customer-provided key
-        item.setMetadataEncrypted(getBit(root, "Encrypted", index));
+        item.setMetadataEncrypted(getBit(batch, "Encrypted", index));
 
-        // --- Properties ---
+        properties.setCreationTime(getTimestamp(batch, "Creation-Time", index));
+        properties.setLastModified(getTimestamp(batch, "Last-Modified", index));
+        properties.setETag(getVarChar(batch, "Etag", index));
+        properties.setContentLength(getUInt64(batch, "Content-Length", index));
+        properties.setContentType(getVarChar(batch, "Content-Type", index));
+        properties.setContentEncoding(getVarChar(batch, "Content-Encoding", index));
+        properties.setContentLanguage(getVarChar(batch, "Content-Language", index));
+        properties.setContentDisposition(getVarChar(batch, "Content-Disposition", index));
+        properties.setCacheControl(getVarChar(batch, "Cache-Control", index));
 
-        properties.setCreationTime(getTimestamp(root, "Creation-Time", index));
-        properties.setLastModified(getTimestamp(root, "Last-Modified", index));
-        properties.setETag(getVarChar(root, "Etag", index));
-        properties.setContentLength(getUInt64(root, "Content-Length", index));
-        properties.setContentType(getVarChar(root, "Content-Type", index));
-        properties.setContentEncoding(getVarChar(root, "Content-Encoding", index));
-        properties.setContentLanguage(getVarChar(root, "Content-Language", index));
-        properties.setContentDisposition(getVarChar(root, "Content-Disposition", index));
-        properties.setCacheControl(getVarChar(root, "Cache-Control", index));
-
-        // Content-MD5: service returns Base64 string, property expects byte[]
-        String contentMd5 = getVarChar(root, "Content-MD5", index);
+        String contentMd5 = getVarChar(batch, "Content-MD5", index);
         if (contentMd5 != null) {
             properties.setContentMd5(Base64.getDecoder().decode(contentMd5));
         }
 
-        // Content-CRC64: same encoding as Content-MD5
-        String contentCrc64 = getVarChar(root, "Content-CRC64", index);
+        String contentCrc64 = getVarChar(batch, "Content-CRC64", index);
         if (contentCrc64 != null) {
             properties.setContentCrc64(Base64.getDecoder().decode(contentCrc64));
         }
 
-        // BlobType
-        String blobType = getVarChar(root, "BlobType", index);
+        String blobType = getVarChar(batch, "BlobType", index);
         if (blobType != null) {
             properties.setBlobType(BlobType.fromString(blobType));
         }
 
-        // AccessTier
-        String accessTier = getVarChar(root, "AccessTier", index);
+        String accessTier = getVarChar(batch, "AccessTier", index);
         if (accessTier != null) {
             properties.setAccessTier(AccessTier.fromString(accessTier));
         }
-        properties.setAccessTierInferred(getBit(root, "AccessTierInferred", index));
-        properties.setAccessTierChangeTime(getTimestamp(root, "AccessTierChangeTime", index));
+        properties.setAccessTierInferred(getBit(batch, "AccessTierInferred", index));
+        properties.setAccessTierChangeTime(getTimestamp(batch, "AccessTierChangeTime", index));
 
-        // SmartAccessTier
-        String smartAccessTier = getVarChar(root, "SmartAccessTier", index);
+        String smartAccessTier = getVarChar(batch, "SmartAccessTier", index);
         if (smartAccessTier != null) {
             properties.setSmartAccessTier(AccessTier.fromString(smartAccessTier));
         }
 
-        // Lease
-        String leaseStatus = getVarChar(root, "LeaseStatus", index);
+        String leaseStatus = getVarChar(batch, "LeaseStatus", index);
         if (leaseStatus != null) {
             properties.setLeaseStatus(LeaseStatusType.fromString(leaseStatus));
         }
-        String leaseState = getVarChar(root, "LeaseState", index);
+        String leaseState = getVarChar(batch, "LeaseState", index);
         if (leaseState != null) {
             properties.setLeaseState(LeaseStateType.fromString(leaseState));
         }
-        String leaseDuration = getVarChar(root, "LeaseDuration", index);
+        String leaseDuration = getVarChar(batch, "LeaseDuration", index);
         if (leaseDuration != null) {
             properties.setLeaseDuration(LeaseDurationType.fromString(leaseDuration));
         }
 
-        // Encryption
-        properties.setServerEncrypted(getBit(root, "ServerEncrypted", index));
-        properties.setCustomerProvidedKeySha256(getVarChar(root, "CustomerProvidedKeySha256", index));
-        properties.setEncryptionScope(getVarChar(root, "EncryptionScope", index));
-        properties.setIncrementalCopy(getBit(root, "IncrementalCopy", index));
+        properties.setServerEncrypted(getBit(batch, "ServerEncrypted", index));
+        properties.setCustomerProvidedKeySha256(getVarChar(batch, "CustomerProvidedKeySha256", index));
+        properties.setEncryptionScope(getVarChar(batch, "EncryptionScope", index));
+        properties.setIncrementalCopy(getBit(batch, "IncrementalCopy", index));
 
-        // OrsPolicySourceBlob
-        properties.setOrsPolicySourceBlob(getVarChar(root, "OrsPolicySourceBlob", index));
+        properties.setOrsPolicySourceBlob(getVarChar(batch, "OrsPolicySourceBlob", index));
+        properties.setAffinityId(getVarChar(batch, "AffinityId", index));
 
-        // AffinityId
-        properties.setAffinityId(getVarChar(root, "AffinityId", index));
-
-        // Copy fields
-        properties.setCopyId(getVarChar(root, "CopyId", index));
-        String copyStatus = getVarChar(root, "CopyStatus", index);
+        properties.setCopyId(getVarChar(batch, "CopyId", index));
+        String copyStatus = getVarChar(batch, "CopyStatus", index);
         if (copyStatus != null) {
             properties.setCopyStatus(CopyStatusType.fromString(copyStatus));
         }
-        properties.setCopySource(getVarChar(root, "CopySource", index));
-        properties.setCopyProgress(getVarChar(root, "CopyProgress", index));
-        properties.setCopyCompletionTime(getTimestamp(root, "CopyCompletionTime", index));
-        properties.setCopyStatusDescription(getVarChar(root, "CopyStatusDescription", index));
-        properties.setDestinationSnapshot(getVarChar(root, "CopyDestinationSnapshot", index));
+        properties.setCopySource(getVarChar(batch, "CopySource", index));
+        properties.setCopyProgress(getVarChar(batch, "CopyProgress", index));
+        properties.setCopyCompletionTime(getTimestamp(batch, "CopyCompletionTime", index));
+        properties.setCopyStatusDescription(getVarChar(batch, "CopyStatusDescription", index));
+        properties.setDestinationSnapshot(getVarChar(batch, "CopyDestinationSnapshot", index));
 
-        // Sequence number
-        properties.setBlobSequenceNumber(getUInt64(root, "x-ms-blob-sequence-number", index));
+        properties.setBlobSequenceNumber(getUInt64(batch, "x-ms-blob-sequence-number", index));
 
-        // Misc properties
-        properties.setIsSealed(getBit(root, "Sealed", index));
-        properties.setLegalHold(getBit(root, "LegalHold", index));
-        properties.setDeletedTime(getTimestamp(root, "DeletedTime", index));
-        properties.setLastAccessedOn(getTimestamp(root, "LastAccessTime", index));
-        properties.setImmutabilityPolicyExpiresOn(getTimestamp(root, "ImmutabilityPolicyUntilDate", index));
+        properties.setIsSealed(getBit(batch, "Sealed", index));
+        properties.setLegalHold(getBit(batch, "LegalHold", index));
+        properties.setDeletedTime(getTimestamp(batch, "DeletedTime", index));
+        properties.setLastAccessedOn(getTimestamp(batch, "LastAccessTime", index));
+        properties.setImmutabilityPolicyExpiresOn(getTimestamp(batch, "ImmutabilityPolicyUntilDate", index));
 
-        String immutabilityMode = getVarChar(root, "ImmutabilityPolicyMode", index);
+        String immutabilityMode = getVarChar(batch, "ImmutabilityPolicyMode", index);
         if (immutabilityMode != null) {
             properties.setImmutabilityPolicyMode(BlobImmutabilityPolicyMode.fromString(immutabilityMode));
         }
 
-        String archiveStatus = getVarChar(root, "ArchiveStatus", index);
+        String archiveStatus = getVarChar(batch, "ArchiveStatus", index);
         if (archiveStatus != null) {
             properties.setArchiveStatus(ArchiveStatus.fromString(archiveStatus));
         }
 
-        String rehydratePriority = getVarChar(root, "RehydratePriority", index);
+        String rehydratePriority = getVarChar(batch, "RehydratePriority", index);
         if (rehydratePriority != null) {
             properties.setRehydratePriority(RehydratePriority.fromString(rehydratePriority));
         }
 
-        // TagCount and RemainingRetentionDays — service uses uint64 but property is Integer
-        Long tagCount = getUInt64(root, "TagCount", index);
+        Long tagCount = getUInt64(batch, "TagCount", index);
         if (tagCount != null) {
             properties.setTagCount(tagCount.intValue());
         }
-        Long remainingRetentionDays = getUInt64(root, "RemainingRetentionDays", index);
+        Long remainingRetentionDays = getUInt64(batch, "RemainingRetentionDays", index);
         if (remainingRetentionDays != null) {
             properties.setRemainingRetentionDays(remainingRetentionDays.intValue());
         }
@@ -314,69 +279,64 @@ public final class ArrowBlobListDeserializer {
         return item;
     }
 
-    // --- Safe vector read helpers ---
-    // Each returns null if the column is absent from the schema or the value is null at the given row.
-
-    private static String getVarChar(VectorSchemaRoot root, String name, int index) {
-        FieldVector vec = root.getVector(name);
-        if (vec == null || vec.isNull(index)) {
+    private static String getVarChar(Batch batch, String name, int index) {
+        Column column = batch.getColumn(name);
+        if (column == null || column.isNull(index)) {
             return null;
         }
-        return new String(((VarCharVector) vec).get(index), StandardCharsets.UTF_8);
+        if (!(column instanceof StringColumn)) {
+            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
+                + "' has unsupported string column type '" + column.getClass().getSimpleName() + "'.");
+        }
+        return ((StringColumn) column).get(index);
     }
 
-    private static Long getUInt64(VectorSchemaRoot root, String name, int index) {
-        FieldVector vec = root.getVector(name);
-        if (vec == null || vec.isNull(index)) {
+    private static Long getUInt64(Batch batch, String name, int index) {
+        Column column = batch.getColumn(name);
+        if (column == null || column.isNull(index)) {
             return null;
         }
-        // Arrow may represent uint64 as BigIntVector (signed 64-bit) or UInt8Vector
-        if (vec instanceof BigIntVector) {
-            return ((BigIntVector) vec).get(index);
-        } else if (vec instanceof UInt8Vector) {
-            return ((UInt8Vector) vec).get(index);
+        if (!(column instanceof IntColumn)) {
+            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
+                + "' has unsupported integer column type '" + column.getClass().getSimpleName() + "'.");
         }
-        return null;
+        return ((IntColumn) column).get(index);
     }
 
-    private static Boolean getBit(VectorSchemaRoot root, String name, int index) {
-        FieldVector vec = root.getVector(name);
-        if (vec == null || vec.isNull(index)) {
+    private static Boolean getBit(Batch batch, String name, int index) {
+        Column column = batch.getColumn(name);
+        if (column == null || column.isNull(index)) {
             return null;
         }
-        return ((BitVector) vec).get(index) == 1;
+        if (!(column instanceof BoolColumn)) {
+            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
+                + "' has unsupported boolean column type '" + column.getClass().getSimpleName() + "'.");
+        }
+        return ((BoolColumn) column).get(index);
     }
 
-    private static OffsetDateTime getTimestamp(VectorSchemaRoot root, String name, int index) {
-        FieldVector vec = root.getVector(name);
-        if (vec == null || vec.isNull(index)) {
+    private static OffsetDateTime getTimestamp(Batch batch, String name, int index) {
+        Column column = batch.getColumn(name);
+        if (column == null || column.isNull(index)) {
             return null;
         }
-        // Service returns Timestamp(SECOND, null) — epoch seconds without timezone, treat as UTC
-        if (vec instanceof TimeStampSecVector) {
-            long epochSeconds = ((TimeStampSecVector) vec).get(index);
-            return OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneOffset.UTC);
+        if (!(column instanceof TimestampColumn)) {
+            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
+                + "' has unsupported timestamp column type '" + column.getClass().getSimpleName() + "'.");
         }
-        return null;
+        long epochSeconds = ((TimestampColumn) column).getEpochSeconds(index);
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneOffset.UTC);
     }
 
-    private static Map<String, String> getMap(VectorSchemaRoot root, String name, int index) {
-        FieldVector vec = root.getVector(name);
-        if (vec == null || vec.isNull(index)) {
+    private static Map<String, String> getMap(Batch batch, String name, int index) {
+        Column column = batch.getColumn(name);
+        if (column == null || column.isNull(index)) {
             return null;
         }
-        if (vec instanceof MapVector) {
-            MapVector mapVec = (MapVector) vec;
-            UnionMapReader reader = mapVec.getReader();
-            reader.setPosition(index);
-            Map<String, String> map = new HashMap<>();
-            while (reader.next()) {
-                String key = reader.key().readText().toString();
-                String value = reader.value().readText().toString();
-                map.put(key, value);
-            }
-            return map.isEmpty() ? null : map;
+        if (!(column instanceof MapColumn)) {
+            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
+                + "' has unsupported map column type '" + column.getClass().getSimpleName() + "'.");
         }
-        return null;
+        return ((MapColumn) column).get(index);
     }
 }

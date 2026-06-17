@@ -602,7 +602,8 @@
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
-                
+
+                <include>org.apache.arrow:arrow-format:[18.1.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
                 <include>org.apache.arrow:arrow-memory-core:[18.1.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
                 <include>org.apache.arrow:arrow-memory-unsafe:[18.1.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
                 <include>org.apache.arrow:arrow-vector:[18.1.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-vector;external_dependency} -->

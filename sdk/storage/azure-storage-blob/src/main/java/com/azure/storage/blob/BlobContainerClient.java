@@ -34,6 +34,7 @@ import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer.ArrowListBlobsResult;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -63,7 +64,9 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import com.azure.xml.XmlReader;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import javax.xml.stream.XMLStreamException;
 import java.net.URI;
 import java.time.Duration;
@@ -1063,38 +1066,45 @@ public final class BlobContainerClient {
 
                 String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
-                if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
-                    // Arrow response — parse with Arrow deserializer
-                    ArrowBlobListDeserializer.ArrowListBlobsResult arrowResult
-                        = ArrowBlobListDeserializer.deserialize(response.getValue());
+                // The response body is an InputStream backed by the network buffer. It must be closed to release the
+                // underlying buffer, otherwise the transport (e.g. Netty) will report a resource leak.
+                try (InputStream responseBody = response.getValue()) {
+                    if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                        // Arrow response — parse with Arrow parser entrypoint
+                        ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(responseBody);
 
-                    List<BlobItem> value = arrowResult.getBlobItems()
-                        .stream()
-                        .map(ModelHelper::populateBlobItem)
-                        .collect(Collectors.toList());
-
-                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, arrowResult.getNextMarker(), response.getDeserializedHeaders());
-                } else {
-                    // XML fallback — service returned XML instead of Arrow
-                    try {
-                        ListBlobsFlatSegmentResponse xmlResponse
-                            = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromStream(response.getValue()));
-
-                        List<BlobItem> value = xmlResponse.getSegment() == null
-                            ? Collections.emptyList()
-                            : xmlResponse.getSegment()
-                                .getBlobItems()
-                                .stream()
-                                .map(ModelHelper::populateBlobItem)
-                                .collect(Collectors.toList());
+                        List<BlobItem> value = arrowResult.getBlobItems()
+                            .stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
 
                         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), value, xmlResponse.getNextMarker(), null);
-                    } catch (XMLStreamException e) {
-                        throw LOGGER
-                            .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                            response.getHeaders(), value, arrowResult.getNextMarker(),
+                            response.getDeserializedHeaders());
+                    } else {
+                        // XML fallback — service returned XML instead of Arrow
+                        try {
+                            ListBlobsFlatSegmentResponse xmlResponse
+                                = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromStream(responseBody));
+
+                            List<BlobItem> value = xmlResponse.getSegment() == null
+                                ? Collections.emptyList()
+                                : xmlResponse.getSegment()
+                                    .getBlobItems()
+                                    .stream()
+                                    .map(ModelHelper::populateBlobItem)
+                                    .collect(Collectors.toList());
+
+                            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                                response.getHeaders(), value, xmlResponse.getNextMarker(), null);
+                        } catch (XMLStreamException e) {
+                            throw LOGGER
+                                .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                        }
                     }
+                } catch (IOException e) {
+                    throw LOGGER
+                        .logExceptionAsError(new UncheckedIOException("Failed to close ListBlobs response stream.", e));
                 }
             } else {
                 Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
@@ -1260,38 +1270,45 @@ public final class BlobContainerClient {
 
             String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
-            if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
-                ArrowBlobListDeserializer.ArrowListBlobsResult arrowResult
-                    = ArrowBlobListDeserializer.deserialize(response.getValue());
+            // The response body is an InputStream backed by the network buffer. It must be closed to release the
+            // underlying buffer, otherwise the transport (e.g. Netty) will report a resource leak.
+            try (InputStream responseBody = response.getValue()) {
+                if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                    ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(responseBody);
 
-                List<BlobItem> value = arrowResult.getBlobItems()
-                    .stream()
-                    .map(ModelHelper::populateBlobItem)
-                    .collect(Collectors.toList());
-
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    value, arrowResult.getNextMarker(), response.getDeserializedHeaders());
-            } else {
-                // XML fallback — service returned XML instead of Arrow
-                try {
-                    ListBlobsHierarchySegmentResponse xmlResponse
-                        = ListBlobsHierarchySegmentResponse.fromXml(XmlReader.fromStream(response.getValue()));
-
-                    BlobHierarchyListSegment segment = xmlResponse.getSegment();
-                    List<BlobItem> value = new ArrayList<>();
-                    if (segment != null) {
-                        segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
-                        segment.getBlobPrefixes()
-                            .forEach(prefix -> value
-                                .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
-                                    .setIsPrefix(true)));
-                    }
+                    List<BlobItem> value = arrowResult.getBlobItems()
+                        .stream()
+                        .map(ModelHelper::populateBlobItem)
+                        .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, xmlResponse.getNextMarker(), null);
-                } catch (XMLStreamException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                        response.getHeaders(), value, arrowResult.getNextMarker(), response.getDeserializedHeaders());
+                } else {
+                    // XML fallback — service returned XML instead of Arrow
+                    try {
+                        ListBlobsHierarchySegmentResponse xmlResponse
+                            = ListBlobsHierarchySegmentResponse.fromXml(XmlReader.fromStream(responseBody));
+
+                        BlobHierarchyListSegment segment = xmlResponse.getSegment();
+                        List<BlobItem> value = new ArrayList<>();
+                        if (segment != null) {
+                            segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                            segment.getBlobPrefixes()
+                                .forEach(prefix -> value
+                                    .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
+                                        .setIsPrefix(true)));
+                        }
+
+                        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), value, xmlResponse.getNextMarker(), null);
+                    } catch (XMLStreamException e) {
+                        throw LOGGER
+                            .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                    }
                 }
+            } catch (IOException e) {
+                throw LOGGER
+                    .logExceptionAsError(new UncheckedIOException("Failed to close ListBlobs response stream.", e));
             }
         } else {
             Callable<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation

@@ -57,7 +57,6 @@
       --add-reads com.azure.storage.blob=com.azure.core.http.jdk.httpclient
       --add-reads com.azure.storage.blob=com.azure.core.http.vertx
       --add-opens java.base/java.nio=ALL-UNNAMED <!-- Arrow's BufferAllocator uses sun.misc.Unsafe to allocate direct byte buffers, which requires this open. -->
-      --add-opens=java.base/java.nio=org.apache.arrow.memory.core,ALL-UNNAMED <!-- Arrow's BufferAllocator uses sun.misc.Unsafe to allocate direct byte buffers, which requires this open. -->
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
 
@@ -142,25 +141,38 @@
     </dependency>
 
     <!-- Arrow dependencies -->
+    <!-- The internal ListBlobs Arrow reader decodes the IPC stream using only the arrow-format flatbuffer
+         definitions, so arrow-format is the sole compile-scoped Arrow dependency. arrow-vector / arrow-memory-* /
+         checker-qual are test-only: they back the parity test that builds a real Arrow payload with the official
+         writer to validate the internal reader. -->
+    <dependency>
+      <groupId>org.apache.arrow</groupId>
+      <artifactId>arrow-format</artifactId>
+      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
+    </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-vector</artifactId>
       <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-vector;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-memory-core</artifactId>
       <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-memory-unsafe</artifactId>
       <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.checkerframework</groupId>
       <artifactId>checker-qual</artifactId>
       <version>3.42.0</version> <!-- {x-version-update;org.checkerframework:checker-qual;external_dependency} -->
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

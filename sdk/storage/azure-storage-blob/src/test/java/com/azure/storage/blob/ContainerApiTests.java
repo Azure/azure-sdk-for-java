@@ -2307,7 +2307,7 @@ public class ContainerApiTests extends BlobTestBase {
 
         AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(cc.getHttpPipeline())
             .url(cc.getAccountUrl())
-            .version(cc.getServiceVersion().getVersion())
+            .version(BlobServiceVersion.getLatest().getVersion())
             .buildClient();
 
         // Call the Arrow endpoint
