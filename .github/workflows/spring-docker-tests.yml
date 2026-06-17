@@ -5,8 +5,10 @@ on:
     paths:
       - '.github/workflows/spring-docker-tests.yml'
       - 'pom.xml'
-      - 'sdk/spring/**'
       - 'sdk/parents/**'
+      - 'sdk/spring/pom.xml'
+      - 'sdk/spring/spring-cloud-azure-testcontainers/**'
+      - 'sdk/spring/spring-cloud-azure-docker-compose/**'
   workflow_dispatch:
 
 permissions:
