@@ -5,8 +5,9 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.BetaAgentsClient;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
@@ -29,34 +30,32 @@ public class SessionsSample {
         String image = Configuration.getGlobalConfiguration().get("FOUNDRY_AGENT_CONTAINER_IMAGE");
         String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME;
 
-        AgentsClient agentsClient = new AgentsClientBuilder()
+        AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildAgentsClient();
+            .endpoint(endpoint);
+        AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
+        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
             AgentSessionResource session = resources.getSession();
 
-            AgentSessionResource fetched = agentsClient.getSession(agentName, session.getAgentSessionId(),
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+            AgentSessionResource fetched = betaAgentsClient.getSession(agentName, session.getAgentSessionId(), null);
             System.out.printf("Retrieved session (id: %s, status: %s)%n", fetched.getAgentSessionId(),
                 fetched.getStatus());
 
             System.out.println("Listing sessions for the agent...");
-            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName,
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null, null);
+            PagedIterable<AgentSessionResource> sessions = betaAgentsClient.listSessions(agentName, null, null, null, null, null);
             for (AgentSessionResource item : sessions) {
                 System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(), item.getStatus());
             }
 
             System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-            agentsClient.deleteSession(agentName, session.getAgentSessionId(),
-                AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+            betaAgentsClient.deleteSession(agentName, session.getAgentSessionId(), null);
             System.out.printf("Session with id: %s deleted.%n", session.getAgentSessionId());
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
         }
     }
 }

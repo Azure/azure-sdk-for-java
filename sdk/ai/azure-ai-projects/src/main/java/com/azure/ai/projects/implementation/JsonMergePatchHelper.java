@@ -15,6 +15,23 @@ import java.util.Map;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
+    private static UpdateModelVersionInputAccessor updateModelVersionInputAccessor;
+
+    public interface UpdateModelVersionInputAccessor {
+        UpdateModelVersionInput prepareModelForJsonMergePatch(UpdateModelVersionInput updateModelVersionInput,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateModelVersionInput updateModelVersionInput);
+    }
+
+    public static void setUpdateModelVersionInputAccessor(UpdateModelVersionInputAccessor accessor) {
+        updateModelVersionInputAccessor = accessor;
+    }
+
+    public static UpdateModelVersionInputAccessor getUpdateModelVersionInputAccessor() {
+        return updateModelVersionInputAccessor;
+    }
+
     private static DatasetVersionAccessor datasetVersionAccessor;
 
     public interface DatasetVersionAccessor {
@@ -104,22 +121,5 @@ public class JsonMergePatchHelper {
 
     public static EmbeddingConfigurationAccessor getEmbeddingConfigurationAccessor() {
         return embeddingConfigurationAccessor;
-    }
-
-    private static UpdateModelVersionInputAccessor updateModelVersionInputAccessor;
-
-    public interface UpdateModelVersionInputAccessor {
-        UpdateModelVersionInput prepareModelForJsonMergePatch(UpdateModelVersionInput updateModelVersionInput,
-            boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(UpdateModelVersionInput updateModelVersionInput);
-    }
-
-    public static void setUpdateModelVersionInputAccessor(UpdateModelVersionInputAccessor accessor) {
-        updateModelVersionInputAccessor = accessor;
-    }
-
-    public static UpdateModelVersionInputAccessor getUpdateModelVersionInputAccessor() {
-        return updateModelVersionInputAccessor;
     }
 }

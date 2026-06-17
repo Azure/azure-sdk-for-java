@@ -187,7 +187,7 @@ public final class ArtifactSigningManagementClientImpl implements ArtifactSignin
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-13";
+        this.apiVersion = "2026-05-15-preview";
         this.operations = new OperationsClientImpl(this);
         this.codeSigningAccounts = new CodeSigningAccountsClientImpl(this);
         this.certificateProfiles = new CertificateProfilesClientImpl(this);

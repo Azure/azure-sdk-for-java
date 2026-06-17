@@ -4,41 +4,20 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
-import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.MultipartFormDataHelper;
-import com.azure.ai.agents.implementation.SessionLogStreamHelper;
-import com.azure.ai.agents.implementation.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
-import com.azure.ai.agents.implementation.models.CreateSessionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
-import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.CandidateDeployConfig;
-import com.azure.ai.agents.models.CandidateMetadata;
-import com.azure.ai.agents.models.CandidateResults;
-import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
-import com.azure.ai.agents.models.JobStatus;
-import com.azure.ai.agents.models.OptimizationCandidatePagedResult;
-import com.azure.ai.agents.models.OptimizationJob;
-import com.azure.ai.agents.models.OptimizationJobInputs;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.PromoteCandidateInput;
-import com.azure.ai.agents.models.PromoteCandidateResult;
-import com.azure.ai.agents.models.SessionLogEvent;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -72,7 +51,9 @@ public final class AgentsAsyncClient {
     private final AgentsImpl serviceClient;
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     *
+     * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -158,7 +139,10 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent
+     *
+     * Retrieves an agent definition by its unique name along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -167,17 +151,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version
+     *
+     * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -304,7 +280,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -374,7 +352,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     *
+     * Retrieves an agent definition by its unique name.
      *
      * @param agentName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,7 +363,9 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an agent
+     *
+     * Retrieves an agent definition by its unique name on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -395,7 +377,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -425,7 +409,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      *
      * @param agentName The name of the agent to retrieve versions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,7 +444,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version.
+     * Create an agent version
+     *
+     * Creates a new version for the specified agent and returns the created version resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -486,17 +474,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates the agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent
+     *
+     * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -649,18 +629,10 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent
+     *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -779,6 +751,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent
+     *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -814,7 +788,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -929,6 +905,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
@@ -1045,7 +1023,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1118,7 +1098,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1149,6 +1131,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1178,7 +1162,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1210,6 +1196,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1247,7 +1235,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1287,7 +1277,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1329,7 +1321,10 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1339,7 +1334,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      *
      * @param agentName The name of the agent to retrieve.
      * @param agentVersion The version of the agent to retrieve.
@@ -1349,7 +1346,10 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1361,7 +1361,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      *
      * @param kind Filter agents by kind. If not provided, all agents are returned.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -1419,7 +1421,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      *
      * @param agentName The name of the agent to retrieve versions for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -1475,7 +1479,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1591,7 +1597,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1630,7 +1638,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     *
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1694,7 +1704,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     *
+     * Returns the conversations available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1769,6 +1781,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Delete an agent
+     *
      * Deletes an agent. For hosted agents, if any version has active sessions, the request
      * is rejected with HTTP 409 unless `force` is set to true. When force is true, all
      * associated sessions are cascade-deleted along with the agent and its versions.
@@ -1808,6 +1822,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Delete an agent version
+     *
      * Deletes a specific version of an agent. For hosted agents, if the version has active
      * sessions, the request is rejected with HTTP 409 unless `force` is set to true. When
      * force is true, all sessions associated with this version are cascade-deleted.
@@ -1850,120 +1866,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Retrieves a session by ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
+     * Create an agent
      *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionWithResponse(String agentName, String sessionId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSessionWithResponseAsync(agentName, sessionId, requestOptions);
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSessions(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listSessionsAsync(agentName, requestOptions);
-    }
-
-    /**
-     * Creates the agent.
+     * Creates a new agent or a new version of an existing agent.
      *
      * @param options Options for createAgent API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1979,7 +1884,6 @@ public final class AgentsAsyncClient {
     Mono<AgentDetails> createAgent(CreateAgentOptions options) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        AgentDefinitionOptInKeys foundryFeatures = options.getFoundryFeatures();
         CreateAgentRequest createAgentRequestObj
             = new CreateAgentRequest(options.getAgentName(), options.getDefinition()).setMetadata(options.getMetadata())
                 .setDescription(options.getDescription())
@@ -1987,56 +1891,11 @@ public final class AgentsAsyncClient {
                 .setAgentEndpoint(options.getAgentEndpoint())
                 .setAgentCard(options.getAgentCard());
         BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         return createAgentWithResponse(createAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 
     /**
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @param blueprintReference The blueprint reference for the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description,
-        AgentBlueprintReference blueprintReference) {
-        // Generated convenience method for updateAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition).setMetadata(metadata)
-            .setDescription(description)
-            .setBlueprintReference(blueprintReference);
-        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
      * Create a new agent version.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
@@ -2044,366 +1903,6 @@ public final class AgentsAsyncClient {
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
      * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @param blueprintReference The blueprint reference for the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description,
-        AgentBlueprintReference blueprintReference) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest createAgentVersionRequestObj
-            = new CreateAgentVersionRequest(definition).setMetadata(metadata)
-                .setDescription(description)
-                .setBlueprintReference(blueprintReference);
-        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
-     * Retrieves a session by ID.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> getSession(String agentName, String sessionId) {
-        // Generated convenience method for getSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     *
-     * @param agentName The name of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentSessionResource> listSessions(String agentName) {
-        // Generated convenience method for listSessions
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, AgentSessionResource>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
-     * {@link SessionLogEvent} values.
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId) {
-        RequestOptions requestOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
-            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
-        return getSessionLogStream(agentName, agentVersion, sessionId, requestOptions);
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
-     * {@link SessionLogEvent} values.
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
-        RequestOptions requestOptions) {
-        return SessionLogStreamHelper
-            .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer()));
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session
-     * as a Server-Sent Events (SSE) stream.
-     *
-     * Each SSE frame contains:
-     * - `event`: always `"log"`
-     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
-     * is not contractual and may include additional keys or change format
-     * over time — clients should treat it as an opaque string)
-     *
-     * Example SSE frames:
-     * ```
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
-     * 8088"}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
-     * ```
-     *
-     * The stream remains open until the client disconnects or the server
-     * terminates the connection. Clients should handle reconnection as needed.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     event: String(log) (Required)
-     *     data: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     *
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionLogStreamWithResponse(String agentName, String agentVersion,
-        String sessionId, RequestOptions requestOptions) {
-        return this.serviceClient.getSessionLogStreamWithResponseAsync(agentName, agentVersion, sessionId,
-            requestOptions);
-    }
-
-    /**
-     * Updates an agent endpoint.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *             status: String(creating/active/failed/deleting/deleted) (Optional)
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentDetailsWithResponse(String agentName,
-        BinaryData patchAgentObjectRequest, RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentDetailsWithResponseAsync(agentName, patchAgentObjectRequest,
-            requestOptions);
-    }
-
-    /**
-     * Create a new agent version.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -2421,15 +1920,12 @@ public final class AgentsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
+        Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
@@ -2442,7 +1938,6 @@ public final class AgentsAsyncClient {
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
      * @param createAgentVersionInput The request body for creating an agent version, which includes the agent
      * definition and optional metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2454,885 +1949,20 @@ public final class AgentsAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinitionOptInKeys foundryFeatures,
+    public Mono<AgentVersionDetails> createAgentVersion(String agentName,
         CreateAgentVersionInput createAgentVersionInput) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
     }
 
     /**
-     * Updates an agent endpoint.
+     * List conversations
      *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for updateAgentDetailsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Updates an agent endpoint.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest) {
-        // Generated convenience method for updateAgentDetailsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
-     * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
-     * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *             status: String(creating/active/failed/deleting/deleted) (Optional)
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The unique name that identifies the agent. Max 63 chars, must start and end with alphanumeric,
-     * hyphens allowed in the middle.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createAgentFromCodeWithResponse(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
-        // Operation 'createAgentFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable and
-        // hence not generated.
-        return this.serviceClient.createAgentFromCodeWithResponseAsync(agentName, codeZipSha256, content,
-            requestOptions);
-    }
-
-    /**
-     * Updates a code-based agent by uploading new code and creating a new version.
-     * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *             status: String(creating/active/failed/deleting/deleted) (Optional)
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> updateAgentFromCodeWithResponse(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
-        // Operation 'updateAgentFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable and
-        // hence not generated.
-        return this.serviceClient.updateAgentFromCodeWithResponseAsync(agentName, codeZipSha256, content,
-            requestOptions);
-    }
-
-    /**
-     * The createAgentVersionFromCode operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     created_at: long (Required)
-     *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
-     *         rai_config (Optional): {
-     *             rai_policy_name: String (Required)
-     *         }
-     *     }
-     *     status: String(creating/active/failed/deleting/deleted) (Optional)
-     *     instance_identity (Optional): {
-     *         principal_id: String (Required)
-     *         client_id: String (Required)
-     *     }
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): {
-     *         type: String(ManagedAgentIdentityBlueprint) (Required)
-     *     }
-     *     agent_guid: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createAgentVersionFromCodeWithResponse(String agentName, String codeZipSha256,
-        BinaryData content, RequestOptions requestOptions) {
-        // Operation 'createAgentVersionFromCode' is of content-type 'multipart/form-data'. Protocol API is not usable
-        // and hence not generated.
-        return this.serviceClient.createAgentVersionFromCodeWithResponseAsync(agentName, codeZipSha256, content,
-            requestOptions);
-    }
-
-    /**
-     * Download the code zip for a code-based hosted agent.
-     * Returns the previously-uploaded zip (`application/zip`).
-     *
-     * If `agent_version` is supplied, returns that version's code zip; otherwise
-     * returns the latest version's code zip.
-     *
-     * The SHA-256 digest of the returned bytes matches the `content_hash` on the
-     * resolved version's `code_configuration`.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>agent_version</td><td>String</td><td>No</td><td>The version of the agent whose code zip should be
-     * downloaded.
-     * If omitted, the latest version's code zip is returned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadAgentCodeWithResponse(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.downloadAgentCodeWithResponseAsync(agentName, requestOptions);
-    }
-
-    /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Optional)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param createSessionRequest The createSessionRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSessionWithResponse(String agentName, BinaryData createSessionRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createSessionWithResponseAsync(agentName, createSessionRequest, requestOptions);
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSessionWithResponse(String agentName, String sessionId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteSessionWithResponseAsync(agentName, sessionId, requestOptions);
-    }
-
-    /**
-     * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
-     * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
-     * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     *
-     * @param agentName The unique name that identifies the agent. Max 63 chars, must start and end with alphanumeric,
-     * hyphens allowed in the middle.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentDetails> createAgentFromCode(String agentName, String codeZipSha256, CreateAgentFromCodeContent content,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for createAgentFromCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createAgentFromCodeWithResponse(agentName, codeZipSha256,
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
-                .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
-                    content.getCode().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
-     * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
-     * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     *
-     * @param agentName The unique name that identifies the agent. Max 63 chars, must start and end with alphanumeric,
-     * hyphens allowed in the middle.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentDetails> createAgentFromCode(String agentName, String codeZipSha256, CreateAgentFromCodeContent content) {
-        // Generated convenience method for createAgentFromCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createAgentFromCodeWithResponse(agentName, codeZipSha256,
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
-                .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
-                    content.getCode().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Updates a code-based agent by uploading new code and creating a new version.
-     * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentFromCode(String agentName, String codeZipSha256,
-        CreateAgentVersionFromCodeContent content, AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for updateAgentFromCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return updateAgentFromCodeWithResponse(agentName, codeZipSha256,
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
-                .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
-                    content.getCode().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Updates a code-based agent by uploading new code and creating a new version.
-     * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
-     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
-     * irrelevant).
-     * Maximum upload size is 250 MB.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentFromCode(String agentName, String codeZipSha256,
-        CreateAgentVersionFromCodeContent content) {
-        // Generated convenience method for updateAgentFromCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return updateAgentFromCodeWithResponse(agentName, codeZipSha256,
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
-                .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
-                    content.getCode().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * The createAgentVersionFromCode operation.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersionFromCode(String agentName, String codeZipSha256,
-        CreateAgentVersionFromCodeContent content, AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for createAgentVersionFromCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createAgentVersionFromCodeWithResponse(agentName, codeZipSha256,
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
-                .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
-                    content.getCode().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
-     * The createAgentVersionFromCode operation.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
-     * verification.
-     * @param content The content parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersionFromCode(String agentName, String codeZipSha256,
-        CreateAgentVersionFromCodeContent content) {
-        // Generated convenience method for createAgentVersionFromCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createAgentVersionFromCodeWithResponse(agentName, codeZipSha256,
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("metadata", content.getMetadata())
-                .serializeFileField("code", content.getCode().getContent(), content.getCode().getContentType(),
-                    content.getCode().getFilename())
-                .end()
-                .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
-     * Download the code zip for a code-based hosted agent.
-     * Returns the previously-uploaded zip (`application/zip`).
-     *
-     * If `agent_version` is supplied, returns that version's code zip; otherwise
-     * returns the latest version's code zip.
-     *
-     * The SHA-256 digest of the returned bytes matches the `content_hash` on the
-     * resolved version's `code_configuration`.
-     *
-     * @param agentName The name of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadAgentCode(String agentName) {
-        // Generated convenience method for downloadAgentCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return downloadAgentCodeWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param versionIndicator Determines which agent version backs the session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> createSession(String agentName, VersionIndicator versionIndicator) {
-        // Generated convenience method for createSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj = new CreateSessionRequest(versionIndicator);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSession(String agentName, String sessionId) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Download the code zip for a code-based hosted agent.
-     * Returns the previously-uploaded zip (`application/zip`).
-     *
-     * If `agent_version` is supplied, returns that version's code zip; otherwise
-     * returns the latest version's code zip.
-     *
-     * The SHA-256 digest of the returned bytes matches the `content_hash` on the
-     * resolved version's `code_configuration`.
-     *
-     * @param agentName The name of the agent.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param agentVersion The version of the agent whose code zip should be downloaded.
-     * If omitted, the latest version's code zip is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadAgentCode(String agentName, AgentDefinitionOptInKeys foundryFeatures,
-        String agentVersion) {
-        // Generated convenience method for downloadAgentCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (agentVersion != null) {
-            requestOptions.addQueryParam("agent_version", agentVersion, false);
-        }
-        return downloadAgentCodeWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns the list of all conversations.
+     * Returns the conversations available in the current project.
      *
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
@@ -3464,2061 +2094,40 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates an agent optimization job.
+     * Update an agent
      *
-     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
-     * absent, the server creates the job unconditionally.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent (Required): {
-     *         agent_name: String (Required)
-     *         agent_version: String (Optional)
-     *     }
-     *     train_dataset_reference (Required): {
-     *         name: String (Required)
-     *         version: String (Optional)
-     *     }
-     *     validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *     evaluators (Optional): [
-     *         String (Optional)
-     *     ]
-     *     options (Optional): {
-     *         max_iterations: Integer (Optional)
-     *         optimization_config (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         eval_model: String (Optional)
-     *         optimization_model: String (Optional)
-     *         evaluation_level: String(turn/conversation) (Optional)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
      *
-     * @param inputs The optimization job inputs.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOptimizationJobWithResponse(BinaryData inputs,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOptimizationJobWithResponseAsync(inputs, requestOptions);
-    }
-
-    /**
-     * Get info about an agent optimization job.
+     * @param agentName The name of the agent to retrieve.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
      *
-     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The ID of the job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about an agent optimization job.
-     *
-     * Get an optimization job by id along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.getOptimizationJobWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Returns a list of agent optimization jobs.
-     *
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOptimizationJobs(RequestOptions requestOptions) {
-        return this.serviceClient.listOptimizationJobsAsync(requestOptions);
-    }
-
-    /**
-     * Cancels an agent optimization job.
-     *
-     * Request cancellation. Idempotent on terminal states.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The ID of the job to cancel.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelOptimizationJobWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Deletes an agent optimization job.
-     *
-     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>force</td><td>Boolean</td><td>No</td><td>When true, force-delete even if the job is in a non-terminal
-     * state.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param jobId The ID of the job to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteOptimizationJobWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Returns a list of candidates for an optimization job.
-     *
-     * List candidates produced by a job.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     data (Required): [
-     *          (Required){
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *     ]
-     *     first_id: String (Optional)
-     *     last_id: String (Optional)
-     *     has_more: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The optimization job id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listOptimizationCandidatesWithResponse(String jobId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.listOptimizationCandidatesWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Get a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     job_id: String (Required)
-     *     candidate_name: String (Required)
-     *     status: String (Required)
-     *     score: Double (Optional)
-     *     has_results: boolean (Required)
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     *     promotion (Optional): {
-     *         promoted_at: long (Required)
-     *         agent_name: String (Required)
-     *         agent_version: String (Required)
-     *     }
-     *     files (Required): [
-     *          (Required){
-     *             path: String (Required)
-     *             type: String (Required)
-     *             size_bytes: long (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getOptimizationCandidateWithResponseAsync(jobId, candidateId, requestOptions);
-    }
-
-    /**
-     * Get candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     instructions: String (Optional)
-     *     model: String (Optional)
-     *     temperature: Double (Optional)
-     *     skills (Optional): [
-     *          (Optional){
-     *             String: BinaryData (Required)
-     *         }
-     *     ]
-     *     tools (Optional): [
-     *          (Optional){
-     *             String: BinaryData (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateConfigWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getOptimizationCandidateConfigWithResponseAsync(jobId, candidateId, requestOptions);
-    }
-
-    /**
-     * Get candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     results (Required): [
-     *          (Required){
-     *             task_name: String (Required)
-     *             query: String (Optional)
-     *             scores (Required): {
-     *                 String: double (Required)
-     *             }
-     *             composite_score: double (Required)
-     *             tokens: long (Required)
-     *             duration_seconds: double (Required)
-     *             passed: boolean (Required)
-     *             error_message: String (Optional)
-     *             rationales (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             response: String (Optional)
-     *             run_id: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateResultsWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getOptimizationCandidateResultsWithResponseAsync(jobId, candidateId, requestOptions);
-    }
-
-    /**
-     * Get info about an agent optimization job.
-     *
-     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     *
-     * @param jobId The ID of the job.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @param blueprintReference The blueprint reference for the agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return info about an agent optimization job.
-     *
-     * Get an optimization job by id on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> getOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationJobWithResponse
+    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
+        String description, AgentBlueprintReference blueprintReference) {
+        // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Get info about an agent optimization job.
-     *
-     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     *
-     * @param jobId The ID of the job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return info about an agent optimization job.
-     *
-     * Get an optimization job by id on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> getOptimizationJob(String jobId) {
-        // Generated convenience method for getOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Returns a list of agent optimization jobs.
-     *
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
-     *
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param status Filter to jobs in this lifecycle state.
-     * @param agentName Filter to jobs targeting this agent name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OptimizationJob> listOptimizationJobs(FoundryFeaturesOptInKeys foundryFeatures, Integer limit,
-        PageOrder order, String after, String before, JobStatus status, String agentName) {
-        // Generated convenience method for listOptimizationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (status != null) {
-            requestOptions.addQueryParam("status", status.toString(), false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agent_name", agentName, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationJobs(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, OptimizationJob>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Returns a list of agent optimization jobs.
-     *
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OptimizationJob> listOptimizationJobs() {
-        // Generated convenience method for listOptimizationJobs
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listOptimizationJobs(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, OptimizationJob>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Cancels an agent optimization job.
-     *
-     * Request cancellation. Idempotent on terminal states.
-     *
-     * @param jobId The ID of the job to cancel.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> cancelOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for cancelOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return cancelOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Cancels an agent optimization job.
-     *
-     * Request cancellation. Idempotent on terminal states.
-     *
-     * @param jobId The ID of the job to cancel.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> cancelOptimizationJob(String jobId) {
-        // Generated convenience method for cancelOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return cancelOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Deletes an agent optimization job.
-     *
-     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
-     *
-     * @param jobId The ID of the job to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteOptimizationJob(String jobId) {
-        // Generated convenience method for deleteOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns a list of candidates for an optimization job.
-     *
-     * List candidates produced by a job.
-     *
-     * @param jobId The optimization job id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationCandidatePagedResult> listOptimizationCandidates(String jobId,
-        FoundryFeaturesOptInKeys foundryFeatures, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listOptimizationCandidatesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return listOptimizationCandidatesWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationCandidatePagedResult.class));
-    }
-
-    /**
-     * Returns a list of candidates for an optimization job.
-     *
-     * List candidates produced by a job.
-     *
-     * @param jobId The optimization job id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationCandidatePagedResult> listOptimizationCandidates(String jobId) {
-        // Generated convenience method for listOptimizationCandidatesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return listOptimizationCandidatesWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationCandidatePagedResult.class));
-    }
-
-    /**
-     * Get a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateMetadata> getOptimizationCandidate(String jobId, String candidateId,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateMetadata.class));
-    }
-
-    /**
-     * Get a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate by id.
-     *
-     * Get a single candidate's metadata, manifest, and promotion info on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateMetadata> getOptimizationCandidate(String jobId, String candidateId) {
-        // Generated convenience method for getOptimizationCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateMetadata.class));
-    }
-
-    /**
-     * Get candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateDeployConfig> getOptimizationCandidateConfig(String jobId, String candidateId,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateConfigWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateConfigWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateDeployConfig.class));
-    }
-
-    /**
-     * Get candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return candidate deploy config.
-     *
-     * Get the candidate's deploy config JSON on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateDeployConfig> getOptimizationCandidateConfig(String jobId, String candidateId) {
-        // Generated convenience method for getOptimizationCandidateConfigWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationCandidateConfigWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateDeployConfig.class));
-    }
-
-    /**
-     * Get candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateResults> getOptimizationCandidateResults(String jobId, String candidateId,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateResultsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateResultsWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateResults.class));
-    }
-
-    /**
-     * Get candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return candidate evaluation results.
-     *
-     * Get full per-task evaluation results for a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CandidateResults> getOptimizationCandidateResults(String jobId, String candidateId) {
-        // Generated convenience method for getOptimizationCandidateResultsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationCandidateResultsWithResponse(jobId, candidateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CandidateResults.class));
-    }
-
-    /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopSessionWithResponse(String agentName, String sessionId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.stopSessionWithResponseAsync(agentName, sessionId, requestOptions);
-    }
-
-    /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param versionIndicator Determines which agent version backs the session.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
-     * endpoint. Auto-generated if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> createSession(String agentName, VersionIndicator versionIndicator,
-        String userIsolationKey, String agentSessionId) {
-        // Generated convenience method for createSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj
-            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Retrieves a session by ID.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> getSession(String agentName, String sessionId,
-        AgentDefinitionOptInKeys foundryFeatures, String userIsolationKey) {
-        // Generated convenience method for getSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return getSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSession(String agentName, String sessionId, AgentDefinitionOptInKeys foundryFeatures,
-        String userIsolationKey) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return deleteSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopSession(String agentName, String sessionId, AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for stopSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return stopSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopSession(String agentName, String sessionId) {
-        // Generated convenience method for stopSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return stopSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     *
-     * @param agentName The name of the agent.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentSessionResource> listSessions(String agentName, AgentDefinitionOptInKeys foundryFeatures,
-        String userIsolationKey, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listSessions
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, AgentSessionResource>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Creates an agent optimization job.
-     *
-     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
-     *
-     * @param inputs The optimization job inputs.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
-     * unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> createOptimizationJob(OptimizationJobInputs inputs,
-        FoundryFeaturesOptInKeys foundryFeatures, String operationId) {
-        // Generated convenience method for createOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (operationId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
-        }
-        return createOptimizationJobWithResponse(BinaryData.fromObject(inputs), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Creates an agent optimization job.
-     *
-     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
-     *
-     * @param inputs The optimization job inputs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OptimizationJob> createOptimizationJob(OptimizationJobInputs inputs) {
-        // Generated convenience method for createOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOptimizationJobWithResponse(BinaryData.fromObject(inputs), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OptimizationJob.class));
-    }
-
-    /**
-     * Deletes an agent optimization job.
-     *
-     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
-     *
-     * @param jobId The ID of the job to delete.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param force When true, force-delete even if the job is in a non-terminal state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteOptimizationJob(String jobId, FoundryFeaturesOptInKeys foundryFeatures, Boolean force) {
-        // Generated convenience method for deleteOptimizationJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        if (force != null) {
-            requestOptions.addQueryParam("force", String.valueOf(force), false);
-        }
-        return deleteOptimizationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateFileWithResponse(String jobId, String candidateId,
-        String path, RequestOptions requestOptions) {
-        return this.serviceClient.getOptimizationCandidateFileWithResponseAsync(jobId, candidateId, path,
-            requestOptions);
-    }
-
-    /**
-     * Promote a candidate.
-     *
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_name: String (Required)
-     *     agent_version: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     status: String (Required)
-     *     promoted_at: long (Required)
-     *     agent_name: String (Required)
-     *     agent_version: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param candidateRequest Promotion details.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response after successfully promoting a candidate along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> promoteOptimizationCandidateWithResponse(String jobId, String candidateId,
-        BinaryData candidateRequest, RequestOptions requestOptions) {
-        return this.serviceClient.promoteOptimizationCandidateWithResponseAsync(jobId, candidateId, candidateRequest,
-            requestOptions);
-    }
-
-    /**
-     * Get a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getOptimizationCandidateFile(String jobId, String candidateId, String path,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for getOptimizationCandidateFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getOptimizationCandidateFileWithResponse(jobId, candidateId, path, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a candidate file.
-     *
-     * Stream a specific file from the candidate's blob directory on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getOptimizationCandidateFile(String jobId, String candidateId, String path) {
-        // Generated convenience method for getOptimizationCandidateFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getOptimizationCandidateFileWithResponse(jobId, candidateId, path, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Promote a candidate.
-     *
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param candidateRequest Promotion details.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PromoteCandidateResult> promoteOptimizationCandidate(String jobId, String candidateId,
-        PromoteCandidateInput candidateRequest, FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for promoteOptimizationCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResult.class));
-    }
-
-    /**
-     * Promote a candidate.
-     *
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     *
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param candidateRequest Promotion details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response after successfully promoting a candidate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PromoteCandidateResult> promoteOptimizationCandidate(String jobId, String candidateId,
-        PromoteCandidateInput candidateRequest) {
-        // Generated convenience method for promoteOptimizationCandidateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return promoteOptimizationCandidateWithResponse(jobId, candidateId, BinaryData.fromObject(candidateRequest),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(PromoteCandidateResult.class));
+        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition).setMetadata(metadata)
+            .setDescription(description)
+            .setBlueprintReference(blueprintReference);
+        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
+        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 }
