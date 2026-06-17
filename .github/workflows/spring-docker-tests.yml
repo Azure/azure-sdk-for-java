@@ -55,4 +55,11 @@ jobs:
           -pl spring-cloud-azure-testcontainers,spring-cloud-azure-docker-compose
           test
           -Pdocker-tests
+          -Dcheckstyle.skip=true
+          -Denforcer.skip
+          -Djacoco.skip=true
+          -Dmaven.javadoc.skip=true
+          -Dspotbugs.skip=true
+          -T 4
+          -ntp
           -DfailIfNoTests=false
