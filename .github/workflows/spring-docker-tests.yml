@@ -37,8 +37,8 @@ jobs:
           -am
           install
           -Dcheckstyle.skip=true
-          -Dcodesnippet.skip
-          -Denforcer.skip
+          -Dcodesnippet.skip=true
+          -Denforcer.skip=true
           -Djacoco.skip=true
           -Dmaven.javadoc.skip=true
           -Drevapi.skip=true
@@ -56,7 +56,8 @@ jobs:
           test
           -Pdocker-tests
           -Dcheckstyle.skip=true
-          -Denforcer.skip
+          -Dcodesnippet.skip=true
+          -Denforcer.skip=true
           -Djacoco.skip=true
           -Dmaven.javadoc.skip=true
           -Dspotbugs.skip=true
