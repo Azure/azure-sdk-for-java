@@ -55,6 +55,10 @@
 * `automaticSkuMigrationPolicy()` was added
 * `withAutomaticSkuMigrationPolicy(models.AutomaticSkuMigrationPolicy)` was added
 
+### Other Changes
+
+- Updated `ComputeRP api-version` to `2026-03-01`.
+
 ## 2.57.1 (2026-05-05)
 
 ### Other Changes
