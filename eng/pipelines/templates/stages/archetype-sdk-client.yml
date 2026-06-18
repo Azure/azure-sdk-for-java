@@ -100,63 +100,63 @@ extends:
                 - pwsh: Write-Host "PR validation skipped because SkipPrValidation was set to true for a manual run."
                   displayName: Skip PR validation
 
-      - ${{ if not(and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual'))) }}:
-        - stage: Build
-          variables:
-            - template: /eng/pipelines/templates/variables/globals.yml
-            - template: /eng/pipelines/templates/variables/image.yml
-            # Convert artifact parameter objects to json and set them as variables to be used in
-            # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
-            # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
-            - name: ArtifactsJson
-              value: '${{ convertToJson(parameters.Artifacts) }}'
-            - name: AdditionalModulesJson
-              value: '${{ convertToJson(parameters.AdditionalModules) }}'
-          jobs:
-            - template: /eng/pipelines/templates/jobs/ci.yml
-              parameters:
-                ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                TestPipeline: ${{ parameters.TestPipeline }}
-                SDKType: ${{ parameters.SDKType }}
-                Artifacts: ${{ parameters.Artifacts }}
-                ExcludePaths: ${{parameters.ExcludePaths}}
-                TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-                ReleaseArtifacts:
-                  - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
-                      - ${{ each artifact in parameters.Artifacts }}:
-                          - ${{ if ne(artifact.releaseInBatch, 'false') }}:
-                              - ${{ artifact }}
-                  - ${{ else }}:
-                    - ${{ parameters.Artifacts }}
-                MatrixConfigs:
-                  - ${{ each config in parameters.MatrixConfigs }}:
-                    - ${{ config }}
-                  - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                    - ${{ config }}
-                MatrixFilters:
-                  - ${{ each filter in parameters.MatrixFilters }}:
-                    - ${{ filter }}
-                  # Skip TestFromSource jobs for SDKType data
-                  - ${{ if eq(parameters.SDKType, 'data') }}:
-                    - TestFromSource=^(?!true).*
-                MatrixReplace:
-                  - ${{ each replacement in parameters.MatrixReplace }}:
-                    - ${{ replacement }}
+      - stage: Build
+        condition: not(and(eq(${{ parameters.SkipPrValidation }}, true), eq(variables['Build.Reason'], 'Manual')))
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+          # Convert artifact parameter objects to json and set them as variables to be used in
+          # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+          # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+          - name: ArtifactsJson
+            value: '${{ convertToJson(parameters.Artifacts) }}'
+          - name: AdditionalModulesJson
+            value: '${{ convertToJson(parameters.AdditionalModules) }}'
+        jobs:
+          - template: /eng/pipelines/templates/jobs/ci.yml
+            parameters:
+              ServiceDirectory: ${{ parameters.ServiceDirectory }}
+              TestPipeline: ${{ parameters.TestPipeline }}
+              SDKType: ${{ parameters.SDKType }}
+              Artifacts: ${{ parameters.Artifacts }}
+              ExcludePaths: ${{parameters.ExcludePaths}}
+              TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+              ReleaseArtifacts:
+                - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+                    - ${{ each artifact in parameters.Artifacts }}:
+                        - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+                            - ${{ artifact }}
+                - ${{ else }}:
+                  - ${{ parameters.Artifacts }}
+              MatrixConfigs:
+                - ${{ each config in parameters.MatrixConfigs }}:
+                  - ${{ config }}
+                - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                  - ${{ config }}
+              MatrixFilters:
+                - ${{ each filter in parameters.MatrixFilters }}:
+                  - ${{ filter }}
+                # Skip TestFromSource jobs for SDKType data
+                - ${{ if eq(parameters.SDKType, 'data') }}:
+                  - TestFromSource=^(?!true).*
+              MatrixReplace:
+                - ${{ each replacement in parameters.MatrixReplace }}:
+                  - ${{ replacement }}
 
-                  - AZURE_TEST.*=.*/
-                  - ${{ if eq(parameters.SDKType, 'data') }}:
-                    - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
-                PreBuildSteps: ${{ parameters.PreBuildSteps }}
-                EnvVars: ${{ parameters.EnvVars }}
-                AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-                ${{ if eq(parameters.SDKType, 'data') }}:
-                  TestGoals: 'verify'
-                  TestOptions: '-am'
-                  JavaBuildVersion: '1.11'
-                ${{ else }}:
-                  JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
-                BuildParallelization: ${{ parameters.BuildParallelization }}
-                TestParallelization: ${{ parameters.TestParallelization }}
+                - AZURE_TEST.*=.*/
+                - ${{ if eq(parameters.SDKType, 'data') }}:
+                  - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
+              PreBuildSteps: ${{ parameters.PreBuildSteps }}
+              EnvVars: ${{ parameters.EnvVars }}
+              AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+              ${{ if eq(parameters.SDKType, 'data') }}:
+                TestGoals: 'verify'
+                TestOptions: '-am'
+                JavaBuildVersion: '1.11'
+              ${{ else }}:
+                JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
+              BuildParallelization: ${{ parameters.BuildParallelization }}
+              TestParallelization: ${{ parameters.TestParallelization }}
 
       - ${{ if and(not(and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual'))), gt(length(parameters.AdditionalStagesAfterBuild), 0)) }}:
           - ${{ parameters.AdditionalStagesAfterBuild }}
