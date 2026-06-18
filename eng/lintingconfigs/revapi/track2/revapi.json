@@ -10,6 +10,16 @@
     }
   },
   {
+    "extension": "revapi.java.filter.annotated",
+    "configuration": {
+      "exclude": [
+        "@com.azure.ai.project.implementation.utils.Beta",
+        "@com.azure.ai.agents.implementation.utils.Beta"
+
+      ]
+    }
+  },
+  {
     "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
