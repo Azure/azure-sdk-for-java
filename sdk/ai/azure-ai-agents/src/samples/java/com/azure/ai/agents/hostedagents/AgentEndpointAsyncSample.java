@@ -5,7 +5,6 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
@@ -46,11 +45,10 @@ public class AgentEndpointAsyncSample {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
-        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
         Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient,
-            betaAgentsAsyncClient, agentName, image)
+            agentName, image)
             .flatMap(resources -> {
                 resourcesRef.set(resources);
 
@@ -62,7 +60,7 @@ public class AgentEndpointAsyncSample {
 
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                return betaAgentsAsyncClient.updateAgentDetails(agentName,
+                return agentsAsyncClient.updateAgentDetails(agentName,
                     new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
                     .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
                         updated.getName()))
@@ -76,10 +74,10 @@ public class AgentEndpointAsyncSample {
             });
 
         workflow
-            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient,
+            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient,
                 agentName,
                 resourcesRef.get()).then(Mono.error(error)))
-            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient,
+            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient,
                 agentName,
                 resourcesRef.get())))
             .timeout(Duration.ofMinutes(15))

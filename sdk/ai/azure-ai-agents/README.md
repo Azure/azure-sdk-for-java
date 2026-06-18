@@ -723,7 +723,7 @@ The synchronous session log method returns `IterableStream<SessionLogEvent>`, wh
 
 ```java com.azure.ai.agents.session_logs_sync
 IterableStream<SessionLogEvent> sessionLogs =
-    betaAgentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
+    agentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
 
 int logsRead = 0;
 for (SessionLogEvent event : sessionLogs) {
@@ -741,7 +741,7 @@ for (SessionLogEvent event : sessionLogs) {
 The asynchronous session log method returns `Flux<SessionLogEvent>`, integrating naturally with Reactor pipelines:
 
 ```java com.azure.ai.agents.session_logs_async
-betaAgentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
+agentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
     .take(100)
     .doOnNext(event -> System.out.printf("[%s] %s%n", event.getEvent(), event.getData()))
     .blockLast();

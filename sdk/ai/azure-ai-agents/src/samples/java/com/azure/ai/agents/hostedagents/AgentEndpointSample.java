@@ -5,7 +5,6 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
@@ -44,11 +43,10 @@ public class AgentEndpointSample {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
 
             AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
                 .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
@@ -56,7 +54,7 @@ public class AgentEndpointSample {
                         .setAgentVersion(resources.getAgent().getVersion()))))
                 .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
 
-            betaAgentsClient.updateAgentDetails(agentName,
+            agentsClient.updateAgentDetails(agentName,
                 new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
             System.out.printf("Agent endpoint configured for agent: %s%n", agentName);
 
@@ -69,7 +67,7 @@ public class AgentEndpointSample {
 
             HostedAgentsSampleUtils.printResponseOutput(response);
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 }

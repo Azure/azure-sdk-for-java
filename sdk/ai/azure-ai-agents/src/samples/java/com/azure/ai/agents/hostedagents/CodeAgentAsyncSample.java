@@ -5,7 +5,6 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.hostedagents.utils.CodeAgentSampleUtils;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
@@ -33,7 +32,6 @@ public class CodeAgentAsyncSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 
         Mono<Void> workflow = agentsAsyncClient.deleteAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
@@ -43,7 +41,7 @@ public class CodeAgentAsyncSample {
 
                 // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode_initial
 
-                return betaAgentsAsyncClient.createAgentVersionFromCode(
+                return agentsAsyncClient.createAgentVersionFromCode(
                     agentName,
                     codeZipSha256,
                     CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip))
@@ -56,14 +54,14 @@ public class CodeAgentAsyncSample {
 
                     // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
 
-                    .then(betaAgentsAsyncClient.downloadAgentCode(agentName, null))
+                    .then(agentsAsyncClient.downloadAgentCode(agentName, null))
                     .flatMap(downloadedCode -> writeDownloadedCode(agentName, downloadedCode))
 
                     // END: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
 
                     // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode
 
-                    .then(betaAgentsAsyncClient.createAgentVersionFromCode(
+                    .then(agentsAsyncClient.createAgentVersionFromCode(
                         agentName,
                         codeZipSha256,
                         CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip)))

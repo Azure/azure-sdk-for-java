@@ -5,7 +5,6 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.hostedagents.utils.CodeAgentSampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -32,7 +31,6 @@ public class CodeAgentSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
 
         try {
             agentsClient.deleteAgent(agentName);
@@ -46,7 +44,7 @@ public class CodeAgentSample {
             BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
             String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
 
-            AgentVersionDetails version = betaAgentsClient.createAgentVersionFromCode(
+            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(
                 agentName,
                 codeZipSha256,
                 CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
@@ -58,7 +56,7 @@ public class CodeAgentSample {
 
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 
-            BinaryData downloadedCode = betaAgentsClient.downloadAgentCode(agentName, null);
+            BinaryData downloadedCode = agentsClient.downloadAgentCode(agentName, null);
             Path downloadPath = Files.createTempFile(agentName + "-", ".zip");
             Files.write(downloadPath, downloadedCode.toBytes());
             System.out.println("Downloaded code package path: " + downloadPath);
@@ -67,7 +65,7 @@ public class CodeAgentSample {
 
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode
 
-            AgentVersionDetails newVersion = betaAgentsClient.createAgentVersionFromCode(
+            AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(
                 agentName,
                 codeZipSha256,
                 CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));

@@ -4,7 +4,6 @@
 package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
-import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
@@ -59,31 +58,30 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
     public void sessionsSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
         String image = getRequiredConfiguration("FOUNDRY_AGENT_CONTAINER_IMAGE");
         String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME + "-sessions-test";
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
             AgentSessionResource session = resources.getSession();
 
-            AgentSessionResource fetched = betaAgentsClient.getSession(agentName, session.getAgentSessionId(), null);
+            AgentSessionResource fetched = agentsClient.getSession(agentName, session.getAgentSessionId(), null);
             Assertions.assertNotNull(fetched);
             Assertions.assertEquals(session.getAgentSessionId(), fetched.getAgentSessionId());
 
             PagedIterable<AgentSessionResource> sessions
-                = betaAgentsClient.listSessions(agentName, null, null, null, null, null);
+                = agentsClient.listSessions(agentName, null, null, null, null, null);
             Assertions.assertTrue(
                 sessions.stream().anyMatch(item -> session.getAgentSessionId().equals(item.getAgentSessionId())));
 
             try {
-                betaAgentsClient.deleteSession(agentName, session.getAgentSessionId(), null);
+                agentsClient.deleteSession(agentName, session.getAgentSessionId(), null);
             } catch (ResourceNotFoundException ignored) {
                 // The session may already be deleted by the service.
             }
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 
@@ -93,34 +91,32 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
     public void sessionFilesSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
         String image = getRequiredConfiguration("FOUNDRY_AGENT_CONTAINER_IMAGE");
         String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME + "-files-test";
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
             String sessionId = resources.getSession().getAgentSessionId();
 
-            betaAgentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
+            agentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
                 BinaryData.fromString("Sample session file 1."), null);
-            betaAgentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
+            agentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
                 BinaryData.fromString("Sample session file 2."), null);
 
             PagedIterable<SessionDirectoryEntry> files
-                = betaAgentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null, null);
+                = agentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null, null);
             Assertions
                 .assertTrue(files.stream().map(SessionDirectoryEntry::getName).anyMatch("data_file1.txt"::equals));
 
-            BinaryData downloaded
-                = betaAgentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, null);
+            BinaryData downloaded = agentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, null);
             String fileContent = new String(downloaded.toBytes(), StandardCharsets.UTF_8);
             Assertions.assertEquals("Sample session file 1.", fileContent);
 
-            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false, null);
-            betaAgentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false, null);
+            agentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false, null);
+            agentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false, null);
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 
@@ -130,14 +126,13 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
     public void agentEndpointSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
         String image = getRequiredConfiguration("FOUNDRY_AGENT_CONTAINER_IMAGE");
         String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME + "-endpoint-test";
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
-            configureAgentEndpoint(betaAgentsClient, agentName, resources);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
+            configureAgentEndpoint(agentsClient, agentName, resources);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
             com.openai.models.responses.Response response = openAIClient.responses()
@@ -150,7 +145,7 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             Assertions.assertNotNull(response);
             Assertions.assertFalse(response.output().isEmpty());
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 
@@ -160,14 +155,13 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
     public void sessionLogStreamSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws IOException {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
         String image = getRequiredConfiguration("FOUNDRY_AGENT_CONTAINER_IMAGE");
         String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME + "-logs-test";
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
-            configureAgentEndpoint(betaAgentsClient, agentName, resources);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
+            configureAgentEndpoint(agentsClient, agentName, resources);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
             com.openai.models.responses.Response openAIResponse = openAIClient.responses()
@@ -179,24 +173,23 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
             Assertions.assertNotNull(openAIResponse);
 
             com.azure.core.http.rest.Response<BinaryData> rawStream
-                = betaAgentsClient.getSessionLogStreamWithResponse(agentName, resources.getAgent().getVersion(),
+                = agentsClient.getSessionLogStreamWithResponse(agentName, resources.getAgent().getVersion(),
                     resources.getSession().getAgentSessionId(), new RequestOptions());
             Assertions.assertNotNull(rawStream.getValue());
             HostedAgentsSampleUtils.printSseFrames(rawStream.getValue(), 5);
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 
-    private static void configureAgentEndpoint(BetaAgentsClient betaAgentsClient, String agentName,
+    private static void configureAgentEndpoint(AgentsClient agentsClient, String agentName,
         HostedAgentSessionResources resources) {
         AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
             .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
                 new FixedRatioVersionSelectionRule(100).setAgentVersion(resources.getAgent().getVersion()))))
             .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
 
-        betaAgentsClient.updateAgentDetails(agentName,
-            new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
+        agentsClient.updateAgentDetails(agentName, new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
     }
 
     private String getRequiredConfiguration(String name) {
