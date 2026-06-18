@@ -9,7 +9,9 @@ pr:
     - pipelinev3*
   paths:
     include:
-    - "*"
+      - "*"
+    exclude:
+      - .github/skills/**
 
 parameters:
   - name: Service
