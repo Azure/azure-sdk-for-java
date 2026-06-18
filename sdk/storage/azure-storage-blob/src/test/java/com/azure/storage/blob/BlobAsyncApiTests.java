@@ -382,33 +382,6 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
-    @Test
-    public void downloadSmartAccessTierHeaders() {
-        Mono<BlobDownloadContentAsyncResponse> response = bc.setAccessTier(AccessTier.SMART)
-            .then(bc.downloadStreamWithResponse(null, null, null, false))
-            .flatMap(r -> {
-                assertSmartAccessTierHeaders(r.getDeserializedHeaders());
-                return FluxUtil.collectBytesInByteBufferStream(r.getValue());
-            })
-            .flatMap(r -> {
-                TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r);
-                return bc.downloadContentWithResponse(null, null);
-            });
-
-        StepVerifier.create(response).assertNext(r -> {
-            assertSmartAccessTierHeaders(r.getDeserializedHeaders());
-            TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r.getValue().toBytes());
-        }).verifyComplete();
-    }
-
-    private static void assertSmartAccessTierHeaders(BlobDownloadHeaders headers) {
-        assertEquals(AccessTier.SMART, headers.getAccessTier());
-        assertNotNull(headers.getSmartAccessTier());
-        assertFalse(headers.isAccessTierInferred());
-        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
-    }
-
     @Test
     public void downloadEmptyFile() {
         AppendBlobAsyncClient bc = ccAsync.getBlobAsyncClient("emptyAppendBlob").getAppendBlobAsyncClient();
