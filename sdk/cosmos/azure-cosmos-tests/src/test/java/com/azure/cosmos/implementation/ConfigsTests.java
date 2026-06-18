@@ -274,48 +274,77 @@ public class ConfigsTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClientProbeFailureThresholdDefaultTest() {
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+    public void thinClientProbeMaxRetriesDefaultTest() {
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
         try {
-            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(3);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
         }
     }
 
     @Test(groups = { "unit" })
-    public void thinClientProbeFailureThresholdOverrideTest() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "5");
+    public void thinClientProbeMaxRetriesOverrideTest() {
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "5");
         try {
-            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(5);
+            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(5);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
         }
     }
 
     @Test(groups = { "unit" })
-    public void thinClientProbeFailureThresholdCoercionTest() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "0");
+    public void thinClientProbeMaxRetriesCoercionTest() {
+        // 0 is a valid value (no in-cycle retries) and must be preserved.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
         try {
-            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(0);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
         }
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "-3");
+        // Negative values are coerced up to 0.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "-3");
         try {
-            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(0);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
         }
     }
 
     @Test(groups = { "unit" })
-    public void thinClientProbeFailureThresholdInvalidFallsBackToDefaultTest() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "not-a-number");
+    public void thinClientProbeMaxRetriesInvalidFallsBackToDefaultTest() {
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "not-a-number");
         try {
-            assertThat(Configs.getThinClientProbeFailureThreshold()).isEqualTo(1);
+            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(3);
         } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientExplicitlyEnabledDefaultTest() {
+        System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        try {
+            // Not explicitly present -> false, so the probe gate applies.
+            assertThat(Configs.isThinClientExplicitlyEnabled()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientExplicitlyEnabledOverrideTest() {
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        try {
+            assertThat(Configs.isThinClientExplicitlyEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "false");
+        try {
+            assertThat(Configs.isThinClientExplicitlyEnabled()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 

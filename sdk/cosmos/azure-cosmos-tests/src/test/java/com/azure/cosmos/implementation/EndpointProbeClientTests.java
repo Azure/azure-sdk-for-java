@@ -26,6 +26,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
+/**
+ * Unit tests for the v2 per-region, one-shot probe-and-cache {@link EndpointProbeClient}.
+ *
+ * <p>The legacy global circuit-breaker (failure/recovery hysteresis thresholds) has been
+ * replaced by a model where:
+ * <ul>
+ *   <li>each region is probed only until it records a success, then cached forever (delta
+ *       probing); a successful region is never re-probed;</li>
+ *   <li>a region that fails every in-cycle attempt is left un-cached and naturally re-probed
+ *       on the next refresh (across-refresh retry);</li>
+ *   <li>within a cycle a region is retried up to {@code COSMOS.THINCLIENT_PROBE_MAX_RETRIES}
+ *       times;</li>
+ *   <li>the routing gate ({@link EndpointProbeClient#isProxyHealthy()}) is conservative: it is
+ *       {@code false} until a non-empty topology is observed and every known region has a cached
+ *       success.</li>
+ * </ul>
+ */
 public class EndpointProbeClientTests {
 
     private static final URI REGION_EAST = URI.create("https://probe-east.example.com:10250");
@@ -34,21 +51,19 @@ public class EndpointProbeClientTests {
     @BeforeMethod(groups = { "unit" })
     public void resetSystemProperties() {
         System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD");
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
         System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
     }
 
     @AfterMethod(groups = { "unit" })
     public void clearSystemProperties() {
         System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD");
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
         System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
     }
 
     @Test(groups = { "unit" })
-    public void allGreen_cycleIsGreen_andHealthStaysTrue() {
+    public void allGreen_allKnownRegionsProven_gateHealthy() {
         Map<URI, Integer> statusByEndpoint = new HashMap<>();
         statusByEndpoint.put(REGION_EAST, 200);
         statusByEndpoint.put(REGION_WEST, 200);
@@ -62,17 +77,20 @@ public class EndpointProbeClientTests {
 
         assertThat(healthy).isTrue();
         assertThat(probeClient.isProxyHealthy()).isTrue();
+        // Each proven region is probed exactly once (success short-circuits retries).
         assertThat(sendCount.get()).isEqualTo(2);
         EndpointProbeDiagnosticsSnapshot snap = probeClient.getDiagnosticsSnapshot();
         assertThat(snap.getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
         assertThat(snap.getLastStateUpdatedAt()).isNotNull();
         assertThat(snap.getLastStateUpdatedAt()).isAfterOrEqualTo(before);
+        assertThat(snap.getKnownRegionCount()).isEqualTo(2);
+        assertThat(snap.getSucceededRegionCount()).isEqualTo(2);
     }
 
     @Test(groups = { "unit" })
-    public void any503_failsTheCycle_andHysteresisDelaysFlip() {
-        // Threshold = 2: one RED cycle should NOT flip; two RED cycles SHOULD flip.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "2");
+    public void partialFailure_gateStaysUnhealthy_andFailedRegionIsUncached() {
+        // No retries so a single non-200 fails the region for the cycle.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
 
         Map<URI, Integer> statusByEndpoint = new HashMap<>();
         statusByEndpoint.put(REGION_EAST, 200);
@@ -81,43 +99,105 @@ public class EndpointProbeClientTests {
 
         EndpointProbeClient probeClient = new EndpointProbeClient(client);
 
-        // Cycle 1: RED but below threshold — gate stays HEALTHY.
-        assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isTrue();
-        assertThat(probeClient.isProxyHealthy()).isTrue();
-        assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
-
-        // Cycle 2: RED at threshold -> flip.
+        // East proven, West failed -> not every known region succeeded -> gate UNHEALTHY.
         assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isFalse();
         assertThat(probeClient.isProxyHealthy()).isFalse();
-        assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
+
+        EndpointProbeDiagnosticsSnapshot snap = probeClient.getDiagnosticsSnapshot();
+        assertThat(snap.getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
+        assertThat(snap.getKnownRegionCount()).isEqualTo(2);
+        assertThat(snap.getSucceededRegionCount()).isEqualTo(1);
     }
 
     @Test(groups = { "unit" })
-    public void singleGreenCycleRestoresHealthAndResetsCounter() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
+    public void failedRegion_isReprobedNextRefresh_thenGateHealthy() {
+        // No in-cycle retries so the first RED attempt fails the region; the across-refresh
+        // retry then re-probes the still-uncached region on the next cycle.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
 
-        Map<URI, Integer> redByEndpoint = new HashMap<>();
-        redByEndpoint.put(REGION_EAST, 503);
-        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(redByEndpoint, new AtomicInteger(), false));
+        // Toggling client returns RED (503) on the first send then GREEN (200) thereafter.
+        EndpointProbeClient probeClient = new EndpointProbeClient(toggleClient(REGION_EAST, 503, 200));
 
+        // Cycle 1: RED -> uncached -> gate UNHEALTHY.
         assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
         assertThat(probeClient.isProxyHealthy()).isFalse();
 
-        // Toggling client returns red on first call and green on subsequent calls; drive the
-        // probe client to RED on cycle 1 then GREEN on cycle 2 and assert hysteresis recovery.
-        EndpointProbeClient combo = new EndpointProbeClient(toggleClient(REGION_EAST, 503, 200));
+        // Cycle 2: region still in the delta -> re-probed -> GREEN -> cached -> gate HEALTHY.
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
+        assertThat(probeClient.isProxyHealthy()).isTrue();
+        assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
+    }
 
-        assertThat(combo.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
-        assertThat(combo.isProxyHealthy()).isFalse();
+    @Test(groups = { "unit" })
+    public void provenRegion_isNeverReprobed_emptyDeltaIssuesNoTraffic() {
+        Map<URI, Integer> statusByEndpoint = new HashMap<>();
+        statusByEndpoint.put(REGION_EAST, 200);
+        statusByEndpoint.put(REGION_WEST, 200);
+        AtomicInteger sendCount = new AtomicInteger(0);
+        EndpointProbeClient probeClient =
+            new EndpointProbeClient(mockClient(statusByEndpoint, sendCount, false));
 
-        assertThat(combo.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
-        assertThat(combo.isProxyHealthy()).isTrue();
-        assertThat(combo.getDiagnosticsSnapshot().getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
+        // Cycle 1 proves both regions.
+        assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isTrue();
+        assertThat(sendCount.get()).isEqualTo(2);
+
+        // Cycle 2 over the same topology: delta is empty -> no HTTP traffic, gate stays healthy.
+        assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isTrue();
+        assertThat(sendCount.get()).isEqualTo(2);
+        assertThat(probeClient.isProxyHealthy()).isTrue();
+    }
+
+    @Test(groups = { "unit" })
+    public void newRegionInTopology_onlyDeltaIsProbed() {
+        Map<URI, Integer> statusByEndpoint = new HashMap<>();
+        statusByEndpoint.put(REGION_EAST, 200);
+        statusByEndpoint.put(REGION_WEST, 200);
+        AtomicInteger sendCount = new AtomicInteger(0);
+        EndpointProbeClient probeClient =
+            new EndpointProbeClient(mockClient(statusByEndpoint, sendCount, false));
+
+        // Cycle 1 sees only East.
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
+        assertThat(sendCount.get()).isEqualTo(1);
+        assertThat(probeClient.isProxyHealthy()).isTrue();
+
+        // Cycle 2 grows the topology to {East, West}: only the new region (West) is probed.
+        assertThat(probeClient.runProbeCycle(Arrays.asList(REGION_EAST, REGION_WEST)).block()).isTrue();
+        assertThat(sendCount.get()).isEqualTo(2);
+        assertThat(probeClient.isProxyHealthy()).isTrue();
+        assertThat(probeClient.getDiagnosticsSnapshot().getSucceededRegionCount()).isEqualTo(2);
+    }
+
+    @Test(groups = { "unit" })
+    public void inCycleRetry_succeedsWithinMaxRetries() {
+        // Default maxRetries (3) -> up to 4 attempts. Region is RED twice then GREEN.
+        HttpClient sequencedClient = sequencedClient(REGION_EAST, 503, 503, 200);
+        EndpointProbeClient probeClient = new EndpointProbeClient(sequencedClient);
+
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
+        assertThat(probeClient.isProxyHealthy()).isTrue();
+    }
+
+    @Test(groups = { "unit" })
+    public void inCycleRetry_exhausted_marksRegionFailed() {
+        // maxRetries=1 -> exactly 2 attempts; both RED -> region failed for the cycle.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "1");
+
+        Map<URI, Integer> redByEndpoint = new HashMap<>();
+        redByEndpoint.put(REGION_EAST, 503);
+        AtomicInteger sendCount = new AtomicInteger(0);
+        EndpointProbeClient probeClient =
+            new EndpointProbeClient(mockClient(redByEndpoint, sendCount, false));
+
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
+        assertThat(probeClient.isProxyHealthy()).isFalse();
+        // 1 initial attempt + 1 retry.
+        assertThat(sendCount.get()).isEqualTo(2);
     }
 
     @Test(groups = { "unit" })
     public void transportErrorIsRed() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
 
         HttpClient client = Mockito.mock(HttpClient.class);
         Mockito.doAnswer(inv -> Mono.error(new ConnectException("refused")))
@@ -132,7 +212,7 @@ public class EndpointProbeClientTests {
     }
 
     @Test(groups = { "unit" })
-    public void featureFlagOff_isNoOp() {
+    public void featureFlagOff_isNoOp_andGateBypassesToHealthy() {
         System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
 
         HttpClient client = Mockito.mock(HttpClient.class);
@@ -146,27 +226,31 @@ public class EndpointProbeClientTests {
     }
 
     @Test(groups = { "unit" })
-    public void emptyOrNullEndpointSet_isNoOp() {
+    public void emptyOrNullEndpointSet_isNoOp_andGateStaysConservative() {
         HttpClient client = Mockito.mock(HttpClient.class);
         EndpointProbeClient probeClient = new EndpointProbeClient(client);
 
-        assertThat(probeClient.runProbeCycle(null).block()).isTrue();
-        assertThat(probeClient.runProbeCycle(Collections.emptyList()).block()).isTrue();
+        // No topology observed yet -> conservative gate is UNHEALTHY and no probe traffic fires.
+        assertThat(probeClient.runProbeCycle(null).block()).isFalse();
+        assertThat(probeClient.runProbeCycle(Collections.emptyList()).block()).isFalse();
+        assertThat(probeClient.isProxyHealthy()).isFalse();
         Mockito.verify(client, Mockito.never()).send(any(HttpRequest.class), any(Duration.class));
         Mockito.verify(client, Mockito.never()).send(any(HttpRequest.class));
     }
 
     @Test(groups = { "unit" })
     public void wrongPath400_isRed() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
         Map<URI, Integer> statusByEndpoint = new HashMap<>();
         statusByEndpoint.put(REGION_EAST, 400);
-        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(statusByEndpoint, new AtomicInteger(), false));
+        EndpointProbeClient probeClient =
+            new EndpointProbeClient(mockClient(statusByEndpoint, new AtomicInteger(), false));
         assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isFalse();
+        assertThat(probeClient.isProxyHealthy()).isFalse();
     }
 
     @Test(groups = { "unit" })
-    public void probeRequestTargetsConfiguredPath() {
+    public void probeRequestTargetsConfiguredPathAndMethod() {
         Map<URI, Integer> statusByEndpoint = new HashMap<>();
         statusByEndpoint.put(REGION_EAST, 200);
         AtomicInteger sendCount = new AtomicInteger(0);
@@ -179,40 +263,16 @@ public class EndpointProbeClientTests {
     }
 
     @Test(groups = { "unit" })
-    public void recoveryThresholdRequiresMultipleGreenCycles() {
-        // Operator opts into more conservative recovery: require two consecutive GREEN cycles
-        // before flipping back to healthy. With default failureThreshold=1 the probe client
-        // becomes UNHEALTHY after one RED. A single GREEN must NOT restore traffic.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
-        System.setProperty("COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD", "2");
-
-        // Sequenced client returns RED, GREEN, GREEN across successive probe calls
-        // against the single regional endpoint.
-        HttpClient sequencedClient = sequencedClient(REGION_EAST, 503, 200, 200);
-        EndpointProbeClient e = new EndpointProbeClient(sequencedClient);
-
-        // RED #1 — hits failure threshold of 1, gate flips UNHEALTHY.
-        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
-        assertThat(e.isProxyHealthy()).isFalse();
-
-        // GREEN #1 — under recovery threshold of 2, gate STAYS UNHEALTHY.
-        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
-        assertThat(e.isProxyHealthy()).isFalse();
-
-        // GREEN #2 — second consecutive GREEN restores healthy.
-        e.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
-        assertThat(e.isProxyHealthy()).isTrue();
-    }
-
-    @Test(groups = { "unit" })
-    public void forceUnhealthy_flipsGateToRedWithoutRunningProbe() {
+    public void forceUnhealthy_flipsHealthyGateToRedWithoutRunningProbe() {
         // Safeguard path used by GlobalEndpointManager when account topology says thin-client
         // is eligible but LocationCache cannot resolve a single thin-client regional endpoint.
-        // Without a fan-out, this method must still flip the gate so the optimistic-startup
-        // default does not pin traffic to an unreachable thin-client store model.
+        // Prove a healthy gate first, then assert the latch flips it to UNHEALTHY without a cycle.
         Map<URI, Integer> greenByEndpoint = new HashMap<>();
         greenByEndpoint.put(REGION_EAST, 200);
-        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
+        EndpointProbeClient probeClient =
+            new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
+
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
         assertThat(probeClient.isProxyHealthy()).isTrue();
 
         probeClient.forceUnhealthy("test: endpoint resolution mismatch");
@@ -222,10 +282,29 @@ public class EndpointProbeClientTests {
     }
 
     @Test(groups = { "unit" })
+    public void forceUnhealthy_latchIsClearedByNextValidCycle() {
+        Map<URI, Integer> greenByEndpoint = new HashMap<>();
+        greenByEndpoint.put(REGION_EAST, 200);
+        EndpointProbeClient probeClient =
+            new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
+
+        // Prove healthy, then force the latch.
+        probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
+        probeClient.forceUnhealthy("test: transient resolution mismatch");
+        assertThat(probeClient.isProxyHealthy()).isFalse();
+
+        // A subsequent valid non-empty cycle clears the latch; the already-cached region keeps the
+        // gate healthy without re-probing.
+        assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
+        assertThat(probeClient.isProxyHealthy()).isTrue();
+    }
+
+    @Test(groups = { "unit" })
     public void forceUnhealthy_onClosedProbeClient_isNoOp() {
         Map<URI, Integer> greenByEndpoint = new HashMap<>();
         greenByEndpoint.put(REGION_EAST, 200);
-        EndpointProbeClient probeClient = new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
+        EndpointProbeClient probeClient =
+            new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
         probeClient.close();
 
         // Closed probe clients must not mutate any state — otherwise diagnostics from a
@@ -234,6 +313,8 @@ public class EndpointProbeClientTests {
         // Snapshot should remain at its pre-close state (no cycle ever ran).
         assertThat(probeClient.getDiagnosticsSnapshot().getLastCycleSuccess()).isNull();
     }
+
+    // --- Mock helpers ---
 
     private static HttpClient sequencedClient(URI endpoint, int... statuses) {
         HttpClient client = Mockito.mock(HttpClient.class);
@@ -250,8 +331,6 @@ public class EndpointProbeClientTests {
         }).when(client).send(any(HttpRequest.class));
         return client;
     }
-
-    // --- Mock helpers ---
 
     private static HttpClient mockClient(
         Map<URI, Integer> statusByHost,

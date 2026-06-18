@@ -38,9 +38,10 @@ import static org.mockito.ArgumentMatchers.any;
  * <p>These tests cover the integration boundary that the routing gate
  * {@code RxDocumentClientImpl.useThinClientStoreModel} relies on:
  * <ul>
- *   <li>Default health is optimistic ({@code true}) before any probes complete.</li>
- *   <li>{@code isProxyProbeHealthy()} remains optimistic when no orchestrator is wired
- *       (preserves pre-existing GW v1 / direct-mode behavior).</li>
+ *   <li>{@code isProxyProbeHealthy()} is optimistic ({@code true}) when no orchestrator is
+ *       wired (preserves pre-existing GW v1 / direct-mode behavior).</li>
+ *   <li>Once an orchestrator is wired, the gate is conservative: it stays {@code false}
+ *       until every known thin-client region has a cached successful probe.</li>
  *   <li>Once an HttpClient is wired, the orchestrator probes the regional endpoints
  *       discovered by {@code LocationCache.getThinClientRegionalEndpoints()}.</li>
  *   <li>An empty thin-client region set does not trigger probe traffic.</li>
@@ -80,13 +81,13 @@ public class ThinClientProbeWiringTests {
     @BeforeMethod(groups = { "unit" })
     public void resetSystemProperties() {
         System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
     }
 
     @AfterMethod(groups = { "unit" })
     public void clearSystemProperties() {
         System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD");
+        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
     }
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
@@ -167,8 +168,9 @@ public class ThinClientProbeWiringTests {
     }
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
-    public void setThinClientHttpClient_redProbesFlipHealthyAfterThreshold() throws Exception {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD", "1");
+    public void setThinClientHttpClient_redProbesKeepProxyUnhealthy() throws Exception {
+        // No in-cycle retries so each region records exactly one failed attempt per cycle.
+        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
 
         AtomicInteger probeCallCount = new AtomicInteger(0);
         Map<URI, Integer> statusByEndpoint = new HashMap<>();
@@ -189,18 +191,18 @@ public class ThinClientProbeWiringTests {
             gem.setThinClientHttpClient(httpClient);
             gem.init();
 
-            // Wait for the first cycle to complete and flip health (threshold=1 -> flips immediately on first RED).
-            long deadline = System.currentTimeMillis() + 5_000;
-            while (System.currentTimeMillis() < deadline) {
-                if (!gem.isProxyProbeHealthy()) {
-                    break;
-                }
-                Thread.sleep(50);
-            }
+            // Wait for the probe cycle to actually fire against both regions.
+            waitForProbeCallCount(probeCallCount, 2, Duration.ofSeconds(5));
 
+            assertThat(probeCallCount.get())
+                .as("probe was issued for each thin-client region")
+                .isGreaterThanOrEqualTo(2);
             assertThat(gem.isProxyProbeHealthy())
-                .as("after all-RED cycle with threshold=1, proxy should be marked unhealthy")
+                .as("no region recorded a successful probe, so the proxy gate stays unhealthy")
                 .isFalse();
+            assertThat(gem.getThinClientProbeDiagnostics()).isNotNull();
+            assertThat(gem.getThinClientProbeDiagnostics().getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
+            assertThat(gem.getThinClientProbeDiagnostics().getSucceededRegionCount()).isEqualTo(0);
         } finally {
             LifeCycleUtils.closeQuietly(gem);
         }

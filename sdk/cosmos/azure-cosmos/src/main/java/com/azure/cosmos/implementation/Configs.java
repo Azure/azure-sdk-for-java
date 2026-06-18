@@ -56,24 +56,21 @@ public class Configs {
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
     // Thin-client connectivity probe (POST /connectivity-probe over HTTP/2 to each thin-client regional endpoint).
-    // The probe runs after every successful account-topology refresh. When the cycle is RED for
-    // THINCLIENT_PROBE_FAILURE_THRESHOLD consecutive cycles, the SDK falls back to Gateway V1 for data-plane
-    // requests until a subsequent cycle is GREEN. See proxy contract: only HTTP 200 counts as GREEN.
+    // The probe runs after every successful account-topology refresh, but only for regions that have not yet
+    // recorded a successful probe (the delta). Once a region's probe succeeds it is cached and never re-probed.
+    // Data-plane routing is gated on "all currently-known thin-client regions have a cached success"; until then
+    // the SDK routes data-plane requests to Gateway V1. See proxy contract: only HTTP 200 counts as success.
     private static final boolean DEFAULT_THINCLIENT_PROBE_ENABLED = true;
     private static final String THINCLIENT_PROBE_ENABLED = "COSMOS.THINCLIENT_PROBE_ENABLED";
     private static final String THINCLIENT_PROBE_ENABLED_VARIABLE = "COSMOS_THINCLIENT_PROBE_ENABLED";
 
-    private static final int DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD = 1;
-    private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD = "COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD";
-    private static final String THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE = "COSMOS_THINCLIENT_PROBE_FAILURE_THRESHOLD";
-
-    // Number of consecutive GREEN probe cycles required to restore proxy-healthy after
-    // a RED-flip. Default 1 preserves the optimistic-recovery behavior shipped in 4.82.0-beta.1.
-    // Raise this (e.g. to match THINCLIENT_PROBE_FAILURE_THRESHOLD) to reduce routing oscillation
-    // when a region is intermittently flapping.
-    private static final int DEFAULT_THINCLIENT_PROBE_RECOVERY_THRESHOLD = 1;
-    private static final String THINCLIENT_PROBE_RECOVERY_THRESHOLD = "COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD";
-    private static final String THINCLIENT_PROBE_RECOVERY_THRESHOLD_VARIABLE = "COSMOS_THINCLIENT_PROBE_RECOVERY_THRESHOLD";
+    // Maximum number of in-cycle retries for a single region's connectivity probe before it is treated as a
+    // failure for that cycle. A failed region is simply left un-cached and naturally re-probed on the next
+    // topology refresh. Total attempts per region per cycle = 1 + THINCLIENT_PROBE_MAX_RETRIES. Values less
+    // than 0 are coerced to 0.
+    private static final int DEFAULT_THINCLIENT_PROBE_MAX_RETRIES = 3;
+    private static final String THINCLIENT_PROBE_MAX_RETRIES = "COSMOS.THINCLIENT_PROBE_MAX_RETRIES";
+    private static final String THINCLIENT_PROBE_MAX_RETRIES_VARIABLE = "COSMOS_THINCLIENT_PROBE_MAX_RETRIES";
 
     private static final String DEFAULT_THINCLIENT_PROBE_PATH = "/connectivity-probe";
     private static final String THINCLIENT_PROBE_PATH = "COSMOS.THINCLIENT_PROBE_PATH";
@@ -610,6 +607,32 @@ public class Configs {
     }
 
     /**
+     * Returns whether thin-client was <em>explicitly</em> opted into via the
+     * {@code COSMOS.THINCLIENT_ENABLED} system property or {@code COSMOS_THINCLIENT_ENABLED}
+     * environment variable, and that explicit value parses to {@code true}.
+     *
+     * <p>This is distinct from {@link #isThinClientEnabled()}, which returns {@code true} by
+     * default even when no value is set. When thin-client is explicitly enabled the SDK treats
+     * it as a hard opt-in: the connectivity probe is skipped entirely and data-plane traffic is
+     * routed to the thin-client endpoints without waiting for a probe to succeed. When the value
+     * is only defaulted (not explicitly present), this returns {@code false} so the probe gate
+     * applies.
+     */
+    public static boolean isThinClientExplicitlyEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return false;
+    }
+
+    /**
      * Returns whether the thin-client connectivity probe is enabled. When true, the SDK
      * issues {@code POST /connectivity-probe} against every thin-client regional endpoint
      * after each topology refresh and gates data-plane routing on the result.
@@ -631,15 +654,17 @@ public class Configs {
     }
 
     /**
-     * Number of consecutive probe cycles that must be RED before the SDK flips data-plane
-     * routing from the thin-client proxy back to Gateway V1. A single GREEN cycle resets
-     * the counter. Default: 1. Override with {@code COSMOS.THINCLIENT_PROBE_FAILURE_THRESHOLD}
-     * or {@code COSMOS_THINCLIENT_PROBE_FAILURE_THRESHOLD}. Values less than 1 are coerced to 1.
+     * Maximum number of in-cycle retries for a single region's thin-client connectivity probe
+     * before that region is treated as failed for the current cycle. A failed region is left
+     * un-cached and is naturally re-probed on the next topology refresh. Total attempts per
+     * region per cycle = {@code 1 + getThinClientProbeMaxRetries()}. Default: 3. Override with
+     * {@code COSMOS.THINCLIENT_PROBE_MAX_RETRIES} or {@code COSMOS_THINCLIENT_PROBE_MAX_RETRIES}.
+     * Values less than 0 are coerced to 0.
      */
-    public static int getThinClientProbeFailureThreshold() {
-        int value = DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD;
+    public static int getThinClientProbeMaxRetries() {
+        int value = DEFAULT_THINCLIENT_PROBE_MAX_RETRIES;
 
-        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_FAILURE_THRESHOLD);
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_MAX_RETRIES);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
             try {
                 value = Integer.parseInt(valueFromSystemProperty);
@@ -647,13 +672,13 @@ public class Configs {
                 logger.warn(
                     "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
                     valueFromSystemProperty,
-                    THINCLIENT_PROBE_FAILURE_THRESHOLD);
+                    THINCLIENT_PROBE_MAX_RETRIES);
                 valueFromSystemProperty = null;
             }
         }
 
         if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
-            String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE);
+            String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_MAX_RETRIES_VARIABLE);
             if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
                 try {
                     value = Integer.parseInt(valueFromEnvVariable);
@@ -661,56 +686,13 @@ public class Configs {
                     logger.warn(
                         "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
                         valueFromEnvVariable,
-                        THINCLIENT_PROBE_FAILURE_THRESHOLD_VARIABLE,
-                        DEFAULT_THINCLIENT_PROBE_FAILURE_THRESHOLD);
+                        THINCLIENT_PROBE_MAX_RETRIES_VARIABLE,
+                        DEFAULT_THINCLIENT_PROBE_MAX_RETRIES);
                 }
             }
         }
 
-        return Math.max(1, value);
-    }
-
-    /**
-     * Number of consecutive GREEN probe cycles required to restore data-plane routing
-     * back to the thin-client proxy after the SDK has flipped to Gateway V1. Default: 1
-     * (a single GREEN cycle restores). Raise this (e.g. to match
-     * {@link #getThinClientProbeFailureThreshold()}) to reduce routing oscillation when a
-     * region is intermittently flapping. Override with
-     * {@code COSMOS.THINCLIENT_PROBE_RECOVERY_THRESHOLD} or
-     * {@code COSMOS_THINCLIENT_PROBE_RECOVERY_THRESHOLD}. Values less than 1 are coerced to 1.
-     */
-    public static int getThinClientProbeRecoveryThreshold() {
-        int value = DEFAULT_THINCLIENT_PROBE_RECOVERY_THRESHOLD;
-
-        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_RECOVERY_THRESHOLD);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            try {
-                value = Integer.parseInt(valueFromSystemProperty);
-            } catch (NumberFormatException ignored) {
-                logger.warn(
-                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
-                    valueFromSystemProperty,
-                    THINCLIENT_PROBE_RECOVERY_THRESHOLD);
-                valueFromSystemProperty = null;
-            }
-        }
-
-        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
-            String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_RECOVERY_THRESHOLD_VARIABLE);
-            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-                try {
-                    value = Integer.parseInt(valueFromEnvVariable);
-                } catch (NumberFormatException ignored) {
-                    logger.warn(
-                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
-                        valueFromEnvVariable,
-                        THINCLIENT_PROBE_RECOVERY_THRESHOLD_VARIABLE,
-                        DEFAULT_THINCLIENT_PROBE_RECOVERY_THRESHOLD);
-                }
-            }
-        }
-
-        return Math.max(1, value);
+        return Math.max(0, value);
     }
 
     /**

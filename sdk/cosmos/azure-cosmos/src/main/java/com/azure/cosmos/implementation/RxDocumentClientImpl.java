@@ -888,11 +888,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // Caveats — probe is only wired when:
             //   1. Connection mode is GATEWAY (skip for Direct mode), AND
             //   2. HTTP/2 is configured and effectively enabled, AND
-            //   3. Thin-client is enabled via Configs.
-            // All three are encoded in `this.useThinClient`. If false, no probe overhead
-            // is incurred and `isProxyProbeHealthy()` returns true by default (no-op gate).
-            // Wiring itself is guarded inside GEM so any failure cannot trip client init.
-            if (this.useThinClient) {
+            //   3. Thin-client is enabled via Configs (all three encoded in `this.useThinClient`), AND
+            //   4. Thin-client was NOT *explicitly* opted into. An explicit opt-in is a hard
+            //      contract that thin-client must be used as-is, so we skip the probe entirely
+            //      (point 5 of the design). With no probe wired, GEM's probeClient stays null and
+            //      `isProxyProbeHealthy()` returns true, so thin-client is used without gating.
+            // If not wired, no probe overhead is incurred. Wiring itself is guarded inside GEM so
+            // any failure cannot trip client init.
+            if (this.useThinClient && !Configs.isThinClientExplicitlyEnabled()) {
                 try {
                     this.globalEndpointManager.setThinClientHttpClient(this.reactorHttpClient);
                 } catch (Throwable t) {
@@ -9012,12 +9015,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        // When the probe kill switch is OFF (COSMOS.THINCLIENT_PROBE_ENABLED=false), routing
-        // must be driven solely by COSMOS.THINCLIENT_ENABLED (already folded into useThinClient
-        // at construction time) -- the probe-health signal becomes meaningless because no probe
-        // cycles run. Treat probe as healthy in that case so the gate behaves as a pure
-        // function of the kill switch.
-        boolean proxyProbeHealthy = !Configs.isThinClientProbeEnabled()
+        // The probe-health gate is bypassed (treated as healthy) in two cases:
+        //   1. Thin-client was *explicitly* opted into (COSMOS.THINCLIENT_ENABLED set to true).
+        //      That is a hard contract to use thin-client as-is; no probe is wired, so routing
+        //      must not wait on a probe signal (point 5 of the design).
+        //   2. The probe kill switch is OFF (COSMOS.THINCLIENT_PROBE_ENABLED=false). Routing is
+        //      then driven solely by COSMOS.THINCLIENT_ENABLED (already folded into useThinClient
+        //      at construction time) because no probe cycles run, making the probe-health signal
+        //      meaningless.
+        // Otherwise the gate is the live per-region probe health from GlobalEndpointManager.
+        boolean proxyProbeHealthy = Configs.isThinClientExplicitlyEnabled()
+            || !Configs.isThinClientProbeEnabled()
             || this.globalEndpointManager.isProxyProbeHealthy();
 
         return shouldUseThinClientStoreModel(
