@@ -43,6 +43,31 @@ directive:
     $.delete.description = "If the storage account's soft delete feature is disabled then, when a blob is deleted, it is permanently removed from the storage account. If the storage account's soft delete feature is enabled, then, when a blob is deleted, it is marked for deletion and becomes inaccessible immediately. However, the blob service retains the blob or snapshot for the number of days specified by the DeleteRetentionPolicy section of [Storage service properties] (Set-Blob-Service-Properties.md). After the specified number of days has passed, the blob's data is permanently removed from the storage account. Note that you continue to be charged for the soft-deleted blob's storage until it is permanently removed. Use the List Blobs API and specify the \"include=deleted\" query parameter to discover which blobs and snapshots have been soft deleted. You can then use the Undelete Blob API to restore a soft-deleted blob. All other operations on a soft-deleted blob or snapshot causes the service to return an HTTP status code of 404 (ResourceNotFound). If the storage account's automatic snapshot feature is enabled, then, when a blob is deleted, an automatic snapshot is created. The blob becomes inaccessible immediately. All other operations on the blob causes the service to return an HTTP status code of 404 (ResourceNotFound). You can access automatic snapshot using snapshot timestamp or version id. You can restore the blob by calling Put or Copy Blob API with automatic snapshot as source. Deleting automatic snapshot requires shared key or special SAS/RBAC permissions.";
     $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
     $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    const accessTierDownloadHeaders = {
+      "x-ms-access-tier": {
+        "x-ms-client-name": "AccessTier",
+        "type": "string",
+        "description": "The tier of page blob on a premium storage account or tier of block blob on blob storage LRS accounts. For a list of allowed premium page blob tiers, see https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssd. For blob storage LRS accounts, valid values are Hot/Cool/Archive."
+      },
+      "x-ms-access-tier-inferred": {
+        "x-ms-client-name": "AccessTierInferred",
+        "type": "boolean",
+        "description": "For page blobs on a premium storage account only. If the access tier is not explicitly set on the blob, the tier is inferred based on its content length and this header will be returned with true value."
+      },
+      "x-ms-access-tier-change-time": {
+        "x-ms-client-name": "AccessTierChangeTime",
+        "type": "string",
+        "format": "date-time-rfc1123",
+        "description": "The time the tier was changed on the object. This is only returned if the tier on the block blob was ever set."
+      },
+      "x-ms-smart-access-tier": {
+        "x-ms-client-name": "SmartAccessTier",
+        "type": "string",
+        "description": "The underlying tier of a smart tier blob. Only returned if the blob is in Smart tier."
+      }
+    };
+    $.get.responses["200"].headers = Object.assign({}, $.get.responses["200"].headers, accessTierDownloadHeaders);
+    $.get.responses["206"].headers = Object.assign({}, $.get.responses["206"].headers, accessTierDownloadHeaders);
 ```
 
 
