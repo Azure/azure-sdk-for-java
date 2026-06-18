@@ -105,7 +105,7 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
             // already at or past the known end of the resource, no data could have been returned anyway, so log
             // the failure and signal end-of-file instead of propagating an exception to the caller that has
             // already received all of the blob's content.
-            if (sourceOffset >= resourceLength) {
+            if (sourceOffset >= resourceLength && dst.position() == initialPosition) {
                 LOGGER.warning("Ignoring error encountered while issuing a read at or past the end of the blob; "
                     + "treating as end-of-file because the resource length is already known.", e);
                 return -1;
