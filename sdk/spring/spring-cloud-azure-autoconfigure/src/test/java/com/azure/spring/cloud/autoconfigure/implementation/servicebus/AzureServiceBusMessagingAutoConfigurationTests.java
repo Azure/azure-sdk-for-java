@@ -15,14 +15,15 @@ import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.lang.reflect.Field;
 
@@ -93,7 +94,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> assertThatIllegalStateException());
     }
 
@@ -102,7 +103,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     void withIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
-            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("defaultServiceBusMessageConverter");
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
@@ -116,7 +117,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
-            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("serviceBusMessageConverter");
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
@@ -130,8 +131,8 @@ class AzureServiceBusMessagingAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
-            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
-            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
+            .withBean("userObjectMapper", JsonMapper.class, () -> JsonMapper.builder().build())
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");
                 assertThat(context).hasSingleBean(ObjectMapper.class);

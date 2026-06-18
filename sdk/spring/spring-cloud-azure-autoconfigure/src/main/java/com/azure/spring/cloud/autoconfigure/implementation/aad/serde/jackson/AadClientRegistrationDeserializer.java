@@ -2,20 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.serde.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.StdConverter;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.util.StdConverter;
 
-import java.io.IOException;
-
-class AadClientRegistrationDeserializer extends JsonDeserializer<ClientRegistration> {
+class AadClientRegistrationDeserializer extends ValueDeserializer<ClientRegistration> {
 
     private static final StdConverter<JsonNode, ClientAuthenticationMethod> CLIENT_AUTHENTICATION_METHOD_CONVERTER =
         new StdConverters.ClientAuthenticationMethodConverter();
@@ -27,9 +24,8 @@ class AadClientRegistrationDeserializer extends JsonDeserializer<ClientRegistrat
         new StdConverters.AuthenticationMethodConverter();
 
     @Override
-    public ClientRegistration deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-        ObjectMapper mapper = (ObjectMapper) parser.getCodec();
-        JsonNode clientRegistrationNode = mapper.readTree(parser);
+    public ClientRegistration deserialize(JsonParser parser, DeserializationContext context) {
+        JsonNode clientRegistrationNode = context.readTree(parser);
         JsonNode providerDetailsNode = JsonNodeUtils.findObjectNode(clientRegistrationNode, "providerDetails");
         JsonNode userInfoEndpointNode = JsonNodeUtils.findObjectNode(providerDetailsNode, "userInfoEndpoint");
         return ClientRegistration
@@ -41,7 +37,7 @@ class AadClientRegistrationDeserializer extends JsonDeserializer<ClientRegistrat
             .authorizationGrantType(AUTHORIZATION_GRANT_TYPE_CONVERTER
                 .convert(JsonNodeUtils.findObjectNode(clientRegistrationNode, "authorizationGrantType")))
             .redirectUri(JsonNodeUtils.findStringValue(clientRegistrationNode, "redirectUri"))
-            .scope(JsonNodeUtils.findValue(clientRegistrationNode, "scopes", JsonNodeUtils.STRING_SET, mapper))
+            .scope(JsonNodeUtils.findValue(clientRegistrationNode, "scopes", JsonNodeUtils.STRING_SET, context))
             .clientName(JsonNodeUtils.findStringValue(clientRegistrationNode, "clientName"))
             .authorizationUri(JsonNodeUtils.findStringValue(providerDetailsNode, "authorizationUri"))
             .tokenUri(JsonNodeUtils.findStringValue(providerDetailsNode, "tokenUri"))
@@ -52,7 +48,7 @@ class AadClientRegistrationDeserializer extends JsonDeserializer<ClientRegistrat
             .jwkSetUri(JsonNodeUtils.findStringValue(providerDetailsNode, "jwkSetUri"))
             .issuerUri(JsonNodeUtils.findStringValue(providerDetailsNode, "issuerUri"))
             .providerConfigurationMetadata(JsonNodeUtils.findValue(providerDetailsNode, "configurationMetadata",
-                JsonNodeUtils.STRING_OBJECT_MAP, mapper))
+                JsonNodeUtils.STRING_OBJECT_MAP, context))
             .build();
     }
 }

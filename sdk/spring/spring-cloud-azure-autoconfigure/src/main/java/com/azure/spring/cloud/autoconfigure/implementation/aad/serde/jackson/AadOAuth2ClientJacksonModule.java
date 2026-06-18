@@ -2,24 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.serde.jackson;
 
-import com.fasterxml.jackson.core.Version;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import tools.jackson.core.Version;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * Jackson {@code Module} for ClientRegistration
  */
-class AadOAuth2ClientJackson2Module extends SimpleModule {
+class AadOAuth2ClientJacksonModule extends SimpleModule {
 
     private static final long serialVersionUID = 30_80_00L;
 
-    AadOAuth2ClientJackson2Module() {
-        super(AadOAuth2ClientJackson2Module.class.getName(), new Version(3, 8, 0, null, null, null));
+    AadOAuth2ClientJacksonModule() {
+        super(AadOAuth2ClientJacksonModule.class.getName(), new Version(3, 8, 0, null, null, null));
     }
 
     @Override
     public void setupModule(SetupContext context) {
-        context.setMixInAnnotations(ClientRegistration.class, AadClientRegistrationMixin.class);
+        context.setMixIn(ClientRegistration.class, AadClientRegistrationMixin.class);
     }
 
 }

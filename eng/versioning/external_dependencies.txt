@@ -346,6 +346,7 @@ springboot4_org.springframework.boot:spring-boot-data-redis;4.1.0
 springboot4_org.springframework.boot:spring-boot-docker-compose;4.1.0
 springboot4_org.springframework.boot:spring-boot-health;4.1.0
 springboot4_org.springframework.boot:spring-boot-http-converter;4.1.0
+springboot4_org.springframework.boot:spring-boot-jackson;4.1.0
 springboot4_org.springframework.boot:spring-boot-jackson2;4.1.0
 springboot4_org.springframework.boot:spring-boot-jdbc;4.1.0
 springboot4_org.springframework.boot:spring-boot-jms;4.1.0
@@ -387,6 +388,8 @@ springboot4_org.springframework:spring-web;7.0.8
 springboot4_org.springframework:spring-webmvc;7.0.8
 springboot4_org.testcontainers:testcontainers-junit-jupiter;2.0.5
 springboot4_org.testcontainers:testcontainers-azure;2.0.5
+springboot4_tools.jackson.core:jackson-core;3.1.4
+springboot4_tools.jackson.core:jackson-databind;3.1.4
 springboot4_jakarta.annotation:jakarta.annotation-api;3.0.0
 springboot4_ch.qos.logback:logback-classic;1.5.34
 springboot4_org.awaitility:awaitility;4.3.0
