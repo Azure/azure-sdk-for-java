@@ -68,7 +68,7 @@ public class AgentsCustomizations extends Customization {
     }
 
     private void annotateBetaFields(LibraryCustomization customization, List<String[]> betaAnnotations,
-        Logger logger) {
+                                    Logger logger) {
         for (String[] entry : betaAnnotations) {
             String className = entry[0];
             String member = entry[1];
@@ -79,11 +79,19 @@ public class AgentsCustomizations extends Customization {
 
             logger.info("Annotating {}{} with @Beta", className, member == null ? "" : "#" + member);
 
-            customization.getClass(packageName, simpleName).customizeAst(ast -> ast.getTypes().stream()
+            ClassCustomization classCustomization = null;
+            try {
+                classCustomization = customization.getClass(packageName, simpleName);
+            } catch (IllegalArgumentException ex) {
+                logger.info(packageName + simpleName + " does not exit.");
+                continue;
+            }
+
+            classCustomization.getClass(packageName, simpleName).customizeAst(ast -> ast.getTypes().stream()
                 .filter(type -> type.getNameAsString().equals(simpleName))
                 .findFirst()
                 .ifPresent(type -> {
-                    ast.addImport("com.azure.ai.agents.util.Beta");
+                    ast.addImport("com.azure.ai.agents.implementation.utils.Beta");
                     if (member == null) {
                         type.addAnnotation(betaAnnotation(description));
                     } else {

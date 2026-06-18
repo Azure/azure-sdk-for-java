@@ -1,3 +1,4 @@
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -28,7 +29,7 @@ public class ProjectsCustomizations extends Customization {
     }
 
     private void annotateBetaFields(LibraryCustomization customization, List<String[]> betaAnnotations,
-        Logger logger) {
+                                    Logger logger) {
         for (String[] entry : betaAnnotations) {
             String className = entry[0];
             String member = entry[1];
@@ -39,11 +40,19 @@ public class ProjectsCustomizations extends Customization {
 
             logger.info("Annotating {}{} with @Beta", className, member == null ? "" : "#" + member);
 
-            customization.getClass(packageName, simpleName).customizeAst(ast -> ast.getTypes().stream()
+            ClassCustomization classCustomization = null;
+            try {
+                classCustomization = customization.getClass(packageName, simpleName);
+            } catch (IllegalArgumentException ex) {
+                logger.info(packageName + simpleName + " does not exit.");
+                continue;
+            }
+
+            classCustomization.customizeAst(ast -> ast.getTypes().stream()
                 .filter(type -> type.getNameAsString().equals(simpleName))
                 .findFirst()
                 .ifPresent(type -> {
-                    ast.addImport("com.azure.ai.projects.util.Beta");
+                    ast.addImport("com.azure.ai.projects.implementation.utils.Beta");
                     if (member == null) {
                         type.addAnnotation(betaAnnotation(description));
                     } else {
