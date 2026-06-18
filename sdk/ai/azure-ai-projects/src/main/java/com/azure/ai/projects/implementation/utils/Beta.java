@@ -29,8 +29,7 @@ public @interface Beta {
     /**
      * Default warning text.
      */
-    String PREVIEW_SUBJECT_TO_CHANGE_WARNING
-        = "Preview API - subject to change in non-backwards compatible way";
+    String PREVIEW_SUBJECT_TO_CHANGE_WARNING = "Preview API - subject to change in non-backwards compatible way";
 
     /**
      * Gets the warning text describing the preview status of the annotated API.
