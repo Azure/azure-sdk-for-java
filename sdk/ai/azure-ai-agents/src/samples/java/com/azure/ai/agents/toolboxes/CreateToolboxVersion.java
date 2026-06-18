@@ -4,7 +4,7 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This sample demonstrates how to create a toolbox version using the ToolboxesClient.
+ * This sample demonstrates how to create a toolbox version using the BetaToolboxesClient.
  *
  * <p>A toolbox stores reusable tool definitions that can be shared across agents.
  * Each call to {@code createToolboxVersion} creates a new immutable version. If the
@@ -30,10 +30,10 @@ public class CreateToolboxVersion {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         // Code sample for creating a toolbox version
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildToolboxesClient();
+                .beta().buildBetaToolboxesClient();
 
         List<Tool> tools = Arrays.asList(
                 new McpTool("api_specs")

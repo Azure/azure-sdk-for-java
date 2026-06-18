@@ -35,6 +35,7 @@
     <module>sdk/avs</module>
     <module>sdk/azureadexternalidentities</module>
     <module>sdk/azurearcdata</module>
+    <module>sdk/azureresiliencemanagement</module>
     <module>sdk/azurestack</module>
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
@@ -209,6 +210,7 @@
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
     <module>sdk/privatedns</module>
+    <module>sdk/programenrollment</module>
     <module>sdk/programmableconnectivity</module>
     <module>sdk/providerhub</module>
     <module>sdk/purestorageblock</module>

@@ -226,6 +226,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -265,6 +267,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -301,6 +305,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -337,6 +343,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -373,6 +381,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -410,6 +420,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -445,6 +457,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -480,6 +494,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -515,6 +531,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * Get a version
+     * 
      * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -540,7 +558,9 @@ public final class IndexesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the Index along with {@link Response} on successful completion of {@link Mono}.
+     * @return a version
+     * 
+     * Get the specific version of the Index along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getIndexVersionWithResponseAsync(String name, String version,
@@ -551,6 +571,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * Get a version
+     * 
      * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -576,7 +598,9 @@ public final class IndexesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the Index along with {@link Response}.
+     * @return a version
+     * 
+     * Get the specific version of the Index along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexVersionWithResponse(String name, String version,
@@ -587,6 +611,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * Delete a version
+     * 
      * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
      * successfully or if the Index does not exist.
      * 
@@ -607,6 +633,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * Delete a version
+     * 
      * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
      * successfully or if the Index does not exist.
      * 
@@ -626,6 +654,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * Create or update a version
+     * 
      * Create a new or update an existing Index with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -682,6 +712,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * Create or update a version
+     * 
      * Create a new or update an existing Index with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -738,6 +770,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -777,6 +811,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -813,6 +849,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -852,6 +890,8 @@ public final class IndexesImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

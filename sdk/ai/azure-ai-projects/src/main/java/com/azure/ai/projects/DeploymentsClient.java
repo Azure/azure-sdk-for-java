@@ -39,7 +39,9 @@ public final class DeploymentsClient {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Gets a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -57,7 +59,9 @@ public final class DeploymentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deployed model along with {@link Response}.
+     * @return a deployment
+     *
+     * Gets a deployed model along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -66,7 +70,10 @@ public final class DeploymentsClient {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -103,7 +110,9 @@ public final class DeploymentsClient {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     *
+     * Gets a deployed model.
      *
      * @param name Name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +121,9 @@ public final class DeploymentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployed model.
+     * @return a deployment
+     *
+     * Gets a deployed model.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -123,7 +134,10 @@ public final class DeploymentsClient {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @param modelPublisher Model publisher to filter models by.
      * @param modelName Model name (the publisher specific name) to filter models by.
@@ -156,7 +170,10 @@ public final class DeploymentsClient {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     *
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

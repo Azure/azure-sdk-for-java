@@ -9,7 +9,7 @@ package com.azure.resourcemanager.artifactsigning.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-13/Operations_List.json
+     * x-ms-original-file: 2026-05-15-preview/Operations_List.json
      */
     /**
      * Sample code: List artifact signing account operations.
