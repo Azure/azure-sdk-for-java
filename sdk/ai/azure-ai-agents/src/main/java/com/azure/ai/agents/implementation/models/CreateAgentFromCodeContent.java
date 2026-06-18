@@ -5,7 +5,7 @@ package com.azure.ai.agents.implementation.models;
 
 import com.azure.ai.agents.models.CodeFileDetails;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
-import com.azure.ai.agents.util.Beta;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 

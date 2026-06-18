@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.util;
+package com.azure.ai.projects.implementation.utils;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
@@ -21,7 +21,7 @@ import static java.lang.annotation.ElementType.TYPE;
  * version.
  */
 @Documented
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.SOURCE)
 @Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR, FIELD })
 @Inherited
 public @interface Beta {
