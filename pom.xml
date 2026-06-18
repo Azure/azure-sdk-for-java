@@ -180,6 +180,7 @@
     <module>sdk/msi</module>
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
+    <module>sdk/napsteromniagentapi</module>
     <module>sdk/neonpostgres</module>
     <module>sdk/netapp</module>
     <module>sdk/network</module>
