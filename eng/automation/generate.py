@@ -35,21 +35,6 @@ os.chdir(pwd)
 def parse_args() -> (argparse.ArgumentParser, argparse.Namespace):
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-c",
-        "--tsp-config",
-        help="The top level directory where the tspconfig.yaml for the service lives. "
-        "Currently only support remote url with specific commitID "
-        "e.g. https://github.com/Azure/azure-rest-api-specs/blob/042e4045dedff4baaf5ae551bf6c8087fbdacd40/specification/deviceregistry/DeviceRegistry.Management/tspconfig.yaml",
-    )
-    parser.add_argument("-v", "--version", help="Specific sdk version")
-    parser.add_argument(
-        "--auto-commit-external-change",
-        action="store_true",
-        help="Automatic commit the generated code",
-    )
-    parser.add_argument("--user-name", help="User Name for commit")
-    parser.add_argument("--user-email", help="User Email for commit")
-    parser.add_argument(
         "config",
         nargs="*",
     )
@@ -336,55 +321,8 @@ def main():
     if args.get("config"):
         return sdk_automation(args["config"][0], args["config"][1])
 
-    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
-
-    if not args.get("tsp_config"):
-        parser.print_help()
-        sys.exit(0)
-
-    tsp_config = args["tsp_config"]
-
-    succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-        tsp_project=tsp_config, sdk_root=sdk_root, remove_before_regen=True, group_id=GROUP_ID, **args
-    )
-
-    stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
-    args["version"] = current_version
-
-    if require_sdk_integration:
-        update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
-        update_root_pom(sdk_root, service)
-
-    output_folder = sdk_folder
-    update_version(sdk_root, output_folder)
-    update_changelog_version(sdk_root, output_folder, current_version)
-
-    if succeeded:
-        succeeded = compile_arm_package(sdk_root, module)
-        if succeeded:
-            latest_release_version = get_latest_release_version(stable_version, current_version)
-            compare_with_maven_package(sdk_root, GROUP_ID, service, latest_release_version, current_version, module)
-
-            if args.get("auto_commit_external_change") and args.get("user_name") and args.get("user_email"):
-                pwd = os.getcwd()
-                try:
-                    os.chdir(sdk_root)
-                    os.system(
-                        "git add eng/versioning eng/automation pom.xml {0} {1}".format(
-                            CI_FILE_FORMAT.format(service), POM_FILE_FORMAT.format(service)
-                        )
-                    )
-                    os.system(
-                        'git -c user.name={0} -c user.email={1} commit -m "[Automation] External Change"'.format(
-                            args["user_name"], args["user_email"]
-                        )
-                    )
-                finally:
-                    os.chdir(pwd)
-
-    if not succeeded:
-        raise RuntimeError("Failed to generate code or compile the package")
+    parser.print_help()
+    sys.exit(0)
 
 
 if __name__ == "__main__":
