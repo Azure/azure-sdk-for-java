@@ -1,0 +1,4 @@
+directory: specification/widget/resource-manager/Microsoft.Widget/Widget
+commit: 6ca72ebaa4942cb3c2b070fac3d392e0359a8567
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
