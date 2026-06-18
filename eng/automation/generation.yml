@@ -2,15 +2,6 @@ trigger: none
 
 pr: none
 
-parameters: # parameters(instead of variables) is used here for template compile time expressions
-  - name: RELEASE_TYPE
-    displayName: Release from
-    type: string
-    values:
-      - Swagger
-      - TypeSpec
-    default: Swagger
-
 variables:
   - group: Release Secrets for GitHub
   - name: MAVEN_CACHE_FOLDER
@@ -35,15 +26,9 @@ steps:
       versionSpec: '$(NodeVersion)'
 
   - bash: |
-      npm install -g autorest
-    displayName: 'Install autorest'
-    condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
-
-  - bash: |
       npm ci
     workingDirectory: $(Build.SourcesDirectory)/eng/common/tsp-client
     displayName: 'Install tsp-client'
-    condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
 
   # - template: /eng/common/testproxy/test-proxy-tool.yml
   #   parameters:
@@ -56,25 +41,12 @@ steps:
       set -x
       ./eng/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
     displayName: Generation from TypeSpec
-    condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
-
-  - bash: |
-      export PATH=$JAVA_HOME_11_X64/bin:$PATH
-      java -version
-      set -x
-      ./eng/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
-    displayName: Generation from Swagger
-    condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
 
   - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
     parameters:
       PRBranchName: fluent-lite-generation-$(Build.BuildId)
-      ${{ if eq(parameters.RELEASE_TYPE, 'TypeSpec') }}: # Have to use parameter here. The ${{<expression>}} is compile time expression, it won't resolve against runtime variables.
-        CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-        PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-      ${{ else }}:
-        CommitMsg: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
-        PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
+      CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+      PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
       PRLabels: 'Mgmt - Track 2'
       OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
       AuthToken: ''
