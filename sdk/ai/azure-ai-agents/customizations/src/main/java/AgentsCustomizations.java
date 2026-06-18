@@ -83,7 +83,7 @@ public class AgentsCustomizations extends Customization {
                 .filter(type -> type.getNameAsString().equals(simpleName))
                 .findFirst()
                 .ifPresent(type -> {
-                    ast.addImport("com.azure.ai.agents.implementation.util.Beta");
+                    ast.addImport("com.azure.ai.agents.implementation.utils.Beta");
                     if (member == null) {
                         type.addAnnotation(betaAnnotation(description));
                     } else {
