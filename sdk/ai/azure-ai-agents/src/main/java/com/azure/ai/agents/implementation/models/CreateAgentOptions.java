@@ -7,6 +7,7 @@ import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentState;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import java.util.Map;
@@ -223,6 +224,34 @@ public final class CreateAgentOptions {
     @Generated
     public CreateAgentOptions setAgentEndpoint(AgentEndpointConfig agentEndpoint) {
         this.agentEndpoint = agentEndpoint;
+        return this;
+    }
+
+    /*
+     * The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     */
+    @Generated
+    private AgentState state;
+
+    /**
+     * Get the state property: The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public AgentState getState() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     *
+     * @param state the state value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setState(AgentState state) {
+        this.state = state;
         return this;
     }
 }

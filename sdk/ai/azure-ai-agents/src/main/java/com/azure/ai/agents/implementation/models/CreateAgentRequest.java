@@ -7,6 +7,7 @@ import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentState;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -154,6 +155,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.agentName);
         jsonWriter.writeJsonField("definition", this.definition);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("blueprint_reference", this.blueprintReference);
@@ -176,6 +178,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
         return jsonReader.readObject(reader -> {
             String agentName = null;
             AgentDefinition definition = null;
+            AgentState state = null;
             Map<String, String> metadata = null;
             String description = null;
             AgentBlueprintReference blueprintReference = null;
@@ -188,6 +191,8 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
                     agentName = reader.getString();
                 } else if ("definition".equals(fieldName)) {
                     definition = AgentDefinition.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    state = AgentState.fromString(reader.getString());
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("description".equals(fieldName)) {
@@ -203,6 +208,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
                 }
             }
             CreateAgentRequest deserializedCreateAgentRequest = new CreateAgentRequest(agentName, definition);
+            deserializedCreateAgentRequest.state = state;
             deserializedCreateAgentRequest.metadata = metadata;
             deserializedCreateAgentRequest.description = description;
             deserializedCreateAgentRequest.blueprintReference = blueprintReference;
@@ -295,6 +301,34 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
     @Generated
     public CreateAgentRequest setAgentEndpoint(AgentEndpointConfig agentEndpoint) {
         this.agentEndpoint = agentEndpoint;
+        return this;
+    }
+
+    /*
+     * The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     */
+    @Generated
+    private AgentState state;
+
+    /**
+     * Get the state property: The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public AgentState getState() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: The initial operational state of the agent. Defaults to 'enabled' if not specified.
+     *
+     * @param state the state value to set.
+     * @return the CreateAgentRequest object itself.
+     */
+    @Generated
+    public CreateAgentRequest setState(AgentState state) {
+        this.state = state;
         return this;
     }
 }

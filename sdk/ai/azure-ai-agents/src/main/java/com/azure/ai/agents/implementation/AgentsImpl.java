@@ -468,6 +468,46 @@ public final class AgentsImpl {
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Post("/agents/{agent_name}:enable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> enableAgent(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}:enable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> enableAgentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}:disable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> disableAgent(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}:disable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> disableAgentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
         @Post("/agents/{agent_name}/endpoint/sessions")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -717,6 +757,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -818,6 +859,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -916,6 +958,7 @@ public final class AgentsImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
@@ -976,6 +1019,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1075,6 +1119,7 @@ public final class AgentsImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
@@ -1135,6 +1180,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1239,6 +1285,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1349,6 +1396,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1476,6 +1524,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1601,6 +1650,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1707,6 +1757,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1818,6 +1869,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1942,6 +1994,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2061,6 +2114,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2180,6 +2234,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2300,6 +2355,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2509,6 +2565,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2632,6 +2689,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2749,6 +2807,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2870,6 +2929,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3827,6 +3887,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3975,6 +4036,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -4285,6 +4347,88 @@ public final class AgentsImpl {
         final String accept = "application/zip";
         return service.downloadAgentCodeSync(this.client.getEndpoint(), agentName,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Enable an agent
+     * 
+     * Enables the specified agent, allowing it to accept new sessions and process requests.
+     * This operation is idempotent — enabling an already-enabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to enable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> enableAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.enableAgent(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Enable an agent
+     * 
+     * Enables the specified agent, allowing it to accept new sessions and process requests.
+     * This operation is idempotent — enabling an already-enabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to enable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> enableAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return service.enableAgentSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * Disable an agent
+     * 
+     * Disables the specified agent, preventing it from accepting new sessions or processing requests.
+     * Existing active sessions are allowed to drain gracefully but no new sessions can be created.
+     * This operation is idempotent — disabling an already-disabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to disable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.disableAgent(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Disable an agent
+     * 
+     * Disables the specified agent, preventing it from accepting new sessions or processing requests.
+     * Existing active sessions are allowed to drain gracefully but no new sessions can be created.
+     * This operation is idempotent — disabling an already-disabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to disable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> disableAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return service.disableAgentSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
     /**
