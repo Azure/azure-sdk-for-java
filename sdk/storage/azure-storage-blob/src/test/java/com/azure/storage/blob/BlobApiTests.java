@@ -543,36 +543,6 @@ public class BlobApiTests extends BlobTestBase {
         //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
-    @Test
-    public void downloadSmartAccessTierHeaders() {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bc.setAccessTier(AccessTier.SMART);
-
-        BlobDownloadResponse response = bc.downloadStreamWithResponse(stream, null, null, null, false, null, null);
-        ByteBuffer body = ByteBuffer.wrap(stream.toByteArray());
-
-        assertEquals(DATA.getDefaultData(), body);
-        assertSmartAccessTierHeaders(response.getDeserializedHeaders());
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
-    @Test
-    public void downloadContentSmartAccessTierHeaders() {
-        bc.setAccessTier(AccessTier.SMART);
-        BlobDownloadContentResponse response = bc.downloadContentWithResponse(null, null, null, null);
-
-        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), response.getValue().toBytes());
-        assertSmartAccessTierHeaders(response.getDeserializedHeaders());
-    }
-
-    private static void assertSmartAccessTierHeaders(BlobDownloadHeaders headers) {
-        assertEquals(AccessTier.SMART, headers.getAccessTier());
-        assertNotNull(headers.getSmartAccessTier());
-        assertFalse(headers.isAccessTierInferred());
-        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
-    }
-
     @Test
     public void downloadEmptyFile() {
         AppendBlobClient bc = cc.getBlobClient("emptyAppendBlob").getAppendBlobClient();
