@@ -123,7 +123,10 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
         }
 
         String ifMatch = requestConditions.getIfMatch();
-        return !CoreUtils.isNullOrEmpty(ifMatch) && !"*".equals(ifMatch.trim());
+        if (CoreUtils.isNullOrEmpty(ifMatch)) {
+            return false;
+        }
+        return !"*".equals(ifMatch.trim());
     }
 
     /**

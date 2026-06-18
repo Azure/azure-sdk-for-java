@@ -4,14 +4,18 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.AfterEach;
@@ -60,6 +64,10 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         cc.deleteIfExists();
     }
 
+    private static BlobClientBase mockClient() {
+        return Mockito.mock(BlobClientBase.class);
+    }
+
     private BlobDownloadResponse createMockDownloadResponse(String contentRange) {
         String contentRangeHeader = "Content-Range";
         Map<String, String> headers = new HashMap<>();
@@ -72,7 +80,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     @MethodSource("readCallsToClientCorrectlySupplier")
     public void readCallsToClientCorrectly(long offset, int bufferSize, BlobRequestConditions conditions)
         throws IOException {
-        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        BlobClientBase client = mockClient();
         ArgumentCaptor<BlobRange> blobRangeCaptor = ArgumentCaptor.forClass(BlobRange.class);
         Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
             .thenReturn(
@@ -102,7 +110,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     @MethodSource("readUsesCacheCorrectlySupplier")
     void readUsesCacheCorrectly(long offset, int bufferSize, int cacheSize) throws Exception {
         // given: "Behavior with a starting cached response"
-        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        BlobClientBase client = mockClient();
         ByteBuffer initialCache = getRandomData(cacheSize);
         StorageSeekableByteChannelBlobReadBehavior behavior
             = new StorageSeekableByteChannelBlobReadBehavior(client, initialCache, offset, Constants.MB, null);
@@ -277,13 +285,104 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     }
 
     /**
+     * The companion to {@link #readDetectsBlobGrowth()}: a blob can also shrink (e.g. it is overwritten with smaller
+     * content) while a channel is open. When a read targets an offset that is now past the (shrunk) end of the blob,
+     * the service responds with HTTP 416 {@code InvalidRange}. The behavior must surface the new, smaller resource
+     * length from the 416 response's {@code Content-Range} header and signal end-of-file.
+     */
+    @Test
+    void readDetectsBlobShrink() throws IOException {
+        // Given: data
+        int halfLength = 512;
+        byte[] data = getRandomByteArray(2 * halfLength);
+
+        // Blob initially at full size
+        String blockId1 = new String(Base64.getEncoder().encode("blockId1".getBytes()));
+        String blockId2 = new String(Base64.getEncoder().encode("blockId2".getBytes()));
+        blockBlobClient.stageBlock(blockId1, BinaryData.fromBytes(Arrays.copyOfRange(data, 0, halfLength)));
+        blockBlobClient.stageBlock(blockId2, BinaryData.fromBytes(Arrays.copyOfRange(data, halfLength, data.length)));
+        blockBlobClient.commitBlockList(Arrays.asList(blockId1, blockId2));
+
+        // behavior to read blob, initialized with the full resource length
+        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
+            blockBlobClient, ByteBuffer.allocate(0), -1, 2 * halfLength, null);
+
+        // first half of blob read successfully
+        ByteBuffer buffer = ByteBuffer.allocate(halfLength);
+        int read = behavior.read(buffer, 0);
+
+        // behavior state as expected
+        assertEquals(halfLength, read);
+        assertEquals(2 * halfLength, behavior.getResourceLength());
+        assertEquals(buffer.capacity(), buffer.position());
+        TestUtils.assertArraysEqual(data, 0, buffer.array(), 0, halfLength);
+
+        // blob overwritten to half its previous size
+        blockBlobClient.commitBlockList(Collections.singletonList(blockId1), true);
+
+        // behavior reads at what used to be the middle of the blob, but is now past the end
+        buffer.clear();
+        read = behavior.read(buffer, halfLength);
+
+        // gracefully signal end of blob and update length to the new, smaller size
+        assertEquals(-1, read);
+        assertEquals(halfLength, behavior.getResourceLength());
+
+        // buffer unfilled
+        assertEquals(0, buffer.position());
+    }
+
+    /**
+     * Deterministically exercises the {@code InvalidRange} (HTTP 416) handling that detects shrink. When the service
+     * reports a smaller total size on the 416 {@code Content-Range} header, the behavior must adopt that length and
+     * either signal EOF (offset at/past the new end) or report zero bytes read (offset still within the new bounds).
+     */
+    @Test
+    public void readUpdatesLengthOnInvalidRangeResponse() throws IOException {
+        BlobClientBase client = mockClient();
+
+        // Channel was opened believing the blob was 2 KB; the service now reports it is only 1 KB.
+        long staleLength = 2 * Constants.KB;
+        long shrunkLength = Constants.KB;
+
+        // Case 1: offset is at/past the new end -> EOF (-1) and length updated.
+        Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
+            .thenThrow(createInvalidRangeException("bytes */" + shrunkLength));
+
+        StorageSeekableByteChannelBlobReadBehavior behaviorAtEnd
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, staleLength, null);
+
+        int readAtEnd = behaviorAtEnd.read(ByteBuffer.allocate(Constants.KB), shrunkLength);
+
+        assertEquals(-1, readAtEnd);
+        assertEquals(shrunkLength, behaviorAtEnd.getResourceLength());
+
+        // Case 2: offset is still within the new bounds -> zero bytes read (0) and length updated.
+        StorageSeekableByteChannelBlobReadBehavior behaviorWithin
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, staleLength, null);
+
+        int readWithin = behaviorWithin.read(ByteBuffer.allocate(Constants.KB), shrunkLength - 100);
+
+        assertEquals(0, readWithin);
+        assertEquals(shrunkLength, behaviorWithin.getResourceLength());
+    }
+
+    private static BlobStorageException createInvalidRangeException(String contentRange) {
+        HttpHeaders headers = new HttpHeaders()
+            .set(Constants.HeaderConstants.ERROR_CODE_HEADER_NAME, BlobErrorCode.INVALID_RANGE.toString())
+            .set(HttpHeaderName.CONTENT_RANGE, contentRange);
+        return new BlobStorageException("The range specified is invalid.", new MockHttpResponse(null, 416, headers),
+            null);
+    }
+
+    /**
      * When the request conditions lock the blob via an If-Match ETag, a read at or past the known end of the
      * resource must short-circuit to EOF without issuing a service call (which the service would reject with an
      * HTTP 416 response).
      */
     @Test
     public void readPastEndShortCircuitsWhenETagLocked() throws IOException {
-        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        BlobClientBase client = mockClient();
 
         long resourceLength = Constants.KB;
         BlobRequestConditions conditions = new BlobRequestConditions().setIfMatch("0xETAG");
@@ -325,7 +424,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
      */
     @Test
     public void readPastEndIssuesRequestWhenNotETagLocked() throws IOException {
-        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        BlobClientBase client = mockClient();
         long resourceLength = Constants.KB;
         Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
             .thenReturn(createMockDownloadResponse(
@@ -348,7 +447,7 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
      */
     @Test
     public void readPastEndSwallowsTransportErrorAndSignalsEof() throws IOException {
-        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+        BlobClientBase client = mockClient();
         long resourceLength = Constants.KB;
         Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
             .thenThrow(new RuntimeException("Connection reset by peer"));
@@ -369,8 +468,8 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
      * must continue to surface as exceptions, since some bytes the caller asked for could not be retrieved.
      */
     @Test
-    public void readWithinResourcePropagatesTransportError() {
-        BlobClientBase client = Mockito.mock(BlobClientBase.class);
+    public void readBeforeEndOfBlobPropagatesTransportError() {
+        BlobClientBase client = mockClient();
         long resourceLength = Constants.KB;
         Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
             .thenThrow(new RuntimeException("Connection reset by peer"));
