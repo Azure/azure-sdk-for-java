@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaModelsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.CreateAsyncResponse;
 import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.ModelCredentialInput;
@@ -34,6 +35,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
+@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
 public final class BetaModelsAsyncClient {
 
@@ -55,7 +57,7 @@ public final class BetaModelsAsyncClient {
      *
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -122,7 +124,7 @@ public final class BetaModelsAsyncClient {
      *
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -188,7 +190,7 @@ public final class BetaModelsAsyncClient {
      *
      * Retrieves the specified model version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -282,7 +284,7 @@ public final class BetaModelsAsyncClient {
      *
      * Update an existing ModelVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -293,9 +295,9 @@ public final class BetaModelsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -367,7 +369,7 @@ public final class BetaModelsAsyncClient {
      * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a location header
      * for polling the operation status.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -414,9 +416,9 @@ public final class BetaModelsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -448,7 +450,7 @@ public final class BetaModelsAsyncClient {
      *
      * Initiates a new pending upload or retrieves an existing one for the specified model version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -458,9 +460,9 @@ public final class BetaModelsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -503,7 +505,7 @@ public final class BetaModelsAsyncClient {
      *
      * Retrieves temporary credentials for accessing the storage backing the specified model version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -511,9 +513,9 @@ public final class BetaModelsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

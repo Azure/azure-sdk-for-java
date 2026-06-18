@@ -13,7 +13,7 @@
     "extension": "revapi.java.filter.annotated",
     "configuration": {
       "exclude": [
-        "@com.azure.ai.project.implementation.utils.Beta",
+        "@com.azure.ai.projects.implementation.utils.Beta",
         "@com.azure.ai.agents.implementation.utils.Beta"
 
       ]
@@ -1980,6 +1980,64 @@
           "code": "java.method.returnTypeChanged",
           "old": "method double com.azure.ai.projects.models.ModelSamplingParams::getTopP()",
           "justification": "Breaking change in beta operation: return type changed from primitive double to boxed Double to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter void com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::<init>(===java.util.List<com.azure.ai.projects.models.FilesFileDetails>===)",
+          "new": "parameter void com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::<init>(===java.util.List<com.azure.ai.projects.models.SkillFileDetails>===)",
+          "parameterIndex": "0",
+          "justification": "Breaking change in beta operations."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old": "method java.util.List<com.azure.ai.projects.models.FilesFileDetails> com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::getFiles()",
+          "new": "method java.util.List<com.azure.ai.projects.models.SkillFileDetails> com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::getFiles()",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.DispatchRoutineResponse",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.EvaluatorCredentialRequest",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.FilesFileDetails",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelCredentialRequest",
+          "justification": "ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelPendingUploadRequest",
+          "justification": "Breaking change in beta operation."
+
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelPendingUploadResponse",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.UpdateModelVersionRequest",
+          "justification": "Breaking change in beta operation."
         },
         {
           "ignore": true,

@@ -4,6 +4,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaSchedulesImpl;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.Schedule;
 import com.azure.ai.projects.models.ScheduleRun;
 import com.azure.ai.projects.models.ScheduleTaskType;
@@ -29,6 +30,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
+@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
 public final class BetaSchedulesAsyncClient {
 
@@ -69,7 +71,7 @@ public final class BetaSchedulesAsyncClient {
      *
      * Retrieves the specified schedule resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -130,7 +132,7 @@ public final class BetaSchedulesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -179,7 +181,7 @@ public final class BetaSchedulesAsyncClient {
      *
      * Creates a new schedule or updates an existing schedule with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -209,9 +211,9 @@ public final class BetaSchedulesAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -263,7 +265,7 @@ public final class BetaSchedulesAsyncClient {
      *
      * Retrieves the specified run for a schedule.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -311,7 +313,7 @@ public final class BetaSchedulesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

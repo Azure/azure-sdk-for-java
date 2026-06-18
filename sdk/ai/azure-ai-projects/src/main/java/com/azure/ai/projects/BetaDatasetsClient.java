@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.implementation.BetaDatasetsImpl;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -23,6 +24,7 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
+@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class BetaDatasetsClient {
 
@@ -44,7 +46,7 @@ public final class BetaDatasetsClient {
      *
      * Retrieves the specified data generation job and its current status.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -150,7 +152,7 @@ public final class BetaDatasetsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -241,7 +243,7 @@ public final class BetaDatasetsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -305,9 +307,9 @@ public final class BetaDatasetsClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -391,7 +393,7 @@ public final class BetaDatasetsClient {
      *
      * Cancels the specified data generation job if it is still in progress.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
