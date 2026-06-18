@@ -79,7 +79,15 @@ public class AgentsCustomizations extends Customization {
 
             logger.info("Annotating {}{} with @Beta", className, member == null ? "" : "#" + member);
 
-            customization.getClass(packageName, simpleName).customizeAst(ast -> ast.getTypes().stream()
+            ClassCustomization classCustomization = null;
+            try {
+                classCustomization = customization.getClass(packageName, simpleName);
+            } catch (IllegalArgumentException ex) {
+                logger.info(packageName + simpleName + " does not exit.");
+                continue;
+            }
+
+            classCustomization.getClass(packageName, simpleName).customizeAst(ast -> ast.getTypes().stream()
                 .filter(type -> type.getNameAsString().equals(simpleName))
                 .findFirst()
                 .ifPresent(type -> {
