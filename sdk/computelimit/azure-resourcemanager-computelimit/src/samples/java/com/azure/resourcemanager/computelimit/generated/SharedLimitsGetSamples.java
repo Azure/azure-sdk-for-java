@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class SharedLimitsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/SharedLimits_Get.json
+     * x-ms-original-file: 2026-07-01/SharedLimits_Get.json
      */
     /**
      * Sample code: Get a shared limit.

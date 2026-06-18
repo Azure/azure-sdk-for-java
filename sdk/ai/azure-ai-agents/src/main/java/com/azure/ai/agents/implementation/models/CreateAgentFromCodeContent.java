@@ -5,6 +5,7 @@ package com.azure.ai.agents.implementation.models;
 
 import com.azure.ai.agents.models.CodeFileDetails;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 
@@ -13,6 +14,7 @@ import com.azure.core.annotation.Immutable;
  * CreateAgentVersionFromCodeContent for future extensibility.
  */
 @Immutable
+@Beta(warningText = "Preview API. CodeAgents=V1Preview")
 public final class CreateAgentFromCodeContent {
 
     /*
