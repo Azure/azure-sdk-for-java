@@ -4,7 +4,7 @@
 MAVEN_HOST = "https://repo1.maven.org/maven2"
 MAVEN_URL = MAVEN_HOST + "/{group_id}/{artifact_id}/{version}/{artifact_id}-{version}.jar"
 
-SDK_ROOT = "../../"  # related to file dir
+SDK_ROOT = "../../"  # relative to file dir
 DEFAULT_VERSION = "1.0.0-beta.1"
 GROUP_ID = "com.azure.resourcemanager"
 
