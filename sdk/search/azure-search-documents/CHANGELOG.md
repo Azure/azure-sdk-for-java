@@ -1,5 +1,16 @@
 # Release History
 
+## 12.1.0 (Unreleased)
+
+### Features Added
+- Added discriminator deserialization support for `KnowledgeBaseSearchIndexActivityRecord`, `KnowledgeBaseAzureBlobActivityRecord`, `KnowledgeBaseIndexedOneLakeActivityRecord`, and `KnowledgeBaseWebActivityRecord` subtypes in `KnowledgeBaseActivityRecord`
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 12.0.0 (2026-04-10)
 
 ### Features Added
