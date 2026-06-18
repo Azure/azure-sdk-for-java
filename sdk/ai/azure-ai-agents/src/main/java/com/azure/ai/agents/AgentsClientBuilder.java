@@ -9,6 +9,7 @@ import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -529,6 +530,7 @@ public final class AgentsClientBuilder
      *
      * @return a builder for creating a new instance of the beta AgentsClient type.
      */
+    @Beta(warningText = "Preview API.")
     public BetaAgentsClientBuilder beta() {
         return new BetaAgentsClientBuilder();
     }
@@ -536,6 +538,7 @@ public final class AgentsClientBuilder
     /**
      * A builder for creating a new instance of the beta AgentsClient type.
      */
+    @Beta(warningText = "Preview API.")
     @ServiceClientBuilder(
         serviceClients = {
             BetaAgentsClient.class,
@@ -557,6 +560,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaAgentsAsyncClient.
          */
+        @Beta(warningText = "Preview API.")
         public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
             return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
@@ -566,6 +570,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaMemoryStoresAsyncClient.
          */
+        @Beta(warningText = "Preview API.")
         public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
             return new BetaMemoryStoresAsyncClient(
                 buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
@@ -576,6 +581,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaToolboxesAsyncClient.
          */
+        @Beta(warningText = "Preview API.")
         public BetaToolboxesAsyncClient buildBetaToolboxesAsyncClient() {
             return new BetaToolboxesAsyncClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
@@ -585,6 +591,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaAgentsClient.
          */
+        @Beta(warningText = "Preview API.")
         public BetaAgentsClient buildBetaAgentsClient() {
             return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
@@ -594,6 +601,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaMemoryStoresClient.
          */
+        @Beta(warningText = "Preview API.")
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
@@ -603,6 +611,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaToolboxesClient.
          */
+        @Beta(warningText = "Preview API.")
         public BetaToolboxesClient buildBetaToolboxesClient() {
             return new BetaToolboxesClient(buildInnerClient(TOOLBOXES_PREVIEW_FEATURES).getBetaToolboxes());
         }
