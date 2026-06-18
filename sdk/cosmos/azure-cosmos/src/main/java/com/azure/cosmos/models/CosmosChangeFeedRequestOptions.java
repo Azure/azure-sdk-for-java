@@ -93,7 +93,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the read consistency strategy.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return this.actualRequestOptions.getReadConsistencyStrategy();
     }
@@ -106,11 +105,13 @@ public final class CosmosChangeFeedRequestOptions {
      * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
      * is not SESSION then session token capturing also needs to be enabled by calling
      * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
+     * <p>Honored across Direct, Gateway V1 (compute gateway), and Gateway V2 (thin client proxy) connection modes.
+     * {@code GLOBAL_STRONG} is rejected client-side with a {@link com.azure.cosmos.CosmosException} (HTTP 400)
+     * when the account's default consistency is not {@link com.azure.cosmos.ConsistencyLevel#STRONG}. Such failures must NOT be retried.</p>
      *
      * @param readConsistencyStrategy the consistency level.
      * @return the request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
         this.actualRequestOptions.setReadConsistencyStrategy(readConsistencyStrategy);
         return this;
@@ -442,11 +443,18 @@ public final class CosmosChangeFeedRequestOptions {
         CosmosChangeFeedRequestOptions effectiveRequestOptions = this;
 
         if (pagedFluxOptions.getRequestContinuation() != null) {
+            // Rebuild from the saved continuation token (this produces the 4 token-encoded
+            // fields: continuationState, feedRangeInternal, mode, startFromInternal) and then
+            // inherit every other field from the caller's original options. Without this
+            // inheritance, a byPage(savedContinuation) round-trip would silently drop
+            // caller-supplied configuration like endLSN, customSerializer, excludeRegions,
+            // readConsistencyStrategy, etc. See
+            // CosmosChangeFeedRequestOptionsImpl.inheritNonContinuationFieldsFrom for the
+            // exhaustive field-by-field rationale.
             effectiveRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
                     pagedFluxOptions.getRequestContinuation());
-            effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
-            effectiveRequestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
+            effectiveRequestOptions.getImpl().inheritNonContinuationFieldsFrom(this.actualRequestOptions);
         }
 
         if (pagedFluxOptions.getMaxItemCount() != null) {

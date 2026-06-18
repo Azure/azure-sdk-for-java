@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MeshMembershipsGetSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/MeshMemberships_Get.json
+     * x-ms-original-file: 2026-04-02-preview/MeshMemberships_Get.json
      */
     /**
      * Sample code: Get Mesh Membership.

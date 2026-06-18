@@ -192,7 +192,8 @@ public class ManagedClusterAgentPoolProfileProperties
     private String currentOrchestratorVersion;
 
     /*
-     * The version of node image
+     * The version of the node image. Setting this value triggers an agentPool rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      */
     private String nodeImageVersion;
 
@@ -936,7 +937,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the nodeImageVersion property: The version of node image.
+     * Get the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @return the nodeImageVersion value.
      */
@@ -945,7 +948,9 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Set the nodeImageVersion property: The version of node image.
+     * Set the nodeImageVersion property: The version of the node image. Setting this value triggers an agentPool
+     * rollback.
+     * Only values from `recentlyUsedVersions` are allowed.
      * 
      * @param nodeImageVersion the nodeImageVersion value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.

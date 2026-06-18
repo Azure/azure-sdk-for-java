@@ -1,14 +1,37 @@
 # Release History
 
-## 12.35.0-beta.2 (Unreleased)
+## 12.36.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
+  in an HTTP 416 response) after the entire blob had already been returned in the initial range download. When the
+  channel is opened with ETag consistency control (the default), the read behavior now short-circuits to end-of-file
+  once the known resource length is reached, avoiding the extra round trip.
+- Fixed an issue where a transport-level failure while streaming the body of the trailing HTTP 416 response from
+  `BlobClientBase.openSeekableByteChannelRead` (for example "Connection reset by peer") could propagate out of the
+  channel even though all of the blob's content had already been delivered to the caller. The read behavior now
+  logs a warning and signals end-of-file when such an error occurs at or past the known end of the resource.
 
 ### Other Changes
+
+## 12.35.0 (2026-06-11)
+
+### Features Added
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS.
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-storage-internal-avro` from `12.19.0` to version `12.20.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
 
 ## 12.34.0 (2026-05-14)
 

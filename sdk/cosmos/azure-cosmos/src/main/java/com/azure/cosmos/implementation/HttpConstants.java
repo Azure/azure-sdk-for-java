@@ -119,6 +119,7 @@ public class HttpConstants {
         public static final String REQUEST_VALIDATION_FAILURE = "x-ms-request-validation-failure";
 
         public static final String WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH = "x-ms-write-request-trigger-refresh";
+        public static final String NO_RETRY_449 = "x-ms-noretry-449";
 
         // Quota Info
         public static final String MAX_RESOURCE_QUOTA = "x-ms-resource-quota";
@@ -456,6 +457,13 @@ public class HttpConstants {
 
         // Client generated request rate too large exception
         public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
+
+        // Client generated gateway network error: HTTP/2 PING keepalive detected a dead
+        // connection (consecutive PING ACK timeouts crossed the failure threshold) and
+        // closed the channel. This is a LOCAL transport failure, NOT a regional outage --
+        // ClientRetryPolicy uses this to skip the endpoint mark-down / cross-region
+        // failover that GATEWAY_ENDPOINT_UNAVAILABLE would trigger.
+        public static final int GATEWAY_HTTP2_PING_TIMEOUT_CHANNEL_CLOSED = 10006;
 
         public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
 

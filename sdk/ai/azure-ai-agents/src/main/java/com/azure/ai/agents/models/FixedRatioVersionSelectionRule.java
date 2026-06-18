@@ -4,6 +4,7 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -17,6 +18,7 @@ import java.util.Set;
  * The FixedRatioVersionSelectionRule model.
  */
 @Fluent
+@Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
 public final class FixedRatioVersionSelectionRule extends VersionSelectionRule {
 
     /*
@@ -40,8 +42,17 @@ public final class FixedRatioVersionSelectionRule extends VersionSelectionRule {
     /**
      * Creates an instance of FixedRatioVersionSelectionRule class.
      */
-    @Generated
-    public FixedRatioVersionSelectionRule() {
+    FixedRatioVersionSelectionRule() {
+    }
+
+    /**
+     * Creates an instance of FixedRatioVersionSelectionRule class.
+     *
+     * @param trafficPercentage the percentage of traffic to route to the version. Must be between 0 and 100.
+     */
+    public FixedRatioVersionSelectionRule(int trafficPercentage) {
+        this.trafficPercentage = trafficPercentage;
+        this.updatedProperties.add("trafficPercentage");
     }
 
     /**

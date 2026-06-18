@@ -13,12 +13,13 @@ import java.util.Collection;
  */
 public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKeyStatus> {
     /**
-     * Static value Valid for EncryptionKeyStatus.
+     * Key is valid and can be used for encryption.
      */
     public static final EncryptionKeyStatus VALID = fromString("Valid");
 
     /**
-     * Static value Invalid for EncryptionKeyStatus.
+     * Key is invalid and cannot be used for encryption. Possible causes include key deletion, permission changes, key
+     * being disabled, key type not supported, or current date being outside of validity period associated to the key.
      */
     public static final EncryptionKeyStatus INVALID = fromString("Invalid");
 

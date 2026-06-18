@@ -4,7 +4,7 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
@@ -13,7 +13,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * This sample demonstrates how to retrieve a specific version of a toolbox
- * using the ToolboxesClient.
+ * using the BetaToolboxesClient.
  *
  * <p>The {@code getToolboxVersion} method returns the full version details
  * including the list of tools, description, metadata, and creation timestamp.</p>
@@ -29,10 +29,10 @@ public class GetToolboxVersion {
         String toolboxName = "toolbox_created_from_java";
         String version = "1"; // Replace with the desired version
         // Code sample for retrieving a specific toolbox version
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildToolboxesClient();
+                .beta().buildBetaToolboxesClient();
 
         ToolboxVersionDetails toolboxVersion = toolboxesClient.getToolboxVersion(toolboxName, version);
 

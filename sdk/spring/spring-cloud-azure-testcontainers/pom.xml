@@ -69,13 +69,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.34.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.35.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.29.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.30.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-testcontainers</artifactId>
-      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -120,13 +120,13 @@
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>13.2.1.jre11</version> <!-- {x-version-update;springboot4_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+      <version>13.4.0.jre11</version> <!-- {x-version-update;springboot4_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.7</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.8</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -160,7 +160,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.15.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -191,14 +191,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-testcontainers:[4.0.6]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-testcontainers:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
                 <include>org.testcontainers:testcontainers-azure:[2.0.5]</include> <!-- {x-include-update;springboot4_org.testcontainers:testcontainers-azure;external_dependency} -->
-                <include>com.microsoft.sqlserver:mssql-jdbc:[13.2.1.jre11]</include> <!-- {x-include-update;springboot4_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[13.4.0.jre11]</include> <!-- {x-include-update;springboot4_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -207,7 +207,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

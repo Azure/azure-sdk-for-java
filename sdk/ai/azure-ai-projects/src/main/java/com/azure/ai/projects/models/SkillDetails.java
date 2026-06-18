@@ -10,10 +10,12 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
- * A skill object.
+ * A skill resource.
  */
 @Immutable
 public final class SkillDetails implements JsonSerializable<SkillDetails> {
@@ -22,13 +24,7 @@ public final class SkillDetails implements JsonSerializable<SkillDetails> {
      * The unique identifier of the skill.
      */
     @Generated
-    private final String skillId;
-
-    /*
-     * Whether the skill was created from a zip blob package.
-     */
-    @Generated
-    private final boolean blobPresent;
+    private final String id;
 
     /*
      * The unique name of the skill.
@@ -40,51 +36,59 @@ public final class SkillDetails implements JsonSerializable<SkillDetails> {
      * A human-readable description of the skill.
      */
     @Generated
-    private String description;
+    private final String description;
 
     /*
-     * Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     * 
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
+     * The Unix timestamp (seconds) when the skill was created.
      */
     @Generated
-    private Map<String, String> metadata;
+    private final long createdAt;
+
+    /*
+     * The default version for the skill. Can be changed via updateSkill.
+     */
+    @Generated
+    private final String defaultVersion;
+
+    /*
+     * The latest version for the skill.
+     */
+    @Generated
+    private final String latestVersion;
 
     /**
      * Creates an instance of SkillDetails class.
      *
-     * @param skillId the skillId value to set.
-     * @param blobPresent the blobPresent value to set.
+     * @param id the id value to set.
      * @param name the name value to set.
+     * @param description the description value to set.
+     * @param createdAt the createdAt value to set.
+     * @param defaultVersion the defaultVersion value to set.
+     * @param latestVersion the latestVersion value to set.
      */
     @Generated
-    private SkillDetails(String skillId, boolean blobPresent, String name) {
-        this.skillId = skillId;
-        this.blobPresent = blobPresent;
+    private SkillDetails(String id, String name, String description, OffsetDateTime createdAt, String defaultVersion,
+        String latestVersion) {
+        this.id = id;
         this.name = name;
+        this.description = description;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.defaultVersion = defaultVersion;
+        this.latestVersion = latestVersion;
     }
 
     /**
-     * Get the skillId property: The unique identifier of the skill.
+     * Get the id property: The unique identifier of the skill.
      *
-     * @return the skillId value.
+     * @return the id value.
      */
     @Generated
-    public String getSkillId() {
-        return this.skillId;
-    }
-
-    /**
-     * Get the blobPresent property: Whether the skill was created from a zip blob package.
-     *
-     * @return the blobPresent value.
-     */
-    @Generated
-    public boolean isBlobPresent() {
-        return this.blobPresent;
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -108,18 +112,33 @@ public final class SkillDetails implements JsonSerializable<SkillDetails> {
     }
 
     /**
-     * Get the metadata property: Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
+     * Get the createdAt property: The Unix timestamp (seconds) when the skill was created.
      *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     *
-     * @return the metadata value.
+     * @return the createdAt value.
      */
     @Generated
-    public Map<String, String> getMetadata() {
-        return this.metadata;
+    public OffsetDateTime getCreatedAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the defaultVersion property: The default version for the skill. Can be changed via updateSkill.
+     *
+     * @return the defaultVersion value.
+     */
+    @Generated
+    public String getDefaultVersion() {
+        return this.defaultVersion;
+    }
+
+    /**
+     * Get the latestVersion property: The latest version for the skill.
+     *
+     * @return the latestVersion value.
+     */
+    @Generated
+    public String getLatestVersion() {
+        return this.latestVersion;
     }
 
     /**
@@ -129,11 +148,12 @@ public final class SkillDetails implements JsonSerializable<SkillDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("skill_id", this.skillId);
-        jsonWriter.writeBooleanField("has_blob", this.blobPresent);
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeStringField("default_version", this.defaultVersion);
+        jsonWriter.writeStringField("latest_version", this.latestVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,32 +169,32 @@ public final class SkillDetails implements JsonSerializable<SkillDetails> {
     @Generated
     public static SkillDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String skillId = null;
-            boolean blobPresent = false;
+            String id = null;
             String name = null;
             String description = null;
-            Map<String, String> metadata = null;
+            OffsetDateTime createdAt = null;
+            String defaultVersion = null;
+            String latestVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("skill_id".equals(fieldName)) {
-                    skillId = reader.getString();
-                } else if ("has_blob".equals(fieldName)) {
-                    blobPresent = reader.getBoolean();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("created_at".equals(fieldName)) {
+                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("default_version".equals(fieldName)) {
+                    defaultVersion = reader.getString();
+                } else if ("latest_version".equals(fieldName)) {
+                    latestVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            SkillDetails deserializedSkillDetails = new SkillDetails(skillId, blobPresent, name);
-            deserializedSkillDetails.description = description;
-            deserializedSkillDetails.metadata = metadata;
-            return deserializedSkillDetails;
+            return new SkillDetails(id, name, description, createdAt, defaultVersion, latestVersion);
         });
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class ManagedClusterSnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ManagedClusterSnapshotsCreate.json
+     * x-ms-original-file: 2026-04-02-preview/ManagedClusterSnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Managed Cluster Snapshot.

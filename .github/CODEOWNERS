@@ -175,10 +175,10 @@
 # ServiceLabel: %Azure.Identity
 
 # PRLabel: %Batch
-/sdk/batch/                                                        @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @Azure/azure-java-sdk
+/sdk/batch/                                                        @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @Azure/azure-java-sdk @lilinvictorms @iwang2 @xingwu1
 
 # ServiceLabel: %Batch
-# ServiceOwners:                                                   @dpwatrous @ReneOv-MSFT @skapur12 @wiboris
+# ServiceOwners:                                                   @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @lilinvictorms
 
 # PRLabel: %clientcore
 /sdk/clientcore/                                                   @alzimmermsft @jonathangiles @samvaity @srnagar @vcolin7 @Azure/azure-java-sdk
@@ -337,16 +337,16 @@
 # ServiceOwners:                                                   @Kishp01 @rajeshka @shankarsama
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                                    @axisc @hmlam @j7nw4r @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/                                                    @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @hmlam @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs/                          @axisc @hmlam @sjkwak @Azure/azure-java-sdk
+/sdk/eventhubs/microsoft-azure-eventhubs/                          @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak @Azure/azure-java-sdk
 
 # ServiceLabel: %Event Hubs
-# ServiceOwners:                                                   @axisc @hmlam @sjkwak
+# ServiceOwners:                                                   @axisc @hmlam @j7nw4r @SwayGom @sagar0207 @sjkwak
 
 # PRLabel: %Health Deidentification
 /sdk/healthdataaiservices/                                         @alexathomases @Azure/healthdatadeidentification @Azure/azure-java-sdk
@@ -975,6 +975,7 @@
 /.github/CODEOWNERS                                                @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                                @Azure/azure-sdk-eng
 /.github/copilot-instructions.md                                   @samvaity @praveenkuttappan @maririos
+/.github/skills/                                                   @Azure/azsdk-cli
 /.config/1espt/                                                    @benbp @mikeharder
 /eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @samvaity @praveenkuttappan @maririos @Azure/azure-sdk-eng
 

@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class JWTAuthenticatorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/JWTAuthenticators_Create_Or_Update.json
+     * x-ms-original-file: 2026-04-02-preview/JWTAuthenticators_Create_Or_Update.json
      */
     /**
      * Sample code: Create or update JWT Authenticator.

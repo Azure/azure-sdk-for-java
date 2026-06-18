@@ -6,35 +6,63 @@ package com.azure.ai.projects;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.MemoryStoresClient;
+import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.ResponsesClient;
+import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
+import com.azure.core.util.BinaryData;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
+import com.openai.models.evals.EvalCreateParams;
 import com.openai.services.async.EvalServiceAsync;
 import com.openai.services.blocking.EvalService;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.projects.clientInitialization
-        AIProjectClientBuilder builder = new AIProjectClientBuilder();
+        AIProjectClientBuilder builder = new AIProjectClientBuilder()
+            .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
+        // Beta* clients automatically opt in to their preview service area.
+        BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
         EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-        EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
-        EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
+        BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
+            = builder.beta().buildBetaEvaluationTaxonomiesClient();
+        BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
         IndexesClient indexesClient = builder.buildIndexesClient();
-        InsightsClient insightsClient = builder.buildInsightsClient();
-        RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
-        SchedulesClient schedulesClient = builder.buildSchedulesClient();
-        SkillsClient skillsClient = builder.buildSkillsClient();
+        BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();
+        BetaModelsClient modelsClient = builder.beta().buildBetaModelsClient();
+        BetaRedTeamsClient redTeamsClient = builder.beta().buildBetaRedTeamsClient();
+        BetaRoutinesClient routinesClient = builder.beta().buildBetaRoutinesClient();
+        BetaSchedulesClient schedulesClient = builder.beta().buildBetaSchedulesClient();
+        BetaSkillsClient skillsClient = builder.beta().buildBetaSkillsClient();
         // END: com.azure.ai.projects.clientInitialization
 
         // BEGIN: com.azure.ai.projects.evalsServices
         EvalService evalService = builder.buildOpenAIClient().evals();
         EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
         // END: com.azure.ai.projects.evalsServices
+
+        // BEGIN: com.azure.ai.projects.evaluationsHelper
+        Map<String, String> dataMapping = new LinkedHashMap<>();
+        dataMapping.put("query", "{{item.query}}");
+        dataMapping.put("response", "{{sample.output_text}}");
+
+        TestingCriterionAzureAIEvaluator coherenceEvaluator = new TestingCriterionAzureAIEvaluator("coherence",
+            "builtin.coherence")
+                .setInitializationParameters(Collections.singletonMap("deployment_name",
+                    BinaryData.fromObject("gpt-4o-mini")))
+                .setDataMapping(dataMapping);
+
+        EvalCreateParams.TestingCriterion testingCriterion
+            = EvaluationsHelper.toTestingCriterion(coherenceEvaluator);
+        // END: com.azure.ai.projects.evaluationsHelper
 
         // BEGIN: com.azure.ai.projects.openAIClient
         OpenAIClient openAIClient = builder.buildOpenAIClient();
@@ -45,7 +73,7 @@ public final class ReadmeSamples {
         AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
 
         AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
-        MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
+        BetaMemoryStoresClient memoryStoresClient = agentsClientBuilder.beta().buildBetaMemoryStoresClient();
         ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
         // END: com.azure.ai.projects.agentsSubClients
 

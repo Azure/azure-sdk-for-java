@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class DatabasesCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/DatabasesCreate.json
+     * x-ms-original-file: 2026-04-01-preview/DatabasesCreate.json
      */
     /**
      * Sample code: Create a database.

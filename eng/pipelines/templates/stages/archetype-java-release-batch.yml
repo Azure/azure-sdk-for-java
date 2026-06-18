@@ -208,6 +208,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
+                  AuthToken: ''
 
         - ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
           - deployment: PublishESRPPackage
@@ -347,6 +348,7 @@ stages:
                 CommitMsg: "Increment package versions for ${{ parameters.ServiceDirectory }} releases"
                 PRTitle: "Increment versions for ${{ parameters.ServiceDirectory }} releases"
                 CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                AuthToken: ''
 
 
         - ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.artifactsigning.models.CheckNameAvailability;
  */
 public final class CodeSigningAccountsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_CheckNameAvailability.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_CheckNameAvailability.json
      */
     /**
      * Sample code: Checks if the artifact signing account name is available.

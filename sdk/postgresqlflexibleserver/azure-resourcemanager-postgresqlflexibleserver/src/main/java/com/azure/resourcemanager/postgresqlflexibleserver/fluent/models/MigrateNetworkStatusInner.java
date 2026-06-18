@@ -13,27 +13,27 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.NetworkMigratio
 import java.io.IOException;
 
 /**
- * The status of a network migration operation.
+ * Status of a network migration operation.
  */
 @Immutable
 public final class MigrateNetworkStatusInner implements JsonSerializable<MigrateNetworkStatusInner> {
     /*
-     * The ID of the subscription.
+     * Identifier of the subscription.
      */
     private String subscriptionId;
 
     /*
-     * The name of the resource group.
+     * Name of the resource group.
      */
     private String resourceGroupName;
 
     /*
-     * The name of the server.
+     * Name of the server.
      */
     private String serverName;
 
     /*
-     * The state of the network migration operation.
+     * State of the network migration operation.
      */
     private NetworkMigrationState state;
 
@@ -44,7 +44,7 @@ public final class MigrateNetworkStatusInner implements JsonSerializable<Migrate
     }
 
     /**
-     * Get the subscriptionId property: The ID of the subscription.
+     * Get the subscriptionId property: Identifier of the subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -53,7 +53,7 @@ public final class MigrateNetworkStatusInner implements JsonSerializable<Migrate
     }
 
     /**
-     * Get the resourceGroupName property: The name of the resource group.
+     * Get the resourceGroupName property: Name of the resource group.
      * 
      * @return the resourceGroupName value.
      */
@@ -62,7 +62,7 @@ public final class MigrateNetworkStatusInner implements JsonSerializable<Migrate
     }
 
     /**
-     * Get the serverName property: The name of the server.
+     * Get the serverName property: Name of the server.
      * 
      * @return the serverName value.
      */
@@ -71,7 +71,7 @@ public final class MigrateNetworkStatusInner implements JsonSerializable<Migrate
     }
 
     /**
-     * Get the state property: The state of the network migration operation.
+     * Get the state property: State of the network migration operation.
      * 
      * @return the state value.
      */
