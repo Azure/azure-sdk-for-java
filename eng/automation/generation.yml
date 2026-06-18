@@ -34,16 +34,24 @@ steps:
     inputs:
       versionSpec: '$(NodeVersion)'
 
+  - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+    parameters:
+      npmrcPath: $(Agent.TempDirectory)/release/.npmrc
+
   - bash: |
       npm install -g autorest
     displayName: 'Install autorest'
     condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
+    env:
+      npm_config_userconfig: "$(Agent.TempDirectory)/release/.npmrc"
 
   - bash: |
       npm ci
     workingDirectory: $(Build.SourcesDirectory)/eng/common/tsp-client
     displayName: 'Install tsp-client'
     condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
+    env:
+      npm_config_userconfig: "$(Agent.TempDirectory)/release/.npmrc"
 
   # - template: /eng/common/testproxy/test-proxy-tool.yml
   #   parameters:
