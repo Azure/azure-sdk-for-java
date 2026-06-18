@@ -304,7 +304,7 @@ public final class SecretsStoreExtensionMgmtClientImpl implements SecretsStoreEx
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

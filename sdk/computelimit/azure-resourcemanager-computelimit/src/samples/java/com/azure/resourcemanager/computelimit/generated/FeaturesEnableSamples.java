@@ -11,7 +11,7 @@ import com.azure.resourcemanager.computelimit.models.FeatureEnableRequest;
  */
 public final class FeaturesEnableSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Features_Enable.json
+     * x-ms-original-file: 2026-07-01/Features_Enable.json
      */
     /**
      * Sample code: Enable feature.

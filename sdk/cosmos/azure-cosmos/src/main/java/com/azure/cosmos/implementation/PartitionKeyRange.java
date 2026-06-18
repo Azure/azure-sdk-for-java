@@ -6,7 +6,11 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represent a partition key range in the Azure Cosmos DB database service.
@@ -17,13 +21,48 @@ public class PartitionKeyRange extends Resource {
     public static final String MASTER_PARTITION_KEY_RANGE_ID = "M";
 
     /**
+     * <p>This is an <b>allow-list</b>: any field the service returns that is not in this set
+     * (including any field added by the service in the future) is dropped at construction.
+     * That keeps per-instance heap bounded against server-side payload growth. Adding a new
+     * field to the allow-list is a one-line change here when a consumer needs it.</p>
+     */
+    private static final Set<String> KEPT_FIELDS = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList(
+            Constants.Properties.ID,
+            "minInclusive",
+            "maxExclusive",
+            Constants.Properties.PARENTS,
+            "status",
+            "throughputFraction",
+            Constants.Properties.R_ID
+        )));
+
+    /**
      * Constructor.
      *
-     * @param objectNode the {@link ObjectNode} that represent the
-     * {@link JsonSerializable}
+     * <p>Fields not listed in {@link #KEPT_FIELDS} are removed from {@code objectNode} as part of
+     * construction so the resulting instance retains only the fields the SDK actually needs.
+     * This is the universal funnel for every {@code PartitionKeyRange} the SDK deserializes from
+     * a service response (see {@link JsonSerializable#instantiateFromObjectNodeAndType}), so the
+     * memory saving applies to all routing-map cache entries and any other code path that
+     * consumes deserialized partition key ranges.</p>
+     *
+     * <p>The argument is mutated in place. This is safe because every production caller obtains
+     * {@code objectNode} from Jackson deserialization and does not retain another reference to
+     * it. Tests that need to preserve a fully-populated source object should use
+     * {@code objectNode.deepCopy()} before handing it to this constructor.</p>
+     *
+     * @param objectNode the {@link ObjectNode} that represents the {@link JsonSerializable}
      */
     public PartitionKeyRange(ObjectNode objectNode) {
-        super(objectNode);
+        super(stripToKeptFields(objectNode));
+    }
+
+    private static ObjectNode stripToKeptFields(ObjectNode objectNode) {
+        if (objectNode != null) {
+            objectNode.retain(KEPT_FIELDS);
+        }
+        return objectNode;
     }
 
     /**
@@ -31,17 +70,6 @@ public class PartitionKeyRange extends Resource {
      */
     public PartitionKeyRange() {
         super();
-    }
-
-    /**
-     * Initialize a partition key range object from json string.
-     *
-     * @param jsonString
-     *            the json string that represents the partition key range
-     *            object.
-     */
-    public PartitionKeyRange(String jsonString) {
-        super(jsonString);
     }
 
     /**
