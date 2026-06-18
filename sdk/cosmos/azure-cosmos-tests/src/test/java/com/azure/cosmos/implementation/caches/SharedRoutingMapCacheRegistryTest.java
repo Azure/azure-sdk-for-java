@@ -1,0 +1,228 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.caches;
+
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+/**
+ * Unit tests for {@link SharedRoutingMapCacheRegistry}.
+ *
+ * <p>The registry is a process-wide singleton, so these tests must leave it
+ * in a clean state for whatever endpoints they touch. Each test uses a
+ * uniquely-named endpoint and releases every reference it acquires.</p>
+ */
+public class SharedRoutingMapCacheRegistryTest {
+
+    private static final String ENABLE_FLAG = "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED";
+
+    private String savedFlag;
+
+    @BeforeMethod(groups = "unit")
+    public void before() {
+        savedFlag = System.getProperty(ENABLE_FLAG);
+        System.clearProperty(ENABLE_FLAG); // default is enabled
+    }
+
+    @AfterMethod(groups = "unit")
+    public void after() {
+        if (savedFlag == null) {
+            System.clearProperty(ENABLE_FLAG);
+        } else {
+            System.setProperty(ENABLE_FLAG, savedFlag);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void acquireReturnsSameInstanceForSameEndpoint() {
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        String endpoint = "https://test-acct-share-1.documents.azure.com:443/";
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(endpoint);
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(endpoint);
+
+        try {
+            assertThat(a).isSameAs(b);
+            assertThat(registry.referenceCount(endpoint)).isEqualTo(2);
+        } finally {
+            registry.release(endpoint, a);
+            registry.release(endpoint, b);
+        }
+        assertThat(registry.referenceCount(endpoint)).isZero();
+    }
+
+    @Test(groups = "unit")
+    public void acquireReturnsDifferentInstanceForDifferentEndpoints() {
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        String e1 = "https://test-acct-share-2a.documents.azure.com:443/";
+        String e2 = "https://test-acct-share-2b.documents.azure.com:443/";
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(e1);
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(e2);
+
+        try {
+            assertThat(a).isNotSameAs(b);
+        } finally {
+            registry.release(e1, a);
+            registry.release(e2, b);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void releaseEvictsAtZeroRefcount() {
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        String endpoint = "https://test-acct-share-3.documents.azure.com:443/";
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(endpoint);
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(endpoint);
+        assertThat(registry.referenceCount(endpoint)).isEqualTo(2);
+
+        registry.release(endpoint, a);
+        assertThat(registry.referenceCount(endpoint)).isEqualTo(1);
+
+        registry.release(endpoint, b);
+        assertThat(registry.referenceCount(endpoint)).isZero();
+
+        // After eviction, a fresh acquire produces a brand-new cache (not the previous one).
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> c = registry.acquire(endpoint);
+        try {
+            assertThat(c).isNotSameAs(a);
+            assertThat(registry.referenceCount(endpoint)).isEqualTo(1);
+        } finally {
+            registry.release(endpoint, c);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void releaseIsIdempotentWhenSuppliedSameCacheRepeatedly() {
+        // The registry's contract is that calling release with a cache instance
+        // that is not currently registered (e.g. already-evicted) is a no-op.
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        String endpoint = "https://test-acct-share-4.documents.azure.com:443/";
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(endpoint);
+        registry.release(endpoint, a);
+        assertThat(registry.referenceCount(endpoint)).isZero();
+
+        // Releasing again with the now-stale cache reference must not crash or go negative.
+        registry.release(endpoint, a);
+        assertThat(registry.referenceCount(endpoint)).isZero();
+    }
+
+    @Test(groups = "unit")
+    public void releaseIsNoOpWhenCacheIsNotTheRegisteredInstance() {
+        // After eviction and re-acquire, the registry holds a different instance.
+        // Releasing the old (stale) reference must not affect the new registered entry.
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        String endpoint = "https://test-acct-share-5.documents.azure.com:443/";
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> stale = registry.acquire(endpoint);
+        registry.release(endpoint, stale);
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> current = registry.acquire(endpoint);
+        try {
+            registry.release(endpoint, stale); // stale != current → no-op
+            assertThat(registry.referenceCount(endpoint)).isEqualTo(1);
+        } finally {
+            registry.release(endpoint, current);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void nullEndpointReturnsIsolatedCacheAndDoesNotEnterRegistry() {
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        int before = registry.registeredEndpointCount();
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(null);
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(null);
+
+        assertThat(a).isNotSameAs(b);
+        assertThat(registry.registeredEndpointCount()).isEqualTo(before);
+
+        // Release with null endpoint is a safe no-op.
+        registry.release(null, a);
+        registry.release(null, b);
+    }
+
+    @Test(groups = "unit")
+    public void disabledFlagReturnsIsolatedCachesAndPreservesRegistryEmpty() {
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        String endpoint = "https://test-acct-share-6.documents.azure.com:443/";
+        int before = registry.registeredEndpointCount();
+
+        System.setProperty(ENABLE_FLAG, "false");
+        assertThat(Configs.isSharedPartitionKeyRangeCacheEnabled()).isFalse();
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(endpoint);
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(endpoint);
+
+        try {
+            // With sharing disabled, each acquire returns a fresh, isolated cache.
+            assertThat(a).isNotSameAs(b);
+            assertThat(registry.registeredEndpointCount()).isEqualTo(before);
+            assertThat(registry.referenceCount(endpoint)).isZero();
+        } finally {
+            // Release should be safe (no-op) since these caches were never registered.
+            registry.release(endpoint, a);
+            registry.release(endpoint, b);
+        }
+    }
+
+    @Test(groups = "unit")
+    public void concurrentAcquireAndReleaseProducesConsistentRefcount() throws Exception {
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        String endpoint = "https://test-acct-share-7.documents.azure.com:443/";
+
+        int threads = 32;
+        int opsPerThread = 200;
+        ExecutorService pool = Executors.newFixedThreadPool(threads);
+        CountDownLatch start = new CountDownLatch(1);
+        CountDownLatch done = new CountDownLatch(threads);
+
+        try {
+            for (int t = 0; t < threads; t++) {
+                pool.submit(() -> {
+                    try {
+                        start.await();
+                        List<AsyncCacheNonBlocking<String, CollectionRoutingMap>> held = new ArrayList<>();
+                        for (int i = 0; i < opsPerThread; i++) {
+                            held.add(registry.acquire(endpoint));
+                            if (i % 3 == 0 && !held.isEmpty()) {
+                                AsyncCacheNonBlocking<String, CollectionRoutingMap> c =
+                                    held.remove(held.size() - 1);
+                                registry.release(endpoint, c);
+                            }
+                        }
+                        for (AsyncCacheNonBlocking<String, CollectionRoutingMap> c : held) {
+                            registry.release(endpoint, c);
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    } finally {
+                        done.countDown();
+                    }
+                });
+            }
+            start.countDown();
+            assertThat(done.await(30, TimeUnit.SECONDS)).isTrue();
+        } finally {
+            pool.shutdownNow();
+        }
+
+        // All acquires matched by releases → refcount must be zero and entry evicted.
+        assertThat(registry.referenceCount(endpoint)).isZero();
+    }
+}

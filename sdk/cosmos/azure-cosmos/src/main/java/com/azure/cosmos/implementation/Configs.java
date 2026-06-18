@@ -218,6 +218,14 @@ public class Configs {
     private static final String USE_LEGACY_TRACING = "COSMOS.USE_LEGACY_TRACING";
     private static final boolean DEFAULT_USE_LEGACY_TRACING = false;
 
+    // Whether multiple CosmosClient instances in the same JVM that target the same
+    // service endpoint share a single partition-key-range routing-map cache.
+    // Enabled by default. Setting this to false restores the pre-sharing behaviour
+    // where every client owns a private cache (useful as a safety valve only).
+    private static final String SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED =
+        "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED";
+    private static final boolean DEFAULT_SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED = true;
+
     // whether to enable replica addresses validation
     private static final String REPLICA_ADDRESS_VALIDATION_ENABLED = "COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED";
     private static final boolean DEFAULT_REPLICA_ADDRESS_VALIDATION_ENABLED = true;
@@ -1080,6 +1088,12 @@ public class Configs {
         return getJVMConfigAsBoolean(
             USE_LEGACY_TRACING,
             DEFAULT_USE_LEGACY_TRACING);
+    }
+
+    public static boolean isSharedPartitionKeyRangeCacheEnabled() {
+        return getJVMConfigAsBoolean(
+            SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED,
+            DEFAULT_SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

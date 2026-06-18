@@ -31,32 +31,66 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
+ *
+ * <p>The underlying routing-map storage ({@link AsyncCacheNonBlocking}) is
+ * obtained from {@link SharedRoutingMapCacheRegistry} keyed by the service
+ * endpoint, so multiple {@code CosmosClient} instances targeting the same
+ * account share a single routing-map cache. {@link #close()} releases this
+ * instance's reference; the shared cache is evicted only when the last
+ * reference is released. The fetching logic (network call, collection
+ * resolution, diagnostics) remains per-client.</p>
  **/
-public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
+public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closeable {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapCache;
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
+    private final String sharedCacheEndpointKey;
+    private final AtomicBoolean closed = new AtomicBoolean(false);
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
-        this.routingMapCache = new AsyncCacheNonBlocking<>();
+        this(client, collectionCache, client == null ? null : client.getServiceEndpoint());
+    }
+
+    public RxPartitionKeyRangeCache(
+        RxDocumentClientImpl client,
+        RxCollectionCache collectionCache,
+        URI serviceEndpoint) {
+
+        this.sharedCacheEndpointKey = serviceEndpoint == null ? null : serviceEndpoint.toString();
+        this.routingMapCache = SharedRoutingMapCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey);
         this.client = client;
         this.collectionCache = collectionCache;
         this.clientContext = client;
+    }
+
+    /**
+     * Releases this instance's reference to the shared routing-map cache.
+     * Safe to call multiple times; only the first call has an effect.
+     * After {@code close()} the instance must not be used further.
+     */
+    @Override
+    public void close() {
+        if (closed.compareAndSet(false, true)) {
+            SharedRoutingMapCacheRegistry.getInstance().release(this.sharedCacheEndpointKey, this.routingMapCache);
+        }
     }
 
     /* (non-Javadoc)

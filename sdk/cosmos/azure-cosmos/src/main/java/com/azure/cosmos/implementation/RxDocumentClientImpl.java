@@ -925,7 +925,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.resetSessionTokenRetryPolicy = new ResetSessionTokenRetryPolicyFactory(this.sessionContainer, this.collectionCache, this.retryPolicy);
 
             this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
-                collectionCache);
+                collectionCache, this.serviceEndpoint);
 
             updateGatewayProxy();
             updateThinProxy();
@@ -7463,6 +7463,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (this.throughputControlEnabled.get()) {
                 logger.info("Closing ThroughputControlStore ...");
                 this.throughputControlStore.close();
+            }
+
+            if (this.partitionKeyRangeCache != null) {
+                logger.info("Releasing shared PartitionKeyRangeCache reference ...");
+                LifeCycleUtils.closeQuietly(this.partitionKeyRangeCache);
             }
 
             if (this.clientTelemetry != null) {
