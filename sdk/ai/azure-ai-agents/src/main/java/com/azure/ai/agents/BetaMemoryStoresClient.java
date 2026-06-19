@@ -45,8 +45,8 @@ import java.util.Map;
 /**
  * Initializes a new instance of the synchronous AgentsClient type.
  */
-@Beta(warningText = "Preview API.")
 @ServiceClient(builder = AgentsClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaMemoryStoresClient {
 
     @Generated
@@ -67,7 +67,7 @@ public final class BetaMemoryStoresClient {
      *
      * Creates a memory store resource with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -82,9 +82,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -124,7 +124,7 @@ public final class BetaMemoryStoresClient {
      *
      * Updates the specified memory store with the supplied configuration changes.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -135,9 +135,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -178,7 +178,7 @@ public final class BetaMemoryStoresClient {
      *
      * Retrieves the specified memory store and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -239,7 +239,7 @@ public final class BetaMemoryStoresClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -277,7 +277,7 @@ public final class BetaMemoryStoresClient {
      *
      * Deletes the specified memory store.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -351,7 +351,7 @@ public final class BetaMemoryStoresClient {
      *
      * Searches the specified memory store for memories relevant to the provided conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -366,9 +366,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -422,7 +422,7 @@ public final class BetaMemoryStoresClient {
      * Starts an update that writes conversation memories into the specified memory store.
      * The operation returns a long-running status location for polling the update result.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -435,9 +435,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -557,7 +557,7 @@ public final class BetaMemoryStoresClient {
      *
      * Retrieves the status and result of a memory store update operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -691,7 +691,7 @@ public final class BetaMemoryStoresClient {
      *
      * Deletes all memories in the specified memory store that are associated with the provided scope.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -699,9 +699,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -734,7 +734,7 @@ public final class BetaMemoryStoresClient {
      *
      * Creates a memory item in the specified memory store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -744,9 +744,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -781,7 +781,7 @@ public final class BetaMemoryStoresClient {
      *
      * Updates the specified memory item in the memory store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -789,9 +789,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -827,7 +827,7 @@ public final class BetaMemoryStoresClient {
      *
      * Retrieves the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -884,7 +884,7 @@ public final class BetaMemoryStoresClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -892,9 +892,9 @@ public final class BetaMemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -928,7 +928,7 @@ public final class BetaMemoryStoresClient {
      *
      * Deletes the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
