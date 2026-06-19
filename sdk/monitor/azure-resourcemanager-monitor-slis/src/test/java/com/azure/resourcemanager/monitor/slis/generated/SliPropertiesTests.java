@@ -25,7 +25,7 @@ public final class SliPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SliProperties model = BinaryData.fromString(
-            "{\"goodSignals\":{\"signalSources\":[{\"signalSourceId\":\"dmoh\",\"sourceAmwAccountManagedIdentity\":\"tbqvudw\",\"sourceAmwAccountResourceId\":\"dndnvow\",\"metricNamespace\":\"ujjugwdkcglh\",\"metricName\":\"lazjdyggdtjixhbk\",\"filters\":[{\"dimensionName\":\"qweykhmenev\",\"scalarFunction\":\"min\",\"samplingType\":\"avg\",\"operator\":\"!contains\",\"value\":\"hybcibv\"},{\"dimensionName\":\"dcsi\",\"scalarFunction\":\"sum\",\"samplingType\":\"min\",\"operator\":\"startswith\",\"value\":\"mdectehfiqscjey\"},{\"dimensionName\":\"hezrkgq\",\"scalarFunction\":\"sum\",\"samplingType\":\"min\",\"operator\":\">\",\"value\":\"o\"},{\"dimensionName\":\"mkqsleyyv\",\"scalarFunction\":\"sum\",\"samplingType\":\"max\",\"operator\":\"<=\",\"value\":\"cattpngjcrcczsq\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"vmdajvnysou\",\"q\",\"canoaeupf\",\"yhltrpmopjmcm\"]},\"temporalAggregation\":{\"type\":\"IDelta\",\"windowSizeMinutes\":860799201}},{\"signalSourceId\":\"kthfui\",\"sourceAmwAccountManagedIdentity\":\"aodsfcpkv\",\"sourceAmwAccountResourceId\":\"odpuozmyzydag\",\"metricNamespace\":\"uaxbezyiuokkt\",\"metricName\":\"hrdxwzywqsmbs\",\"filters\":[{\"dimensionName\":\"xim\",\"scalarFunction\":\"max\",\"samplingType\":\"max\",\"operator\":\"startswith\",\"value\":\"sfksy\"},{\"dimensionName\":\"dystkiiuxhqyud\",\"scalarFunction\":\"sum\",\"samplingType\":\"max\",\"operator\":\"==\",\"value\":\"b\"},{\"dimensionName\":\"czvyifq\",\"scalarFunction\":\"min\",\"samplingType\":\"avg\",\"operator\":\"!startswith\",\"value\":\"sllr\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"d\",\"watkpnpulexxb\",\"zwtruwiqzbqjvsov\"]},\"temporalAggregation\":{\"type\":\"IDelta\",\"windowSizeMinutes\":1785940860}},{\"signalSourceId\":\"acspkwl\",\"sourceAmwAccountManagedIdentity\":\"zdobpxjmflbvvnch\",\"sourceAmwAccountResourceId\":\"kcciwwzjuqkhr\",\"metricNamespace\":\"ajiwkuo\",\"metricName\":\"oskg\",\"filters\":[{\"dimensionName\":\"uuimjmvxieduug\",\"scalarFunction\":\"max\",\"samplingType\":\"sum\",\"operator\":\"!=\",\"value\":\"f\"},{\"dimensionName\":\"aos\",\"scalarFunction\":\"max\",\"samplingType\":\"avg\",\"operator\":\"<\",\"value\":\"npc\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"cohslkev\",\"eggzfb\",\"hfmvfaxkffe\"]},\"temporalAggregation\":{\"type\":\"Average\",\"windowSizeMinutes\":378191098}}],\"signalFormula\":\"lvmezyvshxmzsbbz\"},\"totalSignals\":{\"signalSources\":[{\"signalSourceId\":\"igrxwburvjxxjn\",\"sourceAmwAccountManagedIdentity\":\"pydptko\",\"sourceAmwAccountResourceId\":\"nkoukn\",\"metricNamespace\":\"udwtiukbl\",\"metricName\":\"ngkpocipazy\",\"filters\":[{\"dimensionName\":\"gukgjnpiucgygevq\",\"scalarFunction\":\"sum\",\"samplingType\":\"max\",\"operator\":\"!=\",\"value\":\"rbpizc\"}],\"spatialAggregation\":{\"type\":\"Average\",\"dimensions\":[\"j\",\"dpydn\",\"yhxdeoejzicwi\",\"sjttgzfbish\"]},\"temporalAggregation\":{\"type\":\"IRate\",\"windowSizeMinutes\":1326905161}}],\"signalFormula\":\"ajdeyeamdphaga\"},\"signals\":{\"signalSources\":[{\"signalSourceId\":\"uxwgipwho\",\"sourceAmwAccountManagedIdentity\":\"ow\",\"sourceAmwAccountResourceId\":\"gshwankixz\",\"metricNamespace\":\"injep\",\"metricName\":\"ttmrywnuzoqf\",\"filters\":[{\"dimensionName\":\"qzrnkcqvyxlwhz\",\"scalarFunction\":\"avg\",\"samplingType\":\"sum\",\"operator\":\"startswith\",\"value\":\"oqqnwvlryav\"},{\"dimensionName\":\"heun\",\"scalarFunction\":\"sum\",\"samplingType\":\"min\",\"operator\":\"==\",\"value\":\"xzko\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"uko\",\"lyaxuc\",\"nuqszfkbey\",\"ewrmjmwvvjektc\"]},\"temporalAggregation\":{\"type\":\"Min\",\"windowSizeMinutes\":1562497596}},{\"signalSourceId\":\"hwlrsf\",\"sourceAmwAccountManagedIdentity\":\"rzpwvlqdqgbiq\",\"sourceAmwAccountResourceId\":\"lihkaetcktvfc\",\"metricNamespace\":\"vf\",\"metricName\":\"nkymuctqhjfbebrj\",\"filters\":[{\"dimensionName\":\"rfuwutt\",\"scalarFunction\":\"sum\",\"samplingType\":\"sum\",\"operator\":\"!in\",\"value\":\"birphxepcyva\"}],\"spatialAggregation\":{\"type\":\"Average\",\"dimensions\":[\"ljkyqxjvuuj\",\"gidokgjljyoxgvcl\"]},\"temporalAggregation\":{\"type\":\"Sum\",\"windowSizeMinutes\":794855452}}],\"signalFormula\":\"ncghkje\"},\"windowUptimeCriteria\":{\"target\":56.497059361324276,\"comparator\":\"<=\"}}")
+            "{\"goodSignals\":{\"signalSources\":[{\"signalSourceId\":\"dmoh\",\"sourceAmwAccountManagedIdentity\":\"tbqvudw\",\"sourceAmwAccountResourceId\":\"dndnvow\",\"metricNamespace\":\"ujjugwdkcglh\",\"metricName\":\"lazjdyggdtjixhbk\",\"filters\":[{\"dimensionName\":\"qweykhmenev\",\"scalarFunction\":\"min\",\"samplingType\":\"Sum\",\"operator\":\"notcontains\",\"value\":\"hybcibv\"},{\"dimensionName\":\"dcsi\",\"scalarFunction\":\"sum\",\"samplingType\":\"Count\",\"operator\":\"startswith\",\"value\":\"mdectehfiqscjey\"},{\"dimensionName\":\"hezrkgq\",\"scalarFunction\":\"sum\",\"samplingType\":\"Count\",\"operator\":\"gt\",\"value\":\"o\"},{\"dimensionName\":\"mkqsleyyv\",\"scalarFunction\":\"sum\",\"samplingType\":\"Sum\",\"operator\":\"lte\",\"value\":\"cattpngjcrcczsq\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"vmdajvnysou\",\"q\",\"canoaeupf\",\"yhltrpmopjmcm\"]},\"temporalAggregation\":{\"type\":\"IDelta\",\"windowSizeMinutes\":860799201}},{\"signalSourceId\":\"kthfui\",\"sourceAmwAccountManagedIdentity\":\"aodsfcpkv\",\"sourceAmwAccountResourceId\":\"odpuozmyzydag\",\"metricNamespace\":\"uaxbezyiuokkt\",\"metricName\":\"hrdxwzywqsmbs\",\"filters\":[{\"dimensionName\":\"xim\",\"scalarFunction\":\"max\",\"samplingType\":\"Sum\",\"operator\":\"startswith\",\"value\":\"sfksy\"},{\"dimensionName\":\"dystkiiuxhqyud\",\"scalarFunction\":\"sum\",\"samplingType\":\"Sum\",\"operator\":\"eq\",\"value\":\"b\"},{\"dimensionName\":\"czvyifq\",\"scalarFunction\":\"min\",\"samplingType\":\"Min\",\"operator\":\"notstartswith\",\"value\":\"sllr\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"d\",\"watkpnpulexxb\",\"zwtruwiqzbqjvsov\"]},\"temporalAggregation\":{\"type\":\"IDelta\",\"windowSizeMinutes\":1785940860}},{\"signalSourceId\":\"acspkwl\",\"sourceAmwAccountManagedIdentity\":\"zdobpxjmflbvvnch\",\"sourceAmwAccountResourceId\":\"kcciwwzjuqkhr\",\"metricNamespace\":\"ajiwkuo\",\"metricName\":\"oskg\",\"filters\":[{\"dimensionName\":\"uuimjmvxieduug\",\"scalarFunction\":\"max\",\"samplingType\":\"Sum\",\"operator\":\"ne\",\"value\":\"f\"},{\"dimensionName\":\"aos\",\"scalarFunction\":\"max\",\"samplingType\":\"Sum\",\"operator\":\"lt\",\"value\":\"npc\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"cohslkev\",\"eggzfb\",\"hfmvfaxkffe\"]},\"temporalAggregation\":{\"type\":\"Average\",\"windowSizeMinutes\":378191098}}],\"signalFormula\":\"lvmezyvshxmzsbbz\"},\"totalSignals\":{\"signalSources\":[{\"signalSourceId\":\"igrxwburvjxxjn\",\"sourceAmwAccountManagedIdentity\":\"pydptko\",\"sourceAmwAccountResourceId\":\"nkoukn\",\"metricNamespace\":\"udwtiukbl\",\"metricName\":\"ngkpocipazy\",\"filters\":[{\"dimensionName\":\"gukgjnpiucgygevq\",\"scalarFunction\":\"sum\",\"samplingType\":\"Count\",\"operator\":\"ne\",\"value\":\"rbpizc\"}],\"spatialAggregation\":{\"type\":\"Average\",\"dimensions\":[\"j\",\"dpydn\",\"yhxdeoejzicwi\",\"sjttgzfbish\"]},\"temporalAggregation\":{\"type\":\"IRate\",\"windowSizeMinutes\":1326905161}}],\"signalFormula\":\"ajdeyeamdphaga\"},\"signals\":{\"signalSources\":[{\"signalSourceId\":\"uxwgipwho\",\"sourceAmwAccountManagedIdentity\":\"ow\",\"sourceAmwAccountResourceId\":\"gshwankixz\",\"metricNamespace\":\"injep\",\"metricName\":\"ttmrywnuzoqf\",\"filters\":[{\"dimensionName\":\"qzrnkcqvyxlwhz\",\"scalarFunction\":\"avg\",\"samplingType\":\"Sum\",\"operator\":\"startswith\",\"value\":\"oqqnwvlryav\"},{\"dimensionName\":\"heun\",\"scalarFunction\":\"sum\",\"samplingType\":\"Average\",\"operator\":\"eq\",\"value\":\"xzko\"}],\"spatialAggregation\":{\"type\":\"Min\",\"dimensions\":[\"uko\",\"lyaxuc\",\"nuqszfkbey\",\"ewrmjmwvvjektc\"]},\"temporalAggregation\":{\"type\":\"Min\",\"windowSizeMinutes\":1562497596}},{\"signalSourceId\":\"hwlrsf\",\"sourceAmwAccountManagedIdentity\":\"rzpwvlqdqgbiq\",\"sourceAmwAccountResourceId\":\"lihkaetcktvfc\",\"metricNamespace\":\"vf\",\"metricName\":\"nkymuctqhjfbebrj\",\"filters\":[{\"dimensionName\":\"rfuwutt\",\"scalarFunction\":\"sum\",\"samplingType\":\"Sum\",\"operator\":\"notin\",\"value\":\"birphxepcyva\"}],\"spatialAggregation\":{\"type\":\"Average\",\"dimensions\":[\"ljkyqxjvuuj\",\"gidokgjljyoxgvcl\"]},\"temporalAggregation\":{\"type\":\"Sum\",\"windowSizeMinutes\":794855452}}],\"signalFormula\":\"ncghkje\"},\"windowUptimeCriteria\":{\"target\":56.497059361324276,\"comparator\":\"lte\"}}")
             .toObject(SliProperties.class);
         Assertions.assertEquals("dmoh", model.goodSignals().signalSources().get(0).signalSourceId());
         Assertions.assertEquals("tbqvudw",
@@ -37,7 +37,7 @@ public final class SliPropertiesTests {
             model.goodSignals().signalSources().get(0).filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.MIN,
             model.goodSignals().signalSources().get(0).filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.AVG,
+        Assertions.assertEquals(SamplingType.SUM,
             model.goodSignals().signalSources().get(0).filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_CONTAINS,
             model.goodSignals().signalSources().get(0).filters().get(0).operator());
@@ -61,7 +61,7 @@ public final class SliPropertiesTests {
             model.totalSignals().signalSources().get(0).filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.SUM,
             model.totalSignals().signalSources().get(0).filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.MAX,
+        Assertions.assertEquals(SamplingType.COUNT,
             model.totalSignals().signalSources().get(0).filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_EQUAL,
             model.totalSignals().signalSources().get(0).filters().get(0).operator());
@@ -116,22 +116,22 @@ public final class SliPropertiesTests {
                             .withFilters(Arrays.asList(
                                 new Condition().withDimensionName("qweykhmenev")
                                     .withScalarFunction(ScalarFunction.MIN)
-                                    .withSamplingType(SamplingType.AVG)
+                                    .withSamplingType(SamplingType.SUM)
                                     .withOperator(ConditionOperator.NOT_CONTAINS)
                                     .withValue("hybcibv"),
                                 new Condition().withDimensionName("dcsi")
                                     .withScalarFunction(ScalarFunction.SUM)
-                                    .withSamplingType(SamplingType.MIN)
+                                    .withSamplingType(SamplingType.COUNT)
                                     .withOperator(ConditionOperator.STARTS_WITH)
                                     .withValue("mdectehfiqscjey"),
                                 new Condition().withDimensionName("hezrkgq")
                                     .withScalarFunction(ScalarFunction.SUM)
-                                    .withSamplingType(SamplingType.MIN)
+                                    .withSamplingType(SamplingType.COUNT)
                                     .withOperator(ConditionOperator.GREATER_THAN)
                                     .withValue("o"),
                                 new Condition().withDimensionName("mkqsleyyv")
                                     .withScalarFunction(ScalarFunction.SUM)
-                                    .withSamplingType(SamplingType.MAX)
+                                    .withSamplingType(SamplingType.SUM)
                                     .withOperator(ConditionOperator.LESS_THAN_OR_EQUAL)
                                     .withValue("cattpngjcrcczsq")))
                             .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.MIN)
@@ -147,17 +147,17 @@ public final class SliPropertiesTests {
                             .withFilters(Arrays.asList(
                                 new Condition().withDimensionName("xim")
                                     .withScalarFunction(ScalarFunction.MAX)
-                                    .withSamplingType(SamplingType.MAX)
+                                    .withSamplingType(SamplingType.SUM)
                                     .withOperator(ConditionOperator.STARTS_WITH)
                                     .withValue("sfksy"),
                                 new Condition().withDimensionName("dystkiiuxhqyud")
                                     .withScalarFunction(ScalarFunction.SUM)
-                                    .withSamplingType(SamplingType.MAX)
+                                    .withSamplingType(SamplingType.SUM)
                                     .withOperator(ConditionOperator.EQUAL)
                                     .withValue("b"),
                                 new Condition().withDimensionName("czvyifq")
                                     .withScalarFunction(ScalarFunction.MIN)
-                                    .withSamplingType(SamplingType.AVG)
+                                    .withSamplingType(SamplingType.MIN)
                                     .withOperator(ConditionOperator.NOT_STARTS_WITH)
                                     .withValue("sllr")))
                             .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.MIN)
@@ -178,7 +178,7 @@ public final class SliPropertiesTests {
                                     .withValue("f"),
                                 new Condition().withDimensionName("aos")
                                     .withScalarFunction(ScalarFunction.MAX)
-                                    .withSamplingType(SamplingType.AVG)
+                                    .withSamplingType(SamplingType.SUM)
                                     .withOperator(ConditionOperator.LESS_THAN)
                                     .withValue("npc")))
                             .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.MIN)
@@ -195,7 +195,7 @@ public final class SliPropertiesTests {
                             .withMetricName("ngkpocipazy")
                             .withFilters(Arrays.asList(new Condition().withDimensionName("gukgjnpiucgygevq")
                                 .withScalarFunction(ScalarFunction.SUM)
-                                .withSamplingType(SamplingType.MAX)
+                                .withSamplingType(SamplingType.COUNT)
                                 .withOperator(ConditionOperator.NOT_EQUAL)
                                 .withValue("rbpizc")))
                             .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.AVERAGE)
@@ -217,7 +217,7 @@ public final class SliPropertiesTests {
                                 .withValue("oqqnwvlryav"),
                             new Condition().withDimensionName("heun")
                                 .withScalarFunction(ScalarFunction.SUM)
-                                .withSamplingType(SamplingType.MIN)
+                                .withSamplingType(SamplingType.AVERAGE)
                                 .withOperator(ConditionOperator.EQUAL)
                                 .withValue("xzko")))
                         .withSpatialAggregation(new SpatialAggregation().withType(SpatialAggregationType.MIN)
@@ -252,7 +252,7 @@ public final class SliPropertiesTests {
             model.goodSignals().signalSources().get(0).filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.MIN,
             model.goodSignals().signalSources().get(0).filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.AVG,
+        Assertions.assertEquals(SamplingType.SUM,
             model.goodSignals().signalSources().get(0).filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_CONTAINS,
             model.goodSignals().signalSources().get(0).filters().get(0).operator());
@@ -276,7 +276,7 @@ public final class SliPropertiesTests {
             model.totalSignals().signalSources().get(0).filters().get(0).dimensionName());
         Assertions.assertEquals(ScalarFunction.SUM,
             model.totalSignals().signalSources().get(0).filters().get(0).scalarFunction());
-        Assertions.assertEquals(SamplingType.MAX,
+        Assertions.assertEquals(SamplingType.COUNT,
             model.totalSignals().signalSources().get(0).filters().get(0).samplingType());
         Assertions.assertEquals(ConditionOperator.NOT_EQUAL,
             model.totalSignals().signalSources().get(0).filters().get(0).operator());

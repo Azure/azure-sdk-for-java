@@ -169,6 +169,67 @@ public class ConfigsTests {
         }
     }
 
+    @Test(groups = { "unit" })
+    public void http2MaxFrameSizeInBytes() {
+        final String propName = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
+        final int defaultBytes = 64 * 1024;
+        final int minBytes = 64 * 1024;
+        final int maxBytes = 16_383 * 1024;
+
+        System.clearProperty(propName);
+
+        // Default (64 KB)
+        assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(defaultBytes);
+
+        // Valid value at lower bound
+        System.setProperty(propName, "64");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(minBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Valid value at upper bound (16383 KB)
+        System.setProperty(propName, "16383");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Valid value within range (1 MB)
+        System.setProperty(propName, "1024");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(1024 * 1024);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Below lower bound -> clamped up to 64 KB
+        System.setProperty(propName, "32");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(minBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Above upper bound -> clamped down to 16383 KB
+        System.setProperty(propName, String.valueOf(32 * 1024));
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(maxBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+
+        // Unparseable -> falls back to default
+        System.setProperty(propName, "not-a-number");
+        try {
+            assertThat(Configs.getHttp2MaxFrameSizeInBytes()).isEqualTo(defaultBytes);
+        } finally {
+            System.clearProperty(propName);
+        }
+    }
+
     @Test(groups = { "emulator" })
     public void thinClientEnabledTest() {
         assertThat(isThinClientEnabled()).isFalse();

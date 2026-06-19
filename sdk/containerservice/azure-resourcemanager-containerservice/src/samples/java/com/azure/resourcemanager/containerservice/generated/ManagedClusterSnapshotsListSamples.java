@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClusterSnapshotsListSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ManagedClusterSnapshotsList.json
+     * x-ms-original-file: 2026-04-02-preview/ManagedClusterSnapshotsList.json
      */
     /**
      * Sample code: List Managed Cluster Snapshots.

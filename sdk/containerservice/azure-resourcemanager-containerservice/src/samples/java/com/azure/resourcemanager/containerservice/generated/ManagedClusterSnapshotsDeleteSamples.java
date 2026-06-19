@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClusterSnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ManagedClusterSnapshotsDelete.json
+     * x-ms-original-file: 2026-04-02-preview/ManagedClusterSnapshotsDelete.json
      */
     /**
      * Sample code: Delete Managed Cluster Snapshot.

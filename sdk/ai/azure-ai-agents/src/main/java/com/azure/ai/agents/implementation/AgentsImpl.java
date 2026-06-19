@@ -12,7 +12,6 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
@@ -345,140 +344,6 @@ public final class AgentsImpl {
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Patch("/agents/{agent_name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> updateAgentDetails(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @HeaderParam("Content-Type") String contentType,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData patchAgentObjectRequest,
-            RequestOptions requestOptions, Context context);
-
-        @Patch("/agents/{agent_name}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> updateAgentDetailsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @HeaderParam("Content-Type") String contentType,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData patchAgentObjectRequest,
-            RequestOptions requestOptions, Context context);
-
-        @Post("/agents/{agent_name}/endpoint/sessions")
-        @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createSession(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @HeaderParam("x-session-isolation-key") String isolationKey,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createSessionRequest,
-            RequestOptions requestOptions, Context context);
-
-        @Post("/agents/{agent_name}/endpoint/sessions")
-        @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createSessionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @HeaderParam("x-session-isolation-key") String isolationKey,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData createSessionRequest,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/endpoint/sessions/{session_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSession(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/endpoint/sessions/{session_id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSessionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/agents/{agent_name}/endpoint/sessions/{session_id}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteSession(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @HeaderParam("x-session-isolation-key") String isolationKey, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/agents/{agent_name}/endpoint/sessions/{session_id}")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteSessionSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("session_id") String sessionId,
-            @HeaderParam("x-session-isolation-key") String isolationKey, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/endpoint/sessions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listSessions(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/endpoint/sessions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSessionsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/versions/{agent_version}/sessions/{session_id}:logstream")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSessionLogStream(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
-            @PathParam("session_id") String sessionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agents/{agent_name}/versions/{agent_version}/sessions/{session_id}:logstream")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSessionLogStreamSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
-            @PathParam("session_id") String sessionId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
         @Get("/openai/v1/conversations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -499,7 +364,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     * 
+     * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -520,11 +387,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -546,7 +414,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -584,7 +452,10 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent
+     * 
+     * Retrieves an agent definition by its unique name along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
@@ -594,7 +465,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     * 
+     * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -615,11 +488,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -641,7 +515,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -679,7 +553,9 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return an agent
+     * 
+     * Retrieves an agent definition by its unique name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAgentWithResponse(String agentName, RequestOptions requestOptions) {
@@ -689,16 +565,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates the agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent
+     * 
+     * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -710,7 +579,7 @@ public final class AgentsImpl {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -728,7 +597,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -777,11 +646,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -803,7 +673,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -854,16 +724,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates the agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent
+     * 
+     * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -875,7 +738,7 @@ public final class AgentsImpl {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -893,7 +756,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -942,11 +805,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -968,7 +832,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1017,17 +881,10 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent
+     * 
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1038,7 +895,7 @@ public final class AgentsImpl {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1070,11 +927,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1096,7 +954,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1148,17 +1006,10 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent
+     * 
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1169,7 +1020,7 @@ public final class AgentsImpl {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1201,11 +1052,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1227,7 +1079,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1279,7 +1131,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     * 
+     * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1318,11 +1172,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1344,7 +1199,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1395,7 +1250,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     * 
+     * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1434,11 +1291,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1460,7 +1318,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1511,6 +1369,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent from a manifest
+     * 
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
@@ -1550,11 +1410,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1576,7 +1437,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1628,6 +1489,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent from a manifest
+     * 
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
@@ -1667,11 +1530,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1693,7 +1557,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1745,7 +1609,20 @@ public final class AgentsImpl {
     }
 
     /**
-     * Deletes an agent.
+     * Delete an agent
+     * 
+     * Deletes an agent. For hosted agents, if any version has active sessions, the request
+     * is rejected with HTTP 409 unless `force` is set to true. When force is true, all
+     * associated sessions are cascade-deleted along with the agent and its versions.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the agent even if
+     * its versions have active sessions, cascading deletion to all associated sessions. The service defaults to `false`
+     * if a value is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1775,7 +1652,20 @@ public final class AgentsImpl {
     }
 
     /**
-     * Deletes an agent.
+     * Delete an agent
+     * 
+     * Deletes an agent. For hosted agents, if any version has active sessions, the request
+     * is rejected with HTTP 409 unless `force` is set to true. When force is true, all
+     * associated sessions are cascade-deleted along with the agent and its versions.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the agent even if
+     * its versions have active sessions, cascading deletion to all associated sessions. The service defaults to `false`
+     * if a value is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1804,13 +1694,15 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -1847,11 +1739,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1873,7 +1766,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1924,13 +1817,15 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -1967,11 +1862,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1993,7 +1889,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2038,13 +1934,15 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -2081,11 +1979,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -2107,7 +2006,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2156,13 +2055,15 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -2199,11 +2100,12 @@ public final class AgentsImpl {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -2225,7 +2127,7 @@ public final class AgentsImpl {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -2270,16 +2172,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version
+     * 
+     * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2290,7 +2185,7 @@ public final class AgentsImpl {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -2317,11 +2212,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2358,16 +2254,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version
+     * 
+     * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2378,7 +2267,7 @@ public final class AgentsImpl {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -2405,11 +2294,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2446,7 +2336,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     * 
+     * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2479,11 +2371,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2520,7 +2413,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     * 
+     * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2553,11 +2448,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2594,7 +2490,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2610,11 +2508,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2635,7 +2534,10 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAgentVersionDetailsWithResponseAsync(String agentName, String agentVersion,
@@ -2646,7 +2548,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2662,11 +2566,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2687,7 +2592,9 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAgentVersionDetailsWithResponse(String agentName, String agentVersion,
@@ -2698,7 +2605,20 @@ public final class AgentsImpl {
     }
 
     /**
-     * Deletes a specific version of an agent.
+     * Delete an agent version
+     * 
+     * Deletes a specific version of an agent. For hosted agents, if the version has active
+     * sessions, the request is rejected with HTTP 409 unless `force` is set to true. When
+     * force is true, all sessions associated with this version are cascade-deleted.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the version even if
+     * it has active sessions, cascading deletion to all associated sessions. The service defaults to `false` if a value
+     * is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2730,7 +2650,20 @@ public final class AgentsImpl {
     }
 
     /**
-     * Deletes a specific version of an agent.
+     * Delete an agent version
+     * 
+     * Deletes a specific version of an agent. For hosted agents, if the version has active
+     * sessions, the request is rejected with HTTP 409 unless `force` is set to true. When
+     * force is true, all sessions associated with this version are cascade-deleted.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the version even if
+     * it has active sessions, cascading deletion to all associated sessions. The service defaults to `false` if a value
+     * is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2762,7 +2695,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2798,11 +2733,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2837,7 +2773,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2873,11 +2811,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2905,7 +2844,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2941,11 +2882,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -2977,7 +2919,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3013,11 +2957,12 @@ public final class AgentsImpl {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -3045,988 +2990,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Updates an agent endpoint.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
+     * List conversations
      * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentDetailsWithResponseAsync(String agentName,
-        BinaryData patchAgentObjectRequest, RequestOptions requestOptions) {
-        final String contentType = "application/merge-patch+json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateAgentDetails(this.client.getEndpoint(), agentName,
-            contentType, this.client.getServiceVersion().getVersion(), accept, patchAgentObjectRequest, requestOptions,
-            context));
-    }
-
-    /**
-     * Updates an agent endpoint.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentDetailsWithResponse(String agentName, BinaryData patchAgentObjectRequest,
-        RequestOptions requestOptions) {
-        final String contentType = "application/merge-patch+json";
-        final String accept = "application/json";
-        return service.updateAgentDetailsSync(this.client.getEndpoint(), agentName, contentType,
-            this.client.getServiceVersion().getVersion(), accept, patchAgentObjectRequest, requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Optional)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param createSessionRequest The createSessionRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSessionWithResponseAsync(String agentName, String isolationKey,
-        BinaryData createSessionRequest, RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createSession(this.client.getEndpoint(), agentName, isolationKey,
-            this.client.getServiceVersion().getVersion(), contentType, accept, createSessionRequest, requestOptions,
-            context));
-    }
-
-    /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Optional)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param createSessionRequest The createSessionRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSessionWithResponse(String agentName, String isolationKey,
-        BinaryData createSessionRequest, RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSessionSync(this.client.getEndpoint(), agentName, isolationKey,
-            this.client.getServiceVersion().getVersion(), contentType, accept, createSessionRequest, requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Retrieves a session by ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionWithResponseAsync(String agentName, String sessionId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSession(this.client.getEndpoint(), agentName, sessionId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Retrieves a session by ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSessionWithResponse(String agentName, String sessionId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getSessionSync(this.client.getEndpoint(), agentName, sessionId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSessionWithResponseAsync(String agentName, String sessionId, String isolationKey,
-        RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.deleteSession(this.client.getEndpoint(), agentName, sessionId,
-            isolationKey, this.client.getServiceVersion().getVersion(), requestOptions, context));
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSessionWithResponse(String agentName, String sessionId, String isolationKey,
-        RequestOptions requestOptions) {
-        return service.deleteSessionSync(this.client.getEndpoint(), agentName, sessionId, isolationKey,
-            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSessionsSinglePageAsync(String agentName,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listSessions(this.client.getEndpoint(), agentName,
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSessionsAsync(String agentName, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listSessionsSinglePageAsync(agentName, requestOptions));
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSessionsSinglePage(String agentName, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listSessionsSync(this.client.getEndpoint(), agentName,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSessions(String agentName, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSessionsSinglePage(agentName, requestOptions));
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session
-     * as a Server-Sent Events (SSE) stream.
-     * 
-     * Each SSE frame contains:
-     * - `event`: always `"log"`
-     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
-     * is not contractual and may include additional keys or change format
-     * over time — clients should treat it as an opaque string)
-     * 
-     * Example SSE frames:
-     * ```
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
-     * 8088"}
-     * 
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
-     * 
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
-     * 
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
-     * ```
-     * 
-     * The stream remains open until the client disconnects or the server
-     * terminates the connection. Clients should handle reconnection as needed.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     event: String(log) (Required)
-     *     data: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     * 
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionLogStreamWithResponseAsync(String agentName, String agentVersion,
-        String sessionId, RequestOptions requestOptions) {
-        final String accept = "text/event-stream";
-        return FluxUtil.withContext(context -> service.getSessionLogStream(this.client.getEndpoint(), agentName,
-            agentVersion, sessionId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session
-     * as a Server-Sent Events (SSE) stream.
-     * 
-     * Each SSE frame contains:
-     * - `event`: always `"log"`
-     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
-     * is not contractual and may include additional keys or change format
-     * over time — clients should treat it as an opaque string)
-     * 
-     * Example SSE frames:
-     * ```
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
-     * 8088"}
-     * 
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
-     * 
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
-     * 
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
-     * ```
-     * 
-     * The stream remains open until the client disconnects or the server
-     * terminates the connection. Clients should handle reconnection as needed.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     event: String(log) (Required)
-     *     data: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     * 
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSessionLogStreamWithResponse(String agentName, String agentVersion, String sessionId,
-        RequestOptions requestOptions) {
-        final String accept = "text/event-stream";
-        return service.getSessionLogStreamSync(this.client.getEndpoint(), agentName, agentVersion, sessionId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Returns the list of all conversations.
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4051,6 +3017,14 @@ public final class AgentsImpl {
      * only items associated with the specified agent ID will be returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4087,7 +3061,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     * 
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4112,6 +3088,14 @@ public final class AgentsImpl {
      * only items associated with the specified agent ID will be returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4142,7 +3126,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     * 
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4167,6 +3153,14 @@ public final class AgentsImpl {
      * only items associated with the specified agent ID will be returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4201,7 +3195,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     * 
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4226,6 +3222,14 @@ public final class AgentsImpl {
      * only items associated with the specified agent ID will be returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>

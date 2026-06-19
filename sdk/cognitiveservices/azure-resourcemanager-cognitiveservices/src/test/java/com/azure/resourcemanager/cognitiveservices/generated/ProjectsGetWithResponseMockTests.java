@@ -22,7 +22,7 @@ public final class ProjectsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"hzic\",\"description\":\"fdjhyaaknyukibxi\",\"endpoints\":{\"piilhvtozy\":\"phzwxqte\",\"f\":\"gjjnxkbylhyyx\"},\"isDefault\":true},\"tags\":{\"wtrdgs\":\"z\"},\"location\":\"vq\",\"etag\":\"nsgnwxlwmez\",\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"thceopvkvtwfv\",\"principalId\":\"obpbokhmm\",\"userAssignedIdentities\":{\"kluwz\":{\"principalId\":\"arnggcjfwblqh\",\"clientId\":\"asmcolmugpyvaos\"},\"sqsqkpdmioyjpnml\":{\"principalId\":\"ygz\",\"clientId\":\"yevjhubnobguq\"},\"qojbxao\":{\"principalId\":\"qcpszp\",\"clientId\":\"vqdvrdmvxyrxdhg\"},\"muuv\":{\"principalId\":\"gbzxmbtplefoioy\",\"clientId\":\"oxznvgvd\"}}},\"id\":\"wsxmrszb\",\"name\":\"nimx\",\"type\":\"pnerxrzut\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"vrtrfz\",\"description\":\"ezvhj\",\"endpoints\":{\"swtvd\":\"dyyrudma\",\"qjchivd\":\"xbqssgfenffdxbvw\"},\"isDefault\":false},\"tags\":{\"lmzjotprrmu\":\"xndmuvar\",\"pgarpfctw\":\"cuhtuzlxiwy\",\"esipiysnjq\":\"apczdojqyv\",\"dcndazabun\":\"owa\"},\"location\":\"se\",\"etag\":\"aupwhlzyckrem\",\"identity\":{\"type\":\"None\",\"tenantId\":\"vdorsirx\",\"principalId\":\"yrkqa\",\"userAssignedIdentities\":{\"hi\":{\"principalId\":\"jfrepr\",\"clientId\":\"mkinwteyrq\"},\"rrwcsp\":{\"principalId\":\"cejo\",\"clientId\":\"lblfs\"},\"dytzf\":{\"principalId\":\"tc\",\"clientId\":\"fx\"},\"xu\":{\"principalId\":\"xizhqikmgo\",\"clientId\":\"iqemcdiiisklbon\"}}},\"id\":\"xvtrkfk\",\"name\":\"enjqnnpjw\",\"type\":\"osnyxigfou\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ProjectsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Project response = manager.projects()
-            .getWithResponse("ihzqjjtsmuy", "qfttkacybdueur", "mcdcpkshl", com.azure.core.util.Context.NONE)
+            .getWithResponse("mjw", "njcytesmfucrtfod", "hua", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hzic", response.properties().displayName());
-        Assertions.assertEquals("fdjhyaaknyukibxi", response.properties().description());
-        Assertions.assertEquals("z", response.tags().get("wtrdgs"));
-        Assertions.assertEquals("vq", response.location());
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("vrtrfz", response.properties().displayName());
+        Assertions.assertEquals("ezvhj", response.properties().description());
+        Assertions.assertEquals("xndmuvar", response.tags().get("lmzjotprrmu"));
+        Assertions.assertEquals("se", response.location());
+        Assertions.assertEquals(ResourceIdentityType.NONE, response.identity().type());
     }
 }

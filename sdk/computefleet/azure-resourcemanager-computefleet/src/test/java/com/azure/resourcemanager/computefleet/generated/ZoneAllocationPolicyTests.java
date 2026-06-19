@@ -15,21 +15,23 @@ public final class ZoneAllocationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZoneAllocationPolicy model = BinaryData.fromString(
-            "{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"prnxipeil\",\"rank\":1819249918}]}")
+            "{\"distributionStrategy\":\"Prioritized\",\"zonePreferences\":[{\"zone\":\"krvrns\",\"rank\":1344598384},{\"zone\":\"q\",\"rank\":925506689},{\"zone\":\"xc\",\"rank\":1861824237}]}")
             .toObject(ZoneAllocationPolicy.class);
-        Assertions.assertEquals(ZoneDistributionStrategy.BEST_EFFORT_SINGLE_ZONE, model.distributionStrategy());
-        Assertions.assertEquals("prnxipeil", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(1819249918, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(ZoneDistributionStrategy.PRIORITIZED, model.distributionStrategy());
+        Assertions.assertEquals("krvrns", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1344598384, model.zonePreferences().get(0).rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ZoneAllocationPolicy model
-            = new ZoneAllocationPolicy().withDistributionStrategy(ZoneDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
-                .withZonePreferences(Arrays.asList(new ZonePreference().withZone("prnxipeil").withRank(1819249918)));
+            = new ZoneAllocationPolicy().withDistributionStrategy(ZoneDistributionStrategy.PRIORITIZED)
+                .withZonePreferences(Arrays.asList(new ZonePreference().withZone("krvrns").withRank(1344598384),
+                    new ZonePreference().withZone("q").withRank(925506689),
+                    new ZonePreference().withZone("xc").withRank(1861824237)));
         model = BinaryData.fromObject(model).toObject(ZoneAllocationPolicy.class);
-        Assertions.assertEquals(ZoneDistributionStrategy.BEST_EFFORT_SINGLE_ZONE, model.distributionStrategy());
-        Assertions.assertEquals("prnxipeil", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(1819249918, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(ZoneDistributionStrategy.PRIORITIZED, model.distributionStrategy());
+        Assertions.assertEquals("krvrns", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1344598384, model.zonePreferences().get(0).rank());
     }
 }

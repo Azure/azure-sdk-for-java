@@ -37,6 +37,7 @@ import java.util.Arrays;
  *   <li>Transcribe with Enhanced Mode</li>
  *   <li>Translate an Audio File with Enhanced Mode</li>
  *   <li>Enhanced Mode with Prompt Tuning</li>
+ *   <li>Guide Recognition with a Locale</li>
  *   <li>Combine Enhanced Mode with Other Options (diarization, profanity filter)</li>
  * </ul>
  *
@@ -45,7 +46,8 @@ import java.util.Arrays;
  *   <li>{@code confidence} is not available and always returns 0</li>
  *   <li>Word-level timing ({@code offsetMilliseconds}, {@code durationMilliseconds}) is not supported for the {@code translate} task</li>
  *   <li>Diarization is not supported for the {@code translate} task (only speaker1 label is returned)</li>
- *   <li>{@code locales} and {@code phraseLists} options are not required or applicable with Enhanced Mode</li>
+ *   <li>{@code locales} is optional in Enhanced Mode. The service operates in multilingual mode by default; if specified, the first locale is used as a hint to guide recognition.</li>
+ *   <li>{@code phraseLists} options are not required or applicable with Enhanced Mode</li>
  * </ul>
  */
 public class EnhancedModeSample {
@@ -87,7 +89,10 @@ public class EnhancedModeSample {
         // 3. Enhanced Mode with Prompt Tuning
         demonstrateEnhancedModeWithPrompts();
 
-        // 4. Combine Enhanced Mode with Other Options
+        // 4. Guide Recognition with a Locale
+        demonstrateEnhancedModeWithLocale();
+
+        // 5. Combine Enhanced Mode with Other Options
         demonstrateEnhancedModeWithDiarization();
     }
 
@@ -233,6 +238,56 @@ public class EnhancedModeSample {
     // END: com.azure.ai.speech.transcription.enhancedmode.prompts
 
     /**
+     * Demonstrates guiding Enhanced Mode recognition toward a specific language using a locale.
+     * Enhanced Mode runs in multi-lingual mode by default, so you don't need to specify the
+     * input language. Optionally, to guide recognition toward a specific language, set a
+     * supported locale code (for example, "en-US"). The service uses the first locale as a
+     * hint to bias recognition.
+     */
+    private static void demonstrateEnhancedModeWithLocale() {
+        System.out.println("4. Guide Recognition with a Locale");
+        System.out.println("-----------------------------------");
+
+        try {
+            byte[] audioData = readAudioFile();
+            if (audioData == null) {
+                return;
+            }
+
+            TranscriptionResult result = transcribeWithLocale(audioData);
+
+            System.out.println("Transcription guided by locale:");
+            if (result.getCombinedPhrases() != null && !result.getCombinedPhrases().isEmpty()) {
+                System.out.println(result.getCombinedPhrases().get(0).getText());
+            }
+            System.out.println();
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + "\n");
+        }
+    }
+
+    // BEGIN: com.azure.ai.speech.transcription.enhancedmode.locale
+    /**
+     * Guide Enhanced Mode recognition toward a specific language using a locale.
+     * The service uses the first locale as a hint to bias recognition.
+     */
+    private static TranscriptionResult transcribeWithLocale(byte[] audioData) {
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
+
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setTask("transcribe");
+
+        // Guide recognition toward a specific language
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
+            .setEnhancedModeOptions(enhancedMode)
+            .setLocales(Arrays.asList("en-US"));
+
+        return client.transcribe(options);
+    }
+    // END: com.azure.ai.speech.transcription.enhancedmode.locale
+
+    /**
      * Demonstrates combining Enhanced Mode with other transcription options like
      * diarization, profanityFilterMode, and channels for comprehensive transcription
      * scenarios such as meeting transcription.
@@ -240,7 +295,7 @@ public class EnhancedModeSample {
      * <p>Note: Diarization is only supported for the "transcribe" task, not for "translate".</p>
      */
     private static void demonstrateEnhancedModeWithDiarization() {
-        System.out.println("4. Combine Enhanced Mode with Other Options");
+        System.out.println("5. Combine Enhanced Mode with Other Options");
         System.out.println("--------------------------------------------");
 
         try {

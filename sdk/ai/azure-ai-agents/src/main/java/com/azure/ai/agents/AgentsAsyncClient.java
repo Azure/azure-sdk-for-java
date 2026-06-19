@@ -4,28 +4,20 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
-import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentOptions;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
-import com.azure.ai.agents.implementation.models.CreateSessionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
-import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.SessionLogEvent;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionIndicator;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -59,7 +51,9 @@ public final class AgentsAsyncClient {
     private final AgentsImpl serviceClient;
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     *
+     * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -80,11 +74,12 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -106,7 +101,7 @@ public final class AgentsAsyncClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -144,7 +139,10 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent
+     *
+     * Retrieves an agent definition by its unique name along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -153,16 +151,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version
+     *
+     * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -173,7 +164,7 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -200,11 +191,12 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -288,7 +280,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -324,11 +318,12 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -357,7 +352,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     *
+     * Retrieves an agent definition by its unique name.
      *
      * @param agentName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,7 +363,9 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an agent
+     *
+     * Retrieves an agent definition by its unique name on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -378,7 +377,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -408,7 +409,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      *
      * @param agentName The name of the agent to retrieve versions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,7 +444,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version.
+     * Create an agent version
+     *
+     * Creates a new version for the specified agent and returns the created version resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -469,16 +474,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates the agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent
+     *
+     * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -490,7 +488,7 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -508,7 +506,7 @@ public final class AgentsAsyncClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -557,11 +555,12 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -583,7 +582,7 @@ public final class AgentsAsyncClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -630,17 +629,10 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent
+     *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -651,7 +643,7 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -683,11 +675,12 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -709,7 +702,7 @@ public final class AgentsAsyncClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -758,6 +751,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent
+     *
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -793,7 +788,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -832,11 +829,12 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -858,7 +856,7 @@ public final class AgentsAsyncClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -907,6 +905,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
@@ -946,11 +946,12 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -972,7 +973,7 @@ public final class AgentsAsyncClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1022,7 +1023,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1055,11 +1058,12 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -1094,7 +1098,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1125,6 +1131,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1154,7 +1162,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1186,6 +1196,8 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Update an agent from a manifest
+     *
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1223,7 +1235,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     *
+     * Imports the provided manifest to create a new version for the specified agent.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1263,7 +1277,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1279,11 +1295,12 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow/external) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
@@ -1304,7 +1321,10 @@ public final class AgentsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1314,7 +1334,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      *
      * @param agentName The name of the agent to retrieve.
      * @param agentVersion The version of the agent to retrieve.
@@ -1324,7 +1346,10 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return an agent version
+     *
+     * Retrieves the specified version of an agent by its agent name and version identifier on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1336,7 +1361,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      *
      * @param kind Filter agents by kind. If not provided, all agents are returned.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -1394,7 +1421,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
      *
      * @param agentName The name of the agent to retrieve versions for.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
@@ -1450,13 +1479,15 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     *
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -1493,11 +1524,12 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow/external) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
@@ -1519,7 +1551,7 @@ public final class AgentsAsyncClient {
      *             ]
      *         }
      *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
+     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
      *         ]
      *         authorization_schemes (Optional): [
      *              (Optional){
@@ -1565,7 +1597,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     *
+     * Imports the provided manifest to create an agent and returns the created resource.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
@@ -1604,7 +1638,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     *
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1629,6 +1665,14 @@ public final class AgentsAsyncClient {
      * only items associated with the specified agent ID will be returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1660,71 +1704,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @param agentName Filter by agent name. If provided, only items associated with the specified agent will be
-     * returned.
-     * @param agentId Filter by agent ID in the format `name:version`. If provided, only items associated with the
-     * specified agent ID will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Conversation> listAgentConversations(Integer limit, PageOrder order, String after, String before,
-        String agentName, String agentId) {
-        // Generated convenience method for listAgentConversations
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        if (agentName != null) {
-            requestOptions.addQueryParam("agent_name", agentName, false);
-        }
-        if (agentId != null) {
-            requestOptions.addQueryParam("agent_id", agentId, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Conversation>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Returns the list of all conversations.
+     * Returns the conversations available in the current project.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1799,7 +1781,20 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Deletes an agent.
+     * Delete an agent
+     *
+     * Deletes an agent. For hosted agents, if any version has active sessions, the request
+     * is rejected with HTTP 409 unless `force` is set to true. When force is true, all
+     * associated sessions are cascade-deleted along with the agent and its versions.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the agent even if
+     * its versions have active sessions, cascading deletion to all associated sessions. The service defaults to `false`
+     * if a value is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1827,7 +1822,20 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Deletes a specific version of an agent.
+     * Delete an agent version
+     *
+     * Deletes a specific version of an agent. For hosted agents, if the version has active
+     * sessions, the request is rejected with HTTP 409 unless `force` is set to true. When
+     * force is true, all sessions associated with this version are cascade-deleted.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>force</td><td>Boolean</td><td>No</td><td>For Hosted Agents, if `true`, force-deletes the version even if
+     * it has active sessions, cascading deletion to all associated sessions. The service defaults to `false` if a value
+     * is not specified by the caller. This value is not relevant for other Agent types.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1858,208 +1866,9 @@ public final class AgentsAsyncClient {
     }
 
     /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Optional)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
+     * Create an agent
      *
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param createSessionRequest The createSessionRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSessionWithResponse(String agentName, String isolationKey,
-        BinaryData createSessionRequest, RequestOptions requestOptions) {
-        return this.serviceClient.createSessionWithResponseAsync(agentName, isolationKey, createSessionRequest,
-            requestOptions);
-    }
-
-    /**
-     * Retrieves a session by ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionWithResponse(String agentName, String sessionId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSessionWithResponseAsync(agentName, sessionId, requestOptions);
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSessionWithResponse(String agentName, String sessionId, String isolationKey,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteSessionWithResponseAsync(agentName, sessionId, isolationKey, requestOptions);
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_session_id: String (Required)
-     *     version_indicator (Required): {
-     *         type: String(version_ref) (Required)
-     *     }
-     *     status: String(creating/active/idle/updating/failed/deleting/deleted/expired) (Required)
-     *     created_at: long (Required)
-     *     last_accessed_at: long (Required)
-     *     expires_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSessions(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.listSessionsAsync(agentName, requestOptions);
-    }
-
-    /**
-     * Creates the agent.
+     * Creates a new agent or a new version of an existing agent.
      *
      * @param options Options for createAgent API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2075,7 +1884,6 @@ public final class AgentsAsyncClient {
     Mono<AgentDetails> createAgent(CreateAgentOptions options) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        AgentDefinitionOptInKeys foundryFeatures = options.getFoundryFeatures();
         CreateAgentRequest createAgentRequestObj
             = new CreateAgentRequest(options.getAgentName(), options.getDefinition()).setMetadata(options.getMetadata())
                 .setDescription(options.getDescription())
@@ -2083,52 +1891,7 @@ public final class AgentsAsyncClient {
                 .setAgentEndpoint(options.getAgentEndpoint())
                 .setAgentCard(options.getAgentCard());
         BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         return createAgentWithResponse(createAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @param blueprintReference The blueprint reference for the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description,
-        AgentBlueprintReference blueprintReference) {
-        // Generated convenience method for updateAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition).setMetadata(metadata)
-            .setDescription(description)
-            .setBlueprintReference(blueprintReference);
-        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 
@@ -2140,8 +1903,6 @@ public final class AgentsAsyncClient {
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
      * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -2149,7 +1910,6 @@ public final class AgentsAsyncClient {
      * Keys are strings with a maximum length of 64 characters. Values are strings
      * with a maximum length of 512 characters.
      * @param description A human-readable description of the agent.
-     * @param blueprintReference The blueprint reference for the agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2158,203 +1918,52 @@ public final class AgentsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description,
-        AgentBlueprintReference blueprintReference) {
+        Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
-            = new CreateAgentVersionRequest(definition).setMetadata(metadata)
-                .setDescription(description)
-                .setBlueprintReference(blueprintReference);
+            = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
     }
 
     /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * Create a new agent version.
      *
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param versionIndicator Determines which agent version backs the session.
-     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
-     * endpoint. Auto-generated if omitted.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param createAgentVersionInput The request body for creating an agent version, which includes the agent
+     * definition and optional metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> createSession(String agentName, String isolationKey,
-        VersionIndicator versionIndicator, String agentSessionId) {
-        // Generated convenience method for createSessionWithResponse
+    public Mono<AgentVersionDetails> createAgentVersion(String agentName,
+        CreateAgentVersionInput createAgentVersionInput) {
+        // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj
-            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        return createSessionWithResponse(agentName, isolationKey, createSessionRequest, requestOptions)
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
     }
 
     /**
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * List conversations
      *
-     * @param agentName The name of the agent to create a session for.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param versionIndicator Determines which agent version backs the session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> createSession(String agentName, String isolationKey,
-        VersionIndicator versionIndicator) {
-        // Generated convenience method for createSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj = new CreateSessionRequest(versionIndicator);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        return createSessionWithResponse(agentName, isolationKey, createSessionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Retrieves a session by ID.
+     * Returns the conversations available in the current project.
      *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> getSession(String agentName, String sessionId,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for getSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return getSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Retrieves a session by ID.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> getSession(String agentName, String sessionId) {
-        // Generated convenience method for getSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSession(String agentName, String sessionId, String isolationKey,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return deleteSessionWithResponse(agentName, sessionId, isolationKey, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param isolationKey Isolation key used by the agent endpoint to enforce session ownership for session-mutating
-     * operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSession(String agentName, String sessionId, String isolationKey) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteSessionWithResponse(agentName, sessionId, isolationKey, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Returns a list of sessions for the specified agent.
-     *
-     * @param agentName The name of the agent.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
      * default is 20.
      * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
@@ -2365,6 +1974,12 @@ public final class AgentsAsyncClient {
      * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param agentName Filter by agent name. If provided, only items associated with the specified agent will be
+     * returned.
+     * @param agentId Filter by agent ID in the format `name:version`. If provided, only items associated with the
+     * specified agent ID will be returned.
+     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
+     * conversations, sessions) to a specific end user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2375,13 +1990,10 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentSessionResource> listSessions(String agentName, AgentDefinitionOptInKeys foundryFeatures,
-        Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listSessions
+    public PagedFlux<Conversation> listAgentConversations(Integer limit, PageOrder order, String after, String before,
+        String agentName, String agentId, String userIsolationKey) {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
         }
@@ -2394,26 +2006,47 @@ public final class AgentsAsyncClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        if (agentId != null) {
+            requestOptions.addQueryParam("agent_id", agentId, false);
+        }
+        if (userIsolationKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, AgentSessionResource>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Conversation>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
         });
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * Returns the list of all conversations.
      *
-     * @param agentName The name of the agent.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param agentName Filter by agent name. If provided, only items associated with the specified agent will be
+     * returned.
+     * @param agentId Filter by agent ID in the format `name:version`. If provided, only items associated with the
+     * specified agent ID will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2422,290 +2055,52 @@ public final class AgentsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentSessionResource> listSessions(String agentName) {
-        // Generated convenience method for listSessions
+    public PagedFlux<Conversation> listAgentConversations(Integer limit, PageOrder order, String after, String before,
+        String agentName, String agentId) {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        if (agentId != null) {
+            requestOptions.addQueryParam("agent_id", agentId, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, AgentSessionResource>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, Conversation>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
         });
     }
 
     /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
-     * {@link SessionLogEvent} values.
+     * Update an agent
      *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId) {
-        RequestOptions requestOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
-            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
-        return getSessionLogStream(agentName, agentVersion, sessionId, requestOptions);
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session as typed
-     * {@link SessionLogEvent} values.
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return A stream of {@link SessionLogEvent} values emitted by the hosted agent session log stream.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<SessionLogEvent> getSessionLogStream(String agentName, String agentVersion, String sessionId,
-        RequestOptions requestOptions) {
-        return SessionLogStreamHelper
-            .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer()));
-    }
-
-    /**
-     * Streams console logs (stdout / stderr) for a specific hosted agent session
-     * as a Server-Sent Events (SSE) stream.
-     *
-     * Each SSE frame contains:
-     * - `event`: always `"log"`
-     * - `data`: a plain-text log line (currently JSON-formatted, but the schema
-     * is not contractual and may include additional keys or change format
-     * over time — clients should treat it as an opaque string)
-     *
-     * Example SSE frames:
-     * ```
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.121Z","stream":"stdout","message":"Starting FoundryCBAgent server on port
-     * 8088"}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:33:17.130Z","stream":"stderr","message":"INFO: Application startup complete."}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:34:52.714Z","stream":"status","message":"Successfully connected to container"}
-     *
-     * event: log
-     * data: {"timestamp":"2026-03-10T09:35:52.714Z","stream":"status","message":"No logs since last 60 seconds"}
-     * ```
-     *
-     * The stream remains open until the client disconnects or the server
-     * terminates the connection. Clients should handle reconnection as needed.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     event: String(log) (Required)
-     *     data: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the hosted agent.
-     * @param agentVersion The version of the agent.
-     * @param sessionId The session ID (maps to an ADC sandbox).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single Server-Sent Event frame emitted by the hosted agent session log stream.
-     *
-     * Each frame contains an `event` field identifying the event type and a `data`
-     * field carrying the payload as plain text along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSessionLogStreamWithResponse(String agentName, String agentVersion,
-        String sessionId, RequestOptions requestOptions) {
-        return this.serviceClient.getSessionLogStreamWithResponseAsync(agentName, agentVersion, sessionId,
-            requestOptions);
-    }
-
-    /**
-     * Updates an agent endpoint.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "ContainerAgents=V1Preview", "AgentEndpoints=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *             instance_identity (Optional): {
-     *                 principal_id: String (Required)
-     *                 client_id: String (Required)
-     *             }
-     *             blueprint (Optional): (recursive schema, see blueprint above)
-     *             blueprint_reference (Optional): {
-     *                 type: String(ManagedAgentIdentityBlueprint) (Required)
-     *             }
-     *             agent_guid: String (Optional)
-     *         }
-     *     }
-     *     agent_endpoint (Optional): {
-     *         version_selector (Optional): {
-     *             version_selection_rules (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     type: String(FixedRatio) (Required)
-     *                     agent_version: String (Optional, Required on create)
-     *                 }
-     *             ]
-     *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/invocations) (Optional)
-     *         ]
-     *         authorization_schemes (Optional): [
-     *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
-     *             }
-     *         ]
-     *     }
-     *     instance_identity (Optional): (recursive schema, see instance_identity above)
-     *     blueprint (Optional): (recursive schema, see blueprint above)
-     *     blueprint_reference (Optional): (recursive schema, see blueprint_reference above)
-     *     agent_card (Optional): {
-     *         version: String (Optional, Required on create)
-     *         description: String (Optional)
-     *         skills (Optional, Required on create): [
-     *              (Optional, Required on create){
-     *                 id: String (Optional, Required on create)
-     *                 name: String (Optional, Required on create)
-     *                 description: String (Optional)
-     *                 tags (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 examples (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
      *
      * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAgentDetailsWithResponse(String agentName,
-        BinaryData patchAgentObjectRequest, RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentDetailsWithResponseAsync(agentName, patchAgentObjectRequest,
-            requestOptions);
-    }
-
-    /**
-     * Create a new agent version.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
      * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -2713,69 +2108,7 @@ public final class AgentsAsyncClient {
      * Keys are strings with a maximum length of 64 characters. Values are strings
      * with a maximum length of 512 characters.
      * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest createAgentVersionRequestObj
-            = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
-     * Create a new agent version.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * @param createAgentVersionInput The request body for creating an agent version, which includes the agent
-     * definition and optional metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinitionOptInKeys foundryFeatures,
-        CreateAgentVersionInput createAgentVersionInput) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
-     * Updates an agent endpoint.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
+     * @param blueprintReference The blueprint reference for the agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2786,52 +2119,15 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest,
-        AgentDefinitionOptInKeys foundryFeatures) {
-        // Generated convenience method for updateAgentDetailsWithResponse
+    Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
+        String description, AgentBlueprintReference blueprintReference) {
+        // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Updates an agent endpoint.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgentDetails(String agentName, UpdateAgentDetailsOptions patchAgentObjectRequest) {
-        // Generated convenience method for updateAgentDetailsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, true);
-        BinaryData patchAgentObjectRequestInBinaryData = BinaryData.fromObject(patchAgentObjectRequest);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        patchAgentObjectRequestInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateAgentDetailsOptionsAccessor()
-            .prepareModelForJsonMergePatch(patchAgentObjectRequest, false);
-        return updateAgentDetailsWithResponse(agentName, patchAgentObjectRequestInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition).setMetadata(metadata)
+            .setDescription(description)
+            .setBlueprintReference(blueprintReference);
+        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
+        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 }

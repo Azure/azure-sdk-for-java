@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
  */
 public final class BucketsGenerateAkvCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Buckets_GenerateAkvCredentials.json
+     * x-ms-original-file: 2026-04-01/Buckets_GenerateAkvCredentials.json
      */
     /**
      * Sample code: Buckets_GenerateAkvCredentials.

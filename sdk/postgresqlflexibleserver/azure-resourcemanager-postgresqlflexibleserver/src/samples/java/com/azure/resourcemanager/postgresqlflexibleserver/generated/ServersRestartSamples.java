@@ -12,7 +12,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParamete
  */
 public final class ServersRestartSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersRestartWithFailover.json
+     * x-ms-original-file: 2026-04-01-preview/ServersRestartWithFailover.json
      */
     /**
      * Sample code: Restart PostgreSQL database engine in a server with a forced failover to standby server.
@@ -28,7 +28,7 @@ public final class ServersRestartSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersRestart.json
+     * x-ms-original-file: 2026-04-01-preview/ServersRestart.json
      */
     /**
      * Sample code: Restart PostgreSQL database engine in a server.

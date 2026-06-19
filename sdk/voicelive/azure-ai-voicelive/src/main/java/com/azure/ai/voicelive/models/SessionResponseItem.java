@@ -135,24 +135,24 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("message".equals(discriminatorValue)) {
-                    return SessionResponseMessageItem.fromJson(readerToUse.reset());
-                } else if ("function_call".equals(discriminatorValue)) {
+                if ("function_call".equals(discriminatorValue)) {
                     return ResponseFunctionCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return ResponseFunctionCallOutputItem.fromJson(readerToUse.reset());
                 } else if ("mcp_list_tools".equals(discriminatorValue)) {
-                    return ResponseMCPListToolItem.fromJson(readerToUse.reset());
+                    return ResponseMcpListToolItem.fromJson(readerToUse.reset());
                 } else if ("mcp_call".equals(discriminatorValue)) {
-                    return ResponseMCPCallItem.fromJson(readerToUse.reset());
+                    return ResponseMcpCallItem.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_request".equals(discriminatorValue)) {
-                    return ResponseMCPApprovalRequestItem.fromJson(readerToUse.reset());
+                    return ResponseMcpApprovalRequestItem.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_response".equals(discriminatorValue)) {
-                    return ResponseMCPApprovalResponseItem.fromJson(readerToUse.reset());
+                    return ResponseMcpApprovalResponseItem.fromJson(readerToUse.reset());
                 } else if ("web_search_call".equals(discriminatorValue)) {
                     return ResponseWebSearchCallItem.fromJson(readerToUse.reset());
                 } else if ("file_search_call".equals(discriminatorValue)) {
                     return ResponseFileSearchCallItem.fromJson(readerToUse.reset());
+                } else if ("message".equals(discriminatorValue)) {
+                    return SessionResponseMessageItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

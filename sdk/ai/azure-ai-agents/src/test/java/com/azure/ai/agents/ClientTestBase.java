@@ -44,10 +44,10 @@ public class ClientTestBase extends TestProxyTestBase {
             builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else {
-            builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT"))
+            builder.endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         }
 
@@ -96,20 +96,21 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIAsyncClient().responses();
     }
 
-    protected MemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
+    protected BetaMemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresClient();
     }
 
-    protected MemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
+    protected BetaMemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresAsyncClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresAsyncClient();
     }
 
     private void addTestRecordCustomSanitizers() {
 
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..image", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
         sanitizers.add(new TestProxySanitizer("Content-Type",
             "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",

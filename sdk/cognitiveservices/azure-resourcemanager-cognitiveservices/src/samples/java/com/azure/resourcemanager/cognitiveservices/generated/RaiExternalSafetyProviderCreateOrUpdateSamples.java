@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cognitiveservices.models.RaiExternalSafetyProvi
  */
 public final class RaiExternalSafetyProviderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/PutRaiExternalSafetyProvider.json
+     * x-ms-original-file: 2026-03-15-preview/PutRaiExternalSafetyProvider.json
      */
     /**
      * Sample code: PutRaiExternalSafetyProvider.

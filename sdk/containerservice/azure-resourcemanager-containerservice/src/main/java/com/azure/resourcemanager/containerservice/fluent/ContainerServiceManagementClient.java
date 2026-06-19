@@ -68,6 +68,13 @@ public interface ContainerServiceManagementClient {
     MaintenanceConfigurationsClient getMaintenanceConfigurations();
 
     /**
+     * Gets the MaintenanceWindowsClient object to access its operations.
+     * 
+     * @return the MaintenanceWindowsClient object.
+     */
+    MaintenanceWindowsClient getMaintenanceWindows();
+
+    /**
      * Gets the ManagedNamespacesClient object to access its operations.
      * 
      * @return the ManagedNamespacesClient object.

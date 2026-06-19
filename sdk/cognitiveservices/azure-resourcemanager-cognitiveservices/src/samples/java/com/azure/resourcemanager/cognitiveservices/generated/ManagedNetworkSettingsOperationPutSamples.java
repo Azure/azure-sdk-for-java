@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class ManagedNetworkSettingsOperationPutSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
+     * x-ms-original-file: 2026-03-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
      */
     /**
      * Sample code: Put ManagedNetworkSettings.

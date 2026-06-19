@@ -15,7 +15,7 @@ import java.io.IOException;
  * Returned when an audio transcript annotation is added to a response.
  */
 @Immutable
-public final class ServerEventResponseAudioTranscriptAnnotationAdded extends SessionUpdate {
+public final class ServerEventResponseAudioTranscriptAnnotationAdded extends SessionServerEvent {
 
     /*
      * The type of event.

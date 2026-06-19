@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class TuningOptionsOperationListByServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/TuningOptionsListByServer.json
+     * x-ms-original-file: 2026-04-01-preview/TuningOptionsListByServer.json
      */
     /**
      * Sample code: List the tuning options of a server.
