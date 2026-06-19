@@ -7466,7 +7466,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             if (this.partitionKeyRangeCache != null) {
-                logger.info("Releasing shared PartitionKeyRangeCache reference ...");
+                logger.info("Closing PartitionKeyRangeCache ...");
                 LifeCycleUtils.closeQuietly(this.partitionKeyRangeCache);
             }
 

@@ -10,7 +10,7 @@
 
 #### Other Changes
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
-* Reduced memory footprint and redundant `/pkranges` reads when multiple `CosmosClient` / `CosmosAsyncClient` instances in the same JVM target the same Cosmos account. The partition-key-range routing-map cache (`RxPartitionKeyRangeCache`) is now process-scoped and shared across clients via a refcounted registry keyed by service endpoint; the shared entry is evicted when the last client closes. Sharing also strengthens the single-flight invariant: only one in-flight `/pkranges` fetch per `(account, container)` at any time, even across clients. Disable with system property `COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false` if needed.
+* Reduced memory footprint and redundant `/pkranges` reads when multiple `CosmosClient` / `CosmosAsyncClient` instances in the same JVM target the same Cosmos account. The partition-key-range routing-map cache (`RxPartitionKeyRangeCache`) is now process-scoped and shared across clients via a refcounted registry keyed by service endpoint URI; the shared entry is evicted when the last client closes. Disable with system property `COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false` if needed.
 
 ### 4.81.0 (2026-06-08)
 

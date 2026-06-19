@@ -47,13 +47,10 @@ import java.util.stream.Collectors;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  *
- * <p>The underlying routing-map storage ({@link AsyncCacheNonBlocking}) is
- * obtained from {@link SharedRoutingMapCacheRegistry} keyed by the service
- * endpoint URI. Multiple {@code CosmosClient} instances targeting the same
- * service endpoint share a single routing-map cache. {@link #close()}
- * releases this instance's reference; the shared cache is evicted only
- * when the last reference is released. The fetching logic (network call,
- * collection resolution, diagnostics) remains per-client.</p>
+ * <p>The routing-map storage is obtained from {@link SharedRoutingMapCacheRegistry}
+ * keyed by the service endpoint URI; multiple clients targeting the same endpoint
+ * share it. {@link #close()} releases this instance's reference. The fetching
+ * logic (network call, collection resolution, diagnostics) remains per-client.</p>
  **/
 public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closeable {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
@@ -64,12 +61,6 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     private final DiagnosticsClientContext clientContext;
     private final URI sharedCacheEndpointKey;
     private final AtomicBoolean closed = new AtomicBoolean(false);
-    /**
-     * Handle returned by {@link SharedRoutingMapCacheRegistry#acquire(URI, Object)}
-     * that lets {@link #close()} mark the deferred cleanup action (registered with
-     * {@link com.azure.core.util.ReferenceManager}) as already-fulfilled. May be
-     * {@code null} for isolated caches (sharing disabled / null endpoint).
-     */
     private final SharedRoutingMapCacheRegistry.ReleaseHandle releaseHandle;
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
@@ -91,15 +82,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
         this.clientContext = client;
     }
 
-    /**
-     * Releases this instance's reference to the shared routing-map cache.
-     * Safe to call multiple times; only the first call has an effect.
-     * After {@code close()} the instance must not be used further.
-     *
-     * <p>Marks the {@link com.azure.core.util.ReferenceManager}-registered
-     * cleanup action as fulfilled so it becomes a no-op when the JVM later
-     * runs it after this instance is GC'd.</p>
-     */
+    /** Idempotent release of this instance's shared-cache reference. */
     @Override
     public void close() {
         if (closed.compareAndSet(false, true)) {

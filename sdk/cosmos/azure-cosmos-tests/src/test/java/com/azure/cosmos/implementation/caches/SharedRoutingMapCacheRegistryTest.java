@@ -19,13 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Unit tests for {@link SharedRoutingMapCacheRegistry}.
- *
- * <p>The registry is a process-wide singleton, so these tests must leave it
- * in a clean state for whatever endpoints they touch. Each test uses a
- * uniquely-named endpoint and releases every reference it acquires.</p>
- */
+/** Unit tests for {@link SharedRoutingMapCacheRegistry}. Each test uses a unique endpoint
+ *  and releases every reference, since the registry is a process-wide singleton. */
 public class SharedRoutingMapCacheRegistryTest {
 
     private static final String ENABLE_FLAG = "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED";
@@ -84,15 +79,12 @@ public class SharedRoutingMapCacheRegistryTest {
 
     @Test(groups = "unit")
     public void acquireTreatsHostCaseInsensitivelyMatchingUriEquals() {
-        // URI.equals is case-insensitive on host (RFC 3986). Two clients built with
-        // mixed-case host names must collapse to a single shared cache entry — this
-        // is the reason we key on URI rather than URI.toString().
+        // URI.equals is case-insensitive on host (RFC 3986); confirm clients with
+        // mixed-case host names collapse into one shared entry.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
         URI lower = URI.create("https://test-acct-share-case.documents.azure.com:443/");
         URI mixed = URI.create("https://Test-Acct-Share-Case.documents.azure.com:443/");
 
-        // Sanity: URI.equals must consider these equal; otherwise the test below
-        // would silently regress without anyone noticing.
         assertThat(lower).isEqualTo(mixed);
 
         AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(lower);
@@ -126,7 +118,7 @@ public class SharedRoutingMapCacheRegistryTest {
         registry.release(endpoint, b);
         assertThat(registry.referenceCount(endpoint)).isZero();
 
-        // After eviction, a fresh acquire produces a brand-new cache (not the previous one).
+        // After eviction, fresh acquire produces a new cache instance.
         AsyncCacheNonBlocking<String, CollectionRoutingMap> c = registry.acquire(endpoint);
         try {
             assertThat(c).isNotSameAs(a);
@@ -138,8 +130,6 @@ public class SharedRoutingMapCacheRegistryTest {
 
     @Test(groups = "unit")
     public void releaseIsIdempotentWhenSuppliedSameCacheRepeatedly() {
-        // The registry's contract is that calling release with a cache instance
-        // that is not currently registered (e.g. already-evicted) is a no-op.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
         URI endpoint = URI.create("https://test-acct-share-4.documents.azure.com:443/");
 
@@ -147,15 +137,13 @@ public class SharedRoutingMapCacheRegistryTest {
         registry.release(endpoint, a);
         assertThat(registry.referenceCount(endpoint)).isZero();
 
-        // Releasing again with the now-stale cache reference must not crash or go negative.
+        // Releasing a stale cache reference must not crash or drive refcount negative.
         registry.release(endpoint, a);
         assertThat(registry.referenceCount(endpoint)).isZero();
     }
 
     @Test(groups = "unit")
     public void releaseIsNoOpWhenCacheIsNotTheRegisteredInstance() {
-        // After eviction and re-acquire, the registry holds a different instance.
-        // Releasing the old (stale) reference must not affect the new registered entry.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
         URI endpoint = URI.create("https://test-acct-share-5.documents.azure.com:443/");
 
@@ -182,7 +170,6 @@ public class SharedRoutingMapCacheRegistryTest {
         assertThat(a).isNotSameAs(b);
         assertThat(registry.registeredEndpointCount()).isEqualTo(before);
 
-        // Release with null endpoint is a safe no-op.
         registry.release(null, a);
         registry.release(null, b);
     }
@@ -200,12 +187,10 @@ public class SharedRoutingMapCacheRegistryTest {
         AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(endpoint);
 
         try {
-            // With sharing disabled, each acquire returns a fresh, isolated cache.
             assertThat(a).isNotSameAs(b);
             assertThat(registry.registeredEndpointCount()).isEqualTo(before);
             assertThat(registry.referenceCount(endpoint)).isZero();
         } finally {
-            // Release should be safe (no-op) since these caches were never registered.
             registry.release(endpoint, a);
             registry.release(endpoint, b);
         }
@@ -252,26 +237,19 @@ public class SharedRoutingMapCacheRegistryTest {
             pool.shutdownNow();
         }
 
-        // All acquires matched by releases → refcount must be zero and entry evicted.
         assertThat(registry.referenceCount(endpoint)).isZero();
     }
 
     @Test(groups = "unit")
     public void referenceManagerReleasesSharedCacheWhenOwnerIsGarbageCollected() throws Exception {
-        // Simulates a customer that forgot to call CosmosClient.close(). The owning
-        // object (here: an opaque Object stand-in for RxPartitionKeyRangeCache) is
-        // discarded; azure-core's ReferenceManager observes that the owner is
-        // phantom-reachable and runs the registered cleanup which decrements the refcount.
+        // Owner is allocated in a separate stack frame so this frame can't keep it alive;
+        // ReferenceManager runs the cleanup once GC observes the owner as phantom-reachable.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
         URI endpoint = URI.create("https://test-acct-leak-1.documents.azure.com:443/");
 
-        // Acquire and immediately discard the owner in a separate stack frame so the
-        // test frame cannot keep a hidden strong reference alive past the call.
         acquireAndLeakOwner(registry, endpoint);
         assertThat(registry.referenceCount(endpoint)).isEqualTo(1);
 
-        // Wait for the ReferenceManager to observe the GC and run the cleanup action.
-        // Poll up to 15 s; on most JVMs this completes within a few GC cycles.
         boolean released = false;
         long deadlineNanos = System.nanoTime() + TimeUnit.SECONDS.toNanos(15);
         while (System.nanoTime() < deadlineNanos) {
@@ -290,31 +268,21 @@ public class SharedRoutingMapCacheRegistryTest {
             .isTrue();
     }
 
-    /**
-     * Helper that allocates an owner, registers it with the registry, and returns —
-     * letting the owner immediately become eligible for GC. Living in its own stack
-     * frame guarantees the caller's frame cannot keep the owner alive.
-     */
     private static void acquireAndLeakOwner(SharedRoutingMapCacheRegistry registry, URI endpoint) {
         Object owner = new Object();
         registry.acquire(endpoint, owner);
-        // owner falls out of scope on return; nothing else references it.
+        // owner falls out of scope on return.
     }
 
     @Test(groups = "unit")
     public void promptCloseFulfillsHandleSoReferenceManagerCleanupIsANoop() throws Exception {
-        // After a prompt close() the registry's refcount is already zero and the
-        // entry already evicted. When the JVM later runs the ReferenceManager cleanup
-        // action after the owner is GC'd, the ReleaseHandle is already fulfilled so
-        // the action is a no-op — exercised by referenceCount staying at zero across
-        // a forced GC cycle.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
         URI endpoint = URI.create("https://test-acct-leak-2.documents.azure.com:443/");
 
         acquireAndPromptlyClose(registry, endpoint);
         assertThat(registry.referenceCount(endpoint)).isZero();
 
-        // Force GC; refcount must remain zero, no exception.
+        // GC + cleanup-action firing must not drive the refcount negative.
         for (int i = 0; i < 5; i++) {
             System.gc();
             System.runFinalization();
@@ -326,8 +294,6 @@ public class SharedRoutingMapCacheRegistryTest {
     private static void acquireAndPromptlyClose(SharedRoutingMapCacheRegistry registry, URI endpoint) {
         Object owner = new Object();
         SharedRoutingMapCacheRegistry.AcquireResult result = registry.acquire(endpoint, owner);
-        // Simulate the prompt RxPartitionKeyRangeCache.close() path. This fulfils
-        // the handle so the ReferenceManager-registered cleanup later becomes a no-op.
         registry.release(endpoint, result.cache, result.releaseHandle);
     }
 }

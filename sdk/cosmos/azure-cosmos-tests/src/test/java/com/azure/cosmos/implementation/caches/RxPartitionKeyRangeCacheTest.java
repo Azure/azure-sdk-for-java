@@ -251,9 +251,6 @@ public class RxPartitionKeyRangeCacheTest {
 
     @Test(groups = "unit")
     public void twoCachesForSameEndpointShareRoutingMapStorage() throws Exception {
-        // Two RxPartitionKeyRangeCache instances pointing at the same endpoint should
-        // share their underlying AsyncCacheNonBlocking, so a routing map populated by
-        // one is immediately visible to the other without a second /pkranges call.
         URI endpoint = new URI("https://test-shared-pkr-1.documents.azure.com:443/");
 
         RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
@@ -298,22 +295,16 @@ public class RxPartitionKeyRangeCacheTest {
         RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
 
         try {
-            // First client populates the cache.
             StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
                 .expectNextMatches(v -> v != null && v.v != null)
                 .verifyComplete();
 
-            // Second client must hit the shared cache without issuing its own /pkranges read.
             StepVerifier.create(cacheB.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
                 .expectNextMatches(v -> v != null && v.v != null)
                 .verifyComplete();
 
-            assertThat(clientACalls.get())
-                .as("client A populates the shared routing map")
-                .isEqualTo(1);
-            assertThat(clientBCalls.get())
-                .as("client B must hit the shared cache without issuing its own /pkranges call")
-                .isZero();
+            assertThat(clientACalls.get()).isEqualTo(1);
+            assertThat(clientBCalls.get()).isZero();
         } finally {
             cacheA.close();
             cacheB.close();
@@ -378,7 +369,6 @@ public class RxPartitionKeyRangeCacheTest {
                 .expectNextMatches(v -> v != null && v.v != null)
                 .verifyComplete();
 
-            // Two different endpoints → no sharing, each client issues its own read.
             assertThat(clientACalls.get()).isEqualTo(1);
             assertThat(clientBCalls.get()).isEqualTo(1);
         } finally {
