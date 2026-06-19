@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.MatchConditions;
@@ -14,14 +15,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
-import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -611,6 +611,35 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                     System.out.println("label name = " + label.getName());
                 });
         // END: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
+    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#checkConfigurationSettings(SettingSelector)}
+     */
+    public void checkConfigurationSettings() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        configurationClient.checkConfigurationSettings(settingSelector).iterableByPage().forEach(page -> {
+            String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
+            System.out.printf("Page ETag: %s%n", eTag);
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector
+    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#checkConfigurationSettings(SettingSelector, Context)}
+     */
+    public void checkConfigurationSettingsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        Context ctx = new Context(key2, value2);
+        configurationClient.checkConfigurationSettings(settingSelector, ctx).iterableByPage().forEach(page -> {
+            String eTag = page.getHeaders().getValue(HttpHeaderName.ETAG);
+            System.out.printf("Page ETag: %s%n", eTag);
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.checkConfigurationSettings#settingSelector-context
     }
 
     /**

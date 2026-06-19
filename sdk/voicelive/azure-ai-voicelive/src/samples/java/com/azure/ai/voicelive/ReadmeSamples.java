@@ -61,7 +61,6 @@ import java.util.Arrays;
 public final class ReadmeSamples {
 
     private String endpoint = "https://your-resource.openai.azure.com/";
-    private String apiKey = "your-api-key";
 
     /**
      * Complete voice assistant sample from README
@@ -69,12 +68,11 @@ public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.ai.voicelive.readme
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
-        String apiKey = System.getenv("AZURE_VOICELIVE_API_KEY");
 
-        // Create the VoiceLive client
+        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Configure session options for voice conversation
@@ -160,7 +158,7 @@ public final class ReadmeSamples {
     public void simpleSession() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.ai.voicelive.simple.session
@@ -185,7 +183,7 @@ public final class ReadmeSamples {
     public void configureSessionOptions() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.ai.voicelive.configure.sessionoptions
@@ -235,7 +233,7 @@ public final class ReadmeSamples {
     public void sendAudioInput() throws IOException {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
@@ -264,7 +262,7 @@ public final class ReadmeSamples {
     public void handleEventTypes() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();
@@ -336,7 +334,7 @@ public final class ReadmeSamples {
             .setVoice(BinaryData.fromObject(new AzureCustomVoice("myCustomVoice", "myEndpointId")));
 
         // Azure Personal Voice - requires speaker profile ID and model
-        // Models: DRAGON_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, PHOENIX_V2NEURAL
+        // Models: DRAGON_LATEST_NEURAL, DRAGON_HDOMNI_LATEST_NEURAL, PHOENIX_LATEST_NEURAL, MAI_VOICE_1
         VoiceLiveSessionOptions options3 = new VoiceLiveSessionOptions()
             .setVoice(BinaryData.fromObject(
                 new AzurePersonalVoice("speakerProfileId", PersonalVoiceModels.PHOENIX_LATEST_NEURAL)));
@@ -349,7 +347,7 @@ public final class ReadmeSamples {
     public void functionCalling() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.ai.voicelive.functioncalling
@@ -412,7 +410,7 @@ public final class ReadmeSamples {
         // No special configuration needed — tracing is picked up from GlobalOpenTelemetry
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.ai.voicelive.tracing.automatic
     }
@@ -423,7 +421,7 @@ public final class ReadmeSamples {
     public void mcpToolIntegration() {
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         VoiceLiveSessionAsyncClient session = client.startSession("gpt-realtime").block();

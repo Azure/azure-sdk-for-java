@@ -68,8 +68,8 @@ public class TranscribeWithDiarizationSample {
             if (result.getPhrases() != null && !result.getPhrases().isEmpty()) {
                 for (TranscribedPhrase phrase : result.getPhrases()) {
                     int speakerId = phrase.getSpeaker() != null ? phrase.getSpeaker() : 0;
-                    double startTime = phrase.getOffsetInMs().toMillis() / 1000.0;
-                    double endTime = (phrase.getOffsetInMs().toMillis() + phrase.getDuration().toMillis()) / 1000.0;
+                    double startTime = phrase.getOffset().toMillis() / 1000.0;
+                    double endTime = (phrase.getOffset().toMillis() + phrase.getDuration().toMillis()) / 1000.0;
 
                     System.out.println(String.format("\n[Speaker %d] (%.2fs - %.2fs)",
                         speakerId, startTime, endTime));
