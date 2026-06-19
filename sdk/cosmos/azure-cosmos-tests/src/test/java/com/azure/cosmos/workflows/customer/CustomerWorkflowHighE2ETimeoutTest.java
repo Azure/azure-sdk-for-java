@@ -131,17 +131,17 @@ public class CustomerWorkflowHighE2ETimeoutTest extends CustomerWorkflowTestBase
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy) {
 
         try {
-            if ("create".equals(operation)) {
+                TestObject createdItem = TestObject.create();
                 CosmosItemRequestOptions options = new CosmosItemRequestOptions()
                     .setContentResponseOnWriteEnabled(true)
                     .setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
 
-                return this.container
-                    .createItem(TestObject.create(), options)
-                    .block()
-                    .getDiagnostics()
-                    .getDiagnosticsContext();
-            }
+                CosmosItemResponse<TestObject> response = this.container
+                    .createItem(createdItem, options)
+                    .block();
+
+                registerForCleanup(createdItem);
+                return response.getDiagnostics().getDiagnosticsContext();
 
             if ("read".equals(operation)) {
                 CosmosItemRequestOptions options = new CosmosItemRequestOptions()
