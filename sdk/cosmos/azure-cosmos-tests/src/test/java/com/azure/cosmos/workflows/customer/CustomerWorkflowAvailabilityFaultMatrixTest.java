@@ -185,9 +185,10 @@ public class CustomerWorkflowAvailabilityFaultMatrixTest extends CustomerWorkflo
             }
 
             CosmosItemResponse<TestObject> response = this.container
-                .createItem(TestObject.create(), new CosmosItemRequestOptions().setContentResponseOnWriteEnabled(true))
+                .createItem(item, new CosmosItemRequestOptions().setContentResponseOnWriteEnabled(true))
                 .block();
 
+            registerForCleanup(item);
             return response.getDiagnostics().getDiagnosticsContext();
         } catch (CosmosException error) {
             CosmosDiagnosticsContext diagnosticsContext = error.getDiagnostics().getDiagnosticsContext();

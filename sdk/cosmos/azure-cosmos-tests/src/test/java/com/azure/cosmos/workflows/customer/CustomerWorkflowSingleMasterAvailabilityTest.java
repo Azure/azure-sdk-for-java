@@ -246,11 +246,14 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
 
     private CosmosDiagnosticsContext createWithDiagnostics(TestObject item, CosmosItemRequestOptions options) {
         try {
-            return this.container
+            CosmosDiagnosticsContext diagnosticsContext = this.container
                 .createItem(item, new PartitionKey(item.getMypk()), options)
                 .block()
                 .getDiagnostics()
                 .getDiagnosticsContext();
+
+            registerForCleanup(item);
+            return diagnosticsContext;
         } catch (CosmosException error) {
             return error.getDiagnostics().getDiagnosticsContext();
         }
