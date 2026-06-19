@@ -15,7 +15,7 @@ on:
 permissions: {}
 
 jobs:
-  event-handler:
+  check-enforcer:
     permissions:
       statuses: write # to set status (azure/azure-sdk-actions)
       pull-requests: write # to read pull requests and write comments (azure/azure-sdk-actions)
