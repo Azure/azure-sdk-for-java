@@ -59,9 +59,9 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
             .setExcludedRegions(excludedRegions)
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
-        CosmosItemResponse<TestObject> readResponse = this.container
-            .readItem(item.getId(), partitionKey(item), readOptions, TestObject.class)
-            .block();
+        // Excluding the preferred readable region forces the read onto the remaining readable region, which may
+        // lag behind the just-completed write. Retry until cross-region replication catches up before asserting.
+        CosmosItemResponse<TestObject> readResponse = readWithReplicationRetry(item, readOptions);
 
         assertThat(readResponse).isNotNull();
         CosmosDiagnosticsContext diagnosticsContext = readResponse.getDiagnostics().getDiagnosticsContext();
@@ -165,6 +165,8 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
 
     @Test(groups = {"fi-sm-customer-workflows"}, dataProvider = "singleWriteReadFaultScenarios", timeOut = TIMEOUT)
     public void singleWriteReadFaultMatrix(FaultInjectionServerErrorType errorType) {
+        skipIfFaultTypeUnsupportedOnGateway(errorType, "Customer single-master read fault matrix");
+
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
         registerForCleanup(item);
@@ -242,6 +244,34 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
         } catch (CosmosException error) {
             return error.getDiagnostics().getDiagnosticsContext();
         }
+    }
+
+    private CosmosItemResponse<TestObject> readWithReplicationRetry(TestObject item, CosmosItemRequestOptions options) {
+        Duration deadline = Duration.ofSeconds(30);
+        long deadlineNanos = System.nanoTime() + deadline.toNanos();
+        CosmosException lastNotFound = null;
+
+        while (System.nanoTime() < deadlineNanos) {
+            try {
+                return this.container
+                    .readItem(item.getId(), partitionKey(item), options, TestObject.class)
+                    .block();
+            } catch (CosmosException error) {
+                if (error.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND) {
+                    throw error;
+                }
+                // Item not yet replicated to the remaining readable region - wait and retry.
+                lastNotFound = error;
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new AssertionError("Interrupted while waiting for cross-region replication.", interrupted);
+                }
+            }
+        }
+
+        throw new AssertionError("Item was not replicated to the remaining readable region within " + deadline, lastNotFound);
     }
 
     private CosmosDiagnosticsContext createWithDiagnostics(TestObject item, CosmosItemRequestOptions options) {

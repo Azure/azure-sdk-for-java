@@ -312,13 +312,20 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
     private static DatabaseAccount readDatabaseAccount(CosmosAsyncClient client) {
         AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
 
-        // Force a database account read instead of relying on the possibly not-yet-populated cached value
-        // returned by GlobalEndpointManager.getLatestDatabaseAccount().
-        DatabaseAccount databaseAccount = rxDocumentClient.getDatabaseAccount().block();
-
-        if (databaseAccount == null) {
-            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+        // The latest database account is populated during client initialization. Poll briefly to defend against
+        // an initialization race instead of forcing a synthetic database-account read (which is not routable in
+        // direct connection mode).
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        long deadlineNanos = System.nanoTime() + Duration.ofSeconds(10).toNanos();
+        while (databaseAccount == null && System.nanoTime() < deadlineNanos) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new AssertionError("Interrupted while waiting for the database account to be available.", interrupted);
+            }
             databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
         }
 
@@ -363,6 +370,21 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
     protected final void skipIfNotGatewayMode(String scenarioName) {
         if (getConnectionPolicy().getConnectionMode() != ConnectionMode.GATEWAY) {
             throw new SkipException(scenarioName + " only applies to the gateway connection mode client builder.");
+        }
+    }
+
+    /**
+     * Skips fault-injection scenarios that cannot be injected for the gateway connection type. The gateway
+     * internally retries 410/0, so {@code GONE} and {@code STALED_ADDRESSES_SERVER_GONE} rules are rejected at
+     * configuration time for gateway-mode clients.
+     */
+    protected final void skipIfFaultTypeUnsupportedOnGateway(FaultInjectionServerErrorType errorType, String scenarioName) {
+        if (currentFaultInjectionConnectionType() == FaultInjectionConnectionType.GATEWAY
+            && (errorType == FaultInjectionServerErrorType.GONE
+                || errorType == FaultInjectionServerErrorType.STALED_ADDRESSES_SERVER_GONE)) {
+
+            throw new SkipException(
+                scenarioName + " cannot inject " + errorType + " for the gateway connection type.");
         }
     }
 
