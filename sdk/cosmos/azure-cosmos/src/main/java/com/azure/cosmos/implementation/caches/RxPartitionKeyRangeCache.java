@@ -32,6 +32,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.lang.ref.PhantomReference;
 import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -64,6 +65,16 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     private final DiagnosticsClientContext clientContext;
     private final URI sharedCacheEndpointKey;
     private final AtomicBoolean closed = new AtomicBoolean(false);
+    /**
+     * Phantom registered with {@link SharedRoutingMapCacheRegistry} so that an
+     * unclosed (leaked) cache instance gets cleaned up by the reaper when it
+     * becomes phantom-reachable. Held as a field to keep the phantom itself
+     * reachable for as long as this instance is reachable — otherwise the GC
+     * would collect the phantom before its referent and the queue would never
+     * be notified. May be {@code null} for isolated caches.
+     */
+    @SuppressWarnings("unused") // referenced via the field for liveness; not read at runtime.
+    private final PhantomReference<?> ownerPhantom;
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
         this(client, collectionCache, client == null ? null : client.getServiceEndpoint());
@@ -75,7 +86,10 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
         URI serviceEndpoint) {
 
         this.sharedCacheEndpointKey = serviceEndpoint;
-        this.routingMapCache = SharedRoutingMapCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey);
+        SharedRoutingMapCacheRegistry.AcquireResult acquired =
+            SharedRoutingMapCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey, this);
+        this.routingMapCache = acquired.cache;
+        this.ownerPhantom = acquired.ownerPhantom;
         this.client = client;
         this.collectionCache = collectionCache;
         this.clientContext = client;
@@ -85,11 +99,16 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
      * Releases this instance's reference to the shared routing-map cache.
      * Safe to call multiple times; only the first call has an effect.
      * After {@code close()} the instance must not be used further.
+     *
+     * <p>Also clears the {@link PhantomReference} registered on construction
+     * so the registry's reaper does not attempt a redundant release later
+     * when this instance is GC'd.</p>
      */
     @Override
     public void close() {
         if (closed.compareAndSet(false, true)) {
-            SharedRoutingMapCacheRegistry.getInstance().release(this.sharedCacheEndpointKey, this.routingMapCache);
+            SharedRoutingMapCacheRegistry.getInstance().release(
+                this.sharedCacheEndpointKey, this.routingMapCache, this.ownerPhantom);
         }
     }
 

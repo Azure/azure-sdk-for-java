@@ -255,4 +255,80 @@ public class SharedRoutingMapCacheRegistryTest {
         // All acquires matched by releases → refcount must be zero and entry evicted.
         assertThat(registry.referenceCount(endpoint)).isZero();
     }
+
+    @Test(groups = "unit")
+    public void reaperReleasesSharedCacheWhenOwnerIsGarbageCollected() throws Exception {
+        // Simulates a customer that forgot to call CosmosClient.close(). The owning
+        // object (here: an opaque Object stand-in for RxPartitionKeyRangeCache) is
+        // discarded; the registry's PhantomReference is enqueued on the next GC; the
+        // reaper drains it and decrements the refcount.
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        URI endpoint = URI.create("https://test-acct-leak-1.documents.azure.com:443/");
+
+        // Acquire and immediately discard the owner in a separate stack frame so the
+        // method's frame cannot keep a hidden strong reference alive past `owner = null`.
+        // We also avoid holding the cache in this method to remove any chance of
+        // accidentally keeping the entry alive via the test frame.
+        acquireAndLeakOwner(registry, endpoint);
+        assertThat(registry.referenceCount(endpoint)).isEqualTo(1);
+
+        // Wait for the reaper to observe the GC and decrement the refcount.
+        boolean released = false;
+        long deadlineNanos = System.nanoTime() + TimeUnit.SECONDS.toNanos(15);
+        while (System.nanoTime() < deadlineNanos) {
+            System.gc();
+            System.runFinalization();
+            Thread.sleep(100);
+            if (registry.referenceCount(endpoint) == 0) {
+                released = true;
+                break;
+            }
+        }
+
+        assertThat(released)
+            .as("Reaper should release the shared cache reference after the owner is GC'd "
+                + "(refcount=%d)", registry.referenceCount(endpoint))
+            .isTrue();
+    }
+
+    /**
+     * Helper that allocates an owner, registers it with the registry, and returns —
+     * letting the owner immediately become eligible for GC. Living in its own stack
+     * frame guarantees the caller's frame cannot keep the owner alive.
+     */
+    private static void acquireAndLeakOwner(SharedRoutingMapCacheRegistry registry, URI endpoint) {
+        Object owner = new Object();
+        registry.acquire(endpoint, owner);
+        // owner falls out of scope on return; nothing else references it.
+    }
+
+    @Test(groups = "unit")
+    public void promptCloseClearsPhantomSoReaperDoesNotDoubleRelease() throws Exception {
+        // After a prompt close() the registry's refcount is already zero and the
+        // entry already evicted. Even if the GC enqueues the phantom later, the
+        // reaper's release(endpoint, cache) is a no-op because the registry no
+        // longer holds that cache instance — exercised by referenceCount staying
+        // at zero across a forced GC cycle.
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        URI endpoint = URI.create("https://test-acct-leak-2.documents.azure.com:443/");
+
+        acquireAndPromptlyClose(registry, endpoint);
+        assertThat(registry.referenceCount(endpoint)).isZero();
+
+        // Force GC; refcount must remain zero, no exception.
+        for (int i = 0; i < 5; i++) {
+            System.gc();
+            Thread.sleep(50);
+        }
+        assertThat(registry.referenceCount(endpoint)).isZero();
+    }
+
+    private static void acquireAndPromptlyClose(SharedRoutingMapCacheRegistry registry, URI endpoint) {
+        Object owner = new Object();
+        SharedRoutingMapCacheRegistry.AcquireResult result = registry.acquire(endpoint, owner);
+        // Simulate the prompt RxPartitionKeyRangeCache.close() path via the
+        // phantom-aware overload — this clears the phantom and removes it from the
+        // live-phantom set so the reaper does not later try to double-release.
+        registry.release(endpoint, result.cache, result.ownerPhantom);
+    }
 }
