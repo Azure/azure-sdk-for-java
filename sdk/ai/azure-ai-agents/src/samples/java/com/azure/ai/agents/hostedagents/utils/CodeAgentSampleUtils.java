@@ -3,7 +3,7 @@
 
 package com.azure.ai.agents.hostedagents.utils;
 
-import com.azure.ai.agents.models.AgentProtocol;
+import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeConfiguration;
 import com.azure.ai.agents.models.CodeDependencyResolution;
@@ -86,7 +86,7 @@ public final class CodeAgentSampleUtils {
                 Arrays.asList("python", "main.py"),
                 CodeDependencyResolution.REMOTE_BUILD))
             .setProtocolVersions(Collections.singletonList(
-                new ProtocolVersionRecord(AgentProtocol.RESPONSES, "1.0.0")));
+                new ProtocolVersionRecord(AgentEndpointProtocol.RESPONSES, "1.0.0")));
     }
 
     private static CodeFileDetails createCodeFileDetails(BinaryData codeZip) {

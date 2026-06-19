@@ -5,7 +5,7 @@ package com.azure.ai.agents.hostedagents.utils;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClient;
-import com.azure.ai.agents.models.AgentProtocol;
+import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AgentVersionStatus;
@@ -211,7 +211,7 @@ public final class HostedAgentsSampleUtils {
         return new HostedAgentDefinition("0.5", "1Gi")
             .setContainerConfiguration(new ContainerConfiguration(image))
             .setProtocolVersions(Collections.singletonList(
-                new ProtocolVersionRecord(AgentProtocol.RESPONSES, "1.0.0")));
+                new ProtocolVersionRecord(AgentEndpointProtocol.RESPONSES, "1.0.0")));
     }
 
     private static void waitForAgentVersionActive(AgentsClient agentsClient, String agentName, String agentVersion) {
