@@ -3,5 +3,6 @@ import:
 overrides:
   - filename: "**/sdk/ai/azure-ai-agents/*"
     words:
+    - BYOT
     - dedup
     - gitmcp
