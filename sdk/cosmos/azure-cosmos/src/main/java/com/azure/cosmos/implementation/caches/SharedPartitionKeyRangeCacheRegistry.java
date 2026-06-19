@@ -26,17 +26,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>Sharing can be disabled via system property
  * {@code COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false}.</p>
  */
-public final class SharedRoutingMapCacheRegistry {
-    private static final Logger logger = LoggerFactory.getLogger(SharedRoutingMapCacheRegistry.class);
+public final class SharedPartitionKeyRangeCacheRegistry {
+    private static final Logger logger = LoggerFactory.getLogger(SharedPartitionKeyRangeCacheRegistry.class);
 
-    private static final SharedRoutingMapCacheRegistry INSTANCE = new SharedRoutingMapCacheRegistry();
+    private static final SharedPartitionKeyRangeCacheRegistry INSTANCE = new SharedPartitionKeyRangeCacheRegistry();
 
     private final ConcurrentHashMap<URI, Entry> entries = new ConcurrentHashMap<>();
 
-    private SharedRoutingMapCacheRegistry() {
+    private SharedPartitionKeyRangeCacheRegistry() {
     }
 
-    public static SharedRoutingMapCacheRegistry getInstance() {
+    public static SharedPartitionKeyRangeCacheRegistry getInstance() {
         return INSTANCE;
     }
 
@@ -84,11 +84,6 @@ public final class SharedRoutingMapCacheRegistry {
             handle = h;
         }
         return new AcquireResult(entry.cache, handle);
-    }
-
-    /** Test-only overload without cleanup registration. */
-    AsyncCacheNonBlocking<String, CollectionRoutingMap> acquire(URI endpoint) {
-        return acquire(endpoint, null).cache;
     }
 
     /**

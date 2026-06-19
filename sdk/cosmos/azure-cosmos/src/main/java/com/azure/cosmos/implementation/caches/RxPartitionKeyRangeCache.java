@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  *
- * <p>The routing-map storage is obtained from {@link SharedRoutingMapCacheRegistry}
+ * <p>The routing-map storage is obtained from {@link SharedPartitionKeyRangeCacheRegistry}
  * keyed by the service endpoint URI; multiple clients targeting the same endpoint
  * share it. {@link #close()} releases this instance's reference. The fetching
  * logic (network call, collection resolution, diagnostics) remains per-client.</p>
@@ -61,7 +61,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     private final DiagnosticsClientContext clientContext;
     private final URI sharedCacheEndpointKey;
     private final AtomicBoolean closed = new AtomicBoolean(false);
-    private final SharedRoutingMapCacheRegistry.ReleaseHandle releaseHandle;
+    private final SharedPartitionKeyRangeCacheRegistry.ReleaseHandle releaseHandle;
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
         this(client, collectionCache, client == null ? null : client.getServiceEndpoint());
@@ -73,8 +73,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
         URI serviceEndpoint) {
 
         this.sharedCacheEndpointKey = serviceEndpoint;
-        SharedRoutingMapCacheRegistry.AcquireResult acquired =
-            SharedRoutingMapCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey, this);
+        SharedPartitionKeyRangeCacheRegistry.AcquireResult acquired =
+            SharedPartitionKeyRangeCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey, this);
         this.routingMapCache = acquired.cache;
         this.releaseHandle = acquired.releaseHandle;
         this.client = client;
@@ -86,7 +86,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     @Override
     public void close() {
         if (closed.compareAndSet(false, true)) {
-            SharedRoutingMapCacheRegistry.getInstance().release(
+            SharedPartitionKeyRangeCacheRegistry.getInstance().release(
                 this.sharedCacheEndpointKey, this.routingMapCache, this.releaseHandle);
         }
     }

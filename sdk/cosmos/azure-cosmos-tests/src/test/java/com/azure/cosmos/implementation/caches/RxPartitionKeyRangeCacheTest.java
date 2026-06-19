@@ -310,7 +310,7 @@ public class RxPartitionKeyRangeCacheTest {
             cacheB.close();
         }
 
-        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint))
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
             .as("close() releases the shared cache reference")
             .isZero();
     }
@@ -384,15 +384,133 @@ public class RxPartitionKeyRangeCacheTest {
         RxCollectionCache mockColl = Mockito.mock(RxCollectionCache.class);
 
         RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl, endpoint);
-        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint))
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
             .isEqualTo(1);
 
         c.close();
         c.close(); // second call must be a no-op
         c.close();
 
-        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint))
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
             .as("repeated close() must not drive refcount negative")
             .isZero();
+    }
+
+    @Test(groups = "unit")
+    public void clientWithServiceEndpointAcquiresAndReleasesRegistryRefcount() throws Exception {
+        // Regression-guard for the RxDocumentClientImpl.close() -> partitionKeyRangeCache.close()
+        // wiring: constructing the cache must bump the registry refcount; close() must drop it.
+        URI endpoint = new URI("https://test-pkr-lifecycle.documents.azure.com:443/");
+        RxDocumentClientImpl mockClient = Mockito.mock(RxDocumentClientImpl.class);
+        when(mockClient.getServiceEndpoint()).thenReturn(endpoint);
+        RxCollectionCache mockColl = Mockito.mock(RxCollectionCache.class);
+
+        int before = SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint);
+
+        // 2-arg ctor mirrors what RxDocumentClientImpl actually uses.
+        RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl);
+        try {
+            assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+                .isEqualTo(before + 1);
+        } finally {
+            c.close();
+        }
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
+            .isEqualTo(before);
+    }
+
+    @Test(groups = "unit")
+    public void forceRefreshOnSharedCacheIsVisibleToSiblingClient() throws Exception {
+        // Cross-client invalidation propagation: client A force-refreshes a routing map,
+        // the new value must be visible to client B's next lookup.
+        URI endpoint = new URI("https://test-shared-pkr-refresh.documents.azure.com:443/");
+
+        RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
+        RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
+        RxCollectionCache collA = Mockito.mock(RxCollectionCache.class);
+        RxCollectionCache collB = Mockito.mock(RxCollectionCache.class);
+
+        String collectionRid = "refresh-coll-1";
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink("dbs/db1/colls/coll1");
+
+        PartitionKeyRange rangeBefore = new PartitionKeyRange();
+        rangeBefore.setId("0");
+        rangeBefore.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        rangeBefore.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+        // After refresh: a split scenario produces two child ranges with the original as parent.
+        PartitionKeyRange rangeAfter1 = new PartitionKeyRange();
+        rangeAfter1.setId("1");
+        rangeAfter1.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        rangeAfter1.setMaxExclusive("80");
+        rangeAfter1.setParents(Arrays.asList("0"));
+        PartitionKeyRange rangeAfter2 = new PartitionKeyRange();
+        rangeAfter2.setId("2");
+        rangeAfter2.setMinInclusive("80");
+        rangeAfter2.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        rangeAfter2.setParents(Arrays.asList("0"));
+
+        FeedResponse<PartitionKeyRange> responseBefore = Mockito.mock(FeedResponse.class);
+        when(responseBefore.getResults()).thenReturn(Arrays.asList(rangeBefore));
+        when(responseBefore.getContinuationToken()).thenReturn("etag-before");
+
+        FeedResponse<PartitionKeyRange> responseAfter = Mockito.mock(FeedResponse.class);
+        when(responseAfter.getResults()).thenReturn(Arrays.asList(rangeAfter1, rangeAfter2));
+        when(responseAfter.getContinuationToken()).thenReturn("etag-after");
+
+        when(collA.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+        when(collB.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+
+        // Client A first returns the pre-split layout, then the post-split layout on refresh.
+        AtomicInteger clientACalls = new AtomicInteger();
+        when(clientA.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                int n = clientACalls.incrementAndGet();
+                return n == 1 ? Flux.just(responseBefore) : Flux.just(responseAfter);
+            });
+        AtomicInteger clientBCalls = new AtomicInteger();
+        when(clientB.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                clientBCalls.incrementAndGet();
+                return Flux.just(responseAfter);
+            });
+
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
+
+        try {
+            // Step 1: A populates the shared cache with the pre-split routing map.
+            CollectionRoutingMap[] beforeMapHolder = new CollectionRoutingMap[1];
+            StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
+                .consumeNextWith(v -> beforeMapHolder[0] = v.v)
+                .verifyComplete();
+            assertThat(beforeMapHolder[0]).isNotNull();
+
+            // Step 2: A force-refreshes (passing previousValue == current cached map).
+            CollectionRoutingMap[] afterMapHolder = new CollectionRoutingMap[1];
+            StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, beforeMapHolder[0], new HashMap<>()))
+                .consumeNextWith(v -> afterMapHolder[0] = v.v)
+                .verifyComplete();
+            assertThat(afterMapHolder[0]).isNotSameAs(beforeMapHolder[0]);
+
+            // Step 3: B's lookup must see A's refreshed value (no fresh fetch from B).
+            StepVerifier.create(cacheB.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
+                .consumeNextWith(v -> assertThat(v.v).isSameAs(afterMapHolder[0]))
+                .verifyComplete();
+
+            assertThat(clientACalls.get())
+                .as("A populated then refreshed -> 2 calls")
+                .isEqualTo(2);
+            assertThat(clientBCalls.get())
+                .as("B must observe A's refresh without issuing its own fetch")
+                .isZero();
+        } finally {
+            cacheA.close();
+            cacheB.close();
+        }
     }
 }
