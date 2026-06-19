@@ -1,7 +1,7 @@
 # NOTE: currently azure-sdk-actions only hosts check enforcer code.
 # If further functionality is added, this name should be updated to reflect
 # the more generic behavior
-name: "\\[TEST-IGNORE\\] Check Enforcer"
+name: "[TEST-IGNORE] Check Enforcer"
 
 on:
   check_suite:
