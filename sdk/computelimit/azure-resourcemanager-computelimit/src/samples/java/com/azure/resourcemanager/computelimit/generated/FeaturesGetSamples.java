@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class FeaturesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Features_Get_SharedLimit.json
+     * x-ms-original-file: 2026-07-01/Features_Get_SharedLimit.json
      */
     /**
      * Sample code: Get SharedLimit feature.
@@ -21,7 +21,7 @@ public final class FeaturesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/Features_Get.json
+     * x-ms-original-file: 2026-07-01/Features_Get.json
      */
     /**
      * Sample code: Get feature.

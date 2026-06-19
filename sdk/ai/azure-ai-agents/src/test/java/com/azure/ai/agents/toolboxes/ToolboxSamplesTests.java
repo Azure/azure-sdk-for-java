@@ -27,8 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.azure.core.test.TestProxyTestBase.getHttpClients;
-
 public class ToolboxSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
