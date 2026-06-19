@@ -4,7 +4,6 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaInsightsImpl;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.Insight;
 import com.azure.ai.projects.models.InsightType;
 import com.azure.core.annotation.Generated;
@@ -23,7 +22,6 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class BetaInsightsClient {
 
@@ -54,7 +52,7 @@ public final class BetaInsightsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -74,9 +72,9 @@ public final class BetaInsightsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -124,7 +122,7 @@ public final class BetaInsightsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -179,7 +177,7 @@ public final class BetaInsightsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

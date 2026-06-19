@@ -6,7 +6,6 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.BetaRoutinesImpl;
 import com.azure.ai.projects.implementation.models.CreateOrUpdateRoutineRequest;
 import com.azure.ai.projects.implementation.models.DispatchRoutineAsyncRequest;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.DispatchRoutineResult;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
@@ -30,7 +29,6 @@ import java.util.Map;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class BetaRoutinesClient {
 
@@ -52,7 +50,7 @@ public final class BetaRoutinesClient {
      *
      * Creates a new routine or replaces an existing routine with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -69,9 +67,9 @@ public final class BetaRoutinesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -114,7 +112,7 @@ public final class BetaRoutinesClient {
      *
      * Retrieves the specified routine and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -156,7 +154,7 @@ public final class BetaRoutinesClient {
      *
      * Enables the specified routine so it can be dispatched.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -196,7 +194,7 @@ public final class BetaRoutinesClient {
      *
      * Disables the specified routine so it no longer runs.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -249,7 +247,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -322,7 +320,7 @@ public final class BetaRoutinesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -371,7 +369,7 @@ public final class BetaRoutinesClient {
      *
      * Queues an asynchronous dispatch for the specified routine.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -381,9 +379,9 @@ public final class BetaRoutinesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

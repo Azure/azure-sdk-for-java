@@ -4,7 +4,6 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaSchedulesImpl;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.Schedule;
 import com.azure.ai.projects.models.ScheduleRun;
 import com.azure.ai.projects.models.ScheduleTaskType;
@@ -24,7 +23,6 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class BetaSchedulesClient {
 
@@ -65,7 +63,7 @@ public final class BetaSchedulesClient {
      *
      * Retrieves the specified schedule resource.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -126,7 +124,7 @@ public final class BetaSchedulesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -175,7 +173,7 @@ public final class BetaSchedulesClient {
      *
      * Creates a new schedule or updates an existing schedule with the supplied definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -205,9 +203,9 @@ public final class BetaSchedulesClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -259,7 +257,7 @@ public final class BetaSchedulesClient {
      *
      * Retrieves the specified run for a schedule.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -307,7 +305,7 @@ public final class BetaSchedulesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

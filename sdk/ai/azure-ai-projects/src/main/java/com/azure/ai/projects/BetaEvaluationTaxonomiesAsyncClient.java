@@ -4,7 +4,6 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaEvaluationTaxonomiesImpl;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.EvaluationTaxonomy;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -28,7 +27,6 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
 public final class BetaEvaluationTaxonomiesAsyncClient {
 
@@ -50,7 +48,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      *
      * Retrieves the specified evaluation taxonomy.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -122,7 +120,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -202,7 +200,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      *
      * Creates or replaces the specified evaluation taxonomy with the provided definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -244,9 +242,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -310,7 +308,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      *
      * Update an evaluation taxonomy.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -352,9 +350,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

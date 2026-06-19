@@ -8,7 +8,6 @@ import com.azure.ai.projects.implementation.BetaSkillsImpl;
 import com.azure.ai.projects.implementation.MultipartFormDataHelper;
 import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
-import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
 import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillFileDetails;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class BetaSkillsClient {
 
@@ -55,7 +53,7 @@ public final class BetaSkillsClient {
      *
      * Retrieves the specified skill and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -108,7 +106,7 @@ public final class BetaSkillsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -140,7 +138,7 @@ public final class BetaSkillsClient {
      *
      * Modifies the specified skill's configuration.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -148,9 +146,9 @@ public final class BetaSkillsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -230,7 +228,7 @@ public final class BetaSkillsClient {
      *
      * Removes the specified skill and its associated versions.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -260,7 +258,7 @@ public final class BetaSkillsClient {
      *
      * Creates a new version of a skill. If the skill does not exist, it will be created.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -280,9 +278,9 @@ public final class BetaSkillsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -317,7 +315,7 @@ public final class BetaSkillsClient {
      *
      * Creates a new version of a skill from uploaded files via multipart form data.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -374,7 +372,7 @@ public final class BetaSkillsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -407,7 +405,7 @@ public final class BetaSkillsClient {
      *
      * Retrieves the specified version of a skill by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -442,7 +440,7 @@ public final class BetaSkillsClient {
      *
      * Downloads the zip content for the default version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -468,7 +466,7 @@ public final class BetaSkillsClient {
      *
      * Downloads the zip content for a specific version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -496,7 +494,7 @@ public final class BetaSkillsClient {
      *
      * Removes the specified version of a skill.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

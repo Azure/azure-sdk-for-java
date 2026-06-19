@@ -20,12 +20,6 @@ import java.util.Map;
 public final class ModelVersion implements JsonSerializable<ModelVersion> {
 
     /*
-     * System related metadata
-     */
-    @Generated
-    private SystemDataV3 systemData;
-
-    /*
      * The weight type of the model
      */
     @Generated
@@ -101,16 +95,6 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
     @Generated
     public ModelVersion(String blobUrl) {
         this.blobUrl = blobUrl;
-    }
-
-    /**
-     * Get the systemData property: System related metadata.
-     *
-     * @return the systemData value.
-     */
-    @Generated
-    public SystemDataV3 getSystemData() {
-        return this.systemData;
     }
 
     /**
@@ -331,7 +315,6 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
             String blobUrl = null;
             String name = null;
             String version = null;
-            SystemDataV3 systemData = null;
             FoundryModelWeightType weightType = null;
             String baseModel = null;
             ModelSourceData source = null;
@@ -350,8 +333,6 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
                     name = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     version = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    systemData = SystemDataV3.fromJson(reader);
                 } else if ("weightType".equals(fieldName)) {
                     weightType = FoundryModelWeightType.fromString(reader.getString());
                 } else if ("baseModel".equals(fieldName)) {
@@ -377,7 +358,6 @@ public final class ModelVersion implements JsonSerializable<ModelVersion> {
             ModelVersion deserializedModelVersion = new ModelVersion(blobUrl);
             deserializedModelVersion.name = name;
             deserializedModelVersion.version = version;
-            deserializedModelVersion.systemData = systemData;
             deserializedModelVersion.weightType = weightType;
             deserializedModelVersion.baseModel = baseModel;
             deserializedModelVersion.source = source;

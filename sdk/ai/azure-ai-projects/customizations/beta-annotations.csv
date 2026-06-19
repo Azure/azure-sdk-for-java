@@ -20,6 +20,7 @@ class;com.azure.ai.projects.models.RoutineDispatchPayload;Preview API. Routines=
 class;com.azure.ai.projects.models.RoutineDispatchPayloadType;Preview API. Routines=V1Preview;
 class;com.azure.ai.projects.models.RoutineRun;Preview API. Routines=V1Preview;
 class;com.azure.ai.projects.models.RoutineRunPhase;Preview API. Routines=V1Preview;
+class;com.azure.ai.projects.models.RoutineRunStatus;Preview API. Routines=V1Preview;
 class;com.azure.ai.projects.models.RoutineTrigger;Preview API. Routines=V1Preview;
 class;com.azure.ai.projects.models.RoutineTriggerType;Preview API. Routines=V1Preview;
 class;com.azure.ai.projects.models.ScheduleRoutineTrigger;Preview API. Routines=V1Preview;
