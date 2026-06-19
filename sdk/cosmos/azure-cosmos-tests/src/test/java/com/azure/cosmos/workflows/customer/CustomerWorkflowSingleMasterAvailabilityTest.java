@@ -52,6 +52,7 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
     public void excludedReadableRegionRoutesReadToRemainingReadableRegion() {
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
+        registerForCleanup(item);
 
         List<String> excludedRegions = excludeFirstReadableRegion();
         CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
@@ -74,6 +75,7 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
     public void readFaultInPreferredReadableRegionCanUseRemoteReadableRegion() {
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
+        registerForCleanup(item);
 
         FaultInjectionRule readSessionNotAvailableRule = configureServerErrorRule(
             this.container,
@@ -94,7 +96,10 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
             CosmosDiagnosticsContext diagnosticsContext = readWithDiagnostics(item, readOptions);
 
             assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
+            assertThat(readSessionNotAvailableRule.getHitCount())
+                .as("the injected read-session-not-available fault should have been hit in the preferred readable region")
+                .isGreaterThanOrEqualTo(1);
+            assertThat(diagnosticsContext.getStatusCode()).isBetween(HttpConstants.StatusCodes.OK, 599);
             assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
             if (diagnosticsContext.getStatusCode() < HttpConstants.StatusCodes.BADREQUEST) {
                 assertThat(diagnosticsContext.getContactedRegionNames()).isNotEmpty();
@@ -128,9 +133,14 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
             CosmosDiagnosticsContext diagnosticsContext = createWithDiagnostics(TestObject.create(), createOptions);
 
             assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
+            assertThat(partitionMigratingRule.getHitCount())
+                .as("the injected write fault should have been hit in the single writable region")
+                .isGreaterThanOrEqualTo(1);
+            assertThat(diagnosticsContext.getStatusCode()).isBetween(HttpConstants.StatusCodes.OK, 599);
             assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
 
+            // A single-write account cannot hedge writes to another region, so even with an availability strategy
+            // configured the write must never be routed to a read-only region.
             Set<String> readOnlyRegions = this.readableRegions
                 .stream()
                 .map(region -> region.toLowerCase(Locale.ROOT))
@@ -157,6 +167,7 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
     public void singleWriteReadFaultMatrix(FaultInjectionServerErrorType errorType) {
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
+        registerForCleanup(item);
 
         FaultInjectionRule faultRule = configureServerErrorRule(
             this.container,
@@ -175,9 +186,7 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
 
             CosmosDiagnosticsContext diagnosticsContext = readWithDiagnostics(item, readOptions);
 
-            assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
-            assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
+            assertFaultInjectedOperation(diagnosticsContext, faultRule);
         } finally {
             faultRule.disable();
         }
@@ -215,9 +224,9 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
 
             CosmosDiagnosticsContext diagnosticsContext = createWithDiagnostics(TestObject.create(), createOptions);
 
-            assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
-            assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
+            // The availability strategy cannot hedge writes on a single-write account; the assertion below confirms
+            // the injected write fault was still exercised and produced a real HTTP outcome.
+            assertFaultInjectedOperation(diagnosticsContext, faultRule);
         } finally {
             faultRule.disable();
         }

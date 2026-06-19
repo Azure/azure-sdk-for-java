@@ -22,7 +22,6 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +34,7 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
 
     @BeforeClass(groups = {"fi-customer-workflows"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        initializeSharedSinglePartitionContainer("Customer workflow request option tests");
+        initializeSharedSinglePartitionContainer("Customer workflow request option tests", true);
     }
 
     @AfterClass(groups = {"fi-customer-workflows"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -50,7 +49,7 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
         TestObject item = TestObject.create();
 
         CosmosItemRequestOptions createOptions = new CosmosItemRequestOptions()
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("customer-create")))
+            .setKeywordIdentifiers(Collections.singleton("customer-create"))
             .setContentResponseOnWriteEnabled(true)
             .setExcludedRegions(excludedRegions);
 
@@ -59,13 +58,14 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
             .block();
 
         assertThat(createResponse).isNotNull();
+        registerForCleanup(item);
         assertThat(createResponse.getStatusCode()).isEqualTo(201);
         assertKeywordIdentifier(createResponse.getDiagnostics().getDiagnosticsContext(), "customer-create");
         assertExcludedRegions(createResponse.getDiagnostics().getDiagnosticsContext(), excludedRegions);
         assertDidNotContactExcludedRegions(createResponse.getDiagnostics().getDiagnosticsContext(), excludedRegions);
 
         CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("customer-read")))
+            .setKeywordIdentifiers(Collections.singleton("customer-read"))
             .setExcludedRegions(excludedRegions)
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
@@ -82,7 +82,7 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
         assertDidNotContactExcludedRegions(readDiagnostics, excludedRegions);
 
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("customer-query")))
+            .setKeywordIdentifiers(Collections.singleton("customer-query"))
             .setExcludedRegions(excludedRegions)
             .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
             .setQueryMetricsEnabled(true)
@@ -105,7 +105,7 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
         assertThat(queryRequestOptions.getQueryNameOrDefault(null)).isEqualTo("CustomerWorkflowQuery");
 
         CosmosReadManyRequestOptions readManyOptions = new CosmosReadManyRequestOptions()
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("customer-read-many")))
+            .setKeywordIdentifiers(Collections.singleton("customer-read-many"))
             .setExcludedRegions(excludedRegions)
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
@@ -126,7 +126,7 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
 
         item.setStringProp("updated-" + item.getStringProp());
         CosmosItemRequestOptions upsertOptions = new CosmosItemRequestOptions()
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("customer-upsert")))
+            .setKeywordIdentifiers(Collections.singleton("customer-upsert"))
             .setExcludedRegions(excludedRegions)
             .setContentResponseOnWriteEnabled(true);
 
@@ -141,7 +141,7 @@ public class CustomerWorkflowRequestOptionsTest extends CustomerWorkflowTestBase
         assertDidNotContactExcludedRegions(upsertResponse.getDiagnostics().getDiagnosticsContext(), excludedRegions);
 
         CosmosItemRequestOptions deleteOptions = new CosmosItemRequestOptions()
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("customer-delete")))
+            .setKeywordIdentifiers(Collections.singleton("customer-delete"))
             .setExcludedRegions(excludedRegions);
 
         CosmosItemResponse<Object> deleteResponse = this.container

@@ -48,6 +48,7 @@ public class CustomerWorkflowPartitionLevelCircuitBreakerTest extends CustomerWo
     public void pointOperationCircuitBreakerAndQueryPlanWorkflow() {
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
+        registerForCleanup(item);
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3))
             .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
@@ -62,16 +63,14 @@ public class CustomerWorkflowPartitionLevelCircuitBreakerTest extends CustomerWo
         try {
             CosmosDiagnosticsContext readDiagnostics = readWithPolicy(item, e2ePolicy);
 
-            assertThat(readDiagnostics).isNotNull();
-            assertThat(readDiagnostics.getStatusCode()).isGreaterThan(0);
-            assertThat(readDiagnostics.getContactedRegionNames()).isNotNull();
+            assertFaultInjectedOperation(readDiagnostics, readFaultRule);
         } finally {
             readFaultRule.disable();
         }
 
         CosmosDiagnosticsContext queryDiagnostics = queryWithPolicy(item, e2ePolicy);
         assertThat(queryDiagnostics).isNotNull();
-        assertThat(queryDiagnostics.getStatusCode()).isGreaterThan(0);
+        assertThat(queryDiagnostics.getStatusCode()).isBetween(200, 599);
         assertThat(queryDiagnostics.getContactedRegionNames()).isNotNull();
         assertThat(queryDiagnostics.toJson()).contains("queryPlanDiagnosticsContext");
 
@@ -111,8 +110,13 @@ public class CustomerWorkflowPartitionLevelCircuitBreakerTest extends CustomerWo
                 .setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy)
                 .setQueryName("PclbCustomerWorkflowQuery");
 
+            // ORDER BY forces the gateway query-plan round-trip so the queryPlanDiagnosticsContext is always present,
+            // independent of single-partition / ServiceInterop query-plan optimizations.
             FeedResponse<TestObject> response = this.container
-                .queryItems(String.format("SELECT * FROM c WHERE c.id = '%s'", item.getId()), queryOptions, TestObject.class)
+                .queryItems(
+                    String.format("SELECT * FROM c WHERE c.id = '%s' ORDER BY c.id", item.getId()),
+                    queryOptions,
+                    TestObject.class)
                 .byPage()
                 .blockFirst();
 

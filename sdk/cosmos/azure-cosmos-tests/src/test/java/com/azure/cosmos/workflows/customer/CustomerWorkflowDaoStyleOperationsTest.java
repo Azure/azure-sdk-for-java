@@ -25,7 +25,6 @@ import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +39,7 @@ public class CustomerWorkflowDaoStyleOperationsTest extends CustomerWorkflowTest
 
     @BeforeClass(groups = {"fi-customer-workflows"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        initializeSharedSinglePartitionContainer("Customer DAO-style workflow tests");
+        initializeSharedSinglePartitionContainer("Customer DAO-style workflow tests", true);
     }
 
     @AfterClass(groups = {"fi-customer-workflows"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -54,7 +53,7 @@ public class CustomerWorkflowDaoStyleOperationsTest extends CustomerWorkflowTest
         TestObject item = TestObject.create();
 
         CosmosItemRequestOptions createOptions = new CosmosItemRequestOptions()
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("workflow-crud-create")))
+            .setKeywordIdentifiers(Collections.singleton("workflow-crud-create"))
             .setExcludedRegions(excludedRegions)
             .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER)
             .setContentResponseOnWriteEnabled(true);
@@ -64,6 +63,7 @@ public class CustomerWorkflowDaoStyleOperationsTest extends CustomerWorkflowTest
             .block();
 
         assertThat(createResponse).isNotNull();
+        registerForCleanup(item);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
         assertKeywordIdentifier(createResponse.getDiagnostics().getDiagnosticsContext(), "workflow-crud-create");
         assertThat(getRequestOptions(createResponse.getDiagnostics().getDiagnosticsContext()).getCustomItemSerializer())
@@ -113,12 +113,14 @@ public class CustomerWorkflowDaoStyleOperationsTest extends CustomerWorkflowTest
         CosmosBatchResponse batchResponse = this.container.executeCosmosBatch(batch).block();
 
         assertThat(batchResponse).isNotNull();
+        registerForCleanup(batchItem);
         assertThat(batchResponse.isSuccessStatusCode()).isTrue();
         assertThat(batchResponse.size()).isEqualTo(2);
         assertThat(batchResponse.getDiagnostics()).isNotNull();
 
         TestObject bulkItem = TestObject.create();
         this.container.createItem(bulkItem).block();
+        registerForCleanup(bulkItem);
         CosmosPatchOperations bulkPatchOperations = CosmosPatchOperations.create()
             .set("/stringProp", "bulk-patched-" + bulkItem.getStringProp());
 
@@ -129,7 +131,7 @@ public class CustomerWorkflowDaoStyleOperationsTest extends CustomerWorkflowTest
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions()
             .setMaxMicroBatchSize(2)
             .setExcludedRegions(excludedRegions)
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("workflow-bulk")));
+            .setKeywordIdentifiers(Collections.singleton("workflow-bulk"));
 
         List<CosmosBulkOperationResponse<Object>> bulkResponses = this.container
             .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)

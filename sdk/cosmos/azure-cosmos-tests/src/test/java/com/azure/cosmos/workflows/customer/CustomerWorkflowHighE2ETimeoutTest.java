@@ -31,7 +31,9 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,23 +70,32 @@ public class CustomerWorkflowHighE2ETimeoutTest extends CustomerWorkflowTestBase
     @Test(groups = {"fi-customer-workflows"}, dataProvider = "timeoutWorkflowOperations", timeOut = 2 * TIMEOUT)
     public void responseDelayWithAvailabilityStrategyWorkflow(String operation, FaultInjectionOperationType faultInjectionOperationType) {
         TestObject item = TestObject.create();
-        this.container.createItem(item).block();
+        if (!"create".equals(operation)) {
+            this.container.createItem(item).block();
+            registerForCleanup(item);
+        }
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
             .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
             .build();
 
-        FaultInjectionRule delayRule = configureResponseDelayRule(this.container, faultInjectionOperationType, Duration.ofMillis(1500), 1);
+        // readMany resolves to a point read for a single item, so the QUERY_ITEM data-provider value alone would not
+        // exercise the fault - inject the delay for both the point-read and query operation types.
+        List<FaultInjectionRule> delayRules = new ArrayList<>();
+        if ("readMany".equals(operation)) {
+            delayRules.add(configureResponseDelayRule(this.container, FaultInjectionOperationType.READ_ITEM, Duration.ofMillis(1500), 1));
+            delayRules.add(configureResponseDelayRule(this.container, FaultInjectionOperationType.QUERY_ITEM, Duration.ofMillis(1500), 1));
+        } else {
+            delayRules.add(configureResponseDelayRule(this.container, faultInjectionOperationType, Duration.ofMillis(1500), 1));
+        }
 
         try {
             CosmosDiagnosticsContext diagnosticsContext = executeWithE2EPolicy(operation, item, e2ePolicy);
 
-            assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
+            assertFaultInjectedOperation(diagnosticsContext, delayRules);
             assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
-            assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
         } finally {
-            delayRule.disable();
+            delayRules.forEach(FaultInjectionRule::disable);
         }
     }
 
@@ -92,6 +103,7 @@ public class CustomerWorkflowHighE2ETimeoutTest extends CustomerWorkflowTestBase
     public void partitionMigratingFaultWithE2EPolicyWorkflow() {
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
+        registerForCleanup(item);
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
             .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
@@ -106,10 +118,8 @@ public class CustomerWorkflowHighE2ETimeoutTest extends CustomerWorkflowTestBase
         try {
             CosmosDiagnosticsContext diagnosticsContext = executeWithE2EPolicy("read", item, e2ePolicy);
 
-            assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
+            assertFaultInjectedOperation(diagnosticsContext, migratingRule);
             assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
-            assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
         } finally {
             migratingRule.disable();
         }

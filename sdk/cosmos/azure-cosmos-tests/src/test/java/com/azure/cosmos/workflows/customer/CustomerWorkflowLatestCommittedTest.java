@@ -25,7 +25,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +38,7 @@ public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBas
 
     @BeforeClass(groups = {"fi-customer-workflows"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        initializeSharedSinglePartitionContainer("Customer latest-committed workflow tests");
+        initializeSharedSinglePartitionContainer("Customer latest-committed workflow tests", true);
     }
 
     @AfterClass(groups = {"fi-customer-workflows"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -57,6 +56,7 @@ public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBas
             .block();
 
         assertThat(createResponse).isNotNull();
+        registerForCleanup(item);
         CosmosDiagnosticsContext createDiagnostics = createResponse.getDiagnostics().getDiagnosticsContext();
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
         assertThat(createDiagnostics.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.DEFAULT);
@@ -65,7 +65,7 @@ public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBas
 
         CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
             .setExcludedRegions(excludedRegions)
-            .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("latest-committed-read")))
+            .setKeywordIdentifiers(Collections.singleton("latest-committed-read"))
             .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
 
         CosmosItemResponse<TestObject> readResponse = this.container
@@ -122,7 +122,9 @@ public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBas
             .byPage()
             .blockFirst();
 
-        assertThat(changeFeedResponse).isNotNull();
+        assertThat(changeFeedResponse)
+            .as("change feed query should return at least one page before reading diagnostics")
+            .isNotNull();
         CosmosDiagnosticsContext changeFeedDiagnostics = changeFeedResponse.getCosmosDiagnostics().getDiagnosticsContext();
         assertThat(changeFeedDiagnostics.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
         assertExcludedRegions(changeFeedDiagnostics, excludedRegions);
@@ -132,6 +134,7 @@ public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBas
     public void latestCommittedReadWithRegionalLeaseNotFoundFault() {
         TestObject item = TestObject.create();
         this.container.createItem(item).block();
+        registerForCleanup(item);
 
         FaultInjectionRule leaseNotFoundRule = configureServerErrorRule(
             this.container,
@@ -144,7 +147,7 @@ public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBas
         try {
             CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
                 .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
-                .setKeywordIdentifiers(new HashSet<>(Collections.singletonList("latest-committed-fault-read")));
+                .setKeywordIdentifiers(Collections.singleton("latest-committed-fault-read"));
 
             CosmosDiagnosticsContext diagnosticsContext;
             try {
@@ -160,8 +163,7 @@ public class CustomerWorkflowLatestCommittedTest extends CustomerWorkflowTestBas
 
             assertThat(diagnosticsContext).isNotNull();
             assertThat(diagnosticsContext.getEffectiveReadConsistencyStrategy()).isEqualTo(ReadConsistencyStrategy.LATEST_COMMITTED);
-            assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
+            assertFaultInjectedOperation(diagnosticsContext, leaseNotFoundRule);
         } finally {
             leaseNotFoundRule.disable();
         }

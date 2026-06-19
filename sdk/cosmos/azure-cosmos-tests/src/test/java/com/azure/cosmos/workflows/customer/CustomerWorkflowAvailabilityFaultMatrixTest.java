@@ -24,6 +24,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,28 +85,31 @@ public class CustomerWorkflowAvailabilityFaultMatrixTest extends CustomerWorkflo
         FaultInjectionOperationType faultInjectionOperationType,
         FaultInjectionServerErrorType errorType) {
 
+        skipIfNotDirectMode("Customer availability fault workflow (direct multi-master)");
+
         TestObject item = TestObject.create();
         if (!"create".equals(operation)) {
             this.container.createItem(item).block();
+            registerForCleanup(item);
         }
 
-        FaultInjectionRule faultRule = configureServerErrorRule(
-            this.container,
-            faultInjectionOperationType,
-            errorType,
-            this.writableRegions.get(0),
-            currentFaultInjectionConnectionType(),
-            1);
+        List<FaultInjectionRule> faultRules = "readMany".equals(operation)
+            ? configureReadManyServerErrorRules(this.container, errorType, this.writableRegions.get(0), 1)
+            : Collections.singletonList(configureServerErrorRule(
+                this.container,
+                faultInjectionOperationType,
+                errorType,
+                this.writableRegions.get(0),
+                currentFaultInjectionConnectionType(),
+                1));
 
         try {
             CosmosDiagnosticsContext diagnosticsContext = executeOperation(operation, item);
 
-            assertThat(diagnosticsContext).isNotNull();
-            assertThat(diagnosticsContext.getStatusCode()).isGreaterThan(0);
-            assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
+            assertFaultInjectedOperation(diagnosticsContext, faultRules);
             assertThat(diagnosticsContext.getDuration()).isNotNull();
         } finally {
-            faultRule.disable();
+            faultRules.forEach(FaultInjectionRule::disable);
         }
     }
 

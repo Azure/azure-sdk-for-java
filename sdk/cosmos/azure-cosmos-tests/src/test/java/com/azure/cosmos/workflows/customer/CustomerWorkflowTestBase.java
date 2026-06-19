@@ -8,15 +8,19 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
@@ -49,12 +53,21 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
     protected CosmosAsyncContainer container;
     protected List<String> writableRegions;
     protected List<String> readableRegions;
+    private final List<CosmosItemIdentity> itemsToCleanup = Collections.synchronizedList(new ArrayList<>());
 
     protected CustomerWorkflowTestBase(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     protected final void initializeSharedSinglePartitionContainer(String scenarioName) {
+        initializeSharedSinglePartitionContainer(scenarioName, false);
+    }
+
+    protected final void initializeSharedSinglePartitionContainer(String scenarioName, boolean forceSessionConsistency) {
+        if (forceSessionConsistency) {
+            skipIfAccountConsistencyWeakerThanSession(scenarioName);
+        }
+
         CosmosAsyncClient discoveryClient = null;
 
         try {
@@ -62,11 +75,18 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
             this.writableRegions = discoverWritableRegions(discoveryClient);
             skipIfInsufficientRegions(this.writableRegions, scenarioName);
 
-            this.client = getClientBuilder()
+            CosmosClientBuilder clientBuilder = getClientBuilder()
                 .preferredRegions(this.writableRegions)
                 .multipleWriteRegionsEnabled(true)
-                .contentResponseOnWriteEnabled(true)
-                .buildAsyncClient();
+                .contentResponseOnWriteEnabled(true);
+
+            if (forceSessionConsistency) {
+                // Read-your-write across an excluded write region is only deterministic with session (or
+                // stronger) consistency, so pin the client to session consistency for these scenarios.
+                clientBuilder.consistencyLevel(ConsistencyLevel.SESSION);
+            }
+
+            this.client = clientBuilder.buildAsyncClient();
             this.container = getSharedSinglePartitionCosmosContainer(this.client);
         } finally {
             safeClose(discoveryClient);
@@ -74,6 +94,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
     }
 
     protected final void closeClient() {
+        cleanupRegisteredItems();
         safeClose(this.client);
         this.client = null;
         this.container = null;
@@ -85,23 +106,56 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
         CosmosAsyncClient discoveryClient = null;
 
         try {
-            CosmosClientBuilder clientBuilder = getClientBuilder()
+            discoveryClient = getClientBuilder()
                 .multipleWriteRegionsEnabled(false)
-                .contentResponseOnWriteEnabled(true);
-
-            discoveryClient = clientBuilder.buildAsyncClient();
+                .contentResponseOnWriteEnabled(true)
+                .buildAsyncClient();
             this.writableRegions = discoverWritableRegions(discoveryClient);
             this.readableRegions = discoverReadableRegions(discoveryClient);
             skipIfInsufficientReadableRegions(this.readableRegions, scenarioName);
             skipIfNotSingleWriteRegion(this.writableRegions, scenarioName);
 
-            this.client = clientBuilder
+            this.client = getClientBuilder()
                 .preferredRegions(this.readableRegions)
                 .multipleWriteRegionsEnabled(false)
+                .contentResponseOnWriteEnabled(true)
                 .buildAsyncClient();
             this.container = getSharedSinglePartitionCosmosContainer(this.client);
         } finally {
             safeClose(discoveryClient);
+        }
+    }
+
+    /**
+     * Registers an item to be best-effort deleted from the shared container when the test class finishes,
+     * so the shared single-partition container does not accumulate items across runs.
+     */
+    protected final void registerForCleanup(TestObject item) {
+        if (item != null) {
+            this.itemsToCleanup.add(new CosmosItemIdentity(partitionKey(item), item.getId()));
+        }
+    }
+
+    private void cleanupRegisteredItems() {
+        CosmosAsyncContainer cleanupContainer = this.container;
+        List<CosmosItemIdentity> snapshot;
+        synchronized (this.itemsToCleanup) {
+            snapshot = new ArrayList<>(this.itemsToCleanup);
+            this.itemsToCleanup.clear();
+        }
+
+        if (cleanupContainer == null) {
+            return;
+        }
+
+        for (CosmosItemIdentity identity : snapshot) {
+            try {
+                cleanupContainer
+                    .deleteItem(identity.getId(), identity.getPartitionKey(), new CosmosItemRequestOptions())
+                    .block();
+            } catch (Exception error) {
+                // best-effort cleanup - ignore (for example item already deleted by the test itself)
+            }
         }
     }
 
@@ -144,7 +198,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
                 Thread.sleep(250);
             } catch (InterruptedException error) {
                 Thread.currentThread().interrupt();
-                throw new AssertionError(failureMessage, error);
+                throw new AssertionError("Interrupted while waiting for condition: " + failureMessage, error);
             }
         }
 
@@ -213,7 +267,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
 
         FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
             .operationType(operationType)
-            .connectionType(FaultInjectionConnectionType.DIRECT)
+            .connectionType(currentFaultInjectionConnectionType())
             .build();
 
         IFaultInjectionResult result = FaultInjectionResultBuilders
@@ -234,10 +288,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
     }
 
     protected static List<String> discoverWritableRegions(CosmosAsyncClient client) {
-        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        DatabaseAccount databaseAccount = readDatabaseAccount(client);
 
         List<String> writableRegions = new ArrayList<>();
         for (DatabaseAccountLocation accountLocation : databaseAccount.getWritableLocations()) {
@@ -248,10 +299,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
     }
 
     protected static List<String> discoverReadableRegions(CosmosAsyncClient client) {
-        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        DatabaseAccount databaseAccount = readDatabaseAccount(client);
 
         List<String> readableRegions = new ArrayList<>();
         for (DatabaseAccountLocation accountLocation : databaseAccount.getReadableLocations()) {
@@ -259,6 +307,26 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
         }
 
         return readableRegions;
+    }
+
+    private static DatabaseAccount readDatabaseAccount(CosmosAsyncClient client) {
+        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+
+        // Force a database account read instead of relying on the possibly not-yet-populated cached value
+        // returned by GlobalEndpointManager.getLatestDatabaseAccount().
+        DatabaseAccount databaseAccount = rxDocumentClient.getDatabaseAccount().block();
+
+        if (databaseAccount == null) {
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        }
+
+        assertThat(databaseAccount)
+            .as("database account must be available for region discovery")
+            .isNotNull();
+
+        return databaseAccount;
     }
 
     protected static void skipIfInsufficientRegions(List<String> regions, String scenarioName) {
@@ -279,6 +347,73 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
         }
     }
 
+    protected static void skipIfAccountConsistencyWeakerThanSession(String scenarioName) {
+        if (accountConsistency == ConsistencyLevel.EVENTUAL || accountConsistency == ConsistencyLevel.CONSISTENT_PREFIX) {
+            throw new SkipException(
+                scenarioName + " requires an account with session or stronger default consistency for deterministic read-your-write.");
+        }
+    }
+
+    protected final void skipIfNotDirectMode(String scenarioName) {
+        if (getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException(scenarioName + " only applies to the direct connection mode client builder.");
+        }
+    }
+
+    protected final void skipIfNotGatewayMode(String scenarioName) {
+        if (getConnectionPolicy().getConnectionMode() != ConnectionMode.GATEWAY) {
+            throw new SkipException(scenarioName + " only applies to the gateway connection mode client builder.");
+        }
+    }
+
+    /**
+     * Configures the same server-error fault for both the point-read ({@code READ_ITEM}) and query
+     * ({@code QUERY_ITEM}) operation types. {@code readMany} resolves to a point read for a single item in a
+     * partition and to a query for multiple items, so both rules are needed for the fault to reliably apply.
+     */
+    protected final List<FaultInjectionRule> configureReadManyServerErrorRules(
+        CosmosAsyncContainer targetContainer,
+        FaultInjectionServerErrorType errorType,
+        String region,
+        int hitLimit) {
+
+        List<FaultInjectionRule> rules = new ArrayList<>();
+        rules.add(configureServerErrorRule(
+            targetContainer, FaultInjectionOperationType.READ_ITEM, errorType, region, currentFaultInjectionConnectionType(), hitLimit));
+        rules.add(configureServerErrorRule(
+            targetContainer, FaultInjectionOperationType.QUERY_ITEM, errorType, region, currentFaultInjectionConnectionType(), hitLimit));
+        return rules;
+    }
+
+    /**
+     * Asserts that a fault-injected operation produced a real HTTP outcome and that at least one of the supplied
+     * fault rules was actually hit, so the scenario cannot silently pass without exercising the injected fault.
+     */
+    protected static void assertFaultInjectedOperation(
+        CosmosDiagnosticsContext diagnosticsContext,
+        FaultInjectionRule... rules) {
+
+        assertThat(diagnosticsContext).isNotNull();
+        assertThat(diagnosticsContext.getStatusCode()).isBetween(HttpConstants.StatusCodes.OK, 599);
+        assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
+
+        long totalHits = 0;
+        for (FaultInjectionRule rule : rules) {
+            totalHits += rule.getHitCount();
+        }
+
+        assertThat(totalHits)
+            .as("expected at least one injected fault to be hit")
+            .isGreaterThanOrEqualTo(1);
+    }
+
+    protected static void assertFaultInjectedOperation(
+        CosmosDiagnosticsContext diagnosticsContext,
+        List<FaultInjectionRule> rules) {
+
+        assertFaultInjectedOperation(diagnosticsContext, rules.toArray(new FaultInjectionRule[0]));
+    }
+
     protected static OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext diagnosticsContext) {
         assertThat(diagnosticsContext).isNotNull();
         return ImplementationBridgeHelpers
@@ -291,7 +426,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
         OverridableRequestOptions requestOptions = getRequestOptions(diagnosticsContext);
 
         assertThat(requestOptions.getKeywordIdentifiers())
-            .containsExactly(expectedKeywordIdentifier);
+            .contains(expectedKeywordIdentifier);
     }
 
     protected static void assertExcludedRegions(

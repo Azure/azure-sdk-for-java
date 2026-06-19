@@ -52,6 +52,7 @@ public class CustomerWorkflowSessionTokenTest extends CustomerWorkflowTestBase {
             CosmosItemResponse<TestObject> createResponse = this.container.createItem(item).block();
 
             assertThat(createResponse).isNotNull();
+            registerForCleanup(item);
             lastSessionToken = createResponse.getSessionToken();
             itemIdentities.add(new CosmosItemIdentity(partitionKey(item), item.getId()));
         }

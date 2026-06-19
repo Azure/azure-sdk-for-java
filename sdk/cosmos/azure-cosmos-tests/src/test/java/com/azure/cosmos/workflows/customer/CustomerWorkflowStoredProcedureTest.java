@@ -91,6 +91,11 @@ public class CustomerWorkflowStoredProcedureTest extends CustomerWorkflowTestBas
             assertThat(executeResponse.getDiagnostics()).isNotNull();
         } finally {
             metadataDelayRule.disable();
+            try {
+                this.container.getScripts().getStoredProcedure(storedProcedureId).delete().block();
+            } catch (Exception error) {
+                // best-effort cleanup of the stored procedure created by this test
+            }
         }
     }
 }
