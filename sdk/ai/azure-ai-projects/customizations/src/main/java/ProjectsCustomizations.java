@@ -25,7 +25,23 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+        private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
+        customization.getPackage("com.azure.ai.projects")
+            .listClasses()
+            .stream()
+            .filter(cc -> cc.getClassName().startsWith("Beta") && cc.getClassName().endsWith("Client"))
+            .forEach(classCustomization -> {
+                String simpleName = classCustomization.getClassName();
+                logger.info("Annotating {} with @Beta", simpleName);
+                classCustomization.customizeAst(ast -> ast.getClassByName(simpleName).ifPresent(clazz -> {
+                    ast.addImport("com.azure.ai.projects.implementation.utils.Beta");
+                    clazz.addAnnotation(betaAnnotation("This class is in preview and may change in future releases."));
+                }));
+            });
     }
 
     private void annotateBetaFields(LibraryCustomization customization, List<String[]> betaAnnotations,
