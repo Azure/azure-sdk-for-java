@@ -16,6 +16,7 @@ import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,6 +30,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.getHttpClients;
 
+@Disabled("TODO: re-record once service no longer requires Foundry-Features opt-in keys for these operations.")
 public class ToolboxSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
