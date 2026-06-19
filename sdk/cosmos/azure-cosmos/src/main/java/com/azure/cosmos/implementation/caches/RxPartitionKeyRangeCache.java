@@ -62,7 +62,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
-    private final String sharedCacheEndpointKey;
+    private final URI sharedCacheEndpointKey;
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
     public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
@@ -74,7 +74,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
         RxCollectionCache collectionCache,
         URI serviceEndpoint) {
 
-        this.sharedCacheEndpointKey = serviceEndpoint == null ? null : serviceEndpoint.toString();
+        this.sharedCacheEndpointKey = serviceEndpoint;
         this.routingMapCache = SharedRoutingMapCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey);
         this.client = client;
         this.collectionCache = collectionCache;

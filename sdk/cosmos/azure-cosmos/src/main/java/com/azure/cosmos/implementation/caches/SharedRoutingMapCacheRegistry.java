@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,17 +29,25 @@ import java.util.concurrent.atomic.AtomicInteger;
  * {@code /pkranges} fetch per (account, container) at any time, even across
  * clients.</p>
  *
- * <p><b>Lifecycle.</b> Callers obtain a shared cache via {@link #acquire(String)}
- * during construction and return it via {@link #release(String, AsyncCacheNonBlocking)}
+ * <p><b>Key identity.</b> {@link URI} is used directly (not {@link URI#toString()})
+ * so {@link URI#equals(Object)}'s case-insensitive host comparison applies — two
+ * clients built with {@code https://Acct.documents.azure.com/} and
+ * {@code https://acct.documents.azure.com/} share a single cache entry as
+ * intended. Port, scheme, and path are compared as the user supplied them
+ * (matching the Python SDK's behaviour: do not auto-normalise the user's input
+ * URL beyond what the language's URI type already does).</p>
+ *
+ * <p><b>Lifecycle.</b> Callers obtain a shared cache via {@link #acquire(URI)}
+ * during construction and return it via {@link #release(URI, AsyncCacheNonBlocking)}
  * during {@code close()}. A per-entry refcount tracks live callers; when the
  * count reaches zero the entry is evicted so an idle endpoint does not pin
  * memory forever.</p>
  *
  * <p><b>Opt-out.</b> Setting the system property
  * {@code COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false} disables
- * sharing; each {@link #acquire(String)} returns a fresh, isolated cache so
+ * sharing; each {@link #acquire(URI)} returns a fresh, isolated cache so
  * behaviour matches the pre-sharing implementation. The opt-out is read once
- * per {@link #acquire(String)} call so a test can toggle the property between
+ * per {@link #acquire(URI)} call so a test can toggle the property between
  * client constructions without restarting the JVM.</p>
  *
  * <p><b>Concurrency.</b> All state transitions go through
@@ -51,7 +60,7 @@ public final class SharedRoutingMapCacheRegistry {
 
     private static final SharedRoutingMapCacheRegistry INSTANCE = new SharedRoutingMapCacheRegistry();
 
-    private final ConcurrentHashMap<String, Entry> entries = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<URI, Entry> entries = new ConcurrentHashMap<>();
 
     private SharedRoutingMapCacheRegistry() {
     }
@@ -66,15 +75,15 @@ public final class SharedRoutingMapCacheRegistry {
      *
      * <p>If {@code endpoint} is {@code null} or sharing is disabled via
      * {@link Configs#isSharedPartitionKeyRangeCacheEnabled()}, returns a fresh
-     * isolated cache that the caller fully owns. {@link #release(String, AsyncCacheNonBlocking)}
+     * isolated cache that the caller fully owns. {@link #release(URI, AsyncCacheNonBlocking)}
      * is still safe to call on such a cache (it is a no-op).</p>
      *
-     * @param endpoint The Cosmos service endpoint URL (e.g.
-     *                 {@code "https://my-account.documents.azure.com:443/"}),
+     * @param endpoint The Cosmos service endpoint URI (e.g.
+     *                 {@code https://my-account.documents.azure.com:443/}),
      *                 or {@code null} for an isolated cache.
      * @return The shared (or isolated) cache instance to use as routing-map storage.
      */
-    public AsyncCacheNonBlocking<String, CollectionRoutingMap> acquire(String endpoint) {
+    public AsyncCacheNonBlocking<String, CollectionRoutingMap> acquire(URI endpoint) {
         if (endpoint == null || !Configs.isSharedPartitionKeyRangeCacheEnabled()) {
             // Caller-owned cache; never enters the shared map.
             return new AsyncCacheNonBlocking<>();
@@ -95,7 +104,7 @@ public final class SharedRoutingMapCacheRegistry {
 
     /**
      * Releases a reference to the shared cache previously obtained via
-     * {@link #acquire(String)}. When the last reference is released the
+     * {@link #acquire(URI)}. When the last reference is released the
      * registry entry is evicted.
      *
      * <p>Safe to call when sharing was bypassed (null endpoint or sharing
@@ -110,9 +119,9 @@ public final class SharedRoutingMapCacheRegistry {
      *
      * @param endpoint The endpoint the cache was acquired for, or {@code null}
      *                 if it was an isolated cache.
-     * @param cache    The cache instance returned by {@link #acquire(String)}.
+     * @param cache    The cache instance returned by {@link #acquire(URI)}.
      */
-    public void release(String endpoint, AsyncCacheNonBlocking<String, CollectionRoutingMap> cache) {
+    public void release(URI endpoint, AsyncCacheNonBlocking<String, CollectionRoutingMap> cache) {
         if (endpoint == null || cache == null) {
             return;
         }
@@ -145,7 +154,7 @@ public final class SharedRoutingMapCacheRegistry {
      * Test-only: current refcount for an endpoint, or {@code 0} if no entry
      * is registered. Visible-for-testing.
      */
-    int referenceCount(String endpoint) {
+    int referenceCount(URI endpoint) {
         Entry entry = entries.get(endpoint);
         return entry == null ? 0 : entry.refCount.get();
     }

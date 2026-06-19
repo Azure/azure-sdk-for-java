@@ -9,6 +9,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -49,7 +50,7 @@ public class SharedRoutingMapCacheRegistryTest {
     @Test(groups = "unit")
     public void acquireReturnsSameInstanceForSameEndpoint() {
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
-        String endpoint = "https://test-acct-share-1.documents.azure.com:443/";
+        URI endpoint = URI.create("https://test-acct-share-1.documents.azure.com:443/");
 
         AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(endpoint);
         AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(endpoint);
@@ -67,8 +68,8 @@ public class SharedRoutingMapCacheRegistryTest {
     @Test(groups = "unit")
     public void acquireReturnsDifferentInstanceForDifferentEndpoints() {
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
-        String e1 = "https://test-acct-share-2a.documents.azure.com:443/";
-        String e2 = "https://test-acct-share-2b.documents.azure.com:443/";
+        URI e1 = URI.create("https://test-acct-share-2a.documents.azure.com:443/");
+        URI e2 = URI.create("https://test-acct-share-2b.documents.azure.com:443/");
 
         AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(e1);
         AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(e2);
@@ -82,9 +83,38 @@ public class SharedRoutingMapCacheRegistryTest {
     }
 
     @Test(groups = "unit")
+    public void acquireTreatsHostCaseInsensitivelyMatchingUriEquals() {
+        // URI.equals is case-insensitive on host (RFC 3986). Two clients built with
+        // mixed-case host names must collapse to a single shared cache entry — this
+        // is the reason we key on URI rather than URI.toString().
+        SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
+        URI lower = URI.create("https://test-acct-share-case.documents.azure.com:443/");
+        URI mixed = URI.create("https://Test-Acct-Share-Case.documents.azure.com:443/");
+
+        // Sanity: URI.equals must consider these equal; otherwise the test below
+        // would silently regress without anyone noticing.
+        assertThat(lower).isEqualTo(mixed);
+
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(lower);
+        AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(mixed);
+
+        try {
+            assertThat(a)
+                .as("lower-case and mixed-case host must share the same registry entry")
+                .isSameAs(b);
+            assertThat(registry.referenceCount(lower)).isEqualTo(2);
+            assertThat(registry.referenceCount(mixed)).isEqualTo(2);
+        } finally {
+            registry.release(lower, a);
+            registry.release(mixed, b);
+        }
+        assertThat(registry.referenceCount(lower)).isZero();
+    }
+
+    @Test(groups = "unit")
     public void releaseEvictsAtZeroRefcount() {
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
-        String endpoint = "https://test-acct-share-3.documents.azure.com:443/";
+        URI endpoint = URI.create("https://test-acct-share-3.documents.azure.com:443/");
 
         AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(endpoint);
         AsyncCacheNonBlocking<String, CollectionRoutingMap> b = registry.acquire(endpoint);
@@ -111,7 +141,7 @@ public class SharedRoutingMapCacheRegistryTest {
         // The registry's contract is that calling release with a cache instance
         // that is not currently registered (e.g. already-evicted) is a no-op.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
-        String endpoint = "https://test-acct-share-4.documents.azure.com:443/";
+        URI endpoint = URI.create("https://test-acct-share-4.documents.azure.com:443/");
 
         AsyncCacheNonBlocking<String, CollectionRoutingMap> a = registry.acquire(endpoint);
         registry.release(endpoint, a);
@@ -127,7 +157,7 @@ public class SharedRoutingMapCacheRegistryTest {
         // After eviction and re-acquire, the registry holds a different instance.
         // Releasing the old (stale) reference must not affect the new registered entry.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
-        String endpoint = "https://test-acct-share-5.documents.azure.com:443/";
+        URI endpoint = URI.create("https://test-acct-share-5.documents.azure.com:443/");
 
         AsyncCacheNonBlocking<String, CollectionRoutingMap> stale = registry.acquire(endpoint);
         registry.release(endpoint, stale);
@@ -160,7 +190,7 @@ public class SharedRoutingMapCacheRegistryTest {
     @Test(groups = "unit")
     public void disabledFlagReturnsIsolatedCachesAndPreservesRegistryEmpty() {
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
-        String endpoint = "https://test-acct-share-6.documents.azure.com:443/";
+        URI endpoint = URI.create("https://test-acct-share-6.documents.azure.com:443/");
         int before = registry.registeredEndpointCount();
 
         System.setProperty(ENABLE_FLAG, "false");
@@ -184,7 +214,7 @@ public class SharedRoutingMapCacheRegistryTest {
     @Test(groups = "unit")
     public void concurrentAcquireAndReleaseProducesConsistentRefcount() throws Exception {
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
-        String endpoint = "https://test-acct-share-7.documents.azure.com:443/";
+        URI endpoint = URI.create("https://test-acct-share-7.documents.azure.com:443/");
 
         int threads = 32;
         int opsPerThread = 200;

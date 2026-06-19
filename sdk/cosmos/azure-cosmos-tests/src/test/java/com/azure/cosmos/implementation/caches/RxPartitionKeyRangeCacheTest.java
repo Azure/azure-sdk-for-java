@@ -319,7 +319,7 @@ public class RxPartitionKeyRangeCacheTest {
             cacheB.close();
         }
 
-        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint.toString()))
+        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint))
             .as("close() releases the shared cache reference")
             .isZero();
     }
@@ -394,14 +394,14 @@ public class RxPartitionKeyRangeCacheTest {
         RxCollectionCache mockColl = Mockito.mock(RxCollectionCache.class);
 
         RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl, endpoint);
-        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint.toString()))
+        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint))
             .isEqualTo(1);
 
         c.close();
         c.close(); // second call must be a no-op
         c.close();
 
-        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint.toString()))
+        assertThat(SharedRoutingMapCacheRegistry.getInstance().referenceCount(endpoint))
             .as("repeated close() must not drive refcount negative")
             .isZero();
     }
