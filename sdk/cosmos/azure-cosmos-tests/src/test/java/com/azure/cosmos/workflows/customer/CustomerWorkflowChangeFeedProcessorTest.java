@@ -90,7 +90,12 @@ public class CustomerWorkflowChangeFeedProcessorTest extends CustomerWorkflowTes
             assertThat(processor.isStarted()).isTrue();
             assertThat(restartLatch.await(30, TimeUnit.SECONDS)).isTrue();
             assertThat(receivedIds).contains(restartedItem.getId());
-            assertThat(processor.getEstimatedLag().block()).isNotNull();
+
+            // getEstimatedLag() is not supported for a latest-version processor; query the per-lease state
+            // (which exposes the estimated lag) via the supported getCurrentState() API instead.
+            List<ChangeFeedProcessorState> currentState = processor.getCurrentState().block();
+            assertThat(currentState).isNotNull().isNotEmpty();
+            assertThat(currentState).allSatisfy(state -> assertThat(state.getEstimatedLag()).isGreaterThanOrEqualTo(0));
         } finally {
             if (readFeedDelayRule != null) {
                 readFeedDelayRule.disable();
@@ -144,7 +149,12 @@ public class CustomerWorkflowChangeFeedProcessorTest extends CustomerWorkflowTes
             assertThat(processor.isStarted()).isTrue();
             assertThat(reprocessLatch.await(30, TimeUnit.SECONDS)).isTrue();
             assertThat(reprocessedIds).containsAll(expectedIds);
-            assertThat(processor.getEstimatedLag().block()).isNotNull();
+
+            // getEstimatedLag() is not supported for a latest-version processor; query the per-lease state
+            // (which exposes the estimated lag) via the supported getCurrentState() API instead.
+            List<ChangeFeedProcessorState> currentState = processor.getCurrentState().block();
+            assertThat(currentState).isNotNull().isNotEmpty();
+            assertThat(currentState).allSatisfy(state -> assertThat(state.getEstimatedLag()).isGreaterThanOrEqualTo(0));
         } finally {
             if (processor != null && processor.isStarted()) {
                 processor.stop().block();
