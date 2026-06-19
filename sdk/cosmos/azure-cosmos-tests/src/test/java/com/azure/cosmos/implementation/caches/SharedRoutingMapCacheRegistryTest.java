@@ -257,22 +257,21 @@ public class SharedRoutingMapCacheRegistryTest {
     }
 
     @Test(groups = "unit")
-    public void reaperReleasesSharedCacheWhenOwnerIsGarbageCollected() throws Exception {
+    public void referenceManagerReleasesSharedCacheWhenOwnerIsGarbageCollected() throws Exception {
         // Simulates a customer that forgot to call CosmosClient.close(). The owning
         // object (here: an opaque Object stand-in for RxPartitionKeyRangeCache) is
-        // discarded; the registry's PhantomReference is enqueued on the next GC; the
-        // reaper drains it and decrements the refcount.
+        // discarded; azure-core's ReferenceManager observes that the owner is
+        // phantom-reachable and runs the registered cleanup which decrements the refcount.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
         URI endpoint = URI.create("https://test-acct-leak-1.documents.azure.com:443/");
 
         // Acquire and immediately discard the owner in a separate stack frame so the
-        // method's frame cannot keep a hidden strong reference alive past `owner = null`.
-        // We also avoid holding the cache in this method to remove any chance of
-        // accidentally keeping the entry alive via the test frame.
+        // test frame cannot keep a hidden strong reference alive past the call.
         acquireAndLeakOwner(registry, endpoint);
         assertThat(registry.referenceCount(endpoint)).isEqualTo(1);
 
-        // Wait for the reaper to observe the GC and decrement the refcount.
+        // Wait for the ReferenceManager to observe the GC and run the cleanup action.
+        // Poll up to 15 s; on most JVMs this completes within a few GC cycles.
         boolean released = false;
         long deadlineNanos = System.nanoTime() + TimeUnit.SECONDS.toNanos(15);
         while (System.nanoTime() < deadlineNanos) {
@@ -286,7 +285,7 @@ public class SharedRoutingMapCacheRegistryTest {
         }
 
         assertThat(released)
-            .as("Reaper should release the shared cache reference after the owner is GC'd "
+            .as("ReferenceManager should release the shared cache reference after the owner is GC'd "
                 + "(refcount=%d)", registry.referenceCount(endpoint))
             .isTrue();
     }
@@ -303,12 +302,12 @@ public class SharedRoutingMapCacheRegistryTest {
     }
 
     @Test(groups = "unit")
-    public void promptCloseClearsPhantomSoReaperDoesNotDoubleRelease() throws Exception {
+    public void promptCloseFulfillsHandleSoReferenceManagerCleanupIsANoop() throws Exception {
         // After a prompt close() the registry's refcount is already zero and the
-        // entry already evicted. Even if the GC enqueues the phantom later, the
-        // reaper's release(endpoint, cache) is a no-op because the registry no
-        // longer holds that cache instance — exercised by referenceCount staying
-        // at zero across a forced GC cycle.
+        // entry already evicted. When the JVM later runs the ReferenceManager cleanup
+        // action after the owner is GC'd, the ReleaseHandle is already fulfilled so
+        // the action is a no-op — exercised by referenceCount staying at zero across
+        // a forced GC cycle.
         SharedRoutingMapCacheRegistry registry = SharedRoutingMapCacheRegistry.getInstance();
         URI endpoint = URI.create("https://test-acct-leak-2.documents.azure.com:443/");
 
@@ -318,6 +317,7 @@ public class SharedRoutingMapCacheRegistryTest {
         // Force GC; refcount must remain zero, no exception.
         for (int i = 0; i < 5; i++) {
             System.gc();
+            System.runFinalization();
             Thread.sleep(50);
         }
         assertThat(registry.referenceCount(endpoint)).isZero();
@@ -326,9 +326,8 @@ public class SharedRoutingMapCacheRegistryTest {
     private static void acquireAndPromptlyClose(SharedRoutingMapCacheRegistry registry, URI endpoint) {
         Object owner = new Object();
         SharedRoutingMapCacheRegistry.AcquireResult result = registry.acquire(endpoint, owner);
-        // Simulate the prompt RxPartitionKeyRangeCache.close() path via the
-        // phantom-aware overload — this clears the phantom and removes it from the
-        // live-phantom set so the reaper does not later try to double-release.
-        registry.release(endpoint, result.cache, result.ownerPhantom);
+        // Simulate the prompt RxPartitionKeyRangeCache.close() path. This fulfils
+        // the handle so the ReferenceManager-registered cleanup later becomes a no-op.
+        registry.release(endpoint, result.cache, result.releaseHandle);
     }
 }

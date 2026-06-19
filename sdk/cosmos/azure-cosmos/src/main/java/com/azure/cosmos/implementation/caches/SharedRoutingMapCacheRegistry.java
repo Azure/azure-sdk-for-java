@@ -2,18 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.core.util.ReferenceManager;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.ref.PhantomReference;
-import java.lang.ref.Reference;
-import java.lang.ref.ReferenceQueue;
 import java.net.URI;
-import java.util.Collections;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -44,34 +41,36 @@ import java.util.concurrent.atomic.AtomicInteger;
  * user-supplied account endpoint URL: Python uses {@code client.url_connection}
  * (raw string compare); Rust uses {@code AccountEndpoint(Url)} (URL-based
  * equality). This implementation matches that contract. As a consequence,
- * two clients to the same account that bootstrap from <i>different</i> regional
- * endpoints (e.g. {@code my-acct-westus.documents.azure.com} vs
- * {@code my-acct.documents.azure.com}) do <i>not</i> share a cache entry.</p>
+ * two clients to the same account that bootstrap from <i>different</i>
+ * regional endpoints (e.g. {@code my-acct-westus.documents.azure.com} vs
+ * {@code my-acct.documents.azure.com}) do <i>not</i> share a cache entry —
+ * the same fragmentation behaviour the peer SDKs have.</p>
  *
- * <p><b>Lifecycle.</b> Callers obtain a shared cache via {@link #acquire(URI, Object)}
- * during construction and return it via {@link #release(URI, AsyncCacheNonBlocking)}
- * during {@code close()}. A per-entry refcount tracks live callers; when the
- * count reaches zero the entry is evicted so an idle endpoint does not pin
- * memory forever.</p>
+ * <p><b>Lifecycle.</b> Callers obtain a shared cache via
+ * {@link #acquire(URI, Object)} during construction and return it via
+ * {@link #release(URI, AsyncCacheNonBlocking, ReleaseHandle)} during
+ * {@code close()}. A per-entry refcount tracks live callers; when the count
+ * reaches zero the entry is evicted so an idle endpoint does not pin memory
+ * forever.</p>
  *
  * <p><b>Leaked-client safety net.</b> A caller may forget to {@code close()}
  * its {@code CosmosAsyncClient}. Without protection the unclosed client would
  * keep a strong reference to the shared cache and pin it for the JVM's
  * lifetime. To handle that, every {@link #acquire(URI, Object)} also
- * registers a {@link PhantomReference} for the owner. When the owner becomes
- * unreachable the GC enqueues the phantom; a single daemon reaper thread
- * drains the queue and calls {@link #release(URI, AsyncCacheNonBlocking)}
- * to clean up. The reaper is not a substitute for
- * {@link java.io.Closeable#close()} (no guaranteed promptness) but it
- * prevents the cache from leaking forever. This mirrors the safety net
- * Python provides via its {@code __del__} fallback and Rust gets for free
- * via {@code Drop}; we cannot use {@code java.lang.ref.Cleaner} because
- * this SDK still supports Java 8.</p>
+ * registers a cleanup action with {@link ReferenceManager#INSTANCE} (the
+ * SDK-wide reference manager in {@code azure-core}). When the owner object
+ * becomes phantom-reachable, the reference manager runs the cleanup action
+ * which decrements the refcount and evicts the entry if it was the last
+ * reference. On Java 9+ {@code azure-core}'s {@code ReferenceManagerImpl}
+ * delegates to {@link java.lang.ref.Cleaner} reflectively; on Java 8 it uses
+ * an internal {@link java.lang.ref.PhantomReference}-based daemon thread.
+ * Cosmos reuses the supported, well-tested azure-core machinery rather than
+ * rolling its own.</p>
  *
  * <p><b>Opt-out.</b> Setting the system property
  * {@code COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false} disables
  * sharing; each {@link #acquire(URI, Object)} returns a fresh, isolated cache
- * (no registry entry, no phantom registration).</p>
+ * (no registry entry, no cleanup registration).</p>
  *
  * <p><b>Concurrency.</b> All state transitions go through
  * {@link ConcurrentHashMap#compute(Object, java.util.function.BiFunction)},
@@ -85,29 +84,7 @@ public final class SharedRoutingMapCacheRegistry {
 
     private final ConcurrentHashMap<URI, Entry> entries = new ConcurrentHashMap<>();
 
-    /**
-     * Queue the GC enqueues {@link OwnerPhantom} instances onto when their
-     * referent (the owning {@link RxPartitionKeyRangeCache}) becomes
-     * unreachable without {@code close()} having been called.
-     */
-    private final ReferenceQueue<Object> reaperQueue = new ReferenceQueue<>();
-
-    /**
-     * Strong-references every live {@link OwnerPhantom} so the JVM does not
-     * collect the phantom before its referent. The GC only enqueues phantoms
-     * that are themselves still reachable; without this set the phantoms
-     * registered in {@link #acquire(URI, Object)} would be garbage-collected
-     * together with their owners and the reaper would never observe the leak.
-     * Entries are removed either by the reaper after processing or by
-     * {@link #release(URI, AsyncCacheNonBlocking, PhantomReference)} on prompt close.
-     */
-    private final Set<OwnerPhantom> livePhantoms =
-        Collections.newSetFromMap(new ConcurrentHashMap<>());
-
     private SharedRoutingMapCacheRegistry() {
-        Thread reaper = new Thread(this::runReaper, "cosmos-shared-pkr-cache-reaper");
-        reaper.setDaemon(true);
-        reaper.start();
     }
 
     public static SharedRoutingMapCacheRegistry getInstance() {
@@ -120,20 +97,20 @@ public final class SharedRoutingMapCacheRegistry {
      *
      * <p>If {@code endpoint} is {@code null} or sharing is disabled via
      * {@link Configs#isSharedPartitionKeyRangeCacheEnabled()}, returns a fresh
-     * isolated cache that the caller fully owns.
-     * {@link #release(URI, AsyncCacheNonBlocking)} is still safe to call on
-     * such a cache (it is a no-op).</p>
+     * isolated cache that the caller fully owns.</p>
      *
-     * <p>When {@code owner} is non-null and sharing is enabled, a
-     * {@link PhantomReference} to {@code owner} is registered so that an
+     * <p>When {@code owner} is non-null and sharing is enabled, a cleanup
+     * action is registered with {@link ReferenceManager#INSTANCE} so that an
      * unreferenced (leaked) owner triggers a deferred release.</p>
      *
      * @param endpoint The Cosmos service endpoint URI, or {@code null} for an isolated cache.
      * @param owner    The object whose unreachability should trigger a deferred release
      *                 (typically the {@link RxPartitionKeyRangeCache} caller). May be {@code null}
-     *                 to skip phantom registration (e.g. tests calling acquire directly).
+     *                 to skip cleanup registration (e.g. tests calling acquire directly).
      * @return A handle that exposes the shared cache instance plus a token used by
-     *         {@link #release(URI, AsyncCacheNonBlocking)} for prompt cleanup.
+     *         {@link RxPartitionKeyRangeCache#close()} to mark the cleanup action
+     *         already-fulfilled so it becomes a no-op when {@link ReferenceManager}
+     *         later runs it.
      */
     public AcquireResult acquire(URI endpoint, Object owner) {
         if (endpoint == null || !Configs.isSharedPartitionKeyRangeCacheEnabled()) {
@@ -152,58 +129,56 @@ public final class SharedRoutingMapCacheRegistry {
             return existing;
         });
 
-        OwnerPhantom phantom = null;
+        ReleaseHandle handle = null;
         if (owner != null) {
-            phantom = new OwnerPhantom(owner, reaperQueue, endpoint, entry.cache);
-            // The phantom MUST be strongly reachable until it is either processed by
-            // the reaper or cleared on prompt close, otherwise the GC will collect it
-            // alongside the owner without ever enqueueing it.
-            livePhantoms.add(phantom);
+            // IMPORTANT: the cleanup action must NOT capture `owner`, or the
+            // owner will never become phantom-reachable. We capture only the
+            // endpoint URI and the cache reference — both independent of the owner.
+            final URI capturedEndpoint = endpoint;
+            final AsyncCacheNonBlocking<String, CollectionRoutingMap> capturedCache = entry.cache;
+            final ReleaseHandle h = new ReleaseHandle();
+            ReferenceManager.INSTANCE.register(owner, () -> {
+                if (h.fulfill()) {
+                    logger.warn(
+                        "Leaked (unclosed) RxPartitionKeyRangeCache detected for endpoint [{}]"
+                            + " — releasing shared cache reference via ReferenceManager. Always"
+                            + " close CosmosClient / CosmosAsyncClient to avoid relying on this"
+                            + " safety net.",
+                        capturedEndpoint);
+                    release(capturedEndpoint, capturedCache);
+                }
+            });
+            handle = h;
         }
-        return new AcquireResult(entry.cache, phantom);
+        return new AcquireResult(entry.cache, handle);
     }
 
     /**
-     * Convenience overload used by tests that do not need phantom registration.
+     * Convenience overload used by tests that do not need cleanup registration.
      */
     AsyncCacheNonBlocking<String, CollectionRoutingMap> acquire(URI endpoint) {
         return acquire(endpoint, null).cache;
     }
 
     /**
-     * Releases a reference to the shared cache previously obtained via
-     * {@link #acquire(URI, Object)}. When the last reference is released the
-     * registry entry is evicted.
-     *
-     * <p>Safe to call when sharing was bypassed (null endpoint or sharing
-     * disabled): the call is a no-op if the supplied cache is not the one
-     * currently registered for {@code endpoint}.</p>
-     *
-     * <p>If {@code phantom} is non-null it is cleared and dropped from the
-     * registry's live-phantom set, so the reaper does not later double-release
-     * the same reference.</p>
-     *
-     * @param endpoint The endpoint the cache was acquired for, or {@code null}
-     *                 if it was an isolated cache.
-     * @param cache    The cache instance returned by {@link #acquire(URI, Object)}.
-     * @param phantom  The phantom returned by {@link #acquire(URI, Object)}, or
-     *                 {@code null} if none was registered.
+     * Prompt-close path used by {@link RxPartitionKeyRangeCache#close()}.
+     * Marks the cleanup action as fulfilled (so the later
+     * {@link ReferenceManager}-triggered run becomes a no-op) and decrements
+     * the refcount.
      */
     public void release(URI endpoint,
                         AsyncCacheNonBlocking<String, CollectionRoutingMap> cache,
-                        PhantomReference<?> phantom) {
-        if (phantom instanceof OwnerPhantom) {
-            OwnerPhantom op = (OwnerPhantom) phantom;
-            livePhantoms.remove(op);
-            op.clear();
+                        ReleaseHandle handle) {
+        if (handle != null && !handle.fulfill()) {
+            // Already fulfilled by the ReferenceManager path; do not double-decrement.
+            return;
         }
         release(endpoint, cache);
     }
 
     /**
-     * Internal release used by the reaper (which already holds the phantom
-     * reference it processed) and by the two-arg overload above. Test code
-     * also calls this overload directly to simulate close paths.
+     * Internal release used by both the prompt-close path and the
+     * ReferenceManager-triggered cleanup action.
      */
     public void release(URI endpoint, AsyncCacheNonBlocking<String, CollectionRoutingMap> cache) {
         if (endpoint == null || cache == null) {
@@ -227,40 +202,6 @@ public final class SharedRoutingMapCacheRegistry {
     }
 
     /**
-     * Drains the reference queue and releases the shared cache reference for
-     * each phantom whose owner was garbage-collected without a prior
-     * {@code close()}. Runs forever on a daemon thread; exits cleanly on
-     * interruption (e.g. JVM shutdown).
-     */
-    private void runReaper() {
-        while (!Thread.currentThread().isInterrupted()) {
-            try {
-                Reference<?> ref = reaperQueue.remove();
-                if (ref instanceof OwnerPhantom) {
-                    OwnerPhantom phantom = (OwnerPhantom) ref;
-                    logger.warn(
-                        "Leaked (unclosed) RxPartitionKeyRangeCache detected for endpoint [{}]"
-                            + " — releasing shared cache reference via reaper. Always close CosmosClient"
-                            + " / CosmosAsyncClient to avoid relying on this safety net.",
-                        phantom.endpoint);
-                    try {
-                        release(phantom.endpoint, phantom.cache);
-                    } catch (RuntimeException ex) {
-                        logger.error("Reaper failed to release shared cache for endpoint [{}]",
-                            phantom.endpoint, ex);
-                    } finally {
-                        livePhantoms.remove(phantom);
-                        phantom.clear();
-                    }
-                }
-            } catch (InterruptedException ie) {
-                Thread.currentThread().interrupt();
-                return;
-            }
-        }
-    }
-
-    /**
      * Test-only: number of registered endpoints currently held by the registry.
      */
     int registeredEndpointCount() {
@@ -277,66 +218,38 @@ public final class SharedRoutingMapCacheRegistry {
     }
 
     /**
-     * Test-only: number of live phantoms currently retained by the registry.
-     */
-    int livePhantomCount() {
-        return livePhantoms.size();
-    }
-
-    /**
      * Returned by {@link #acquire(URI, Object)}. Holds the shared cache and
-     * the {@link PhantomReference} (when one was registered) so the caller
-     * can clear it on prompt {@code close()} and avoid a redundant reaper
-     * release later.
+     * a handle the caller passes back to
+     * {@link #release(URI, AsyncCacheNonBlocking, ReleaseHandle)} on prompt
+     * close to prevent the deferred cleanup action from double-releasing.
      */
     public static final class AcquireResult {
         public final AsyncCacheNonBlocking<String, CollectionRoutingMap> cache;
-        public final PhantomReference<?> ownerPhantom;
+        public final ReleaseHandle releaseHandle;
 
         AcquireResult(AsyncCacheNonBlocking<String, CollectionRoutingMap> cache,
-                      PhantomReference<?> ownerPhantom) {
+                      ReleaseHandle releaseHandle) {
             this.cache = cache;
-            this.ownerPhantom = ownerPhantom;
+            this.releaseHandle = releaseHandle;
+        }
+    }
+
+    /**
+     * One-shot fulfilment flag shared between the prompt-close path and the
+     * deferred {@link ReferenceManager} cleanup. Whichever path runs first
+     * wins via {@link AtomicBoolean#compareAndSet}; the loser becomes a no-op
+     * so the refcount is decremented exactly once.
+     */
+    public static final class ReleaseHandle {
+        private final AtomicBoolean fulfilled = new AtomicBoolean(false);
+
+        boolean fulfill() {
+            return fulfilled.compareAndSet(false, true);
         }
     }
 
     private static final class Entry {
         final AsyncCacheNonBlocking<String, CollectionRoutingMap> cache = new AsyncCacheNonBlocking<>();
         final AtomicInteger refCount = new AtomicInteger(0);
-    }
-
-    /**
-     * PhantomReference whose enqueueing on GC of its referent (the owning
-     * {@link RxPartitionKeyRangeCache}) signals the reaper to release the
-     * matching shared-cache entry. The captured endpoint + cache are strong
-     * fields on the phantom itself — that's fine: once the reaper clears the
-     * phantom, the phantom itself becomes unreachable and the captured cache
-     * loses one more strong holder.
-     *
-     * <p><b>Why is this safe?</b> The phantom is registered on the
-     * {@code RxPartitionKeyRangeCache} (which is the field of the
-     * {@code RxDocumentClientImpl}). It does <i>not</i> reference the client
-     * or any field of it. So the phantom does not prevent the owning client
-     * from being GC'd; it is enqueued exactly when the owning cache
-     * becomes phantom-reachable.</p>
-     *
-     * <p>The phantom is kept reachable by being assigned to a field on the
-     * owning {@code RxPartitionKeyRangeCache}. If the phantom itself were
-     * unreachable before its referent became unreachable, the GC would never
-     * enqueue it. Holding it on the owner ties phantom liveness to owner
-     * liveness, which is precisely what we want.</p>
-     */
-    static final class OwnerPhantom extends PhantomReference<Object> {
-        final URI endpoint;
-        final AsyncCacheNonBlocking<String, CollectionRoutingMap> cache;
-
-        OwnerPhantom(Object owner,
-                     ReferenceQueue<Object> queue,
-                     URI endpoint,
-                     AsyncCacheNonBlocking<String, CollectionRoutingMap> cache) {
-            super(owner, queue);
-            this.endpoint = endpoint;
-            this.cache = cache;
-        }
     }
 }
