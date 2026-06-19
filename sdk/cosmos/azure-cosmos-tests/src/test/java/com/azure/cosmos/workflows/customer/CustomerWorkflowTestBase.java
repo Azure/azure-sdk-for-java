@@ -167,7 +167,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
         String region,
         int hitLimit) {
 
-        return configureServerErrorRule(targetContainer, operationType, errorType, region, FaultInjectionConnectionType.DIRECT, hitLimit);
+        return configureServerErrorRule(targetContainer, operationType, errorType, region, currentFaultInjectionConnectionType(), hitLimit);
     }
 
     protected final FaultInjectionRule configureServerErrorRule(
