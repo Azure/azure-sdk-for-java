@@ -10,6 +10,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Removed unused internal `DebugInfo` model
 
 ## 12.0.0 (2026-04-10)
 
