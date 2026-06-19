@@ -88,8 +88,25 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
 
             this.client = clientBuilder.buildAsyncClient();
             this.container = getSharedSinglePartitionCosmosContainer(this.client);
+            awaitSharedContainerPropagation();
         } finally {
             safeClose(discoveryClient);
+        }
+    }
+
+    /**
+     * Waits briefly after the shared container is created so its metadata fully propagates to every region of
+     * the multi-region account. A direct-mode write routed to a secondary region (for example via excluded
+     * regions) immediately after container creation can otherwise fail because the container is not yet fully
+     * provisioned in that region - observed as a 401 MAC-signature error from the secondary region's backend
+     * replica. Kept in this customer-scenario base (not TestSuiteBase) so single-region tests are not delayed.
+     */
+    protected static void awaitSharedContainerPropagation() {
+        try {
+            Thread.sleep(Duration.ofSeconds(5).toMillis());
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            throw new AssertionError("Interrupted while waiting for shared container propagation.", interrupted);
         }
     }
 
@@ -121,6 +138,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
                 .contentResponseOnWriteEnabled(true)
                 .buildAsyncClient();
             this.container = getSharedSinglePartitionCosmosContainer(this.client);
+            awaitSharedContainerPropagation();
         } finally {
             safeClose(discoveryClient);
         }
