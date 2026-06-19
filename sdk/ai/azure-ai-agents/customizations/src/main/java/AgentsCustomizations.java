@@ -1,3 +1,4 @@
+import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
@@ -87,7 +88,7 @@ public class AgentsCustomizations extends Customization {
                 continue;
             }
 
-            classCustomization.getClass(packageName, simpleName).customizeAst(ast -> ast.getTypes().stream()
+            classCustomization.customizeAst(ast -> ast.getTypes().stream()
                 .filter(type -> type.getNameAsString().equals(simpleName))
                 .findFirst()
                 .ifPresent(type -> {

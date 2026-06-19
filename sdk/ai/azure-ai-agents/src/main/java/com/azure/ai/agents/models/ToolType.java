@@ -216,4 +216,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType TOOL_SEARCH = fromString("tool_search");
+
+    /**
+     * Static value reminder_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType REMINDER_PREVIEW = fromString("reminder_preview");
 }

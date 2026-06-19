@@ -4,7 +4,6 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.BetaAgentsImpl;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.OptimizationJob;
 import com.azure.ai.agents.models.OptimizationJobListItem;
@@ -32,7 +31,6 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AgentsClient type.
  */
-@Beta(warningText = "Preview API.")
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class BetaAgentsAsyncClient {
 
@@ -62,7 +60,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -143,9 +141,9 @@ public final class BetaAgentsAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -248,7 +246,7 @@ public final class BetaAgentsAsyncClient {
      *
      * Get an optimization job by id.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -374,7 +372,7 @@ public final class BetaAgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -428,7 +426,7 @@ public final class BetaAgentsAsyncClient {
      *
      * Request cancellation of a running or queued job. Returns an error if the job is already in a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

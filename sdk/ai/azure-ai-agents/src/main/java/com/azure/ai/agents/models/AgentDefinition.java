@@ -16,8 +16,7 @@ import java.io.IOException;
  * The AgentDefinition model.
  */
 @Fluent
-@Beta(
-    warningText = "Preview API. CodeAgents=V1Preview, ExternalAgents=V1Preview, HostedAgents=V1Preview, WorkflowAgents=V1Preview")
+@Beta(warningText = "Preview API. ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
 public class AgentDefinition implements JsonSerializable<AgentDefinition> {
 
     /*

@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
@@ -19,7 +18,6 @@ import java.util.Set;
  * The AgentEndpointAuthorizationScheme model.
  */
 @Immutable
-@Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
 public class AgentEndpointAuthorizationScheme implements JsonSerializable<AgentEndpointAuthorizationScheme> {
 
     /*

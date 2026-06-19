@@ -105,6 +105,8 @@ public class Tool implements JsonSerializable<Tool> {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("toolbox_search_preview".equals(discriminatorValue)) {
                     return ToolboxSearchPreviewTool.fromJson(readerToUse.reset());
+                } else if ("reminder_preview".equals(discriminatorValue)) {
+                    return ReminderPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterTool.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {

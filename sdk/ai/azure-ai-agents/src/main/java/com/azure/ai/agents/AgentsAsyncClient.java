@@ -74,6 +74,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -495,6 +496,7 @@ public final class AgentsAsyncClient {
      * {@code
      * {
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
@@ -555,6 +557,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -675,6 +678,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -829,6 +833,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -946,6 +951,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1524,6 +1530,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1897,7 +1904,8 @@ public final class AgentsAsyncClient {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentRequest createAgentRequestObj
-            = new CreateAgentRequest(options.getAgentName(), options.getDefinition()).setMetadata(options.getMetadata())
+            = new CreateAgentRequest(options.getAgentName(), options.getDefinition()).setState(options.getState())
+                .setMetadata(options.getMetadata())
                 .setDescription(options.getDescription())
                 .setBlueprintReference(options.getBlueprintReference())
                 .setAgentEndpoint(options.getAgentEndpoint())
@@ -2160,6 +2168,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2269,6 +2278,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2420,6 +2430,7 @@ public final class AgentsAsyncClient {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3936,5 +3947,93 @@ public final class AgentsAsyncClient {
         return SessionLogStreamHelper
             .parse(getSessionLogStreamWithResponse(agentName, agentVersion, sessionId, requestOptions)
                 .flatMapMany(response -> response.getValue().toFluxByteBuffer()));
+    }
+
+    /**
+     * Enable an agent
+     *
+     * Enables the specified agent, allowing it to accept new sessions and process requests.
+     * This operation is idempotent — enabling an already-enabled agent returns success with no side effects.
+     *
+     * @param agentName The name of the agent to enable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> enableAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.enableAgentWithResponseAsync(agentName, requestOptions);
+    }
+
+    /**
+     * Disable an agent
+     *
+     * Disables the specified agent, preventing it from accepting new sessions or processing requests.
+     * Existing active sessions are allowed to drain gracefully but no new sessions can be created.
+     * This operation is idempotent — disabling an already-disabled agent returns success with no side effects.
+     *
+     * @param agentName The name of the agent to disable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.disableAgentWithResponseAsync(agentName, requestOptions);
+    }
+
+    /**
+     * Enable an agent
+     *
+     * Enables the specified agent, allowing it to accept new sessions and process requests.
+     * This operation is idempotent — enabling an already-enabled agent returns success with no side effects.
+     *
+     * @param agentName The name of the agent to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableAgent(String agentName) {
+        // Generated convenience method for enableAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return enableAgentWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Disable an agent
+     *
+     * Disables the specified agent, preventing it from accepting new sessions or processing requests.
+     * Existing active sessions are allowed to drain gracefully but no new sessions can be created.
+     * This operation is idempotent — disabling an already-disabled agent returns success with no side effects.
+     *
+     * @param agentName The name of the agent to disable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disableAgent(String agentName) {
+        // Generated convenience method for disableAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return disableAgentWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

@@ -6,7 +6,6 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
@@ -37,7 +36,6 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AgentsClient type.
  */
-@Beta(warningText = "Preview API.")
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ToolboxesAsyncClient {
 
@@ -59,7 +57,7 @@ public final class ToolboxesAsyncClient {
      *
      * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -69,7 +67,7 @@ public final class ToolboxesAsyncClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -85,9 +83,9 @@ public final class ToolboxesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -101,7 +99,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -140,7 +138,7 @@ public final class ToolboxesAsyncClient {
      *
      * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -191,7 +189,7 @@ public final class ToolboxesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -240,7 +238,7 @@ public final class ToolboxesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -254,7 +252,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -290,7 +288,7 @@ public final class ToolboxesAsyncClient {
      *
      * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -304,7 +302,7 @@ public final class ToolboxesAsyncClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -342,7 +340,7 @@ public final class ToolboxesAsyncClient {
      *
      * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -350,9 +348,9 @@ public final class ToolboxesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
