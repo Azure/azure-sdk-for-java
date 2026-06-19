@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Process-wide registry of {@link AsyncCacheNonBlocking} instances that hold
  * the cached partition-key-range routing maps, keyed by the Cosmos service
- * endpoint (account) the cache belongs to.
+ * endpoint URI.
  *
  * <p>Historically, every {@link RxPartitionKeyRangeCache} owned its own
  * private {@link AsyncCacheNonBlocking}. When many {@code CosmosAsyncClient}
@@ -29,13 +29,22 @@ import java.util.concurrent.atomic.AtomicInteger;
  * {@code /pkranges} fetch per (account, container) at any time, even across
  * clients.</p>
  *
- * <p><b>Key identity.</b> {@link URI} is used directly (not {@link URI#toString()})
- * so {@link URI#equals(Object)}'s case-insensitive host comparison applies — two
+ * <p><b>Key identity.</b> The {@link URI} is used directly so
+ * {@link URI#equals(Object)}'s case-insensitive host comparison applies — two
  * clients built with {@code https://Acct.documents.azure.com/} and
  * {@code https://acct.documents.azure.com/} share a single cache entry as
- * intended. Port, scheme, and path are compared as the user supplied them
- * (matching the Python SDK's behaviour: do not auto-normalise the user's input
- * URL beyond what the language's URI type already does).</p>
+ * intended.</p>
+ *
+ * <p><b>Cross-SDK consistency.</b> The peer Cosmos DB SDKs key sharing on the
+ * user-supplied account endpoint URL: Python uses {@code client.url_connection}
+ * (raw string compare); Rust uses {@code AccountEndpoint(Url)} (URL-based
+ * equality). This implementation matches that contract. As a consequence,
+ * two clients to the same account that bootstrap from <i>different</i> regional
+ * endpoints (e.g. {@code my-acct-westus.documents.azure.com} vs
+ * {@code my-acct.documents.azure.com}) do <i>not</i> share a cache entry.
+ * Routing this through the account's resource-id ({@code _rid}) would fix the
+ * regional-endpoint case but would diverge from Python/Rust, and the
+ * {@code _rid} is not always populated (notably for the emulator).</p>
  *
  * <p><b>Lifecycle.</b> Callers obtain a shared cache via {@link #acquire(URI)}
  * during construction and return it via {@link #release(URI, AsyncCacheNonBlocking)}

@@ -49,11 +49,11 @@ import java.util.stream.Collectors;
  *
  * <p>The underlying routing-map storage ({@link AsyncCacheNonBlocking}) is
  * obtained from {@link SharedRoutingMapCacheRegistry} keyed by the service
- * endpoint, so multiple {@code CosmosClient} instances targeting the same
- * account share a single routing-map cache. {@link #close()} releases this
- * instance's reference; the shared cache is evicted only when the last
- * reference is released. The fetching logic (network call, collection
- * resolution, diagnostics) remains per-client.</p>
+ * endpoint URI. Multiple {@code CosmosClient} instances targeting the same
+ * service endpoint share a single routing-map cache. {@link #close()}
+ * releases this instance's reference; the shared cache is evicted only
+ * when the last reference is released. The fetching logic (network call,
+ * collection resolution, diagnostics) remains per-client.</p>
  **/
 public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closeable {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
