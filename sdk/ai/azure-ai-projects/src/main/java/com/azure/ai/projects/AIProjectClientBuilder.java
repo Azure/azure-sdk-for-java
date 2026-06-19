@@ -8,6 +8,7 @@ import com.azure.ai.projects.implementation.TokenUtils;
 import com.azure.ai.projects.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.projects.implementation.http.HttpClientHelper;
 import com.azure.ai.projects.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -766,6 +767,7 @@ public final class AIProjectClientBuilder
     /**
      * A builder for creating a new instance of the beta AIProjectClient type.
      */
+    @Beta
     @ServiceClientBuilder(
         serviceClients = {
             BetaModelsAsyncClient.class,
@@ -796,6 +798,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaModelsAsyncClient.
          */
+        @Beta
         public BetaModelsAsyncClient buildBetaModelsAsyncClient() {
             return new BetaModelsAsyncClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
         }
@@ -805,6 +808,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaRedTeamsAsyncClient.
          */
+        @Beta
         public BetaRedTeamsAsyncClient buildBetaRedTeamsAsyncClient() {
             return new BetaRedTeamsAsyncClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
         }
@@ -814,6 +818,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaEvaluationTaxonomiesAsyncClient.
          */
+        @Beta
         public BetaEvaluationTaxonomiesAsyncClient buildBetaEvaluationTaxonomiesAsyncClient() {
             return new BetaEvaluationTaxonomiesAsyncClient(
                 buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
@@ -824,6 +829,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaEvaluatorsAsyncClient.
          */
+        @Beta
         public BetaEvaluatorsAsyncClient buildBetaEvaluatorsAsyncClient() {
             return new BetaEvaluatorsAsyncClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
         }
@@ -833,6 +839,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaInsightsAsyncClient.
          */
+        @Beta
         public BetaInsightsAsyncClient buildBetaInsightsAsyncClient() {
             return new BetaInsightsAsyncClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
         }
@@ -842,6 +849,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaSchedulesAsyncClient.
          */
+        @Beta
         public BetaSchedulesAsyncClient buildBetaSchedulesAsyncClient() {
             return new BetaSchedulesAsyncClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
         }
@@ -851,6 +859,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaRoutinesAsyncClient.
          */
+        @Beta
         public BetaRoutinesAsyncClient buildBetaRoutinesAsyncClient() {
             return new BetaRoutinesAsyncClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
         }
@@ -860,6 +869,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaSkillsAsyncClient.
          */
+        @Beta
         public BetaSkillsAsyncClient buildBetaSkillsAsyncClient() {
             return new BetaSkillsAsyncClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
         }
@@ -869,6 +879,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaDatasetsAsyncClient.
          */
+        @Beta
         public BetaDatasetsAsyncClient buildBetaDatasetsAsyncClient() {
             return new BetaDatasetsAsyncClient(
                 buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
@@ -879,6 +890,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaModelsClient.
          */
+        @Beta
         public BetaModelsClient buildBetaModelsClient() {
             return new BetaModelsClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
         }
@@ -888,6 +900,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaRedTeamsClient.
          */
+        @Beta
         public BetaRedTeamsClient buildBetaRedTeamsClient() {
             return new BetaRedTeamsClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
         }
@@ -897,6 +910,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaEvaluationTaxonomiesClient.
          */
+        @Beta
         public BetaEvaluationTaxonomiesClient buildBetaEvaluationTaxonomiesClient() {
             return new BetaEvaluationTaxonomiesClient(
                 buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
@@ -907,6 +921,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaEvaluatorsClient.
          */
+        @Beta
         public BetaEvaluatorsClient buildBetaEvaluatorsClient() {
             return new BetaEvaluatorsClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
         }
@@ -916,6 +931,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaInsightsClient.
          */
+        @Beta
         public BetaInsightsClient buildBetaInsightsClient() {
             return new BetaInsightsClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
         }
@@ -925,6 +941,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaSchedulesClient.
          */
+        @Beta
         public BetaSchedulesClient buildBetaSchedulesClient() {
             return new BetaSchedulesClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
         }
@@ -934,6 +951,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaRoutinesClient.
          */
+        @Beta
         public BetaRoutinesClient buildBetaRoutinesClient() {
             return new BetaRoutinesClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
         }
@@ -943,6 +961,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaSkillsClient.
          */
+        @Beta
         public BetaSkillsClient buildBetaSkillsClient() {
             return new BetaSkillsClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
         }
@@ -952,6 +971,7 @@ public final class AIProjectClientBuilder
          *
          * @return an instance of BetaDatasetsClient.
          */
+        @Beta
         public BetaDatasetsClient buildBetaDatasetsClient() {
             return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
         }

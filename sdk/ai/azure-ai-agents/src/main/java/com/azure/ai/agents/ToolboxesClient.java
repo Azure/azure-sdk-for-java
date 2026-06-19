@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.ToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
@@ -30,6 +31,7 @@ import java.util.Map;
 /**
  * Initializes a new instance of the synchronous AgentsClient type.
  */
+@Beta(warningText = "Preview API.")
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ToolboxesClient {
 
@@ -51,7 +53,7 @@ public final class ToolboxesClient {
      *
      * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -77,9 +79,9 @@ public final class ToolboxesClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -131,7 +133,7 @@ public final class ToolboxesClient {
      *
      * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -181,7 +183,7 @@ public final class ToolboxesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -230,7 +232,7 @@ public final class ToolboxesClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -280,7 +282,7 @@ public final class ToolboxesClient {
      *
      * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -332,7 +334,7 @@ public final class ToolboxesClient {
      *
      * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -340,9 +342,9 @@ public final class ToolboxesClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

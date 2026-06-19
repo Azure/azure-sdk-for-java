@@ -12,6 +12,7 @@ import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.ListMemoriesOptions;
 import com.azure.ai.agents.models.MemoryItem;
 import com.azure.ai.agents.models.MemoryItemKind;
@@ -50,6 +51,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AgentsClient type.
  */
+@Beta(warningText = "Preview API.")
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class BetaMemoryStoresAsyncClient {
 
@@ -71,7 +73,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Creates a memory store resource with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -86,9 +88,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -129,7 +131,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Updates the specified memory store with the supplied configuration changes.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -140,9 +142,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -184,7 +186,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the specified memory store and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -246,7 +248,7 @@ public final class BetaMemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -284,7 +286,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes the specified memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -332,7 +334,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Searches the specified memory store for memories relevant to the provided conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -347,9 +349,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -403,7 +405,7 @@ public final class BetaMemoryStoresAsyncClient {
      * Starts an update that writes conversation memories into the specified memory store.
      * The operation returns a long-running status location for polling the update result.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -416,9 +418,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -538,7 +540,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the status and result of a memory store update operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -675,7 +677,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes all memories in the specified memory store that are associated with the provided scope.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -683,9 +685,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -719,7 +721,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Creates a memory item in the specified memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -729,9 +731,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -766,7 +768,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Updates the specified memory item in the memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -774,9 +776,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -812,7 +814,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -871,7 +873,7 @@ public final class BetaMemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -879,9 +881,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -915,7 +917,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

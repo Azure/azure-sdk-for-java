@@ -9,6 +9,7 @@ import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -527,6 +528,7 @@ public final class AgentsClientBuilder
      *
      * @return a builder for creating a new instance of the beta AgentsClient type.
      */
+    @Beta
     public BetaAgentsClientBuilder beta() {
         return new BetaAgentsClientBuilder();
     }
@@ -534,6 +536,7 @@ public final class AgentsClientBuilder
     /**
      * A builder for creating a new instance of the beta AgentsClient type.
      */
+    @Beta
     @ServiceClientBuilder(
         serviceClients = {
             BetaAgentsClient.class,
@@ -553,6 +556,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaAgentsAsyncClient.
          */
+        @Beta
         public BetaAgentsAsyncClient buildBetaAgentsAsyncClient() {
             return new BetaAgentsAsyncClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
@@ -562,6 +566,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaMemoryStoresAsyncClient.
          */
+        @Beta
         public BetaMemoryStoresAsyncClient buildBetaMemoryStoresAsyncClient() {
             return new BetaMemoryStoresAsyncClient(
                 buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
@@ -572,6 +577,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaAgentsClient.
          */
+        @Beta
         public BetaAgentsClient buildBetaAgentsClient() {
             return new BetaAgentsClient(buildInnerClient(AGENT_PREVIEW_FEATURES).getBetaAgents());
         }
@@ -581,6 +587,7 @@ public final class AgentsClientBuilder
          *
          * @return an instance of BetaMemoryStoresClient.
          */
+        @Beta
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
         }
