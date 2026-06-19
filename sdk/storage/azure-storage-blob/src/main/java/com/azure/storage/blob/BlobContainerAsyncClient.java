@@ -1213,10 +1213,10 @@ public final class BlobContainerAsyncClient {
                 String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
                 return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
-                    java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(bytes);
+                    java.io.ByteArrayInputStream inputStream = new java.io.ByteArrayInputStream(bytes);
 
                     if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
-                        ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(bais);
+                        ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(inputStream);
 
                         List<BlobItem> value = arrowResult.getBlobItems()
                             .stream()
@@ -1230,7 +1230,7 @@ public final class BlobContainerAsyncClient {
                         // XML fallback
                         try {
                             ListBlobsFlatSegmentResponse xmlResponse
-                                = ListBlobsFlatSegmentResponse.fromXml(com.azure.xml.XmlReader.fromStream(bais));
+                                = ListBlobsFlatSegmentResponse.fromXml(com.azure.xml.XmlReader.fromStream(inputStream));
 
                             List<BlobItem> value = xmlResponse.getSegment() == null
                                 ? Collections.emptyList()
@@ -1453,10 +1453,10 @@ public final class BlobContainerAsyncClient {
                 String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
 
                 return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
-                    java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(bytes);
+                    java.io.ByteArrayInputStream inputStream = new java.io.ByteArrayInputStream(bytes);
 
                     if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
-                        ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(bais);
+                        ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(inputStream);
 
                         List<BlobItem> value = arrowResult.getBlobItems()
                             .stream()
@@ -1469,8 +1469,8 @@ public final class BlobContainerAsyncClient {
                     } else {
                         // XML fallback
                         try {
-                            ListBlobsHierarchySegmentResponse xmlResponse
-                                = ListBlobsHierarchySegmentResponse.fromXml(com.azure.xml.XmlReader.fromStream(bais));
+                            ListBlobsHierarchySegmentResponse xmlResponse = ListBlobsHierarchySegmentResponse
+                                .fromXml(com.azure.xml.XmlReader.fromStream(inputStream));
 
                             BlobHierarchyListSegment segment = xmlResponse.getSegment();
                             List<BlobItem> value = new ArrayList<>();
