@@ -8,6 +8,8 @@
     "-Pdirect": "Direct",
     "-Pmulti-master": "MultiMaster",
     "-Pfi-multi-master": "FaultInjectionMultiMaster",
+    "-Pfi-customer-workflows": "FaultInjectionCustomerWorkflows",
+    "-Pfi-sm-customer-workflows": "FaultInjectionSingleMasterCustomerWorkflows",
     "-Pflaky-multi-master": "FlakyMultiMaster",
     "-Pcircuit-breaker-misc-direct": "CircuitBreakerMiscDirect",
     "-Pcircuit-breaker-misc-gateway": "CircuitBreakerMiscGateway",
@@ -22,6 +24,7 @@
     "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong'; enableMultipleRegions = $true }": ""
   },
@@ -126,7 +129,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfi-multi-master" ],
+      "ProfileFlag": [ "-Pfi-multi-master", "-Pfi-customer-workflows" ],
       "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=TRUE\"",
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
@@ -160,6 +163,21 @@
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pfi-multi-master" ],
       "AdditionalArgs": "\"-DCOSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN=FALSE\"",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "SingleMaster_MultiRegion_FI_CustomerWorkflows": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pfi-sm-customer-workflows" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }
