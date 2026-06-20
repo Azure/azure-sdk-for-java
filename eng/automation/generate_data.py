@@ -453,7 +453,7 @@ def uri_file_exists(file_path: str) -> bool:
 
 def uri_file_read(file_path: str) -> str:
     if file_path.startswith("http://") or file_path.startswith("https://"):
-        return requests.get(file_path).text
+        return requests.get(file_path, timeout=30).text
     else:
         with open(file_path, "r", encoding="utf-8") as f_in:
             return f_in.read()
