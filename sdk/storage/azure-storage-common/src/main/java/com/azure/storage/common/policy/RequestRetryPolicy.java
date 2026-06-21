@@ -174,17 +174,17 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 int newPrimaryTry = getNewPrimaryTry(considerSecondary, primaryTry, tryingPrimary);
 
                 Flux<ByteBuffer> responseBody = response.getBody();
-                final boolean retryConsiderSecondary = newConsiderSecondary;
-                final HttpResponse retryResponse = response;
+                final boolean consideredSecondaryForRetry = newConsiderSecondary;
 
                 if (responseBody == null) {
-                    retryResponse.close();
-                    return attemptAsync(context, next, originalRequest, retryConsiderSecondary, newPrimaryTry,
+                    response.close();
+                    return attemptAsync(context, next, originalRequest, consideredSecondaryForRetry, newPrimaryTry,
                         attempt + 1, suppressed);
                 } else {
                     return responseBody.ignoreElements()
-                        .doFinally(ignored -> retryResponse.close())
-                        .then(Mono.defer(() -> attemptAsync(context, next, originalRequest, retryConsiderSecondary,
+                        .doFinally(ignored -> response.close())
+                        .onErrorResume(drainError -> Mono.empty())
+                        .then(Mono.defer(() -> attemptAsync(context, next, originalRequest, consideredSecondaryForRetry,
                             newPrimaryTry, attempt + 1, suppressed)));
                 }
 
