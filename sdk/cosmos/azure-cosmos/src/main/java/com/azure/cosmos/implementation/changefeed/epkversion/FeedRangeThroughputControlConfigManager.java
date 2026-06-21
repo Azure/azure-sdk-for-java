@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,7 @@ public class FeedRangeThroughputControlConfigManager {
     private final AtomicReference<List<FeedRangeEpkImpl>> leaseTokens; // epk leases
     private final Map<PartitionKeyRange, List<FeedRange>> pkRangeToFeedRangeMap;
     private final Map<FeedRange, ThroughputControlGroupConfig> feedRangeToThroughputControlGroupConfigMap;
+    private final AtomicBoolean throughputControlGroupEnabled;
 
     public FeedRangeThroughputControlConfigManager(
         ThroughputControlGroupConfig throughputControlGroupConfig,
@@ -47,6 +49,7 @@ public class FeedRangeThroughputControlConfigManager {
         this.leaseTokens = new AtomicReference<>();
         this.pkRangeToFeedRangeMap = new ConcurrentHashMap<>();
         this.feedRangeToThroughputControlGroupConfigMap = new ConcurrentHashMap<>();
+        this.throughputControlGroupEnabled = new AtomicBoolean(false);
     }
 
     /**
@@ -88,6 +91,14 @@ public class FeedRangeThroughputControlConfigManager {
 
     public Mono<ThroughputControlGroupConfig> getOrCreateThroughputControlConfigForFeedRange(FeedRangeEpkImpl feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' can not be null");
+
+        if (this.throughputControlGroupConfig.getThroughputBucket() != null) {
+            if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
+                this.documentClient.getContainerClient().enableServerThroughputControlGroup(this.throughputControlGroupConfig);
+            }
+            return Mono.just(this.throughputControlGroupConfig);
+        }
+
         ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange =
             this.feedRangeToThroughputControlGroupConfigMap.get(feedRange);
 

@@ -41,7 +41,11 @@ public class FeedRangeThroughputControlConfigManager {
         // Note: if global throughput control be added in future, then we will need to create one group per pkRange
 
         if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
-            this.documentClient.getContainerClient().enableLocalThroughputControlGroup(this.throughputControlGroupConfig);
+            if (this.throughputControlGroupConfig.getThroughputBucket() != null) {
+                this.documentClient.getContainerClient().enableServerThroughputControlGroup(this.throughputControlGroupConfig);
+            } else {
+                this.documentClient.getContainerClient().enableLocalThroughputControlGroup(this.throughputControlGroupConfig);
+            }
         }
 
         return this.throughputControlGroupConfig;
