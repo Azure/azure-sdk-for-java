@@ -185,7 +185,8 @@ public class RequestRetryPolicyTest {
             .expectNextMatches(response -> response.getStatusCode() == 200)
             .expectComplete()
             .verify(Duration.ofSeconds(5));
-        assertEquals(2, requestCount.get());
+assertEquals(2, requestCount.get());
+Assertions.assertTrue(firstResponseClosed.get(), "Retryable response should be closed after draining the body.");
     }
 
     @SyncAsyncTest
