@@ -174,13 +174,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 int newPrimaryTry = getNewPrimaryTry(considerSecondary, primaryTry, tryingPrimary);
 
                 Flux<ByteBuffer> responseBody = response.getBody();
-                response.close();
 
                 if (responseBody == null) {
+                    response.close();
                     return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
                         attempt + 1, suppressed);
                 } else {
                     return responseBody.ignoreElements()
+                        .doFinally(ignored -> response.close())
                         .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
                             attempt + 1, suppressed));
                 }

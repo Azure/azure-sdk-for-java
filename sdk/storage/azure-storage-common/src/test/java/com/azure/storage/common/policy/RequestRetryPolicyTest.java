@@ -22,11 +22,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -144,6 +148,43 @@ public class RequestRetryPolicyTest {
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
 
         assertEquals(3, closeCalls.get());
+    }
+
+    @Test
+    public void retryDrainsBodyBeforeClosingAsync() {
+        AtomicInteger requestCount = new AtomicInteger();
+        AtomicBoolean firstResponseClosed = new AtomicBoolean();
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RequestRetryPolicy(retryTestOptions))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (requestCount.incrementAndGet() == 1) {
+                        return Mono.just(new MockHttpResponse(request, 500) {
+                            @Override
+                            public Flux<ByteBuffer> getBody() {
+                                return Flux.defer(() -> firstResponseClosed.get()
+                                    ? Flux.never()
+                                    : Flux.just(ByteBuffer.wrap(new byte[0])));
+                            }
+
+                            @Override
+                            public void close() {
+                                firstResponseClosed.set(true);
+                                super.close();
+                            }
+                        });
+                    }
+
+                    return Mono.just(new MockHttpResponse(request, 200));
+                }
+            })
+            .build();
+
+        StepVerifier.create(sendRequest(pipeline))
+            .expectNextMatches(response -> response.getStatusCode() == 200)
+            .verifyComplete();
+        assertEquals(2, requestCount.get());
     }
 
     @SyncAsyncTest
