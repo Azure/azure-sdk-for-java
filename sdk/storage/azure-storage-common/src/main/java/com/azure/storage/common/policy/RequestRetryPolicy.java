@@ -183,13 +183,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         attempt + 1, suppressed);
                 } else {
                     return responseBody.ignoreElements()
-                        .doOnError(e -> retryResponse.close())
-                        .doOnCancel(retryResponse::close)
-                        .then(Mono.defer(() -> {
-                            retryResponse.close();
-                            return attemptAsync(context, next, originalRequest, retryConsiderSecondary, newPrimaryTry,
-                                attempt + 1, suppressed);
-                        }));
+                        .doFinally(ignored -> retryResponse.close())
+                        .then(Mono.defer(() -> attemptAsync(context, next, originalRequest, retryConsiderSecondary,
+                            newPrimaryTry, attempt + 1, suppressed)));
                 }
 
             }
