@@ -66,4 +66,36 @@ public class FeedRangeThroughputControlConfigManagerTests {
         assertThat(pkRangeThroughputControlConfig.getTargetThroughputThreshold()).isEqualTo(throughputControlGroupConfig.getTargetThroughputThreshold()/allLeases.size());
         assertThat(pkRangeThroughputControlConfig.getPriorityLevel()).isEqualTo(throughputControlGroupConfig.getPriorityLevel());
     }
+
+    @Test(groups = "unit")
+    public void getOrCreateThroughputControlConfigForFeedRange_withThroughputBucket() {
+
+        ThroughputControlGroupConfig throughputControlGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("test-" + UUID.randomUUID())
+                .priorityLevel(PriorityLevel.LOW)
+                .throughputBucket(2)
+                .build();
+
+        ChangeFeedContextClient documentClientMock = Mockito.mock(ChangeFeedContextClient.class);
+        CosmosAsyncContainer containerMock = Mockito.mock(CosmosAsyncContainer.class);
+        Mockito.doReturn(containerMock).when(documentClientMock).getContainerClient();
+        Mockito.doNothing().when(containerMock).enableServerThroughputControlGroup(Mockito.any());
+
+        FeedRangeThroughputControlConfigManager throughputControlConfigManager =
+            new FeedRangeThroughputControlConfigManager(throughputControlGroupConfig, documentClientMock);
+
+        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(new Range<>("AA", "CC", true, false));
+
+        ThroughputControlGroupConfig pkRangeThroughputControlConfig =
+            throughputControlConfigManager.getOrCreateThroughputControlConfigForFeedRange(feedRangeEpk).block();
+
+        assertThat(pkRangeThroughputControlConfig).isNotNull();
+        assertThat(pkRangeThroughputControlConfig.getGroupName()).isEqualTo(throughputControlGroupConfig.getGroupName());
+        assertThat(pkRangeThroughputControlConfig.getPriorityLevel()).isEqualTo(throughputControlGroupConfig.getPriorityLevel());
+        assertThat(pkRangeThroughputControlConfig.getThroughputBucket()).isEqualTo(2);
+
+        Mockito.verify(containerMock, Mockito.times(1)).enableServerThroughputControlGroup(throughputControlGroupConfig);
+        Mockito.verify(containerMock, Mockito.never()).enableLocalThroughputControlGroup(Mockito.any());
+    }
 }
