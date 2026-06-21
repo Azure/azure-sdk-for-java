@@ -183,7 +183,8 @@ public class RequestRetryPolicyTest {
 
         StepVerifier.create(sendRequest(pipeline))
             .expectNextMatches(response -> response.getStatusCode() == 200)
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
         assertEquals(2, requestCount.get());
     }
 
