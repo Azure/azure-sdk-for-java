@@ -429,6 +429,7 @@
               <source>${maven.compiler.source}</source>
               <target>${maven.compiler.target}</target>
               <scalaVersion>${scala.version}</scalaVersion>
+              <secondaryCacheDir>${project.build.directory}/zinc-cache</secondaryCacheDir>
             </configuration>
             <executions>
               <execution>
