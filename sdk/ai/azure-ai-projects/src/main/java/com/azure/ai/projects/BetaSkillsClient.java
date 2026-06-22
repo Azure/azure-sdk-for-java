@@ -8,6 +8,7 @@ import com.azure.ai.projects.implementation.BetaSkillsImpl;
 import com.azure.ai.projects.implementation.MultipartFormDataHelper;
 import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
 import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillFileDetails;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaSkillsClient {
 
     @Generated

@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaModelsImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.CreateAsyncResponse;
 import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.ModelCredentialInput;
@@ -35,6 +36,7 @@ import reactor.core.publisher.Mono;
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaModelsAsyncClient {
 
     @Generated

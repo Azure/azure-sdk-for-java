@@ -4,6 +4,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaRedTeamsImpl;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.RedTeam;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -28,6 +29,7 @@ import reactor.core.publisher.Mono;
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaRedTeamsAsyncClient {
 
     @Generated

@@ -6,6 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.BetaRoutinesImpl;
 import com.azure.ai.projects.implementation.models.CreateOrUpdateRoutineRequest;
 import com.azure.ai.projects.implementation.models.DispatchRoutineAsyncRequest;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.DispatchRoutineResult;
 import com.azure.ai.projects.models.Routine;
 import com.azure.ai.projects.models.RoutineAction;
@@ -30,6 +31,7 @@ import java.util.Map;
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaRoutinesClient {
 
     @Generated

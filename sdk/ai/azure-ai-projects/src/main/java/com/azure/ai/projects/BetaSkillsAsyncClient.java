@@ -8,6 +8,7 @@ import com.azure.ai.projects.implementation.BetaSkillsImpl;
 import com.azure.ai.projects.implementation.MultipartFormDataHelper;
 import com.azure.ai.projects.implementation.models.CreateSkillVersionRequest;
 import com.azure.ai.projects.implementation.models.UpdateSkillRequest;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
 import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillFileDetails;
@@ -38,6 +39,7 @@ import reactor.core.publisher.Mono;
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaSkillsAsyncClient {
 
     @Generated
