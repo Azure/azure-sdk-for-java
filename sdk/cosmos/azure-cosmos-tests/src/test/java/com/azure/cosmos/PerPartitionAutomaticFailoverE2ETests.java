@@ -276,8 +276,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (expectedResponseCharacteristics.shouldFinalResponseHaveSuccess) {
             assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
-            assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode() >= HttpConstants.StatusCodes.OK
-                && cosmosDiagnostics.getDiagnosticsContext().getStatusCode() <= HttpConstants.StatusCodes.NOT_MODIFIED).isTrue();
+            int finalStatusCode = cosmosDiagnostics.getDiagnosticsContext().getStatusCode();
+            assertThat(finalStatusCode)
+                .as("final response status code should indicate success (2xx/304) but was %d (sub-status %d)",
+                    finalStatusCode, cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                .isBetween(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
         }
     };
 
