@@ -5,3 +5,4 @@ overrides:
     words:
     - dedup
     - gitmcp
+    - byot
