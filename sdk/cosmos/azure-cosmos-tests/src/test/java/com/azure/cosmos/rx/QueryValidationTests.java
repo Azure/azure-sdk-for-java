@@ -126,7 +126,7 @@ public class QueryValidationTests extends TestSuiteBase {
         ).block();
 
         CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
-        waitForCollectionToBeAvailableToRead();
+        waitForCollectionToBeAvailableToRead(container, /* probeClient */ null);
 
         int partitionDocCount = 5;
         int pageSize = partitionDocCount + 1;
@@ -382,7 +382,7 @@ public class QueryValidationTests extends TestSuiteBase {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
         CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
-        waitForCollectionToBeAvailableToRead();
+        waitForCollectionToBeAvailableToRead(container, /* probeClient */ null);
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
 
         //Insert some documents
@@ -494,7 +494,7 @@ public class QueryValidationTests extends TestSuiteBase {
         createdDatabase.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
 
         CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
-        waitForCollectionToBeAvailableToRead();
+        waitForCollectionToBeAvailableToRead(container, /* probeClient */ null);
         CosmosContainerResponse containerResponse = container.read().block();
         assert (containerResponse != null);
         CosmosContainerProperties properties = containerResponse.getProperties();
@@ -582,7 +582,7 @@ public class QueryValidationTests extends TestSuiteBase {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
         CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
-        waitForCollectionToBeAvailableToRead();
+        waitForCollectionToBeAvailableToRead(container, /* probeClient */ null);
         //id as partitionkey > 100bytes
         String itemID1 = "cosmosdb" +
                              "-drWarm4Z60GkknMfHLo5BwuiH7w6AffzSb9jKbvwAQwaRZd10oxnLeCueuyZ5gbm9dwVVAqJLdzrB38Dk73Q6xMErv-0";
