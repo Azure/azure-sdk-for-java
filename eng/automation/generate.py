@@ -318,8 +318,11 @@ def main():
     (parser, args) = parse_args()
     args = vars(args)
 
-    if args.get("config"):
-        return sdk_automation(args["config"][0], args["config"][1])
+    config = args.get("config")
+    if config:
+        if len(config) != 2:
+            parser.error("config requires exactly two arguments: generationInput and generationOutput")
+        return sdk_automation(config[0], config[1])
 
     parser.print_help()
     sys.exit(0)
