@@ -172,8 +172,6 @@ public final class ArrowBlobListDeserializer {
             item.setBlobTags(ModelHelper.toBlobTags(tags));
         }
 
-        item.setMetadataEncrypted(getBit(batch, "Encrypted", index));
-
         properties.setCreationTime(getTimestamp(batch, "Creation-Time", index));
         properties.setLastModified(getTimestamp(batch, "Last-Modified", index));
         properties.setETag(getVarChar(batch, "Etag", index));
@@ -187,11 +185,6 @@ public final class ArrowBlobListDeserializer {
         String contentMd5 = getVarChar(batch, "Content-MD5", index);
         if (contentMd5 != null) {
             properties.setContentMd5(Base64.getDecoder().decode(contentMd5));
-        }
-
-        String contentCrc64 = getVarChar(batch, "Content-CRC64", index);
-        if (contentCrc64 != null) {
-            properties.setContentCrc64(Base64.getDecoder().decode(contentCrc64));
         }
 
         String blobType = getVarChar(batch, "BlobType", index);
@@ -228,9 +221,6 @@ public final class ArrowBlobListDeserializer {
         properties.setCustomerProvidedKeySha256(getVarChar(batch, "CustomerProvidedKeySha256", index));
         properties.setEncryptionScope(getVarChar(batch, "EncryptionScope", index));
         properties.setIncrementalCopy(getBit(batch, "IncrementalCopy", index));
-
-        properties.setOrsPolicySourceBlob(getVarChar(batch, "OrsPolicySourceBlob", index));
-        properties.setAffinityId(getVarChar(batch, "AffinityId", index));
 
         properties.setCopyId(getVarChar(batch, "CopyId", index));
         String copyStatus = getVarChar(batch, "CopyStatus", index);
@@ -278,6 +268,8 @@ public final class ArrowBlobListDeserializer {
         item.setProperties(properties);
         return item;
     }
+
+    // region Arrow helpers
 
     private static String getVarChar(Batch batch, String name, int index) {
         Column column = batch.getColumn(name);
@@ -339,4 +331,6 @@ public final class ArrowBlobListDeserializer {
         }
         return ((MapColumn) column).get(index);
     }
+
+    //endregion
 }
