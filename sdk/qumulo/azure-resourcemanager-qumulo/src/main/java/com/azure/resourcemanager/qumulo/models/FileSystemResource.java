@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.qumulo.fluent.models.FileSystemResourceInner;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,13 +51,6 @@ public interface FileSystemResource {
     Map<String, String> tags();
 
     /**
-     * Gets the properties property: The resource-specific properties for this resource.
-     * 
-     * @return the properties value.
-     */
-    FileSystemResourceProperties properties();
-
-    /**
      * Gets the identity property: The managed service identities assigned to this resource.
      * 
      * @return the identity value.
@@ -69,6 +63,76 @@ public interface FileSystemResource {
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the marketplaceDetails property: Marketplace details.
+     * 
+     * @return the marketplaceDetails value.
+     */
+    MarketplaceDetails marketplaceDetails();
+
+    /**
+     * Gets the provisioningState property: Provisioning State of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the storageSku property: Storage Sku.
+     * 
+     * @return the storageSku value.
+     */
+    String storageSku();
+
+    /**
+     * Gets the userDetails property: User Details.
+     * 
+     * @return the userDetails value.
+     */
+    UserDetails userDetails();
+
+    /**
+     * Gets the delegatedSubnetId property: Delegated subnet id for Vnet injection.
+     * 
+     * @return the delegatedSubnetId value.
+     */
+    String delegatedSubnetId();
+
+    /**
+     * Gets the performanceTier property: Pre-Provisioned Performance of the Resource.
+     * 
+     * @return the performanceTier value.
+     */
+    String performanceTier();
+
+    /**
+     * Gets the clusterLoginUrl property: File system Id of the resource.
+     * 
+     * @return the clusterLoginUrl value.
+     */
+    String clusterLoginUrl();
+
+    /**
+     * Gets the privateIPs property: Private IPs of the resource.
+     * 
+     * @return the privateIPs value.
+     */
+    List<String> privateIPs();
+
+    /**
+     * Gets the adminPassword property: Initial administrator password of the resource.
+     * 
+     * @return the adminPassword value.
+     */
+    String adminPassword();
+
+    /**
+     * Gets the availabilityZone property: Availability zone.
+     * 
+     * @return the availabilityZone value.
+     */
+    String availabilityZone();
 
     /**
      * Gets the region of the resource.
@@ -154,7 +218,10 @@ public interface FileSystemResource {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithMarketplaceDetails,
+            DefinitionStages.WithStorageSku, DefinitionStages.WithUserDetails, DefinitionStages.WithDelegatedSubnetId,
+            DefinitionStages.WithPerformanceTier, DefinitionStages.WithClusterLoginUrl, DefinitionStages.WithPrivateIPs,
+            DefinitionStages.WithAdminPassword, DefinitionStages.WithAvailabilityZone {
             /**
              * Executes the create request.
              * 
@@ -185,19 +252,6 @@ public interface FileSystemResource {
         }
 
         /**
-         * The stage of the FileSystemResource definition allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The resource-specific properties for this resource..
-             * 
-             * @param properties The resource-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(FileSystemResourceProperties properties);
-        }
-
-        /**
          * The stage of the FileSystemResource definition allowing to specify identity.
          */
         interface WithIdentity {
@@ -208,6 +262,123 @@ public interface FileSystemResource {
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify marketplaceDetails.
+         */
+        interface WithMarketplaceDetails {
+            /**
+             * Specifies the marketplaceDetails property: Marketplace details.
+             * 
+             * @param marketplaceDetails Marketplace details.
+             * @return the next definition stage.
+             */
+            WithCreate withMarketplaceDetails(MarketplaceDetails marketplaceDetails);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify storageSku.
+         */
+        interface WithStorageSku {
+            /**
+             * Specifies the storageSku property: Storage Sku.
+             * 
+             * @param storageSku Storage Sku.
+             * @return the next definition stage.
+             */
+            WithCreate withStorageSku(String storageSku);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify userDetails.
+         */
+        interface WithUserDetails {
+            /**
+             * Specifies the userDetails property: User Details.
+             * 
+             * @param userDetails User Details.
+             * @return the next definition stage.
+             */
+            WithCreate withUserDetails(UserDetails userDetails);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify delegatedSubnetId.
+         */
+        interface WithDelegatedSubnetId {
+            /**
+             * Specifies the delegatedSubnetId property: Delegated subnet id for Vnet injection.
+             * 
+             * @param delegatedSubnetId Delegated subnet id for Vnet injection.
+             * @return the next definition stage.
+             */
+            WithCreate withDelegatedSubnetId(String delegatedSubnetId);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify performanceTier.
+         */
+        interface WithPerformanceTier {
+            /**
+             * Specifies the performanceTier property: Pre-Provisioned Performance of the Resource.
+             * 
+             * @param performanceTier Pre-Provisioned Performance of the Resource.
+             * @return the next definition stage.
+             */
+            WithCreate withPerformanceTier(String performanceTier);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify clusterLoginUrl.
+         */
+        interface WithClusterLoginUrl {
+            /**
+             * Specifies the clusterLoginUrl property: File system Id of the resource.
+             * 
+             * @param clusterLoginUrl File system Id of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withClusterLoginUrl(String clusterLoginUrl);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify privateIPs.
+         */
+        interface WithPrivateIPs {
+            /**
+             * Specifies the privateIPs property: Private IPs of the resource.
+             * 
+             * @param privateIPs Private IPs of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivateIPs(List<String> privateIPs);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify adminPassword.
+         */
+        interface WithAdminPassword {
+            /**
+             * Specifies the adminPassword property: Initial administrator password of the resource.
+             * 
+             * @param adminPassword Initial administrator password of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withAdminPassword(String adminPassword);
+        }
+
+        /**
+         * The stage of the FileSystemResource definition allowing to specify availabilityZone.
+         */
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availabilityZone property: Availability zone.
+             * 
+             * @param availabilityZone Availability zone.
+             * @return the next definition stage.
+             */
+            WithCreate withAvailabilityZone(String availabilityZone);
         }
     }
 

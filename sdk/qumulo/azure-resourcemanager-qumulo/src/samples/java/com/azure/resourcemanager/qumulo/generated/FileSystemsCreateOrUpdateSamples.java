@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.qumulo.generated;
 
-import com.azure.resourcemanager.qumulo.models.FileSystemResourceProperties;
 import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
@@ -49,23 +48,22 @@ public final class FileSystemsCreateOrUpdateSamples {
             .withRegion("uiuztlexlmxsqcnsdpvzzygmi")
             .withExistingResourceGroup("rgQumulo")
             .withTags(mapOf("key7800", "fakeTokenPlaceholder"))
-            .withProperties(new FileSystemResourceProperties()
-                .withMarketplaceDetails(
-                    new MarketplaceDetails().withMarketplaceSubscriptionId("vwjzkiurjihwxrhoicenkbxacokvep")
-                        .withPlanId("vxnyxa")
-                        .withOfferId("itiocfnteqyuavgmdtnvwvbpectyr")
-                        .withPublisherId("zfevjvhjiifwxbazta")
-                        .withTermUnit("lkbiqoqdyqbua"))
-                .withStorageSku("myzqnfqelxo")
-                .withUserDetails(new UserDetails().withEmail("rlqqzevfgtqpynvifqp"))
-                .withDelegatedSubnetId("kmjaqsfflkjpke")
-                .withPerformanceTier("fjgqmkcvjtygcavpbo")
-                .withClusterLoginUrl("uzpvkgxrbgtthyxgavsjr")
-                .withPrivateIPs(Arrays.asList("qrhvbdfbfdgqqe"))
-                .withAdminPassword("fakeTokenPlaceholder")
-                .withAvailabilityZone("luklrtwmngwnaerygykcbwljeso"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key8111", new UserAssignedIdentity())))
+            .withMarketplaceDetails(
+                new MarketplaceDetails().withMarketplaceSubscriptionId("vwjzkiurjihwxrhoicenkbxacokvep")
+                    .withPlanId("vxnyxa")
+                    .withOfferId("itiocfnteqyuavgmdtnvwvbpectyr")
+                    .withPublisherId("zfevjvhjiifwxbazta")
+                    .withTermUnit("lkbiqoqdyqbua"))
+            .withStorageSku("myzqnfqelxo")
+            .withUserDetails(new UserDetails().withEmail("rlqqzevfgtqpynvifqp"))
+            .withDelegatedSubnetId("kmjaqsfflkjpke")
+            .withPerformanceTier("fjgqmkcvjtygcavpbo")
+            .withClusterLoginUrl("uzpvkgxrbgtthyxgavsjr")
+            .withPrivateIPs(Arrays.asList("qrhvbdfbfdgqqe"))
+            .withAdminPassword("<a-password-goes-here>")
+            .withAvailabilityZone("luklrtwmngwnaerygykcbwljeso")
             .create();
     }
 

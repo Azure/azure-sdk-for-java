@@ -9,11 +9,14 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.qumulo.fluent.models.FileSystemResourceInner;
 import com.azure.resourcemanager.qumulo.models.FileSystemResource;
-import com.azure.resourcemanager.qumulo.models.FileSystemResourceProperties;
 import com.azure.resourcemanager.qumulo.models.FileSystemResourceUpdate;
 import com.azure.resourcemanager.qumulo.models.FileSystemResourceUpdateProperties;
 import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
+import com.azure.resourcemanager.qumulo.models.ProvisioningState;
+import com.azure.resourcemanager.qumulo.models.UserDetails;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class FileSystemResourceImpl
@@ -47,16 +50,57 @@ public final class FileSystemResourceImpl
         }
     }
 
-    public FileSystemResourceProperties properties() {
-        return this.innerModel().properties();
-    }
-
     public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public MarketplaceDetails marketplaceDetails() {
+        return this.innerModel().marketplaceDetails();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String storageSku() {
+        return this.innerModel().storageSku();
+    }
+
+    public UserDetails userDetails() {
+        return this.innerModel().userDetails();
+    }
+
+    public String delegatedSubnetId() {
+        return this.innerModel().delegatedSubnetId();
+    }
+
+    public String performanceTier() {
+        return this.innerModel().performanceTier();
+    }
+
+    public String clusterLoginUrl() {
+        return this.innerModel().clusterLoginUrl();
+    }
+
+    public List<String> privateIPs() {
+        List<String> inner = this.innerModel().privateIPs();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String adminPassword() {
+        return this.innerModel().adminPassword();
+    }
+
+    public String availabilityZone() {
+        return this.innerModel().availabilityZone();
     }
 
     public Region region() {
@@ -175,11 +219,6 @@ public final class FileSystemResourceImpl
         }
     }
 
-    public FileSystemResourceImpl withProperties(FileSystemResourceProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
-    }
-
     public FileSystemResourceImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
@@ -188,6 +227,51 @@ public final class FileSystemResourceImpl
             this.updateProperties.withIdentity(identity);
             return this;
         }
+    }
+
+    public FileSystemResourceImpl withMarketplaceDetails(MarketplaceDetails marketplaceDetails) {
+        this.innerModel().withMarketplaceDetails(marketplaceDetails);
+        return this;
+    }
+
+    public FileSystemResourceImpl withStorageSku(String storageSku) {
+        this.innerModel().withStorageSku(storageSku);
+        return this;
+    }
+
+    public FileSystemResourceImpl withUserDetails(UserDetails userDetails) {
+        this.innerModel().withUserDetails(userDetails);
+        return this;
+    }
+
+    public FileSystemResourceImpl withDelegatedSubnetId(String delegatedSubnetId) {
+        this.innerModel().withDelegatedSubnetId(delegatedSubnetId);
+        return this;
+    }
+
+    public FileSystemResourceImpl withPerformanceTier(String performanceTier) {
+        this.innerModel().withPerformanceTier(performanceTier);
+        return this;
+    }
+
+    public FileSystemResourceImpl withClusterLoginUrl(String clusterLoginUrl) {
+        this.innerModel().withClusterLoginUrl(clusterLoginUrl);
+        return this;
+    }
+
+    public FileSystemResourceImpl withPrivateIPs(List<String> privateIPs) {
+        this.innerModel().withPrivateIPs(privateIPs);
+        return this;
+    }
+
+    public FileSystemResourceImpl withAdminPassword(String adminPassword) {
+        this.innerModel().withAdminPassword(adminPassword);
+        return this;
+    }
+
+    public FileSystemResourceImpl withAvailabilityZone(String availabilityZone) {
+        this.innerModel().withAvailabilityZone(availabilityZone);
+        return this;
     }
 
     public FileSystemResourceImpl withProperties(FileSystemResourceUpdateProperties properties) {

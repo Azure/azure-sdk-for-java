@@ -10,9 +10,12 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.qumulo.models.FileSystemResourceProperties;
 import com.azure.resourcemanager.qumulo.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
+import com.azure.resourcemanager.qumulo.models.ProvisioningState;
+import com.azure.resourcemanager.qumulo.models.UserDetails;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +26,7 @@ public final class FileSystemResourceInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
-    private FileSystemResourceProperties properties;
+    private FileSystemResourceProperties innerProperties;
 
     /*
      * The managed service identities assigned to this resource.
@@ -57,23 +60,12 @@ public final class FileSystemResourceInner extends Resource {
     }
 
     /**
-     * Get the properties property: The resource-specific properties for this resource.
+     * Get the innerProperties property: The resource-specific properties for this resource.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public FileSystemResourceProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the FileSystemResourceInner object itself.
-     */
-    public FileSystemResourceInner withProperties(FileSystemResourceProperties properties) {
-        this.properties = properties;
-        return this;
+    private FileSystemResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -154,6 +146,222 @@ public final class FileSystemResourceInner extends Resource {
     }
 
     /**
+     * Get the marketplaceDetails property: Marketplace details.
+     * 
+     * @return the marketplaceDetails value.
+     */
+    public MarketplaceDetails marketplaceDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().marketplaceDetails();
+    }
+
+    /**
+     * Set the marketplaceDetails property: Marketplace details.
+     * 
+     * @param marketplaceDetails the marketplaceDetails value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withMarketplaceDetails(MarketplaceDetails marketplaceDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withMarketplaceDetails(marketplaceDetails);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning State of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the storageSku property: Storage Sku.
+     * 
+     * @return the storageSku value.
+     */
+    public String storageSku() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageSku();
+    }
+
+    /**
+     * Set the storageSku property: Storage Sku.
+     * 
+     * @param storageSku the storageSku value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withStorageSku(String storageSku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withStorageSku(storageSku);
+        return this;
+    }
+
+    /**
+     * Get the userDetails property: User Details.
+     * 
+     * @return the userDetails value.
+     */
+    public UserDetails userDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().userDetails();
+    }
+
+    /**
+     * Set the userDetails property: User Details.
+     * 
+     * @param userDetails the userDetails value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withUserDetails(UserDetails userDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withUserDetails(userDetails);
+        return this;
+    }
+
+    /**
+     * Get the delegatedSubnetId property: Delegated subnet id for Vnet injection.
+     * 
+     * @return the delegatedSubnetId value.
+     */
+    public String delegatedSubnetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().delegatedSubnetId();
+    }
+
+    /**
+     * Set the delegatedSubnetId property: Delegated subnet id for Vnet injection.
+     * 
+     * @param delegatedSubnetId the delegatedSubnetId value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withDelegatedSubnetId(String delegatedSubnetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withDelegatedSubnetId(delegatedSubnetId);
+        return this;
+    }
+
+    /**
+     * Get the performanceTier property: Pre-Provisioned Performance of the Resource.
+     * 
+     * @return the performanceTier value.
+     */
+    public String performanceTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().performanceTier();
+    }
+
+    /**
+     * Set the performanceTier property: Pre-Provisioned Performance of the Resource.
+     * 
+     * @param performanceTier the performanceTier value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withPerformanceTier(String performanceTier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withPerformanceTier(performanceTier);
+        return this;
+    }
+
+    /**
+     * Get the clusterLoginUrl property: File system Id of the resource.
+     * 
+     * @return the clusterLoginUrl value.
+     */
+    public String clusterLoginUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().clusterLoginUrl();
+    }
+
+    /**
+     * Set the clusterLoginUrl property: File system Id of the resource.
+     * 
+     * @param clusterLoginUrl the clusterLoginUrl value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withClusterLoginUrl(String clusterLoginUrl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withClusterLoginUrl(clusterLoginUrl);
+        return this;
+    }
+
+    /**
+     * Get the privateIPs property: Private IPs of the resource.
+     * 
+     * @return the privateIPs value.
+     */
+    public List<String> privateIPs() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateIPs();
+    }
+
+    /**
+     * Set the privateIPs property: Private IPs of the resource.
+     * 
+     * @param privateIPs the privateIPs value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withPrivateIPs(List<String> privateIPs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withPrivateIPs(privateIPs);
+        return this;
+    }
+
+    /**
+     * Get the adminPassword property: Initial administrator password of the resource.
+     * 
+     * @return the adminPassword value.
+     */
+    public String adminPassword() {
+        return this.innerProperties() == null ? null : this.innerProperties().adminPassword();
+    }
+
+    /**
+     * Set the adminPassword property: Initial administrator password of the resource.
+     * 
+     * @param adminPassword the adminPassword value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withAdminPassword(String adminPassword) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withAdminPassword(adminPassword);
+        return this;
+    }
+
+    /**
+     * Get the availabilityZone property: Availability zone.
+     * 
+     * @return the availabilityZone value.
+     */
+    public String availabilityZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityZone();
+    }
+
+    /**
+     * Set the availabilityZone property: Availability zone.
+     * 
+     * @param availabilityZone the availabilityZone value to set.
+     * @return the FileSystemResourceInner object itself.
+     */
+    public FileSystemResourceInner withAvailabilityZone(String availabilityZone) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FileSystemResourceProperties();
+        }
+        this.innerProperties().withAvailabilityZone(availabilityZone);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -161,7 +369,7 @@ public final class FileSystemResourceInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -194,7 +402,7 @@ public final class FileSystemResourceInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedFileSystemResourceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedFileSystemResourceInner.properties = FileSystemResourceProperties.fromJson(reader);
+                    deserializedFileSystemResourceInner.innerProperties = FileSystemResourceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedFileSystemResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
