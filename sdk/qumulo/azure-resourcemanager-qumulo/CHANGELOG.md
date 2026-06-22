@@ -22,9 +22,9 @@
 
 #### `models.UserAssignedIdentity` was modified
 
-* `validate()` was removed
-* `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
 
 #### `models.FileSystemResourceUpdateProperties` was modified
 
