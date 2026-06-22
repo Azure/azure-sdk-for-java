@@ -8,6 +8,11 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where the service's proactive `x-ms-auth-info: session_expiring` hint was ignored when the
+  client's own session-refresh timer had not yet elapsed, allowing a container session to be used past the
+  point the service rotated its network-context binding and surfacing as a `401 InvalidAuthenticationInfo`
+  (`session_token_invalid` / network context mismatch). The hint now forces a proactive background refresh.
+
 ### Other Changes
 
 ## 12.33.3 (2026-03-30)
