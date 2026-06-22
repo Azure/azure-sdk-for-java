@@ -25,6 +25,7 @@ com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
 com.google.code.gson:gson;2.13.1
+com.google.flatbuffers:flatbuffers-java;24.3.25
 com.google.guava:guava;33.1.0-jre
 com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0

@@ -150,6 +150,14 @@
       <artifactId>arrow-format</artifactId>
       <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
     </dependency>
+    <!-- arrow-format's generated flatbuffer classes (e.g. org.apache.arrow.flatbuf.Buffer) extend base types from
+         com.google.flatbuffers, which arrow-format does not expose transitively on the compile classpath. It must be
+         declared explicitly so the internal ListBlobs Arrow reader compiles. -->
+    <dependency>
+      <groupId>com.google.flatbuffers</groupId>
+      <artifactId>flatbuffers-java</artifactId>
+      <version>24.3.25</version> <!-- {x-version-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
+    </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-vector</artifactId>
