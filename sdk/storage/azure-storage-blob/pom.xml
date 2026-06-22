@@ -65,14 +65,15 @@
 
   <build>
     <plugins>
-      <!-- The differential drift-detector tests (BlobListArrowAccessorParityTests, BlobListArrowFlatbufConstantsTest)
-           import org.apache.arrow.flatbuf.* to compare the vendored accessors against Apache Arrow's own generated
-           accessors. Apache Arrow 19+ annotates referenced classes with the Java 9+ form of @Deprecated
-           (with since()/forRemoval()), which the parent's release-8 test-compile pass (base-testCompile) cannot read
-           under -Xlint:classfile + failOnWarning. These tests are test-only and run on the 11+ test JVM, so they are
-           excluded from the release-8 pass only; the release-${java.version} pass (default-testCompile) still compiles
-           and runs them. This keeps all quality gates intact while allowing the Arrow test dependency to track upstream.
-           See the Arrow dependency comment below. -->
+      <!-- The Arrow-based tests reference Apache Arrow classes to build/validate real Arrow IPC payloads. Apache Arrow
+           19+ annotates classes with the Java 9+ form of @Deprecated (with since()/forRemoval()). The parent compiles
+           test sources twice: at the JVM's release (default-testCompile) and again at release 8 (base-testCompile). At
+           release 8, java.lang.Deprecated has no since()/forRemoval(), so javac's annotation reader emits unconditional
+           warnings ("Cannot find annotation method 'forRemoval()'") that are NOT controlled by any -Xlint flag; with
+           failOnWarning they become fatal. This is a cross-compilation false positive: the annotations are valid, and
+           the Arrow tests only run on the 11+ test JVM. Relax failOnWarning for the redundant release-8 test pass ONLY;
+           the primary release-${java.version} pass (default-testCompile) keeps failOnWarning=true and full linting, so
+           genuine warnings in test code are still caught. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -80,10 +81,7 @@
           <execution>
             <id>base-testCompile</id>
             <configuration>
-              <testExcludes combine.children="append">
-                <testExclude>**/BlobListArrowAccessorParityTests.java</testExclude>
-                <testExclude>**/BlobListArrowFlatbufConstantsTest.java</testExclude>
-              </testExcludes>
+              <failOnWarning>false</failOnWarning>
             </configuration>
           </execution>
         </executions>
