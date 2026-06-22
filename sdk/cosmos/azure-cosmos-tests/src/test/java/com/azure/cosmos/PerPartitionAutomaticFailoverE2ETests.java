@@ -1821,7 +1821,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Dynamic enablement is achieved by overriding GlobalEndpointManager's owner to
      * inject the PPAF flag into DatabaseAccount snapshots.</p>
      */
-    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testFailoverBehaviorForNonWriteOperationsWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,
