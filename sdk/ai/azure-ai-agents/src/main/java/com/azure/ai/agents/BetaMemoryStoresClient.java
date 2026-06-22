@@ -45,6 +45,7 @@ import java.util.Map;
  * Initializes a new instance of the synchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaMemoryStoresClient {
 
     @Generated

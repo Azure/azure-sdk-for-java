@@ -6,3 +6,4 @@ overrides:
     - BYOT
     - dedup
     - gitmcp
+    - byot

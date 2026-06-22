@@ -28,6 +28,7 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
@@ -66,6 +67,21 @@ public class AgentsCustomizations extends Customization {
 
                     clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"));
                 }));
+    }
+
+    private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
+        customization.getPackage("com.azure.ai.agents")
+            .listClasses()
+            .stream()
+            .filter(cc -> cc.getClassName().startsWith("Beta") && cc.getClassName().endsWith("Client"))
+            .forEach(classCustomization -> {
+                String simpleName = classCustomization.getClassName();
+                logger.info("Annotating {} with @Beta", simpleName);
+                classCustomization.customizeAst(ast -> ast.getClassByName(simpleName).ifPresent(clazz -> {
+                    ast.addImport("com.azure.ai.agents.implementation.utils.Beta");
+                    clazz.addAnnotation(betaAnnotation("This class is in preview and may change in future releases."));
+                }));
+            });
     }
 
     private void annotateBetaFields(LibraryCustomization customization, List<String[]> betaAnnotations,
