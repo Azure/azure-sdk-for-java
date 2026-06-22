@@ -10,6 +10,15 @@ Result: the build failed in `org.revapi:revapi-maven-plugin:0.15.1:check` while 
 `com.azure:azure-ai-projects:2.1.0` against `2.2.0-beta.1`. Tests and coverage completed before the
 RevAPI check.
 
+## Version resolution
+
+RevAPI resolves the old artifact from Maven's active repositories because this package does not set
+`revapi.oldArtifacts` or `revapi.oldVersion`. The inherited parent config sets
+`<versionFormat>^\d+\.\d+\.\d+$</versionFormat>`, so `RELEASE` resolves to the latest stable version
+matching that pattern and excludes beta versions. In this build, that resolved to
+`com.azure:azure-ai-projects:2.1.0`; the new artifact is the local project version,
+`2.2.0-beta.1`.
+
 ## Beta-annotated surface
 
 The 2.1.0 source jar contains no `@Beta` annotations. The only RevAPI failure on a type that is
