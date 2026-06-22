@@ -536,6 +536,51 @@ public class SessionTokenCredentialPolicyTest {
         }
     }
 
+    @Test
+    public void sessionExpiringHintForcesBackgroundRefreshEvenWhenTimerNotDue() {
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        // Fresh session far from expiry, so the client's own jittered refresh timer is NOT due.
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)))
+            .thenReturn(Mono.just(credentialWithToken(SECOND_TOKEN)));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+        // The service signals (via x-ms-auth-info: session_expiring) that this session is about to stop
+        // being honored — for example, just before its network-context binding rotates.
+        when(response.getHeaderValue(HttpHeaderName.fromString("x-ms-auth-info"))).thenReturn("session_expiring");
+
+        policy.process(context, next).block().close();
+
+        // The service hint must trigger a proactive background refresh (a second createSession), even
+        // though the client's own refresh timer had not yet elapsed. Dropping the hint here is what
+        // previously let the session be used past the rotation boundary, surfacing as a 401
+        // "session_token_invalid" (network context mismatch).
+        verify(sessionClient, times(2)).createSessionAsync();
+    }
+
+    @Test
+    public void noSessionExpiringHintDoesNotForceBackgroundRefresh() {
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
+        HttpResponse response = mock(HttpResponse.class);
+
+        when(sessionClient.createSessionAsync()).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)))
+            .thenReturn(Mono.just(credentialWithToken(SECOND_TOKEN)));
+        when(next.clone()).thenReturn(next);
+        when(next.process()).thenReturn(Mono.just(response));
+        when(response.getStatusCode()).thenReturn(200);
+        // No x-ms-auth-info hint on the response.
+        when(response.getHeaderValue(HttpHeaderName.fromString("x-ms-auth-info"))).thenReturn(null);
+
+        policy.process(context, next).block().close();
+
+        // Without the hint and with a fresh session, only the initial session is created.
+        verify(sessionClient, times(1)).createSessionAsync();
+    }
+
     private SessionTokenCredentialPolicy createPolicy(SessionMode mode) {
         SessionOptions options = new SessionOptions().setSessionMode(mode).setContainerName("mycontainer");
         return new SessionTokenCredentialPolicy(bearerPolicy, new StorageSessionCredentialCache(sessionClient),
