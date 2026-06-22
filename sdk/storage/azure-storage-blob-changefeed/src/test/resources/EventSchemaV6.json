@@ -1,13 +1,13 @@
 {
     "schemaVersion": 6,
-    "topic": "/subscriptions/dd40261b-437d-43d0-86cf-ef222b78fd15/resourceGroups/haambaga/providers/Microsoft.Storage/storageAccounts/HAAMBAGA-DEV",
+    "topic": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/haambaga/providers/Microsoft.Storage/storageAccounts/HAAMBAGA-DEV",
     "subject": "/blobServices/default/containers/apitestcontainerver/blobs/20220217_131202494_Blob_oaG6iu7ImEB1cX8M",
     "eventType": "BlobCreated",
     "eventTime": "2022-02-17T13:12:11.5746587Z",
     "id": "62616073-8020-0000-00ff-233467060cc0",
     "data": {
         "api": "PutBlob",
-        "clientRequestId": "b3f9b39a-ae5a-45ac-afad-95ac9e9f2791",
+        "clientRequestId": "00000000-0000-0000-0000-000000000000",
         "requestId": "62616073-8020-0000-00ff-233467000000",
         "etag": "0x8D9F2171BE32588",
         "contentType": "application/octet-stream",
@@ -68,8 +68,8 @@
             }
         },
         "restorePointMarker": {
-            "rpi": "cbd73e3d-f650-4700-b90c-2f067bce639c",
-            "rpp": "cbd73e3d-f650-4700-b90c-2f067bce639c",
+            "rpi": "00000000-0000-0000-0000-000000000000",
+            "rpp": "00000000-0000-0000-0000-000000000000",
             "rpl": "test-restore-label",
             "rpt": "2022-02-17T13:56:09.3559772Z"
         },
@@ -78,7 +78,7 @@
         "storageDiagnostics": {
             "bid": "9d726db1-8006-0000-00ff-233467000000",
             "seq": "(2,18446744073709551615,29,29)",
-            "sid": "4cc94e71-f6be-75bf-e7b2-f9ac41458e5a"
+            "sid": "00000000-0000-0000-0000-000000000000"
         }
     }
 }

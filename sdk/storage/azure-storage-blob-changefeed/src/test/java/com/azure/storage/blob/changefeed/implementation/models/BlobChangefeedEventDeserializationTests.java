@@ -7,6 +7,7 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType;
+import com.azure.storage.blob.models.BlobType;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
@@ -30,6 +32,15 @@ public class BlobChangefeedEventDeserializationTests {
     private static final String CREATE_TIME = "2022-02-17T13:11:52.5901564Z";
     private static final String LAST_ACCESS_TIME = "2022-02-17T13:11:53.5901564Z";
     private static final String RESTORED_CONTAINER_VERSION = "0000000000000002";
+    private static final String CLIENT_REQUEST_ID = "clientRequestId";
+    private static final String REQUEST_ID = "requestId";
+    private static final String ETAG = "0x8D9F2171BE32588";
+    private static final String CONTENT_TYPE = "application/octet-stream";
+    private static final long CONTENT_LENGTH = 128L;
+    private static final String SEQUENCER = "00000000000000010000000000000002000000000000001d";
+    private static final String DESTINATION_URL = "destinationUrl";
+    private static final String SOURCE_URL = "sourceUrl";
+    private static final String BLOB_URL = "https://www.myurl.com";
 
     // ======================== Schema V6 ========================
 
@@ -70,17 +81,44 @@ public class BlobChangefeedEventDeserializationTests {
         Map<String, Object> eventMap = buildEventRecord(r -> {
             r.put("eventType", "BlobCreated");
             r.put("data", buildDataRecord(d -> {
-                d.put("api", "PutBlob");
+                d.put("clientRequestId", CLIENT_REQUEST_ID);
+                d.put("requestId", REQUEST_ID);
+                d.put("etag", ETAG);
+                d.put("contentType", CONTENT_TYPE);
+                d.put("contentLength", CONTENT_LENGTH);
+                d.put("blobType", "BlockBlob");
                 d.put("contentOffset", CONTENT_OFFSET);
+                d.put("destinationUrl", DESTINATION_URL);
+                d.put("sourceUrl", SOURCE_URL);
+                d.put("url", BLOB_URL);
+                d.put("recursive", false);
+                d.put("sequencer", SEQUENCER);
                 d.put("createTime", CREATE_TIME);
             }));
         });
 
         InternalBlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(eventMap);
 
+        assertEquals("topic", event.getTopic());
+        assertEquals("subject", event.getSubject());
         assertEquals(BlobChangefeedEventType.BLOB_CREATED, event.getEventType());
+        assertEquals(OffsetDateTime.of(2022, 2, 17, 13, 12, 11, 0, ZoneOffset.UTC), event.getEventTime());
+        assertEquals("62616073-8020-0000-00ff-233467060cc0", event.getId());
+        assertEquals(1L, event.getDataVersion());
+        assertEquals("1", event.getMetadataVersion());
         assertEquals("PutBlob", event.getData().getApi());
+        assertEquals(CLIENT_REQUEST_ID, event.getData().getClientRequestId());
+        assertEquals(REQUEST_ID, event.getData().getRequestId());
+        assertEquals(ETAG, event.getData().getETag());
+        assertEquals(CONTENT_TYPE, event.getData().getContentType());
+        assertEquals(CONTENT_LENGTH, event.getData().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, event.getData().getBlobType());
         assertEquals(CONTENT_OFFSET, event.getData().getContentOffset());
+        assertEquals(DESTINATION_URL, event.getData().getDestinationUrl());
+        assertEquals(SOURCE_URL, event.getData().getSourceUrl());
+        assertEquals(BLOB_URL, event.getData().getBlobUrl());
+        assertFalse(event.getData().isRecursive());
+        assertEquals(SEQUENCER, event.getData().getSequencer());
         assertEquals(OffsetDateTime.parse(CREATE_TIME), event.getData().getCreationTime());
         assertNull(event.getData().getLastAccessTime());
         assertNull(event.getData().getRestoredContainerVersion());
@@ -115,8 +153,18 @@ public class BlobChangefeedEventDeserializationTests {
         Map<String, Object> eventMap = buildEventRecord(r -> {
             r.put("eventType", "BlobCreated");
             r.put("data", buildDataRecord(d -> {
-                d.put("api", "PutBlob");
+                d.put("clientRequestId", CLIENT_REQUEST_ID);
+                d.put("requestId", REQUEST_ID);
+                d.put("etag", ETAG);
+                d.put("contentType", CONTENT_TYPE);
+                d.put("contentLength", CONTENT_LENGTH);
+                d.put("blobType", "BlockBlob");
                 d.put("contentOffset", CONTENT_OFFSET);
+                d.put("destinationUrl", DESTINATION_URL);
+                d.put("sourceUrl", SOURCE_URL);
+                d.put("url", BLOB_URL);
+                d.put("recursive", false);
+                d.put("sequencer", SEQUENCER);
                 d.put("createTime", CREATE_TIME);
                 d.put("lastAccessTime", LAST_ACCESS_TIME);
             }));
@@ -124,7 +172,26 @@ public class BlobChangefeedEventDeserializationTests {
 
         InternalBlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(eventMap);
 
+        assertEquals("topic", event.getTopic());
+        assertEquals("subject", event.getSubject());
+        assertEquals(BlobChangefeedEventType.BLOB_CREATED, event.getEventType());
+        assertEquals(OffsetDateTime.of(2022, 2, 17, 13, 12, 11, 0, ZoneOffset.UTC), event.getEventTime());
+        assertEquals("62616073-8020-0000-00ff-233467060cc0", event.getId());
+        assertEquals(1L, event.getDataVersion());
+        assertEquals("1", event.getMetadataVersion());
+        assertEquals("PutBlob", event.getData().getApi());
+        assertEquals(CLIENT_REQUEST_ID, event.getData().getClientRequestId());
+        assertEquals(REQUEST_ID, event.getData().getRequestId());
+        assertEquals(ETAG, event.getData().getETag());
+        assertEquals(CONTENT_TYPE, event.getData().getContentType());
+        assertEquals(CONTENT_LENGTH, event.getData().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, event.getData().getBlobType());
         assertEquals(CONTENT_OFFSET, event.getData().getContentOffset());
+        assertEquals(DESTINATION_URL, event.getData().getDestinationUrl());
+        assertEquals(SOURCE_URL, event.getData().getSourceUrl());
+        assertEquals(BLOB_URL, event.getData().getBlobUrl());
+        assertFalse(event.getData().isRecursive());
+        assertEquals(SEQUENCER, event.getData().getSequencer());
         assertEquals(OffsetDateTime.parse(CREATE_TIME), event.getData().getCreationTime());
         assertEquals(OffsetDateTime.parse(LAST_ACCESS_TIME), event.getData().getLastAccessTime());
         assertNull(event.getData().getRestoredContainerVersion());
@@ -169,8 +236,18 @@ public class BlobChangefeedEventDeserializationTests {
         Map<String, Object> eventMap = buildEventRecord(r -> {
             r.put("eventType", "BlobCreated");
             r.put("data", buildDataRecord(d -> {
-                d.put("api", "PutBlob");
+                d.put("clientRequestId", CLIENT_REQUEST_ID);
+                d.put("requestId", REQUEST_ID);
+                d.put("etag", ETAG);
+                d.put("contentType", CONTENT_TYPE);
+                d.put("contentLength", CONTENT_LENGTH);
+                d.put("blobType", "BlockBlob");
                 d.put("contentOffset", CONTENT_OFFSET);
+                d.put("destinationUrl", DESTINATION_URL);
+                d.put("sourceUrl", SOURCE_URL);
+                d.put("url", BLOB_URL);
+                d.put("recursive", false);
+                d.put("sequencer", SEQUENCER);
                 d.put("createTime", CREATE_TIME);
                 d.put("lastAccessTime", LAST_ACCESS_TIME);
                 d.put("restoredContainerVersion", RESTORED_CONTAINER_VERSION);
@@ -179,7 +256,26 @@ public class BlobChangefeedEventDeserializationTests {
 
         InternalBlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(eventMap);
 
+        assertEquals("topic", event.getTopic());
+        assertEquals("subject", event.getSubject());
+        assertEquals(BlobChangefeedEventType.BLOB_CREATED, event.getEventType());
+        assertEquals(OffsetDateTime.of(2022, 2, 17, 13, 12, 11, 0, ZoneOffset.UTC), event.getEventTime());
+        assertEquals("62616073-8020-0000-00ff-233467060cc0", event.getId());
+        assertEquals(1L, event.getDataVersion());
+        assertEquals("1", event.getMetadataVersion());
+        assertEquals("PutBlob", event.getData().getApi());
+        assertEquals(CLIENT_REQUEST_ID, event.getData().getClientRequestId());
+        assertEquals(REQUEST_ID, event.getData().getRequestId());
+        assertEquals(ETAG, event.getData().getETag());
+        assertEquals(CONTENT_TYPE, event.getData().getContentType());
+        assertEquals(CONTENT_LENGTH, event.getData().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, event.getData().getBlobType());
         assertEquals(CONTENT_OFFSET, event.getData().getContentOffset());
+        assertEquals(DESTINATION_URL, event.getData().getDestinationUrl());
+        assertEquals(SOURCE_URL, event.getData().getSourceUrl());
+        assertEquals(BLOB_URL, event.getData().getBlobUrl());
+        assertFalse(event.getData().isRecursive());
+        assertEquals(SEQUENCER, event.getData().getSequencer());
         assertEquals(OffsetDateTime.parse(CREATE_TIME), event.getData().getCreationTime());
         assertEquals(OffsetDateTime.parse(LAST_ACCESS_TIME), event.getData().getLastAccessTime());
         assertEquals(RESTORED_CONTAINER_VERSION, event.getData().getRestoredContainerVersion());
@@ -291,9 +387,8 @@ public class BlobChangefeedEventDeserializationTests {
     @SuppressWarnings("unchecked")
     private static Map<String, Object> loadJsonAsAvroMap(String resourceName) throws IOException {
         try (InputStream is = Objects.requireNonNull(
-                BlobChangefeedEventDeserializationTests.class.getClassLoader().getResourceAsStream(resourceName),
-                "Test resource not found: " + resourceName);
-             JsonReader reader = JsonProviders.createReader(is)) {
+            BlobChangefeedEventDeserializationTests.class.getClassLoader().getResourceAsStream(resourceName),
+            "Test resource not found: " + resourceName); JsonReader reader = JsonProviders.createReader(is)) {
             reader.nextToken();
             Map<String, Object> map = readJsonObject(reader);
             map.put("$record", "BlobChangeEvent");
@@ -319,17 +414,23 @@ public class BlobChangefeedEventDeserializationTests {
         switch (reader.currentToken()) {
             case NULL:
                 return null;
+
             case STRING:
                 return reader.getString();
+
             case NUMBER:
                 return reader.getLong();
+
             case BOOLEAN:
                 return reader.getBoolean();
+
             case START_OBJECT:
                 return readJsonObject(reader);
+
             case START_ARRAY:
                 reader.skipChildren();
                 return null;
+
             default:
                 return null;
         }
