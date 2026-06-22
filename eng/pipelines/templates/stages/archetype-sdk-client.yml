@@ -14,6 +14,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: not-specified
+  - name: SkipPrValidation
+    type: boolean
+    default: false
   - name: ExcludePaths
     type: object
     default: []
@@ -79,7 +82,26 @@ extends:
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     stages:
+      - ${{ if and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual')) }}:
+        - stage: NoOp
+          displayName: No-op
+          variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
+          jobs:
+            - job: NoOp
+              displayName: No-op
+              pool:
+                name: $(LINUXPOOL)
+                image: $(LINUXVMIMAGE)
+                os: linux
+              steps:
+                - checkout: none
+                - pwsh: Write-Host "PR validation skipped because SkipPrValidation was set to true for a manual run."
+                  displayName: Skip PR validation
+
       - stage: Build
+        condition: not(and(eq(${{ parameters.SkipPrValidation }}, true), eq(variables['Build.Reason'], 'Manual')))
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
@@ -136,15 +158,15 @@ extends:
               BuildParallelization: ${{ parameters.BuildParallelization }}
               TestParallelization: ${{ parameters.TestParallelization }}
 
-      - ${{ if parameters.AdditionalStagesAfterBuild }}:
+      - ${{ if and(not(and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual'))), gt(length(parameters.AdditionalStagesAfterBuild), 0)) }}:
           - ${{ parameters.AdditionalStagesAfterBuild }}
 
-      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'],'IndividualCI')) }}:
+      - ${{ if and(not(and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual'))), eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'],'IndividualCI')) }}:
           - ${{ parameters.LiveTestStages }}
 
       # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
       # The tests-weekly check needs to be done so we don't create signing/release tasks for manual weekly-test runs
-      - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
+      - ${{if and(not(and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual'))), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
           - template: archetype-java-release-batch.yml
             parameters:
               DependsOn:
