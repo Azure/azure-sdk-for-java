@@ -791,8 +791,7 @@ public final class BlockBlobClient extends BlobClientBase {
 
         Mono<Response<Void>> response = BinaryData.fromFlux(dataFlux, length, false)
             .flatMap(binaryData -> client.stageBlockWithResponseInternal(
-                new BlockBlobStageBlockOptions(base64BlockId, binaryData).setContentMd5(contentMd5)
-                    .setLeaseId(leaseId),
+                new BlockBlobStageBlockOptions(base64BlockId, binaryData).setContentMd5(contentMd5).setLeaseId(leaseId),
                 context));
         return blockWithOptionalTimeout(response, timeout);
     }
