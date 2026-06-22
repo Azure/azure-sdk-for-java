@@ -31,10 +31,13 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -43,6 +46,7 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -51,6 +55,7 @@ import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -566,24 +571,143 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .getCosmosAsyncClientAccessor()
             .getPreferredRegions(client).size() > 1;
         if (throughput > 6000 || isMultiRegional) {
-            waitForCollectionToBeAvailableToRead();
+            waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()));
         }
 
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
-    protected static void waitForCollectionToBeAvailableToRead() {
-        // Creating a container is an async task - especially with multiple regions it can
-        // take some time until the container is available in the remote regions as well.
-        // When the container does not exist yet, metadata reads or item operations can
-        // fail with 404/1013 "Collection is not yet available for read".
-        // So, adding this delay after container creation to minimize risk of hitting these errors.
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
+    protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container) {
+        // Creating a container is asynchronous - especially on multi-region accounts the new collection can
+        // take time to become readable in the non-write regions. Until then, reads routed to those regions fail
+        // with 404/1013 ("Collection is not yet available for read"). Instead of a fixed sleep, verify - against
+        // every non-primary region of the account - that the collection is readable, probing each region (by
+        // excluding all other regions) with exponential back-off until it succeeds, bounded to two minutes total.
+        CosmosAsyncClient client = ImplementationBridgeHelpers
+            .CosmosAsyncDatabaseHelper
+            .getCosmosAsyncDatabaseAccessor()
+            .getCosmosAsyncClient(container.getDatabase());
+
+        DatabaseAccount databaseAccount = getLatestDatabaseAccount(client);
+
+        // Use the account's regions (not the client's preferred regions, which may be a subset).
+        List<String> allRegions = new ArrayList<>();
+        for (DatabaseAccountLocation location : databaseAccount.getReadableLocations()) {
+            allRegions.add(location.getName());
         }
+
+        // The primary region is the first writable location; propagation lag manifests in the other regions.
+        String primaryRegion = null;
+        for (DatabaseAccountLocation location : databaseAccount.getWritableLocations()) {
+            primaryRegion = location.getName();
+            break;
+        }
+        final String primary = primaryRegion;
+
+        List<String> nonPrimaryRegions = allRegions
+            .stream()
+            .filter(region -> primary == null || !region.equalsIgnoreCase(primary))
+            .collect(Collectors.toList());
+
+        Duration maxWait = Duration.ofMinutes(2);
+        long deadlineNanos = System.nanoTime() + maxWait.toNanos();
+
+        if (nonPrimaryRegions.isEmpty()) {
+            // Single-region account: there is no non-primary region to verify, but the collection still needs
+            // to be readable (for example while physical partitions are provisioned).
+            awaitContainerReadableInRegion(container, null, Collections.emptyList(), deadlineNanos, maxWait);
+            return;
+        }
+
+        // Verify the collection is readable in each non-primary region.
+        for (String region : nonPrimaryRegions) {
+            final String target = region;
+            List<String> excludedRegions = allRegions
+                .stream()
+                .filter(other -> !other.equalsIgnoreCase(target))
+                .collect(Collectors.toList());
+            awaitContainerReadableInRegion(container, region, excludedRegions, deadlineNanos, maxWait);
+        }
+    }
+
+    private static void awaitContainerReadableInRegion(
+        CosmosAsyncContainer container,
+        String targetRegion,
+        List<String> excludedRegions,
+        long deadlineNanos,
+        Duration maxWait) {
+
+        long backoffMillis = 100;
+        long maxBackoffMillis = 5000;
+        int attempts = 0;
+        Throwable lastError = null;
+
+        while (true) {
+            attempts++;
+            try {
+                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                if (!excludedRegions.isEmpty()) {
+                    options.setExcludedRegions(excludedRegions);
+                }
+                // A successful (possibly empty) page proves the collection is resolvable/readable in the
+                // targeted region.
+                container.queryItems("SELECT TOP 1 c.id FROM c", options, Object.class)
+                    .byPage(1)
+                    .blockFirst();
+                return;
+            } catch (Exception error) {
+                lastError = error;
+            }
+
+            long remainingNanos = deadlineNanos - System.nanoTime();
+            if (remainingNanos <= 0) {
+                break;
+            }
+
+            long sleepMillis = Math.max(1, Math.min(backoffMillis, TimeUnit.NANOSECONDS.toMillis(remainingNanos)));
+            try {
+                TimeUnit.MILLISECONDS.sleep(sleepMillis);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while waiting for collection to be available to read.", interrupted);
+            }
+            backoffMillis = Math.min(backoffMillis * 2, maxBackoffMillis);
+        }
+
+        throw new AssertionError(
+            String.format(
+                "Container '%s' was not available to read%s within %d seconds (%d attempts).",
+                container.getId(),
+                targetRegion != null ? " in region '" + targetRegion + "'" : "",
+                maxWait.getSeconds(),
+                attempts),
+            lastError);
+    }
+
+    private static DatabaseAccount getLatestDatabaseAccount(CosmosAsyncClient client) {
+        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(client);
+        GlobalEndpointManager globalEndpointManager =
+            ReflectionUtils.getGlobalEndpointManager((RxDocumentClientImpl) asyncDocumentClient);
+
+        // The latest database account is populated during client initialization; poll briefly to defend against
+        // an initialization race.
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        long deadlineNanos = System.nanoTime() + Duration.ofSeconds(10).toNanos();
+        while (databaseAccount == null && System.nanoTime() < deadlineNanos) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(200);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while resolving the database account.", interrupted);
+            }
+            databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        }
+
+        if (databaseAccount == null) {
+            throw new AssertionError("Database account was not available to determine the account's regions.");
+        }
+
+        return databaseAccount;
     }
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
