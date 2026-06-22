@@ -63,6 +63,34 @@
     <spotbugs.skip>false</spotbugs.skip>
   </properties>
 
+  <build>
+    <plugins>
+      <!-- The differential drift-detector tests (BlobListArrowAccessorParityTests, BlobListArrowFlatbufConstantsTest)
+           import org.apache.arrow.flatbuf.* to compare the vendored accessors against Apache Arrow's own generated
+           accessors. Apache Arrow 19+ annotates referenced classes with the Java 9+ form of @Deprecated
+           (with since()/forRemoval()), which the parent's release-8 test-compile pass (base-testCompile) cannot read
+           under -Xlint:classfile + failOnWarning. These tests are test-only and run on the 11+ test JVM, so they are
+           excluded from the release-8 pass only; the release-${java.version} pass (default-testCompile) still compiles
+           and runs them. This keeps all quality gates intact while allowing the Arrow test dependency to track upstream.
+           See the Arrow dependency comment below. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>base-testCompile</id>
+            <configuration>
+              <testExcludes combine.children="append">
+                <testExclude>**/BlobListArrowAccessorParityTests.java</testExclude>
+                <testExclude>**/BlobListArrowFlatbufConstantsTest.java</testExclude>
+              </testExcludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -155,19 +183,19 @@
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-vector</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-vector;external_dependency} -->
+      <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-vector;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-memory-core</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
+      <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-memory-unsafe</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
+      <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
