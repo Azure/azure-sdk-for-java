@@ -141,18 +141,12 @@
     </dependency>
 
     <!-- Arrow dependencies -->
-    <!-- The internal ListBlobs Arrow reader decodes the IPC stream using only the arrow-format flatbuffer
-         definitions, so arrow-format is the sole compile-scoped Arrow dependency. arrow-vector / arrow-memory-* /
-         checker-qual are test-only: they back the parity test that builds a real Arrow payload with the official
-         writer to validate the internal reader. -->
-    <dependency>
-      <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-format</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
-    </dependency>
-    <!-- arrow-format's generated flatbuffer classes (e.g. org.apache.arrow.flatbuf.Buffer) extend base types from
-         com.google.flatbuffers, which arrow-format does not expose transitively on the compile classpath. It must be
-         declared explicitly so the internal ListBlobs Arrow reader compiles. -->
+    <!-- The internal ListBlobs Arrow reader decodes the IPC stream using vendored FlatBuffer metadata accessors
+         (com.azure.storage.blob.implementation.util.arrow) backed by flatbuffers-java, so flatbuffers-java is the sole
+         compile-scoped dependency needed to parse the Arrow format. The arrow-format artifact is deliberately NOT a
+         compile dependency: it ships Java 11 bytecode and would break the Java 8 baseline build. arrow-vector /
+         arrow-memory-* / arrow-format / checker-qual are test-only: they back the parity test that builds a real Arrow
+         payload with the official writer to validate the internal reader (and run on the Java 11+ test JVM). -->
     <dependency>
       <groupId>com.google.flatbuffers</groupId>
       <artifactId>flatbuffers-java</artifactId>

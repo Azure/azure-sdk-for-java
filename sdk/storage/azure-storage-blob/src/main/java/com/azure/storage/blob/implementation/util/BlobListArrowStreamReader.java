@@ -4,19 +4,19 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.implementation.models.BlobListArrowParseException;
-import org.apache.arrow.flatbuf.Buffer;
-import org.apache.arrow.flatbuf.Endianness;
-import org.apache.arrow.flatbuf.Field;
-import org.apache.arrow.flatbuf.FieldNode;
-import org.apache.arrow.flatbuf.Int;
-import org.apache.arrow.flatbuf.KeyValue;
-import org.apache.arrow.flatbuf.Message;
-import org.apache.arrow.flatbuf.MessageHeader;
-import org.apache.arrow.flatbuf.RecordBatch;
-import org.apache.arrow.flatbuf.Schema;
-import org.apache.arrow.flatbuf.TimeUnit;
-import org.apache.arrow.flatbuf.Timestamp;
-import org.apache.arrow.flatbuf.Type;
+import com.azure.storage.blob.implementation.util.arrow.Buffer;
+import com.azure.storage.blob.implementation.util.arrow.Endianness;
+import com.azure.storage.blob.implementation.util.arrow.Field;
+import com.azure.storage.blob.implementation.util.arrow.FieldNode;
+import com.azure.storage.blob.implementation.util.arrow.Int;
+import com.azure.storage.blob.implementation.util.arrow.KeyValue;
+import com.azure.storage.blob.implementation.util.arrow.Message;
+import com.azure.storage.blob.implementation.util.arrow.MessageHeader;
+import com.azure.storage.blob.implementation.util.arrow.RecordBatch;
+import com.azure.storage.blob.implementation.util.arrow.Schema;
+import com.azure.storage.blob.implementation.util.arrow.TimeUnit;
+import com.azure.storage.blob.implementation.util.arrow.Timestamp;
+import com.azure.storage.blob.implementation.util.arrow.Type;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -153,19 +153,19 @@ final class BlobListArrowStreamReader {
             pos += (int) bodyLength;
 
             byte headerType = message.headerType();
-            if (headerType == MessageHeader.Schema) {
+            if (headerType == MessageHeader.SCHEMA) {
                 Schema schema = (Schema) message.header(new Schema());
                 if (schema == null) {
                     throw new BlobListArrowParseException(
                         "ListBlobs Arrow parse failure: schema message header is missing.");
                 }
-                if (schema.endianness() != Endianness.Little) {
+                if (schema.endianness() != Endianness.LITTLE) {
                     throw new BlobListArrowParseException(
                         "ListBlobs Arrow parse failure: only little-endian streams are supported.");
                 }
                 schemaMetadata = readKeyValueMetadata(schema);
                 fields = readFields(schema);
-            } else if (headerType == MessageHeader.RecordBatch) {
+            } else if (headerType == MessageHeader.RECORD_BATCH) {
                 if (fields == null) {
                     throw new BlobListArrowParseException(
                         "ListBlobs Arrow parse failure: record batch encountered before schema.");
@@ -180,7 +180,7 @@ final class BlobListArrowStreamReader {
                         "ListBlobs Arrow parse failure: compressed record batches are not supported.");
                 }
                 batches.add(buildBatch(fields, recordBatch, body, bodyStart));
-            } else if (headerType == MessageHeader.DictionaryBatch) {
+            } else if (headerType == MessageHeader.DICTIONARY_BATCH) {
                 throw new BlobListArrowParseException(
                     "ListBlobs Arrow parse failure: dictionary-encoded streams are not supported.");
             }
@@ -208,34 +208,34 @@ final class BlobListArrowStreamReader {
         int valueCount = (int) node.length();
 
         switch (field.typeType) {
-            case Type.Utf8:
-            case Type.Binary: {
+            case Type.UTF8:
+            case Type.BINARY: {
                 BufferRegion validity = cursor.nextBuffer();
                 BufferRegion offsets = cursor.nextBuffer();
                 BufferRegion data = cursor.nextBuffer();
                 return new StringColumn(valueCount, validity, offsets, data, cursor.body, cursor.bodyStart);
             }
 
-            case Type.Bool: {
+            case Type.BOOL: {
                 BufferRegion validity = cursor.nextBuffer();
                 BufferRegion data = cursor.nextBuffer();
                 return new BoolColumn(valueCount, validity, data, cursor.body, cursor.bodyStart);
             }
 
-            case Type.Int: {
+            case Type.INT: {
                 BufferRegion validity = cursor.nextBuffer();
                 BufferRegion data = cursor.nextBuffer();
                 return new IntColumn(valueCount, validity, data, field.bitWidth, field.signed, cursor.body,
                     cursor.bodyStart);
             }
 
-            case Type.Timestamp: {
+            case Type.TIMESTAMP: {
                 BufferRegion validity = cursor.nextBuffer();
                 BufferRegion data = cursor.nextBuffer();
                 return new TimestampColumn(valueCount, validity, data, cursor.body, cursor.bodyStart);
             }
 
-            case Type.Map: {
+            case Type.MAP: {
                 BufferRegion validity = cursor.nextBuffer();
                 BufferRegion offsets = cursor.nextBuffer();
                 // Map has a single Struct child ("entries") with key and value children.
@@ -251,7 +251,7 @@ final class BlobListArrowStreamReader {
                     (StringColumn) valueColumn, cursor.body, cursor.bodyStart);
             }
 
-            case Type.Struct_: {
+            case Type.STRUCT: {
                 cursor.nextBuffer(); // struct validity buffer
                 List<Column> children = new ArrayList<>(field.children.size());
                 for (ArrowField child : field.children) {
@@ -280,13 +280,13 @@ final class BlobListArrowStreamReader {
         arrowField.name = field.name();
         arrowField.typeType = field.typeType();
 
-        if (arrowField.typeType == Type.Int) {
+        if (arrowField.typeType == Type.INT) {
             Int intType = (Int) field.type(new Int());
             if (intType != null) {
                 arrowField.bitWidth = intType.bitWidth();
                 arrowField.signed = intType.isSigned();
             }
-        } else if (arrowField.typeType == Type.Timestamp) {
+        } else if (arrowField.typeType == Type.TIMESTAMP) {
             Timestamp timestamp = (Timestamp) field.type(new Timestamp());
             if (timestamp != null && timestamp.unit() != TimeUnit.SECOND) {
                 throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + arrowField.name
