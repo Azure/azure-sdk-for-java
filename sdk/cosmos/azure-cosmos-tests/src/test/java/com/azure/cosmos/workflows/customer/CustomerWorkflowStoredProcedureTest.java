@@ -3,6 +3,7 @@
 package com.azure.cosmos.workflows.customer;
 
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
@@ -18,6 +19,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -69,20 +71,20 @@ public class CustomerWorkflowStoredProcedureTest extends CustomerWorkflowTestBas
             options.setPartitionKey(new PartitionKey("sproc-workflow"));
             options.setScriptLoggingEnabled(true);
 
-            CosmosStoredProcedureResponse readResponse = this.container
+            CosmosStoredProcedureResponse readResponse = withStoredProcedureReplicationRetry(() -> this.container
                 .getScripts()
                 .getStoredProcedure(storedProcedureId)
                 .read()
-                .block();
+                .block());
 
             assertThat(readResponse).isNotNull();
             assertThat(readResponse.getProperties().getId()).isEqualTo(storedProcedureId);
 
-            CosmosStoredProcedureResponse executeResponse = this.container
+            CosmosStoredProcedureResponse executeResponse = withStoredProcedureReplicationRetry(() -> this.container
                 .getScripts()
                 .getStoredProcedure(storedProcedureId)
                 .execute(Collections.singletonList("workflow"), options)
-                .block();
+                .block());
 
             assertThat(executeResponse).isNotNull();
             assertThat(executeResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
@@ -97,5 +99,36 @@ public class CustomerWorkflowStoredProcedureTest extends CustomerWorkflowTestBas
                 // best-effort cleanup of the stored procedure created by this test
             }
         }
+    }
+
+    /**
+     * Retries a stored-procedure operation while it returns 404. A stored procedure that was just created can
+     * be temporarily not found when the request is routed to a region the metadata has not yet replicated to
+     * (possible on a multi-write account, where stored-procedure metadata is not covered by session
+     * read-your-write the way document operations are).
+     */
+    private CosmosStoredProcedureResponse withStoredProcedureReplicationRetry(Supplier<CosmosStoredProcedureResponse> operation) {
+        Duration deadline = Duration.ofSeconds(30);
+        long deadlineNanos = System.nanoTime() + deadline.toNanos();
+        CosmosException lastNotFound = null;
+
+        while (System.nanoTime() < deadlineNanos) {
+            try {
+                return operation.get();
+            } catch (CosmosException error) {
+                if (error.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND) {
+                    throw error;
+                }
+                lastNotFound = error;
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw new AssertionError("Interrupted while waiting for stored procedure replication.", interrupted);
+                }
+            }
+        }
+
+        throw new AssertionError("Stored procedure was not available to read within " + deadline, lastNotFound);
     }
 }
