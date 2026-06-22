@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.models.FeedRange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,6 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 // Only used in CFP when customer configure throughput control config
 // The main purpose of this class is to create corresponding throughput control group for each feed range
 public class FeedRangeThroughputControlConfigManager {
+    private static final Logger logger = LoggerFactory.getLogger(FeedRangeThroughputControlConfigManager.class);
 
     private final ThroughputControlGroupConfig throughputControlGroupConfig;
     private final ChangeFeedContextClient documentClient;
@@ -43,7 +46,14 @@ public class FeedRangeThroughputControlConfigManager {
 
         if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
             if (this.throughputControlGroupConfig.getThroughputBucket() != null) {
-                this.documentClient.getContainerClient().enableServerThroughputControlGroup(this.throughputControlGroupConfig);
+                try {
+                    this.documentClient.getContainerClient()
+                        .enableServerThroughputControlGroup(this.throughputControlGroupConfig);
+                } catch (Exception ex) {
+                    logger.warn(
+                        "Enable server throughput control group failed, continuing without throughput control.",
+                        ex);
+                }
             } else {
                 this.documentClient.getContainerClient().enableLocalThroughputControlGroup(this.throughputControlGroupConfig);
             }
