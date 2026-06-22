@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
@@ -24,13 +22,12 @@ import org.slf4j.LoggerFactory;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,13 +35,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * End-to-end tests for {@link SharedPartitionKeyRangeCacheRegistry}: spin up real
- * {@link CosmosAsyncClient} instances, do a few partition-key-routed operations
- * to populate the routing-map cache, and verify cross-client sharing semantics.
+ * {@link CosmosAsyncClient} instances, perform partition-key-routed operations to
+ * populate the routing-map cache, and verify cross-client sharing semantics.
  *
- * <p>These tests run against the configured Cosmos endpoint
- * ({@code TestConfigurations.HOST}). The regional-endpoint test is skipped when
- * the account exposes fewer than two readable locations (single-region accounts /
- * emulator).</p>
+ * <p>Runs against the endpoint configured in {@link TestConfigurations}. The
+ * regional-endpoint test is skipped when the account exposes fewer than two
+ * distinct readable locations (single-region accounts / emulator).</p>
  */
 public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
     private static final Logger logger = LoggerFactory.getLogger(SharedPartitionKeyRangeCacheE2ETest.class);
@@ -58,22 +54,19 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
     private CosmosAsyncContainer container;
     private String accountId;
 
-    public SharedPartitionKeyRangeCacheE2ETest() {
-        super();
+    @Factory(dataProvider = "simpleGatewayClient")
+    public SharedPartitionKeyRangeCacheE2ETest(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
     }
 
     @BeforeClass(groups = {"emulator", "fast"}, timeOut = SETUP_TIMEOUT)
     public void before() {
-        this.setupClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .buildAsyncClient();
+        this.setupClient = getClientBuilder().buildAsyncClient();
         this.database = getSharedCosmosDatabase(this.setupClient);
 
         String containerId = "pkr-share-e2e-" + UUID.randomUUID();
         CosmosContainerProperties properties =
-            new CosmosContainerProperties(containerId, "/pk");
+            new CosmosContainerProperties(containerId, "/mypk");
         this.database
             .createContainer(properties, ThroughputProperties.createManualThroughput(400))
             .block();
@@ -107,14 +100,14 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
         CosmosAsyncClient clientA = null;
         CosmosAsyncClient clientB = null;
         try {
-            clientA = newClient(TestConfigurations.HOST);
-            clientB = newClient(TestConfigurations.HOST);
+            clientA = getClientBuilder().buildAsyncClient();
+            clientB = getClientBuilder().buildAsyncClient();
 
-            // Trigger a PK-routed read on both clients to force the routing-map cache to populate.
-            String pk = UUID.randomUUID().toString();
-            createDoc(clientA, pk);
-            readDocSilently(clientA, pk);
-            readDocSilently(clientB, pk);
+            // Trigger PK-routed operations on both clients so the routing-map cache populates.
+            TestObject seed = TestObject.create();
+            createItem(clientA, seed);
+            readItemSilently(clientA, seed.getMypk());
+            readItemSilently(clientB, seed.getMypk());
 
             AsyncCacheNonBlocking<String, CollectionRoutingMap> storageA = routingMapStorageOf(clientA);
             AsyncCacheNonBlocking<String, CollectionRoutingMap> storageB = routingMapStorageOf(clientB);
@@ -128,7 +121,6 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
                 .as("Registry refcount for account [%s] must include both clients", this.accountId)
                 .isGreaterThanOrEqualTo(2);
 
-            // The cached value-map must contain the e2e container's RID after the reads.
             ConcurrentHashMap<String, ?> values =
                 ReflectionUtils.getValueMapNonBlockingCache(storageA);
             assertThat(values)
@@ -175,16 +167,17 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
 
         logger.info("Global endpoint: [{}], regional endpoint: [{}]", TestConfigurations.HOST, regionalEndpoint);
 
+        String originalEndpoint = TestConfigurations.HOST;
         CosmosAsyncClient globalClient = null;
         CosmosAsyncClient regionalClient = null;
         try {
-            globalClient = newClient(TestConfigurations.HOST);
-            regionalClient = newClient(regionalEndpoint);
+            globalClient = getClientBuilder().endpoint(originalEndpoint).buildAsyncClient();
+            regionalClient = getClientBuilder().endpoint(regionalEndpoint).buildAsyncClient();
 
-            String pk = UUID.randomUUID().toString();
-            createDoc(globalClient, pk);
-            readDocSilently(globalClient, pk);
-            readDocSilently(regionalClient, pk);
+            TestObject seed = TestObject.create();
+            createItem(globalClient, seed);
+            readItemSilently(globalClient, seed.getMypk());
+            readItemSilently(regionalClient, seed.getMypk());
 
             String globalAccountId = getAccountId(globalClient);
             String regionalAccountId = getAccountId(regionalClient);
@@ -207,74 +200,59 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
         } finally {
             safeClose(globalClient);
             safeClose(regionalClient);
+            // Restore the shared builder's endpoint so later tests aren't poisoned.
+            getClientBuilder().endpoint(originalEndpoint);
         }
     }
 
     // --- helpers ----------------------------------------------------------------
 
-    private CosmosAsyncClient newClient(String endpoint) {
-        return new CosmosClientBuilder()
-            .endpoint(endpoint)
-            .key(TestConfigurations.MASTER_KEY)
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .buildAsyncClient();
-    }
-
-    private void createDoc(CosmosAsyncClient client, String pk) {
+    private void createItem(CosmosAsyncClient client, TestObject item) {
         CosmosAsyncContainer c = client
             .getDatabase(this.database.getId())
             .getContainer(this.container.getId());
-        Map<String, Object> doc = new HashMap<>();
-        String id = UUID.randomUUID().toString();
-        doc.put("id", id);
-        doc.put("pk", pk);
-        c.createItem(doc, new PartitionKey(pk), new CosmosItemRequestOptions()).block();
+        c.createItem(item, new PartitionKey(item.getMypk()), new CosmosItemRequestOptions()).block();
     }
 
-    private void readDocSilently(CosmosAsyncClient client, String pk) {
-        // We don't care whether the doc exists for the cache to populate — only that the request
-        // resolves through the partition key range cache. Use a random id; ignore 404s.
+    private void readItemSilently(CosmosAsyncClient client, String pk) {
+        // The cache is populated by the resolve step regardless of whether the doc exists;
+        // we issue a random-id read and tolerate 404.
         CosmosAsyncContainer c = client
             .getDatabase(this.database.getId())
             .getContainer(this.container.getId());
         try {
-            CosmosItemResponse<Map> resp = c.readItem(
+            CosmosItemResponse<TestObject> resp = c.readItem(
                 UUID.randomUUID().toString(),
                 new PartitionKey(pk),
                 new CosmosItemRequestOptions(),
-                Map.class).block();
-            // 200 path
+                TestObject.class).block();
             assertThat(resp).isNotNull();
         } catch (CosmosException ex) {
             if (ex.getStatusCode() != 404) {
                 throw ex;
             }
-            // 404 expected (random id); routing-map cache still populated.
         }
     }
 
     private static AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapStorageOf(CosmosAsyncClient client) {
-        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        RxPartitionKeyRangeCache partitionKeyRangeCache =
-            ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
+        RxDocumentClientImpl rxDocumentClient =
+            (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        RxPartitionKeyRangeCache partitionKeyRangeCache = rxDocumentClient.getPartitionKeyRangeCache();
         return ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(partitionKeyRangeCache);
     }
 
     private static String getAccountId(CosmosAsyncClient client) {
-        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        GlobalEndpointManager gem = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-        DatabaseAccount account = gem.getLatestDatabaseAccount();
+        RxDocumentClientImpl rxDocumentClient =
+            (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        DatabaseAccount account = rxDocumentClient.getGlobalEndpointManager().getLatestDatabaseAccount();
         assertThat(account).as("globalEndpointManager.getLatestDatabaseAccount()").isNotNull();
         return account.getId();
     }
 
     private static List<String> readableRegionalEndpoints(CosmosAsyncClient client) {
-        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        GlobalEndpointManager gem = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-        DatabaseAccount account = gem.getLatestDatabaseAccount();
+        RxDocumentClientImpl rxDocumentClient =
+            (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client);
+        DatabaseAccount account = rxDocumentClient.getGlobalEndpointManager().getLatestDatabaseAccount();
         List<String> endpoints = new ArrayList<>();
         if (account == null) {
             return endpoints;
@@ -293,8 +271,8 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
 
     /**
      * The registry's {@code referenceCount} accessor is package-private (test-only).
-     * Reflect into it from this package; widening visibility for an e2e test would
-     * pollute the public surface of an {@code implementation} class.
+     * Reflect into it from this package; widening visibility for a test-only check
+     * would pollute the implementation class's surface.
      */
     private static int registryReferenceCount(String accountId) {
         try {
