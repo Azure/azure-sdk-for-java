@@ -63,19 +63,6 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final SharedPartitionKeyRangeCacheRegistry.ReleaseHandle releaseHandle;
 
-    /**
-     * Convenience constructor that resolves the registry endpoint key from
-     * {@code client.getServiceEndpoint()}. For real clients this routes through
-     * {@link SharedPartitionKeyRangeCacheRegistry} and shares the cache with
-     * sibling instances at the same endpoint. Tests using Mockito mocks where
-     * {@code getServiceEndpoint()} returns {@code null} fall through to an
-     * isolated cache. Production call sites should prefer the 3-arg ctor and
-     * pass an explicit endpoint.
-     */
-    public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
-        this(client, collectionCache, client == null ? null : client.getServiceEndpoint());
-    }
-
     public RxPartitionKeyRangeCache(
         RxDocumentClientImpl client,
         RxCollectionCache collectionCache,

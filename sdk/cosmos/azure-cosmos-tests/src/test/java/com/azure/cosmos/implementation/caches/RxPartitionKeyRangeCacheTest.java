@@ -43,7 +43,9 @@ public class RxPartitionKeyRangeCacheTest {
     public void before_test() {
         client = Mockito.mock(RxDocumentClientImpl.class);
         collectionCache = Mockito.mock(RxCollectionCache.class);
-        cache = new RxPartitionKeyRangeCache(client, collectionCache);
+        // Mockito mock returns null for getServiceEndpoint(); pass null explicitly
+        // to opt into an isolated cache for the original test-suite behavior.
+        cache = new RxPartitionKeyRangeCache(client, collectionCache, null);
     }
 
     @Test(groups = "unit")
@@ -407,8 +409,8 @@ public class RxPartitionKeyRangeCacheTest {
 
         int before = SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint);
 
-        // 2-arg ctor mirrors what RxDocumentClientImpl actually uses.
-        RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl);
+        // Mirrors what RxDocumentClientImpl actually uses: 3-arg ctor with the service endpoint.
+        RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl, endpoint);
         try {
             assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
                 .isEqualTo(before + 1);
