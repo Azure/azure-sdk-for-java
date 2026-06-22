@@ -36,8 +36,9 @@ public class FeedRangeThroughputControlConfigManager {
 
         // for pkRange leases, it has only been used to support for split
         // the lease feed range and partition key range is always a 1:1 mapping
-        // throughput control internally will divide the target RU across all pk ranges
-        // so all pk ranges can use the same local throughput control group
+        // for local throughput control, throughput control internally will divide the target RU across all pk ranges
+        // so all pk ranges can use the same local throughput control group. Throughput bucket uses server
+        // throughput control and can also share the same group across all pk ranges.
         // Note: if global throughput control be added in future, then we will need to create one group per pkRange
 
         if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
