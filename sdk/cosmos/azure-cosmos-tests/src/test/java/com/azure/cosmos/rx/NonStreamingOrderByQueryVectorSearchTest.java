@@ -102,7 +102,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         database.createContainer(containerProperties).block();
         largeDataContainer = database.getContainer(largeDataContainerId);
 
-        waitForCollectionToBeAvailableToRead(largeDataContainer);
+        waitForCollectionToBeAvailableToRead(largeDataContainer, /* probeClient */ null);
 
         for (Document doc : getVectorDocs()) {
             flatIndexContainer.createItem(doc).block();

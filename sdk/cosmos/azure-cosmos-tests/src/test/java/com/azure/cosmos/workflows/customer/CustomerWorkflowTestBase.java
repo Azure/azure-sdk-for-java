@@ -88,7 +88,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
 
             this.client = clientBuilder.buildAsyncClient();
             this.container = getSharedSinglePartitionCosmosContainer(this.client);
-            waitForCollectionToBeAvailableToRead(this.container);
+            waitForCollectionToBeAvailableToRead(this.container, /* probeClient */ null);
         } finally {
             safeClose(discoveryClient);
         }
@@ -122,7 +122,7 @@ public abstract class CustomerWorkflowTestBase extends TestSuiteBase {
                 .contentResponseOnWriteEnabled(true)
                 .buildAsyncClient();
             this.container = getSharedSinglePartitionCosmosContainer(this.client);
-            waitForCollectionToBeAvailableToRead(this.container);
+            waitForCollectionToBeAvailableToRead(this.container, /* probeClient */ null);
         } finally {
             safeClose(discoveryClient);
         }

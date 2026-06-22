@@ -88,7 +88,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         partitionKeyDef.setPaths(paths);
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         database.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
-        waitForCollectionToBeAvailableToRead(database.getContainer(containerProperties.getId()));
+        waitForCollectionToBeAvailableToRead(database.getContainer(containerProperties.getId()), /* probeClient */ null);
         return database.getContainer(containerProperties.getId());
     }
 }

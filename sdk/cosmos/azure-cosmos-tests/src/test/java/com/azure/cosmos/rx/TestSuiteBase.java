@@ -552,6 +552,18 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
+        return createCollection(database, cosmosContainerProperties, options, throughput, /* probeClient */ null);
+    }
+
+    /**
+     * Overload of {@link #createCollection(CosmosAsyncDatabase, CosmosContainerProperties, CosmosContainerRequestOptions, int)}
+     * that runs the post-creation collection-readiness probe using {@code probeClient} instead of the caller's
+     * client. Tests that depend on the caller's collection cache remaining stale after a recreate (for example
+     * {@code ContainerCreateDeleteWithSameNameTest}) pass a throwaway client here so the probe does not refresh
+     * their main client's cache. When {@code probeClient} is null the caller's client is used.
+     */
+    public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
+                                                        CosmosContainerRequestOptions options, int throughput, CosmosAsyncClient probeClient) {
         database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
@@ -571,24 +583,29 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .getCosmosAsyncClientAccessor()
             .getPreferredRegions(client).size() > 1;
         if (throughput > 6000 || isMultiRegional) {
-            waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()));
+            waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
         }
 
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
-    protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container) {
+    protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
         // Creating a container is asynchronous - especially on multi-region accounts the new collection can
         // take time to become readable in the non-write regions. Until then, reads routed to those regions fail
         // with 404/1013 ("Collection is not yet available for read"). Instead of a fixed sleep, verify - against
         // every non-primary region of the account - that the collection is readable, probing each region (by
         // excluding all other regions) with exponential back-off until it succeeds, bounded to two minutes total.
-        CosmosAsyncClient client = ImplementationBridgeHelpers
-            .CosmosAsyncDatabaseHelper
-            .getCosmosAsyncDatabaseAccessor()
-            .getCosmosAsyncClient(container.getDatabase());
-
+        // The probe is issued through probeClient when provided (so a throwaway client does not warm the caller's
+        // caches); otherwise the container's own client is used.
+        CosmosAsyncClient client = probeClient != null
+            ? probeClient
+            : ImplementationBridgeHelpers
+                .CosmosAsyncDatabaseHelper
+                .getCosmosAsyncDatabaseAccessor()
+                .getCosmosAsyncClient(container.getDatabase());
         DatabaseAccount databaseAccount = getLatestDatabaseAccount(client);
+        CosmosAsyncContainer probeContainer =
+            client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
 
         // Use the account's regions (not the client's preferred regions, which may be a subset).
         List<String> allRegions = new ArrayList<>();
@@ -615,7 +632,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         if (nonPrimaryRegions.isEmpty()) {
             // Single-region account: there is no non-primary region to verify, but the collection still needs
             // to be readable (for example while physical partitions are provisioned).
-            awaitContainerReadableInRegion(container, null, Collections.emptyList(), deadlineNanos, maxWait);
+            awaitContainerReadableInRegion(probeContainer, null, Collections.emptyList(), deadlineNanos, maxWait);
             return;
         }
 
@@ -626,7 +643,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .stream()
                 .filter(other -> !other.equalsIgnoreCase(target))
                 .collect(Collectors.toList());
-            awaitContainerReadableInRegion(container, region, excludedRegions, deadlineNanos, maxWait);
+            awaitContainerReadableInRegion(probeContainer, region, excludedRegions, deadlineNanos, maxWait);
         }
     }
 
