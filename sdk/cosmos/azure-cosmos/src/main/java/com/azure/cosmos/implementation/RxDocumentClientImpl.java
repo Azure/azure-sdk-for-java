@@ -925,7 +925,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.resetSessionTokenRetryPolicy = new ResetSessionTokenRetryPolicyFactory(this.sessionContainer, this.collectionCache, this.retryPolicy);
 
             this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(RxDocumentClientImpl.this,
-                collectionCache, this.serviceEndpoint);
+                collectionCache, databaseAccountSnapshot.getId());
 
             updateGatewayProxy();
             updateThinProxy();

@@ -32,7 +32,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,9 +47,10 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  *
  * <p>The routing-map storage is obtained from {@link SharedPartitionKeyRangeCacheRegistry}
- * keyed by the service endpoint URI; multiple clients targeting the same endpoint
- * share it. {@link #close()} releases this instance's reference. The fetching
- * logic (network call, collection resolution, diagnostics) remains per-client.</p>
+ * keyed by the Cosmos database account id; multiple clients targeting the same
+ * account share it. {@link #close()} releases this instance's reference. The
+ * fetching logic (network call, collection resolution, diagnostics) remains
+ * per-client.</p>
  **/
 public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closeable {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
@@ -59,18 +59,18 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
-    private final URI sharedCacheEndpointKey;
+    private final String sharedCacheAccountId;
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final SharedPartitionKeyRangeCacheRegistry.ReleaseHandle releaseHandle;
 
     public RxPartitionKeyRangeCache(
         RxDocumentClientImpl client,
         RxCollectionCache collectionCache,
-        URI serviceEndpoint) {
+        String accountId) {
 
-        this.sharedCacheEndpointKey = serviceEndpoint;
+        this.sharedCacheAccountId = accountId;
         SharedPartitionKeyRangeCacheRegistry.AcquireResult acquired =
-            SharedPartitionKeyRangeCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey, this);
+            SharedPartitionKeyRangeCacheRegistry.getInstance().acquire(this.sharedCacheAccountId, this);
         this.routingMapCache = acquired.cache;
         this.releaseHandle = acquired.releaseHandle;
         this.client = client;
@@ -83,7 +83,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
     public void close() {
         if (closed.compareAndSet(false, true)) {
             SharedPartitionKeyRangeCacheRegistry.getInstance().release(
-                this.sharedCacheEndpointKey, this.routingMapCache, this.releaseHandle);
+                this.sharedCacheAccountId, this.routingMapCache, this.releaseHandle);
         }
     }
 

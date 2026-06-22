@@ -8,16 +8,16 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Process-wide registry of {@link AsyncCacheNonBlocking} instances holding
- * partition-key-range routing maps, keyed by service endpoint URI. Multiple
- * {@code CosmosAsyncClient} instances targeting the same account share a single
- * cache; the entry is refcounted and evicted when the last caller releases.
+ * partition-key-range routing maps, keyed by Cosmos database account id.
+ * Multiple {@code CosmosAsyncClient} instances targeting the same account
+ * share a single cache; the entry is refcounted and evicted when the last
+ * caller releases.
  *
  * <p>An unreleased caller is cleaned up by registering a one-shot action with
  * {@link ReferenceManager#INSTANCE}; when the owner becomes phantom-reachable
@@ -31,7 +31,7 @@ public final class SharedPartitionKeyRangeCacheRegistry {
 
     private static final SharedPartitionKeyRangeCacheRegistry INSTANCE = new SharedPartitionKeyRangeCacheRegistry();
 
-    private final ConcurrentHashMap<URI, Entry> entries = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Entry> entries = new ConcurrentHashMap<>();
 
     private SharedPartitionKeyRangeCacheRegistry() {
     }
@@ -41,24 +41,24 @@ public final class SharedPartitionKeyRangeCacheRegistry {
     }
 
     /**
-     * Returns the shared cache for {@code endpoint} (creating it if needed) and
-     * bumps the refcount. Returns an isolated cache when {@code endpoint} is
-     * {@code null} or sharing is disabled.
+     * Returns the shared cache for {@code accountId} (creating it if needed) and
+     * bumps the refcount. Returns an isolated cache when {@code accountId} is
+     * {@code null}/blank or sharing is disabled.
      *
      * <p>If {@code owner} is non-null, a deferred cleanup action is registered
      * so the refcount is decremented automatically if {@code owner} is GC'd
-     * without calling {@link #release(URI, AsyncCacheNonBlocking, ReleaseHandle)}.</p>
+     * without calling {@link #release(String, AsyncCacheNonBlocking, ReleaseHandle)}.</p>
      */
-    public AcquireResult acquire(URI endpoint, Object owner) {
-        if (endpoint == null || !Configs.isSharedPartitionKeyRangeCacheEnabled()) {
+    public AcquireResult acquire(String accountId, Object owner) {
+        if (accountId == null || accountId.isEmpty() || !Configs.isSharedPartitionKeyRangeCacheEnabled()) {
             return new AcquireResult(new AsyncCacheNonBlocking<>(), null);
         }
 
-        Entry entry = entries.compute(endpoint, (key, existing) -> {
+        Entry entry = entries.compute(accountId, (key, existing) -> {
             if (existing == null) {
                 Entry created = new Entry();
                 created.refCount.set(1);
-                logger.debug("Created shared partition key range cache for endpoint [{}]", key);
+                logger.debug("Created shared partition key range cache for account [{}]", key);
                 return created;
             }
             existing.refCount.incrementAndGet();
@@ -69,16 +69,16 @@ public final class SharedPartitionKeyRangeCacheRegistry {
         if (owner != null) {
             // The cleanup lambda MUST NOT capture `owner`, otherwise the owner can
             // never become phantom-reachable and the cleanup will never run.
-            final URI capturedEndpoint = endpoint;
+            final String capturedAccountId = accountId;
             final AsyncCacheNonBlocking<String, CollectionRoutingMap> capturedCache = entry.cache;
             final ReleaseHandle h = new ReleaseHandle();
             ReferenceManager.INSTANCE.register(owner, () -> {
                 if (h.fulfill()) {
                     logger.warn(
-                        "Leaked RxPartitionKeyRangeCache for endpoint [{}] released by"
+                        "Leaked RxPartitionKeyRangeCache for account [{}] released by"
                             + " ReferenceManager; always close the CosmosClient to avoid this.",
-                        capturedEndpoint);
-                    release(capturedEndpoint, capturedCache);
+                        capturedAccountId);
+                    release(capturedAccountId, capturedCache);
                 }
             });
             handle = h;
@@ -91,28 +91,28 @@ public final class SharedPartitionKeyRangeCacheRegistry {
      * becomes a no-op) and decrements the refcount. If the handle was already
      * fulfilled by the deferred cleanup, this call is a no-op.
      */
-    public void release(URI endpoint,
+    public void release(String accountId,
                         AsyncCacheNonBlocking<String, CollectionRoutingMap> cache,
                         ReleaseHandle handle) {
         if (handle != null && !handle.fulfill()) {
             return;
         }
-        release(endpoint, cache);
+        release(accountId, cache);
     }
 
     /** Refcount decrement; evicts the entry at zero. */
-    public void release(URI endpoint, AsyncCacheNonBlocking<String, CollectionRoutingMap> cache) {
-        if (endpoint == null || cache == null) {
+    public void release(String accountId, AsyncCacheNonBlocking<String, CollectionRoutingMap> cache) {
+        if (accountId == null || accountId.isEmpty() || cache == null) {
             return;
         }
 
-        entries.compute(endpoint, (key, existing) -> {
+        entries.compute(accountId, (key, existing) -> {
             if (existing == null || existing.cache != cache) {
                 return existing;
             }
             int remaining = existing.refCount.decrementAndGet();
             if (remaining <= 0) {
-                logger.debug("Evicting shared partition key range cache for endpoint [{}]", key);
+                logger.debug("Evicting shared partition key range cache for account [{}]", key);
                 return null;
             }
             return existing;
@@ -120,17 +120,17 @@ public final class SharedPartitionKeyRangeCacheRegistry {
     }
 
     /** Test-only. */
-    int registeredEndpointCount() {
+    int registeredAccountCount() {
         return entries.size();
     }
 
     /** Test-only. */
-    int referenceCount(URI endpoint) {
-        Entry entry = entries.get(endpoint);
+    int referenceCount(String accountId) {
+        Entry entry = entries.get(accountId);
         return entry == null ? 0 : entry.refCount.get();
     }
 
-    /** Result of {@link #acquire(URI, Object)}: the cache plus a release handle (null when isolated). */
+    /** Result of {@link #acquire(String, Object)}: the cache plus a release handle (null when isolated). */
     public static final class AcquireResult {
         public final AsyncCacheNonBlocking<String, CollectionRoutingMap> cache;
         public final ReleaseHandle releaseHandle;
