@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.BetaToolboxesImpl;
 import com.azure.ai.agents.implementation.models.CreateToolboxVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateToolboxRequest;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxDetails;
@@ -31,6 +32,7 @@ import java.util.Map;
  * Initializes a new instance of the synchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaToolboxesClient {
 
     @Generated
@@ -61,7 +63,7 @@ public final class BetaToolboxesClient {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -93,7 +95,7 @@ public final class BetaToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -244,7 +246,7 @@ public final class BetaToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -294,7 +296,7 @@ public final class BetaToolboxesClient {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [

@@ -9,6 +9,7 @@ import com.azure.ai.agents.implementation.MultipartFormDataHelper;
 import com.azure.ai.agents.implementation.SessionLogStreamHelper;
 import com.azure.ai.agents.implementation.models.CreateAgentFromCodeContent;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -47,6 +48,7 @@ import com.azure.core.util.IterableStream;
  * Initializes a new instance of the synchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaAgentsClient {
 
     @Generated

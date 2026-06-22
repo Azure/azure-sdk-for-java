@@ -4,6 +4,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaRedTeamsImpl;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.RedTeam;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -27,6 +28,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
+@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
 public final class BetaRedTeamsAsyncClient {
 
@@ -48,7 +50,7 @@ public final class BetaRedTeamsAsyncClient {
      *
      * Retrieves the specified redteam and its configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -99,7 +101,7 @@ public final class BetaRedTeamsAsyncClient {
      *
      * Returns the redteams available in the current project.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -146,7 +148,7 @@ public final class BetaRedTeamsAsyncClient {
      *
      * Submits a new redteam run for execution with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -174,9 +176,9 @@ public final class BetaRedTeamsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

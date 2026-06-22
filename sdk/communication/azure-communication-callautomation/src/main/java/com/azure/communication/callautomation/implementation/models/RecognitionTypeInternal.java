@@ -9,8 +9,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Determines the sub-type of the recognize operation.
- * In case of cancel operation the this field is not set and is returned empty.
+ * Recognition type determines the sub-type of the recognition operation
+ * Possible values will be Dtmf, Speech, or Choices.
  */
 public final class RecognitionTypeInternal extends ExpandableStringEnum<RecognitionTypeInternal> {
     /**

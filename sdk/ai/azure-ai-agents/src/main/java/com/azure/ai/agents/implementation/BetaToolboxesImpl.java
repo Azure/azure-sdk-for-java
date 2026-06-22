@@ -262,7 +262,7 @@ public final class BetaToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -294,7 +294,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -345,7 +345,7 @@ public final class BetaToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -377,7 +377,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -717,7 +717,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -793,7 +793,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -862,7 +862,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -935,7 +935,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -984,7 +984,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [
@@ -1037,7 +1037,7 @@ public final class BetaToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
      *         }
      *     ]
      *     skills (Optional): [

@@ -12,6 +12,7 @@ import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.ListMemoriesOptions;
 import com.azure.ai.agents.models.MemoryItem;
 import com.azure.ai.agents.models.MemoryItemKind;
@@ -51,6 +52,7 @@ import reactor.core.publisher.Mono;
  * Initializes a new instance of the asynchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaMemoryStoresAsyncClient {
 
     @Generated
