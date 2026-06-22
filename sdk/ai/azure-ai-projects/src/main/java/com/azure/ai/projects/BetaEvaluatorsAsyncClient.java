@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.implementation.BetaEvaluatorsImpl;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.EvaluatorCredentialInput;
 import com.azure.ai.projects.models.EvaluatorGenerationJob;
@@ -36,6 +37,7 @@ import reactor.core.publisher.Mono;
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaEvaluatorsAsyncClient {
 
     @Generated

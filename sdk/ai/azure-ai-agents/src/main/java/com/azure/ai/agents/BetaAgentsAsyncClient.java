@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.BetaAgentsImpl;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.OptimizationJob;
 import com.azure.ai.agents.models.OptimizationJobListItem;
@@ -32,6 +33,7 @@ import reactor.core.publisher.Mono;
  * Initializes a new instance of the asynchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaAgentsAsyncClient {
 
     @Generated

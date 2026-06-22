@@ -4,6 +4,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaSchedulesImpl;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.Schedule;
 import com.azure.ai.projects.models.ScheduleRun;
 import com.azure.ai.projects.models.ScheduleTaskType;
@@ -24,6 +25,7 @@ import com.azure.core.util.BinaryData;
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaSchedulesClient {
 
     @Generated

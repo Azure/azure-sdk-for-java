@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.BetaAgentsImpl;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.OptimizationJob;
 import com.azure.ai.agents.models.OptimizationJobListItem;
@@ -26,6 +27,7 @@ import com.azure.core.util.BinaryData;
  * Initializes a new instance of the synchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaAgentsClient {
 
     @Generated
