@@ -231,7 +231,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private void handleSessionExpiringHeader(HttpResponse response) {
         String authInfo = response.getHeaderValue(X_MS_AUTH_INFO);
         if (authInfo != null && authInfo.contains(SESSION_EXPIRING)) {
-            sessionCredentialCache.refreshSessionInBackground();
+            sessionCredentialCache.forceRefreshSessionInBackground();
         }
     }
 

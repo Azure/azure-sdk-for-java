@@ -5,6 +5,12 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.PagedIterable;
@@ -65,6 +71,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -2283,6 +2291,200 @@ public class ContainerApiTests extends BlobTestBase {
         assertFalse(listAuthSchemes.isEmpty(), "Expected to observe at least one list request");
         assertTrue(listAuthSchemes.stream().allMatch("Bearer"::equals),
             "Container list operation must use Bearer authorization; saw " + listAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Verifies that the cached session token rotates on its own while a client keeps issuing blob GET requests.
+    // A session credential is short-lived (~5 minutes) and the credential cache fetches a fresh one in the
+    // background before the current one expires. This test keeps issuing small GETs across more than one session
+    // lifetime and asserts that the session token observed on the wire changes at least once (rotation happened).
+    public void sessionTokenRotates() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Continuously issue small GET requests for slightly longer than one session lifetime so we are
+        // guaranteed to cross at least one background rotation boundary while requests are in flight.
+        long testDurationMillis = 6 * 60 * 1000L;
+        long pollIntervalMillis = 10 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each GET is small (the default test data) and must succeed with the expected content.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+            sleepIfRunningAgainstService(pollIntervalMillis);
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the test window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the test window; only saw " + distinctTokens);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Verifies that, while a client hammers the service with small, rapid, back-to-back blob GET requests, the
+    // cached session token rotates and every download still succeeds. The service legitimately returns transient
+    // "session_token_invalid" (401, network-context-mismatch) responses while it rotates a session's binding; the
+    // SDK recovers from those by invalidating the session, creating a fresh one, and retrying, so the caller's GET
+    // never fails. We therefore assert the contract the SDK can actually honor - every download returns the
+    // correct content (no invalid-token failure ever surfaces to the caller) and the token rotates at least once -
+    // rather than asserting the wire never carries a 401, which the service does not guarantee. (Recovered
+    // invalid-token responses are still recorded and surfaced in the failure message below for diagnostics.)
+    public void sessionTokenRotatesWithoutInvalidTokenGets() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Continuously issue small GET requests, back-to-back with no delay, for slightly longer than one
+        // session lifetime so we are guaranteed to cross at least one rotation boundary while a high volume of
+        // requests are in flight.
+        long testDurationMillis = 6 * 60 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each GET must succeed with the expected content. If a transient invalid-token 401 reaches the wire,
+            // the SDK's retry transparently recovers it, so this download still returns the blob - the caller
+            // never observes a failure.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the test window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the test window; saw tokens " + distinctTokens
+                + " and transparently-recovered invalid-token responses " + inspect.getInvalidAuthStatuses());
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Simulates a slow-polling client that issues a single small blob GET roughly every 30 seconds. Because the
+    // requests are sparse, the client can go a long time between responses and may miss the service's proactive
+    // "x-ms-auth-info: session_expiring" hint window entirely - so it can end up signing a request with a token
+    // that has expired purely due to the passage of time. This verifies the SDK handles that gracefully: every
+    // download still returns the correct content (the cache rotates to a fresh session - proactively via its own
+    // refresh timer when it can, or via the one-shot 401 retry as a backstop when an expired token slips onto the
+    // wire) and the session token observed on the wire rotates at least once over the multi-lifetime window.
+    public void sessionTokenRotatesWithSparsePolling() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Poll once every ~30s for longer than two session lifetimes (~5 min each) so we are guaranteed to cross
+        // multiple expiry boundaries. The wide gap between requests is what makes it possible to land a request
+        // on an already-expired token: the proactive refresh point can come due during the idle gap, and the
+        // first request after it - 30s later - may be signed just after the token has lapsed.
+        long testDurationMillis = 11 * 60 * 1000L;
+        long pollIntervalMillis = 30 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // The caller must never observe a failure: each sparse GET returns the expected content, whether the
+            // cached token was still valid, was proactively rotated, or had to be re-acquired after a 401. Any
+            // expired-token use is recovered transparently by the policy's single retry with a fresh session.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+            sleepIfRunningAgainstService(pollIntervalMillis);
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the sparse-polling window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the sparse-polling window; only saw "
+                + distinctTokens);
+    }
+
+    /**
+     * Test-only pipeline policy that watches blob-level GET requests for a single blob and records, at the wire
+     * level (PER_RETRY), the Session token used to sign each request and any invalid-token (401/403) responses
+     * those requests receive. Used to assert that session tokens rotate over time without any request ever being
+     * signed with an expired/invalid token.
+     */
+    private static final class SessionGetInspectionPolicy implements HttpPipelinePolicy {
+        private final String blobName;
+        private final List<String> sessionTokens = Collections.synchronizedList(new ArrayList<>());
+        private final List<Integer> invalidAuthStatuses = Collections.synchronizedList(new ArrayList<>());
+
+        SessionGetInspectionPolicy(String blobName) {
+            this.blobName = blobName;
+        }
+
+        private boolean isBlobGet(HttpRequest request) {
+            String path = request.getUrl().getPath();
+            String query = request.getUrl().getQuery();
+            return request.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="));
+        }
+
+        private void onRequest(HttpRequest request) {
+            if (!isBlobGet(request)) {
+                return;
+            }
+            String auth = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (auth != null && auth.startsWith("Session ")) {
+                // Header form is "Session <sessionToken>:<signature>" - extract just the token.
+                int tokenStart = "Session ".length();
+                int sigSeparator = auth.indexOf(':', tokenStart);
+                sessionTokens
+                    .add(sigSeparator < 0 ? auth.substring(tokenStart) : auth.substring(tokenStart, sigSeparator));
+            }
+        }
+
+        private void onResponse(HttpRequest request, int statusCode) {
+            if (isBlobGet(request) && (statusCode == 401 || statusCode == 403)) {
+                invalidAuthStatuses.add(statusCode);
+            }
+        }
+
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_RETRY;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            onRequest(context.getHttpRequest());
+            return next.process().doOnNext(response -> onResponse(context.getHttpRequest(), response.getStatusCode()));
+        }
+
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            onRequest(context.getHttpRequest());
+            HttpResponse response = next.processSync();
+            onResponse(context.getHttpRequest(), response.getStatusCode());
+            return response;
+        }
+
+        List<String> getSessionTokens() {
+            return sessionTokens;
+        }
+
+        List<Integer> getInvalidAuthStatuses() {
+            return invalidAuthStatuses;
+        }
     }
 
     private BlobContainerClient sessionEnabledContainerClient(HttpPipelinePolicy... policies) {

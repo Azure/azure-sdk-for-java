@@ -6,6 +6,7 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -20,6 +21,7 @@ final class StorageSessionCredentialCache {
     private static final double JITTER_WINDOW_START_RATIO = 0.8d;
 
     private final BlobSessionClient sessionClient;
+    private final Clock clock;
     private final Object creationLock = new Object();
     private volatile StorageSessionCredential credential;
     private volatile OffsetDateTime nextRefreshTime;
@@ -27,11 +29,16 @@ final class StorageSessionCredentialCache {
     private volatile Mono<StorageSessionCredential> inflightCreation;
 
     StorageSessionCredentialCache(BlobSessionClient sessionClient) {
+        this(sessionClient, Clock.systemUTC());
+    }
+
+    StorageSessionCredentialCache(BlobSessionClient sessionClient, Clock clock) {
         this.sessionClient = Objects.requireNonNull(sessionClient, "'sessionClient' cannot be null.");
+        this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 
     Mono<StorageSessionCredential> getValidSessionAsync() {
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
         StorageSessionCredential current = credential;
         if (isUsable(current, now)) {
             if (isRefreshDue(now)) {
@@ -44,7 +51,7 @@ final class StorageSessionCredentialCache {
     }
 
     StorageSessionCredential getValidSessionSync() {
-        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now(clock);
         StorageSessionCredential current = credential;
         if (isUsable(current, now)) {
             if (isRefreshDue(now)) {
@@ -64,7 +71,7 @@ final class StorageSessionCredentialCache {
 
         synchronized (creationLock) {
             current = credential;
-            now = OffsetDateTime.now();
+            now = OffsetDateTime.now(clock);
             if (isUsable(current, now)) {
                 if (isRefreshDue(now)) {
                     refreshSessionInBackground();
@@ -91,7 +98,7 @@ final class StorageSessionCredentialCache {
 
     void refreshSessionInBackground() {
         synchronized (creationLock) {
-            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime now = OffsetDateTime.now(clock);
             if (!isUsable(credential, now) || !isRefreshDue(now) || refreshing) {
                 return;
             }
@@ -102,9 +109,19 @@ final class StorageSessionCredentialCache {
         }, error -> LOGGER.warning("Background session refresh failed.", error));
     }
 
+    void forceRefreshSessionInBackground() {
+        synchronized (creationLock) {
+            if (isUsable(credential, OffsetDateTime.now(clock))) {
+                nextRefreshTime = OffsetDateTime.now(clock);
+            }
+        }
+
+        refreshSessionInBackground();
+    }
+
     private Mono<StorageSessionCredential> startSessionCreationAsync() {
         synchronized (creationLock) {
-            OffsetDateTime now = OffsetDateTime.now();
+            OffsetDateTime now = OffsetDateTime.now(clock);
             StorageSessionCredential current = credential;
             if (isUsable(current, now) && !isRefreshDue(now)) {
                 return Mono.just(current);
@@ -133,7 +150,7 @@ final class StorageSessionCredentialCache {
 
     private void setActiveCredential(StorageSessionCredential newCredential) {
         credential = newCredential;
-        nextRefreshTime = computeRefreshTime(OffsetDateTime.now(), newCredential.getExpiration());
+        nextRefreshTime = computeRefreshTime(OffsetDateTime.now(clock), newCredential.getExpiration());
         refreshing = false;
     }
 
