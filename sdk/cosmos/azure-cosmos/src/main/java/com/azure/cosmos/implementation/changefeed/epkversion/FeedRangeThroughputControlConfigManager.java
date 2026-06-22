@@ -93,10 +93,19 @@ public class FeedRangeThroughputControlConfigManager {
         checkNotNull(feedRange, "Argument 'feedRange' can not be null");
 
         if (this.throughputControlGroupConfig.getThroughputBucket() != null) {
-            if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
-                this.documentClient.getContainerClient().enableServerThroughputControlGroup(this.throughputControlGroupConfig);
-            }
-            return Mono.just(this.throughputControlGroupConfig);
+            return Mono.defer(() -> {
+                if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
+                    try {
+                        this.documentClient.getContainerClient()
+                            .enableServerThroughputControlGroup(this.throughputControlGroupConfig);
+                    } catch (Exception ex) {
+                        logger.warn(
+                            "Enable server throughput control group failed, continuing without throughput control.",
+                            ex);
+                    }
+                }
+                return Mono.just(this.throughputControlGroupConfig);
+            });
         }
 
         ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange =
