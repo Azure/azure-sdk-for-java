@@ -2528,6 +2528,50 @@ public final class AgentsClient {
     }
 
     /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent.
+     * Returns the previously-uploaded zip (`application/zip`).
+     *
+     * If `agent_version` is supplied, returns that version's code zip; otherwise
+     * returns the latest version's code zip.
+     *
+     * The SHA-256 digest of the returned bytes matches the `content_hash` on the
+     * resolved version's `code_configuration`.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>agent_version</td><td>String</td><td>No</td><td>The version of the agent whose code zip should be
+     * downloaded.
+     * If omitted, the latest version's code zip is returned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param filePath The path to the file where the downloaded code zip will be saved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadAgentCodeWithResponse(String agentName, Path filePath, RequestOptions requestOptions) throws IOException {
+        Response<BinaryData> response = this.serviceClient.downloadAgentCodeWithResponse(agentName, requestOptions);
+        response.getValue().writeTo(new FileOutputStream(filePath.toFile()));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+    }
+
+    /**
      * Create a session
      *
      * Creates a new session for an agent endpoint.
@@ -2946,6 +2990,46 @@ public final class AgentsClient {
     public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
         RequestOptions requestOptions) {
         return this.serviceClient.downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
+    }
+
+    /**
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path as a binary stream.
+     * The path is resolved relative to the session home directory.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param filePath path to disc in file where to save the downloaded file.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+                                                                Path filePath, RequestOptions requestOptions) throws IOException {
+        Response<BinaryData> response = this.serviceClient.downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
+        response.getValue().writeTo(new FileOutputStream(filePath.toFile()));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
 
     /**
@@ -3596,6 +3680,38 @@ public final class AgentsClient {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
         return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions).getValue()
+            .toObject(SessionFileWriteResult.class);
+    }
+
+    /**
+     * Upload a session file
+     *
+     * Uploads binary file content to the specified path in the session sandbox.
+     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The destination file path within the sandbox, relative to the session home directory.
+     * @param filePath path to file on disc.
+     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
+     * conversations, sessions) to a specific end user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from uploading a file to a session sandbox.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path,
+                                                    Path filePath, String userIsolationKey) {
+        // Generated convenience method for uploadSessionFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (userIsolationKey != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        }
+        return uploadSessionFileWithResponse(agentName, agentSessionId, path, BinaryData.fromFile(filePath), requestOptions).getValue()
             .toObject(SessionFileWriteResult.class);
     }
 
