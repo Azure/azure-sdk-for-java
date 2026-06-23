@@ -208,6 +208,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
 
         CosmosItemResponse<ObjectNode> createResponse = this.container.createItem(item);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         return new TestItem(id, partitionKey);
     }
 
