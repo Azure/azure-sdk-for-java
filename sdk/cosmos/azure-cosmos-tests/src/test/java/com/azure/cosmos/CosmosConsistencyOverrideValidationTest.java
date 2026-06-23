@@ -44,6 +44,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String MULTIPLE_WRITE_REGIONS_PROPERTY =
         "COSMOS.CONSISTENCY_OVERRIDE_MULTIPLE_WRITE_REGIONS_ENABLED";
+    private static final String EMULATOR_VNEXT_ENABLED_PROPERTY = "COSMOS.EMULATOR_VNEXT_ENABLED";
     private static final String HTTP2_ENABLED_PROPERTY = "COSMOS.HTTP2_ENABLED";
     private static final String THINCLIENT_ENABLED_PROPERTY = "COSMOS.THINCLIENT_ENABLED";
 
@@ -78,9 +79,12 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
     public static Object[][] clientBuildersForConsistencyOverrides() {
         boolean multipleWriteRegionsEnabled = Boolean.parseBoolean(
             System.getProperty(MULTIPLE_WRITE_REGIONS_PROPERTY, "false"));
+        boolean emulatorVNextRun = isEmulatorVNextRun();
 
         List<Object[]> providers = new ArrayList<>();
-        addDirectClientBuilder(providers, multipleWriteRegionsEnabled);
+        if (!emulatorVNextRun) {
+            addDirectClientBuilder(providers, multipleWriteRegionsEnabled);
+        }
 
         addGatewayClientBuilder(
             providers,
@@ -89,7 +93,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
             false,
             false);
 
-        if (TestConfigurations.HOST.contains(ROUTING_GATEWAY_EMULATOR_PORT) && !isEmulatorVNextRun()) {
+        if (TestConfigurations.HOST.contains(ROUTING_GATEWAY_EMULATOR_PORT) && !emulatorVNextRun) {
             String computeGatewayEndpoint = TestConfigurations.HOST.replace(
                 ROUTING_GATEWAY_EMULATOR_PORT,
                 COMPUTE_GATEWAY_EMULATOR_PORT);
@@ -101,7 +105,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
                 false);
         }
 
-        if (!isEmulatorGatewayEndpoint(TestConfigurations.HOST)) {
+        if (!emulatorVNextRun && !isEmulatorGatewayEndpoint(TestConfigurations.HOST)) {
             addGatewayClientBuilder(
                 providers,
                 TestConfigurations.HOST,
@@ -530,7 +534,8 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
     }
 
     private static boolean isEmulatorVNextRun() {
-        return containsEmulatorVNextGroup(System.getProperty("test.groups"))
+        return Boolean.parseBoolean(System.getProperty(EMULATOR_VNEXT_ENABLED_PROPERTY, "false"))
+            || containsEmulatorVNextGroup(System.getProperty("test.groups"))
             || containsEmulatorVNextGroup(System.getProperty("groups"))
             || containsEmulatorVNextGroup(System.getProperty("includedGroups"))
             || TestConfigurations.HOST.startsWith("http://");
