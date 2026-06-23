@@ -321,6 +321,9 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionKeyRangeGoneException(PartitionKeyRangeGoneException exception) {
+            // PartitionKeyRangeGoneException is generally treated as non-retriable, but when it is thrown while resolving
+            // addresses in direct mode it typically indicates stale routing/partition state; clear the cached target and
+            // force a routing-map (partition key range) refresh to allow the request to be re-routed.
             this.request.requestContext.resolvedPartitionKeyRange = null;
             this.request.requestContext.quorumSelectedLSN = -1;
             this.request.requestContext.quorumSelectedStoreResponse = null;
