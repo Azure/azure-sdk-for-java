@@ -603,13 +603,12 @@
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
 
-                <!-- Apache Arrow dependencies for parsing Arrow format -->
-                <include>org.apache.arrow:arrow-format:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
+                <!-- Apache Arrow format parsing. Only flatbuffers-java is compile-scoped (used by azure-storage-blob's
+                     vendored Arrow FlatBuffer accessors) and therefore needs to be allow-listed here. The arrow-* and
+                     checker-qual artifacts are test-only (or, for arrow-format, only a transitive test dependency), and
+                     since this rule excludes only compile/runtime/provided scopes with searchTransitive=false, they do
+                     not require an entry. -->
                 <include>com.google.flatbuffers:flatbuffers-java:[24.3.25]</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
-                <include>org.apache.arrow:arrow-memory-core:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
-                <include>org.apache.arrow:arrow-memory-unsafe:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
-                <include>org.apache.arrow:arrow-vector:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-vector;external_dependency} -->
-                <include>org.checkerframework:checker-qual:[3.42.0]</include> <!-- {x-include-update;org.checkerframework:checker-qual;external_dependency} -->
               </includes>
             </bannedDependencies>
 
