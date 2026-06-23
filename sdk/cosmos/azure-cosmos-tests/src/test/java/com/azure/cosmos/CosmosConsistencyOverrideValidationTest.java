@@ -113,7 +113,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
         return providers.toArray(new Object[0][]);
     }
 
-    @BeforeClass(groups = { "consistency-overrides" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "consistency-overrides", "emulator", "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
 
@@ -138,7 +138,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
         logAccountMetadata(databaseAccount);
     }
 
-    @AfterClass(groups = { "consistency-overrides" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "consistency-overrides", "emulator", "emulator-vnext" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeCloseSyncClient(this.client);
         this.client = null;
@@ -147,7 +147,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
         restoreTransportSystemProperties();
     }
 
-    @Test(groups = { "consistency-overrides" }, timeOut = TIMEOUT)
+    @Test(groups = { "consistency-overrides", "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void requestOptionsConsistencyUpgradeReadAndQueryShouldBeIgnored() {
         List<ConsistencyLevel> unsupportedRequestConsistencies = strongerConsistencyLevelsThan(this.accountDefaultConsistency);
         if (unsupportedRequestConsistencies.isEmpty()) {
@@ -181,7 +181,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
             .isEmpty();
     }
 
-    @Test(groups = { "consistency-overrides" }, timeOut = TIMEOUT)
+    @Test(groups = { "consistency-overrides", "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void latestCommittedReadConsistencyStrategyReadAndQueryShouldSucceed() {
         TestItem item = createTestItem();
 
