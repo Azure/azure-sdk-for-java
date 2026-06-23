@@ -89,10 +89,8 @@ class AzureEventHubsMessagingAutoConfigurationTests {
 
     @Test
     @SuppressWarnings("removal")
-    void withoutToolsJacksonObjectMapperShouldUseDefaultConverter() {
+    void withoutJacksonAutoConfigurationShouldUseDefaultConverter() {
         this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withPropertyValues(
             "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
         )

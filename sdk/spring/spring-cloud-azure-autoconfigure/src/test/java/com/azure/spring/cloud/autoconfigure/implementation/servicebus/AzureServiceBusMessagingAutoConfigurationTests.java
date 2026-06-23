@@ -87,13 +87,11 @@ class AzureServiceBusMessagingAutoConfigurationTests {
 
     @Test
     @SuppressWarnings("removal")
-    void withoutToolsJacksonObjectMapperShouldUseDefaultConverter() {
+    void withoutJacksonAutoConfigurationShouldUseDefaultConverter() {
         this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("defaultServiceBusMessageConverter");
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);

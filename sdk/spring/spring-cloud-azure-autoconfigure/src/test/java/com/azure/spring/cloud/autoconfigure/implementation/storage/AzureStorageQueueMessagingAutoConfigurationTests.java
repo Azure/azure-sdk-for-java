@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,10 +25,8 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
 
     @Test
     @SuppressWarnings("removal")
-    void withoutToolsJacksonObjectMapperShouldUseDefaultConverter() {
+    void withoutJacksonAutoConfigurationShouldUseDefaultConverter() {
         this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
