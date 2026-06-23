@@ -95,6 +95,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
      */
     @Override
     public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties) {
+        Instant lookupStart = Instant.now();
         return routingMapCache.getAsync(
                 collectionRid,
                 routingMap ->
@@ -105,6 +106,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
                         properties),
                 currentValue -> shouldForceRefresh(previousValue, currentValue))
             .map(Utils.ValueHolder::new)
+            .doFinally(signal -> recordPartitionKeyRangeLookUp(metaDataDiagnosticsContext, lookupStart))
             .onErrorResume(err -> {
                 logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
                 CosmosException dce = Utils.as(err, CosmosException.class);
@@ -207,6 +209,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
      */
     @Override
     public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties) {
+        Instant lookupStart = Instant.now();
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
             collectionRid,
             routingMap ->
@@ -216,7 +219,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
                     null,
                     properties),
             forceRefresh -> false)
-            .map(Utils.ValueHolder::new);
+            .map(Utils.ValueHolder::new)
+            .doFinally(signal -> recordPartitionKeyRangeLookUp(metaDataDiagnosticsContext, lookupStart));
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
@@ -277,7 +281,6 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
         CollectionRoutingMap previousRoutingMap,
         Map<String, Object> properties) {
 
-        Instant pkRangesCallStartTime = Instant.now();
         String previousChangeFeedIfNoneMatch =
             previousRoutingMap == null ? null : previousRoutingMap.getChangeFeedNextIfNoneMatch();
 
@@ -307,18 +310,21 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closea
                     updateRoutingMap(collectionRid, previousRoutingMap, ranges, continuationToken.get());
 
                 return Mono.just(updatedMap);
-            })
-            .doFinally(signal -> {
-                if (metaDataDiagnosticsContext != null) {
-                    Instant pkRangesCallEndTime = Instant.now();
-                    MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic =
-                        new MetadataDiagnosticsContext.MetadataDiagnostics(
-                            pkRangesCallStartTime,
-                            pkRangesCallEndTime,
-                            MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
-                    metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
-                }
             });
+    }
+
+    private static void recordPartitionKeyRangeLookUp(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        Instant lookupStart) {
+        if (metaDataDiagnosticsContext == null) {
+            return;
+        }
+        MetadataDiagnosticsContext.MetadataDiagnostics diagnostic =
+            new MetadataDiagnosticsContext.MetadataDiagnostics(
+                lookupStart,
+                Instant.now(),
+                MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
+        metaDataDiagnosticsContext.addMetaDataDiagnostic(diagnostic);
     }
 
     private CollectionRoutingMap updateRoutingMap(

@@ -610,25 +610,32 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
                 assertThat(metadataDiagnosticList.size()).isGreaterThan(0);
 
-                JsonNode pkRangesLookup = null;
+                // PARTITION_KEY_RANGE_LOOK_UP is recorded once per cache lookup (cache hits and the
+                // actual /pkranges fetch alike), so several entries can be present. The injected delay
+                // only applies to the real network fetch, so pick the entry with the largest duration.
+                boolean pkRangesLookupFound = false;
+                long maxPkRangesLookupDurationInMs = -1;
                 for (int i = 0; i < metadataDiagnosticList.size(); i++) {
-                    if (metadataDiagnosticList
-                        .get(i)
+                    JsonNode metadataDiagnostic = metadataDiagnosticList.get(i);
+                    if (metadataDiagnostic
                         .get("metaDataName")
                         .asText()
                         .equalsIgnoreCase(MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP.name())) {
-                        pkRangesLookup = metadataDiagnosticList.get(i);
-                        break;
+                        pkRangesLookupFound = true;
+                        maxPkRangesLookupDurationInMs =
+                            Math.max(maxPkRangesLookupDurationInMs, metadataDiagnostic.get("durationinMS").asLong());
                     }
                 }
 
-                assertThat(pkRangesLookup).isNotNull();
+                assertThat(pkRangesLookupFound)
+                    .as("At least one PARTITION_KEY_RANGE_LOOK_UP diagnostic must be present")
+                    .isTrue();
                 if (faultInjectionServerErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
-                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(45 * 1000 * Math.min(applyLimit, 3)); // the duration will be at least one connection timeout
+                    assertThat(maxPkRangesLookupDurationInMs).isGreaterThanOrEqualTo(45 * 1000 * Math.min(applyLimit, 3)); // the duration will be at least one connection timeout
                 }
 
                 if (faultInjectionServerErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY) {
-                    assertThat(pkRangesLookup.get("durationinMS").asLong()).isGreaterThanOrEqualTo(500 * Math.min(applyLimit, 3)); // the duration will be at least one response timeout
+                    assertThat(maxPkRangesLookupDurationInMs).isGreaterThanOrEqualTo(500 * Math.min(applyLimit, 3)); // the duration will be at least one response timeout
                 }
 
             } catch (CosmosException cosmosException) {
