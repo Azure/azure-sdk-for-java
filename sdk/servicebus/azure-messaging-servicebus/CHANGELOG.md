@@ -12,6 +12,10 @@
 
 - Fixed `ServiceBusProcessorClient.close()` disposing the receiver before in-flight message handlers could complete settlement, causing `IllegalStateException`. The processor now drains active handlers before closing. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
 - Fixed the first call to `ServiceBusSenderClient.sendMessage()` (and `ServiceBusSenderAsyncClient.sendMessage()`) not recognizing the caller's current OpenTelemetry trace context, causing the `ServiceBus.send` span and the outgoing message's `traceparent` to start a new, disconnected trace. The send span is now started on the calling thread before the first send establishes the AMQP connection on a background thread. ([#44958](https://github.com/Azure/azure-sdk-for-java/issues/44958))
+- Fixed `ServiceBusMessageBatch` accepting messages beyond the service-enforced batch size limit on
+  Premium large-message entities by reading the `com.microsoft:max-message-batch-size` vendor property
+  from the AMQP sender link instead of using `max-message-size`. ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+- Fixed `ServiceBusAdministrationClient.updateSubscription()` silently ignoring `defaultMessageTimeToLive` changes. The property was incorrectly nullified before serialization. ([#48495](https://github.com/Azure/azure-sdk-for-java/issues/48495))
 
 ### Other Changes
 
