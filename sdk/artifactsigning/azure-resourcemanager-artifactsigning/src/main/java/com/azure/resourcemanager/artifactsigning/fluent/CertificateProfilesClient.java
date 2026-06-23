@@ -12,7 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.artifactsigning.fluent.models.CertificateProfileInner;
-import com.azure.resourcemanager.artifactsigning.models.RevokeCertificate;
+import com.azure.resourcemanager.artifactsigning.models.RevokeCertificateList;
 
 /**
  * An instance of this class provides access to all the operations defined in CertificateProfilesClient.
@@ -200,12 +200,12 @@ public interface CertificateProfilesClient {
         Context context);
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Artifact Signing account name.
      * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,20 +213,21 @@ public interface CertificateProfilesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> revokeCertificateWithResponse(String resourceGroupName, String accountName, String profileName,
-        RevokeCertificate body, Context context);
+    Response<Void> revokeCertificatesWithResponse(String resourceGroupName, String accountName, String profileName,
+        RevokeCertificateList body, Context context);
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Artifact Signing account name.
      * @param profileName Certificate profile name.
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void revokeCertificate(String resourceGroupName, String accountName, String profileName, RevokeCertificate body);
+    void revokeCertificates(String resourceGroupName, String accountName, String profileName,
+        RevokeCertificateList body);
 }

@@ -78,6 +78,11 @@ public final class VirtualMachineScaleSetUpdateVMProfile
      */
     private VirtualMachineScaleSetHardwareProfile hardwareProfile;
 
+    /*
+     * Specifies the Interconnect Block related details of a scale set. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectBlockProfile interconnectBlockProfile;
+
     /**
      * Creates an instance of VirtualMachineScaleSetUpdateVMProfile class.
      */
@@ -337,6 +342,29 @@ public final class VirtualMachineScaleSetUpdateVMProfile
     }
 
     /**
+     * Get the interconnectBlockProfile property: Specifies the Interconnect Block related details of a scale set.
+     * Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectBlockProfile value.
+     */
+    public InterconnectBlockProfile interconnectBlockProfile() {
+        return this.interconnectBlockProfile;
+    }
+
+    /**
+     * Set the interconnectBlockProfile property: Specifies the Interconnect Block related details of a scale set.
+     * Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectBlockProfile the interconnectBlockProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile
+        withInterconnectBlockProfile(InterconnectBlockProfile interconnectBlockProfile) {
+        this.interconnectBlockProfile = interconnectBlockProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -372,6 +400,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile
         if (hardwareProfile() != null) {
             hardwareProfile().validate();
         }
+        if (interconnectBlockProfile() != null) {
+            interconnectBlockProfile().validate();
+        }
     }
 
     /**
@@ -392,6 +423,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile
         jsonWriter.writeJsonField("scheduledEventsProfile", this.scheduledEventsProfile);
         jsonWriter.writeStringField("userData", this.userData);
         jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("interconnectBlockProfile", this.interconnectBlockProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -444,6 +476,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile
                 } else if ("hardwareProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateVMProfile.hardwareProfile
                         = VirtualMachineScaleSetHardwareProfile.fromJson(reader);
+                } else if ("interconnectBlockProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateVMProfile.interconnectBlockProfile
+                        = InterconnectBlockProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

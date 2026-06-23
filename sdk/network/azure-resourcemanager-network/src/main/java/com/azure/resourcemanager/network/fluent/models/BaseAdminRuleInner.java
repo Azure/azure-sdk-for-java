@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Network base admin rule.
  */
-@Immutable
+@Fluent
 public class BaseAdminRuleInner extends ChildResource {
     /*
      * Whether the rule is custom or default.
@@ -36,19 +36,14 @@ public class BaseAdminRuleInner extends ChildResource {
     private String etag;
 
     /*
-     * Resource type.
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Resource name.
+     * The name of the resource.
      */
     private String name;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of BaseAdminRuleInner class.
@@ -96,7 +91,7 @@ public class BaseAdminRuleInner extends ChildResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -106,7 +101,7 @@ public class BaseAdminRuleInner extends ChildResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -116,13 +111,12 @@ public class BaseAdminRuleInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
+     * {@inheritDoc}
      */
     @Override
-    public String id() {
-        return this.id;
+    public BaseAdminRuleInner withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
@@ -140,6 +134,7 @@ public class BaseAdminRuleInner extends ChildResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -187,14 +182,14 @@ public class BaseAdminRuleInner extends ChildResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
-                    deserializedBaseAdminRuleInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
                     deserializedBaseAdminRuleInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBaseAdminRuleInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedBaseAdminRuleInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedBaseAdminRuleInner.withId(reader.getString());
                 } else if ("kind".equals(fieldName)) {
                     deserializedBaseAdminRuleInner.kind = AdminRuleKind.fromString(reader.getString());
                 } else if ("systemData".equals(fieldName)) {

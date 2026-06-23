@@ -332,8 +332,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryPrefetchingDataProvider",
+        timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void asyncChangeFeedPrefetching(ChangeFeedMode changeFeedMode) throws Exception {
+        // Note on shape: this test verifies Reactor's prefetch behavior on the change-feed
+        // byPage stream. The two fire-and-forget `.subscribe()` calls + `Thread.sleep(3000)`
+        // are intentional — they exercise the prefetch path without backpressure-bounded
+        // collection. retryAnalyzer = FlakyTestRetryAnalyzer absorbs occasional slow-runner
+        // jitter (Windows EmulatorTcp Java 8 can take >3s to deliver the first 3 pages).
         this.createContainer(
             (cp) -> {
                 if (changeFeedMode.equals(ChangeFeedMode.INCREMENTAL)) {

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class NetAppResourceUsagesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Usages_List.json
+     * x-ms-original-file: 2026-04-01/Usages_List.json
      */
     /**
      * Sample code: Usages_List.

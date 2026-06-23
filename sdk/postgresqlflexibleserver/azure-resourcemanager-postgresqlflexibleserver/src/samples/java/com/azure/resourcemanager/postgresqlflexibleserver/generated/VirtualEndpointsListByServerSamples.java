@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class VirtualEndpointsListByServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/VirtualEndpointsListByServer.json
+     * x-ms-original-file: 2026-04-01-preview/VirtualEndpointsListByServer.json
      */
     /**
      * Sample code: List pair of virtual endpoints associated to a server.

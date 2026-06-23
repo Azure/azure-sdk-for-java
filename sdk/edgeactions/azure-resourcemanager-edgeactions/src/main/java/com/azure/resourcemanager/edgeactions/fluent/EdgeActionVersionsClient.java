@@ -281,7 +281,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner>
@@ -298,7 +298,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionVersionPropertiesInner>, EdgeActionVersionPropertiesInner> beginDeployVersionCode(
@@ -314,7 +314,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,
@@ -331,7 +331,7 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return represents an edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionVersionPropertiesInner deployVersionCode(String resourceGroupName, String edgeActionName, String version,

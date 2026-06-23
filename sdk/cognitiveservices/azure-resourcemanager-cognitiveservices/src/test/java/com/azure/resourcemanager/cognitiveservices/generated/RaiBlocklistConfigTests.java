@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiBlocklistConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiBlocklistConfig model = BinaryData.fromString("{\"blocklistName\":\"eaivxwczel\",\"blocking\":false}")
-            .toObject(RaiBlocklistConfig.class);
-        Assertions.assertEquals("eaivxwczel", model.blocklistName());
+        RaiBlocklistConfig model
+            = BinaryData.fromString("{\"blocklistName\":\"n\",\"blocking\":false}").toObject(RaiBlocklistConfig.class);
+        Assertions.assertEquals("n", model.blocklistName());
         Assertions.assertFalse(model.blocking());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlocklistConfig model = new RaiBlocklistConfig().withBlocklistName("eaivxwczel").withBlocking(false);
+        RaiBlocklistConfig model = new RaiBlocklistConfig().withBlocklistName("n").withBlocking(false);
         model = BinaryData.fromObject(model).toObject(RaiBlocklistConfig.class);
-        Assertions.assertEquals("eaivxwczel", model.blocklistName());
+        Assertions.assertEquals("n", model.blocklistName());
         Assertions.assertFalse(model.blocking());
     }
 }

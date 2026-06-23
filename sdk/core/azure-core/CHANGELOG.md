@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.58.1 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.6` to `2.18.7`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
+
 ## 1.58.0 (2026-04-28)
 
 ### Features Added

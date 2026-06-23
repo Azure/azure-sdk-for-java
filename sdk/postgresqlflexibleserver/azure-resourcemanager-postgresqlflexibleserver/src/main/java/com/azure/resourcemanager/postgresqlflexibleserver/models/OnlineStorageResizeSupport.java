@@ -9,18 +9,16 @@ import java.util.Collection;
 
 /**
  * Indicates if resizing the storage, without interrupting the operation of the database engine, is supported in this
- * location for the given subscription. 'Enabled' means resizing the storage without interrupting the operation of the
- * database engine is supported. 'Disabled' means resizing the storage without interrupting the operation of the
- * database engine is not supported. Will be deprecated in the future. Look to Supported Features for 'OnlineResize'.
+ * location for the given subscription. Will be deprecated in the future. Look to Supported Features for 'OnlineResize'.
  */
 public final class OnlineStorageResizeSupport extends ExpandableStringEnum<OnlineStorageResizeSupport> {
     /**
-     * Static value Enabled for OnlineStorageResizeSupport.
+     * Resizing the storage without interrupting the operation of the database engine is supported.
      */
     public static final OnlineStorageResizeSupport ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for OnlineStorageResizeSupport.
+     * Resizing the storage without interrupting the operation of the database engine is not supported.
      */
     public static final OnlineStorageResizeSupport DISABLED = fromString("Disabled");
 

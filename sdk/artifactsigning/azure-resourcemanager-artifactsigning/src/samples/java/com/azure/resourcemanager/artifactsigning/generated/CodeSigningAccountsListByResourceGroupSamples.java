@@ -9,7 +9,7 @@ package com.azure.resourcemanager.artifactsigning.generated;
  */
 public final class CodeSigningAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_ListByResourceGroup.json
+     * x-ms-original-file: 2026-05-15-preview/CodeSigningAccounts_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists artifact signing accounts within a resource group.
