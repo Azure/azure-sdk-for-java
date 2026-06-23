@@ -7,6 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 
+import java.nio.file.Path;
+
 /**
  * The file details for the "code" field.
  */
@@ -39,6 +41,16 @@ public final class CodeFileDetails {
     @Generated
     public CodeFileDetails(BinaryData content) {
         this.content = content;
+    }
+
+    /**
+     * Creates an instance of CodeFileDetails class.
+     *
+     * @param filePath path to the file in disc to upload.
+     */
+    public CodeFileDetails(Path filePath) {
+        this.content = BinaryData.fromFile(filePath);
+        this.filename = filePath.getFileName().toString();
     }
 
     /**
