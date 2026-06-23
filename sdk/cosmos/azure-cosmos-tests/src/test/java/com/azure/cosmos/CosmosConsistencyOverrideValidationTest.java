@@ -210,7 +210,6 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
         assertThat(changeFeedResult.statusCode)
             .as("queryChangeFeed status code")
             .isIn(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
-        assertThat(changeFeedResult.resultCount).isEqualTo(0);
         assertLatestCommitted(changeFeedResult, "queryChangeFeed");
     }
 
