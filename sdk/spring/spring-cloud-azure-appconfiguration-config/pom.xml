@@ -81,6 +81,12 @@
       <artifactId>jackson-databind</artifactId>
       <version>3.1.4</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
+    <!-- Keep jackson-annotations on the 2.x line because Jackson 3 databind still consumes
+         com.fasterxml.jackson.annotation APIs. Jackson's migration guide explicitly says
+         jackson-annotations stays on the 2.x line in 3.x, and the project README says
+         databind still depends on jackson-annotations:
+         https://github.com/FasterXML/jackson/tree/main/jackson3/MIGRATING_TO_JACKSON_3.md
+         https://github.com/FasterXML/jackson/tree/main/README.md -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
