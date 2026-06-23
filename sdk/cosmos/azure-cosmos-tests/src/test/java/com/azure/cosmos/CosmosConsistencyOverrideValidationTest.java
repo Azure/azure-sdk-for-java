@@ -89,7 +89,7 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
             false,
             false);
 
-        if (TestConfigurations.HOST.contains(ROUTING_GATEWAY_EMULATOR_PORT)) {
+        if (TestConfigurations.HOST.contains(ROUTING_GATEWAY_EMULATOR_PORT) && !isEmulatorVNextRun()) {
             String computeGatewayEndpoint = TestConfigurations.HOST.replace(
                 ROUTING_GATEWAY_EMULATOR_PORT,
                 COMPUTE_GATEWAY_EMULATOR_PORT);
@@ -208,8 +208,26 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
 
         CosmosItemResponse<ObjectNode> createResponse = this.container.createItem(item);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
-        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+        waitIfNeededForReplicasToCatchUp();
         return new TestItem(id, partitionKey);
+    }
+
+    private void waitIfNeededForReplicasToCatchUp() {
+        switch (this.accountDefaultConsistency) {
+            case EVENTUAL:
+            case CONSISTENT_PREFIX:
+                logger.info(" additional wait in EVENTUAL mode so the replica catch up");
+                try {
+                    Thread.sleep(WAIT_REPLICA_CATCH_UP_IN_MILLIS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 
     private OperationResult executeRead(TestItem item, CosmosItemRequestOptions requestOptions) {
@@ -509,6 +527,19 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
     private static boolean isEmulatorGatewayEndpoint(String endpoint) {
         return endpoint.contains(ROUTING_GATEWAY_EMULATOR_PORT)
             || endpoint.contains(COMPUTE_GATEWAY_EMULATOR_PORT);
+    }
+
+    private static boolean isEmulatorVNextRun() {
+        return containsEmulatorVNextGroup(System.getProperty("test.groups"))
+            || containsEmulatorVNextGroup(System.getProperty("groups"))
+            || containsEmulatorVNextGroup(System.getProperty("includedGroups"))
+            || TestConfigurations.HOST.startsWith("http://");
+    }
+
+    private static boolean containsEmulatorVNextGroup(String groups) {
+        return groups != null && Arrays.stream(groups.split(","))
+            .map(String::trim)
+            .anyMatch("emulator-vnext"::equals);
     }
 
     private static String modeLabel(
