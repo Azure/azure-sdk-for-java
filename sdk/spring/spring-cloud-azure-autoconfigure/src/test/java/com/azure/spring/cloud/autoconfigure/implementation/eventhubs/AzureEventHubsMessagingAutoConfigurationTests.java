@@ -29,7 +29,6 @@ import java.lang.reflect.Field;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.Mockito.mock;
 
 class AzureEventHubsMessagingAutoConfigurationTests {
@@ -90,7 +89,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
 
     @Test
     @SuppressWarnings("removal")
-    void withoutObjectMapperShouldNotConfigure() {
+    void withoutToolsJacksonObjectMapperShouldUseDefaultConverter() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
@@ -98,7 +97,11 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
         )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .run(context -> assertThatIllegalStateException());
+            .run(context -> {
+                assertThat(context).hasBean("defaultEventHubsMessageConverter");
+                assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
+                assertThat(context).doesNotHaveBean("eventHubsMessageConverter");
+            });
     }
 
     @Test

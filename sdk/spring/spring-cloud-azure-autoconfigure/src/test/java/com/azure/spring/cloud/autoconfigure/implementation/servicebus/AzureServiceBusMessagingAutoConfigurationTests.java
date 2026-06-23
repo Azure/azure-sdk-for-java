@@ -29,7 +29,6 @@ import java.lang.reflect.Field;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.util.TestServiceBusUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.mockito.Mockito.mock;
 
 class AzureServiceBusMessagingAutoConfigurationTests {
@@ -88,14 +87,18 @@ class AzureServiceBusMessagingAutoConfigurationTests {
 
     @Test
     @SuppressWarnings("removal")
-    void withoutObjectMapperShouldNotConfigure() {
+    void withoutToolsJacksonObjectMapperShouldUseDefaultConverter() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
-            .run(context -> assertThatIllegalStateException());
+            .run(context -> {
+                assertThat(context).hasBean("defaultServiceBusMessageConverter");
+                assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
+                assertThat(context).doesNotHaveBean("serviceBusMessageConverter");
+            });
     }
 
     @Test

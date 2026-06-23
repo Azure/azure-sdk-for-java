@@ -18,7 +18,6 @@ import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 public class AzureStorageQueueMessagingAutoConfigurationTests {
 
@@ -27,13 +26,17 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
 
     @Test
     @SuppressWarnings("removal")
-    void withoutObjectMapperShouldNotConfigure() {
+    void withoutToolsJacksonObjectMapperShouldUseDefaultConverter() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
-            .run(context -> assertThatIllegalStateException());
+            .run(context -> {
+                assertThat(context).hasBean("defaultStorageQueueMessageConverter");
+                assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
+                assertThat(context).doesNotHaveBean("storageQueueMessageConverter");
+            });
     }
 
     @Test
