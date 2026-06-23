@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.caches.SharedPartitionKeyRangeCacheRegistry.AcquireResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -288,5 +289,92 @@ public class SharedPartitionKeyRangeCacheRegistryTest {
         Object owner = new Object();
         AcquireResult result = registry.acquire(accountId, owner);
         registry.release(accountId, result.cache, result.releaseHandle);
+    }
+
+    @Test(groups = "unit")
+    public void canonicalAccountIdHandlesNullAndEmptyInputs() {
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(null)).isNull();
+
+        DatabaseAccount emptyAccount = new DatabaseAccount(
+            "{\"id\":\"\",\"writableLocations\":[],\"readableLocations\":[]}");
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(emptyAccount)).isEmpty();
+    }
+
+    @Test(groups = "unit")
+    public void canonicalAccountIdPassesThroughGlobalEndpointId() {
+        // Global endpoint returns the bare account id; canonicalization must not alter it.
+        DatabaseAccount account = new DatabaseAccount(
+            "{\"id\":\"contoso\","
+                + "\"writableLocations\":[{\"name\":\"East US\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-eastus.documents.azure.com:443/\"}],"
+                + "\"readableLocations\":[{\"name\":\"East US\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-eastus.documents.azure.com:443/\"}]}");
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(account))
+            .isEqualTo("contoso");
+    }
+
+    @Test(groups = "unit")
+    public void canonicalAccountIdStripsRegionSuffixFromRegionalEndpointId() {
+        // Regional endpoint returns "<global>-<normalize(region)>"; canonicalization must
+        // strip the region suffix so global and regional endpoints map to the same key.
+        DatabaseAccount account = new DatabaseAccount(
+            "{\"id\":\"contoso-westcentralus\","
+                + "\"writableLocations\":[{\"name\":\"West Central US\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-westcentralus.documents.azure.com:443/\"}],"
+                + "\"readableLocations\":[{\"name\":\"West Central US\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-westcentralus.documents.azure.com:443/\"}]}");
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(account))
+            .isEqualTo("contoso");
+    }
+
+    @Test(groups = "unit")
+    public void canonicalAccountIdNormalizesRegionNameSpacesAndCase() {
+        // Region "West US 3" normalises to "westus3" in the regional URL host.
+        DatabaseAccount account = new DatabaseAccount(
+            "{\"id\":\"contoso-westus3\","
+                + "\"writableLocations\":[{\"name\":\"West US 3\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-westus3.documents.azure.com:443/\"}],"
+                + "\"readableLocations\":[{\"name\":\"West US 3\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-westus3.documents.azure.com:443/\"}]}");
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(account))
+            .isEqualTo("contoso");
+    }
+
+    @Test(groups = "unit")
+    public void canonicalAccountIdLeavesGlobalNameWithRegionShapedTailUnchanged() {
+        // A global account legitimately named "my-acct-westus" must not be misinterpreted
+        // as a regional id: rawId only matches the global endpoint, not any regional one.
+        DatabaseAccount account = new DatabaseAccount(
+            "{\"id\":\"my-acct-westus\","
+                + "\"writableLocations\":[{\"name\":\"East US\","
+                + "\"databaseAccountEndpoint\":\"https://my-acct-westus-eastus.documents.azure.com:443/\"}],"
+                + "\"readableLocations\":[{\"name\":\"East US\","
+                + "\"databaseAccountEndpoint\":\"https://my-acct-westus-eastus.documents.azure.com:443/\"}]}");
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(account))
+            .isEqualTo("my-acct-westus");
+    }
+
+    @Test(groups = "unit")
+    public void canonicalAccountIdMatchesAcrossGlobalAndRegionalRepresentations() {
+        // The defining property: global and any regional endpoint of the same account
+        // canonicalise to the same id.
+        String locationsJson =
+            "\"writableLocations\":[{\"name\":\"East US\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-eastus.documents.azure.com:443/\"},"
+                + "{\"name\":\"West Europe\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-westeurope.documents.azure.com:443/\"}],"
+                + "\"readableLocations\":[{\"name\":\"East US\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-eastus.documents.azure.com:443/\"},"
+                + "{\"name\":\"West Europe\","
+                + "\"databaseAccountEndpoint\":\"https://contoso-westeurope.documents.azure.com:443/\"}]";
+
+        DatabaseAccount fromGlobal = new DatabaseAccount("{\"id\":\"contoso\"," + locationsJson + "}");
+        DatabaseAccount fromEastUs = new DatabaseAccount("{\"id\":\"contoso-eastus\"," + locationsJson + "}");
+        DatabaseAccount fromWestEurope = new DatabaseAccount("{\"id\":\"contoso-westeurope\"," + locationsJson + "}");
+
+        String canonical = SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(fromGlobal);
+        assertThat(canonical).isEqualTo("contoso");
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(fromEastUs)).isEqualTo(canonical);
+        assertThat(SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(fromWestEurope)).isEqualTo(canonical);
     }
 }

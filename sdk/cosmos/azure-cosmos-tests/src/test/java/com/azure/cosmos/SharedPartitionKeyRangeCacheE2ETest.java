@@ -246,7 +246,9 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
             (RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client);
         DatabaseAccount account = rxDocumentClient.getGlobalEndpointManager().getLatestDatabaseAccount();
         assertThat(account).as("globalEndpointManager.getLatestDatabaseAccount()").isNotNull();
-        return account.getId();
+        String canonical = SharedPartitionKeyRangeCacheRegistry.canonicalAccountId(account);
+        assertThat(canonical).as("canonical account id").isNotBlank();
+        return canonical;
     }
 
     private static List<String> readableRegionalEndpoints(CosmosAsyncClient client) {

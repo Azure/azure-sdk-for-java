@@ -4,10 +4,16 @@ package com.azure.cosmos.implementation.caches;
 
 import com.azure.core.util.ReferenceManager;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -128,6 +134,83 @@ public final class SharedPartitionKeyRangeCacheRegistry {
     int referenceCount(String accountId) {
         Entry entry = entries.get(accountId);
         return entry == null ? 0 : entry.refCount.get();
+    }
+
+    /**
+     * Canonicalizes the account id returned by {@link DatabaseAccount#getId()} so that
+     * clients constructed against a regional endpoint share the registry entry with
+     * clients constructed against the global endpoint of the same logical account.
+     *
+     * <p>The Cosmos service returns {@code getId() == "<globalAccountId>-<normalize(region)>"}
+     * from regional endpoints (matching the regional URL host segment built by
+     * {@link com.azure.cosmos.implementation.routing.LocationHelper#getLocationEndpoint}),
+     * while the global endpoint returns just {@code "<globalAccountId>"}. To map both to
+     * the same key, this method:</p>
+     *
+     * <ol>
+     *   <li>Walks {@link DatabaseAccount#getReadableLocations()} and
+     *       {@link DatabaseAccount#getWritableLocations()}.</li>
+     *   <li>Extracts each location's regional account-id (the host prefix of
+     *       {@link DatabaseAccountLocation#getEndpoint()}, i.e. the part before the first
+     *       {@code .}).</li>
+     *   <li>When the raw id equals any such regional account-id, strips the trailing
+     *       {@code "-" + RegionNameNormalizer.normalize(loc.getName())} suffix.</li>
+     * </ol>
+     *
+     * <p>The two-step match (regional-host equality <em>plus</em> normalized-region suffix)
+     * is robust against legitimate global account names that happen to end in a hyphenated
+     * region-shaped tail: stripping only occurs when the id provably came from one of the
+     * regional endpoints reported by the service.</p>
+     *
+     * <p>Returns the raw id unchanged when the input is null/empty, when no regional
+     * location matches, or when the account has no locations metadata.</p>
+     */
+    public static String canonicalAccountId(DatabaseAccount account) {
+        if (account == null) {
+            return null;
+        }
+        String rawId = account.getId();
+        if (StringUtils.isEmpty(rawId)) {
+            return rawId;
+        }
+        for (Iterable<DatabaseAccountLocation> locations : Arrays.asList(
+                account.getReadableLocations(), account.getWritableLocations())) {
+            if (locations == null) {
+                continue;
+            }
+            for (DatabaseAccountLocation loc : locations) {
+                if (loc == null) {
+                    continue;
+                }
+                String locEndpoint = loc.getEndpoint();
+                String locName = loc.getName();
+                if (StringUtils.isEmpty(locEndpoint) || StringUtils.isEmpty(locName)) {
+                    continue;
+                }
+                String regionalAccountId = extractAccountIdFromEndpoint(locEndpoint);
+                if (regionalAccountId == null || !regionalAccountId.equals(rawId)) {
+                    continue;
+                }
+                String suffix = "-" + RegionNameNormalizer.normalize(locName);
+                if (rawId.length() > suffix.length() && rawId.endsWith(suffix)) {
+                    return rawId.substring(0, rawId.length() - suffix.length());
+                }
+            }
+        }
+        return rawId;
+    }
+
+    private static String extractAccountIdFromEndpoint(String endpoint) {
+        try {
+            String host = URI.create(endpoint).getHost();
+            if (host == null) {
+                return null;
+            }
+            int dot = host.indexOf('.');
+            return dot >= 0 ? host.substring(0, dot) : host;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /** Result of {@link #acquire(String, Object)}: the cache plus a release handle (null when isolated). */
