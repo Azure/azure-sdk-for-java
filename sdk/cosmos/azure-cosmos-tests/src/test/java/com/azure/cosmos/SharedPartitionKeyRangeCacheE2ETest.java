@@ -125,18 +125,13 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
                 .as("Routing-map cache must contain at least one entry after PK-routed reads")
                 .isNotEmpty();
         } finally {
-            int refCountBeforeClose = registryReferenceCount(this.serviceEndpoint);
+            // The registry refcount for this endpoint is shared with every other client/test that
+            // targets it, so in the parallel "fast" suite the absolute count changes under us. The
+            // exact close-delta is therefore not asserted here; that wiring is covered
+            // deterministically by SharedPartitionKeyRangeCacheRegistryTest. This e2e test's value is
+            // proving that two real clients share the same storage instance (asserted above).
             safeClose(clientA);
-            int refCountAfterFirstClose = registryReferenceCount(this.serviceEndpoint);
-            assertThat(refCountAfterFirstClose)
-                .as("Closing one client must drop the registry refcount by exactly one")
-                .isEqualTo(refCountBeforeClose - 1);
-
             safeClose(clientB);
-            int refCountAfterSecondClose = registryReferenceCount(this.serviceEndpoint);
-            assertThat(refCountAfterSecondClose)
-                .as("Closing both test clients must drop refcount by two (setup client may still hold a reference)")
-                .isEqualTo(refCountBeforeClose - 2);
         }
     }
 
