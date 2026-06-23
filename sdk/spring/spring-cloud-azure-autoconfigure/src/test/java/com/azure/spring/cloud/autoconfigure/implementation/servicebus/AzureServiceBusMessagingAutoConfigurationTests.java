@@ -86,7 +86,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void withoutJacksonAutoConfigurationShouldUseDefaultConverter() {
         this.contextRunner
             .withPropertyValues(
@@ -100,7 +99,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void withIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
@@ -113,7 +111,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void withNonIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
@@ -127,7 +124,6 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void withUserProvidedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),

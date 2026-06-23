@@ -24,7 +24,6 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
         .withConfiguration(AutoConfigurations.of(AzureStorageQueueMessagingAutoConfiguration.class));
 
     @Test
-    @SuppressWarnings("removal")
     void withoutJacksonAutoConfigurationShouldUseDefaultConverter() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
@@ -37,7 +36,6 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void withIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
@@ -51,7 +49,6 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void withNonIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true",
@@ -66,7 +63,6 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("removal")
     void withUserProvidedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true",
