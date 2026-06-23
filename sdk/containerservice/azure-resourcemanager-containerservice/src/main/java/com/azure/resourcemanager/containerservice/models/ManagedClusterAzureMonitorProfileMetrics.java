@@ -32,6 +32,13 @@ public final class ManagedClusterAzureMonitorProfileMetrics
      */
     private ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics;
 
+    /*
+     * Control plane metrics collection profile for the Azure Managed Prometheus addon. Configures collection of
+     * operational runtime metrics from managed control plane components (kube-apiserver, etcd, etc). See
+     * aka.ms/aks/controlplane-metrics for an overview.
+     */
+    private ManagedClusterAzureMonitorProfileMetricsControlPlane controlPlane;
+
     /**
      * Creates an instance of ManagedClusterAzureMonitorProfileMetrics class.
      */
@@ -86,6 +93,31 @@ public final class ManagedClusterAzureMonitorProfileMetrics
     }
 
     /**
+     * Get the controlPlane property: Control plane metrics collection profile for the Azure Managed Prometheus addon.
+     * Configures collection of operational runtime metrics from managed control plane components (kube-apiserver, etcd,
+     * etc). See aka.ms/aks/controlplane-metrics for an overview.
+     * 
+     * @return the controlPlane value.
+     */
+    public ManagedClusterAzureMonitorProfileMetricsControlPlane controlPlane() {
+        return this.controlPlane;
+    }
+
+    /**
+     * Set the controlPlane property: Control plane metrics collection profile for the Azure Managed Prometheus addon.
+     * Configures collection of operational runtime metrics from managed control plane components (kube-apiserver, etcd,
+     * etc). See aka.ms/aks/controlplane-metrics for an overview.
+     * 
+     * @param controlPlane the controlPlane value to set.
+     * @return the ManagedClusterAzureMonitorProfileMetrics object itself.
+     */
+    public ManagedClusterAzureMonitorProfileMetrics
+        withControlPlane(ManagedClusterAzureMonitorProfileMetricsControlPlane controlPlane) {
+        this.controlPlane = controlPlane;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -93,6 +125,9 @@ public final class ManagedClusterAzureMonitorProfileMetrics
     public void validate() {
         if (kubeStateMetrics() != null) {
             kubeStateMetrics().validate();
+        }
+        if (controlPlane() != null) {
+            controlPlane().validate();
         }
     }
 
@@ -104,6 +139,7 @@ public final class ManagedClusterAzureMonitorProfileMetrics
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeJsonField("kubeStateMetrics", this.kubeStateMetrics);
+        jsonWriter.writeJsonField("controlPlane", this.controlPlane);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +165,9 @@ public final class ManagedClusterAzureMonitorProfileMetrics
                 } else if ("kubeStateMetrics".equals(fieldName)) {
                     deserializedManagedClusterAzureMonitorProfileMetrics.kubeStateMetrics
                         = ManagedClusterAzureMonitorProfileKubeStateMetrics.fromJson(reader);
+                } else if ("controlPlane".equals(fieldName)) {
+                    deserializedManagedClusterAzureMonitorProfileMetrics.controlPlane
+                        = ManagedClusterAzureMonitorProfileMetricsControlPlane.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

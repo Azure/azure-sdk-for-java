@@ -1,31 +1,44 @@
 {
-  "metrics": {
-    "printingInterval": 10,
-    "enableJvmStats": true,
-    "enableNettyHttpMetrics": true,
-    "destination": {
-      "csv": {
-        "reportingDirectory": "/tmp/benchmark-output"
+  "lifecycle": {
+    "cycles": 1,
+    "settleTimeMs": -1,
+    "suppressCleanup": false,
+    "gcBetweenCycles": true
+  },
+
+  "orchestrator": {
+    "concurrency": 1000,
+    "numberOfOperations": 100000,
+    "isPartitionLevelCircuitBreakerEnabled": true,
+    "isPerPartitionAutomaticFailoverRequired": true,
+    "minConnectionPoolSizePerEndpoint": 0,
+
+    "metrics": {
+      "printingInterval": 10,
+      "enableJvmStats": true,
+      "enableNettyHttpMetrics": true,
+      "destination": {
+        "csv": {
+          "reportingDirectory": "/tmp/benchmark-output"
+        }
       }
-    }
-  },
+    },
 
-  "tenantDefaults": {
-    "serviceEndpoint": "https://myaccount.documents.azure.com:443/",
-    "masterKey": "<your-master-key -- use environment variables or managed identity in production>",
-    "databaseId": "benchdb",
-    "containerId": "benchcoll",
-    "consistencyLevel": "Session",
-    "connectionMode": "Direct",
-    "numberOfPreCreatedDocuments": 1000,
-    "documentDataFieldSize": 20,
-    "concurrency": 50
-  },
+    "tenantDefaults": {
+      "consistencyLevel": "Session",
+      "connectionMode": "Direct",
+      "numberOfPreCreatedDocuments": 1000,
+      "documentDataFieldSize": 20
+    },
 
-  "tenants": [
-    {
-      "operation": "ReadThroughput",
-      "numberOfOperations": 100000
-    }
-  ]
+    "tenants": [
+      {
+        "serviceEndpoint": "https://myaccount.documents.azure.com:443/",
+        "masterKey": "<your-master-key>",
+        "databaseId": "benchdb",
+        "containerId": "benchcoll",
+        "operation": "ReadThroughput"
+      }
+    ]
+  }
 }

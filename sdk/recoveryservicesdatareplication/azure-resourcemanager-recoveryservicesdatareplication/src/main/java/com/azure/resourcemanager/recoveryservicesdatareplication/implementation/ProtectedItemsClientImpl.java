@@ -1071,7 +1071,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return planned failover model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> plannedFailoverWithResponseAsync(String resourceGroupName,
@@ -1095,7 +1095,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return planned failover model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> plannedFailoverWithResponse(String resourceGroupName, String vaultName,
@@ -1118,7 +1118,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return planned failover model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> plannedFailoverWithResponse(String resourceGroupName, String vaultName,
@@ -1140,7 +1140,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of planned failover model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailoverAsync(
@@ -1162,7 +1162,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of planned failover model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
@@ -1184,7 +1184,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of planned failover model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
@@ -1206,7 +1206,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return planned failover model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlannedFailoverModelInner> plannedFailoverAsync(String resourceGroupName, String vaultName,
@@ -1225,7 +1225,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return planned failover model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName,
@@ -1244,7 +1244,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return planned failover model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName,

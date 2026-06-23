@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ReplicasListByServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ReplicasListByServer.json
+     * x-ms-original-file: 2026-04-01-preview/ReplicasListByServer.json
      */
     /**
      * Sample code: List all read replicas of a server.

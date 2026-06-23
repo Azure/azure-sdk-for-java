@@ -364,7 +364,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [keys_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/README.md
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [jwk_specification]: https://tools.ietf.org/html/rfc7517
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients

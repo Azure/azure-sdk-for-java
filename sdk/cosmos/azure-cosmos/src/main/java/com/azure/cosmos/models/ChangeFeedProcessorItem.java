@@ -3,7 +3,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +16,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  *
  * Caller is recommended to type cast {@link JsonNode} to cosmos item structure.
  */
-@Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedProcessorItem {
     @JsonProperty("current")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,7 +35,6 @@ public final class ChangeFeedProcessorItem {
      *
      * @return change feed current item.
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode getCurrent() {
         return current;
     }
@@ -49,7 +46,6 @@ public final class ChangeFeedProcessorItem {
      *
      * @return change feed previous item.
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode getPrevious() {
         return previous;
     }
@@ -59,7 +55,6 @@ public final class ChangeFeedProcessorItem {
      *
      * @return change feed metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @JsonIgnore
     public ChangeFeedMetaData getChangeFeedMetaData() {
 
@@ -78,7 +73,6 @@ public final class ChangeFeedProcessorItem {
      * @throws IllegalArgumentException If conversion fails due to incompatible type;
      * if so, root cause will contain underlying checked exception data binding functionality threw
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode toJsonNode() {
 
         if (this.changeFeedProcessorItemAsJsonNode == null) {

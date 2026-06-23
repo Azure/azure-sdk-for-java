@@ -3,7 +3,6 @@
 
 ## Fleets
 
-- [Cancel](#fleets_cancel)
 - [CreateOrUpdate](#fleets_createorupdate)
 - [Delete](#fleets_delete)
 - [GetByResourceGroup](#fleets_getbyresourcegroup)
@@ -16,27 +15,6 @@
 ## Operations
 
 - [List](#operations_list)
-### Fleets_Cancel
-
-```java
-/**
- * Samples for Fleets Cancel.
- */
-public final class FleetsCancelSamples {
-    /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_Cancel.json
-     */
-    /**
-     * Sample code: Fleets_Cancel.
-     * 
-     * @param manager Entry point to ComputeFleetManager.
-     */
-    public static void fleetsCancel(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
-        manager.fleets().cancel("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Fleets_CreateOrUpdate
 
 ```java
@@ -164,14 +142,15 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_CreateOrUpdate.
+     * Sample code: Fleets_CreateOrUpdate_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsCreateOrUpdate(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void
+        fleetsCreateOrUpdateMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets()
             .define("myFleet")
             .withRegion("westus")
@@ -657,8 +636,8 @@ public final class FleetsCreateOrUpdateSamples {
                         .withPlatformFaultDomainCount(1)
                         .withAdditionalVirtualMachineCapabilities(
                             new AdditionalCapabilities().withUltraSSDEnabled(true).withHibernationEnabled(true)))
-                .withMode(FleetMode.INSTANCE)
-                .withCapacityType(CapacityType.VCPU)
+                .withMode(FleetMode.LAUNCH)
+                .withCapacityType(CapacityType.VM)
                 .withZoneAllocationPolicy(
                     new ZoneAllocationPolicy().withDistributionStrategy(ZoneDistributionStrategy.PRIORITIZED)
                         .withZonePreferences(Arrays.asList(new ZonePreference().withZone("1").withRank(0),
@@ -696,14 +675,14 @@ public final class FleetsCreateOrUpdateSamples {
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_Delete.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_Delete.
+     * Sample code: Fleets_Delete_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsDelete(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsDeleteMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().delete("rgazurefleet", "testFleet", com.azure.core.util.Context.NONE);
     }
 }
@@ -717,14 +696,14 @@ public final class FleetsDeleteSamples {
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_Get.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_Get.
+     * Sample code: Fleets_Get_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsGet(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsGetMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().getByResourceGroupWithResponse("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE);
     }
 }
@@ -738,14 +717,15 @@ public final class FleetsGetByResourceGroupSamples {
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_ListBySubscription.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_ListBySubscription.
+     * Sample code: Fleets_ListBySubscription_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsListBySubscription(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void
+        fleetsListBySubscriptionMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -759,14 +739,15 @@ public final class FleetsListSamples {
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_ListByResourceGroup.
+     * Sample code: Fleets_ListByResourceGroup_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsListByResourceGroup(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void
+        fleetsListByResourceGroupMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().listByResourceGroup("rgazurefleet", com.azure.core.util.Context.NONE);
     }
 }
@@ -780,15 +761,15 @@ public final class FleetsListByResourceGroupSamples {
  */
 public final class FleetsListVirtualMachineScaleSetsSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_ListVirtualMachineScaleSets.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_ListVirtualMachineScaleSets.
+     * Sample code: Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void
-        fleetsListVirtualMachineScaleSets(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsListVirtualMachineScaleSetsMaximumSetGen(
+        com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().listVirtualMachineScaleSets("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE);
     }
 }
@@ -802,17 +783,17 @@ public final class FleetsListVirtualMachineScaleSetsSamples {
  */
 public final class FleetsListVirtualMachinesSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_ListVirtualMachines.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_ListVirtualMachines_MaximumSet.
+     * Sample code: Fleets_ListVirtualMachines_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
     public static void
-        fleetsListVirtualMachinesMaximumSet(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+        fleetsListVirtualMachinesMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets()
-            .listVirtualMachines("rgazurefleet", "myFleet", "xzcepyottghqa", "hydepbmwuypaprlphcdecsz",
+            .listVirtualMachines("rgazurefleet", "testFleet", "qppsnaauhedxu", "jxgpugummyphgx",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -945,14 +926,14 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_Update.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_Update.
+     * Sample code: Fleets_Update_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void fleetsUpdate(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsUpdateMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         Fleet resource = manager.fleets()
             .getByResourceGroupWithResponse("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE)
             .getValue();
@@ -1475,14 +1456,26 @@ public final class FleetsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-04-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: Operations_List.
+     * Sample code: Operations_List_MinimumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void operationsList(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void operationsListMinimumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-04-01-preview/Operations_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Operations_List_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to ComputeFleetManager.
+     */
+    public static void operationsListMaximumSetGen(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

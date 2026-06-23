@@ -22,7 +22,7 @@ import java.io.IOException;
  * event.
  */
 @Fluent
-public final class ClientEventInputAudioBufferCommit extends ClientEvent {
+public final class ClientEventInputAudioBufferCommit extends SessionClientEvent {
 
     /*
      * The type of event.

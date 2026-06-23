@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem model = BinaryData.fromString("{\"id\":\"qyrp\"}")
-            .toObject(NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem.class);
-        Assertions.assertEquals("qyrp", model.id());
+        NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem model
+            = BinaryData.fromString("{\"id\":\"qbsms\"}")
+                .toObject(NetworkSecurityPerimeterAccessRulePropertiesSubscriptionsItem.class);
+        Assertions.assertEquals("qbsms", model.id());
     }
 }

@@ -144,4 +144,28 @@ public final class ClientEventType extends ExpandableStringEnum<ClientEventType>
      */
     @Generated
     public static final ClientEventType MCP_APPROVAL_RESPONSE = fromString("mcp_approval_response");
+
+    /**
+     * Client request to clear the avatar output buffer.
+     */
+    @Generated
+    public static final ClientEventType OUTPUT_AUDIO_BUFFER_CLEAR = fromString("output_audio_buffer.clear");
+
+    /**
+     * Sent by the client to initiate a WebRTC session with an SDP offer.
+     */
+    @Generated
+    public static final ClientEventType RTC_CALL_SDP_CREATE = fromString("rtc.call.sdp.create");
+
+    /**
+     * Streamed delta of input text content being appended to an item.
+     */
+    @Generated
+    public static final ClientEventType INPUT_TEXT_DELTA = fromString("input_text.delta");
+
+    /**
+     * Signals that the streamed input text content for an item is complete.
+     */
+    @Generated
+    public static final ClientEventType INPUT_TEXT_DONE = fromString("input_text.done");
 }

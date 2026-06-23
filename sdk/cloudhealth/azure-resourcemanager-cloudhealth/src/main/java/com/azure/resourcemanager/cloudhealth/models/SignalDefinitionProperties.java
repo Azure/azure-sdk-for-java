@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -40,9 +38,9 @@ public class SignalDefinitionProperties implements JsonSerializable<SignalDefini
     private RefreshInterval refreshInterval;
 
     /*
-     * Optional set of labels (key-value pairs)
+     * Optional set of tags (key-value pairs)
      */
-    private Map<String, String> labels;
+    private Map<String, String> tags;
 
     /*
      * Unit of the signal result (e.g. Bytes, MilliSeconds, Percent, Count))
@@ -53,11 +51,6 @@ public class SignalDefinitionProperties implements JsonSerializable<SignalDefini
      * Evaluation rules for the signal definition
      */
     private EvaluationRule evaluationRules;
-
-    /*
-     * Date when the signal definition was (soft-)deleted
-     */
-    private OffsetDateTime deletionDate;
 
     /**
      * Creates an instance of SignalDefinitionProperties class.
@@ -135,22 +128,22 @@ public class SignalDefinitionProperties implements JsonSerializable<SignalDefini
     }
 
     /**
-     * Get the labels property: Optional set of labels (key-value pairs).
+     * Get the tags property: Optional set of tags (key-value pairs).
      * 
-     * @return the labels value.
+     * @return the tags value.
      */
-    public Map<String, String> labels() {
-        return this.labels;
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
-     * Set the labels property: Optional set of labels (key-value pairs).
+     * Set the tags property: Optional set of tags (key-value pairs).
      * 
-     * @param labels the labels value to set.
+     * @param tags the tags value to set.
      * @return the SignalDefinitionProperties object itself.
      */
-    public SignalDefinitionProperties withLabels(Map<String, String> labels) {
-        this.labels = labels;
+    public SignalDefinitionProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -195,26 +188,6 @@ public class SignalDefinitionProperties implements JsonSerializable<SignalDefini
     }
 
     /**
-     * Get the deletionDate property: Date when the signal definition was (soft-)deleted.
-     * 
-     * @return the deletionDate value.
-     */
-    public OffsetDateTime deletionDate() {
-        return this.deletionDate;
-    }
-
-    /**
-     * Set the deletionDate property: Date when the signal definition was (soft-)deleted.
-     * 
-     * @param deletionDate the deletionDate value to set.
-     * @return the SignalDefinitionProperties object itself.
-     */
-    SignalDefinitionProperties withDeletionDate(OffsetDateTime deletionDate) {
-        this.deletionDate = deletionDate;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -225,7 +198,7 @@ public class SignalDefinitionProperties implements JsonSerializable<SignalDefini
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("refreshInterval",
             this.refreshInterval == null ? null : this.refreshInterval.toString());
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("dataUnit", this.dataUnit);
         return jsonWriter.writeEndObject();
     }
@@ -287,14 +260,11 @@ public class SignalDefinitionProperties implements JsonSerializable<SignalDefini
                 } else if ("refreshInterval".equals(fieldName)) {
                     deserializedSignalDefinitionProperties.refreshInterval
                         = RefreshInterval.fromString(reader.getString());
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedSignalDefinitionProperties.labels = labels;
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSignalDefinitionProperties.tags = tags;
                 } else if ("dataUnit".equals(fieldName)) {
                     deserializedSignalDefinitionProperties.dataUnit = reader.getString();
-                } else if ("deletionDate".equals(fieldName)) {
-                    deserializedSignalDefinitionProperties.deletionDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

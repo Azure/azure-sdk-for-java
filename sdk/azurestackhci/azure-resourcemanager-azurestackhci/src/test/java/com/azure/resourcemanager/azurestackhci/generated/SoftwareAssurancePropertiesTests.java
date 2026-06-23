@@ -13,16 +13,16 @@ public final class SoftwareAssurancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SoftwareAssuranceProperties model = BinaryData.fromString(
-            "{\"softwareAssuranceStatus\":\"Disabled\",\"softwareAssuranceIntent\":\"Enable\",\"lastUpdated\":\"2021-10-30T21:23:13Z\"}")
+            "{\"softwareAssuranceStatus\":\"Disabled\",\"softwareAssuranceIntent\":\"Disable\",\"lastUpdated\":\"2021-05-01T06:56:52Z\"}")
             .toObject(SoftwareAssuranceProperties.class);
-        Assertions.assertEquals(SoftwareAssuranceIntent.ENABLE, model.softwareAssuranceIntent());
+        Assertions.assertEquals(SoftwareAssuranceIntent.DISABLE, model.softwareAssuranceIntent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SoftwareAssuranceProperties model
-            = new SoftwareAssuranceProperties().withSoftwareAssuranceIntent(SoftwareAssuranceIntent.ENABLE);
+            = new SoftwareAssuranceProperties().withSoftwareAssuranceIntent(SoftwareAssuranceIntent.DISABLE);
         model = BinaryData.fromObject(model).toObject(SoftwareAssuranceProperties.class);
-        Assertions.assertEquals(SoftwareAssuranceIntent.ENABLE, model.softwareAssuranceIntent());
+        Assertions.assertEquals(SoftwareAssuranceIntent.DISABLE, model.softwareAssuranceIntent());
     }
 }

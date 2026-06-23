@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetMembersCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_Create.json
+     * x-ms-original-file: 2026-03-02-preview/FleetMembers_Create.json
      */
     /**
      * Sample code: Creates a FleetMember resource with a long running operation.

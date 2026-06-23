@@ -129,6 +129,7 @@ public final class CustomToolParameter extends Tool {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +149,7 @@ public final class CustomToolParameter extends Tool {
             ToolType type = ToolType.CUSTOM;
             String description = null;
             CustomToolParamFormat format = null;
+            Boolean deferLoading = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -159,6 +161,8 @@ public final class CustomToolParameter extends Tool {
                     description = reader.getString();
                 } else if ("format".equals(fieldName)) {
                     format = CustomToolParamFormat.fromJson(reader);
+                } else if ("defer_loading".equals(fieldName)) {
+                    deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -167,7 +171,36 @@ public final class CustomToolParameter extends Tool {
             deserializedCustomToolParameter.type = type;
             deserializedCustomToolParameter.description = description;
             deserializedCustomToolParameter.format = format;
+            deserializedCustomToolParameter.deferLoading = deferLoading;
             return deserializedCustomToolParameter;
         });
+    }
+
+    /*
+     * Whether this tool should be deferred and discovered via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /**
+     * Get the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this tool should be deferred and discovered via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the CustomToolParameter object itself.
+     */
+    @Generated
+    public CustomToolParameter setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
     }
 }

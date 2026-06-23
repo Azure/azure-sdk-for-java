@@ -33,6 +33,18 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     /**
      * Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
      */
+    public static final OSSku MARINER = fromString("Mariner");
+
+    /**
+     * Use Flatcar Container Linux as the OS for node images. Flatcar is a container-optimized, security-focused Linux
+     * OS, with an immutable filesystem and part of the Cloud Native Computing Foundation (CNCF). For more information
+     * about Flatcar Container Linux for AKS, see aka.ms/aks/flatcar-container-linux-for-aks.
+     */
+    public static final OSSku FLATCAR = fromString("Flatcar");
+
+    /**
+     * Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
+     */
     public static final OSSku CBLMARINER = fromString("CBLMariner");
 
     /**
@@ -60,10 +72,26 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku WINDOWS2025 = fromString("Windows2025");
 
     /**
+     * Use Windows Annual Channel version as the OS for node images. Unsupported for system node pools. Details about
+     * supported container images and kubernetes versions under different AKS Annual Channel versions could be seen in
+     * https://aka.ms/aks/windows-annual-channel-details.
+     */
+    public static final OSSku WINDOWS_ANNUAL = fromString("WindowsAnnual");
+
+    /**
      * Use Ubuntu2404 as the OS for node images, however, Ubuntu 24.04 may not be supported for all nodepools. For
      * limitations and supported kubernetes versions, see see https://aka.ms/aks/supported-ubuntu-versions.
      */
     public static final OSSku UBUNTU2404 = fromString("Ubuntu2404");
+
+    /**
+     * Use Azure Container Linux as the OS for node images. Azure Container Linux is a container-optimized,
+     * security-focused Linux OS built on Azure Linux, with an immutable filesystem. ACL is derived from the Flatcar
+     * Container Linux project, building on Flatcar's proven container-first, immutable design, while adding Azure Linux
+     * packages, servicing, and deep integration with the Azure and AKS lifecycle. For more information, see
+     * https://aka.ms/azurecontainerlinux.
+     */
+    public static final OSSku AZURE_CONTAINER_LINUX = fromString("AzureContainerLinux");
 
     /**
      * Creates a new instance of OSSku value.

@@ -1,0 +1,28 @@
+# NOTE: currently azure-sdk-actions only hosts check enforcer code.
+# If further functionality is added, this name should be updated to reflect
+# the more generic behavior
+name: "[TEST-IGNORE] Check Enforcer"
+
+on:
+  check_suite:
+    types: [completed]
+  issue_comment:
+    types: [created]
+  workflow_run:
+    workflows: ["*"]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  check-enforcer:
+    permissions:
+      statuses: write # to set status (azure/azure-sdk-actions)
+      pull-requests: read # to read pull requests; use "write" for response comments (azure/azure-sdk-actions)
+      checks: read # to read check status (azure/azure-sdk-actions)
+    name: "[TEST-IGNORE] Check Enforcer (${{ github.event_name }}:${{ github.event.action }})"
+    runs-on: ubuntu-latest # This image is intentionally set to "latest", and not to a specific version
+    steps:
+      - uses: azure/azure-sdk-actions@e1ab1a2cb5944bfea74b5cdbfc96e34da96548d2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

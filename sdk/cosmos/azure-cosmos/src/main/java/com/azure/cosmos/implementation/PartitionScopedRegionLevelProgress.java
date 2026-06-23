@@ -8,13 +8,13 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
+import com.azure.cosmos.implementation.routing.RegionIdRegistry;
+import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,7 +33,6 @@ public class PartitionScopedRegionLevelProgress {
     private final ConcurrentHashMap<String, String> normalizedRegionLookupMap;
 
     public final static String GLOBAL_PROGRESS_KEY = "global";
-
 
     public PartitionScopedRegionLevelProgress() {
         this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
@@ -122,11 +121,11 @@ public class PartitionScopedRegionLevelProgress {
                     return regionLevelProgressAsVal;
                 }
 
-                this.normalizedRegionLookupMap.computeIfAbsent(regionRoutedTo, (regionRoutedToAsVal) -> regionRoutedToAsVal.toLowerCase(Locale.ROOT).trim().replace(" ", ""));
+                this.normalizedRegionLookupMap.computeIfAbsent(regionRoutedTo, RegionNameNormalizer::normalize);
 
                 String normalizedRegionRoutedTo = this.normalizedRegionLookupMap.get(regionRoutedTo);
 
-                int regionId = RegionNameToRegionIdMap.getRegionId(normalizedRegionRoutedTo);
+                int regionId = RegionIdRegistry.getRegionId(normalizedRegionRoutedTo);
 
                 if (regionId != -1) {
                     long localLsn = localLsnByRegion.v.getOrDefault(regionId, Long.MIN_VALUE);
@@ -355,7 +354,7 @@ public class PartitionScopedRegionLevelProgress {
                 for (Map.Entry<Integer, Long> localLsnByRegionEntry : localLsnByRegion.v.entrySet()) {
 
                     int regionId = localLsnByRegionEntry.getKey();
-                    String normalizedRegionName = RegionNameToRegionIdMap.getRegionName(regionId);
+                    String normalizedRegionName = RegionIdRegistry.getNormalizedRegionNameForId(regionId);
 
                     // the regionId to normalizedRegionName does not exist
                     if (normalizedRegionName.equals(StringUtils.EMPTY)) {
@@ -401,7 +400,7 @@ public class PartitionScopedRegionLevelProgress {
 
                 // Obtain globalLsn from hub region
                 for (String lesserPreferredRegionPkProbablyRequestedFrom : lesserPreferredRegionsPkProbablyRequestedFrom) {
-                    int regionId = RegionNameToRegionIdMap.getRegionId(lesserPreferredRegionPkProbablyRequestedFrom);
+                    int regionId = RegionIdRegistry.getRegionId(lesserPreferredRegionPkProbablyRequestedFrom);
                     boolean isHubRegion = !localLsnByRegion.v.containsKey(regionId);
 
                     if (isHubRegion) {

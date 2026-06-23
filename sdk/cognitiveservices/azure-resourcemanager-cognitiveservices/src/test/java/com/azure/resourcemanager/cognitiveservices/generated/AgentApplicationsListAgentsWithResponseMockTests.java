@@ -21,7 +21,7 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
     @Test
     public void testListAgentsWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"kd\",\"value\":[{\"properties\":{\"agentId\":\"dwdbvxvzal\",\"agentName\":\"oyqxlunkf\"},\"id\":\"mcxqqxmyzklao\",\"name\":\"n\",\"type\":\"ohrvmz\"},{\"properties\":{\"agentId\":\"razadivznllaslks\",\"agentName\":\"jqjpv\"},\"id\":\"ihxjtgzgtai\",\"name\":\"wbqgroigbsfsgsa\",\"type\":\"nwldfmhljq\"},{\"properties\":{\"agentId\":\"spmrjct\",\"agentName\":\"ldsxebuhsxrz\"},\"id\":\"gsdaluyckh\",\"name\":\"frbhseuerbg\",\"type\":\"xebjl\"},{\"properties\":{\"agentId\":\"caytujraxdtpryj\",\"agentName\":\"tnsewou\"},\"id\":\"yms\",\"name\":\"vyljurkeposehqq\",\"type\":\"lmpctwj\"}]}";
+            = "{\"nextLink\":\"xpcbwkdwjyjizn\",\"value\":[{\"properties\":{\"agentId\":\"ofmftasp\",\"agentName\":\"reihuftrnigh\"},\"id\":\"nuwqxungro\",\"name\":\"gwfmsxjwdylwxm\",\"type\":\"zjow\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class AgentApplicationsListAgentsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AgentReferenceResourceArmPaginatedResult response = manager.agentApplications()
-            .listAgentsWithResponse("hnoyrzaaoeeh", "mjenvjeatea", "xc", "xoxdjxldnaryyi",
-                com.azure.core.util.Context.NONE)
+            .listAgentsWithResponse("zgottaksadzighmm", "b", "dvucfvvra", "beurdeewl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kd", response.nextLink());
-        Assertions.assertEquals("dwdbvxvzal", response.value().get(0).properties().agentId());
-        Assertions.assertEquals("oyqxlunkf", response.value().get(0).properties().agentName());
+        Assertions.assertEquals("xpcbwkdwjyjizn", response.nextLink());
+        Assertions.assertEquals("ofmftasp", response.value().get(0).properties().agentId());
+        Assertions.assertEquals("reihuftrnigh", response.value().get(0).properties().agentName());
     }
 }

@@ -77,6 +77,12 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      */
     private EncryptionProperties encryption;
 
+    /*
+     * The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows Azure Cosmos DB service to bypass
+     * network restrictions.
+     */
+    private NetworkBypassMode networkBypassMode;
+
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
      */
@@ -326,6 +332,28 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
+     * Get the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * Azure Cosmos DB service to bypass network restrictions.
+     * 
+     * @return the networkBypassMode value.
+     */
+    public NetworkBypassMode networkBypassMode() {
+        return this.networkBypassMode;
+    }
+
+    /**
+     * Set the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * Azure Cosmos DB service to bypass network restrictions.
+     * 
+     * @param networkBypassMode the networkBypassMode value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withNetworkBypassMode(NetworkBypassMode networkBypassMode) {
+        this.networkBypassMode = networkBypassMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -345,6 +373,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("authConfig", this.authConfig);
         jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("networkBypassMode",
+            this.networkBypassMode == null ? null : this.networkBypassMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -391,6 +421,9 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
                     deserializedMongoClusterUpdateProperties.authConfig = AuthConfigProperties.fromJson(reader);
                 } else if ("encryption".equals(fieldName)) {
                     deserializedMongoClusterUpdateProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("networkBypassMode".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.networkBypassMode
+                        = NetworkBypassMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
