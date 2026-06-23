@@ -167,11 +167,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
+        // Exactly one send span and one message span should be produced for a single sendMessage() call.
+        // An exact-count assertion guards against accidental double-instrumentation regressions.
         List<ReadableSpan> send = findSpans(spans, "ServiceBus.send");
+        assertEquals(1, send.size());
         assertEquals(expectedTraceId, send.get(0).getSpanContext().getTraceId());
         assertEquals(expectedTraceId, send.get(0).getParentSpanContext().getTraceId());
 
         List<ReadableSpan> messageSpans = findSpans(spans, "ServiceBus.message");
+        assertEquals(1, messageSpans.size());
         assertMessageSpan(messageSpans.get(0), message);
         assertEquals(expectedTraceId, messageSpans.get(0).getSpanContext().getTraceId());
 
