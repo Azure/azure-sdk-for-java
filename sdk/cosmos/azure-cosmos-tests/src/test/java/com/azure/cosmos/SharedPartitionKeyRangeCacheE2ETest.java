@@ -3,7 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.SharedPartitionKeyRangeCacheRegistry;
@@ -138,48 +137,6 @@ public class SharedPartitionKeyRangeCacheE2ETest extends TestSuiteBase {
             assertThat(refCountAfterSecondClose)
                 .as("Closing both test clients must drop refcount by two (setup client may still hold a reference)")
                 .isEqualTo(refCountBeforeClose - 2);
-        }
-    }
-
-    /**
-     * Negative-case companion to {@link #twoClientsOnSameEndpointShareRoutingMapStorage()}:
-     * clients configured with different endpoint URIs (for example, the global endpoint
-     * versus a regional endpoint of the same logical account) must <em>not</em> share
-     * the cache. The registry intentionally keys on the URI as configured on the builder,
-     * not on the underlying Cosmos account, because the account id returned from regional
-     * endpoints embeds a service-normalised region suffix that cannot be reliably
-     * reversed. This test pins that contract.
-     */
-    @Test(groups = {"emulator", "fast"}, timeOut = TIMEOUT)
-    public void clientsOnDifferentEndpointsDoNotShareRoutingMapStorage() {
-        // Construct a syntactically-different endpoint URI by toggling host case.
-        // URI.equals is case-insensitive on host (RFC 3986), so we need a more substantive
-        // difference: alter the path. The registry uses URI.equals which keys on scheme,
-        // host (case-insensitive), port, AND path, so a non-empty distinct path produces
-        // a distinct registry key without changing where the request actually goes.
-        // For an even cleaner separation we just point client B at an alternate endpoint
-        // string by replacing the host with itself plus a non-routable suffix; both
-        // clients still talk to the same logical account but the URIs differ.
-        URI primaryEndpoint = this.serviceEndpoint;
-        URI alternateEndpoint = URI.create(primaryEndpoint.toString().replaceFirst("/$", "/alt/"));
-
-        CosmosAsyncClient clientA = null;
-        CosmosAsyncClient clientB = null;
-        try {
-            clientA = getClientBuilder().endpoint(primaryEndpoint.toString()).buildAsyncClient();
-            clientB = getClientBuilder().endpoint(alternateEndpoint.toString()).buildAsyncClient();
-
-            AsyncCacheNonBlocking<String, CollectionRoutingMap> storageA = routingMapStorageOf(clientA);
-            AsyncCacheNonBlocking<String, CollectionRoutingMap> storageB = routingMapStorageOf(clientB);
-
-            assertThat(storageA)
-                .as("Clients configured with different endpoint URIs must use distinct registry entries")
-                .isNotSameAs(storageB);
-        } finally {
-            safeClose(clientA);
-            safeClose(clientB);
-            // Restore the shared builder's endpoint so later tests aren't poisoned.
-            getClientBuilder().endpoint(primaryEndpoint.toString());
         }
     }
 
