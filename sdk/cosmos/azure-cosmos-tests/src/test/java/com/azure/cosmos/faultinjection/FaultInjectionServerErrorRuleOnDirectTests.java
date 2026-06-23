@@ -2088,7 +2088,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
     @Test(groups = {"multi-region-strong"}, timeOut = 2 * TIMEOUT)
     public void faultInjection_writeBarrierThrottled_flagDisabled_doesNotEarlyYield() throws JsonProcessingException {
-        // Validates the default behavior when COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429 is NOT set.
+        // Validates the opt-out behavior when COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429 is explicitly set to false.
         // With the flag off, throttled write barrier requests must NOT surface as the new
         // 408 / SERVER_WRITE_BARRIER_THROTTLED (21013) early-yield path. The legacy behavior
         // (barrier-not-met -> Gone/retry) is preserved instead.
@@ -2119,8 +2119,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .duration(Duration.ofMinutes(5))
                 .build();
 
-        // Ensure the flag is not set for this test (default disabled).
-        System.clearProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429");
+        // Explicitly opt out of the early-yield behavior for this test (flag set to false).
+        System.setProperty("COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429", "false");
         try {
             newClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)

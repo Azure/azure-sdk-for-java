@@ -624,8 +624,8 @@ public class ConsistencyWriterTest {
 
     // The barrier early-yield-on-429 behavior is gated behind the Configs feature flag
     // (COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429), which is read at ConsistencyWriter construction time and
-    // defaults to false. This helper toggles the flag around construction so tests can exercise the
-    // flag-enabled behavior deterministically.
+    // defaults to true. This helper toggles the flag around construction so tests can exercise both the
+    // flag-enabled and flag-disabled behavior deterministically.
     private void initializeConsistencyWriterWithStoreReader(boolean useMultipleWriteLocation, StoreReader reader,
                                                             boolean enableBarrierEarlyYieldOn429) {
         String previous = System.getProperty(BARRIER_EARLY_YIELD_ON_429_PROPERTY);

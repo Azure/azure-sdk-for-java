@@ -47,8 +47,8 @@ public class QuorumReaderTest {
 
     // The barrier early-yield-on-429 behavior is gated behind the Configs feature flag
     // (COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429), which is read at QuorumReader construction time and defaults
-    // to false. This helper constructs a QuorumReader with the flag toggled so tests can exercise the
-    // flag-enabled behavior deterministically.
+    // to true. This helper constructs a QuorumReader with the flag toggled so tests can exercise both the
+    // flag-enabled and flag-disabled behavior deterministically.
     private static QuorumReader createQuorumReaderWithBarrierEarlyYieldOn429(
         boolean enableBarrierEarlyYieldOn429,
         Supplier<QuorumReader> quorumReaderSupplier) {
