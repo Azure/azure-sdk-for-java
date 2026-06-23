@@ -14,9 +14,11 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
@@ -200,6 +202,16 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
             new CosmosQueryRequestOptions().setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED));
         assertThat(queryResult.resultCount).isEqualTo(1);
         assertLatestCommitted(queryResult, "pointQuery");
+
+        OperationResult changeFeedResult = executeChangeFeed(
+            CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forFullRange())
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED));
+        assertThat(changeFeedResult.statusCode)
+            .as("queryChangeFeed status code")
+            .isIn(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
+        assertThat(changeFeedResult.resultCount).isEqualTo(0);
+        assertLatestCommitted(changeFeedResult, "queryChangeFeed");
     }
 
     private TestItem createTestItem() {
@@ -277,6 +289,25 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
             diagnosticsContext,
             resultCount,
             pageCount,
+            diagnosticsContext != null ? diagnosticsContext.getStatusCode() : -1);
+    }
+
+    private OperationResult executeChangeFeed(CosmosChangeFeedRequestOptions requestOptions) {
+        Iterator<FeedResponse<ObjectNode>> iterator = this.container
+            .queryChangeFeed(requestOptions, ObjectNode.class)
+            .iterableByPage()
+            .iterator();
+
+        if (!iterator.hasNext()) {
+            return new OperationResult(null, 0, 0, -1);
+        }
+
+        FeedResponse<ObjectNode> response = iterator.next();
+        CosmosDiagnosticsContext diagnosticsContext = response.getCosmosDiagnostics().getDiagnosticsContext();
+        return new OperationResult(
+            diagnosticsContext,
+            response.getResults().size(),
+            1,
             diagnosticsContext != null ? diagnosticsContext.getStatusCode() : -1);
     }
 
