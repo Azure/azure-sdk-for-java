@@ -15,6 +15,12 @@
   Premium large-message entities by reading the `com.microsoft:max-message-batch-size` vendor property
   from the AMQP sender link instead of using `max-message-size`. ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
 - Fixed `ServiceBusAdministrationClient.updateSubscription()` silently ignoring `defaultMessageTimeToLive` changes. The property was incorrectly nullified before serialization. ([#48495](https://github.com/Azure/azure-sdk-for-java/issues/48495))
+- Fixed session-enabled `ServiceBusProcessorClient` logging a spurious `DeliveryNotOnLinkException`
+  ("...does not exist in the link's DeliveryMap") at ERROR when a message handler settles a message
+  manually (e.g. `complete()`) while auto-complete is left enabled. The V2 session disposition path now
+  marks the message settled on success, so the redundant auto-settlement short-circuits at the
+  already-settled guard instead of attempting a second disposition on the receive-link. The message was
+  always settled correctly; only the misleading error log is removed. ([#47356](https://github.com/Azure/azure-sdk-for-java/issues/47356))
 
 ### Other Changes
 
