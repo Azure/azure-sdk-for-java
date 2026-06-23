@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pwsh -NonInteractive -Command \"& .\\\\eng\\\\common\\\\testproxy\\\\scripts\\\\resolve-asset-conflict\\\\resolve-asset-conflict.ps1 sdk/storage/azure-storage-blob/assets.json\")",
+      "Bash(pwsh -File ./eng/common/testproxy/scripts/tag-merge/merge-proxy-tags.ps1 sdk/storage/azure-storage-blob/assets.json java/storage/azure-storage-blob_4691350e44 java/storage/azure-storage-blob_beac25b9c7)",
+      "Bash(test-proxy push *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:dev.azure.com)",
+      "Bash(gh pr *)",
+      "Bash(git *)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "azure-sdk-mcp"
+  ]
+}
