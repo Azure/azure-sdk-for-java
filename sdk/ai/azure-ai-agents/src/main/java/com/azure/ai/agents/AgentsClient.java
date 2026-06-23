@@ -2565,7 +2565,8 @@ public final class AgentsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadAgentCodeWithResponse(String agentName, Path filePath, RequestOptions requestOptions) throws IOException {
+    public Response<Void> downloadAgentCodeWithResponse(String agentName, Path filePath, RequestOptions requestOptions)
+        throws IOException {
         Response<BinaryData> response = this.serviceClient.downloadAgentCodeWithResponse(agentName, requestOptions);
         response.getValue().writeTo(new FileOutputStream(filePath.toFile()));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -2903,7 +2904,6 @@ public final class AgentsClient {
             requestOptions);
     }
 
-
     /**
      * Upload a session file
      *
@@ -2949,9 +2949,9 @@ public final class AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String agentSessionId, String path,
-                                                              Path fileInDisk, RequestOptions requestOptions) {
-        return this.serviceClient.uploadSessionFileWithResponse(agentName, agentSessionId, path, BinaryData.fromFile(fileInDisk),
-            requestOptions);
+        Path fileInDisk, RequestOptions requestOptions) {
+        return this.serviceClient.uploadSessionFileWithResponse(agentName, agentSessionId, path,
+            BinaryData.fromFile(fileInDisk), requestOptions);
     }
 
     /**
@@ -3026,8 +3026,9 @@ public final class AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
-                                                                Path filePath, RequestOptions requestOptions) throws IOException {
-        Response<BinaryData> response = this.serviceClient.downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
+        Path filePath, RequestOptions requestOptions) throws IOException {
+        Response<BinaryData> response
+            = this.serviceClient.downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
         response.getValue().writeTo(new FileOutputStream(filePath.toFile()));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
@@ -3348,8 +3349,7 @@ public final class AgentsClient {
         if (agentVersion != null) {
             requestOptions.addQueryParam("agent_version", agentVersion, false);
         }
-        downloadAgentCode(agentName, agentVersion)
-            .writeTo(new FileOutputStream(destinationPath.toFile(), true));
+        downloadAgentCode(agentName, agentVersion).writeTo(new FileOutputStream(destinationPath.toFile(), true));
     }
 
     /**
@@ -3704,15 +3704,15 @@ public final class AgentsClient {
      * @return response from uploading a file to a session sandbox.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path,
-                                                    Path filePath, String userIsolationKey) {
+    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path, Path filePath,
+        String userIsolationKey) {
         // Generated convenience method for uploadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (userIsolationKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
-        return uploadSessionFileWithResponse(agentName, agentSessionId, path, BinaryData.fromFile(filePath), requestOptions).getValue()
-            .toObject(SessionFileWriteResult.class);
+        return uploadSessionFileWithResponse(agentName, agentSessionId, path, BinaryData.fromFile(filePath),
+            requestOptions).getValue().toObject(SessionFileWriteResult.class);
     }
 
     /**
@@ -3793,18 +3793,17 @@ public final class AgentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadSessionFile(String agentName, String agentSessionId, String path,
-                                          String userIsolationKey, Path fileInDisk) throws IOException {
+    public void downloadSessionFile(String agentName, String agentSessionId, String path, String userIsolationKey,
+        Path fileInDisk) throws IOException {
         RequestOptions requestOptions = new RequestOptions();
         if (userIsolationKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
 
-        BinaryData fileContent = downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
+        BinaryData fileContent
+            = downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
         fileContent.writeTo(new FileOutputStream(fileInDisk.toFile(), true));
     }
-
-
 
     /**
      * Download a session file
