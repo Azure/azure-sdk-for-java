@@ -218,8 +218,8 @@ public class Configs {
     private static final String USE_LEGACY_TRACING = "COSMOS.USE_LEGACY_TRACING";
     private static final boolean DEFAULT_USE_LEGACY_TRACING = false;
 
-    // Whether multiple CosmosClient instances targeting the same Cosmos
-    // account share a single partition-key-range cache. Enabled by default.
+    // Whether multiple CosmosClient instances configured with the same service
+    // endpoint share a single partition-key-range cache. Enabled by default.
     private static final String SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED =
         "COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED";
     private static final boolean DEFAULT_SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED = true;

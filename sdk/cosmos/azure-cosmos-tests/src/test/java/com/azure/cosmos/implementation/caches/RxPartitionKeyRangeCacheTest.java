@@ -20,6 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,9 +43,9 @@ public class RxPartitionKeyRangeCacheTest {
     public void before_test() {
         client = Mockito.mock(RxDocumentClientImpl.class);
         collectionCache = Mockito.mock(RxCollectionCache.class);
-        // Pass null/blank accountId explicitly to opt into an isolated cache
-        // for the original test-suite behavior (these tests don't exercise sharing).
-        cache = new RxPartitionKeyRangeCache(client, collectionCache, null);
+        // Pass null endpoint explicitly to opt into an isolated cache for the
+        // original test-suite behavior (these tests don't exercise sharing).
+        cache = new RxPartitionKeyRangeCache(client, collectionCache, (URI) null);
     }
 
     @Test(groups = "unit")
@@ -252,7 +253,7 @@ public class RxPartitionKeyRangeCacheTest {
 
     @Test(groups = "unit")
     public void twoCachesForSameEndpointShareRoutingMapStorage() throws Exception {
-        String accountId = "test-shared-pkr-1";
+        URI endpoint = URI.create("https://test-shared-pkr-1.documents.azure.com:443/");
 
         RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
         RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
@@ -292,8 +293,8 @@ public class RxPartitionKeyRangeCacheTest {
                 return Flux.just(response);
             });
 
-        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, accountId);
-        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, accountId);
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
 
         try {
             StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
@@ -311,15 +312,15 @@ public class RxPartitionKeyRangeCacheTest {
             cacheB.close();
         }
 
-        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(accountId))
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
             .as("close() releases the shared cache reference")
             .isZero();
     }
 
     @Test(groups = "unit")
     public void cachesForDifferentEndpointsDoNotShareStorage() throws Exception {
-        String accountIdA = "test-shared-pkr-2a";
-        String accountIdB = "test-shared-pkr-2b";
+        URI endpointA = URI.create("https://test-shared-pkr-2a.documents.azure.com:443/");
+        URI endpointB = URI.create("https://test-shared-pkr-2b.documents.azure.com:443/");
 
         RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
         RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
@@ -358,8 +359,8 @@ public class RxPartitionKeyRangeCacheTest {
                 return Flux.just(response);
             });
 
-        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, accountIdA);
-        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, accountIdB);
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpointA);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpointB);
 
         try {
             StepVerifier.create(cacheA.tryLookupAsync(null, collectionRid, null, new HashMap<>()))
@@ -380,19 +381,19 @@ public class RxPartitionKeyRangeCacheTest {
 
     @Test(groups = "unit")
     public void closeIsIdempotent() throws Exception {
-        String accountId = "test-shared-pkr-3";
+        URI endpoint = URI.create("https://test-shared-pkr-3.documents.azure.com:443/");
         RxDocumentClientImpl mockClient = Mockito.mock(RxDocumentClientImpl.class);
         RxCollectionCache mockColl = Mockito.mock(RxCollectionCache.class);
 
-        RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl, accountId);
-        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(accountId))
+        RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl, endpoint);
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
             .isEqualTo(1);
 
         c.close();
         c.close(); // second call must be a no-op
         c.close();
 
-        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(accountId))
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
             .as("repeated close() must not drive refcount negative")
             .isZero();
     }
@@ -401,21 +402,21 @@ public class RxPartitionKeyRangeCacheTest {
     public void clientWithServiceEndpointAcquiresAndReleasesRegistryRefcount() throws Exception {
         // Regression-guard for the RxDocumentClientImpl.close() -> partitionKeyRangeCache.close()
         // wiring: constructing the cache must bump the registry refcount; close() must drop it.
-        String accountId = "test-pkr-lifecycle";
+        URI endpoint = URI.create("https://test-pkr-lifecycle.documents.azure.com:443/");
         RxDocumentClientImpl mockClient = Mockito.mock(RxDocumentClientImpl.class);
         RxCollectionCache mockColl = Mockito.mock(RxCollectionCache.class);
 
-        int before = SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(accountId);
+        int before = SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint);
 
         // Mirrors what RxDocumentClientImpl actually uses: 3-arg ctor with the account id.
-        RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl, accountId);
+        RxPartitionKeyRangeCache c = new RxPartitionKeyRangeCache(mockClient, mockColl, endpoint);
         try {
-            assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(accountId))
+            assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
                 .isEqualTo(before + 1);
         } finally {
             c.close();
         }
-        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(accountId))
+        assertThat(SharedPartitionKeyRangeCacheRegistry.getInstance().referenceCount(endpoint))
             .isEqualTo(before);
     }
 
@@ -423,7 +424,7 @@ public class RxPartitionKeyRangeCacheTest {
     public void forceRefreshOnSharedCacheIsVisibleToSiblingClient() throws Exception {
         // Cross-client invalidation propagation: client A force-refreshes a routing map,
         // the new value must be visible to client B's next lookup.
-        String accountId = "test-shared-pkr-refresh";
+        URI endpoint = URI.create("https://test-shared-pkr-refresh.documents.azure.com:443/");
 
         RxDocumentClientImpl clientA = Mockito.mock(RxDocumentClientImpl.class);
         RxDocumentClientImpl clientB = Mockito.mock(RxDocumentClientImpl.class);
@@ -479,8 +480,8 @@ public class RxPartitionKeyRangeCacheTest {
                 return Flux.just(responseAfter);
             });
 
-        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, accountId);
-        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, accountId);
+        RxPartitionKeyRangeCache cacheA = new RxPartitionKeyRangeCache(clientA, collA, endpoint);
+        RxPartitionKeyRangeCache cacheB = new RxPartitionKeyRangeCache(clientB, collB, endpoint);
 
         try {
             // Step 1: A populates the shared cache with the pre-split routing map.
