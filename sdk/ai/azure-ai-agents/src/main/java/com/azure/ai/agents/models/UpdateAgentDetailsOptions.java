@@ -24,7 +24,7 @@ public final class UpdateAgentDetailsOptions implements JsonSerializable<UpdateA
      * The endpoint configuration for the agent
      */
     @Generated
-    private AgentEndpoint agentEndpoint;
+    private AgentEndpointConfig agentEndpoint;
 
     /*
      * Optional agent card for the agent
@@ -77,21 +77,8 @@ public final class UpdateAgentDetailsOptions implements JsonSerializable<UpdateA
      * @return the agentEndpoint value.
      */
     @Generated
-    public AgentEndpoint getAgentEndpoint() {
+    public AgentEndpointConfig getAgentEndpoint() {
         return this.agentEndpoint;
-    }
-
-    /**
-     * Set the agentEndpoint property: The endpoint configuration for the agent.
-     *
-     * @param agentEndpoint the agentEndpoint value to set.
-     * @return the UpdateAgentDetailsOptions object itself.
-     */
-    @Generated
-    public UpdateAgentDetailsOptions setAgentEndpoint(AgentEndpoint agentEndpoint) {
-        this.agentEndpoint = agentEndpoint;
-        this.updatedProperties.add("agentEndpoint");
-        return this;
     }
 
     /**
@@ -140,9 +127,10 @@ public final class UpdateAgentDetailsOptions implements JsonSerializable<UpdateA
             if (this.agentEndpoint == null) {
                 jsonWriter.writeNullField("agent_endpoint");
             } else {
-                JsonMergePatchHelper.getAgentEndpointAccessor().prepareModelForJsonMergePatch(this.agentEndpoint, true);
+                JsonMergePatchHelper.getAgentEndpointConfigAccessor()
+                    .prepareModelForJsonMergePatch(this.agentEndpoint, true);
                 jsonWriter.writeJsonField("agent_endpoint", this.agentEndpoint);
-                JsonMergePatchHelper.getAgentEndpointAccessor()
+                JsonMergePatchHelper.getAgentEndpointConfigAccessor()
                     .prepareModelForJsonMergePatch(this.agentEndpoint, false);
             }
         }
@@ -174,7 +162,7 @@ public final class UpdateAgentDetailsOptions implements JsonSerializable<UpdateA
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("agent_endpoint".equals(fieldName)) {
-                    deserializedUpdateAgentDetailsOptions.agentEndpoint = AgentEndpoint.fromJson(reader);
+                    deserializedUpdateAgentDetailsOptions.agentEndpoint = AgentEndpointConfig.fromJson(reader);
                 } else if ("agent_card".equals(fieldName)) {
                     deserializedUpdateAgentDetailsOptions.agentCard = AgentCard.fromJson(reader);
                 } else {
@@ -183,5 +171,18 @@ public final class UpdateAgentDetailsOptions implements JsonSerializable<UpdateA
             }
             return deserializedUpdateAgentDetailsOptions;
         });
+    }
+
+    /**
+     * Set the agentEndpoint property: The endpoint configuration for the agent.
+     *
+     * @param agentEndpoint the agentEndpoint value to set.
+     * @return the UpdateAgentDetailsOptions object itself.
+     */
+    @Generated
+    public UpdateAgentDetailsOptions setAgentEndpoint(AgentEndpointConfig agentEndpoint) {
+        this.agentEndpoint = agentEndpoint;
+        this.updatedProperties.add("agentEndpoint");
+        return this;
     }
 }

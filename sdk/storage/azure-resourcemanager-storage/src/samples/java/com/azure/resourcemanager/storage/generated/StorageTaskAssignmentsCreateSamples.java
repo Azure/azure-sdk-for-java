@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class StorageTaskAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
+     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
      */
     /**
      * Sample code: PutStorageTaskAssignment.
@@ -46,7 +46,7 @@ public final class StorageTaskAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentMockRun.json
+     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentMockRun.json
      */
     /**
      * Sample code: PutStorageTaskAssignmentMockRun.
@@ -66,13 +66,13 @@ public final class StorageTaskAssignmentsCreateSamples {
                             new ExecutionTarget().withPrefix(Arrays.asList()).withExcludePrefix(Arrays.asList()))
                         .withTrigger(new ExecutionTrigger().withType(TriggerType.MOCK_RUN)
                             .withParameters(new TriggerParameters()
-                                .withStartFrom(OffsetDateTime.parse("2023-01-01T00:00:00.1234567Z")))))
+                                .withStartOn(OffsetDateTime.parse("2023-01-01T00:00:00.1234567Z")))))
                     .withReport(new StorageTaskAssignmentReport().withPrefix("reports"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
+     * x-ms-original-file: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
      */
     /**
      * Sample code: PutStorageTaskAssignmentRequiredProperties.

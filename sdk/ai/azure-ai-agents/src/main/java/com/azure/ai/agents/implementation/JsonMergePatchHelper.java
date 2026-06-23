@@ -6,8 +6,8 @@ package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentCardSkill;
-import com.azure.ai.agents.models.AgentEndpoint;
 import com.azure.ai.agents.models.AgentEndpointAuthorizationScheme;
+import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.IsolationKeySource;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelectionRule;
@@ -17,20 +17,21 @@ import com.azure.ai.agents.models.VersionSelector;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
-    private static AgentEndpointAccessor agentEndpointAccessor;
+    private static AgentEndpointConfigAccessor agentEndpointConfigAccessor;
 
-    public interface AgentEndpointAccessor {
-        AgentEndpoint prepareModelForJsonMergePatch(AgentEndpoint agentEndpoint, boolean jsonMergePatchEnabled);
+    public interface AgentEndpointConfigAccessor {
+        AgentEndpointConfig prepareModelForJsonMergePatch(AgentEndpointConfig agentEndpointConfig,
+            boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(AgentEndpoint agentEndpoint);
+        boolean isJsonMergePatch(AgentEndpointConfig agentEndpointConfig);
     }
 
-    public static void setAgentEndpointAccessor(AgentEndpointAccessor accessor) {
-        agentEndpointAccessor = accessor;
+    public static void setAgentEndpointConfigAccessor(AgentEndpointConfigAccessor accessor) {
+        agentEndpointConfigAccessor = accessor;
     }
 
-    public static AgentEndpointAccessor getAgentEndpointAccessor() {
-        return agentEndpointAccessor;
+    public static AgentEndpointConfigAccessor getAgentEndpointConfigAccessor() {
+        return agentEndpointConfigAccessor;
     }
 
     private static VersionSelectorAccessor versionSelectorAccessor;

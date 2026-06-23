@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class FleetUpdateStrategiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/UpdateStrategies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-02-preview/UpdateStrategies_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a FleetUpdateStrategy.

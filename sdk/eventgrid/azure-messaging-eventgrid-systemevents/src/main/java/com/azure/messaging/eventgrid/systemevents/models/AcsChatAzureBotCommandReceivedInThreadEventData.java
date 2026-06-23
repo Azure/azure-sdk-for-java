@@ -34,6 +34,12 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
     private Map<String, String> metadata;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The display name of the sender
      */
     @Generated
@@ -85,6 +91,17 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
     }
 
     /**
+     * Get the sequenceId property: The Sequence id of the message.
+     *
+     * @return the sequenceId value.
+     */
+    @Generated
+    @Override
+    public Long getSequenceId() {
+        return this.sequenceId;
+    }
+
+    /**
      * Get the senderDisplayName property: The display name of the sender.
      *
      * @return the senderDisplayName value.
@@ -122,6 +139,7 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
         jsonWriter.writeLongField("version", getVersion());
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
+        jsonWriter.writeNumberField("sequenceId", getSequenceId());
         jsonWriter.writeStringField("messageBody", this.messageBody);
         return jsonWriter.writeEndObject();
     }
@@ -146,6 +164,7 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
             long version = 0L;
             String transactionId = null;
             String senderDisplayName = null;
+            Long sequenceId = null;
             String messageBody = null;
             Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -168,6 +187,8 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
                     transactionId = reader.getString();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     senderDisplayName = reader.getString();
+                } else if ("sequenceId".equals(fieldName)) {
+                    sequenceId = reader.getNullable(JsonReader::getLong);
                 } else if ("messageBody".equals(fieldName)) {
                     messageBody = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
@@ -181,6 +202,7 @@ public final class AcsChatAzureBotCommandReceivedInThreadEventData extends AcsCh
                     senderCommunicationIdentifier, composeTime, type, version, messageBody);
             deserializedAcsChatAzureBotCommandReceivedInThreadEventData.transactionId = transactionId;
             deserializedAcsChatAzureBotCommandReceivedInThreadEventData.senderDisplayName = senderDisplayName;
+            deserializedAcsChatAzureBotCommandReceivedInThreadEventData.sequenceId = sequenceId;
             deserializedAcsChatAzureBotCommandReceivedInThreadEventData.metadata = metadata;
             return deserializedAcsChatAzureBotCommandReceivedInThreadEventData;
         });

@@ -16,7 +16,7 @@ import java.io.IOException;
  * the default Session configuration.
  */
 @Immutable
-public final class SessionUpdateSessionCreated extends SessionUpdate {
+public final class SessionUpdateSessionCreated extends SessionServerEvent {
 
     /*
      * The type of event.

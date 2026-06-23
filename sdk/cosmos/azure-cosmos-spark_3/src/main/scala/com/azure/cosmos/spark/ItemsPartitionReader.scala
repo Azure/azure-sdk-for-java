@@ -45,6 +45,14 @@ private case class ItemsPartitionReader
     .getCosmosQueryRequestOptionsAccessor
     .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
 
+  // Bubble empty pages up to the iterator so the per-page end-to-end timeout
+  // applies to each individual page rather than being exceeded by serial
+  // empty-page drains inside ParallelDocumentQueryExecutionContext.
+  ImplementationBridgeHelpers
+    .CosmosQueryRequestOptionsHelper
+    .getCosmosQueryRequestOptionsAccessor
+    .setAllowEmptyPages(queryOptions, true)
+
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   ThroughputControlHelper.populateThroughputControlGroupName(
     ImplementationBridgeHelpers

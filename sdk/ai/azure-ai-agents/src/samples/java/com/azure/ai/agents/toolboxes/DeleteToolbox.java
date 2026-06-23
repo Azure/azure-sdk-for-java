@@ -4,13 +4,13 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * This sample demonstrates how to delete a toolbox and all its versions using the
- * ToolboxesClient.
+ * BetaToolboxesClient.
  *
  * <p>The {@code deleteToolbox} method removes the toolbox and every version
  * associated with it.</p>
@@ -25,10 +25,10 @@ public class DeleteToolbox {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String toolboxName = "toolbox_created_from_java";
         // Code sample for deleting a toolbox
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildToolboxesClient();
+                .beta().buildBetaToolboxesClient();
 
         toolboxesClient.deleteToolbox(toolboxName);
 

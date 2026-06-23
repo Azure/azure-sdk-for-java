@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
  */
 public final class NetAppResourceUpdateNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NetworkSiblingSet_Update.json
+     * x-ms-original-file: 2026-04-01/NetworkSiblingSet_Update.json
      */
     /**
      * Sample code: NetworkFeatures_Update.
@@ -25,7 +25,7 @@ public final class NetAppResourceUpdateNetworkSiblingSetSamples {
                 .withNetworkSiblingSetId("9760acf5-4638-11e7-9bdb-020073ca3333")
                 .withSubnetId(
                     "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet")
-                .withNetworkSiblingSetStateId("12345_44420.8001578125")
+                .withNetworkSiblingSetStateId("1.2345444208001578E9")
                 .withNetworkFeatures(NetworkFeatures.STANDARD), com.azure.core.util.Context.NONE);
     }
 }

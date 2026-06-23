@@ -37,6 +37,7 @@ import com.azure.resourcemanager.storage.fluent.ConnectorsClient;
 import com.azure.resourcemanager.storage.fluent.models.ConnectorInner;
 import com.azure.resourcemanager.storage.fluent.models.TestConnectionResponseInner;
 import com.azure.resourcemanager.storage.implementation.models.ConnectorListResult;
+import com.azure.resourcemanager.storage.models.ConnectorUpdate;
 import com.azure.resourcemanager.storage.models.TestExistingConnectionRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -100,7 +101,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("connectorName") String connectorName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ConnectorInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ConnectorUpdate properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -578,7 +579,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String connectorName, ConnectorInner properties) {
+        String connectorName, ConnectorUpdate properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -628,7 +629,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String connectorName, ConnectorInner properties, Context context) {
+        String connectorName, ConnectorUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -675,7 +676,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectorInner>, ConnectorInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String connectorName, ConnectorInner properties) {
+        String accountName, String connectorName, ConnectorUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, connectorName, properties);
         return this.client.<ConnectorInner, ConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
@@ -699,7 +700,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectorInner>, ConnectorInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String connectorName, ConnectorInner properties, Context context) {
+        String accountName, String connectorName, ConnectorUpdate properties, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, connectorName, properties, context);
@@ -723,7 +724,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectorInner>, ConnectorInner> beginUpdate(String resourceGroupName,
-        String accountName, String connectorName, ConnectorInner properties) {
+        String accountName, String connectorName, ConnectorUpdate properties) {
         return this.beginUpdateAsync(resourceGroupName, accountName, connectorName, properties).getSyncPoller();
     }
 
@@ -744,7 +745,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectorInner>, ConnectorInner> beginUpdate(String resourceGroupName,
-        String accountName, String connectorName, ConnectorInner properties, Context context) {
+        String accountName, String connectorName, ConnectorUpdate properties, Context context) {
         return this.beginUpdateAsync(resourceGroupName, accountName, connectorName, properties, context)
             .getSyncPoller();
     }
@@ -765,7 +766,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectorInner> updateAsync(String resourceGroupName, String accountName, String connectorName,
-        ConnectorInner properties) {
+        ConnectorUpdate properties) {
         return beginUpdateAsync(resourceGroupName, accountName, connectorName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -787,7 +788,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectorInner> updateAsync(String resourceGroupName, String accountName, String connectorName,
-        ConnectorInner properties, Context context) {
+        ConnectorUpdate properties, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, connectorName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -807,7 +808,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorInner update(String resourceGroupName, String accountName, String connectorName,
-        ConnectorInner properties) {
+        ConnectorUpdate properties) {
         return updateAsync(resourceGroupName, accountName, connectorName, properties).block();
     }
 
@@ -827,7 +828,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorInner update(String resourceGroupName, String accountName, String connectorName,
-        ConnectorInner properties, Context context) {
+        ConnectorUpdate properties, Context context) {
         return updateAsync(resourceGroupName, accountName, connectorName, properties, context).block();
     }
 
