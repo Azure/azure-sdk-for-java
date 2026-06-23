@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
@@ -323,6 +324,52 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(request.requestContext.quorumSelectedLSN).isEqualTo(-1);
         assertThat(shouldRetryResult.policyArg.getValue0()).isFalse();
 
+    }
+
+    /**
+     * Retry with PartitionKeyRangeGoneException
+     */
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldRetryWithPartitionKeyRangeGoneException() {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+            .shouldRetry(new PartitionKeyRangeGoneException());
+        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+        assertThat(request.forcePartitionKeyRangeRefresh).isTrue();
+        assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
+        assertThat(request.requestContext.quorumSelectedLSN).isEqualTo(-1);
+        assertThat(shouldRetryResult.policyArg.getValue0()).isFalse();
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldWrapPartitionKeyRangeGoneExceptionWithServiceUnavailableWhenRetryBudgetExhausted() {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 0);
+
+        ShouldRetryResult shouldRetryResult = goneAndRetryWithRetryPolicy
+            .shouldRetry(new PartitionKeyRangeGoneException())
+            .block();
+        assertThat(shouldRetryResult.shouldRetry).isTrue();
+
+        shouldRetryResult = goneAndRetryWithRetryPolicy
+            .shouldRetry(new PartitionKeyRangeGoneException())
+            .block();
+
+        assertThat(shouldRetryResult.shouldRetry).isFalse();
+        assertThat(shouldRetryResult.exception).isInstanceOf(CosmosException.class);
+
+        CosmosException cosmosException = (CosmosException) shouldRetryResult.exception;
+        assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+        assertThat(cosmosException.getSubStatusCode())
+            .isEqualTo(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT);
     }
 
     /**

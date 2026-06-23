@@ -127,6 +127,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             if (exception instanceof GoneException ||
                 exception instanceof PartitionIsMigratingException ||
                 exception instanceof PartitionKeyRangeIsSplittingException ||
+                exception instanceof PartitionKeyRangeGoneException ||
                 exception instanceof LeaseNotFoundException) {
 
                 return false;
@@ -292,6 +293,8 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 return handlePartitionIsMigratingException((PartitionIsMigratingException)exception);
             } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
                 return handlePartitionKeyIsSplittingException((PartitionKeyRangeIsSplittingException) exception);
+            } else if (exception instanceof PartitionKeyRangeGoneException) {
+                return handlePartitionKeyRangeGoneException((PartitionKeyRangeGoneException) exception);
             }
 
             throw new IllegalStateException("Invalid exception type", exception);
@@ -313,6 +316,15 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             this.request.requestContext.quorumSelectedLSN = -1;
             this.request.requestContext.quorumSelectedStoreResponse = null;
             logger.debug("Received partition key range splitting exception, will retry, {}", exception.toString());
+            this.request.forcePartitionKeyRangeRefresh = true;
+            return Pair.of(null, false);
+        }
+
+        private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionKeyRangeGoneException(PartitionKeyRangeGoneException exception) {
+            this.request.requestContext.resolvedPartitionKeyRange = null;
+            this.request.requestContext.quorumSelectedLSN = -1;
+            this.request.requestContext.quorumSelectedStoreResponse = null;
+            logger.debug("Received partition key range gone exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
             return Pair.of(null, false);
         }
