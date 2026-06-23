@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.serde.jackson;
 
-import org.springframework.security.jackson.CoreJacksonModule;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.jackson.OAuth2ClientJacksonModule;
 import tools.jackson.core.JacksonException;
@@ -19,11 +18,6 @@ public final class SerializerUtils {
     static {
         OBJECT_MAPPER = JsonMapper.builder()
             .addModule(new OAuth2ClientJacksonModule())
-            // Use to handle problem: OAuth2ClientJacksonModule does not support self-defined ClientRegistration type.
-            // For example: "on_behalf_on" or "azure_delegated".
-            // TODO(rujche) Delete this after OAuth2ClientJacksonModule support self-defined ClientRegistration type.
-            .addModule(new AadOAuth2ClientJacksonModule())
-            .addModule(new CoreJacksonModule())
             .build();
     }
 
