@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/placeholder/ci.yml
+      - sdk/placeholder/azure-resourcemanager-placeholder/
+    exclude:
+      - sdk/placeholder/pom.xml
+      - sdk/placeholder/azure-resourcemanager-placeholder/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/placeholder/ci.yml
+      - sdk/placeholder/azure-resourcemanager-placeholder/
+    exclude:
+      - sdk/placeholder/pom.xml
+      - sdk/placeholder/azure-resourcemanager-placeholder/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerplaceholder
+    displayName: azure-resourcemanager-placeholder
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: placeholder
+    Artifacts:
+      - name: azure-resourcemanager-placeholder
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerplaceholder
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerplaceholder }}
