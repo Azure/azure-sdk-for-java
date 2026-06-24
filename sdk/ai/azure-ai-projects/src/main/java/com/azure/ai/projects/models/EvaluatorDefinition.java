@@ -26,13 +26,6 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
     private EvaluatorDefinitionType type = EvaluatorDefinitionType.fromString("EvaluatorDefinition");
 
     /*
-     * The JSON schema (Draft 2020-12) for the evaluator's input parameters. This includes parameters like type,
-     * properties, required.
-     */
-    @Generated
-    private Map<String, BinaryData> initParameters;
-
-    /*
      * The JSON schema (Draft 2020-12) for the evaluator's input data. This includes parameters like type, properties,
      * required.
      */
@@ -60,17 +53,6 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
     @Generated
     public EvaluatorDefinitionType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the initParameters property: The JSON schema (Draft 2020-12) for the evaluator's input parameters. This
-     * includes parameters like type, properties, required.
-     *
-     * @return the initParameters value.
-     */
-    @Generated
-    public Map<String, BinaryData> getInitParameters() {
-        return this.initParameters;
     }
 
     /**
@@ -114,7 +96,7 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeMapField("init_parameters", this.initParameters, (writer, element) -> {
+        jsonWriter.writeMapField("init_parameters", this.initializationParameters, (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
@@ -181,9 +163,9 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
                 if ("type".equals(fieldName)) {
                     deserializedEvaluatorDefinition.type = EvaluatorDefinitionType.fromString(reader.getString());
                 } else if ("init_parameters".equals(fieldName)) {
-                    Map<String, BinaryData> initParameters = reader.readMap(reader1 -> reader1
+                    Map<String, BinaryData> initializationParameters = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedEvaluatorDefinition.initParameters = initParameters;
+                    deserializedEvaluatorDefinition.initializationParameters = initializationParameters;
                 } else if ("data_schema".equals(fieldName)) {
                     Map<String, BinaryData> dataSchema = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
@@ -200,19 +182,6 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
     }
 
     /**
-     * Set the initParameters property: The JSON schema (Draft 2020-12) for the evaluator's input parameters. This
-     * includes parameters like type, properties, required.
-     *
-     * @param initParameters the initParameters value to set.
-     * @return the EvaluatorDefinition object itself.
-     */
-    @Generated
-    public EvaluatorDefinition setInitParameters(Map<String, BinaryData> initParameters) {
-        this.initParameters = initParameters;
-        return this;
-    }
-
-    /**
      * Set the dataSchema property: The JSON schema (Draft 2020-12) for the evaluator's input data. This includes
      * parameters like type, properties, required.
      *
@@ -222,6 +191,37 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
     @Generated
     public EvaluatorDefinition setDataSchema(Map<String, BinaryData> dataSchema) {
         this.dataSchema = dataSchema;
+        return this;
+    }
+
+    /*
+     * The JSON schema (Draft 2020-12) for the evaluator's input parameters. This includes parameters like type,
+     * properties, required.
+     */
+    @Generated
+    private Map<String, BinaryData> initializationParameters;
+
+    /**
+     * Get the initializationParameters property: The JSON schema (Draft 2020-12) for the evaluator's input parameters.
+     * This includes parameters like type, properties, required.
+     *
+     * @return the initializationParameters value.
+     */
+    @Generated
+    public Map<String, BinaryData> getInitializationParameters() {
+        return this.initializationParameters;
+    }
+
+    /**
+     * Set the initializationParameters property: The JSON schema (Draft 2020-12) for the evaluator's input parameters.
+     * This includes parameters like type, properties, required.
+     *
+     * @param initializationParameters the initializationParameters value to set.
+     * @return the EvaluatorDefinition object itself.
+     */
+    @Generated
+    public EvaluatorDefinition setInitializationParameters(Map<String, BinaryData> initializationParameters) {
+        this.initializationParameters = initializationParameters;
         return this;
     }
 }

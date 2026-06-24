@@ -109,16 +109,6 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
      */
     @Generated
     @Override
-    public RubricBasedEvaluatorDefinition setInitParameters(Map<String, BinaryData> initParameters) {
-        super.setInitParameters(initParameters);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public RubricBasedEvaluatorDefinition setDataSchema(Map<String, BinaryData> dataSchema) {
         super.setDataSchema(dataSchema);
         return this;
@@ -141,7 +131,7 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("init_parameters", getInitParameters(), (writer, element) -> {
+        jsonWriter.writeMapField("init_parameters", getInitializationParameters(), (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
@@ -174,7 +164,7 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Generated
     public static RubricBasedEvaluatorDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, BinaryData> initParameters = null;
+            Map<String, BinaryData> initializationParameters = null;
             Map<String, BinaryData> dataSchema = null;
             Map<String, EvaluatorMetric> metrics = null;
             List<Dimension> dimensions = null;
@@ -184,7 +174,7 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("init_parameters".equals(fieldName)) {
-                    initParameters = reader.readMap(reader1 -> reader1
+                    initializationParameters = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("data_schema".equals(fieldName)) {
                     dataSchema = reader.readMap(reader1 -> reader1
@@ -203,12 +193,23 @@ public final class RubricBasedEvaluatorDefinition extends EvaluatorDefinition {
             }
             RubricBasedEvaluatorDefinition deserializedRubricBasedEvaluatorDefinition
                 = new RubricBasedEvaluatorDefinition(dimensions);
-            deserializedRubricBasedEvaluatorDefinition.setInitParameters(initParameters);
+            deserializedRubricBasedEvaluatorDefinition.setInitializationParameters(initializationParameters);
             deserializedRubricBasedEvaluatorDefinition.setDataSchema(dataSchema);
             deserializedRubricBasedEvaluatorDefinition.setMetrics(metrics);
             deserializedRubricBasedEvaluatorDefinition.type = type;
             deserializedRubricBasedEvaluatorDefinition.passThreshold = passThreshold;
             return deserializedRubricBasedEvaluatorDefinition;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public RubricBasedEvaluatorDefinition
+        setInitializationParameters(Map<String, BinaryData> initializationParameters) {
+        super.setInitializationParameters(initializationParameters);
+        return this;
     }
 }
