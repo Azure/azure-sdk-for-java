@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
 
 ### Other Changes
 

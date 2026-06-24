@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed a `NullPointerException` in `CosmosDiagnosticsContext.getRequestInfo()` (used by OpenTelemetry tracing and request-level diagnostics) that could occur when a store response did not carry a server-side activity id (for example certain transient transport errors in Direct mode). The request-level activity id is now used as a fallback. - See PR [49560](https://github.com/Azure/azure-sdk-for-java/pull/49560).
+* Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
 
 #### Other Changes
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).

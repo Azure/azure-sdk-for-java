@@ -132,6 +132,7 @@ public final class FunctionTool extends Tool {
         jsonWriter.writeBooleanField("strict", this.strict);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         return jsonWriter.writeEndObject();
     }
 
@@ -152,6 +153,7 @@ public final class FunctionTool extends Tool {
             Boolean strict = null;
             ToolType type = ToolType.FUNCTION;
             String description = null;
+            Boolean deferLoading = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -166,6 +168,8 @@ public final class FunctionTool extends Tool {
                     type = ToolType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("defer_loading".equals(fieldName)) {
+                    deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -173,6 +177,7 @@ public final class FunctionTool extends Tool {
             FunctionTool deserializedFunctionTool = new FunctionTool(name, parameters, strict);
             deserializedFunctionTool.type = type;
             deserializedFunctionTool.description = description;
+            deserializedFunctionTool.deferLoading = deferLoading;
             return deserializedFunctionTool;
         });
     }
@@ -189,5 +194,33 @@ public final class FunctionTool extends Tool {
         this.name = name;
         this.parameters = parameters;
         this.strict = strict;
+    }
+
+    /*
+     * Whether this function is deferred and loaded via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /**
+     * Get the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
     }
 }
