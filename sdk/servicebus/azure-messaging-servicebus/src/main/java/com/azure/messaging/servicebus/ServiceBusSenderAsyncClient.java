@@ -321,7 +321,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
-        return sendFluxInternal(message, null);
+        return sendMessageInternal(message, null);
     }
 
     /**
@@ -346,7 +346,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return sendFluxInternal(message, transactionContext);
+        return sendMessageInternal(message, transactionContext);
     }
 
     /**
@@ -889,7 +889,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final String message = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
         final Mono<Void> withRetry = withRetry(sendMessage, retryOptions, message).onErrorMap(this::mapError);
-        // The single-message send path (sendFluxInternal) starts the "ServiceBus.send" span itself on the
+        // The single-message send path (sendMessageInternal) starts the "ServiceBus.send" span itself on the
         // subscribing thread, so it sends this batch with instrument=false to avoid a duplicate span.
         if (!instrument) {
             return withRetry;
@@ -897,7 +897,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
 
-    private Mono<Void> sendFluxInternal(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
+    private Mono<Void> sendMessageInternal(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger,
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
