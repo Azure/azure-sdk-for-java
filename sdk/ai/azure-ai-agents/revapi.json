@@ -1,0 +1,38 @@
+[
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::(deleteSession|downloadAgentCode|getSession|listSessions)\\(.*\\)"
+          },
+          "justification": "Breaking change in beta operation: session and hosted-agent code methods no longer expose AgentDefinitionOptInKeys. The opt-in key is now sent implicitly and userIsolationKey/agentVersion are the public parameters."
+        },
+        {
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.ai\\.agents\\.models\\.(AgentIdentifier|AgentProtocol|CandidateDeployConfig|CandidateFileInfo|CandidateMetadata|CandidateResults|DatasetInfo|DatasetRef|OptimizationAgentDefinition|OptimizationTaskResult|PromoteCandidateInput|PromoteCandidateResult)"
+          },
+          "justification": "Breaking change in beta operation: optimization and agent protocol models were renamed, restructured, or removed to align with the current service contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(numberOfParametersChanged|removed|returnTypeChanged|returnTypeTypeParametersChanged|visibilityIncreased)",
+          "old": "method .* com\\.azure\\.ai\\.agents\\.models\\.Optimization(Candidate|Job|JobInputs|JobProgress|JobResult|Options)::.*",
+          "justification": "Breaking change in beta operation: optimization models were restructured to align with the current AgentsOptimization preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeChanged)",
+          "old": "(method|parameter) .* com\\.azure\\.ai\\.agents\\.models\\.ProtocolVersionRecord::.*",
+          "justification": "AgentProtocol was renamed to AgentEndpointProtocol to align protocol-version records with the current service contract."
+        }
+      ]
+    }
+  }
+]
