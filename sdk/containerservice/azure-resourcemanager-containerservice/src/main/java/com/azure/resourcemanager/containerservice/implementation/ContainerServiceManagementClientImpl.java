@@ -10,10 +10,17 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
+import com.azure.resourcemanager.containerservice.fluent.IdentityBindingsClient;
+import com.azure.resourcemanager.containerservice.fluent.JWTAuthenticatorsClient;
+import com.azure.resourcemanager.containerservice.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.containerservice.fluent.MachinesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
+import com.azure.resourcemanager.containerservice.fluent.MaintenanceWindowsClient;
+import com.azure.resourcemanager.containerservice.fluent.ManagedClusterSnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedNamespacesClient;
+import com.azure.resourcemanager.containerservice.fluent.MeshMembershipsClient;
+import com.azure.resourcemanager.containerservice.fluent.OperationStatusResultsClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
@@ -21,6 +28,7 @@ import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServi
 import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRoleBindingsClient;
 import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRolesClient;
+import com.azure.resourcemanager.containerservice.fluent.VmSkusClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -157,6 +165,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The MaintenanceWindowsClient object to access its operations.
+     */
+    private final MaintenanceWindowsClient maintenanceWindows;
+
+    /**
+     * Gets the MaintenanceWindowsClient object to access its operations.
+     * 
+     * @return the MaintenanceWindowsClient object.
+     */
+    public MaintenanceWindowsClient getMaintenanceWindows() {
+        return this.maintenanceWindows;
+    }
+
+    /**
      * The ManagedNamespacesClient object to access its operations.
      */
     private final ManagedNamespacesClient managedNamespaces;
@@ -213,6 +235,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The ManagedClusterSnapshotsClient object to access its operations.
+     */
+    private final ManagedClusterSnapshotsClient managedClusterSnapshots;
+
+    /**
+     * Gets the ManagedClusterSnapshotsClient object to access its operations.
+     * 
+     * @return the ManagedClusterSnapshotsClient object.
+     */
+    public ManagedClusterSnapshotsClient getManagedClusterSnapshots() {
+        return this.managedClusterSnapshots;
+    }
+
+    /**
      * The TrustedAccessRoleBindingsClient object to access its operations.
      */
     private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
@@ -227,6 +263,62 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The LoadBalancersClient object to access its operations.
+     */
+    private final LoadBalancersClient loadBalancers;
+
+    /**
+     * Gets the LoadBalancersClient object to access its operations.
+     * 
+     * @return the LoadBalancersClient object.
+     */
+    public LoadBalancersClient getLoadBalancers() {
+        return this.loadBalancers;
+    }
+
+    /**
+     * The IdentityBindingsClient object to access its operations.
+     */
+    private final IdentityBindingsClient identityBindings;
+
+    /**
+     * Gets the IdentityBindingsClient object to access its operations.
+     * 
+     * @return the IdentityBindingsClient object.
+     */
+    public IdentityBindingsClient getIdentityBindings() {
+        return this.identityBindings;
+    }
+
+    /**
+     * The JWTAuthenticatorsClient object to access its operations.
+     */
+    private final JWTAuthenticatorsClient jWTAuthenticators;
+
+    /**
+     * Gets the JWTAuthenticatorsClient object to access its operations.
+     * 
+     * @return the JWTAuthenticatorsClient object.
+     */
+    public JWTAuthenticatorsClient getJWTAuthenticators() {
+        return this.jWTAuthenticators;
+    }
+
+    /**
+     * The MeshMembershipsClient object to access its operations.
+     */
+    private final MeshMembershipsClient meshMemberships;
+
+    /**
+     * Gets the MeshMembershipsClient object to access its operations.
+     * 
+     * @return the MeshMembershipsClient object.
+     */
+    public MeshMembershipsClient getMeshMemberships() {
+        return this.meshMemberships;
+    }
+
+    /**
      * The OperationsClient object to access its operations.
      */
     private final OperationsClient operations;
@@ -238,6 +330,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /**
+     * The OperationStatusResultsClient object to access its operations.
+     */
+    private final OperationStatusResultsClient operationStatusResults;
+
+    /**
+     * Gets the OperationStatusResultsClient object to access its operations.
+     * 
+     * @return the OperationStatusResultsClient object.
+     */
+    public OperationStatusResultsClient getOperationStatusResults() {
+        return this.operationStatusResults;
     }
 
     /**
@@ -283,6 +389,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The VmSkusClient object to access its operations.
+     */
+    private final VmSkusClient vmSkus;
+
+    /**
+     * Gets the VmSkusClient object to access its operations.
+     * 
+     * @return the VmSkusClient object.
+     */
+    public VmSkusClient getVmSkus() {
+        return this.vmSkus;
+    }
+
+    /**
      * Initializes an instance of ContainerServiceManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -300,18 +420,26 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-02-01";
+        this.apiVersion = "2026-04-02-preview";
         this.agentPools = new AgentPoolsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
+        this.maintenanceWindows = new MaintenanceWindowsClientImpl(this);
         this.managedNamespaces = new ManagedNamespacesClientImpl(this);
         this.machines = new MachinesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
+        this.managedClusterSnapshots = new ManagedClusterSnapshotsClientImpl(this);
         this.trustedAccessRoleBindings = new TrustedAccessRoleBindingsClientImpl(this);
+        this.loadBalancers = new LoadBalancersClientImpl(this);
+        this.identityBindings = new IdentityBindingsClientImpl(this);
+        this.jWTAuthenticators = new JWTAuthenticatorsClientImpl(this);
+        this.meshMemberships = new MeshMembershipsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.operationStatusResults = new OperationStatusResultsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
         this.trustedAccessRoles = new TrustedAccessRolesClientImpl(this);
+        this.vmSkus = new VmSkusClientImpl(this);
     }
 }

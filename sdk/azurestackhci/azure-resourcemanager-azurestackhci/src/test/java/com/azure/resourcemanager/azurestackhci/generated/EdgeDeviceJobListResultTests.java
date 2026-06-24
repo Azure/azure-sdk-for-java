@@ -12,8 +12,8 @@ public final class EdgeDeviceJobListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeDeviceJobListResult model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"EdgeDeviceJob\",\"id\":\"fggc\",\"name\":\"kyylizr\",\"type\":\"bjpsfxsfuztlvtm\"},{\"kind\":\"EdgeDeviceJob\",\"id\":\"gbwidqlvh\",\"name\":\"koveof\",\"type\":\"zrvjfnmjmvlwyzgi\"}],\"nextLink\":\"kujrllfojui\"}")
+            "{\"value\":[{\"kind\":\"EdgeDeviceJob\",\"id\":\"eizjcpeogkhnmg\",\"name\":\"ro\",\"type\":\"xddbhfhpfpaz\"}],\"nextLink\":\"oywjxhpdulont\"}")
             .toObject(EdgeDeviceJobListResult.class);
-        Assertions.assertEquals("kujrllfojui", model.nextLink());
+        Assertions.assertEquals("oywjxhpdulont", model.nextLink());
     }
 }

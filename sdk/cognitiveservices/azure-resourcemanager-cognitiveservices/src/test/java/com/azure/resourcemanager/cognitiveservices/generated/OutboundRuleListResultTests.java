@@ -14,10 +14,10 @@ public final class OutboundRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRuleListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"glrrczez\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Deleting\",\"errorInformation\":\"dhqoawj\",\"parentRuleNames\":[\"ueayfbpcmsplb\",\"rrueqthwmg\",\"mbscbbx\"]},\"id\":\"dhxiidlopedbwd\",\"name\":\"yqyybxubmdna\",\"type\":\"cbq\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"laqacigele\",\"parentRuleNames\":[\"bvqvwzkjopwbeo\"]},\"id\":\"lkwzdqybxceakxcp\",\"name\":\"soqfyiaseqchkrt\",\"type\":\"zrazisgyk\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Inactive\",\"errorInformation\":\"nbwzohmnrxxbso\",\"parentRuleNames\":[\"inhmdptys\",\"rqsgnzx\",\"jp\",\"lsvjgpliu\"]},\"id\":\"qwoyxqvapco\",\"name\":\"houcqpqojxc\",\"type\":\"zrzdcgd\"},{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Inactive\",\"errorInformation\":\"bcawetz\",\"parentRuleNames\":[\"tjwfljhznamtua\",\"mzwcjjncqt\",\"z\",\"izvg\"]},\"id\":\"atzuuv\",\"name\":\"xngre\",\"type\":\"wggahttzlswvaj\"}]}")
+            "{\"nextLink\":\"zkiswqjmdghsy\",\"value\":[{\"properties\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Provisioning\",\"errorInformation\":\"p\",\"parentRuleNames\":[\"czjnc\",\"uiyqvldaswvppi\",\"qqzlgcndhz\"]},\"id\":\"rfc\",\"name\":\"srhkhgsnxuwwkpph\",\"type\":\"fsbzxlbzxo\"}]}")
             .toObject(OutboundRuleListResult.class);
-        Assertions.assertEquals("glrrczez", model.nextLink());
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.value().get(0).properties().category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.value().get(0).properties().status());
+        Assertions.assertEquals("zkiswqjmdghsy", model.nextLink());
+        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.value().get(0).properties().category());
+        Assertions.assertEquals(RuleStatus.PROVISIONING, model.value().get(0).properties().status());
     }
 }

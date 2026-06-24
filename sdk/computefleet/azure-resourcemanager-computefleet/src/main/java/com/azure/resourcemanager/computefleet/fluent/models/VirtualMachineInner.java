@@ -14,7 +14,7 @@ import com.azure.resourcemanager.computefleet.models.VMOperationStatus;
 import java.io.IOException;
 
 /**
- * An instant Fleet's virtual machine.
+ * A Launch mode Fleet's virtual machine.
  */
 @Immutable
 public final class VirtualMachineInner implements JsonSerializable<VirtualMachineInner> {

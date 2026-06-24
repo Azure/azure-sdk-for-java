@@ -33,6 +33,8 @@ import org.springframework.boot.context.config.Profiles;
 import org.springframework.boot.logging.DeferredLog;
 import org.springframework.boot.logging.DeferredLogFactory;
 
+import com.azure.core.util.Configuration;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
@@ -108,6 +110,8 @@ public class AzureAppConfigDataLoaderTest {
             .thenReturn(keyVaultClientFactoryMock);
         lenient().when(bootstrapContextMock.get(StateHolder.class)).thenReturn(stateHolderMock);
         lenient().when(logFactoryMock.getLog(any(Class.class))).thenReturn(new DeferredLog());
+        lenient().when(clientMock.getTracingInfo())
+            .thenReturn(new TracingInfo(false, 0, Configuration.getGlobalConfiguration()));
     }
 
     @AfterEach

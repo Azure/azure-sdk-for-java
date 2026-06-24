@@ -16,11 +16,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
-final class JsonConfigurationParser {
+public final class JsonConfigurationParser {
 
     private static final ObjectMapper MAPPER = JsonMapper.builder().enable(JsonReadFeature.ALLOW_JAVA_COMMENTS).build();
 
-    static boolean isJsonContentType(String contentType) {
+    public static boolean isJsonContentType(String contentType) {
         if (!StringUtils.hasText(contentType)) {
             return false;
         }

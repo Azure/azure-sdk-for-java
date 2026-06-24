@@ -14,40 +14,41 @@ public final class VmssExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmssExtension model = BinaryData.fromString(
-            "{\"name\":\"yhgbijtjivfx\",\"properties\":{\"publisher\":\"sjabibs\",\"type\":\"stawfsdjpvkv\",\"typeHandlerVersion\":\"bjxbkzbzk\",\"autoUpgradeMinorVersion\":false,\"settings\":\"\\\"datajabudurgkakmo\\\"\",\"protectedSettings\":\"\\\"datahjjklff\\\"\",\"forceUpdateTag\":\"ouw\",\"provisionAfterExtensions\":[\"zrfze\"],\"provisioningState\":\"ebizikayuh\",\"enableAutomaticUpgrade\":false,\"setupOrder\":[\"BeforeSFRuntime\"]}}")
+            "{\"name\":\"jsvfycxzbfvoowv\",\"properties\":{\"publisher\":\"vmtgjqppy\",\"type\":\"s\",\"typeHandlerVersion\":\"ronzmyhgfip\",\"autoUpgradeMinorVersion\":true,\"settings\":\"\\\"datamcwaekrrjr\\\"\",\"protectedSettings\":\"\\\"datafxtsgum\\\"\",\"forceUpdateTag\":\"glikkxwslolb\",\"provisionAfterExtensions\":[\"uzlm\",\"felfktg\"],\"provisioningState\":\"crpw\",\"enableAutomaticUpgrade\":false,\"setupOrder\":[\"BeforeSFRuntime\",\"BeforeSFRuntime\",\"BeforeSFRuntime\"]}}")
             .toObject(VmssExtension.class);
-        Assertions.assertEquals("yhgbijtjivfx", model.name());
-        Assertions.assertEquals("sjabibs", model.publisher());
-        Assertions.assertEquals("stawfsdjpvkv", model.type());
-        Assertions.assertEquals("bjxbkzbzk", model.typeHandlerVersion());
-        Assertions.assertFalse(model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("ouw", model.forceUpdateTag());
-        Assertions.assertEquals("zrfze", model.provisionAfterExtensions().get(0));
+        Assertions.assertEquals("jsvfycxzbfvoowv", model.name());
+        Assertions.assertEquals("vmtgjqppy", model.publisher());
+        Assertions.assertEquals("s", model.type());
+        Assertions.assertEquals("ronzmyhgfip", model.typeHandlerVersion());
+        Assertions.assertTrue(model.autoUpgradeMinorVersion());
+        Assertions.assertEquals("glikkxwslolb", model.forceUpdateTag());
+        Assertions.assertEquals("uzlm", model.provisionAfterExtensions().get(0));
         Assertions.assertFalse(model.enableAutomaticUpgrade());
         Assertions.assertEquals(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, model.setupOrder().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmssExtension model = new VmssExtension().withName("yhgbijtjivfx")
-            .withPublisher("sjabibs")
-            .withType("stawfsdjpvkv")
-            .withTypeHandlerVersion("bjxbkzbzk")
-            .withAutoUpgradeMinorVersion(false)
-            .withSettings("\"datajabudurgkakmo\"")
-            .withProtectedSettings("\"datahjjklff\"")
-            .withForceUpdateTag("ouw")
-            .withProvisionAfterExtensions(Arrays.asList("zrfze"))
+        VmssExtension model = new VmssExtension().withName("jsvfycxzbfvoowv")
+            .withPublisher("vmtgjqppy")
+            .withType("s")
+            .withTypeHandlerVersion("ronzmyhgfip")
+            .withAutoUpgradeMinorVersion(true)
+            .withSettings("\"datamcwaekrrjr\"")
+            .withProtectedSettings("\"datafxtsgum\"")
+            .withForceUpdateTag("glikkxwslolb")
+            .withProvisionAfterExtensions(Arrays.asList("uzlm", "felfktg"))
             .withEnableAutomaticUpgrade(false)
-            .withSetupOrder(Arrays.asList(VmssExtensionSetupOrder.BEFORE_SFRUNTIME));
+            .withSetupOrder(Arrays.asList(VmssExtensionSetupOrder.BEFORE_SFRUNTIME,
+                VmssExtensionSetupOrder.BEFORE_SFRUNTIME, VmssExtensionSetupOrder.BEFORE_SFRUNTIME));
         model = BinaryData.fromObject(model).toObject(VmssExtension.class);
-        Assertions.assertEquals("yhgbijtjivfx", model.name());
-        Assertions.assertEquals("sjabibs", model.publisher());
-        Assertions.assertEquals("stawfsdjpvkv", model.type());
-        Assertions.assertEquals("bjxbkzbzk", model.typeHandlerVersion());
-        Assertions.assertFalse(model.autoUpgradeMinorVersion());
-        Assertions.assertEquals("ouw", model.forceUpdateTag());
-        Assertions.assertEquals("zrfze", model.provisionAfterExtensions().get(0));
+        Assertions.assertEquals("jsvfycxzbfvoowv", model.name());
+        Assertions.assertEquals("vmtgjqppy", model.publisher());
+        Assertions.assertEquals("s", model.type());
+        Assertions.assertEquals("ronzmyhgfip", model.typeHandlerVersion());
+        Assertions.assertTrue(model.autoUpgradeMinorVersion());
+        Assertions.assertEquals("glikkxwslolb", model.forceUpdateTag());
+        Assertions.assertEquals("uzlm", model.provisionAfterExtensions().get(0));
         Assertions.assertFalse(model.enableAutomaticUpgrade());
         Assertions.assertEquals(VmssExtensionSetupOrder.BEFORE_SFRUNTIME, model.setupOrder().get(0));
     }

@@ -280,7 +280,7 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
   # Maven Central endpoint is blocked on the build agent network.
   $uri = "$PackageRepositoryUri/$($groupId.Replace('.', '/'))/$pkgId/$pkgVersion/$pkgId-$pkgVersion.pom"
 
-  $headers = @{ "Content-signal" = "search=yes,ai-train=no" }
+  $headers = @{}
   # Azure DevOps feeds require authentication; use SYSTEM_ACCESSTOKEN if available.
   if ($env:SYSTEM_ACCESSTOKEN -and $PackageRepositoryUri -match "pkgs.dev.azure.com") {
     $headers["Authorization"] = "Bearer $env:SYSTEM_ACCESSTOKEN"

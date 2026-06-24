@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupIds\":[\"bgdlfgtdysna\",\"uflqbctq\",\"amz\",\"rwd\"],\"privateEndpoint\":{\"id\":\"eqyj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"u\",\"actionsRequired\":\"xdfzantkw\"},\"provisioningState\":\"Failed\"},\"id\":\"amlbnseqacjjvpil\",\"name\":\"uooqjagmdit\",\"type\":\"ueio\"}";
+            = "{\"properties\":{\"groupIds\":[\"qivbgkcvkh\",\"zvuqdflvon\",\"yp\"],\"privateEndpoint\":{\"id\":\"bcpzgpxtivh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"dibgqjxgpnrhgov\",\"actionsRequired\":\"pikqmh\"},\"provisioningState\":\"Failed\"},\"id\":\"jrmzvupor\",\"name\":\"zdfuydzvkfvxcnqm\",\"type\":\"qpswokmvkhlggdhb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("o", "gebx", "cnwfepbnwgfmxjg", com.azure.core.util.Context.NONE)
+            .getWithResponse("tieyujtvczkcny", "rxmunjdxvgln", "vxlx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("u", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xdfzantkw", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("dibgqjxgpnrhgov", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("pikqmh", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

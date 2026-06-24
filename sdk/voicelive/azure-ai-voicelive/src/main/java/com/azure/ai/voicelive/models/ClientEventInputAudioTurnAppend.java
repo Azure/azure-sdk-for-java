@@ -14,7 +14,7 @@ import java.io.IOException;
  * Appends audio data to an ongoing input turn.
  */
 @Fluent
-public final class ClientEventInputAudioTurnAppend extends ClientEvent {
+public final class ClientEventInputAudioTurnAppend extends SessionClientEvent {
 
     /*
      * The type of event.

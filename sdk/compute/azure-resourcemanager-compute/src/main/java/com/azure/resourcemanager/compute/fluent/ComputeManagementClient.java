@@ -159,6 +159,13 @@ public interface ComputeManagementClient {
     CapacityReservationsClient getCapacityReservations();
 
     /**
+     * Gets the InterconnectBlocksClient object to access its operations.
+     * 
+     * @return the InterconnectBlocksClient object.
+     */
+    InterconnectBlocksClient getInterconnectBlocks();
+
+    /**
      * Gets the VirtualMachineRunCommandsClient object to access its operations.
      * 
      * @return the VirtualMachineRunCommandsClient object.

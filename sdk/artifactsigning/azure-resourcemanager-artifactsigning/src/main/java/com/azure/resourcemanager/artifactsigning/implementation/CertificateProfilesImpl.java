@@ -13,7 +13,7 @@ import com.azure.resourcemanager.artifactsigning.fluent.CertificateProfilesClien
 import com.azure.resourcemanager.artifactsigning.fluent.models.CertificateProfileInner;
 import com.azure.resourcemanager.artifactsigning.models.CertificateProfile;
 import com.azure.resourcemanager.artifactsigning.models.CertificateProfiles;
-import com.azure.resourcemanager.artifactsigning.models.RevokeCertificate;
+import com.azure.resourcemanager.artifactsigning.models.RevokeCertificateList;
 
 public final class CertificateProfilesImpl implements CertificateProfiles {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateProfilesImpl.class);
@@ -66,15 +66,15 @@ public final class CertificateProfilesImpl implements CertificateProfiles {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateProfileImpl(inner1, this.manager()));
     }
 
-    public Response<Void> revokeCertificateWithResponse(String resourceGroupName, String accountName,
-        String profileName, RevokeCertificate body, Context context) {
+    public Response<Void> revokeCertificatesWithResponse(String resourceGroupName, String accountName,
+        String profileName, RevokeCertificateList body, Context context) {
         return this.serviceClient()
-            .revokeCertificateWithResponse(resourceGroupName, accountName, profileName, body, context);
+            .revokeCertificatesWithResponse(resourceGroupName, accountName, profileName, body, context);
     }
 
-    public void revokeCertificate(String resourceGroupName, String accountName, String profileName,
-        RevokeCertificate body) {
-        this.serviceClient().revokeCertificate(resourceGroupName, accountName, profileName, body);
+    public void revokeCertificates(String resourceGroupName, String accountName, String profileName,
+        RevokeCertificateList body) {
+        this.serviceClient().revokeCertificates(resourceGroupName, accountName, profileName, body);
     }
 
     public CertificateProfile getById(String id) {

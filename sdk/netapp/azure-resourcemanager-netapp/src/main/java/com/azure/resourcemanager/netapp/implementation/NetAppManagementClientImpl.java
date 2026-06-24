@@ -487,7 +487,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-01";
+        this.apiVersion = "2026-04-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
@@ -624,7 +624,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

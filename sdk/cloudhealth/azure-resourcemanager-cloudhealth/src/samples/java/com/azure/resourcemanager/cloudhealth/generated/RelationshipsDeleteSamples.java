@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class RelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Relationships_Delete.json
+     * x-ms-original-file: 2026-01-01-preview/Relationships_Delete.json
      */
     /**
      * Sample code: Relationships_Delete.
@@ -17,6 +17,6 @@ public final class RelationshipsDeleteSamples {
      * @param manager Entry point to CloudHealthManager.
      */
     public static void relationshipsDelete(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
-        manager.relationships().deleteWithResponse("rgopenapi", "model1", "rel1", com.azure.core.util.Context.NONE);
+        manager.relationships().delete("rgopenapi", "model1", "rel1", com.azure.core.util.Context.NONE);
     }
 }

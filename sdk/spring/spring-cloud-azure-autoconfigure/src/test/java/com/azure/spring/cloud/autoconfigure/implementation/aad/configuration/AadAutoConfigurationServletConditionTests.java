@@ -19,7 +19,8 @@ class AadAutoConfigurationServletConditionTests {
         oauthClientAndResourceServerRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id"
             )
             .run(context -> assertThat(context).hasSingleBean(AadAuthenticationProperties.class));
     }
@@ -29,7 +30,8 @@ class AadAutoConfigurationServletConditionTests {
         oauthClientAndResourceServerRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id",
+                "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id"
             )
             .withClassLoader(new FilteredClassLoader(SERVLET_WEB_APPLICATION_CLASS))
             .run(context -> assertThat(context).doesNotHaveBean(AadAuthenticationProperties.class));
