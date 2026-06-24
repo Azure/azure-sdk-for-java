@@ -17,6 +17,8 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FrontendCon
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedResourceProvisioningState;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NetworkSecurityRule;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeNatConfig;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ProxyAgentSettings;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicy;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
@@ -337,6 +339,17 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
      * resilient ephemeral OS disk provides improved reliability for ephemeral OS disks by enabling full caching.
      */
     private Boolean enableResilientEphemeralOsDisk;
+
+    /*
+     * Specifies the scale in policy for the node type, which will be used when scale in happens on the cluster. If not
+     * specified, the default is Default which means the platform will decide which nodes to remove during scale in.
+     */
+    private ScaleInPolicy scaleInPolicy;
+
+    /*
+     * Specifies the settings for the proxy agent on the node type.
+     */
+    private ProxyAgentSettings proxyAgentSettings;
 
     /**
      * Creates an instance of NodeTypeProperties class.
@@ -1527,6 +1540,50 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
     }
 
     /**
+     * Get the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used when scale in
+     * happens on the cluster. If not specified, the default is Default which means the platform will decide which nodes
+     * to remove during scale in.
+     * 
+     * @return the scaleInPolicy value.
+     */
+    public ScaleInPolicy scaleInPolicy() {
+        return this.scaleInPolicy;
+    }
+
+    /**
+     * Set the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used when scale in
+     * happens on the cluster. If not specified, the default is Default which means the platform will decide which nodes
+     * to remove during scale in.
+     * 
+     * @param scaleInPolicy the scaleInPolicy value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withScaleInPolicy(ScaleInPolicy scaleInPolicy) {
+        this.scaleInPolicy = scaleInPolicy;
+        return this;
+    }
+
+    /**
+     * Get the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type.
+     * 
+     * @return the proxyAgentSettings value.
+     */
+    public ProxyAgentSettings proxyAgentSettings() {
+        return this.proxyAgentSettings;
+    }
+
+    /**
+     * Set the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type.
+     * 
+     * @param proxyAgentSettings the proxyAgentSettings value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings) {
+        this.proxyAgentSettings = proxyAgentSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -1595,6 +1652,8 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
         jsonWriter.writeBooleanField("zoneBalance", this.zoneBalance);
         jsonWriter.writeBooleanField("isOutboundOnly", this.isOutboundOnly);
         jsonWriter.writeBooleanField("enableResilientEphemeralOsDisk", this.enableResilientEphemeralOsDisk);
+        jsonWriter.writeJsonField("scaleInPolicy", this.scaleInPolicy);
+        jsonWriter.writeJsonField("proxyAgentSettings", this.proxyAgentSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -1746,6 +1805,10 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
                 } else if ("enableResilientEphemeralOsDisk".equals(fieldName)) {
                     deserializedNodeTypeProperties.enableResilientEphemeralOsDisk
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("scaleInPolicy".equals(fieldName)) {
+                    deserializedNodeTypeProperties.scaleInPolicy = ScaleInPolicy.fromJson(reader);
+                } else if ("proxyAgentSettings".equals(fieldName)) {
+                    deserializedNodeTypeProperties.proxyAgentSettings = ProxyAgentSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Code interpreter
@@ -66,6 +67,9 @@ public final class CodeInterpreterTool extends Tool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         if (this.container != null) {
             jsonWriter.writeFieldName("container");
             this.container.writeTo(jsonWriter);
@@ -90,6 +94,13 @@ public final class CodeInterpreterTool extends Tool {
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedCodeInterpreterTool.type = ToolType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedCodeInterpreterTool.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCodeInterpreterTool.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedCodeInterpreterTool.toolConfigs = toolConfigs;
                 } else if ("container".equals(fieldName)) {
                     deserializedCodeInterpreterTool.container
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -183,5 +194,95 @@ public final class CodeInterpreterTool extends Tool {
             return null;
         }
         return this.container.toObject(AutoCodeInterpreterToolParameter.class);
+    }
+
+    /*
+     * Optional user-defined name for this tool or configuration.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Optional user-defined description for this tool or configuration.
+     */
+    @Generated
+    private String description;
+
+    /**
+     * Get the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Optional user-defined name for this tool or configuration.
+     *
+     * @param name the name value to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    @Generated
+    public CodeInterpreterTool setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Optional user-defined description for this tool or configuration.
+     *
+     * @param description the description value to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    @Generated
+    public CodeInterpreterTool setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /*
+     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
+     * Resolution order: exact tool name match takes priority over `*`.
+     * Unknown tool names are silently ignored at runtime.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    @Generated
+    public CodeInterpreterTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
+        return this;
     }
 }

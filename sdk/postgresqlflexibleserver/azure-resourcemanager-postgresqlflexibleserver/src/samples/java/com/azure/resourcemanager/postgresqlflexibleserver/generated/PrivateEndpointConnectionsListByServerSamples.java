@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class PrivateEndpointConnectionsListByServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: 2026-04-01-preview/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: List all private endpoint connections on a server.

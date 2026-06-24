@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ExperimentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Experiments_List.json
+     * x-ms-original-file: 2026-05-01-preview/Experiments_List.json
      */
     /**
      * Sample code: List all Experiments in a resource group.

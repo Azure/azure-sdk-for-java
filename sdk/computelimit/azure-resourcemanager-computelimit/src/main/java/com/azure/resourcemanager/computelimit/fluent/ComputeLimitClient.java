@@ -80,4 +80,18 @@ public interface ComputeLimitClient {
      * @return the VmFamiliesClient object.
      */
     VmFamiliesClient getVmFamilies();
+
+    /**
+     * Gets the SharedLimitCapsClient object to access its operations.
+     * 
+     * @return the SharedLimitCapsClient object.
+     */
+    SharedLimitCapsClient getSharedLimitCaps();
+
+    /**
+     * Gets the MemberCapOverridesClient object to access its operations.
+     * 
+     * @return the MemberCapOverridesClient object.
+     */
+    MemberCapOverridesClient getMemberCapOverrides();
 }

@@ -79,6 +79,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     @Override
+    protected void applyGatewayRetryWithHeaders(RxDocumentServiceRequest request) {
+        // ThinClient does not use the Gateway V1 server-side 449 retry loop.
+    }
+
+    @Override
     protected Map<String, String> getDefaultHeaders(
         ApiType apiType,
         UserAgentContainer userAgentContainer) {

@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ProjectCapabilityHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/ProjectCapabilityHost/createOrUpdate.json
+     * x-ms-original-file: 2026-03-15-preview/ProjectCapabilityHost/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Project CapabilityHost.

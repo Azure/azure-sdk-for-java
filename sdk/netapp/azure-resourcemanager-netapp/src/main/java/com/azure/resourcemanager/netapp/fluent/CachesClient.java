@@ -328,11 +328,11 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName, String poolName,
-        String cacheName, PoolChangeRequest body);
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
+        String poolName, String cacheName, PoolChangeRequest body);
 
     /**
      * Moves Cache to another Capacity Pool.
@@ -346,11 +346,11 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName, String poolName,
-        String cacheName, PoolChangeRequest body, Context context);
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
+        String poolName, String cacheName, PoolChangeRequest body, Context context);
 
     /**
      * Moves Cache to another Capacity Pool.
@@ -363,9 +363,10 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body);
 
     /**
@@ -380,9 +381,10 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context);
 
     /**
@@ -395,10 +397,10 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginResetSmbPassword(String resourceGroupName, String accountName,
         String poolName, String cacheName);
 
     /**
@@ -412,10 +414,10 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginResetSmbPassword(String resourceGroupName, String accountName,
         String poolName, String cacheName, Context context);
 
     /**
@@ -428,9 +430,10 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName);
+    CacheInner resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName);
 
     /**
      * Resets the SMB password for the cache.
@@ -443,8 +446,9 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+    CacheInner resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
         Context context);
 }

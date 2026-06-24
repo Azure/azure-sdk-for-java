@@ -8,22 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Type of storage assigned to a server. Allowed values are Premium_LRS, PremiumV2_LRS, or UltraSSD_LRS. If not
- * specified, it defaults to Premium_LRS.
+ * Type of storage assigned to a server. If not specified, it defaults to Premium_LRS.
  */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
     /**
-     * Static value Premium_LRS for StorageType.
+     * Standard Solid State Disk (SSD) backed storage offering consistent performance for general purpose workloads.
      */
     public static final StorageType PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
-     * Static value PremiumV2_LRS for StorageType.
+     * Next generation Solid State Disk (SSD) storage with improved scalability and performance for demanding enterprise
+     * workloads.
      */
     public static final StorageType PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
-     * Static value UltraSSD_LRS for StorageType.
+     * High-end Solid State Disk (SSD) storage designed for extreme IOPS and latency-sensitive applications.
      */
     public static final StorageType ULTRA_SSD_LRS = fromString("UltraSSD_LRS");
 

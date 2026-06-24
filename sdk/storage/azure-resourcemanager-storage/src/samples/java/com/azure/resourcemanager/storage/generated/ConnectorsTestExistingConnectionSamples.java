@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.TestExistingConnectionRequest;
  */
 public final class ConnectorsTestExistingConnectionSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageConnectorCRUD/StorageConnectors_TestExistingConnection.json
+     * x-ms-original-file: 2026-04-01/StorageConnectorCRUD/StorageConnectors_TestExistingConnection.json
      */
     /**
      * Sample code: ExistingConnectionTest.
