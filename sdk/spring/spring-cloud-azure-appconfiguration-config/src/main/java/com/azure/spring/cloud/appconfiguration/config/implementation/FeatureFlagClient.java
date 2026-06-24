@@ -43,11 +43,11 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.feature.ent
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Variant;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.FeatureFlagTracing;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Loads sets of feature flags, and de-duplicates the results with previously loaded feature flags. Newer Feature Flags
@@ -138,7 +138,7 @@ class FeatureFlagClient {
             JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
             JsonNode conditions = node.get(CONDITIONS);
             if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
-                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
+                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asString();
             }
             JsonNode telemetryNode = node.get(TELEMETRY);
             if (telemetryNode != null && !telemetryNode.isEmpty()) {
@@ -179,7 +179,7 @@ class FeatureFlagClient {
                     originMetadata.put("AllocationId", generateAllocationId(node));
                 }
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Error parsing feature flag value for key: {}", item.getKey(), e);
         }
         return feature;
@@ -231,7 +231,7 @@ class FeatureFlagClient {
             if (variantsNode != null && variantsNode.isArray()) {
                 tracing.updateMaxVariants(variantsNode.size());
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.warn("Error parsing feature flag telemetry for key: {}", featureFlag.getKey(), e);
         }
     }
@@ -253,13 +253,13 @@ class FeatureFlagClient {
         }
 
         // Seed
-        allocationId.append("seed=").append(allocation.has("seed") ? allocation.get("seed").asText() : "");
+        allocationId.append("seed=").append(allocation.has("seed") ? allocation.get("seed").asString() : "");
 
         // DefaultWhenEnabled
         if (allocation.has("default_when_enabled")) {
-            allocatedVariants.add(allocation.get("default_when_enabled").asText());
+            allocatedVariants.add(allocation.get("default_when_enabled").asString());
         }
-        allocationId.append("\ndefault_when_enabled=").append(allocation.has("default_when_enabled") ? allocation.get("default_when_enabled").asText() : "");
+        allocationId.append("\ndefault_when_enabled=").append(allocation.has("default_when_enabled") ? allocation.get("default_when_enabled").asString() : "");
 
         // Percentile
         allocationId.append("\npercentiles=");
@@ -267,7 +267,7 @@ class FeatureFlagClient {
         List<JsonNode> percentileAllocations = new ArrayList<>();
         if (percentile != null && percentile.isArray()) {
             percentile.forEach(p -> {
-                if (!Objects.equals(p.get("from").asText(), p.get("to").asText())) {
+                if (!Objects.equals(p.get("from").asString(), p.get("to").asString())) {
                     percentileAllocations.add(p);
                 }
             });
@@ -276,13 +276,13 @@ class FeatureFlagClient {
 
         for (JsonNode percentileAllocation : percentileAllocations) {
             if (percentileAllocation.has("variant")) {
-                allocatedVariants.add(percentileAllocation.get("variant").asText());
+                allocatedVariants.add(percentileAllocation.get("variant").asString());
             }
         }
 
         allocationId.append(percentileAllocations.stream()
             .map(pa -> pa.get("from") + ","
-                + Base64.getEncoder().encodeToString(pa.get("variant").asText().getBytes(StandardCharsets.UTF_8)) + ","
+                + Base64.getEncoder().encodeToString(pa.get("variant").asString().getBytes(StandardCharsets.UTF_8)) + ","
                 + pa.get("to"))
             .collect(Collectors.joining(";")));
 

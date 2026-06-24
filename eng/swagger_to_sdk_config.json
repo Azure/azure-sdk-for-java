@@ -30,7 +30,7 @@
       "command": "mvn clean package -f {packagePath} -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip"
     },
     "getSDKChangesScript": {
-      "command": "pwsh ./eng/scripts/Automation-Sdk-GetSDKChanges.ps1 -PackagePath \"{packagePath}\" -OutputJsonFile \"{outputJsonFile}\""
+      "command": "pwsh {SdkRepoPath}/eng/scripts/Automation-Sdk-GetSDKChanges.ps1 -PackagePath \"{packagePath}\" -OutputJsonFile \"{outputJsonFile}\""
     },
     "updateChangelogContentScript": {
       "path": "./eng/scripts/Automation-Sdk-UpdateChangelog.ps1"
