@@ -12,8 +12,8 @@ import com.azure.ai.agents.hostedagents.utils.CodeAgentSampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,25 +55,21 @@ public class CodeAgentSamplesTests extends ClientTestBase {
         }
 
         try {
-            BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
-            String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
+            Path codeZipPath = CodeAgentSampleUtils.createCodeZip();
+            String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZipPath);
 
             AgentVersionDetails version = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath));
             Assertions.assertNotNull(version);
             Assertions.assertEquals(agentName, version.getName());
             Assertions.assertNotNull(version.getVersion());
 
-            BinaryData downloadedCode = agentsClient.downloadAgentCode(agentName, null);
-            Assertions.assertNotNull(downloadedCode);
-            Assertions.assertTrue(downloadedCode.toBytes().length > 0);
-
-            Path downloadPath = Files.createTempFile(agentName + "-", ".zip");
-            Files.write(downloadPath, downloadedCode.toBytes());
+            Path downloadPath = Files.createTempDirectory(agentName + "-").resolve("code.zip");
+            agentsClient.downloadAgentCodeWithResponse(agentName, downloadPath, new RequestOptions());
             Assertions.assertTrue(Files.size(downloadPath) > 0);
 
             AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath));
             Assertions.assertNotNull(newVersion);
             Assertions.assertEquals(agentName, newVersion.getName());
             Assertions.assertNotNull(newVersion.getVersion());
@@ -93,25 +89,28 @@ public class CodeAgentSamplesTests extends ClientTestBase {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         String agentName = CodeAgentSampleUtils.SAMPLE_AGENT_NAME + "-async-test";
-        BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
-        String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
+        Path codeZipPath = CodeAgentSampleUtils.createCodeZip();
+        String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZipPath);
+        Path downloadPath = Files.createTempDirectory(agentName + "-").resolve("code.zip");
 
         Mono<Void> testFlow = agentsAsyncClient.deleteAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
             .then(agentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip)))
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath)))
             .flatMap(version -> {
                 Assertions.assertNotNull(version);
                 Assertions.assertEquals(agentName, version.getName());
                 Assertions.assertNotNull(version.getVersion());
 
-                return agentsAsyncClient.downloadAgentCode(agentName, null);
+                return agentsAsyncClient.downloadAgentCodeWithResponse(agentName, downloadPath, new RequestOptions());
             })
-            .flatMap(downloadedCode -> {
-                Assertions.assertNotNull(downloadedCode);
-                Assertions.assertTrue(downloadedCode.toBytes().length > 0);
+            .then(Mono.fromCallable(() -> {
+                Assertions.assertTrue(Files.size(downloadPath) > 0);
+                return downloadPath;
+            }))
+            .flatMap(ignored -> {
                 return agentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                    CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
+                    CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath));
             })
             .doOnNext(newVersion -> {
                 Assertions.assertNotNull(newVersion);

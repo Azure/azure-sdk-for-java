@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 /**
  * Internal utilities for file operations.
@@ -28,7 +29,9 @@ public class FileUtils {
      */
     public static Mono<Void> writeToFileAsync(BinaryData content, Path destinationFile) {
         // file handling is done asynchronously. Errors either opening or closing the file are bubbled up to the subscriber
-        return Mono.usingWhen(Mono.fromCallable(() -> AsynchronousFileChannel.open(destinationFile)),
+        return Mono.usingWhen(
+            Mono.fromCallable(() -> AsynchronousFileChannel.open(destinationFile, StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)),
             channel -> FluxUtil.writeFile(content.toFluxByteBuffer(), channel), channel -> Mono.defer(() -> {
                 try {
                     channel.close();

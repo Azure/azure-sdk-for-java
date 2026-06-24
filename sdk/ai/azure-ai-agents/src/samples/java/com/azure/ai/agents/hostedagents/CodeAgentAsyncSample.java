@@ -7,12 +7,13 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.utils.CodeAgentSampleUtils;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.util.BinaryData;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -36,26 +37,29 @@ public class CodeAgentAsyncSample {
         Mono<Void> workflow = agentsAsyncClient.deleteAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
             .then(Mono.fromCallable(CodeAgentSampleUtils::createCodeZip).subscribeOn(Schedulers.boundedElastic()))
-            .flatMap(codeZip -> {
-                String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
+            .flatMap(codeZipPath -> {
+                String codeZipSha256;
+                try {
+                    codeZipSha256 = CodeAgentSampleUtils.sha256(codeZipPath);
+                } catch (IOException e) {
+                    return Mono.error(e);
+                }
 
                 // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode_initial
 
                 return agentsAsyncClient.createAgentVersionFromCode(
                     agentName,
                     codeZipSha256,
-                    CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip))
+                    CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath))
                     .doOnNext(version -> {
                         System.out.printf("Created code-based agent: %s%n", version.getName());
                         CodeAgentSampleUtils.printLatestVersion(version);
                     })
 
                     // END: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.createAgentVersionFromCode_initial
-
                     // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
 
-                    .then(agentsAsyncClient.downloadAgentCode(agentName, null))
-                    .flatMap(downloadedCode -> writeDownloadedCode(agentName, downloadedCode))
+                    .then(downloadAgentCode(agentsAsyncClient, agentName))
 
                     // END: com.azure.ai.agents.hostedagents.CodeAgentAsyncSample.downloadAgentCode
 
@@ -64,7 +68,7 @@ public class CodeAgentAsyncSample {
                     .then(agentsAsyncClient.createAgentVersionFromCode(
                         agentName,
                         codeZipSha256,
-                        CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip)))
+                        CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath)))
                     .doOnNext(newVersion -> {
                         System.out.printf("Created code-based agent version: %s%n", newVersion.getVersion());
                         CodeAgentSampleUtils.printLatestVersion(newVersion);
@@ -85,12 +89,13 @@ public class CodeAgentAsyncSample {
             .block();
     }
 
-    private static Mono<Path> writeDownloadedCode(String agentName, BinaryData downloadedCode) {
+    private static Mono<Path> downloadAgentCode(AgentsAsyncClient agentsAsyncClient, String agentName) {
         return Mono.fromCallable(() -> {
-            Path downloadPath = Files.createTempFile(agentName + "-", ".zip");
-            Files.write(downloadPath, downloadedCode.toBytes());
-            System.out.println("Downloaded code package path: " + downloadPath);
+            Path downloadPath = Files.createTempDirectory(agentName + "-").resolve("code.zip");
             return downloadPath;
-        }).subscribeOn(Schedulers.boundedElastic());
+        }).subscribeOn(Schedulers.boundedElastic())
+            .flatMap(downloadPath -> agentsAsyncClient.downloadAgentCodeWithResponse(
+                agentName, downloadPath, new RequestOptions()).thenReturn(downloadPath))
+            .doOnNext(downloadPath -> System.out.println("Downloaded code package path: " + downloadPath));
     }
 }
