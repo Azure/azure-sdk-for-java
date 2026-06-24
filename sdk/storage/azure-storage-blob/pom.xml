@@ -147,8 +147,7 @@
          writer to validate the internal reader. -->
     <dependency>
       <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-format</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
+      $117.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
     </dependency>
     <!-- arrow-format's generated flatbuffer classes (e.g. org.apache.arrow.flatbuf.Buffer) extend base types from
          com.google.flatbuffers, which arrow-format does not expose transitively on the compile classpath. It must be
@@ -160,20 +159,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-vector</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-vector;external_dependency} -->
+      $117.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-vector;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-memory-core</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
+      $117.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-memory-unsafe</artifactId>
-      <version>18.1.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
+      $117.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -229,3 +225,4 @@
     </profile>
   </profiles>
 </project>
+
