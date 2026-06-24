@@ -49,9 +49,9 @@
       <version>7.0.8</version> <!-- {x-version-update;springboot4_org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
+      <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.21.4</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>3.1.4</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -174,7 +174,7 @@
                 <include>org.springframework:spring-tx:[7.0.8]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.13]</include> <!-- {x-include-update;springboot4_org.springframework.retry:spring-retry;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.21]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.21.4]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>tools.jackson.core:jackson-databind:[3.1.4]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
