@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-06-15)
+## 2.0.0-beta.1 (2026-06-15)
 
 This release is the first preview of the rewritten Device Update for IoT Hub client library generated from
 TypeSpec. It targets API version `2026-06-01`.
