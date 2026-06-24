@@ -66,7 +66,7 @@ public class ConnectionHandler extends Handler {
     static final int CONNECTION_IDLE_TIMEOUT = 60_000;  // milliseconds
 
     private final Map<String, Object> connectionProperties;
-    private final ConnectionOptions connectionOptions;
+    protected final ConnectionOptions connectionOptions;
     private final SslPeerDetails peerDetails;
     private final AmqpMetricsProvider metricProvider;
     private final boolean enableSsl;

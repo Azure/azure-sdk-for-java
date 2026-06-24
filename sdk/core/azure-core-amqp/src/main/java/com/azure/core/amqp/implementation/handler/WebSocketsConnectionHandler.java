@@ -5,10 +5,15 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.util.Header;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 
@@ -59,7 +64,14 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         logger.info("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
-        webSocket.configure(hostname, SOCKET_PATH, "", 0, PROTOCOL, null, null);
+
+        final Map<String, String> headers = connectionOptions != null && connectionOptions.getClientOptions().getHeaders() != null
+            ? StreamSupport.stream(connectionOptions.getClientOptions().getHeaders().spliterator(), false)
+                .collect(Collectors.toMap(Header::getName, Header::getValue))
+            : null;
+
+        webSocket.configure(hostname, SOCKET_PATH, "", 0, PROTOCOL, headers, null);
+
 
         transport.addTransportLayer(webSocket);
 
