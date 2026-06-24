@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Fixed direct connectivity retries for `PartitionKeyRangeGoneException` thrown during address resolution so stale partition key ranges trigger routing-map refresh and exhausted retries surface as 503 with partition-key-range-gone retry-limit substatus. - See [Issue 49381](https://github.com/Azure/azure-sdk-for-java/issues/49381).
+* Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
 
 #### Other Changes
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
