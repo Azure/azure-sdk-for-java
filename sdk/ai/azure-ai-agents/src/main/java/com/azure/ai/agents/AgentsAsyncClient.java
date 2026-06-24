@@ -50,9 +50,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.models.conversations.Conversation;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -2674,9 +2671,10 @@ public final class AgentsAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> downloadAgentCodeWithResponse(String agentName, Path filePath, RequestOptions requestOptions) {
+    public Mono<Response<Void>> downloadAgentCodeWithResponse(String agentName, Path filePath,
+        RequestOptions requestOptions) {
         return this.serviceClient.downloadAgentCodeWithResponseAsync(agentName, requestOptions)
-            .flatMap(response -> FileUtils.writeToFileWithResponse(response, filePath));
+            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath));
     }
 
     /**
@@ -3062,9 +3060,9 @@ public final class AgentsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadSessionFileWithResponse(String agentName, String agentSessionId,
-                                                                    String path, Path filePath, RequestOptions requestOptions) {
-        return this.serviceClient.uploadSessionFileWithResponseAsync(agentName, agentSessionId, path, BinaryData.fromFile(filePath),
-            requestOptions);
+        String path, Path filePath, RequestOptions requestOptions) {
+        return this.serviceClient.uploadSessionFileWithResponseAsync(agentName, agentSessionId, path,
+            BinaryData.fromFile(filePath), requestOptions);
     }
 
     /**
@@ -3138,10 +3136,10 @@ public final class AgentsAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> downloadSessionFileWithResponse(String agentName, String agentSessionId,
-                                                                      String path, Path filePath, RequestOptions requestOptions) {
+    public Mono<Response<Void>> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+        Path filePath, RequestOptions requestOptions) {
         return this.serviceClient.downloadSessionFileWithResponseAsync(agentName, agentSessionId, path, requestOptions)
-            .flatMap(response -> FileUtils.writeToFileWithResponse(response, filePath));
+            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath));
     }
 
     /**
@@ -3467,7 +3465,7 @@ public final class AgentsAsyncClient {
             requestOptions.addQueryParam("agent_version", agentVersion, false);
         }
         return downloadAgentCodeWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
-            .flatMap(content -> FileUtils.writeToFile(content, filePath));
+            .flatMap(content -> FileUtils.writeToFileAsync(content, filePath));
     }
 
     /**
@@ -3915,8 +3913,8 @@ public final class AgentsAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadSessionFile(String agentName, String agentSessionId, String path,
-                                                String userIsolationKey, Path filePath) {
+    public Mono<Void> downloadSessionFile(String agentName, String agentSessionId, String path, String userIsolationKey,
+        Path filePath) {
         // Generated convenience method for downloadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (userIsolationKey != null) {
@@ -3924,7 +3922,7 @@ public final class AgentsAsyncClient {
         }
         return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .flatMap(content -> FileUtils.writeToFile(content, filePath));
+            .flatMap(content -> FileUtils.writeToFileAsync(content, filePath));
     }
 
     /**

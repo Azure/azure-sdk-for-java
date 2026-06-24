@@ -16,6 +16,7 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
+import com.azure.ai.agents.implementation.utils.FileUtils;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentDetails;
@@ -47,11 +48,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.openai.models.conversations.Conversation;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -2562,13 +2559,14 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws IOException file write operation failure.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadAgentCodeWithResponse(String agentName, Path filePath, RequestOptions requestOptions)
         throws IOException {
         Response<BinaryData> response = this.serviceClient.downloadAgentCodeWithResponse(agentName, requestOptions);
-        response.getValue().writeTo(new FileOutputStream(filePath.toFile()));
+        FileUtils.writeToFile(response, filePath);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
 
@@ -2939,7 +2937,7 @@ public final class AgentsClient {
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
-     * @param fileInDisk The content parameter.
+     * @param filePath The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2949,9 +2947,9 @@ public final class AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String agentSessionId, String path,
-        Path fileInDisk, RequestOptions requestOptions) {
+        Path filePath, RequestOptions requestOptions) {
         return this.serviceClient.uploadSessionFileWithResponse(agentName, agentSessionId, path,
-            BinaryData.fromFile(fileInDisk), requestOptions);
+            BinaryData.fromFile(filePath), requestOptions);
     }
 
     /**
@@ -3022,6 +3020,7 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws IOException file write operation failure.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3029,7 +3028,7 @@ public final class AgentsClient {
         Path filePath, RequestOptions requestOptions) throws IOException {
         Response<BinaryData> response
             = this.serviceClient.downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
-        response.getValue().writeTo(new FileOutputStream(filePath.toFile()));
+        FileUtils.writeToFile(response, filePath);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
 
@@ -3335,21 +3334,22 @@ public final class AgentsClient {
      * @param agentName The name of the agent.
      * @param agentVersion The version of the agent whose code zip should be downloaded.
      * If omitted, the latest version's code zip is returned.
+     * @param filePath destination file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @throws IOException file write operation failure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadAgentCode(String agentName, String agentVersion, Path destinationPath) throws IOException {
+    public void downloadAgentCode(String agentName, String agentVersion, Path filePath) throws IOException {
         RequestOptions requestOptions = new RequestOptions();
         if (agentVersion != null) {
             requestOptions.addQueryParam("agent_version", agentVersion, false);
         }
-        downloadAgentCode(agentName, agentVersion).writeTo(new FileOutputStream(destinationPath.toFile(), true));
+        FileUtils.writeToFile(downloadAgentCode(agentName, agentVersion), filePath);
     }
 
     /**
@@ -3785,24 +3785,26 @@ public final class AgentsClient {
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
      * conversations, sessions) to a specific end user.
+     * @param filePath path to file on disc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws IOException file write operation failure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadSessionFile(String agentName, String agentSessionId, String path, String userIsolationKey,
-        Path fileInDisk) throws IOException {
+        Path filePath) throws IOException {
         RequestOptions requestOptions = new RequestOptions();
         if (userIsolationKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
         }
 
-        BinaryData fileContent
-            = downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
-        fileContent.writeTo(new FileOutputStream(fileInDisk.toFile(), true));
+        Response<BinaryData> response
+            = downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
+        FileUtils.writeToFile(response, filePath);
     }
 
     /**
