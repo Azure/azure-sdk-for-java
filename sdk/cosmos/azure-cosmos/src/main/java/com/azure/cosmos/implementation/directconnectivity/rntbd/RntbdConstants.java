@@ -625,7 +625,7 @@ public final class RntbdConstants {
         WorkloadId((short)0x00DC, RntbdTokenType.Byte, false),
         HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false),
         ReadConsistencyStrategy((short)0x00FE, RntbdTokenType.Byte, false),
-        // QueryPlan headers for proxy — IDs match server-side RntbdConstants.cs (ADO PR 1982503)
+        // QueryPlan headers for proxy — IDs match server-side RntbdConstants.cs
         SupportedQueryFeatures((short) 0x00FF, RntbdTokenType.String, false),
         QueryVersion((short) 0x0100, RntbdTokenType.SmallString, false);
 

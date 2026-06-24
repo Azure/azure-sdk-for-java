@@ -197,7 +197,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getClientVersion, HttpHeaders.VERSION);
 
         // QueryPlan headers — needed for proxy to extract supported features and query version
-        // from the RNTBD body (IDs match server-side proxy: ADO PR 1982503)
+        // from the RNTBD body (IDs match server-side proxy)
         this.fillTokenFromHeader(headers, this::getSupportedQueryFeatures, HttpHeaders.SUPPORTED_QUERY_FEATURES);
         this.fillTokenFromHeader(headers, this::getQueryVersion, HttpHeaders.QUERY_VERSION);
     }

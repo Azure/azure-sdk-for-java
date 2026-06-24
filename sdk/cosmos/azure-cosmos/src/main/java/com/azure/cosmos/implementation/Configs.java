@@ -55,6 +55,12 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    // Kill-switch to opt out of routing QueryPlan requests through the thin client (Gateway V2).
+    // Defaults to enabled; set to false to force QueryPlan requests back onto Gateway V1.
+    private static final boolean DEFAULT_THINCLIENT_QUERY_PLAN_ENABLED = true;
+    private static final String THINCLIENT_QUERY_PLAN_ENABLED = "COSMOS.THINCLIENT_QUERY_PLAN_ENABLED";
+    private static final String THINCLIENT_QUERY_PLAN_ENABLED_VARIABLE = "COSMOS_THINCLIENT_QUERY_PLAN_ENABLED";
+
     private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
@@ -583,6 +589,20 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    public static boolean isThinClientQueryPlanEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_QUERY_PLAN_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_QUERY_PLAN_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return DEFAULT_THINCLIENT_QUERY_PLAN_ENABLED;
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {

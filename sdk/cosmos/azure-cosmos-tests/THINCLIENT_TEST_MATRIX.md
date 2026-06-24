@@ -1,9 +1,8 @@
 # Thin Client (Gateway V2) QueryPlan — E2E Test Specification
 
-**PR:** Azure/azure-sdk-for-java #47759 — *Integrate Stored Procedure and Query Plan request routing to Gateway V2 endpoint*
 **Primary suite:** `sdk/cosmos/azure-cosmos-tests/.../rx/ThinClientQueryE2ETest.java` (84 `@Test` methods)
 **Sibling suites:** `ThinClientPointOperationE2ETest` (3), `ThinClientChangeFeedE2ETest` (3), `ThinClientStoredProcedureE2ETest` (3)
-**TestNG group:** `thinclient` · **Status:** reverse-engineered from the committed test code (head `65b23d9`)
+**TestNG group:** `thinclient` · **Status:** reverse-engineered from the committed test code
 
 > This document is the human-readable test-design spec reconstructed from the test code so it can be reviewed independently of the implementation. It states **what is being proven, how, and what is intentionally not covered** — i.e. exactly what a reviewer needs to sign off on the test strategy.
 
@@ -150,7 +149,7 @@ This is the test that proves the routing rule `useGatewayMode = (partitionKeyDef
 
 ## 7. Query-feature coverage vs. the advertised contract
 
-`SupportedQueryFeatures` advertised by the client (per `QueryPlanRetriever`): Aggregate, CompositeAggregate, MultipleOrderBy, MultipleAggregates, OrderBy, OffsetAndLimit, Distinct, GroupBy, Top, DCount, NonValueAggregate, NonStreamingOrderBy, HybridSearch, **CountIf**, WeightedRankFusion.
+`SupportedQueryFeatures` advertised by the client (per `QueryPlanRetriever`): Aggregate, CompositeAggregate, MultipleOrderBy, MultipleAggregates, OrderBy, OffsetAndLimit, Distinct, GroupBy, Top, DCount, NonValueAggregate, NonStreamingOrderBy, HybridSearch, WeightedRankFusion.
 
 | Advertised feature | Covered by | Gap? |
 |--------------------|-----------|------|
@@ -161,11 +160,11 @@ This is the test that proves the routing rule `useGatewayMode = (partitionKeyDef
 | Distinct | DistinctValue* | — |
 | Top | Top, TopWithOrderBy | — |
 | HybridSearch / WeightedRankFusion | HybridSearch (RRF) | — |
-| **CountIf** | — | **No dedicated test** (newly advertised) |
 | DCount | — | **No dedicated test** |
 | CompositeAggregate / MultipleAggregates | GroupBySumAvg (two aggs) | partial |
 
 **Intentionally NOT advertised** (documented in code, should be noted to the reviewer):
+- `CountIf` — Java has no CountIf aggregator in `SingleGroupAggregator` yet.
 - `ListAndSetAggregate` — Java has no MAKELIST/MAKESET support.
 - `HybridSearchSkipOrderByRewrite` — Java hybrid pipeline cannot yet consume the optimized plan (would 400 / SC1001).
 
@@ -173,7 +172,7 @@ This is the test that proves the routing rule `useGatewayMode = (partitionKeyDef
 
 ## 8. Known gaps / limitations (for reviewer sign-off)
 
-1. **`CountIf` and `DCount` have no dedicated test** despite `CountIf` being newly advertised in this PR — highest-priority gap.
+1. **`DCount` has no dedicated test** — highest-priority coverage gap.
 2. **`MultipleOrderBy`** (multi-key `ORDER BY a, b`) is not exercised explicitly.
 3. **Cross-partition aggregate/GROUP BY** — aggregates run within a single logical partition (`partitionedOptions`); cross-partition aggregate merge through the proxy is not directly asserted.
 4. **Large result drain** — continuation draining uses 10 docs / page size 3 (multiple pages, but small). No high-cardinality (hundreds/thousands of docs) drain to stress merge/continuation under realistic volume.
@@ -189,7 +188,7 @@ This is the test that proves the routing rule `useGatewayMode = (partitionKeyDef
 - [ ] The **ordered-vs-unordered** split (§4.2) matches the service ordering contract for each query class.
 - [ ] **Endpoint provenance** (§4.1) is genuinely sufficient to prove no Direct fallback (i.e. `assertThinClientEndpointUsed` inspects the actual transport, not a cached/first-hop signal).
 - [ ] The **error contract** test (§6.2) asserts the right status/substatus for the proxy's actual error frame.
-- [ ] Agreement on the **gap list** (§8) — especially whether `CountIf`/`DCount`/`MultipleOrderBy` must be added before merge.
+- [ ] Agreement on the **gap list** (§8) — especially whether `DCount`/`MultipleOrderBy` must be added before merge.
 - [ ] Multi-range test (§6.4 / row 19) actually spans **multiple physical partitions** (24k RU container) so EPK-range sort correctness through `convertToSortedEpkRanges` is exercised.
 
 ---

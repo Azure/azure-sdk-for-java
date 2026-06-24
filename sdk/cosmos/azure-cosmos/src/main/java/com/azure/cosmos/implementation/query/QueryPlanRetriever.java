@@ -57,7 +57,7 @@ class QueryPlanRetriever {
     // True to opt out of this new query feature, we will return the OLD query features to operate correctly.
     // TODO: Add ListAndSetAggregate after Java supports MAKELIST/MAKESET query aggregation.
     // TODO: Add HybridSearchSkipOrderByRewrite after the Java hybrid query pipeline can consume the optimized plan.
-    // See PR #47759 review.
+    // TODO: Add CountIf after Java implements a CountIf aggregator in SingleGroupAggregator.
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
@@ -71,7 +71,6 @@ class QueryPlanRetriever {
                                                                QueryFeature.NonValueAggregate.name() + ", " +
                                                                QueryFeature.NonStreamingOrderBy.name() + ", " +
                                                                QueryFeature.HybridSearch.name() + ", " +
-                                                               QueryFeature.CountIf.name() + ", " +
                                                                QueryFeature.WeightedRankFusion.name();
 
     private static final String OLD_SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
@@ -118,10 +117,14 @@ class QueryPlanRetriever {
                                                                                  ResourceType.Document,
                                                                                  resourceLink,
                                                                                  requestHeaders);
-        // Validation callers do not have collection metadata, so keep those query-plan
-        // requests on Gateway V1. Normal query execution can route through thin client,
-        // where PartitionKeyDefinition is available to convert proxy query ranges.
-        queryPlanRequest.useGatewayMode = partitionKeyDefinition == null;
+        // Route the query-plan request based on the thin-client opt-in, not on collection
+        // metadata. When thin client is enabled and eligible for this request, leave gateway
+        // mode off so the request is routed through the Gateway V2 thin-client proxy;
+        // otherwise force Gateway V1 (preserving the legacy query-plan routing).
+        // Configs.isThinClientQueryPlanEnabled() is a kill-switch (system property /
+        // environment variable) that forces query-plan requests back onto Gateway V1.
+        queryPlanRequest.useGatewayMode =
+            !(queryClient.useThinClient(queryPlanRequest) && Configs.isThinClientQueryPlanEnabled());
 
         // Create a defensive copy to prevent concurrent modification of the shared
         // SqlQuerySpec's internal ObjectNode when multiple threads retrieve the query

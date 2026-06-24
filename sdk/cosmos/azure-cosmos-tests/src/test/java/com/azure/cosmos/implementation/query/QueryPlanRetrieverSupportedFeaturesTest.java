@@ -11,11 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class QueryPlanRetrieverSupportedFeaturesTest {
 
     @Test(groups = {"unit"})
-    public void supportedFeaturesIncludeOptimizedCountIfFlag() throws Exception {
+    public void supportedFeaturesExcludeUnsupportedAggregates() throws Exception {
         String supportedFeatures = getQueryPlanRetrieverString("SUPPORTED_QUERY_FEATURES");
 
         assertThat(supportedFeatures)
-            .contains(QueryFeature.CountIf.name())
+            .doesNotContain(QueryFeature.CountIf.name())
             .doesNotContain("HybridSearchSkipOrderByRewrite")
             .doesNotContain("ListAndSetAggregate");
     }
