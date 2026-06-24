@@ -16,8 +16,9 @@
 
 #### `models.FileShareLimits` was modified
 
-* `guardrailIOScalar()` was added
 * `guardrailBandwidthScalar()` was added
+* `guardrailIOScalar()` was added
+
 
 ## 2.56.0 (2026-05-07)
 
