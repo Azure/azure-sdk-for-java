@@ -10,12 +10,12 @@ import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.implementation.converter.AbstractJacksonAzureMessageConverter;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.Duration;
 import java.time.Instant;
