@@ -248,21 +248,24 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         PartitionKeyInternal partitionKey = request.getPartitionKeyInternal();
 
-        if (partitionKey != null) {
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            // QueryPlan is collection-scoped on the thin-client proxy: it carries no
+            // EffectivePartitionKey and no StartEpkHash/EndEpkHash headers - the proxy fans out
+            // across partitions itself. Keep this explicit so the contract is self-documenting and
+            // cannot be violated if a resolved partition key range is ever present on the request.
+            //noinspection StatementWithEmptyBody
+        } else if (partitionKey != null) {
             byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
-        } else if (request.requestContext.resolvedPartitionKeyRange == null) {
-
-            if (request.getOperationType() != OperationType.QueryPlan) {
-                throw new IllegalStateException(
-                    "Resolved partition key range should not be null at this point. ResourceType: "
-                        + request.getResourceType() + ", OperationType: "
-                        + request.getOperationType());
-            }
-        } else {
+        } else if (request.requestContext.resolvedPartitionKeyRange != null) {
             PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, HexConvert.hexToBytes(pkRange.getMinInclusive()));
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash, HexConvert.hexToBytes(pkRange.getMaxExclusive()));
+        } else {
+            throw new IllegalStateException(
+                "Resolved partition key range should not be null at this point. ResourceType: "
+                    + request.getResourceType() + ", OperationType: "
+                    + request.getOperationType());
         }
 
         // todo: eventually need to use pooled buffer
