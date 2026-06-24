@@ -6,7 +6,6 @@ module com.azure.security.confidentialledger {
     requires transitive com.azure.core;
 
     exports com.azure.security.confidentialledger;
-    exports com.azure.security.confidentialledger.certificate;
     exports com.azure.security.confidentialledger.models;
 
     opens com.azure.security.confidentialledger.models to com.azure.core;
