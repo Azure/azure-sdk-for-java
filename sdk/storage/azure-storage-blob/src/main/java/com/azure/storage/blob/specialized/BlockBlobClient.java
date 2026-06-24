@@ -38,14 +38,17 @@ import com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.time.Duration;
 import java.util.List;
@@ -783,10 +786,13 @@ public final class BlockBlobClient extends BlobClientBase {
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
 
-        Mono<Response<Void>> response = client.stageBlockWithResponseInternal(
-            new BlockBlobStageBlockOptions(base64BlockId, BinaryData.fromStream(data, length)).setContentMd5(contentMd5)
-                .setLeaseId(leaseId),
-            context);
+        Flux<ByteBuffer> fbb
+            = Utility.convertStreamToByteBuffer(data, length, BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
+
+        Mono<Response<Void>> response = BinaryData.fromFlux(fbb, length, false)
+            .flatMap(binaryData -> client.stageBlockWithResponseInternal(
+                new BlockBlobStageBlockOptions(base64BlockId, binaryData).setContentMd5(contentMd5).setLeaseId(leaseId),
+                context));
         return blockWithOptionalTimeout(response, timeout);
     }
 
