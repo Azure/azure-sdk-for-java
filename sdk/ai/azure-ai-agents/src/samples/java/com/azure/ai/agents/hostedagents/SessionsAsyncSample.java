@@ -5,8 +5,9 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.BetaAgentsAsyncClient;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -32,40 +33,38 @@ public class SessionsAsyncSample {
         String image = Configuration.getGlobalConfiguration().get("FOUNDRY_AGENT_CONTAINER_IMAGE");
         String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME;
 
-        AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
+        AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildAgentsAsyncClient();
+            .endpoint(endpoint);
+        AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
+        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
-        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, agentName, image)
+        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName, image)
             .flatMap(resources -> {
                 resourcesRef.set(resources);
                 AgentSessionResource session = resources.getSession();
 
-                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId(),
-                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
+                return betaAgentsAsyncClient.getSession(agentName, session.getAgentSessionId(), null)
                     .doOnNext(fetched -> System.out.printf("Retrieved session (id: %s, status: %s)%n",
                         fetched.getAgentSessionId(), fetched.getStatus()))
-                    .thenMany(agentsAsyncClient.listSessions(agentName,
-                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null, null)
+                    .thenMany(betaAgentsAsyncClient.listSessions(agentName, null, null, null, null, null)
                         .doOnSubscribe(unused -> System.out.println("Listing sessions for the agent..."))
                         .doOnNext(item -> System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(),
                             item.getStatus())))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId(),
-                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
+                        return betaAgentsAsyncClient.deleteSession(agentName, session.getAgentSessionId(), null)
                             .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n",
                                 session.getAgentSessionId()));
                     }));
             });
 
         workflow
-            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
+            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
                 resourcesRef.get()).then(Mono.error(error)))
-            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
+            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
                 resourcesRef.get())))
             .timeout(Duration.ofMinutes(15))
             .block();

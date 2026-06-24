@@ -1,6 +1,13 @@
 # Code snippets and samples
 
 
+## Clusters
+
+- [CreateOrUpdate](#clusters_createorupdate)
+- [Delete](#clusters_delete)
+- [Get](#clusters_get)
+- [List](#clusters_list)
+
 ## Operations
 
 - [List](#operations_list)
@@ -13,6 +20,109 @@
 - [List](#organizations_list)
 - [ListByResourceGroup](#organizations_listbyresourcegroup)
 - [Update](#organizations_update)
+
+## Projects
+
+- [CreateOrUpdate](#projects_createorupdate)
+- [Delete](#projects_delete)
+- [Get](#projects_get)
+- [List](#projects_list)
+- [ListClusterTierRegions](#projects_listclustertierregions)
+- [TierLimitReached](#projects_tierlimitreached)
+### Clusters_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.mongodbatlas.models.ClusterProperties;
+import com.azure.resourcemanager.mongodbatlas.models.ClusterTier;
+
+/**
+ * Samples for Clusters CreateOrUpdate.
+ */
+public final class ClustersCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Clusters_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Clusters_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void
+        clustersCreateOrUpdateMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.clusters()
+            .define("myCluster")
+            .withExistingProject("rgopenapi", "myOrganization", "myProject")
+            .withProperties(new ClusterProperties().withClusterTier(ClusterTier.FREE).withRegionName("eastus"))
+            .create();
+    }
+}
+```
+
+### Clusters_Delete
+
+```java
+/**
+ * Samples for Clusters Delete.
+ */
+public final class ClustersDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Clusters_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Clusters_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void clustersDeleteMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.clusters()
+            .delete("rgopenapi", "myOrganization", "myProject", "myCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_Get
+
+```java
+/**
+ * Samples for Clusters Get.
+ */
+public final class ClustersGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Clusters_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Clusters_Get_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void clustersGetMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.clusters()
+            .getWithResponse("rgopenapi", "myOrganization", "myProject", "myCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_List
+
+```java
+/**
+ * Samples for Clusters List.
+ */
+public final class ClustersListSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Clusters_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Clusters_List_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void clustersListMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.clusters().list("rgopenapi", "myOrganization", "myProject", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -21,7 +131,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet.
@@ -33,7 +143,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet.
@@ -64,7 +174,7 @@ import java.util.Map;
  */
 public final class OrganizationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_CreateOrUpdate_MaximumSet.
@@ -122,7 +232,7 @@ public final class OrganizationsCreateOrUpdateSamples {
  */
 public final class OrganizationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_Delete_MaximumSet.
@@ -144,7 +254,7 @@ public final class OrganizationsDeleteSamples {
  */
 public final class OrganizationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_Get_MaximumSet.
@@ -165,7 +275,7 @@ public final class OrganizationsGetByResourceGroupSamples {
  */
 public final class OrganizationsListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_ListBySubscription_MaximumSet.
@@ -178,7 +288,7 @@ public final class OrganizationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organizations_ListBySubscription_MaximumSet - generated by [MinimumSet] rule.
@@ -200,7 +310,7 @@ public final class OrganizationsListSamples {
  */
 public final class OrganizationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_ListByResourceGroup_MaximumSet.
@@ -213,7 +323,7 @@ public final class OrganizationsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organizations_ListByResourceGroup_MaximumSet - generated by [MinimumSet] rule.
@@ -244,7 +354,7 @@ import java.util.Map;
  */
 public final class OrganizationsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Organizations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_Update_MaximumSet.
@@ -283,6 +393,145 @@ public final class OrganizationsUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### Projects_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.mongodbatlas.models.ProjectProperties;
+
+/**
+ * Samples for Projects CreateOrUpdate.
+ */
+public final class ProjectsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Projects_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Projects_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void
+        projectsCreateOrUpdateMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.projects()
+            .define("myProject")
+            .withExistingOrganization("rgopenapi", "myOrganization")
+            .withProperties(new ProjectProperties())
+            .create();
+    }
+}
+```
+
+### Projects_Delete
+
+```java
+/**
+ * Samples for Projects Delete.
+ */
+public final class ProjectsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Projects_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Projects_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void projectsDeleteMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.projects().delete("rgopenapi", "myOrganization", "myProject", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Projects_Get
+
+```java
+/**
+ * Samples for Projects Get.
+ */
+public final class ProjectsGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Projects_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Projects_Get_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void projectsGetMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.projects()
+            .getWithResponse("rgopenapi", "myOrganization", "myProject", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Projects_List
+
+```java
+/**
+ * Samples for Projects List.
+ */
+public final class ProjectsListSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Projects_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Projects_List_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void projectsListMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.projects().list("rgopenapi", "myOrganization", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Projects_ListClusterTierRegions
+
+```java
+/**
+ * Samples for Projects ListClusterTierRegions.
+ */
+public final class ProjectsListClusterTierRegionsSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Projects_ListClusterTierRegions_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Projects_ListClusterTierRegions_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void
+        projectsListClusterTierRegionsMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.projects()
+            .listClusterTierRegionsWithResponse("rgopenapi", "myOrganization", "myProject",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Projects_TierLimitReached
+
+```java
+/**
+ * Samples for Projects TierLimitReached.
+ */
+public final class ProjectsTierLimitReachedSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/Projects_TierLimitReached_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Projects_TierLimitReached_MaximumSet.
+     * 
+     * @param manager Entry point to MongoDBAtlasManager.
+     */
+    public static void
+        projectsTierLimitReachedMaximumSet(com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager manager) {
+        manager.projects()
+            .tierLimitReachedWithResponse("rgopenapi", "myOrganization", "myProject", com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -13,7 +13,7 @@ import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
-import com.azure.ai.agents.MemoryStoresClient;
+import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
@@ -52,7 +52,7 @@ public class MemorySearchSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
+        BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
         ConversationService conversationService = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
@@ -132,7 +132,7 @@ public class MemorySearchSync {
         }
     }
 
-    private static void deleteMemoryStoreQuietly(MemoryStoresClient client, String name) {
+    private static void deleteMemoryStoreQuietly(BetaMemoryStoresClient client, String name) {
         try {
             client.deleteMemoryStore(name);
             System.out.println("Memory store deleted: " + name);

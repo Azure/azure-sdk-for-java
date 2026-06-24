@@ -28,6 +28,8 @@ import com.azure.resourcemanager.compute.models.EventGridAndResourceGraph;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.HostEndpointSettings;
 import com.azure.resourcemanager.compute.models.ImageReference;
+import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
+import com.azure.resourcemanager.compute.models.InterconnectGroupProfile;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
 import com.azure.resourcemanager.compute.models.LinuxPatchAssessmentMode;
 import com.azure.resourcemanager.compute.models.LinuxPatchSettings;
@@ -95,7 +97,7 @@ import java.util.Map;
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Cache disk using placement property.
@@ -138,7 +140,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByOS.
@@ -181,7 +183,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Windows vm with patch settings patchMode and assessmentMode set to AutomaticByPlatform.
@@ -222,7 +224,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
      */
     /**
      * Sample code: Create a VM with encryption identity.
@@ -263,7 +265,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
      */
     /**
      * Sample code: Create or update a VM with capacity reservation.
@@ -306,7 +308,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
      */
     /**
      * Sample code: Create a vm with premium storage.
@@ -343,7 +345,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting assessmentMode of ImageDefault.
@@ -385,7 +387,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
      */
     /**
      * Sample code: Create a custom-image vm from an unmanaged generalized os image.
@@ -418,7 +420,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
      */
     /**
      * Sample code: Create a vm with Host Encryption using encryptionAtHost property.
@@ -459,7 +461,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
      */
     /**
      * Sample code: Create a vm in an availability set.
@@ -498,7 +500,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Nvme disk using placement property.
@@ -541,7 +543,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
      */
     /**
      * Sample code: Create a VM with network interface configuration.
@@ -590,7 +592,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a specialized shared image.
@@ -617,7 +619,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
      */
     /**
      * Sample code: Create a vm with password authentication.
@@ -653,7 +655,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
      */
     /**
      * Sample code: Create a vm with Scheduled Events Profile.
@@ -705,7 +707,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk provisioning in Resource disk using placement property.
@@ -747,7 +749,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk.
@@ -788,7 +790,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.
      * json
      */
     /**
@@ -831,7 +833,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
      */
     /**
      * Sample code: Create a vm with DiskEncryptionSet resource id in the os disk and data disk.
@@ -881,7 +883,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
      */
     /**
      * Sample code: Create a VM with Disk Controller Type.
@@ -929,7 +931,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
      */
     /**
      * Sample code: Create a VM from a shared gallery image.
@@ -960,8 +962,56 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithInterconnectBlock.json
+     */
+    /**
+     * Sample code: Create or update a VM with Interconnect Block.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void
+        createOrUpdateAVMWithInterconnectBlock(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate("myResourceGroup", "myVM",
+                new VirtualMachineInner().withLocation("westus")
+                    .withZones(Arrays.asList("1"))
+                    .withHardwareProfile(new HardwareProfile()
+                        .withVmSize(VirtualMachineSizeTypes.fromString("Standard_ND128isr_GB300_v6")))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withImageReference(new ImageReference().withPublisher("microsoft-dsvm")
+                                .withOffer("ubuntu-hpc")
+                                .withSku("2404-gb")
+                                .withVersion("latest"))
+                            .withOsDisk(new OSDisk().withName("myVMosdisk")
+                                .withCaching(CachingTypes.READ_WRITE)
+                                .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
+                                .withManagedDisk(new ManagedDiskParameters()
+                                    .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                    .withOsProfile(new OSProfile()
+                        .withComputerName("myVM")
+                        .withAdminUsername("{your-username}")
+                        .withAdminPassword("fakeTokenPlaceholder")
+                        .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(false)))
+                    .withNetworkProfile(new NetworkProfile().withNetworkInterfaces(
+                        Arrays.asList(new NetworkInterfaceReference().withId(
+                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                            .withPrimary(true)))
+                        .withInterconnectGroupProfile(new InterconnectGroupProfile()
+                            .withInterconnectGroup(new SubResource().withId(
+                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"))
+                            .withSubgroups(Arrays.asList(new SubResource().withId(
+                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0")))))
+                    .withInterconnectBlockProfile(
+                        new InterconnectBlockProfile().withInterconnectBlock(new ApiEntityReference().withId(
+                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
      */
     /**
      * Sample code: Create a platform-image vm with unmanaged os and data disks.
@@ -1005,7 +1055,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
      */
     /**
      * Sample code: Create a VM with VM Size Properties.
@@ -1047,7 +1097,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
      * Sample code: Create a Linux vm with a patch settings patchMode and assessmentMode set to AutomaticByPlatform.
@@ -1088,7 +1138,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
      */
     /**
      * Sample code: Create a VM with securityType ConfidentialVM with NonPersistedTPM securityEncryptionType.
@@ -1131,7 +1181,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
      */
     /**
      * Sample code: Create a vm with a marketplace image plan.
@@ -1171,7 +1221,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.
      * json
      */
     /**
@@ -1214,7 +1264,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithZoneMovementEnabled.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithZoneMovementEnabled.json
      */
     /**
      * Sample code: Create a vm with resiliency profile and zone movement enabled.
@@ -1260,7 +1310,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/
      * VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
      */
     /**
@@ -1304,7 +1354,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
      */
     /**
      * Sample code: Create a vm with an extensions time budget.
@@ -1344,7 +1394,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
      */
     /**
      * Sample code: Create a vm with empty data disks.
@@ -1381,7 +1431,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskAndFullCachingEnabled.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskAndFullCachingEnabled.json
      */
     /**
      * Sample code: Create a vm with ephemeral os disk and enableFullCaching set to true.
@@ -1424,7 +1474,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
      */
     /**
      * Sample code: Create a vm with data disks using 'Copy' and 'Restore' options.
@@ -1473,7 +1523,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
      */
     /**
      * Sample code: Create a VM with securityType ConfidentialVM with Platform Managed Keys.
@@ -1516,7 +1566,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
      */
     /**
      * Sample code: Create a vm from a custom image.
@@ -1546,7 +1596,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
      */
     /**
      * Sample code: Create a VM with HibernationEnabled.
@@ -1586,7 +1636,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
      */
     /**
      * Sample code: Create a vm with Application Profile.
@@ -1633,7 +1683,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
      */
     /**
      * Sample code: Create a VM with Uefi Settings of secureBoot and vTPM.
@@ -1673,7 +1723,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
      */
     /**
      * Sample code: Create a VM with network interface configuration with public ip address dns settings.
@@ -1724,7 +1774,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
      */
     /**
      * Sample code: Create a vm in a Virtual Machine Scale Set with customer assigned platformFaultDomain.
@@ -1764,7 +1814,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with boot diagnostics.
@@ -1803,7 +1853,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
      */
     /**
      * Sample code: Create a vm with ssh authentication.
@@ -1841,7 +1891,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
      */
     /**
      * Sample code: Create a VM from a community gallery image.
@@ -1872,7 +1922,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
      */
     /**
      * Sample code: Create a VM with UserData.
@@ -1912,7 +1962,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
      */
     /**
      * Sample code: Create a vm from a generalized shared image.
@@ -1943,7 +1993,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting patchMode of AutomaticByPlatform and
@@ -1989,7 +2039,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of Manual.
@@ -2030,7 +2080,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithFips1403Enabled.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithFips1403Enabled.json
      */
     /**
      * Sample code: Create a VM with FIPS 140-3 Enabled.
@@ -2070,7 +2120,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
      */
     /**
      * Sample code: Create a VM with ProxyAgent Settings of enabled and mode.
@@ -2111,7 +2161,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
      */
     /**
      * Sample code: Create a Linux vm with a patch setting patchMode of ImageDefault.
@@ -2152,7 +2202,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
      */
     /**
      * Sample code: Create a vm with managed boot diagnostics.
@@ -2190,7 +2240,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithPlacement.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPlacement.json
      */
     /**
      * Sample code: Create a VM with automatic zone placement.
@@ -2232,7 +2282,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
+     * 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
      */
     /**
      * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and

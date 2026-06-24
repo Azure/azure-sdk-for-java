@@ -6,8 +6,8 @@ package com.azure.ai.agents.toolboxes;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
-import com.azure.ai.agents.ToolboxesAsyncClient;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesAsyncClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolType;
@@ -27,8 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.azure.core.test.TestProxyTestBase.getHttpClients;
-
 public class ToolboxSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
@@ -41,7 +39,8 @@ public class ToolboxSamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void toolboxSearchToolboxSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        ToolboxesClient toolboxesClient = getClientBuilder(httpClient, serviceVersion).buildToolboxesClient();
+        BetaToolboxesClient toolboxesClient
+            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaToolboxesClient();
         String toolboxName = "toolbox-search-tool-java-test";
 
         try {
@@ -75,7 +74,7 @@ public class ToolboxSamplesTests extends ClientTestBase {
     @MethodSource("getTestParameters")
     public void toolboxesAsyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
-        ToolboxesAsyncClient toolboxesAsyncClient = builder.buildToolboxesAsyncClient();
+        BetaToolboxesAsyncClient toolboxesAsyncClient = builder.beta().buildBetaToolboxesAsyncClient();
         String toolboxName = "toolbox-with-mcp-tool-java-async-test";
 
         List<Tool> toolsWithMcpApprovalNever = Collections

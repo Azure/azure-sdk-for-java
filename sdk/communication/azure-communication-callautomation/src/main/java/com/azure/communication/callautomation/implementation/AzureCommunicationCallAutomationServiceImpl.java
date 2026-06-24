@@ -47,12 +47,12 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     private final AzureCommunicationCallAutomationServiceService service;
 
     /**
-     * The endpoint of the Azure Communication resource.
+     * The endpoint of the Azure Communication Service resource.
      */
     private final String endpoint;
 
     /**
-     * Gets The endpoint of the Azure Communication resource.
+     * Gets The endpoint of the Azure Communication Service resource.
      * 
      * @return the endpoint value.
      */
@@ -147,7 +147,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     /**
      * Initializes an instance of AzureCommunicationCallAutomationService client.
      * 
-     * @param endpoint The endpoint of the Azure Communication resource.
+     * @param endpoint The endpoint of the Azure Communication Service resource.
      * @param apiVersion Api Version.
      */
     AzureCommunicationCallAutomationServiceImpl(String endpoint, String apiVersion) {
@@ -159,7 +159,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * Initializes an instance of AzureCommunicationCallAutomationService client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The endpoint of the Azure Communication resource.
+     * @param endpoint The endpoint of the Azure Communication Service resource.
      * @param apiVersion Api Version.
      */
     AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
@@ -171,7 +171,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The endpoint of the Azure Communication resource.
+     * @param endpoint The endpoint of the Azure Communication Service resource.
      * @param apiVersion Api Version.
      */
     AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,

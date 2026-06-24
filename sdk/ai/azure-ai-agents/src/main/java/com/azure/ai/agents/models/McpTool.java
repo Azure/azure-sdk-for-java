@@ -434,6 +434,7 @@ public final class McpTool extends Tool {
             jsonWriter.writeFieldName("require_approval");
             this.requireApproval.writeTo(jsonWriter);
         }
+        jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
         jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -460,6 +461,7 @@ public final class McpTool extends Tool {
             Map<String, String> headers = null;
             BinaryData allowedTools = null;
             BinaryData requireApproval = null;
+            Boolean deferLoading = null;
             String projectConnectionId = null;
             Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -485,6 +487,8 @@ public final class McpTool extends Tool {
                 } else if ("require_approval".equals(fieldName)) {
                     requireApproval
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("defer_loading".equals(fieldName)) {
+                    deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else if ("project_connection_id".equals(fieldName)) {
                     projectConnectionId = reader.getString();
                 } else if ("tool_configs".equals(fieldName)) {
@@ -502,6 +506,7 @@ public final class McpTool extends Tool {
             deserializedMcpTool.headers = headers;
             deserializedMcpTool.allowedTools = allowedTools;
             deserializedMcpTool.requireApproval = requireApproval;
+            deserializedMcpTool.deferLoading = deferLoading;
             deserializedMcpTool.projectConnectionId = projectConnectionId;
             deserializedMcpTool.toolConfigs = toolConfigs;
             return deserializedMcpTool;
@@ -562,6 +567,34 @@ public final class McpTool extends Tool {
     @Generated
     public McpTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
+        return this;
+    }
+
+    /*
+     * Whether this MCP tool is deferred and discovered via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /**
+     * Get the deferLoading property: Whether this MCP tool is deferred and discovered via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this MCP tool is deferred and discovered via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the McpTool object itself.
+     */
+    @Generated
+    public McpTool setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
         return this;
     }
 }

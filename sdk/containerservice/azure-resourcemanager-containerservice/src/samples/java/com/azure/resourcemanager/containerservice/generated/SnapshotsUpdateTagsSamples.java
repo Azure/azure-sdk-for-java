@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class SnapshotsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2026-04-01/SnapshotsUpdateTags.json
+     * x-ms-original-file: 2026-04-02-preview/SnapshotsUpdateTags.json
      */
     /**
      * Sample code: Update Snapshot Tags.

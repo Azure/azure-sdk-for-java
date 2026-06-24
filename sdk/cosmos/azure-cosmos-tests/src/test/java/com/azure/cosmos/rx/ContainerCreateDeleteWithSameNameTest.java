@@ -889,6 +889,9 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         String pkPathAfterRecreate,
         Function<TestObject, String> getPkAfterRecreate) throws InterruptedException {
         CosmosAsyncContainer container = null;
+        // A throwaway client runs the post-create readiness probe so it does not warm this test's main client
+        // collection cache - the test relies on that cache being stale after the container is recreated.
+        CosmosAsyncClient probeClient = getClientBuilder().buildAsyncClient();
         try {
             // step1: create container
             String testContainerId = UUID.randomUUID().toString();
@@ -899,7 +902,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             partitionKeyDef.setPaths(paths);
 
             CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId, partitionKeyDef);
-            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), ruBeforeDelete);
+            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), ruBeforeDelete, probeClient);
 
             // Step2: execute func
             validateFunc.accept(container, getPkBeforeDelete, false);
@@ -912,13 +915,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             partitionKeyDef.setPaths(Arrays.asList(pkPathAfterRecreate));
 
             containerProperties = getCollectionDefinition(testContainerId, partitionKeyDef);
-            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), ruAfterRecreate);
+            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), ruAfterRecreate, probeClient);
 
             // step5: same as step2.
             // This part will confirm the cache refreshed correctly
             validateFunc.accept(container, getPkAfterRecreate, true);
         } finally {
             safeDeleteCollection(container);
+            safeClose(probeClient);
         }
     }
 
@@ -930,6 +934,9 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         String pkPathAfterRecreate) throws InterruptedException {
         CosmosAsyncContainer feedContainer = null;
         CosmosAsyncContainer leaseContainer = null;
+        // A throwaway client runs the post-create readiness probe so it does not warm this test's main client
+        // collection cache - the test relies on that cache being stale after the feed container is recreated.
+        CosmosAsyncClient probeClient = getClientBuilder().buildAsyncClient();
 
         try {
             // step1: create feed container and lease container
@@ -937,7 +944,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
             partitionKeyDefinition.setPaths(Arrays.asList(pkPathBeforeDelete));
             CosmosContainerProperties feedContainerProperties = getCollectionDefinition(feedContainerId, partitionKeyDefinition);
-            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions(), ruBeforeDelete);
+            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions(), ruBeforeDelete, probeClient);
 
             String leaseContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties leaseContainerProperties = getCollectionDefinition(leaseContainerId);
@@ -954,7 +961,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             // step 4: recreate the feed container with same id as step 1
             partitionKeyDefinition.setPaths(Arrays.asList(pkPathAfterRecreate));
             feedContainerProperties = getCollectionDefinition(feedContainerId, partitionKeyDefinition);
-            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions(), ruAfterRecreate);
+            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions(), ruAfterRecreate, probeClient);
 
             // step5: recreate the lease container and lease container with same ids as step1
             leaseContainer = createLeaseContainer(leaseContainerProperties.getId());
@@ -965,6 +972,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         } finally {
             safeDeleteCollection(feedContainer);
             safeDeleteCollection(leaseContainer);
+            safeClose(probeClient);
         }
     }
 
