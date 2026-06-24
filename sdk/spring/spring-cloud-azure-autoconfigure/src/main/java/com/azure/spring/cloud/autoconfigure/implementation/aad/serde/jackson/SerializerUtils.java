@@ -13,7 +13,8 @@ import java.util.Map;
 
 public final class SerializerUtils {
     private static final JsonMapper OBJECT_MAPPER;
-    private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE = new TypeReference<>() { };
+    private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE =
+        new TypeReference<Map<String, OAuth2AuthorizedClient>>() { };
 
     static {
         OBJECT_MAPPER = JsonMapper.builder()
