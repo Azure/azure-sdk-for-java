@@ -5,7 +5,10 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.AIProjectClientImpl;
 import com.azure.ai.projects.implementation.TokenUtils;
+import com.azure.ai.projects.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.projects.implementation.http.HttpClientHelper;
+import com.azure.ai.projects.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -51,34 +54,34 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(
     serviceClients = {
+        BetaModelsClient.class,
+        BetaRedTeamsClient.class,
+        BetaEvaluationTaxonomiesClient.class,
+        BetaEvaluatorsClient.class,
+        BetaInsightsClient.class,
+        BetaSchedulesClient.class,
+        BetaRoutinesClient.class,
+        BetaSkillsClient.class,
+        BetaDatasetsClient.class,
         ConnectionsClient.class,
         DatasetsClient.class,
         IndexesClient.class,
-        ModelsClient.class,
         DeploymentsClient.class,
-        RedTeamsClient.class,
         EvaluationRulesClient.class,
-        EvaluationTaxonomiesClient.class,
-        EvaluatorsClient.class,
-        InsightsClient.class,
-        SchedulesClient.class,
-        RoutinesClient.class,
-        SkillsClient.class,
-        DataGenerationJobsClient.class,
+        BetaModelsAsyncClient.class,
+        BetaRedTeamsAsyncClient.class,
+        BetaEvaluationTaxonomiesAsyncClient.class,
+        BetaEvaluatorsAsyncClient.class,
+        BetaInsightsAsyncClient.class,
+        BetaSchedulesAsyncClient.class,
+        BetaRoutinesAsyncClient.class,
+        BetaSkillsAsyncClient.class,
+        BetaDatasetsAsyncClient.class,
         ConnectionsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
-        ModelsAsyncClient.class,
         DeploymentsAsyncClient.class,
-        RedTeamsAsyncClient.class,
-        EvaluationRulesAsyncClient.class,
-        EvaluationTaxonomiesAsyncClient.class,
-        EvaluatorsAsyncClient.class,
-        InsightsAsyncClient.class,
-        SchedulesAsyncClient.class,
-        RoutinesAsyncClient.class,
-        SkillsAsyncClient.class,
-        DataGenerationJobsAsyncClient.class })
+        EvaluationRulesAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -95,6 +98,26 @@ public final class AIProjectClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-projects.properties");
 
+    private static final String MODELS_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.MODELS_V1_PREVIEW.toString();
+
+    private static final String RED_TEAMS_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.RED_TEAMS_V1_PREVIEW.toString();
+
+    private static final String EVALUATIONS_PREVIEW_FEATURES
+        = FoundryFeaturesOptInKeys.EVALUATIONS_V1_PREVIEW.toString();
+
+    private static final String INSIGHTS_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.INSIGHTS_V1_PREVIEW.toString();
+
+    private static final String SCHEDULES_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.SCHEDULES_V1_PREVIEW.toString();
+
+    private static final String ROUTINES_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW.toString();
+
+    private static final String SKILLS_PREVIEW_FEATURES = FoundryFeaturesOptInKeys.SKILLS_V1_PREVIEW.toString();
+
+    private static final String DATA_GENERATION_JOBS_PREVIEW_FEATURES
+        = FoundryFeaturesOptInKeys.DATA_GENERATION_JOBS_V1_PREVIEW.toString();
+
+    private boolean allowPreview;
+
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -104,6 +127,20 @@ public final class AIProjectClientBuilder
     @Generated
     public AIProjectClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
+    }
+
+    /**
+     * Enables or disables preview feature headers for non-beta preview APIs.
+     * <p>
+     * Beta clients always add their required {@code Foundry-Features} header.
+     *
+     * @param allowPreview {@code true} to automatically add the appropriate {@code Foundry-Features} header to
+     * supported non-beta preview requests.
+     * @return the AIProjectClientBuilder.
+     */
+    public AIProjectClientBuilder allowPreview(boolean allowPreview) {
+        this.allowPreview = allowPreview;
+        return this;
     }
 
     /*
@@ -300,6 +337,19 @@ public final class AIProjectClientBuilder
         return client;
     }
 
+    private AIProjectClientImpl buildInnerClient(String previewFeatures) {
+        this.validateClient();
+        if (CoreUtils.isNullOrEmpty(previewFeatures)) {
+            return buildInnerClient();
+        }
+        HttpPipeline localPipeline = resolvePipeline(previewFeatures);
+        AIProjectsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : AIProjectsServiceVersion.getLatest();
+        AIProjectClientImpl client = new AIProjectClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
+        return client;
+    }
+
     @Generated
     private void validateClient() {
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
@@ -345,6 +395,16 @@ public final class AIProjectClientBuilder
         return httpPipeline;
     }
 
+    private HttpPipeline resolvePipeline(String foundryFeatures) {
+        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();
+        HttpPipelinePolicy foundryFeaturesPolicy = FoundryPolicyHelper.createFoundryFeaturesPolicy(foundryFeatures);
+        return FoundryPolicyHelper.prependPolicy(localPipeline, foundryFeaturesPolicy);
+    }
+
+    private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
+        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
+    }
+
     /**
      * Builds an instance of ConnectionsAsyncClient class.
      *
@@ -386,63 +446,13 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of RedTeamsAsyncClient class.
-     *
-     * @return an instance of RedTeamsAsyncClient.
-     */
-    @Generated
-    public RedTeamsAsyncClient buildRedTeamsAsyncClient() {
-        return new RedTeamsAsyncClient(buildInnerClient().getRedTeams());
-    }
-
-    /**
      * Builds an instance of EvaluationRulesAsyncClient class.
      *
      * @return an instance of EvaluationRulesAsyncClient.
      */
-    @Generated
     public EvaluationRulesAsyncClient buildEvaluationRulesAsyncClient() {
-        return new EvaluationRulesAsyncClient(buildInnerClient().getEvaluationRules());
-    }
-
-    /**
-     * Builds an instance of EvaluationTaxonomiesAsyncClient class.
-     *
-     * @return an instance of EvaluationTaxonomiesAsyncClient.
-     */
-    @Generated
-    public EvaluationTaxonomiesAsyncClient buildEvaluationTaxonomiesAsyncClient() {
-        return new EvaluationTaxonomiesAsyncClient(buildInnerClient().getEvaluationTaxonomies());
-    }
-
-    /**
-     * Builds an instance of EvaluatorsAsyncClient class.
-     *
-     * @return an instance of EvaluatorsAsyncClient.
-     */
-    @Generated
-    public EvaluatorsAsyncClient buildEvaluatorsAsyncClient() {
-        return new EvaluatorsAsyncClient(buildInnerClient().getEvaluators());
-    }
-
-    /**
-     * Builds an instance of InsightsAsyncClient class.
-     *
-     * @return an instance of InsightsAsyncClient.
-     */
-    @Generated
-    public InsightsAsyncClient buildInsightsAsyncClient() {
-        return new InsightsAsyncClient(buildInnerClient().getInsights());
-    }
-
-    /**
-     * Builds an instance of SchedulesAsyncClient class.
-     *
-     * @return an instance of SchedulesAsyncClient.
-     */
-    @Generated
-    public SchedulesAsyncClient buildSchedulesAsyncClient() {
-        return new SchedulesAsyncClient(buildInnerClient().getSchedules());
+        return new EvaluationRulesAsyncClient(
+            buildInnerClient(allowPreview ? EVALUATIONS_PREVIEW_FEATURES : null).getEvaluationRules());
     }
 
     /**
@@ -486,63 +496,13 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of RedTeamsClient class.
-     *
-     * @return an instance of RedTeamsClient.
-     */
-    @Generated
-    public RedTeamsClient buildRedTeamsClient() {
-        return new RedTeamsClient(buildInnerClient().getRedTeams());
-    }
-
-    /**
      * Builds an instance of EvaluationRulesClient class.
      *
      * @return an instance of EvaluationRulesClient.
      */
-    @Generated
     public EvaluationRulesClient buildEvaluationRulesClient() {
-        return new EvaluationRulesClient(buildInnerClient().getEvaluationRules());
-    }
-
-    /**
-     * Builds an instance of EvaluationTaxonomiesClient class.
-     *
-     * @return an instance of EvaluationTaxonomiesClient.
-     */
-    @Generated
-    public EvaluationTaxonomiesClient buildEvaluationTaxonomiesClient() {
-        return new EvaluationTaxonomiesClient(buildInnerClient().getEvaluationTaxonomies());
-    }
-
-    /**
-     * Builds an instance of EvaluatorsClient class.
-     *
-     * @return an instance of EvaluatorsClient.
-     */
-    @Generated
-    public EvaluatorsClient buildEvaluatorsClient() {
-        return new EvaluatorsClient(buildInnerClient().getEvaluators());
-    }
-
-    /**
-     * Builds an instance of InsightsClient class.
-     *
-     * @return an instance of InsightsClient.
-     */
-    @Generated
-    public InsightsClient buildInsightsClient() {
-        return new InsightsClient(buildInnerClient().getInsights());
-    }
-
-    /**
-     * Builds an instance of SchedulesClient class.
-     *
-     * @return an instance of SchedulesClient.
-     */
-    @Generated
-    public SchedulesClient buildSchedulesClient() {
-        return new SchedulesClient(buildInnerClient().getSchedules());
+        return new EvaluationRulesClient(
+            buildInnerClient(allowPreview ? EVALUATIONS_PREVIEW_FEATURES : null).getEvaluationRules());
     }
 
     /**
@@ -553,8 +513,7 @@ public final class AIProjectClientBuilder
      */
     public OpenAIClient buildOpenAIClient() {
         return getOpenAIClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     /**
@@ -570,8 +529,7 @@ public final class AIProjectClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         return getOpenAIClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     /**
@@ -582,8 +540,7 @@ public final class AIProjectClientBuilder
      */
     public OpenAIClientAsync buildOpenAIAsyncClient() {
         return getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     /**
@@ -599,8 +556,7 @@ public final class AIProjectClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         return getOpenAIAsyncClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     private String getDefaultBaseUrl() {
@@ -636,82 +592,388 @@ public final class AIProjectClientBuilder
     private static final ClientLogger LOGGER = new ClientLogger(AIProjectClientBuilder.class);
 
     /**
-     * Builds an instance of SkillsAsyncClient class.
+     * Builds an instance of BetaModelsAsyncClient class.
      *
-     * @return an instance of SkillsAsyncClient.
+     * @return an instance of BetaModelsAsyncClient.
      */
-    @Generated
-    public SkillsAsyncClient buildSkillsAsyncClient() {
-        return new SkillsAsyncClient(buildInnerClient().getSkills());
+    private BetaModelsAsyncClient buildBetaModelsAsyncClient() {
+        return new BetaModelsAsyncClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
     }
 
     /**
-     * Builds an instance of SkillsClient class.
+     * Builds an instance of BetaRedTeamsAsyncClient class.
      *
-     * @return an instance of SkillsClient.
+     * @return an instance of BetaRedTeamsAsyncClient.
      */
-    @Generated
-    public SkillsClient buildSkillsClient() {
-        return new SkillsClient(buildInnerClient().getSkills());
+    private BetaRedTeamsAsyncClient buildBetaRedTeamsAsyncClient() {
+        return new BetaRedTeamsAsyncClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
     }
 
     /**
-     * Builds an instance of ModelsAsyncClient class.
+     * Builds an instance of BetaEvaluationTaxonomiesAsyncClient class.
      *
-     * @return an instance of ModelsAsyncClient.
+     * @return an instance of BetaEvaluationTaxonomiesAsyncClient.
      */
-    @Generated
-    public ModelsAsyncClient buildModelsAsyncClient() {
-        return new ModelsAsyncClient(buildInnerClient().getModels());
+    private BetaEvaluationTaxonomiesAsyncClient buildBetaEvaluationTaxonomiesAsyncClient() {
+        return new BetaEvaluationTaxonomiesAsyncClient(
+            buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
     }
 
     /**
-     * Builds an instance of ModelsClient class.
+     * Builds an instance of BetaEvaluatorsAsyncClient class.
      *
-     * @return an instance of ModelsClient.
+     * @return an instance of BetaEvaluatorsAsyncClient.
      */
-    @Generated
-    public ModelsClient buildModelsClient() {
-        return new ModelsClient(buildInnerClient().getModels());
+    private BetaEvaluatorsAsyncClient buildBetaEvaluatorsAsyncClient() {
+        return new BetaEvaluatorsAsyncClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
     }
 
     /**
-     * Builds an instance of RoutinesAsyncClient class.
+     * Builds an instance of BetaInsightsAsyncClient class.
      *
-     * @return an instance of RoutinesAsyncClient.
+     * @return an instance of BetaInsightsAsyncClient.
      */
-    @Generated
-    public RoutinesAsyncClient buildRoutinesAsyncClient() {
-        return new RoutinesAsyncClient(buildInnerClient().getRoutines());
+    private BetaInsightsAsyncClient buildBetaInsightsAsyncClient() {
+        return new BetaInsightsAsyncClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
     }
 
     /**
-     * Builds an instance of DataGenerationJobsAsyncClient class.
+     * Builds an instance of BetaSchedulesAsyncClient class.
      *
-     * @return an instance of DataGenerationJobsAsyncClient.
+     * @return an instance of BetaSchedulesAsyncClient.
      */
-    @Generated
-    public DataGenerationJobsAsyncClient buildDataGenerationJobsAsyncClient() {
-        return new DataGenerationJobsAsyncClient(buildInnerClient().getDataGenerationJobs());
+    private BetaSchedulesAsyncClient buildBetaSchedulesAsyncClient() {
+        return new BetaSchedulesAsyncClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
     }
 
     /**
-     * Builds an instance of RoutinesClient class.
+     * Builds an instance of BetaRoutinesAsyncClient class.
      *
-     * @return an instance of RoutinesClient.
+     * @return an instance of BetaRoutinesAsyncClient.
      */
-    @Generated
-    public RoutinesClient buildRoutinesClient() {
-        return new RoutinesClient(buildInnerClient().getRoutines());
+    private BetaRoutinesAsyncClient buildBetaRoutinesAsyncClient() {
+        return new BetaRoutinesAsyncClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
     }
 
     /**
-     * Builds an instance of DataGenerationJobsClient class.
+     * Builds an instance of BetaSkillsAsyncClient class.
      *
-     * @return an instance of DataGenerationJobsClient.
+     * @return an instance of BetaSkillsAsyncClient.
      */
-    @Generated
-    public DataGenerationJobsClient buildDataGenerationJobsClient() {
-        return new DataGenerationJobsClient(buildInnerClient().getDataGenerationJobs());
+    private BetaSkillsAsyncClient buildBetaSkillsAsyncClient() {
+        return new BetaSkillsAsyncClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+    }
+
+    /**
+     * Builds an instance of BetaDatasetsAsyncClient class.
+     *
+     * @return an instance of BetaDatasetsAsyncClient.
+     */
+    private BetaDatasetsAsyncClient buildBetaDatasetsAsyncClient() {
+        return new BetaDatasetsAsyncClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+    }
+
+    /**
+     * Builds an instance of BetaModelsClient class.
+     *
+     * @return an instance of BetaModelsClient.
+     */
+    private BetaModelsClient buildBetaModelsClient() {
+        return new BetaModelsClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
+    }
+
+    /**
+     * Builds an instance of BetaRedTeamsClient class.
+     *
+     * @return an instance of BetaRedTeamsClient.
+     */
+    private BetaRedTeamsClient buildBetaRedTeamsClient() {
+        return new BetaRedTeamsClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
+    }
+
+    /**
+     * Builds an instance of BetaEvaluationTaxonomiesClient class.
+     *
+     * @return an instance of BetaEvaluationTaxonomiesClient.
+     */
+    private BetaEvaluationTaxonomiesClient buildBetaEvaluationTaxonomiesClient() {
+        return new BetaEvaluationTaxonomiesClient(
+            buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
+    }
+
+    /**
+     * Builds an instance of BetaEvaluatorsClient class.
+     *
+     * @return an instance of BetaEvaluatorsClient.
+     */
+    private BetaEvaluatorsClient buildBetaEvaluatorsClient() {
+        return new BetaEvaluatorsClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
+    }
+
+    /**
+     * Builds an instance of BetaInsightsClient class.
+     *
+     * @return an instance of BetaInsightsClient.
+     */
+    private BetaInsightsClient buildBetaInsightsClient() {
+        return new BetaInsightsClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
+    }
+
+    /**
+     * Builds an instance of BetaSchedulesClient class.
+     *
+     * @return an instance of BetaSchedulesClient.
+     */
+    private BetaSchedulesClient buildBetaSchedulesClient() {
+        return new BetaSchedulesClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
+    }
+
+    /**
+     * Builds an instance of BetaRoutinesClient class.
+     *
+     * @return an instance of BetaRoutinesClient.
+     */
+    private BetaRoutinesClient buildBetaRoutinesClient() {
+        return new BetaRoutinesClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
+    }
+
+    /**
+     * Builds an instance of BetaSkillsClient class.
+     *
+     * @return an instance of BetaSkillsClient.
+     */
+    private BetaSkillsClient buildBetaSkillsClient() {
+        return new BetaSkillsClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+    }
+
+    /**
+     * Builds an instance of BetaDatasetsClient class.
+     *
+     * @return an instance of BetaDatasetsClient.
+     */
+    private BetaDatasetsClient buildBetaDatasetsClient() {
+        return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+    }
+
+    /**
+     * A builder for creating a new instance of the beta AIProjectClient type.
+     *
+     * @return a builder for creating a new instance of the beta AIProjectClient type.
+     */
+    public BetaAIProjectClientBuilder beta() {
+        return new BetaAIProjectClientBuilder();
+    }
+
+    /**
+     * A builder for creating a new instance of the beta AIProjectClient type.
+     */
+    @Beta
+    @ServiceClientBuilder(
+        serviceClients = {
+            BetaModelsAsyncClient.class,
+            BetaRedTeamsAsyncClient.class,
+            BetaEvaluationTaxonomiesAsyncClient.class,
+            BetaEvaluatorsAsyncClient.class,
+            BetaInsightsAsyncClient.class,
+            BetaSchedulesAsyncClient.class,
+            BetaRoutinesAsyncClient.class,
+            BetaSkillsAsyncClient.class,
+            BetaDatasetsAsyncClient.class,
+            BetaModelsClient.class,
+            BetaRedTeamsClient.class,
+            BetaEvaluationTaxonomiesClient.class,
+            BetaEvaluatorsClient.class,
+            BetaInsightsClient.class,
+            BetaSchedulesClient.class,
+            BetaRoutinesClient.class,
+            BetaSkillsClient.class,
+            BetaDatasetsClient.class })
+    public final class BetaAIProjectClientBuilder {
+
+        private BetaAIProjectClientBuilder() {
+        }
+
+        /**
+         * Builds an instance of BetaModelsAsyncClient class.
+         *
+         * @return an instance of BetaModelsAsyncClient.
+         */
+        @Beta
+        public BetaModelsAsyncClient buildBetaModelsAsyncClient() {
+            return new BetaModelsAsyncClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
+        }
+
+        /**
+         * Builds an instance of BetaRedTeamsAsyncClient class.
+         *
+         * @return an instance of BetaRedTeamsAsyncClient.
+         */
+        @Beta
+        public BetaRedTeamsAsyncClient buildBetaRedTeamsAsyncClient() {
+            return new BetaRedTeamsAsyncClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
+        }
+
+        /**
+         * Builds an instance of BetaEvaluationTaxonomiesAsyncClient class.
+         *
+         * @return an instance of BetaEvaluationTaxonomiesAsyncClient.
+         */
+        @Beta
+        public BetaEvaluationTaxonomiesAsyncClient buildBetaEvaluationTaxonomiesAsyncClient() {
+            return new BetaEvaluationTaxonomiesAsyncClient(
+                buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
+        }
+
+        /**
+         * Builds an instance of BetaEvaluatorsAsyncClient class.
+         *
+         * @return an instance of BetaEvaluatorsAsyncClient.
+         */
+        @Beta
+        public BetaEvaluatorsAsyncClient buildBetaEvaluatorsAsyncClient() {
+            return new BetaEvaluatorsAsyncClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
+        }
+
+        /**
+         * Builds an instance of BetaInsightsAsyncClient class.
+         *
+         * @return an instance of BetaInsightsAsyncClient.
+         */
+        @Beta
+        public BetaInsightsAsyncClient buildBetaInsightsAsyncClient() {
+            return new BetaInsightsAsyncClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
+        }
+
+        /**
+         * Builds an instance of BetaSchedulesAsyncClient class.
+         *
+         * @return an instance of BetaSchedulesAsyncClient.
+         */
+        @Beta
+        public BetaSchedulesAsyncClient buildBetaSchedulesAsyncClient() {
+            return new BetaSchedulesAsyncClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
+        }
+
+        /**
+         * Builds an instance of BetaRoutinesAsyncClient class.
+         *
+         * @return an instance of BetaRoutinesAsyncClient.
+         */
+        @Beta
+        public BetaRoutinesAsyncClient buildBetaRoutinesAsyncClient() {
+            return new BetaRoutinesAsyncClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
+        }
+
+        /**
+         * Builds an instance of BetaSkillsAsyncClient class.
+         *
+         * @return an instance of BetaSkillsAsyncClient.
+         */
+        @Beta
+        public BetaSkillsAsyncClient buildBetaSkillsAsyncClient() {
+            return new BetaSkillsAsyncClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+        }
+
+        /**
+         * Builds an instance of BetaDatasetsAsyncClient class.
+         *
+         * @return an instance of BetaDatasetsAsyncClient.
+         */
+        @Beta
+        public BetaDatasetsAsyncClient buildBetaDatasetsAsyncClient() {
+            return new BetaDatasetsAsyncClient(
+                buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+        }
+
+        /**
+         * Builds an instance of BetaModelsClient class.
+         *
+         * @return an instance of BetaModelsClient.
+         */
+        @Beta
+        public BetaModelsClient buildBetaModelsClient() {
+            return new BetaModelsClient(buildInnerClient(MODELS_PREVIEW_FEATURES).getBetaModels());
+        }
+
+        /**
+         * Builds an instance of BetaRedTeamsClient class.
+         *
+         * @return an instance of BetaRedTeamsClient.
+         */
+        @Beta
+        public BetaRedTeamsClient buildBetaRedTeamsClient() {
+            return new BetaRedTeamsClient(buildInnerClient(RED_TEAMS_PREVIEW_FEATURES).getBetaRedTeams());
+        }
+
+        /**
+         * Builds an instance of BetaEvaluationTaxonomiesClient class.
+         *
+         * @return an instance of BetaEvaluationTaxonomiesClient.
+         */
+        @Beta
+        public BetaEvaluationTaxonomiesClient buildBetaEvaluationTaxonomiesClient() {
+            return new BetaEvaluationTaxonomiesClient(
+                buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluationTaxonomies());
+        }
+
+        /**
+         * Builds an instance of BetaEvaluatorsClient class.
+         *
+         * @return an instance of BetaEvaluatorsClient.
+         */
+        @Beta
+        public BetaEvaluatorsClient buildBetaEvaluatorsClient() {
+            return new BetaEvaluatorsClient(buildInnerClient(EVALUATIONS_PREVIEW_FEATURES).getBetaEvaluators());
+        }
+
+        /**
+         * Builds an instance of BetaInsightsClient class.
+         *
+         * @return an instance of BetaInsightsClient.
+         */
+        @Beta
+        public BetaInsightsClient buildBetaInsightsClient() {
+            return new BetaInsightsClient(buildInnerClient(INSIGHTS_PREVIEW_FEATURES).getBetaInsights());
+        }
+
+        /**
+         * Builds an instance of BetaSchedulesClient class.
+         *
+         * @return an instance of BetaSchedulesClient.
+         */
+        @Beta
+        public BetaSchedulesClient buildBetaSchedulesClient() {
+            return new BetaSchedulesClient(buildInnerClient(SCHEDULES_PREVIEW_FEATURES).getBetaSchedules());
+        }
+
+        /**
+         * Builds an instance of BetaRoutinesClient class.
+         *
+         * @return an instance of BetaRoutinesClient.
+         */
+        @Beta
+        public BetaRoutinesClient buildBetaRoutinesClient() {
+            return new BetaRoutinesClient(buildInnerClient(ROUTINES_PREVIEW_FEATURES).getBetaRoutines());
+        }
+
+        /**
+         * Builds an instance of BetaSkillsClient class.
+         *
+         * @return an instance of BetaSkillsClient.
+         */
+        @Beta
+        public BetaSkillsClient buildBetaSkillsClient() {
+            return new BetaSkillsClient(buildInnerClient(SKILLS_PREVIEW_FEATURES).getBetaSkills());
+        }
+
+        /**
+         * Builds an instance of BetaDatasetsClient class.
+         *
+         * @return an instance of BetaDatasetsClient.
+         */
+        @Beta
+        public BetaDatasetsClient buildBetaDatasetsClient() {
+            return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
+        }
     }
 }

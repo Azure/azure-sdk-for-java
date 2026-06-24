@@ -22,7 +22,7 @@ public final class CodeSigningAccountsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"accountUri\":\"o\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Succeeded\"},\"location\":\"mdgbbjfdd\",\"tags\":{\"ppbhtqqrolfp\":\"mbe\",\"gjyjgzjaoyfhrtxi\":\"psalgbqux\",\"rkujy\":\"n\",\"rlyxwjkcprbnw\":\"vlejuvfqa\"},\"id\":\"xgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"}";
+            = "{\"properties\":{\"accountUri\":\"erkujys\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Failed\"},\"location\":\"fqawrlyxw\",\"tags\":{\"ysszdnrujqguh\":\"prbnwbxgjvtbv\"},\"id\":\"uouq\",\"name\":\"prwzwbnguitnwui\",\"type\":\"gazxuf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class CodeSigningAccountsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CodeSigningAccount response = manager.codeSigningAccounts()
-            .getByResourceGroupWithResponse("uqktap", "pwgcuertu", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("gbquxigj", "jgzjaoyfhrtx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mdgbbjfdd", response.location());
-        Assertions.assertEquals("mbe", response.tags().get("ppbhtqqrolfp"));
+        Assertions.assertEquals("fqawrlyxw", response.location());
+        Assertions.assertEquals("prbnwbxgjvtbv", response.tags().get("ysszdnrujqguh"));
         Assertions.assertEquals(SkuName.BASIC, response.sku().name());
     }
 }

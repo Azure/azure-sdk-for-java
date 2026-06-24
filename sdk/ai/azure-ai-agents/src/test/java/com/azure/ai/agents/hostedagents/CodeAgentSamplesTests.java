@@ -5,10 +5,12 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.BetaAgentsAsyncClient;
+import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.hostedagents.utils.CodeAgentSampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -44,7 +46,9 @@ public class CodeAgentSamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void codeAgentSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws Exception {
-        AgentsClient agentsClient = getClientBuilder(httpClient, serviceVersion).buildAgentsClient();
+        AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
+        AgentsClient agentsClient = builder.buildAgentsClient();
+        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
         String agentName = CodeAgentSampleUtils.SAMPLE_AGENT_NAME + "-test";
 
         try {
@@ -57,15 +61,13 @@ public class CodeAgentSamplesTests extends ClientTestBase {
             BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
             String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
 
-            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
-                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+            AgentVersionDetails version = betaAgentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
             Assertions.assertNotNull(version);
             Assertions.assertEquals(agentName, version.getName());
             Assertions.assertNotNull(version.getVersion());
 
-            BinaryData downloadedCode
-                = agentsClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW, null);
+            BinaryData downloadedCode = betaAgentsClient.downloadAgentCode(agentName, null);
             Assertions.assertNotNull(downloadedCode);
             Assertions.assertTrue(downloadedCode.toBytes().length > 0);
 
@@ -73,9 +75,8 @@ public class CodeAgentSamplesTests extends ClientTestBase {
             Files.write(downloadPath, downloadedCode.toBytes());
             Assertions.assertTrue(Files.size(downloadPath) > 0);
 
-            AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
-                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+            AgentVersionDetails newVersion = betaAgentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
             Assertions.assertNotNull(newVersion);
             Assertions.assertEquals(agentName, newVersion.getName());
             Assertions.assertNotNull(newVersion.getVersion());
@@ -94,29 +95,27 @@ public class CodeAgentSamplesTests extends ClientTestBase {
     public void codeAgentAsyncSample(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws Exception {
         AgentsClientBuilder builder = getClientBuilder(httpClient, serviceVersion);
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
         String agentName = CodeAgentSampleUtils.SAMPLE_AGENT_NAME + "-async-test";
         BinaryData codeZip = CodeAgentSampleUtils.createCodeZip();
         String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZip);
 
         Mono<Void> testFlow = agentsAsyncClient.deleteAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
-            .then(agentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
-                AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW))
+            .then(betaAgentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
+                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip)))
             .flatMap(version -> {
                 Assertions.assertNotNull(version);
                 Assertions.assertEquals(agentName, version.getName());
                 Assertions.assertNotNull(version.getVersion());
 
-                return agentsAsyncClient.downloadAgentCode(agentName, AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW,
-                    null);
+                return betaAgentsAsyncClient.downloadAgentCode(agentName, null);
             })
             .flatMap(downloadedCode -> {
                 Assertions.assertNotNull(downloadedCode);
                 Assertions.assertTrue(downloadedCode.toBytes().length > 0);
-                return agentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                    CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip),
-                    AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW);
+                return betaAgentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
+                    CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZip));
             })
             .doOnNext(newVersion -> {
                 Assertions.assertNotNull(newVersion);

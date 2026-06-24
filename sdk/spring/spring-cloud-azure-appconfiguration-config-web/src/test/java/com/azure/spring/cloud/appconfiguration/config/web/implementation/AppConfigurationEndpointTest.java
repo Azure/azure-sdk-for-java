@@ -24,13 +24,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 public class AppConfigurationEndpointTest {
 
@@ -49,7 +47,7 @@ public class AppConfigurationEndpointTest {
 
     private static final String GET_TEST_INVALID = "src/test/resources/webHookInvalid.json";
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = JsonMapper.builder().build();
 
     @BeforeEach
     public void setup() throws IOException {
@@ -59,7 +57,7 @@ public class AppConfigurationEndpointTest {
     }
 
     @Test
-    public void validationParsing() throws JsonGenerationException, JsonMappingException, IOException {
+    public void validationParsing() throws IOException {
         String requestBody = mapper.readValue(new File(GET_TEST_VALIDATION), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
         
@@ -77,7 +75,7 @@ public class AppConfigurationEndpointTest {
     }
 
     @Test
-    public void validationInvalidParsing() throws JsonGenerationException, JsonMappingException, IOException {
+    public void validationInvalidParsing() throws IOException {
         String requestBody = mapper.readValue(new File(GET_TEST_INVALID), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
@@ -88,7 +86,7 @@ public class AppConfigurationEndpointTest {
     }
 
     @Test
-    public void authenticate() throws JsonParseException, JsonMappingException, IOException {
+    public void authenticate() throws IOException {
         String requestBody = mapper.readValue(new File(GET_TEST_VALIDATION), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
         
@@ -158,7 +156,7 @@ public class AppConfigurationEndpointTest {
     }
 
     @Test
-    public void triggerRefresh() throws JsonParseException, JsonMappingException, IOException {
+    public void triggerRefresh() throws IOException {
         String requestBody = mapper.readValue(new File(GET_TEST_VALIDATION), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
