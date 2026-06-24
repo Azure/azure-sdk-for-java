@@ -902,7 +902,7 @@ final class SessionsMessagePump {
                 // already been removed from the link's DeliveryMap.
                 // See https://github.com/Azure/azure-sdk-for-java/issues/47356
                 updateDispositionMono = receiver.updateDisposition(message.getLockToken(), deliveryState)
-                    .doOnSuccess(__ -> message.setIsSettled());
+                    .<Void>then(Mono.fromRunnable(() -> message.setIsSettled()));
             } else {
                 updateDispositionMono
                     = Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(message.getLockToken(), deliveryState));
