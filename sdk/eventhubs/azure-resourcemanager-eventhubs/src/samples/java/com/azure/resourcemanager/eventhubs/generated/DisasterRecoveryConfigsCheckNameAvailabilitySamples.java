@@ -11,7 +11,7 @@ import com.azure.resourcemanager.eventhubs.models.CheckNameAvailabilityParameter
  */
 public final class DisasterRecoveryConfigsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
+     * x-ms-original-file: 2026-01-01/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
      */
     /**
      * Sample code: NamespacesCheckNameAvailability.

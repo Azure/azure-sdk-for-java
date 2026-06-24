@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EHOperations_List.json
+     * x-ms-original-file: 2026-01-01/EHOperations_List.json
      */
     /**
      * Sample code: EHOperations_List.

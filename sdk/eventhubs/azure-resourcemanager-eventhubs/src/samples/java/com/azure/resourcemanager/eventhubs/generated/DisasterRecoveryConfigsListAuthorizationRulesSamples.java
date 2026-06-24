@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class DisasterRecoveryConfigsListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
+     * x-ms-original-file: 2026-01-01/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
      */
     /**
      * Sample code: ListAuthorizationRules.

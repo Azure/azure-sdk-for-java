@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventhubs.models.RegenerateAccessKeyParameters;
  */
 public final class EventHubsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: EventHubAuthorizationRuleRegenerateKey.

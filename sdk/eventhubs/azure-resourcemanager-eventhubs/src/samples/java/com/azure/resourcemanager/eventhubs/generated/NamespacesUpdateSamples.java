@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/EHNameSpaceUpdate.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/EHNameSpaceUpdate.json
      */
     /**
      * Sample code: NamespacesUpdate.
@@ -25,11 +25,13 @@ public final class NamespacesUpdateSamples {
     public static void namespacesUpdate(com.azure.resourcemanager.eventhubs.EventHubsManager manager) {
         manager.serviceClient()
             .getNamespaces()
-            .update("ResurceGroupSample", "NamespaceSample", new EHNamespaceInner().withLocation("East US")
-                .withIdentity(new Identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .updateWithResponse("ResurceGroupSample", "NamespaceSample",
+                new EHNamespaceInner().withIdentity(new Identity()
+                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
                         "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2",
-                        null))),
+                        null)))
+                    .withLocation("East US"),
                 com.azure.core.util.Context.NONE);
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class ConsumerGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ConsumerGroup/EHConsumerGroupGet.json
+     * x-ms-original-file: 2026-01-01/ConsumerGroup/EHConsumerGroupGet.json
      */
     /**
      * Sample code: ConsumerGroupGet.

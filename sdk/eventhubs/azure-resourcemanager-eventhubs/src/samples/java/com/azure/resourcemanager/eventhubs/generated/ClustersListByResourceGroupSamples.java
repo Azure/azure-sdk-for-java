@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Clusters/ClustersListByResourceGroup.json
+     * x-ms-original-file: 2026-01-01/Clusters/ClustersListByResourceGroup.json
      */
     /**
      * Sample code: ClustersListByResourceGroup.

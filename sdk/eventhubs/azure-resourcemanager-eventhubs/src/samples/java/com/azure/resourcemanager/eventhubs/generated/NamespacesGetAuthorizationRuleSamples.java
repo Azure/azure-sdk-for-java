@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class NamespacesGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/EHNameSpaceAuthorizationRuleGet.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleGet.

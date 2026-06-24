@@ -11,7 +11,7 @@ import com.azure.resourcemanager.eventhubs.fluent.models.ArmDisasterRecoveryInne
  */
 public final class DisasterRecoveryConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasCreate.json
+     * x-ms-original-file: 2026-01-01/disasterRecoveryConfigs/EHAliasCreate.json
      */
     /**
      * Sample code: EHAliasCreate.

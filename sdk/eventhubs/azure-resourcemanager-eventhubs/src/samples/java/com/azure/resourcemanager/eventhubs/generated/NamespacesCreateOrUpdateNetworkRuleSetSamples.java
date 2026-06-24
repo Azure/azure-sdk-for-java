@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
      */
     /**
      * Sample code: NameSpaceNetworkRuleSetCreate.

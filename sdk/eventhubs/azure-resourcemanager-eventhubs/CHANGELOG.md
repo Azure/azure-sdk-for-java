@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for the `2026-01-01` API version.
+- Added `ipAddressType` (IPv4 / DualStack) to the Event Hubs namespace.
 - Supported `disableLocalAuth()` and `enableLocalAuth()` in `EventHubNamespace`.
 
 ### Breaking Changes

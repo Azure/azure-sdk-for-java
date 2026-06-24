@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class DisasterRecoveryConfigsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasList.json
+     * x-ms-original-file: 2026-01-01/disasterRecoveryConfigs/EHAliasList.json
      */
     /**
      * Sample code: EHAliasList.

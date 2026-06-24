@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class EventHubsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubGet.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubGet.json
      */
     /**
      * Sample code: EventHubGet.

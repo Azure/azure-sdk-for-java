@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class EventHubsCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleCreate.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleCreate.json
      */
     /**
      * Sample code: EventHubAuthorizationRuleCreate.

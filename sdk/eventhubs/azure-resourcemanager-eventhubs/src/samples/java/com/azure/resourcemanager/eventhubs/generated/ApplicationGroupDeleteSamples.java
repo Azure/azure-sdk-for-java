@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class ApplicationGroupDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ApplicationGroup/ApplicationGroupDelete.json
+     * x-ms-original-file: 2026-01-01/ApplicationGroup/ApplicationGroupDelete.json
      */
     /**
      * Sample code: ApplicationGroupDelete.

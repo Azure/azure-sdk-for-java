@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class NetworkSecurityPerimeterConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/NetworkSecurityPerimeterConfigurationList.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/NetworkSecurityPerimeterConfigurationList.json
      */
     /**
      * Sample code: NamspaceNetworkSecurityPerimeterConfigurationList.

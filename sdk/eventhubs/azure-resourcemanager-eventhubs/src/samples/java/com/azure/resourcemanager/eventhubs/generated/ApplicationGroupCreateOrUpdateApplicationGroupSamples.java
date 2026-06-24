@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ApplicationGroupCreateOrUpdateApplicationGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ApplicationGroup/ApplicationGroupCreate.json
+     * x-ms-original-file: 2026-01-01/ApplicationGroup/ApplicationGroupCreate.json
      */
     /**
      * Sample code: ApplicationGroupCreate.

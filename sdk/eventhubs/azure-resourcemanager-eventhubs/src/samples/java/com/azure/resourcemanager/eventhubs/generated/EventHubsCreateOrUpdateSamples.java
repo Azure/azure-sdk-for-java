@@ -21,7 +21,7 @@ import com.azure.resourcemanager.eventhubs.models.TimestampType;
  */
 public final class EventHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubWithDeletePolicyCreate.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubWithDeletePolicyCreate.json
      */
     /**
      * Sample code: EHEventHubWithDeletePolicyCreate.
@@ -59,7 +59,7 @@ public final class EventHubsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubCreate.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubCreate.json
      */
     /**
      * Sample code: EHEventHubCreate.
@@ -91,7 +91,7 @@ public final class EventHubsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubWithCompactPolicyCreate.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubWithCompactPolicyCreate.json
      */
     /**
      * Sample code: EHEventHubWithCompactPolicyCreate.
@@ -130,7 +130,7 @@ public final class EventHubsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubWithDeleteOrCompactPolicyCreate.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubWithDeleteOrCompactPolicyCreate.json
      */
     /**
      * Sample code: EHEventHubWithDeleteOrCompactPolicyCreate.

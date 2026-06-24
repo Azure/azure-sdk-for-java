@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Clusters/ClusterPut.json
+     * x-ms-original-file: 2026-01-01/Clusters/ClusterPut.json
      */
     /**
      * Sample code: ClusterPut.
@@ -26,9 +26,9 @@ public final class ClustersCreateOrUpdateSamples {
         manager.serviceClient()
             .getClusters()
             .createOrUpdate("myResourceGroup", "testCluster",
-                new ClusterInner().withTags(mapOf("tag1", "value1", "tag2", "value2"))
+                new ClusterInner().withSku(new ClusterSku().withName(ClusterSkuName.DEDICATED).withCapacity(1))
                     .withLocation("South Central US")
-                    .withSku(new ClusterSku().withName(ClusterSkuName.DEDICATED).withCapacity(1)),
+                    .withTags(mapOf("tag1", "value1", "tag2", "value2")),
                 com.azure.core.util.Context.NONE);
     }
 

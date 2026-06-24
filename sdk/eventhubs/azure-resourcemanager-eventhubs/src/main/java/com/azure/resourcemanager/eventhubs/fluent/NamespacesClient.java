@@ -218,57 +218,8 @@ public interface NamespacesClient
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+    Mono<Response<EHNamespaceInner>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
         EHNamespaceInner parameters);
-
-    /**
-     * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of single Namespace item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<EHNamespaceInner>, EHNamespaceInner> beginUpdateAsync(String resourceGroupName,
-        String namespaceName, EHNamespaceInner parameters);
-
-    /**
-     * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single Namespace item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EHNamespaceInner>, EHNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, EHNamespaceInner parameters);
-
-    /**
-     * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The Namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of single Namespace item in List or Get Operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EHNamespaceInner>, EHNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, EHNamespaceInner parameters, Context context);
 
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
@@ -292,13 +243,15 @@ public interface NamespacesClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for updating a namespace resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single Namespace item in List or Get Operation.
+     * @return single Namespace item in List or Get Operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EHNamespaceInner update(String resourceGroupName, String namespaceName, EHNamespaceInner parameters);
+    Response<EHNamespaceInner> updateWithResponse(String resourceGroupName, String namespaceName,
+        EHNamespaceInner parameters, Context context);
 
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
@@ -307,15 +260,13 @@ public interface NamespacesClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for updating a namespace resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single Namespace item in List or Get Operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EHNamespaceInner update(String resourceGroupName, String namespaceName, EHNamespaceInner parameters,
-        Context context);
+    EHNamespaceInner update(String resourceGroupName, String namespaceName, EHNamespaceInner parameters);
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.

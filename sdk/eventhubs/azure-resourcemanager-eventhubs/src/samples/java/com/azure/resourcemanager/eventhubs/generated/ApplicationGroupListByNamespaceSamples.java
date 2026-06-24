@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class ApplicationGroupListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/ApplicationGroup/ApplicationGroupListByNamespace.json
+     * x-ms-original-file: 2026-01-01/ApplicationGroup/ApplicationGroupListByNamespace.json
      */
     /**
      * Sample code: ListApplicationGroups.

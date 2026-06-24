@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class EventHubsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubDelete.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubDelete.json
      */
     /**
      * Sample code: EventHubDelete.

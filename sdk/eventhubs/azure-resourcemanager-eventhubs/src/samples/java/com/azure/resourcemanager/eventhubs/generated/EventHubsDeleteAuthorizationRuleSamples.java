@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class EventHubsDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleDelete.json
      */
     /**
      * Sample code: EventHubAuthorizationRuleDelete.

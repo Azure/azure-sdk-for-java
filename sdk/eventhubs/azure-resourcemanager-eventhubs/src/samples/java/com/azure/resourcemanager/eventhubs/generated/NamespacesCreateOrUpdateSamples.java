@@ -9,10 +9,15 @@ import com.azure.resourcemanager.eventhubs.models.Encryption;
 import com.azure.resourcemanager.eventhubs.models.GeoDRRoleType;
 import com.azure.resourcemanager.eventhubs.models.GeoDataReplicationProperties;
 import com.azure.resourcemanager.eventhubs.models.Identity;
+import com.azure.resourcemanager.eventhubs.models.IpAddressType;
 import com.azure.resourcemanager.eventhubs.models.KeySource;
 import com.azure.resourcemanager.eventhubs.models.KeyVaultProperties;
 import com.azure.resourcemanager.eventhubs.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.eventhubs.models.NamespaceReplicaLocation;
+import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventhubs.models.Sku;
+import com.azure.resourcemanager.eventhubs.models.SkuName;
+import com.azure.resourcemanager.eventhubs.models.SkuTier;
 import com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity;
 import com.azure.resourcemanager.eventhubs.models.UserAssignedIdentityProperties;
 import java.util.Arrays;
@@ -24,7 +29,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/EHNameSpaceCreate.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/EHNameSpaceCreate.json
      */
     /**
      * Sample code: NamespaceCreate.
@@ -34,13 +39,14 @@ public final class NamespacesCreateOrUpdateSamples {
     public static void namespaceCreate(com.azure.resourcemanager.eventhubs.EventHubsManager manager) {
         manager.serviceClient()
             .getNamespaces()
-            .createOrUpdate("ResurceGroupSample", "NamespaceSample", new EHNamespaceInner().withLocation("East US")
-                .withIdentity(new Identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf(
-                        "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1",
-                        new UserAssignedIdentity(),
-                        "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2",
-                        new UserAssignedIdentity())))
+            .createOrUpdate("ResurceGroupSample", "NamespaceSample", new EHNamespaceInner().withIdentity(new Identity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1",
+                    new UserAssignedIdentity(),
+                    "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2",
+                    new UserAssignedIdentity())))
+                .withLocation("East US")
                 .withClusterArmId(
                     "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test")
                 .withEncryption(new Encryption().withKeyVaultProperties(Arrays.asList(new KeyVaultProperties()
@@ -58,7 +64,7 @@ public final class NamespacesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/NamespaceWithGeoDRCreate.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/NamespaceWithGeoDRCreate.json
      */
     /**
      * Sample code: NamespaceWithGeoDRCreate.
@@ -77,6 +83,45 @@ public final class NamespacesCreateOrUpdateSamples {
                         new NamespaceReplicaLocation().withLocationName("centralus")
                             .withRoleType(GeoDRRoleType.SECONDARY)))),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/NameSpaces/EHNamespaceCreateWithIpAddressTypeDualStack.json
+     */
+    /**
+     * Sample code: NamespaceCreateWithIpAddressTypeDualStack.
+     * 
+     * @param manager Entry point to EventHubsManager.
+     */
+    public static void
+        namespaceCreateWithIpAddressTypeDualStack(com.azure.resourcemanager.eventhubs.EventHubsManager manager) {
+        manager.serviceClient()
+            .getNamespaces()
+            .createOrUpdate("ResurceGroupSample", "NamespaceSample", new EHNamespaceInner()
+                .withSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD).withCapacity(1))
+                .withIdentity(new Identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1",
+                        new UserAssignedIdentity(),
+                        "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2",
+                        new UserAssignedIdentity())))
+                .withLocation("East US")
+                .withTags(mapOf())
+                .withClusterArmId(
+                    "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test")
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withEncryption(new Encryption().withKeyVaultProperties(Arrays.asList(new KeyVaultProperties()
+                    .withKeyName("fakeTokenPlaceholder")
+                    .withKeyVaultUri("fakeTokenPlaceholder")
+                    .withIdentity(new UserAssignedIdentityProperties().withUserAssignedIdentity(
+                        "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1"))))
+                    .withKeySource(KeySource.MICROSOFT_KEY_VAULT))
+                .withGeoDataReplication(new GeoDataReplicationProperties().withMaxReplicationLagDurationInSeconds(300)
+                    .withLocations(Arrays.asList(
+                        new NamespaceReplicaLocation().withLocationName("eastus").withRoleType(GeoDRRoleType.PRIMARY),
+                        new NamespaceReplicaLocation().withLocationName("southcentralus")
+                            .withRoleType(GeoDRRoleType.SECONDARY))))
+                .withIpAddressType(IpAddressType.DUAL_STACK), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

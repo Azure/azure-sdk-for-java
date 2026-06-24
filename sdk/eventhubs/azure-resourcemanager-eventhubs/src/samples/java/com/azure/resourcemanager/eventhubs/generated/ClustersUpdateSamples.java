@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Clusters/ClusterPatch.json
+     * x-ms-original-file: 2026-01-01/Clusters/ClusterPatch.json
      */
     /**
      * Sample code: ClusterPatch.
@@ -24,7 +24,7 @@ public final class ClustersUpdateSamples {
         manager.serviceClient()
             .getClusters()
             .update("myResourceGroup", "testCluster",
-                new ClusterInner().withTags(mapOf("tag3", "value3", "tag4", "value4")).withLocation("South Central US"),
+                new ClusterInner().withLocation("South Central US").withTags(mapOf("tag3", "value3", "tag4", "value4")),
                 com.azure.core.util.Context.NONE);
     }
 

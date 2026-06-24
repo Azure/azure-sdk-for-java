@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class SchemaRegistryGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/SchemaRegistry/SchemaRegistryGet.json
+     * x-ms-original-file: 2026-01-01/SchemaRegistry/SchemaRegistryGet.json
      */
     /**
      * Sample code: SchemaRegistryGet.

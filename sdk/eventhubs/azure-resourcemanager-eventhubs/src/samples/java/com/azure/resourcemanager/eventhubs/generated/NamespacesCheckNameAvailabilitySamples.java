@@ -11,7 +11,7 @@ import com.azure.resourcemanager.eventhubs.models.CheckNameAvailabilityParameter
  */
 public final class NamespacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/EHNameSpaceCheckNameAvailability.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/EHNameSpaceCheckNameAvailability.json
      */
     /**
      * Sample code: NamespacesCheckNameAvailability.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.eventhubs.generated;
  */
 public final class NamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/EHNameSpaceDelete.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/EHNameSpaceDelete.json
      */
     /**
      * Sample code: NameSpaceDelete.
