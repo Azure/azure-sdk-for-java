@@ -50,7 +50,7 @@ DeviceUpdateClient client = new DeviceUpdateClientBuilder()
     .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-    .buildClient();
+    .buildDeviceUpdateClient();
 ```
 
 To instantiate `DeviceManagementClient` we use similar code:
@@ -70,7 +70,7 @@ DeviceManagementClient client = new DeviceManagementClientBuilder()
 Let's start by enumerating all update providers:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.EnumerateProviders
-PagedIterable<BinaryData> providers = client.listProviders(null);
+PagedIterable<BinaryData> providers = client.listProviders((RequestOptions) null);
 for (BinaryData p: providers) {
     System.out.println(p);
 }
@@ -82,7 +82,7 @@ Let's enumerate all update names for a given update provider:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.EnumerateNames
 System.out.println("Providers:");
-PagedIterable<BinaryData> names = client.listNames(updateProvider, null);
+PagedIterable<BinaryData> names = client.listNames(updateProvider, (RequestOptions) null);
 for (BinaryData n: names) {
     System.out.println(n);
 }
@@ -93,7 +93,7 @@ for (BinaryData n: names) {
 Let's enumerate all update version for a given update provider and update name:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.EnumerateVersions
-PagedIterable<BinaryData> versions = client.listVersions(updateProvider, updateName, null);
+PagedIterable<BinaryData> versions = client.listVersions(updateProvider, updateName, (RequestOptions) null);
 for (BinaryData v: versions) {
     System.out.println(v);
 }
@@ -161,7 +161,7 @@ for (String fileId: fileIds) {
 To enumerate all registered devices and print their device identifiers:
 
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDevices
-PagedIterable<BinaryData> devices = client.listDevices(null);
+PagedIterable<BinaryData> devices = client.listDevices((RequestOptions) null);
 for (BinaryData d: devices) {
     System.out.println(new ObjectMapper().readTree(d.toBytes()).get("deviceId").asText());
 }
@@ -172,7 +172,7 @@ for (BinaryData d: devices) {
 To enumerate all available device groups and print their group identifiers:
 
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateGroups
-PagedIterable<BinaryData> groups = client.listGroups(null);
+PagedIterable<BinaryData> groups = client.listGroups((RequestOptions) null);
 for (BinaryData g: groups) {
     System.out.println(new ObjectMapper().readTree(g.toBytes()).get("groupId").asText());
 }
@@ -183,7 +183,7 @@ for (BinaryData g: groups) {
 To enumerate all available device classes and print their device class identifiers:
 
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDeviceClasses
-PagedIterable<BinaryData> deviceClasses = client.listDeviceClasses(null);
+PagedIterable<BinaryData> deviceClasses = client.listDeviceClasses((RequestOptions) null);
 for (BinaryData dc: deviceClasses) {
     System.out.println(new ObjectMapper().readTree(dc.toBytes()).get("deviceClassId").asText());
 }
@@ -194,7 +194,7 @@ for (BinaryData dc: deviceClasses) {
 Finally, lets find out all best updates for all devices in a specific group, groupped by their device class identifier:
 
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
-PagedIterable<BinaryData> bestUpdates = client.listBestUpdatesForGroup(groupId, null);
+PagedIterable<BinaryData> bestUpdates = client.listBestUpdatesForGroup(groupId, (RequestOptions) null);
 ObjectMapper updateMapper = new ObjectMapper();
 for (BinaryData bu: bestUpdates) {
     JsonNode json = updateMapper.readTree(bu.toBytes());
@@ -270,7 +270,8 @@ response.waitForCompletion();
 Let's retrieve specific update metadata:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.DeleteUpdate
-SyncPoller<BinaryData, BinaryData> response = client.beginDeleteUpdate(updateProvider, updateName, updateVersion, null);
+SyncPoller<BinaryData, Void> response
+    = client.beginDeleteUpdate(updateProvider, updateName, updateVersion, (RequestOptions) null);
 response.waitForCompletion();
 ```
 
