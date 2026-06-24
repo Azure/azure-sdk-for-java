@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class TopicsCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleCreate.json
+     * x-ms-original-file: 2026-01-01/Topics/SBTopicAuthorizationRuleCreate.json
      */
     /**
      * Sample code: TopicAuthorizationRuleCreate.

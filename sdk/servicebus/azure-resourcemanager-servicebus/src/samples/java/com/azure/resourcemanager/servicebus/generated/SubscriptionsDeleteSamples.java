@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class SubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Subscriptions/SBSubscriptionDelete.json
+     * x-ms-original-file: 2026-01-01/Subscriptions/SBSubscriptionDelete.json
      */
     /**
      * Sample code: SubscriptionDelete.

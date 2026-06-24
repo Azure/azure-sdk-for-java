@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicebus.generated;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
 import com.azure.resourcemanager.servicebus.models.GeoDRRoleType;
 import com.azure.resourcemanager.servicebus.models.GeoDataReplicationProperties;
+import com.azure.resourcemanager.servicebus.models.IpAddressType;
 import com.azure.resourcemanager.servicebus.models.NamespaceReplicaLocation;
+import com.azure.resourcemanager.servicebus.models.PublicNetworkAccess;
 import com.azure.resourcemanager.servicebus.models.SBSku;
 import com.azure.resourcemanager.servicebus.models.SkuName;
 import com.azure.resourcemanager.servicebus.models.SkuTier;
@@ -20,7 +22,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/SBNameSpaceCreate.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/SBNameSpaceCreate.json
      */
     /**
      * Sample code: NameSpaceCreate.
@@ -40,6 +42,31 @@ public final class NamespacesCreateOrUpdateSamples {
                         new NamespaceReplicaLocation().withLocationName("southcentralus")
                             .withRoleType(GeoDRRoleType.SECONDARY)))),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/NameSpaces/SBNamespaceCreateWithIpAddressTypeDualStack.json
+     */
+    /**
+     * Sample code: NameSpaceCreateWithIpAddressTypeDualStack.
+     * 
+     * @param manager Entry point to ServiceBusManager.
+     */
+    public static void
+        nameSpaceCreateWithIpAddressTypeDualStack(com.azure.resourcemanager.servicebus.ServiceBusManager manager) {
+        manager.serviceClient()
+            .getNamespaces()
+            .createOrUpdate("ArunMonocle", "sdk-Namespace2924", new SBNamespaceInner().withLocation("South Central US")
+                .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+                .withSku(new SBSku().withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM).withCapacity(4))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withPremiumMessagingPartitions(2)
+                .withGeoDataReplication(new GeoDataReplicationProperties().withMaxReplicationLagDurationInSeconds(300)
+                    .withLocations(Arrays.asList(
+                        new NamespaceReplicaLocation().withLocationName("eastus").withRoleType(GeoDRRoleType.PRIMARY),
+                        new NamespaceReplicaLocation().withLocationName("southcentralus")
+                            .withRoleType(GeoDRRoleType.SECONDARY))))
+                .withIpAddressType(IpAddressType.DUAL_STACK), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

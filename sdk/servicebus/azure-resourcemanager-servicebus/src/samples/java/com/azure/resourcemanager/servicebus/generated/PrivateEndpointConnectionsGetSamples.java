@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/PrivateEndPointConnectionGet.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/PrivateEndPointConnectionGet.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionGet.

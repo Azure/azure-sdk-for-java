@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class MigrationConfigsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationList.json
+     * x-ms-original-file: 2026-01-01/Migrationconfigurations/SBMigrationconfigurationList.json
      */
     /**
      * Sample code: MigrationConfigurationsList.

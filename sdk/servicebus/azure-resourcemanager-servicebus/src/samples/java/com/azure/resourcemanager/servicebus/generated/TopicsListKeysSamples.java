@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class TopicsListKeysSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleListKey.json
+     * x-ms-original-file: 2026-01-01/Topics/SBTopicAuthorizationRuleListKey.json
      */
     /**
      * Sample code: TopicAuthorizationRuleListKey.

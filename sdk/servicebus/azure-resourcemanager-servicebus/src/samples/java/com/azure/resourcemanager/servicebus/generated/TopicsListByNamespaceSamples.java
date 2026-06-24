@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class TopicsListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicListByNameSpace.json
+     * x-ms-original-file: 2026-01-01/Topics/SBTopicListByNameSpace.json
      */
     /**
      * Sample code: TopicGet.

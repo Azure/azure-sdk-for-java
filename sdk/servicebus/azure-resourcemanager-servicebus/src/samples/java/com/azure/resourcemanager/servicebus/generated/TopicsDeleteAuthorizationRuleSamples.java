@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class TopicsDeleteAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleDelete.json
+     * x-ms-original-file: 2026-01-01/Topics/SBTopicAuthorizationRuleDelete.json
      */
     /**
      * Sample code: TopicAuthorizationRuleDelete.

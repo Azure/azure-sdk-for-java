@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters
  */
 public final class QueuesRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-01-01/Queues/SBQueueAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: QueueAuthorizationRuleRegenerateKey.

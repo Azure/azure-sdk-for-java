@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/SBNameSpaceUpdate.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/SBNameSpaceUpdate.json
      */
     /**
      * Sample code: NameSpaceUpdate.
@@ -23,7 +23,7 @@ public final class NamespacesUpdateSamples {
     public static void nameSpaceUpdate(com.azure.resourcemanager.servicebus.ServiceBusManager manager) {
         manager.serviceClient()
             .getNamespaces()
-            .update("ArunMonocle", "sdk-Namespace-3285",
+            .updateWithResponse("ArunMonocle", "sdk-Namespace-3285",
                 new SBNamespaceUpdateParameters().withLocation("South Central US")
                     .withTags(mapOf("tag3", "value3", "tag4", "value4")),
                 com.azure.core.util.Context.NONE);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class SubscriptionsListByTopicSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Subscriptions/SBSubscriptionListByTopic.json
+     * x-ms-original-file: 2026-01-01/Subscriptions/SBSubscriptionListByTopic.json
      */
     /**
      * Sample code: SubscriptionListByTopic.

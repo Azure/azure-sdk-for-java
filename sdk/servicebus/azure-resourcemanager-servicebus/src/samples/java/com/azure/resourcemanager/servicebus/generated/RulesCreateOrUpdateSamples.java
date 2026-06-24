@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class RulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Rules/RuleCreate_CorrelationFilter.json
+     * x-ms-original-file: 2026-01-01/Rules/RuleCreate_CorrelationFilter.json
      */
     /**
      * Sample code: RulesCreateCorrelationFilter.
@@ -34,7 +34,7 @@ public final class RulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/Rules/RuleCreate.json
+     * x-ms-original-file: 2026-01-01/Rules/RuleCreate.json
      */
     /**
      * Sample code: RulesCreateOrUpdate.
@@ -49,7 +49,7 @@ public final class RulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01-preview/Rules/RuleCreate_SqlFilter.json
+     * x-ms-original-file: 2026-01-01/Rules/RuleCreate_SqlFilter.json
      */
     /**
      * Sample code: RulesCreateSqlFilter.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class TopicsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicDelete.json
+     * x-ms-original-file: 2026-01-01/Topics/SBTopicDelete.json
      */
     /**
      * Sample code: TopicDelete.

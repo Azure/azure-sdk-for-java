@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.fluent.models.ArmDisasterRecoveryInn
  */
 public final class DisasterRecoveryConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasCreate.json
+     * x-ms-original-file: 2026-01-01/disasterRecoveryConfigs/SBAliasCreate.json
      */
     /**
      * Sample code: SBAliasCreate.

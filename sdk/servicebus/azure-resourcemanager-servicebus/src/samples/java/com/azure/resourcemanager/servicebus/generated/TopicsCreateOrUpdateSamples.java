@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.fluent.models.SBTopicInner;
  */
 public final class TopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicCreate.json
+     * x-ms-original-file: 2026-01-01/Topics/SBTopicCreate.json
      */
     /**
      * Sample code: TopicCreate.

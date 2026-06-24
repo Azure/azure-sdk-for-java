@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class DisasterRecoveryConfigsBreakPairingSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/SBEHAliasBreakPairing.json
+     * x-ms-original-file: 2026-01-01/disasterRecoveryConfigs/SBEHAliasBreakPairing.json
      */
     /**
      * Sample code: SBEHAliasBreakPairing.

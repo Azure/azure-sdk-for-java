@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class NamespacesListKeysSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleListKey.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleListKey.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleListKey.

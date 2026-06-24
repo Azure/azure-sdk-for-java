@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.fluent.models.SBSubscriptionInner;
  */
 public final class SubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Subscriptions/SBSubscriptionCreate.json
+     * x-ms-original-file: 2026-01-01/Subscriptions/SBSubscriptionCreate.json
      */
     /**
      * Sample code: SubscriptionCreate.

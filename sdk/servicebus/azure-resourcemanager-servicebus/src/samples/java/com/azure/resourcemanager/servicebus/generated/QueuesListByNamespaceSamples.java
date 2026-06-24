@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class QueuesListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Queues/SBQueueListByNameSpace.json
+     * x-ms-original-file: 2026-01-01/Queues/SBQueueListByNameSpace.json
      */
     /**
      * Sample code: QueueListByNameSpace.

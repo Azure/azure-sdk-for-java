@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class NamespacesGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleGet.json
+     * x-ms-original-file: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleGet.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleGet.

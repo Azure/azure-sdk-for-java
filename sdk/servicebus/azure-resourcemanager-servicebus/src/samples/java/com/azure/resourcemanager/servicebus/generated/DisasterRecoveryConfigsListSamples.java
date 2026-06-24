@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class DisasterRecoveryConfigsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasList.json
+     * x-ms-original-file: 2026-01-01/disasterRecoveryConfigs/SBAliasList.json
      */
     /**
      * Sample code: SBAliasList.

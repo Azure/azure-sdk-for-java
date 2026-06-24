@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters
  */
 public final class TopicsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-01-01/Topics/SBTopicAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: TopicAuthorizationRuleRegenerateKey.

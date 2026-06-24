@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.models.MigrationConfigurationName;
  */
 public final class MigrationConfigsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationDelete.json
+     * x-ms-original-file: 2026-01-01/Migrationconfigurations/SBMigrationconfigurationDelete.json
      */
     /**
      * Sample code: MigrationConfigurationsDelete.

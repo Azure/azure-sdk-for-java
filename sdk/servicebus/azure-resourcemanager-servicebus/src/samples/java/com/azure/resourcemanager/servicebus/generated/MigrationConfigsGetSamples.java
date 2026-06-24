@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.models.MigrationConfigurationName;
  */
 public final class MigrationConfigsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationGet.json
+     * x-ms-original-file: 2026-01-01/Migrationconfigurations/SBMigrationconfigurationGet.json
      */
     /**
      * Sample code: MigrationConfigurationsGet.

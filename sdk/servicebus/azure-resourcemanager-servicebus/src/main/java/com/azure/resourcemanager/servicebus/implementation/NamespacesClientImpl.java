@@ -105,9 +105,9 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
             @BodyParam("application/json") SBNamespaceInner parameters, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<SBNamespaceInner>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -652,7 +652,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
      * @return description of a namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+    public Mono<Response<SBNamespaceInner>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -697,7 +697,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
      * @return description of a namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+    private Mono<Response<SBNamespaceInner>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -736,93 +736,13 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdateAsync(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, namespaceName, parameters);
-        return this.client.<SBNamespaceInner, SBNamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SBNamespaceInner.class, SBNamespaceInner.class, this.client.getContext());
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdateAsync(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, namespaceName, parameters, context);
-        return this.client.<SBNamespaceInner, SBNamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SBNamespaceInner.class, SBNamespaceInner.class, context);
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters) {
-        return this.beginUpdateAsync(resourceGroupName, namespaceName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginUpdate(String resourceGroupName,
-        String namespaceName, SBNamespaceUpdateParameters parameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, namespaceName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SBNamespaceInner> updateAsync(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, namespaceName, parameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, namespaceName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -836,13 +756,12 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource on successful completion of {@link Mono}.
+     * @return description of a namespace resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SBNamespaceInner> updateAsync(String resourceGroupName, String namespaceName,
+    public Response<SBNamespaceInner> updateWithResponse(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, namespaceName, parameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return updateWithResponseAsync(resourceGroupName, namespaceName, parameters, context).block();
     }
 
     /**
@@ -860,26 +779,7 @@ public final class NamespacesClientImpl implements InnerSupportsGet<SBNamespaceI
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SBNamespaceInner update(String resourceGroupName, String namespaceName,
         SBNamespaceUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, namespaceName, parameters).block();
-    }
-
-    /**
-     * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to update a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SBNamespaceInner update(String resourceGroupName, String namespaceName,
-        SBNamespaceUpdateParameters parameters, Context context) {
-        return updateAsync(resourceGroupName, namespaceName, parameters, context).block();
+        return updateWithResponse(resourceGroupName, namespaceName, parameters, Context.NONE).getValue();
     }
 
     /**
