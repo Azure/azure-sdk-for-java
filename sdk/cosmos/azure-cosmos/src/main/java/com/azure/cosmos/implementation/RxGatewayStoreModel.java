@@ -864,13 +864,16 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             if (StringUtils.isNotEmpty(body)) {
                 try {
                     cosmosError = new CosmosError(body);
-                } catch (IllegalArgumentException jsonParseError) {
+                } catch (IllegalArgumentException | ClassCastException jsonParseError) {
                     // Gateway V2 / thin-client error responses (notably query-plan generation
-                    // failures) can carry a raw, non-JSON body (optionally NUL-padded) instead of a
-                    // serialized CosmosError. Parsing it as JSON throws and, upstream, the real HTTP
-                    // status code is lost and the failure surfaces as statusCode 0. Fall back to the
-                    // raw (sanitized) body as the message so the actual status code is preserved on
-                    // the thrown CosmosException.
+                    // failures) can carry a raw, non-JSON body (optionally NUL-padded) or a non-object
+                    // JSON value (scalar, array) instead of a serialized CosmosError. Parsing it throws
+                    // (IllegalArgumentException for non-JSON, ClassCastException for valid non-object
+                    // JSON) and, upstream, the real HTTP status code is lost and the failure surfaces
+                    // as statusCode 0. Fall back to the raw (sanitized) body as the message so the
+                    // actual status code is preserved on the thrown CosmosException.
+                    logger.debug("Failed to parse gateway error body as CosmosError; "
+                        + "falling back to raw body. statusCode: {}", statusCodeString, jsonParseError);
                     cosmosError = new CosmosError(statusCodeString, sanitizeErrorBody(body));
                 }
             } else {

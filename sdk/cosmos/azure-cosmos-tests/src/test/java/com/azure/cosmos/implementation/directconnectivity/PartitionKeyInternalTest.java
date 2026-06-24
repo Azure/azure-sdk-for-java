@@ -560,6 +560,15 @@ public class PartitionKeyInternalTest {
     }
 
     @Test(groups = "unit", expectedExceptions = IllegalStateException.class)
+    public void convertToSortedEpkRangesEmptyArrayThrows() {
+        // queryRanges is an empty array — would otherwise silently yield zero results
+        ObjectNode json = MAPPER.createObjectNode();
+        json.putArray("queryRanges");
+
+        PartitionKeyInternalHelper.convertToSortedEpkRanges("queryRanges", json, singleHashPkDef());
+    }
+
+    @Test(groups = "unit", expectedExceptions = IllegalStateException.class)
     public void convertToSortedEpkRangesNonObjectElementThrows() {
         // queryRanges array contains a string instead of object
         ObjectNode json = MAPPER.createObjectNode();

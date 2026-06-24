@@ -21,27 +21,25 @@ import static org.assertj.core.api.Assertions.assertThat;
  * {@code readManyByPartitionKeys} when a custom query is supplied.
  *
  * <p>The fork lives in {@code QueryPlanRetriever.getQueryPlanThroughGatewayAsync}:
- * <pre>queryPlanRequest.useGatewayMode = partitionKeyDefinition == null;</pre>
+ * <pre>queryPlanRequest.useGatewayMode = !(queryClient.useThinClient(queryPlanRequest)
+ *     &amp;&amp; Configs.isThinClientQueryPlanEnabled());</pre>
  *
- * <p>For {@code readManyByPartitionKeys} the {@code PartitionKeyDefinition} is derived from
- * the {@link DocumentCollection} plumbed all the way through
- * {@code validateCustomQueryForReadManyByPartitionKeys} →
- * {@link DocumentQueryExecutionContextFactory#fetchQueryPlanForValidation} → {@code fetchQueryPlan}.
- * These tests assert both halves of that contract:
+ * <p>Routing is driven by the thin-client opt-in ({@link IDocumentQueryClient#useThinClient}),
+ * not by collection metadata. These tests assert both halves of that contract:
  * <ul>
- *   <li>collection absent ⇒ request pinned to Gateway V1 (Compute Gateway);</li>
- *   <li>collection present ⇒ request is thin-client eligible (Gateway V2 / proxy) for accounts
- *       and containers configured for thin-client routing — the {@code useGatewayMode=false}
- *       flag is the prerequisite the store-model layer reads to bifurcate.</li>
+ *   <li>thin-client not eligible ⇒ request pinned to Gateway V1 (Compute Gateway);</li>
+ *   <li>thin-client eligible ⇒ request is thin-client eligible (Gateway V2 / proxy) — the
+ *       {@code useGatewayMode=false} flag is the prerequisite the store-model layer reads
+ *       to bifurcate.</li>
  * </ul>
  */
 public class ReadManyByPartitionKeyQueryPlanRoutingTest {
 
     @Test(groups = { "unit" })
-    public void validationQueryPlanRoutesToGatewayV1WhenCollectionAbsent() {
+    public void validationQueryPlanRoutesToGatewayV1WhenThinClientNotEligible() {
         ArgumentCaptor<RxDocumentServiceRequest> requestCaptor =
             ArgumentCaptor.forClass(RxDocumentServiceRequest.class);
-        IDocumentQueryClient queryClient = mockQueryClient(requestCaptor);
+        IDocumentQueryClient queryClient = mockQueryClient(requestCaptor, /* useThinClient */ false);
 
         DocumentQueryExecutionContextFactory
             .fetchQueryPlanForValidation(
@@ -50,7 +48,7 @@ public class ReadManyByPartitionKeyQueryPlanRoutingTest {
                 new SqlQuerySpec("SELECT * FROM c"),
                 "dbs/db/colls/col",
                 new CosmosQueryRequestOptions(),
-                /* collection */ null,
+                collectionWithPartitionKey(),
                 /* queryPlanCachingEnabled */ false,
                 Collections.emptyMap())
             .block();
@@ -59,20 +57,15 @@ public class ReadManyByPartitionKeyQueryPlanRoutingTest {
             .as("a single validation query-plan request must be issued")
             .hasSize(1);
         assertThat(requestCaptor.getValue().useGatewayMode)
-            .as("validation query-plan must pin to Gateway V1 when no DocumentCollection is plumbed through")
+            .as("validation query-plan must pin to Gateway V1 when thin client is not eligible")
             .isTrue();
     }
 
     @Test(groups = { "unit" })
-    public void validationQueryPlanIsThinClientEligibleWhenCollectionProvided() {
+    public void validationQueryPlanIsThinClientEligibleWhenOptedIn() {
         ArgumentCaptor<RxDocumentServiceRequest> requestCaptor =
             ArgumentCaptor.forClass(RxDocumentServiceRequest.class);
-        IDocumentQueryClient queryClient = mockQueryClient(requestCaptor);
-
-        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        partitionKeyDefinition.setPaths(Collections.singletonList("/pk"));
-        DocumentCollection collection = new DocumentCollection();
-        collection.setPartitionKey(partitionKeyDefinition);
+        IDocumentQueryClient queryClient = mockQueryClient(requestCaptor, /* useThinClient */ true);
 
         DocumentQueryExecutionContextFactory
             .fetchQueryPlanForValidation(
@@ -81,7 +74,7 @@ public class ReadManyByPartitionKeyQueryPlanRoutingTest {
                 new SqlQuerySpec("SELECT * FROM c"),
                 "dbs/db/colls/col",
                 new CosmosQueryRequestOptions(),
-                collection,
+                collectionWithPartitionKey(),
                 /* queryPlanCachingEnabled */ false,
                 Collections.emptyMap())
             .block();
@@ -91,12 +84,23 @@ public class ReadManyByPartitionKeyQueryPlanRoutingTest {
             .hasSize(1);
         assertThat(requestCaptor.getValue().useGatewayMode)
             .as("validation query-plan must be thin-client eligible (useGatewayMode=false) "
-                + "when a DocumentCollection with a PartitionKeyDefinition is plumbed through")
+                + "when the thin-client opt-in is satisfied")
             .isFalse();
     }
 
-    private static IDocumentQueryClient mockQueryClient(ArgumentCaptor<RxDocumentServiceRequest> requestCaptor) {
+    private static DocumentCollection collectionWithPartitionKey() {
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.setPaths(Collections.singletonList("/pk"));
+        DocumentCollection collection = new DocumentCollection();
+        collection.setPartitionKey(partitionKeyDefinition);
+        return collection;
+    }
+
+    private static IDocumentQueryClient mockQueryClient(
+        ArgumentCaptor<RxDocumentServiceRequest> requestCaptor,
+        boolean useThinClient) {
         IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+        Mockito.when(queryClient.useThinClient(Mockito.any())).thenReturn(useThinClient);
         // executeFeedOperationWithAvailabilityStrategy is a generic <T> method; use doAnswer so the
         // returned Mono.empty() is supplied at invocation time without forcing a generic cast on the
         // stubbing call site. We only care about the captured request, not the downstream payload.

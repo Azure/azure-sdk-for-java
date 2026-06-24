@@ -339,6 +339,13 @@ public class PartitionKeyInternalHelper {
         }
 
         ArrayNode rawRanges = (ArrayNode) queryRangesNode;
+        if (rawRanges.isEmpty()) {
+            throw new IllegalStateException(
+                "Thin client proxy query plan response '" + queryRangesProperty + "' array must not be empty. "
+                + "Expected: at least one range covering the partitions to fan out to. "
+                + "An empty array would silently produce zero query results.");
+        }
+
         List<Range<String>> epkRanges = new ArrayList<>(rawRanges.size());
 
         for (JsonNode rangeNode : rawRanges) {

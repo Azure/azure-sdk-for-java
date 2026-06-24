@@ -51,7 +51,6 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
             PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY,
             content,
             partitionKeyDefinition);
-        this.getPropertyBag().remove(PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY);
     }
 
     public int getVersion() {
