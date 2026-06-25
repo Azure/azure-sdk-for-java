@@ -19,7 +19,51 @@ Examples below use changelog bullets, but similar signatures can also appear in 
 
 **Changelog Pattern**:
 
+Adding an optional parameter causes the client method signature to change.
+
 ```md
+#### `models.ContainerAppsRevisions` was modified
+
+* `listRevisions(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `listRevisions(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+```
+
+**Spec Pattern**:
+
+Find the corresponding operation in TypeSpec where a new optional parameter was introduced via `@added` versioning decorator.
+
+```typespec
+listRevisions is ArmResourceListByParent<
+  Revision,
+  Parameters = {
+    /**
+     * The filter to apply on the operation.
+     */
+    @added(Versions.v2026_01_01)
+    @query("$filter")
+    $filter?: string;
+  },
+  Response = ArmResponse<RevisionCollection>,
+  Error = DefaultErrorResponse
+>;
+```
+
+**Breaking**:
+
+A public client method overload is removed and replaced with another overload that includes an extra parameter. Callers compiled against the previous signature fail to compile until they update call sites.
+
+**Reason**:
+
+Service added an optional parameter, which is not a breaking change in the REST API.
+
+**Resolution**:
+
+Preserve the method overload by configuring `tspconfig.yaml`:
+
+```yaml
+options:
+  "@azure-tools/typespec-java":
+    advanced-versioning: true
 ```
 
 ## Similar Old and New Public Types
