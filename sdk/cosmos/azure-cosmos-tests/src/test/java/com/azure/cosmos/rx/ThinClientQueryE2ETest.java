@@ -8,6 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
@@ -52,6 +54,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -78,9 +81,15 @@ import static org.assertj.core.api.Fail.fail;
 public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     private CosmosAsyncClient directClient;    // Baseline: Direct TCP
-    private CosmosAsyncClient thinClient;      // SUT: Gateway V2 (thin client)
+    private CosmosAsyncClient thinClient;      // System under test: Gateway V2 (thin client)
     private CosmosAsyncContainer directContainer;
     private CosmosAsyncContainer thinClientContainer;
+
+    // Dedicated container whose documents reside in multiple physical partitions (distinct partition
+    // keys over a 12,000 RU/s container). Used by the cross-partition tests so they genuinely fan out.
+    private CosmosAsyncContainer directCrossPartitionContainer;
+    private CosmosAsyncContainer thinClientCrossPartitionContainer;
+    private String crossPartitionContainerId;
 
     private final List<ObjectNode> seededDocs = new ArrayList<>();
     private final String commonPk = "tc-query-" + UUID.randomUUID().toString().substring(0, 8);
@@ -94,15 +103,15 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     public void before_ThinClientQueryE2ETest() {
         try {
             // 1. Direct TCP client (baseline)
-            CosmosClientBuilder directBuilder = createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true);
-            this.directClient = directBuilder.buildAsyncClient();
+            CosmosClientBuilder directClientBuilder = createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true);
+            this.directClient = directClientBuilder.buildAsyncClient();
             this.directContainer = getSharedMultiPartitionCosmosContainer(this.directClient);
 
             // 2. Gateway V2 thin client (system under test)
             ThinClientTestBase.enableThinClientForTest();
-            CosmosClientBuilder thinBuilder = createGatewayRxDocumentClient(
+            CosmosClientBuilder thinClientBuilder = createGatewayRxDocumentClient(
                 TestConfigurations.HOST, null, true, null, true, true, true);
-            this.thinClient = thinBuilder.buildAsyncClient();
+            this.thinClient = thinClientBuilder.buildAsyncClient();
             this.thinClientContainer = this.thinClient.getDatabase(
                 directContainer.getDatabase().getId()).getContainer(directContainer.getId());
 
@@ -111,6 +120,9 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
             // 4. Seed diverse test data for broad query coverage
             seedTestData();
+
+            // 5. Seed a dedicated multi-physical-partition container for genuine cross-partition coverage
+            seedCrossPartitionData();
         } catch (Exception e) {
             // Clean up any clients that were successfully created before the failure
             if (this.thinClient != null) { this.thinClient.close(); this.thinClient = null; }
@@ -176,6 +188,38 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         bulkInsert(directContainer, seededDocs).blockLast();
     }
 
+    /**
+     * Seeds a dedicated container whose documents reside in multiple physical partitions. The
+     * container is provisioned at 12,000 RU/s - above the 10,000 RU/s single-partition limit, so the
+     * service splits it into multiple physical partitions - and each document is given a distinct
+     * partition key, spreading the rows across those partitions. Cross-partition queries against this
+     * container therefore genuinely fan out, unlike the single-partition shared fixture.
+     */
+    private void seedCrossPartitionData() {
+        crossPartitionContainerId = "thinXp_" + UUID.randomUUID().toString().substring(0, 8);
+        CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
+
+        PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+        pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
+        CosmosContainerProperties props = new CosmosContainerProperties(crossPartitionContainerId, pkDef);
+        db.createContainer(props, ThroughputProperties.createManualThroughput(12000)).block();
+
+        this.directCrossPartitionContainer = db.getContainer(crossPartitionContainerId);
+        this.thinClientCrossPartitionContainer =
+            thinClient.getDatabase(db.getId()).getContainer(crossPartitionContainerId);
+
+        String[] categories = {"electronics", "books", "clothing", "toys"};
+        for (int i = 0; i < 30; i++) {
+            ObjectNode doc = OBJECT_MAPPER.createObjectNode();
+            doc.put(ID_FIELD, "xp-" + i + "-" + UUID.randomUUID().toString().substring(0, 8));
+            // Distinct partition key per document so the rows spread across physical partitions.
+            doc.put(PK_FIELD, "xppk-" + i + "-" + UUID.randomUUID());
+            doc.put("category", categories[i % categories.length]);
+            doc.put("idx", i); // distinct -> ORDER BY c.idx is a total order
+            directCrossPartitionContainer.createItem(doc, new PartitionKey(doc.get(PK_FIELD).asText()), null).block();
+        }
+    }
+
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         if (directContainer != null && !seededDocs.isEmpty()) {
@@ -190,6 +234,9 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             }
         }
         ThinClientTestBase.clearThinClientForTest();
+        if (directCrossPartitionContainer != null) {
+            safeDeleteContainer(directCrossPartitionContainer);
+        }
         if (this.thinClient != null) { this.thinClient.close(); }
         if (this.directClient != null) { this.directClient.close(); }
     }
@@ -787,13 +834,13 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testCrossPartitionSelectAll() {
-        assertDirectAndThinClientMatch("SELECT * FROM c ORDER BY c.idx", new CosmosQueryRequestOptions());
+        assertCrossPartitionDirectAndThinClientMatch("SELECT * FROM c ORDER BY c.idx");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testCrossPartitionWhereFilter() {
-        assertDirectAndThinClientMatch("SELECT * FROM c WHERE c.category = 'electronics' ORDER BY c.idx",
-            new CosmosQueryRequestOptions());
+        assertCrossPartitionDirectAndThinClientMatch(
+            "SELECT * FROM c WHERE c.category = 'electronics' ORDER BY c.idx");
     }
 
     // ==================== Multi-EPK-Range Tests (Sort Validation) ====================
@@ -811,7 +858,8 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
      * Helper: creates a higher-throughput (24K RU) container exposing multiple EPK ranges, runs the
      * test, deletes the container.
      */
-    private void runMultiRangeTest(String[] pkValues, String queryTemplate, int expectedCount) {
+    private void runMultiRangeTest(String[] pkValues, String queryTemplate, int expectedCount,
+                                   boolean assertMultipleRangesContacted) {
         String containerId = "multiRange_" + UUID.randomUUID().toString().substring(0, 8);
         CosmosAsyncDatabase db = directClient.getDatabase(directContainer.getDatabase().getId());
         CosmosAsyncContainer directTestContainer = db.getContainer(containerId);
@@ -848,6 +896,12 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             List<String> tcIds = tcResult.results.stream().map(d -> d.get(ID_FIELD).asText()).sorted().collect(Collectors.toList());
             assertThat(tcIds).isEqualTo(directIds);
 
+            if (assertMultipleRangesContacted) {
+                assertThat(distinctPartitionKeyRangesContacted(directResult.diagnostics))
+                    .as("multi-range query must contact more than one partition key range: " + query)
+                    .isGreaterThan(1);
+            }
+
         } finally {
             safeDeleteContainer(directTestContainer);
         }
@@ -861,7 +915,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         String[] pkValues = {"pk-alpha", "pk-beta", "pk-gamma", "pk-delta", "pk-epsilon"};
         runMultiRangeTest(pkValues,
             "SELECT * FROM c WHERE c.mypk IN ('pk-alpha', 'pk-gamma', 'pk-epsilon')",
-            3);
+            3, false);
     }
 
     /**
@@ -872,7 +926,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         String[] pkValues = {"pk-or-1", "pk-or-2", "pk-or-3"};
         runMultiRangeTest(pkValues,
             "SELECT * FROM c WHERE c.mypk = 'pk-or-1' OR c.mypk = 'pk-or-3'",
-            2);
+            2, false);
     }
 
     /**
@@ -893,7 +947,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             sb.append("'").append(pkValues[i]).append("'");
         }
         sb.append(")");
-        runMultiRangeTest(pkValues, sb.toString(), 10);
+        runMultiRangeTest(pkValues, sb.toString(), 10, true);
     }
 
     // ==================== Continuation Token Draining ====================
@@ -1517,21 +1571,104 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     }
 
     /**
-     * Compares document IDs between the Direct (baseline) and thin client results. When {@code
-     * ordered} is true the sequence is significant, so IDs are compared in order; otherwise (a
-     * cross-partition non-ORDER-BY query, where cross-partition / cross-page ordering is undefined)
-     * IDs are compared as sorted sets. See {@link #isStrictlyOrdered}.
+     * Compares the Direct (baseline) and thin client result rows. When {@code ordered} is true the
+     * sequence is significant (compared position-by-position); otherwise the rows are compared
+     * order-insensitively (a cross-partition non-ORDER-BY query, where cross-partition / cross-page
+     * ordering is undefined). See {@link #isStrictlyOrdered}.
+     * <p>
+     * If every row projects an {@code id} it is used as the comparison key (stable and cheap).
+     * Otherwise (projection queries that do not select {@code id}, e.g. {@code SELECT <expr> AS x})
+     * we do NOT drop the check and lose coverage - the full projected rows are compared instead,
+     * with numeric fields matched within {@link #NUMERIC_TOLERANCE} to avoid float-formatting false
+     * mismatches between the Direct and thin-client serialization paths.
      */
     private static void assertSameDocumentIds(List<ObjectNode> gwDocs, List<ObjectNode> tcDocs, boolean ordered, String desc) {
-        List<String> gwIds = gwDocs.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        List<String> tcIds = tcDocs.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        if (ordered) {
-            assertThat(tcIds).as("IDs mismatch (ordered): " + desc).isEqualTo(gwIds);
-        } else {
-            assertThat(tcIds.stream().sorted().collect(Collectors.toList()))
-                .as("IDs mismatch (unordered): " + desc)
-                .isEqualTo(gwIds.stream().sorted().collect(Collectors.toList()));
+        assertThat(tcDocs.size()).as("Row count mismatch: " + desc).isEqualTo(gwDocs.size());
+
+        boolean allHaveId = !gwDocs.isEmpty()
+            && gwDocs.stream().allMatch(d -> d.has(ID_FIELD))
+            && tcDocs.stream().allMatch(d -> d.has(ID_FIELD));
+
+        if (allHaveId) {
+            List<String> gwIds = gwDocs.stream().map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+            List<String> tcIds = tcDocs.stream().map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+            if (ordered) {
+                assertThat(tcIds).as("IDs mismatch (ordered): " + desc).isEqualTo(gwIds);
+            } else {
+                assertThat(tcIds.stream().sorted().collect(Collectors.toList()))
+                    .as("IDs mismatch (unordered): " + desc)
+                    .isEqualTo(gwIds.stream().sorted().collect(Collectors.toList()));
+            }
+            return;
         }
+
+        // No id projected - compare the full rows so ordering/content coverage is not lost.
+        if (ordered) {
+            for (int i = 0; i < gwDocs.size(); i++) {
+                assertThat(jsonEqualsWithTolerance(tcDocs.get(i), gwDocs.get(i)))
+                    .as("Row mismatch (ordered) at index " + i + ": " + desc
+                        + " | expected=" + gwDocs.get(i) + " actual=" + tcDocs.get(i))
+                    .isTrue();
+            }
+        } else {
+            // Multiset comparison: each Direct row must have a distinct matching thin-client row.
+            List<ObjectNode> remaining = new ArrayList<>(tcDocs);
+            for (ObjectNode gwRow : gwDocs) {
+                int matchIdx = -1;
+                for (int j = 0; j < remaining.size(); j++) {
+                    if (jsonEqualsWithTolerance(remaining.get(j), gwRow)) {
+                        matchIdx = j;
+                        break;
+                    }
+                }
+                assertThat(matchIdx)
+                    .as("Row not found in thin-client results (unordered): " + desc + " | row=" + gwRow)
+                    .isGreaterThanOrEqualTo(0);
+                remaining.remove(matchIdx);
+            }
+        }
+    }
+
+    /**
+     * Cross-partition parity check against the dedicated multi-physical-partition container. Asserts
+     * (1) thin client routing, (2) result parity with Direct (strict order for ORDER BY queries),
+     * and (3) that the query actually fanned out across more than one partition key range - i.e. the
+     * seeded data really does span multiple partitions.
+     */
+    private void assertCrossPartitionDirectAndThinClientMatch(String query) {
+        CosmosQueryRequestOptions crossPartitionOptions = new CosmosQueryRequestOptions();
+        QueryResult<ObjectNode> directResult = drainQuery(directCrossPartitionContainer, query, crossPartitionOptions, ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainQuery(thinClientCrossPartitionContainer, query, crossPartitionOptions, ObjectNode.class);
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size()).as("Count mismatch: " + query).isEqualTo(directResult.results.size());
+        assertSameDocumentIds(directResult.results, tcResult.results, isStrictlyOrdered(query, crossPartitionOptions), query);
+
+        // Prove the fixture data genuinely spans more than one physical partition (so this really is
+        // a cross-partition query). Counted from the Direct diagnostics, which reliably report the
+        // partition key range per request; the parity check above already proves the thin client
+        // fanned out and merged all rows from those partitions correctly.
+        assertThat(distinctPartitionKeyRangesContacted(directResult.diagnostics))
+            .as("cross-partition query must contact more than one partition key range: " + query)
+            .isGreaterThan(1);
+    }
+
+    /** Counts the distinct partition key ranges contacted across all pages' diagnostics. */
+    private static int distinctPartitionKeyRangesContacted(List<CosmosDiagnostics> diagnosticsList) {
+        Set<String> ranges = new HashSet<>();
+        for (CosmosDiagnostics diagnostics : diagnosticsList) {
+            CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
+            if (ctx == null) {
+                continue;
+            }
+            for (CosmosDiagnosticsRequestInfo requestInfo : ctx.getRequestInfo()) {
+                String pkRangeId = requestInfo.getPartitionKeyRangeId();
+                if (pkRangeId != null && !pkRangeId.isEmpty()) {
+                    ranges.add(pkRangeId);
+                }
+            }
+        }
+        return ranges.size();
     }
 
     /**
