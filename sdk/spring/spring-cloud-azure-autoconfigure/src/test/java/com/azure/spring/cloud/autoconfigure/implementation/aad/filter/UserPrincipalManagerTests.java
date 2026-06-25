@@ -21,7 +21,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -99,17 +98,14 @@ class UserPrincipalManagerTests {
 
     @Test
     void tenantIdValidationSucceedsWhenMatchingConfiguredTenant() throws Exception {
-        // Setup: create UserPrincipalManager with configured tenant ID
+        // Setup: create mocked AadAuthenticationProperties with configured tenant ID
         AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
         AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
-        
-        // Configure tenant ID as "test" (matching the token's tid)
         Mockito.when(profileProperties.getTenantId()).thenReturn("test");
         
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        // Inject the mocked AadAuthenticationProperties via reflection
-        setAadAuthenticationProperties(userPrincipalManager, properties);
+        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
         
         // Create JWT claims set with matching tenant ID
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -125,14 +121,14 @@ class UserPrincipalManagerTests {
 
     @Test
     void tenantIdValidationFailsWhenMismatchedTenant() throws Exception {
-        // Setup: create UserPrincipalManager with configured tenant ID "test"
+        // Setup: create mocked AadAuthenticationProperties with configured tenant ID "test"
         AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
         AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("test");
         
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        setAadAuthenticationProperties(userPrincipalManager, properties);
+        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
         
         // Create JWT claims set with different tenant ID (mismatched)
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -149,14 +145,14 @@ class UserPrincipalManagerTests {
 
     @Test
     void tenantIdValidationSkippedWhenNoTenantConfigured() throws Exception {
-        // Setup: create UserPrincipalManager with default multi-tenant value "common"
+        // Setup: create mocked AadAuthenticationProperties with default multi-tenant value "common"
         AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
         AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
-        Mockito.when(profileProperties.getTenantId()).thenReturn("common");  // Default when not configured
+        Mockito.when(profileProperties.getTenantId()).thenReturn("common");
         
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        setAadAuthenticationProperties(userPrincipalManager, properties);
+        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
         
         // Create JWT claims set with any tenant ID - should be accepted since "common" is multi-tenant
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -172,14 +168,14 @@ class UserPrincipalManagerTests {
 
     @Test
     void tenantIdValidationSkippedWhenOrganizationsConfigured() throws Exception {
-        // Setup: create UserPrincipalManager with multi-tenant value "organizations"
+        // Setup: create mocked AadAuthenticationProperties with multi-tenant value "organizations"
         AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
         AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
-        Mockito.when(profileProperties.getTenantId()).thenReturn("organizations");  // Multi-tenant setting
+        Mockito.when(profileProperties.getTenantId()).thenReturn("organizations");
         
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        setAadAuthenticationProperties(userPrincipalManager, properties);
+        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
         
         // Create JWT claims set with any tenant ID
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -201,17 +197,6 @@ class UserPrincipalManagerTests {
         assertEquals(expected.size(), actual.size());
         assertTrue(expected.containsAll(actual));
         assertTrue(actual.containsAll(expected));
-    }
-
-    /**
-     * Helper method to set AadAuthenticationProperties via reflection.
-     * Since the field is private, we use reflection to set it for testing.
-     */
-    private void setAadAuthenticationProperties(UserPrincipalManager manager,
-            AadAuthenticationProperties properties) throws NoSuchFieldException, IllegalAccessException {
-        Field field = UserPrincipalManager.class.getDeclaredField("aadAuthenticationProperties");
-        field.setAccessible(true);
-        field.set(manager, properties);
     }
 
     /**
