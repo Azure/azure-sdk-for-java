@@ -87,4 +87,3 @@ public final class Message extends Table {
         return o != 0 ? bb.getLong(o + bb_pos) : 0L;
     }
 }
-

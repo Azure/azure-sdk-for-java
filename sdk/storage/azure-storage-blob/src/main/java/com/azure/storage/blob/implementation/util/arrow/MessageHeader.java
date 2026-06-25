@@ -23,4 +23,3 @@ public final class MessageHeader {
     /** A sparse tensor header. */
     public static final byte SPARSE_TENSOR = 5;
 }
-

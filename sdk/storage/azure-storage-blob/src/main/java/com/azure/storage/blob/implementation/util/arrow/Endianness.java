@@ -15,4 +15,3 @@ public final class Endianness {
     /** Big-endian byte order. */
     public static final short BIG = 1;
 }
-

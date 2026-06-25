@@ -31,4 +31,3 @@ public final class TimeUnit {
         return NAMES[e];
     }
 }
-

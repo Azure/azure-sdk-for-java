@@ -51,4 +51,3 @@ public final class FieldNode extends Struct {
         return bb.getLong(bb_pos + 8);
     }
 }
-

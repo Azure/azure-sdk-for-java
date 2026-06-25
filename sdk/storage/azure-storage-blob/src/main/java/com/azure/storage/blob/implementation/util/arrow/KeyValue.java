@@ -53,4 +53,3 @@ public final class KeyValue extends Table {
         return o != 0 ? __string(o + bb_pos) : null;
     }
 }
-

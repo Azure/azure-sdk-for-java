@@ -53,4 +53,3 @@ public final class Int extends Table {
         return o != 0 && 0 != bb.get(o + bb_pos);
     }
 }
-

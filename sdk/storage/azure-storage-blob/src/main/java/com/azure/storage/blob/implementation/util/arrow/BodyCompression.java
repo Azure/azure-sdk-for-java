@@ -36,4 +36,3 @@ public final class BodyCompression extends Table {
         return this;
     }
 }
-

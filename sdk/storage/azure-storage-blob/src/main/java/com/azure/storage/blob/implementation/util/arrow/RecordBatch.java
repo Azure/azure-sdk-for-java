@@ -127,4 +127,3 @@ public final class RecordBatch extends Table {
         return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null;
     }
 }
-

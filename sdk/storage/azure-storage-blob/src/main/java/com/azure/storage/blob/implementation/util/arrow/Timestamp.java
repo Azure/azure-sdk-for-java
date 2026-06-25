@@ -43,4 +43,3 @@ public final class Timestamp extends Table {
         return o != 0 ? bb.getShort(o + bb_pos) : 0;
     }
 }
-

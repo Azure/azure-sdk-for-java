@@ -107,4 +107,3 @@ public final class Schema extends Table {
         return o != 0 ? __vector_len(o) : 0;
     }
 }
-
