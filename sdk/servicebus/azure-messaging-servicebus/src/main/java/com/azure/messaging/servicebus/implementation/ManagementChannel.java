@@ -57,6 +57,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_MESSAGE_SESSIONS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_PEEK;
@@ -502,6 +503,177 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             return sendWithVerify(channel, message, null);
         })).then();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<MessageSessionsResult> getMessageSessions(OffsetDateTime lastUpdatedTime, int skip, int top,
+        String lastSessionId) {
+        if (lastUpdatedTime == null) {
+            return monoError(logger, new NullPointerException("'lastUpdatedTime' cannot be null."));
+        }
+        if (skip < 0) {
+            return monoError(logger, new IllegalArgumentException("'skip' must be non-negative; got " + skip + "."));
+        }
+        if (top <= 0) {
+            return monoError(logger, new IllegalArgumentException("'top' must be positive; got " + top + "."));
+        }
+
+        // Track 1's SessionBrowser uses new Date(253402300800000L) as the active-messages sentinel
+        // (1ms past 9999-12-31T23:59:59.999Z, rendered by OffsetDateTime.toString() as
+        // +10000-01-01T00:00Z). This is the wire value the broker has been validated against for
+        // years; align with it here. Any input at or beyond that instant (including
+        // OffsetDateTime.MAX, whose nanosecond precision and year-999_999_999 value would otherwise
+        // overflow java.util.Date) is clamped to it so the sentinel comparison and Date.from(...)
+        // both stay well-defined. Comparing with >= so the sentinel-equal case is also routed
+        // through the clamp explicitly (it's a no-op for equal values, but keeps the comment/code
+        // contract precise).
+        final OffsetDateTime cappedTime = lastUpdatedTime.compareTo(ManagementConstants.ACTIVE_MESSAGES_SENTINEL) >= 0
+            ? ManagementConstants.ACTIVE_MESSAGES_SENTINEL
+            : lastUpdatedTime;
+
+        return isAuthorized(OPERATION_GET_MESSAGE_SESSIONS).then(channelCache.get().flatMap(channel -> {
+            // No associated link name for entity-level operations
+            final Message message = createManagementMessage(OPERATION_GET_MESSAGE_SESSIONS, null);
+
+            final Map<String, Object> body = new HashMap<>();
+            body.put(ManagementConstants.LAST_UPDATED_TIME, Date.from(cappedTime.toInstant()));
+            body.put(ManagementConstants.SKIP, skip);
+            body.put(ManagementConstants.TOP, top);
+            // Empty string is a valid Service Bus session ID, so the broker contract distinguishes
+            // null (no cursor) from "" (cursor is the empty-ID session). Only omit the field when
+            // lastSessionId is null; never collapse empty strings into "no cursor".
+            if (lastSessionId != null) {
+                body.put(ManagementConstants.LAST_SESSION_ID, lastSessionId);
+            }
+
+            message.setBody(new AmqpValue(body));
+
+            return sendWithVerify(channel, message, null);
+        })).flatMap(response -> {
+            final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+
+            if (statusCode == AmqpResponseCode.OK) {
+                // Validate the response body shape strictly: an unexpected type indicates a
+                // broker/proxy compatibility issue and we should surface it rather than silently
+                // terminating pagination (which would drop any remaining results). Truly empty
+                // pages take the "no sessions-ids key" branch below.
+                final Object responseBody = response.getBody();
+                if (responseBody == null) {
+                    return monoError(logger,
+                        new IllegalStateException("Get message sessions returned a 200 OK response with no body."));
+                }
+                if (!(responseBody instanceof AmqpValue)) {
+                    return monoError(logger,
+                        new IllegalStateException(
+                            "Get message sessions returned a 200 OK response with an unexpected body type: "
+                                + responseBody.getClass().getName() + ". Expected AmqpValue."));
+                }
+
+                final Object value = ((AmqpValue) responseBody).getValue();
+                if (!(value instanceof Map)) {
+                    return monoError(logger,
+                        new IllegalStateException(
+                            "Get message sessions returned a 200 OK response whose AmqpValue payload was not a Map: "
+                                + (value == null ? "null" : value.getClass().getName()) + "."));
+                }
+
+                @SuppressWarnings("unchecked")
+                final Map<String, Object> map = (Map<String, Object>) value;
+                final Object sessionsObj = map.get(ManagementConstants.SESSION_IDS);
+
+                // Accept both Object[] (the shape qpid-proton currently surfaces) and any
+                // Iterable<?> (List, Set, ...) so a future broker/library change in payload type
+                // doesn't silently produce an empty page and prematurely terminate pagination.
+                // Null entries are treated as malformed responses and fail the operation rather
+                // than surfacing the literal string "null" as a session ID to callers.
+                final List<String> sessionIds;
+                if (sessionsObj == null) {
+                    sessionIds = Collections.emptyList();
+                } else if (sessionsObj instanceof Object[]) {
+                    final Object[] sessionArray = (Object[]) sessionsObj;
+                    sessionIds = new ArrayList<>(sessionArray.length);
+                    for (Object id : sessionArray) {
+                        if (id == null) {
+                            throw logger.logExceptionAsWarning(
+                                new IllegalStateException("Management response contained a null session id entry."));
+                        }
+                        sessionIds.add(id.toString());
+                    }
+                } else if (sessionsObj instanceof Iterable<?>) {
+                    sessionIds = new ArrayList<>();
+                    for (Object id : (Iterable<?>) sessionsObj) {
+                        if (id == null) {
+                            throw logger.logExceptionAsWarning(
+                                new IllegalStateException("Management response contained a null session id entry."));
+                        }
+                        sessionIds.add(id.toString());
+                    }
+                } else {
+                    // A non-null sessions-ids that's neither Object[] nor Iterable<?> indicates a
+                    // broker/library payload-shape change; surface it as a protocol error rather
+                    // than silently terminating pagination on an empty list.
+                    throw logger
+                        .logExceptionAsWarning(new IllegalStateException("Get message sessions returned an unexpected '"
+                            + ManagementConstants.SESSION_IDS + "' payload type: " + sessionsObj.getClass().getName()
+                            + ". Expected Object[] or Iterable."));
+                }
+
+                return Mono.just(new MessageSessionsResult(sessionIds, readResponseSkip(map, skip, sessionIds.size())));
+            } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                return Mono.just(new MessageSessionsResult(Collections.emptyList(), skip));
+            } else if (statusCode == AmqpResponseCode.NOT_FOUND) {
+                // 404 + SessionNotFound means no sessions exist. sendWithVerify already passes
+                // this through as a successful response rather than an error.
+                return Mono.just(new MessageSessionsResult(Collections.emptyList(), skip));
+            } else {
+                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+                throw logger.logExceptionAsWarning(new AmqpException(true,
+                    "Get message sessions failed. Status: " + statusCode + " Description: " + statusDescription,
+                    getErrorContext()));
+            }
+        });
+    }
+
+    /**
+     * Reads the {@code skip} value the service returns alongside the session-ID page. Track 1 uses
+     * this server-returned value as the cursor for the next page rather than {@code currentSkip +
+     * page.size()}, so callers must propagate it verbatim. If the field is missing, non-numeric,
+     * negative, outside the {@code int} range, or not strictly greater than {@code requestSkip}
+     * (which would either cursor backwards or stall on the same value, risking infinite loops or
+     * duplicate results), fall back to advancing by the size of the page actually returned
+     * (saturating to {@link Integer#MAX_VALUE} on overflow) so a malformed response cannot stall
+     * the cursor on the same skip value or wrap into a negative cursor.
+     */
+    private static int readResponseSkip(Map<String, Object> responseBody, int requestSkip, int pageSize) {
+        final Object value = responseBody.get(ManagementConstants.SKIP);
+        if (value instanceof Number) {
+            final long responseSkip = ((Number) value).longValue();
+            // Require strict monotonic forward progress: responseSkip must be > requestSkip. Equal
+            // would re-fetch the same page; smaller would cursor backwards. Both risk loops and
+            // duplicate results, so fall back to the page-size-based cursor instead.
+            if (responseSkip > requestSkip && responseSkip <= Integer.MAX_VALUE) {
+                return (int) responseSkip;
+            }
+        }
+        return computeFallbackSkip(requestSkip, pageSize);
+    }
+
+    /**
+     * Computes the fallback cursor when the server-returned {@code skip} is missing, non-numeric,
+     * negative, or outside the {@code int} range. The addition is performed in {@code long} (and
+     * {@code requestSkip} is validated as non-negative at the call site) so wraparound cannot
+     * occur; the only thing to guard against is overflow past {@link Integer#MAX_VALUE}, which is
+     * clamped so the next request stays a valid {@code int}.
+     */
+    private static int computeFallbackSkip(int requestSkip, int pageSize) {
+        final long nextSkip = (long) requestSkip + pageSize;
+        if (nextSkip >= Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int) nextSkip;
     }
 
     /**

@@ -9,8 +9,13 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
@@ -18,9 +23,16 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusT
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 
 /**
@@ -149,6 +161,14 @@ import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionO
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverAsyncClient.class);
+    private static final int LIST_SESSIONS_DEFAULT_PAGE_SIZE = 100;
+    /**
+     * Continuation-token format is {@code <decimal-skip>|<base64url-utf8(lastSessionId)>}. The
+     * {@code |} is safe as a separator because the URL-safe Base64 alphabet (A-Z, a-z, 0-9, '-',
+     * '_') does not contain it, so any byte sequence in {@code lastSessionId} survives a round
+     * trip without escaping.
+     */
+    private static final char CURSOR_SEPARATOR = '|';
 
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -290,6 +310,157 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
                 }, sessionManager);
         });
         return tracer.traceMono("ServiceBus.acceptSession", acquireSessionReceiver);
+    }
+
+    /**
+     * Lists the IDs of sessions that have active messages in this entity.
+     *
+     * <p>Only sessions with active messages in the queue or subscription are returned.
+     * Sessions on the dead-letter queue or sessions having only a session state (but no messages)
+     * are not returned.</p>
+     *
+     * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
+     * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
+     * previous page) and terminates when the broker returns an empty page. The default page size
+     * is 100; callers can request a different size via
+     * {@link PagedFlux#byPage(int)}.</p>
+     *
+     * @return A {@link PagedFlux} of session ID strings.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listSessions() {
+        // Wire value matches Track 1's SessionBrowser.MAXDATE so the broker switches into the
+        // active-messages mode it has historically been validated against.
+        return listSessionsInternal(ManagementConstants.ACTIVE_MESSAGES_SENTINEL);
+    }
+
+    /**
+     * Lists the IDs of sessions whose state was updated after the specified time.
+     *
+     * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
+     * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
+     * previous page) and terminates when the broker returns an empty page. The default page size
+     * is 100; callers can request a different size via
+     * {@link PagedFlux#byPage(int)}.</p>
+     *
+     * <p>Values at or beyond the active-messages sentinel value
+     * ({@code new Date(253402300800000L)}, rendered by {@code OffsetDateTime.toString()} as
+     * {@code +10000-01-01T00:00Z}, matching Track 1's {@code SessionBrowser.MAXDATE}) are clamped
+     * to that sentinel and behave the same as {@link #listSessions()}, returning sessions that
+     * have active messages.</p>
+     *
+     * @param sessionStateUpdatedAfter Only sessions whose session state was updated after this time are returned.
+     * @return A {@link PagedFlux} of session ID strings.
+     * @throws NullPointerException if {@code sessionStateUpdatedAfter} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listSessions(OffsetDateTime sessionStateUpdatedAfter) {
+        if (sessionStateUpdatedAfter == null) {
+            return pagedFluxError(LOGGER, new NullPointerException("'sessionStateUpdatedAfter' cannot be null."));
+        }
+        return listSessionsInternal(sessionStateUpdatedAfter);
+    }
+
+    private PagedFlux<String> listSessionsInternal(OffsetDateTime lastUpdatedTime) {
+        // Use the page-size-aware PagedFlux constructor so a caller's byPage(int) value flows
+        // through to the management request's `top` parameter. When the caller doesn't request a
+        // specific page size, pageSize is null and we fall back to the default. The first lambda
+        // is the first-page retriever. The next-page retriever may also be invoked directly when
+        // a caller starts from a continuation token via byPage(token) without going through any
+        // previous PagedResponse, so it must validate the token it receives. Note: in azure-core,
+        // byPage(null) returns Flux.empty() rather than routing to the first-page retriever, so a
+        // null continuation token never reaches this lambda.
+        return new PagedFlux<>(pageSize -> fetchSessionPage(lastUpdatedTime, 0, null, resolvePageSize(pageSize)),
+            (continuationToken, pageSize) -> {
+                // Treat an empty continuation token as "no more pages", matching
+                // ServiceBusAdministrationAsyncClient.listQueuesNextPage / listRulesNextPage and
+                // the wider Azure SDK paging convention. This is tolerant of callers that persist
+                // the token to storage and read back an empty string.
+                if (continuationToken.isEmpty()) {
+                    return Mono.empty();
+                }
+                final int separator = continuationToken.indexOf(CURSOR_SEPARATOR);
+                if (separator < 0) {
+                    return monoError(LOGGER, new IllegalArgumentException(
+                        "Invalid continuation token. Expected format '<skip>|<base64url(lastSessionId)>'."));
+                }
+
+                final int nextSkip;
+                try {
+                    nextSkip = Integer.parseInt(continuationToken.substring(0, separator));
+                } catch (NumberFormatException ex) {
+                    return monoError(LOGGER, new IllegalArgumentException(
+                        "Invalid continuation token. Expected a numeric skip value before the '|' separator.", ex));
+                }
+                if (nextSkip < 0) {
+                    return monoError(LOGGER, new IllegalArgumentException(
+                        "Invalid continuation token. Skip value must be non-negative; got " + nextSkip + "."));
+                }
+
+                final String lastSessionId;
+                try {
+                    final byte[] decoded = Base64.getUrlDecoder().decode(continuationToken.substring(separator + 1));
+                    // Strict UTF-8 decoding: a token whose payload base64-decodes cleanly but isn't valid
+                    // UTF-8 must be rejected, otherwise new String(decoded, UTF_8) silently substitutes
+                    // U+FFFD and we'd send a corrupted session ID to the broker as the cursor.
+                    lastSessionId = StandardCharsets.UTF_8.newDecoder()
+                        .onMalformedInput(CodingErrorAction.REPORT)
+                        .onUnmappableCharacter(CodingErrorAction.REPORT)
+                        .decode(ByteBuffer.wrap(decoded))
+                        .toString();
+                } catch (IllegalArgumentException ex) {
+                    return monoError(LOGGER, new IllegalArgumentException(
+                        "Invalid continuation token. Expected base64url-encoded UTF-8 bytes after the '|' separator.",
+                        ex));
+                } catch (CharacterCodingException ex) {
+                    return monoError(LOGGER, new IllegalArgumentException(
+                        "Invalid continuation token. Decoded bytes after the '|' separator are not valid UTF-8.", ex));
+                }
+
+                return fetchSessionPage(lastUpdatedTime, nextSkip, lastSessionId, resolvePageSize(pageSize));
+            });
+    }
+
+    /**
+     * Resolves the per-page request size: a positive caller-supplied value (via {@code byPage(int)})
+     * is honored, anything else (null or non-positive) falls back to the default.
+     */
+    private static int resolvePageSize(Integer requested) {
+        return requested != null && requested > 0 ? requested : LIST_SESSIONS_DEFAULT_PAGE_SIZE;
+    }
+
+    private Mono<PagedResponse<String>> fetchSessionPage(OffsetDateTime lastUpdatedTime, int skip, String lastSessionId,
+        int pageSize) {
+        // Wrap each page fetch in a tracing span so distributed traces show one
+        // "ServiceBus.listSessions" span per page, matching the tracing pattern used by
+        // acceptSession/acceptNextSession in this client.
+        final Mono<PagedResponse<String>> pageMono = connectionCacheWrapper.getConnection()
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(
+                managementNode -> managementNode.getMessageSessions(lastUpdatedTime, skip, pageSize, lastSessionId))
+            .map(result -> {
+                final java.util.List<String> sessionIds = result.getSessionIds();
+                // Empty page terminates pagination (matches Track 1's SessionBrowser loop and the
+                // broker contract). Continuation token encodes the server-returned skip and the
+                // last session ID of the page so the next call uses the same cursor Track 1 does.
+                // Base64url-encode the session ID so arbitrary byte sequences (including the '|'
+                // separator) round-trip without escaping.
+                final String continuationToken;
+                if (sessionIds.isEmpty()) {
+                    continuationToken = null;
+                } else {
+                    final String last = sessionIds.get(sessionIds.size() - 1);
+                    final String encoded
+                        = Base64.getUrlEncoder().withoutPadding().encodeToString(last.getBytes(StandardCharsets.UTF_8));
+                    continuationToken = result.getNextSkip() + String.valueOf(CURSOR_SEPARATOR) + encoded;
+                }
+                // Allocate a fresh HttpHeaders per page so callers cannot mutate a shared
+                // instance (HttpHeaders is mutable and PagedResponseBase exposes the reference
+                // via getHeaders()).
+                return new PagedResponseBase<Void, String>(null, 200, new HttpHeaders(), sessionIds, continuationToken,
+                    null);
+            });
+        return tracer.traceMono("ServiceBus.listSessions", pageMono);
     }
 
     @Override
