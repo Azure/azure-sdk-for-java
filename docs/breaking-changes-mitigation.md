@@ -377,14 +377,14 @@ Emitter change. This should only happen to the SDK under TypeSpec migration.
 
 Accept this break. Callers are unlikely to invoke generated validation helpers directly.
 
-## `java.lang.UUID` Changes to `java.util.String`
+## `java.util.UUID` Changes to `java.lang.String`
 
 **Changelog Pattern**:
 
-A property, getter, or setter changes from `String` to `UUID`:
+A property, getter, or setter changes from `UUID` to `String`:
 
 ```md
-* `java.lang.String correlationId()` -> `java.util.UUID correlationId()`
+* `java.util.UUID correlationId()` -> `java.lang.String correlationId()`
 ```
 
 **Spec Pattern**:
@@ -407,4 +407,4 @@ Emitter change during TypeSpec migration.
 
 **Resolution**:
 
-Accept this break. `UUID` is the preferred Java surface for UUID-valued data.
+Accept this break. `String` is the preferred Java surface for UUID-valued data.
