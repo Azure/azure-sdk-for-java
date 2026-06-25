@@ -105,48 +105,182 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         .build();
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstPreferredRegionOnly = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
+        String firstPreferredRegionName = this.firstPreferredRegion.toLowerCase(Locale.ROOT);
+        assertContactedRegionCount(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include only the first preferred region <%s>",
+                firstPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            firstPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the first preferred region <%s>",
+                firstPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasSecondPreferredRegionOnly = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        String secondPreferredRegionName = this.secondPreferredRegion.toLowerCase(Locale.ROOT);
+        assertContactedRegionCount(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include only the second preferred region <%s>",
+                secondPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            secondPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the second preferred region <%s>",
+                secondPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstAndSecondPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
-        assertThat(ctx.getContactedRegionNames()).contains(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
-        assertThat(ctx.getContactedRegionNames()).contains(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        String firstPreferredRegionName = this.firstPreferredRegion.toLowerCase(Locale.ROOT);
+        String secondPreferredRegionName = this.secondPreferredRegion.toLowerCase(Locale.ROOT);
+        assertContactedRegionCount(
+            ctx,
+            2,
+            String.format(
+                "Expected diagnostics context to include the first and second preferred regions <%s> and <%s>",
+                firstPreferredRegionName,
+                secondPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            firstPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the first preferred region <%s>",
+                firstPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            secondPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the second preferred region <%s>",
+                secondPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAtMostTwoPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(2);
+        assertContactedRegionCountAtMost(
+            ctx,
+            2,
+            String.format(
+                "Expected diagnostics context to include at most two preferred regions; "
+                    + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>",
+                this.firstPreferredRegion,
+                this.secondPreferredRegion));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasOnePreferredRegion = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(1);
+        assertContactedRegionCountAtMost(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include at most one preferred region; "
+                    + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>",
+                this.firstPreferredRegion,
+                this.secondPreferredRegion));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAllRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(this.writeRegions.size());
+        assertContactedRegionCount(
+            ctx,
+            this.writeRegions.size(),
+            String.format("Expected diagnostics context to include all write regions <%s>", this.writeRegions));
 
         for (String region : this.writeRegions) {
-            assertThat(ctx.getContactedRegionNames()).contains(region.toLowerCase(Locale.ROOT));
+            String writeRegionName = region.toLowerCase(Locale.ROOT);
+            assertContactedRegionsContain(
+                ctx,
+                writeRegionName,
+                String.format(
+                    "Expected diagnostics context to include write region <%s> from all write regions <%s>",
+                    writeRegionName,
+                    this.writeRegions));
         }
     };
+
+    private void assertContactedRegionCount(
+        CosmosDiagnosticsContext ctx,
+        int expectedCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (contactedRegionNames.size() != expectedCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count <%d>", expectedCount),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private void assertContactedRegionCountAtMost(
+        CosmosDiagnosticsContext ctx,
+        int maxCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (contactedRegionNames.size() > maxCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count at most <%d>", maxCount),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private void assertContactedRegionsContain(
+        CosmosDiagnosticsContext ctx,
+        String expectedRegion,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (!contactedRegionNames.contains(expectedRegion)) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted regions to contain <%s>", expectedRegion),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private Set<String> getContactedRegionNamesOrFail(CosmosDiagnosticsContext ctx, String expectation) {
+        if (ctx == null) {
+            fail(expectation + ". Diagnostics context was null.");
+        }
+
+        Set<String> contactedRegionNames = ctx.getContactedRegionNames();
+        if (contactedRegionNames == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null contacted region names",
+                null,
+                ctx));
+        }
+
+        return contactedRegionNames;
+    }
+
+    private String formatContactedRegionsAssertionMessage(
+        String expectation,
+        String expected,
+        Set<String> contactedRegionNames,
+        CosmosDiagnosticsContext ctx) {
+
+        return String.format(
+            "%s. Expected %s but actual contacted regions were <%s>. "
+                + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>, writeRegions=<%s>, readRegions=<%s>, "
+                + "diagnosticsContext=<%s>",
+            expectation,
+            expected,
+            contactedRegionNames,
+            this.firstPreferredRegion,
+            this.secondPreferredRegion,
+            this.writeRegions,
+            this.readRegions,
+            ctx == null ? null : ctx.toJson());
+    }
 
     Consumer<ResponseWrapper<?>> validateResponseHasSuccess = (responseWrapper) -> {
 
