@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 
 /**
  * A single routine run returned from the run history API.
@@ -33,7 +34,7 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
      * The run status.
      */
     @Generated
-    private BinaryData status;
+    private String status;
 
     /*
      * The AgentExtensions lifecycle phase for the routine attempt.
@@ -129,7 +130,7 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
      * @return the status value.
      */
     @Generated
-    public BinaryData getStatus() {
+    public String getStatus() {
         return this.status;
     }
 
@@ -279,13 +280,17 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (this.status != null) {
-            jsonWriter.writeFieldName("status");
-            this.status.writeTo(jsonWriter);
-        }
+        jsonWriter.writeStringField("status", this.status);
         jsonWriter.writeStringField("phase", this.phase == null ? null : this.phase.toString());
         jsonWriter.writeStringField("trigger_type", this.triggerType == null ? null : this.triggerType.toString());
         jsonWriter.writeStringField("trigger_name", this.triggerName);
+        jsonWriter.writeMapField("trigger_event_payload", this.triggerEventPayload, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("attempt_source",
             this.attemptSource == null ? null : this.attemptSource.toString());
         jsonWriter.writeStringField("action_type", this.actionType == null ? null : this.actionType.toString());
@@ -326,14 +331,17 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
                 if ("id".equals(fieldName)) {
                     deserializedRoutineRun.id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedRoutineRun.status
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedRoutineRun.status = reader.getString();
                 } else if ("phase".equals(fieldName)) {
                     deserializedRoutineRun.phase = RoutineRunPhase.fromString(reader.getString());
                 } else if ("trigger_type".equals(fieldName)) {
                     deserializedRoutineRun.triggerType = RoutineTriggerType.fromString(reader.getString());
                 } else if ("trigger_name".equals(fieldName)) {
                     deserializedRoutineRun.triggerName = reader.getString();
+                } else if ("trigger_event_payload".equals(fieldName)) {
+                    Map<String, BinaryData> triggerEventPayload = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    deserializedRoutineRun.triggerEventPayload = triggerEventPayload;
                 } else if ("attempt_source".equals(fieldName)) {
                     deserializedRoutineRun.attemptSource = RoutineAttemptSource.fromString(reader.getString());
                 } else if ("action_type".equals(fieldName)) {
@@ -496,5 +504,22 @@ public final class RoutineRun implements JsonSerializable<RoutineRun> {
     @Generated
     public Integer getErrorStatusCode() {
         return this.errorStatusCode;
+    }
+
+    /*
+     * The event payload captured from the event that triggered the routine attempt, when available.
+     */
+    @Generated
+    private Map<String, BinaryData> triggerEventPayload;
+
+    /**
+     * Get the triggerEventPayload property: The event payload captured from the event that triggered the routine
+     * attempt, when available.
+     *
+     * @return the triggerEventPayload value.
+     */
+    @Generated
+    public Map<String, BinaryData> getTriggerEventPayload() {
+        return this.triggerEventPayload;
     }
 }

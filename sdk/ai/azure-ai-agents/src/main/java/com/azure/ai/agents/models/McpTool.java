@@ -436,7 +436,6 @@ public final class McpTool extends Tool {
         }
         jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -463,7 +462,6 @@ public final class McpTool extends Tool {
             BinaryData requireApproval = null;
             Boolean deferLoading = null;
             String projectConnectionId = null;
-            Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -491,8 +489,6 @@ public final class McpTool extends Tool {
                     deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else if ("project_connection_id".equals(fieldName)) {
                     projectConnectionId = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -508,7 +504,6 @@ public final class McpTool extends Tool {
             deserializedMcpTool.requireApproval = requireApproval;
             deserializedMcpTool.deferLoading = deferLoading;
             deserializedMcpTool.projectConnectionId = projectConnectionId;
-            deserializedMcpTool.toolConfigs = toolConfigs;
             return deserializedMcpTool;
         });
     }
@@ -533,40 +528,6 @@ public final class McpTool extends Tool {
     @Generated
     public McpTool setConnectorType(McpToolConnectorId connectorType) {
         this.connectorType = connectorType;
-        return this;
-    }
-
-    /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
-    }
-
-    /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the McpTool object itself.
-     */
-    @Generated
-    public McpTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
         return this;
     }
 

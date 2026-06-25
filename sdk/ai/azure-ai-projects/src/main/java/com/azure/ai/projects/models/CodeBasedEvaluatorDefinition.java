@@ -69,7 +69,7 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("init_parameters", getInitParameters(), (writer, element) -> {
+        jsonWriter.writeMapField("init_parameters", getInitializationParameters(), (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
@@ -108,9 +108,9 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("init_parameters".equals(fieldName)) {
-                    Map<String, BinaryData> initParameters = reader.readMap(reader1 -> reader1
+                    Map<String, BinaryData> initializationParameters = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedCodeBasedEvaluatorDefinition.setInitParameters(initParameters);
+                    deserializedCodeBasedEvaluatorDefinition.setInitializationParameters(initializationParameters);
                 } else if ("data_schema".equals(fieldName)) {
                     Map<String, BinaryData> dataSchema = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
@@ -135,16 +135,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
             }
             return deserializedCodeBasedEvaluatorDefinition;
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public CodeBasedEvaluatorDefinition setInitParameters(Map<String, BinaryData> initParameters) {
-        super.setInitParameters(initParameters);
-        return this;
     }
 
     /**
@@ -277,6 +267,16 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public CodeBasedEvaluatorDefinition setBlobUrl(String blobUrl) {
         this.blobUrl = blobUrl;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public CodeBasedEvaluatorDefinition setInitializationParameters(Map<String, BinaryData> initializationParameters) {
+        super.setInitializationParameters(initializationParameters);
         return this;
     }
 }

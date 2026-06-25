@@ -73,12 +73,6 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static final ToolType BROWSER_AUTOMATION_PREVIEW = fromString("browser_automation_preview");
 
     /**
-     * Static value fabric_dataagent_preview for ToolType.
-     */
-    @Generated
-    public static final ToolType FABRIC_DATAAGENT_PREVIEW = fromString("fabric_dataagent_preview");
-
-    /**
      * Static value sharepoint_grounding_preview for ToolType.
      */
     @Generated
@@ -222,4 +216,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType REMINDER_PREVIEW = fromString("reminder_preview");
+
+    /**
+     * Static value fabric_dataagent_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType FABRIC_DATA_AGENT_PREVIEW = fromString("fabric_dataagent_preview");
 }

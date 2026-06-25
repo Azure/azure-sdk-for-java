@@ -78,7 +78,7 @@ public final class PromptBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("init_parameters", getInitParameters(), (writer, element) -> {
+        jsonWriter.writeMapField("init_parameters", getInitializationParameters(), (writer, element) -> {
             if (element == null) {
                 writer.writeNull();
             } else {
@@ -110,7 +110,7 @@ public final class PromptBasedEvaluatorDefinition extends EvaluatorDefinition {
     @Generated
     public static PromptBasedEvaluatorDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, BinaryData> initParameters = null;
+            Map<String, BinaryData> initializationParameters = null;
             Map<String, BinaryData> dataSchema = null;
             Map<String, EvaluatorMetric> metrics = null;
             String promptText = null;
@@ -119,7 +119,7 @@ public final class PromptBasedEvaluatorDefinition extends EvaluatorDefinition {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("init_parameters".equals(fieldName)) {
-                    initParameters = reader.readMap(reader1 -> reader1
+                    initializationParameters = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("data_schema".equals(fieldName)) {
                     dataSchema = reader.readMap(reader1 -> reader1
@@ -136,7 +136,7 @@ public final class PromptBasedEvaluatorDefinition extends EvaluatorDefinition {
             }
             PromptBasedEvaluatorDefinition deserializedPromptBasedEvaluatorDefinition
                 = new PromptBasedEvaluatorDefinition(promptText);
-            deserializedPromptBasedEvaluatorDefinition.setInitParameters(initParameters);
+            deserializedPromptBasedEvaluatorDefinition.setInitializationParameters(initializationParameters);
             deserializedPromptBasedEvaluatorDefinition.setDataSchema(dataSchema);
             deserializedPromptBasedEvaluatorDefinition.setMetrics(metrics);
             deserializedPromptBasedEvaluatorDefinition.type = type;
@@ -149,8 +149,8 @@ public final class PromptBasedEvaluatorDefinition extends EvaluatorDefinition {
      */
     @Generated
     @Override
-    public PromptBasedEvaluatorDefinition setInitParameters(Map<String, BinaryData> initParameters) {
-        super.setInitParameters(initParameters);
+    public PromptBasedEvaluatorDefinition setDataSchema(Map<String, BinaryData> dataSchema) {
+        super.setDataSchema(dataSchema);
         return this;
     }
 
@@ -159,8 +159,9 @@ public final class PromptBasedEvaluatorDefinition extends EvaluatorDefinition {
      */
     @Generated
     @Override
-    public PromptBasedEvaluatorDefinition setDataSchema(Map<String, BinaryData> dataSchema) {
-        super.setDataSchema(dataSchema);
+    public PromptBasedEvaluatorDefinition
+        setInitializationParameters(Map<String, BinaryData> initializationParameters) {
+        super.setInitializationParameters(initializationParameters);
         return this;
     }
 }

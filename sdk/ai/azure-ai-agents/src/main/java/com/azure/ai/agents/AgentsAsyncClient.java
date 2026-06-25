@@ -116,12 +116,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -522,12 +534,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -599,12 +623,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -720,12 +756,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -875,12 +923,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -993,12 +1053,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1572,12 +1644,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1691,8 +1775,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -2001,8 +2086,8 @@ public final class AgentsAsyncClient {
      * returned.
      * @param agentId Filter by agent ID in the format `name:version`. If provided, only items associated with the
      * specified agent ID will be returned.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
+     * @param userIdentity Opaque per-user identity string used to scope endpoint-scoped data to a specific end user.
+     * The caller must have the `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2014,7 +2099,7 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Conversation> listAgentConversations(Integer limit, PageOrder order, String after, String before,
-        String agentName, String agentId, String userIsolationKey) {
+        String agentName, String agentId, String userIdentity) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -2035,8 +2120,8 @@ public final class AgentsAsyncClient {
         if (agentId != null) {
             requestOptions.addQueryParam("agent_id", agentId, false);
         }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        if (userIdentity != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-identity"), userIdentity);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
@@ -2210,12 +2295,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2320,12 +2417,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2395,12 +2504,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2472,12 +2593,24 @@ public final class AgentsAsyncClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2683,14 +2816,6 @@ public final class AgentsAsyncClient {
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      *
      * <pre>
@@ -2742,14 +2867,6 @@ public final class AgentsAsyncClient {
      * Get a session
      *
      * Retrieves the details of a hosted agent session by agent name and session identifier.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -2791,14 +2908,6 @@ public final class AgentsAsyncClient {
      *
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -2861,14 +2970,6 @@ public final class AgentsAsyncClient {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -2967,14 +3068,6 @@ public final class AgentsAsyncClient {
      *
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      *
      * <pre>
@@ -3070,14 +3163,6 @@ public final class AgentsAsyncClient {
      *
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -3170,14 +3255,6 @@ public final class AgentsAsyncClient {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -3220,14 +3297,6 @@ public final class AgentsAsyncClient {
      * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -3506,44 +3575,6 @@ public final class AgentsAsyncClient {
      *
      * @param agentName The name of the agent to create a session for.
      * @param versionIndicator Determines which agent version backs the session.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
-     * endpoint. Auto-generated if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> createSession(String agentName, VersionIndicator versionIndicator,
-        String userIsolationKey, String agentSessionId) {
-        // Generated convenience method for createSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj
-            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Create a session
-     *
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param versionIndicator Determines which agent version backs the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3561,38 +3592,6 @@ public final class AgentsAsyncClient {
         CreateSessionRequest createSessionRequestObj = new CreateSessionRequest(versionIndicator);
         BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
         return createSessionWithResponse(agentName, createSessionRequest, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Get a session
-     *
-     * Retrieves the details of a hosted agent session by agent name and session identifier.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a session
-     *
-     * Retrieves the details of a hosted agent session by agent name and session identifier on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentSessionResource> getSession(String agentName, String sessionId, String userIsolationKey) {
-        // Generated convenience method for getSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return getSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
     }
 
@@ -3621,35 +3620,6 @@ public final class AgentsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Delete a session
-     *
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSession(String agentName, String sessionId, String userIsolationKey) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return deleteSessionWithResponse(agentName, sessionId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3705,69 +3675,6 @@ public final class AgentsAsyncClient {
      * Returns a paged collection of sessions associated with the specified agent endpoint.
      *
      * @param agentName The name of the agent.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AgentSessionResource> listSessions(String agentName, String userIsolationKey, Integer limit,
-        PageOrder order, String after, String before) {
-        // Generated convenience method for listSessions
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, AgentSessionResource>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * List sessions for an agent
-     *
-     * Returns a paged collection of sessions associated with the specified agent endpoint.
-     *
-     * @param agentName The name of the agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3795,40 +3702,6 @@ public final class AgentsAsyncClient {
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Upload a session file
-     *
-     * Uploads binary file content to the specified path in the session sandbox.
-     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The destination file path within the sandbox, relative to the session home directory.
-     * @param content The content parameter.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from uploading a file to a session sandbox on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SessionFileWriteResult> uploadSessionFile(String agentName, String agentSessionId, String path,
-        BinaryData content, String userIsolationKey) {
-        // Generated convenience method for uploadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SessionFileWriteResult.class));
     }
 
     /**
@@ -3869,71 +3742,6 @@ public final class AgentsAsyncClient {
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> downloadSessionFile(String agentName, String agentSessionId, String path,
-        String userIsolationKey) {
-        // Generated convenience method for downloadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Download a session file
-     *
-     * Downloads the file at the specified sandbox path as a binary stream.
-     * The path is resolved relative to the session home directory.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The file path to download from the sandbox, relative to the session home directory.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param filePath destination file for the download.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadSessionFile(String agentName, String agentSessionId, String path, String userIsolationKey,
-        Path filePath) {
-        // Generated convenience method for downloadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .flatMap(content -> FileUtils.writeToFileAsync(content, filePath));
-    }
-
-    /**
-     * Download a session file
-     *
-     * Downloads the file at the specified sandbox path as a binary stream.
-     * The path is resolved relative to the session home directory.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The file path to download from the sandbox, relative to the session home directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3949,77 +3757,6 @@ public final class AgentsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions)
             .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * List session files
-     *
-     * Returns files and directories at the specified path in the session sandbox.
-     * The response includes only the immediate children of the target directory and defaults to the session home
-     * directory when no path is supplied.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
-     * not provided.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId, String path,
-        String userIsolationKey, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listSessionFiles
-        RequestOptions requestOptions = new RequestOptions();
-        if (path != null) {
-            requestOptions.addQueryParam("path", path, false);
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listSessionFiles(agentName, agentSessionId, requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, SessionDirectoryEntry>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryEntry.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
     }
 
     /**
@@ -4058,42 +3795,6 @@ public final class AgentsAsyncClient {
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
         });
-    }
-
-    /**
-     * Delete a session file
-     *
-     * Deletes the specified file or directory from the session sandbox.
-     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The file or directory path to delete, relative to the session home directory.
-     * @param recursive Whether to recursively delete directory contents. The service defaults to `false` if a value is
-     * not specified by the caller.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSessionFile(String agentName, String agentSessionId, String path, Boolean recursive,
-        String userIsolationKey) {
-        // Generated convenience method for deleteSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4240,5 +3941,192 @@ public final class AgentsAsyncClient {
         // Generated convenience method for disableAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return disableAgentWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create a session
+     *
+     * Creates a new session for an agent endpoint.
+     * The endpoint resolves the backing agent version from `version_indicator` and
+     * enforces session ownership using the provided isolation key for session-mutating operations.
+     *
+     * @param agentName The name of the agent to create a session for.
+     * @param versionIndicator Determines which agent version backs the session.
+     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
+     * endpoint. Auto-generated if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentSessionResource> createSession(String agentName, VersionIndicator versionIndicator,
+        String agentSessionId) {
+        // Generated convenience method for createSessionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateSessionRequest createSessionRequestObj
+            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
+        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
+        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class));
+    }
+
+    /**
+     * List sessions for an agent
+     *
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
+     *
+     * @param agentName The name of the agent.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AgentSessionResource> listSessions(String agentName, Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listSessions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listSessions(agentName, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, AgentSessionResource>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(AgentSessionResource.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * List session files
+     *
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
+     * not provided.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId, String path,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listSessionFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (path != null) {
+            requestOptions.addQueryParam("path", path, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listSessionFiles(agentName, agentSessionId, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, SessionDirectoryEntry>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(SessionDirectoryEntry.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Delete a session file
+     *
+     * Deletes the specified file or directory from the session sandbox.
+     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file or directory path to delete, relative to the session home directory.
+     * @param recursive Whether to recursively delete directory contents. The service defaults to `false` if a value is
+     * not specified by the caller.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSessionFile(String agentName, String agentSessionId, String path, Boolean recursive) {
+        // Generated convenience method for deleteSessionFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        return deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

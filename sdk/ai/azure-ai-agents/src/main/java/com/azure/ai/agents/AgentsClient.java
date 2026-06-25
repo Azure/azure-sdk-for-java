@@ -112,12 +112,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -490,12 +502,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -567,12 +591,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -688,12 +724,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -843,12 +891,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -960,12 +1020,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1507,12 +1579,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1625,8 +1709,9 @@ public final class AgentsClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -1917,8 +2002,8 @@ public final class AgentsClient {
      * returned.
      * @param agentId Filter by agent ID in the format `name:version`. If provided, only items associated with the
      * specified agent ID will be returned.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
+     * @param userIdentity Opaque per-user identity string used to scope endpoint-scoped data to a specific end user.
+     * The caller must have the `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1930,7 +2015,7 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Conversation> listAgentConversations(Integer limit, PageOrder order, String after,
-        String before, String agentName, String agentId, String userIsolationKey) {
+        String before, String agentName, String agentId, String userIdentity) {
         // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -1951,8 +2036,8 @@ public final class AgentsClient {
         if (agentId != null) {
             requestOptions.addQueryParam("agent_id", agentId, false);
         }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
+        if (userIdentity != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-identity"), userIdentity);
         }
         return serviceClient.listAgentConversations(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
@@ -2104,12 +2189,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2213,12 +2310,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2287,12 +2396,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2364,12 +2485,24 @@ public final class AgentsClient {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2576,14 +2709,6 @@ public final class AgentsClient {
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      *
      * <pre>
@@ -2635,14 +2760,6 @@ public final class AgentsClient {
      * Get a session
      *
      * Retrieves the details of a hosted agent session by agent name and session identifier.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -2683,14 +2800,6 @@ public final class AgentsClient {
      *
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -2751,14 +2860,6 @@ public final class AgentsClient {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -2856,14 +2957,6 @@ public final class AgentsClient {
      *
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      *
      * <pre>
@@ -2957,14 +3050,6 @@ public final class AgentsClient {
      *
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -3060,14 +3145,6 @@ public final class AgentsClient {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      *
      * <pre>
@@ -3110,14 +3187,6 @@ public final class AgentsClient {
      * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -3390,43 +3459,6 @@ public final class AgentsClient {
      *
      * @param agentName The name of the agent to create a session for.
      * @param versionIndicator Determines which agent version backs the session.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
-     * endpoint. Auto-generated if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentSessionResource createSession(String agentName, VersionIndicator versionIndicator,
-        String userIsolationKey, String agentSessionId) {
-        // Generated convenience method for createSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateSessionRequest createSessionRequestObj
-            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
-        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).getValue()
-            .toObject(AgentSessionResource.class);
-    }
-
-    /**
-     * Create a session
-     *
-     * Creates a new session for an agent endpoint.
-     * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
-     *
-     * @param agentName The name of the agent to create a session for.
-     * @param versionIndicator Determines which agent version backs the session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3443,37 +3475,6 @@ public final class AgentsClient {
         CreateSessionRequest createSessionRequestObj = new CreateSessionRequest(versionIndicator);
         BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
         return createSessionWithResponse(agentName, createSessionRequest, requestOptions).getValue()
-            .toObject(AgentSessionResource.class);
-    }
-
-    /**
-     * Get a session
-     *
-     * Retrieves the details of a hosted agent session by agent name and session identifier.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a session
-     *
-     * Retrieves the details of a hosted agent session by agent name and session identifier.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentSessionResource getSession(String agentName, String sessionId, String userIsolationKey) {
-        // Generated convenience method for getSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return getSessionWithResponse(agentName, sessionId, requestOptions).getValue()
             .toObject(AgentSessionResource.class);
     }
 
@@ -3501,34 +3502,6 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return getSessionWithResponse(agentName, sessionId, requestOptions).getValue()
             .toObject(AgentSessionResource.class);
-    }
-
-    /**
-     * Delete a session
-     *
-     * Deletes a session synchronously.
-     * Returns 204 No Content when the session is deleted or does not exist.
-     *
-     * @param agentName The name of the agent.
-     * @param sessionId The session identifier.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSession(String agentName, String sessionId, String userIsolationKey) {
-        // Generated convenience method for deleteSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        deleteSessionWithResponse(agentName, sessionId, requestOptions).getValue();
     }
 
     /**
@@ -3582,57 +3555,6 @@ public final class AgentsClient {
      * Returns a paged collection of sessions associated with the specified agent endpoint.
      *
      * @param agentName The name of the agent.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentSessionResource> listSessions(String agentName, String userIsolationKey, Integer limit,
-        PageOrder order, String after, String before) {
-        // Generated convenience method for listSessions
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listSessions(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * List sessions for an agent
-     *
-     * Returns a paged collection of sessions associated with the specified agent endpoint.
-     *
-     * @param agentName The name of the agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3648,71 +3570,6 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listSessions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
-    }
-
-    /**
-     * Upload a session file
-     *
-     * Uploads binary file content to the specified path in the session sandbox.
-     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The destination file path within the sandbox, relative to the session home directory.
-     * @param content The content parameter.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from uploading a file to a session sandbox.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path,
-        BinaryData content, String userIsolationKey) {
-        // Generated convenience method for uploadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return uploadSessionFileWithResponse(agentName, agentSessionId, path, content, requestOptions).getValue()
-            .toObject(SessionFileWriteResult.class);
-    }
-
-    /**
-     * Upload a session file
-     *
-     * Uploads binary file content to the specified path in the session sandbox.
-     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The destination file path within the sandbox, relative to the session home directory.
-     * @param filePath path to file on disc.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from uploading a file to a session sandbox.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SessionFileWriteResult uploadSessionFile(String agentName, String agentSessionId, String path, Path filePath,
-        String userIsolationKey) {
-        // Generated convenience method for uploadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return uploadSessionFileWithResponse(agentName, agentSessionId, path, BinaryData.fromFile(filePath),
-            requestOptions).getValue().toObject(SessionFileWriteResult.class);
     }
 
     /**
@@ -3752,70 +3609,6 @@ public final class AgentsClient {
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData downloadSessionFile(String agentName, String agentSessionId, String path,
-        String userIsolationKey) {
-        // Generated convenience method for downloadSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
-    }
-
-    /**
-     * Download a session file
-     *
-     * Downloads the file at the specified sandbox path as a binary stream.
-     * The path is resolved relative to the session home directory.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The file path to download from the sandbox, relative to the session home directory.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param filePath path to file on disc.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @throws IOException file write operation failure.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadSessionFile(String agentName, String agentSessionId, String path, String userIsolationKey,
-        Path filePath) throws IOException {
-        RequestOptions requestOptions = new RequestOptions();
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-
-        Response<BinaryData> response
-            = downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
-        FileUtils.writeToFile(response, filePath);
-    }
-
-    /**
-     * Download a session file
-     *
-     * Downloads the file at the specified sandbox path as a binary stream.
-     * The path is resolved relative to the session home directory.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The file path to download from the sandbox, relative to the session home directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3830,65 +3623,6 @@ public final class AgentsClient {
         // Generated convenience method for downloadSessionFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
-    }
-
-    /**
-     * List session files
-     *
-     * Returns files and directories at the specified path in the session sandbox.
-     * The response includes only the immediate children of the target directory and defaults to the session home
-     * directory when no path is supplied.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
-     * not provided.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId, String path,
-        String userIsolationKey, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listSessionFiles
-        RequestOptions requestOptions = new RequestOptions();
-        if (path != null) {
-            requestOptions.addQueryParam("path", path, false);
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listSessionFiles(agentName, agentSessionId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
     }
 
     /**
@@ -3915,41 +3649,6 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listSessionFiles(agentName, agentSessionId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
-    }
-
-    /**
-     * Delete a session file
-     *
-     * Deletes the specified file or directory from the session sandbox.
-     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
-     *
-     * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
-     * @param path The file or directory path to delete, relative to the session home directory.
-     * @param recursive Whether to recursively delete directory contents. The service defaults to `false` if a value is
-     * not specified by the caller.
-     * @param userIsolationKey Opaque per-user isolation key used to scope endpoint-scoped data (responses,
-     * conversations, sessions) to a specific end user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSessionFile(String agentName, String agentSessionId, String path, Boolean recursive,
-        String userIsolationKey) {
-        // Generated convenience method for deleteSessionFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        if (userIsolationKey != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-user-isolation-key"), userIsolationKey);
-        }
-        deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
     }
 
     /**
@@ -4094,5 +3793,166 @@ public final class AgentsClient {
         // Generated convenience method for disableAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         disableAgentWithResponse(agentName, requestOptions).getValue();
+    }
+
+    /**
+     * Create a session
+     *
+     * Creates a new session for an agent endpoint.
+     * The endpoint resolves the backing agent version from `version_indicator` and
+     * enforces session ownership using the provided isolation key for session-mutating operations.
+     *
+     * @param agentName The name of the agent to create a session for.
+     * @param versionIndicator Determines which agent version backs the session.
+     * @param agentSessionId Optional caller-provided session ID. If specified, it must be unique within the agent
+     * endpoint. Auto-generated if omitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentSessionResource createSession(String agentName, VersionIndicator versionIndicator,
+        String agentSessionId) {
+        // Generated convenience method for createSessionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateSessionRequest createSessionRequestObj
+            = new CreateSessionRequest(versionIndicator).setAgentSessionId(agentSessionId);
+        BinaryData createSessionRequest = BinaryData.fromObject(createSessionRequestObj);
+        return createSessionWithResponse(agentName, createSessionRequest, requestOptions).getValue()
+            .toObject(AgentSessionResource.class);
+    }
+
+    /**
+     * List sessions for an agent
+     *
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
+     *
+     * @param agentName The name of the agent.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentSessionResource> listSessions(String agentName, Integer limit, PageOrder order,
+        String after, String before) {
+        // Generated convenience method for listSessions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listSessions(agentName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentSessionResource.class));
+    }
+
+    /**
+     * List session files
+     *
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The directory path to list, relative to the session home directory. Defaults to the home directory if
+     * not provided.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SessionDirectoryEntry> listSessionFiles(String agentName, String agentSessionId, String path,
+        Integer limit, PageOrder order, String after, String before) {
+        // Generated convenience method for listSessionFiles
+        RequestOptions requestOptions = new RequestOptions();
+        if (path != null) {
+            requestOptions.addQueryParam("path", path, false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listSessionFiles(agentName, agentSessionId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SessionDirectoryEntry.class));
+    }
+
+    /**
+     * Delete a session file
+     *
+     * Deletes the specified file or directory from the session sandbox.
+     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file or directory path to delete, relative to the session home directory.
+     * @param recursive Whether to recursively delete directory contents. The service defaults to `false` if a value is
+     * not specified by the caller.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSessionFile(String agentName, String agentSessionId, String path, Boolean recursive) {
+        // Generated convenience method for deleteSessionFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
     }
 }

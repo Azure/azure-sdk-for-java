@@ -54,12 +54,6 @@ public final class AttackStrategy extends ExpandableStringEnum<AttackStrategy> {
     public static final AttackStrategy ATBASH = fromString("atbash");
 
     /**
-     * Encodes binary data into a text format using Base64, commonly used for data transmission.
-     */
-    @Generated
-    public static final AttackStrategy BASE64 = fromString("base64");
-
-    /**
      * Converts text into binary code, representing data in a series of 0s and 1s.
      */
     @Generated
@@ -130,12 +124,6 @@ public final class AttackStrategy extends ExpandableStringEnum<AttackStrategy> {
      */
     @Generated
     public static final AttackStrategy LEETSPEAK = fromString("leetspeak");
-
-    /**
-     * Applies the ROT13 cipher, a simple substitution cipher that shifts characters by 13 positions.
-     */
-    @Generated
-    public static final AttackStrategy ROT13 = fromString("rot13");
 
     /**
      * Encodes text into Morse code, using dots and dashes to represent characters.
@@ -215,4 +203,16 @@ public final class AttackStrategy extends ExpandableStringEnum<AttackStrategy> {
      */
     @Generated
     public static final AttackStrategy ANSI_ATTACK = fromString("ansi_attack");
+
+    /**
+     * Encodes binary data into a text format using Base64, commonly used for data transmission.
+     */
+    @Generated
+    public static final AttackStrategy BASE_64 = fromString("base64");
+
+    /**
+     * Applies the ROT13 cipher, a simple substitution cipher that shifts characters by 13 positions.
+     */
+    @Generated
+    public static final AttackStrategy ROT_13 = fromString("rot13");
 }

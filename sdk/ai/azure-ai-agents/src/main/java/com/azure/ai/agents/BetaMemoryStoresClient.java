@@ -1238,6 +1238,75 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
+     * Search memories
+     *
+     * Searches the specified memory store for memories relevant to the provided conversation context.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     *     items (Optional): [
+     *         BinaryData (Optional)
+     *     ]
+     *     previous_search_id: String (Optional)
+     *     options (Optional): {
+     *         max_memories: Integer (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     search_id: String (Required)
+     *     memories (Required): [
+     *          (Required){
+     *             memory_item (Required): {
+     *                 kind: String(user_profile/chat_summary/procedural) (Required)
+     *                 memory_id: String (Required)
+     *                 updated_at: long (Required)
+     *                 scope: String (Required)
+     *                 content: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         embedding_tokens: int (Required)
+     *         input_tokens: long (Required)
+     *         input_tokens_details (Required): {
+     *             cached_tokens: long (Required)
+     *         }
+     *         output_tokens: long (Required)
+     *         output_tokens_details (Required): {
+     *             reasoning_tokens: long (Required)
+     *         }
+     *         total_tokens: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store to search.
+     * @param searchMemoriesRequest The searchMemoriesRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return memory search response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> searchMemoriesWithResponse(String name, BinaryData searchMemoriesRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalSearchMemoriesWithResponse(name, searchMemoriesRequest, requestOptions);
+    }
+
+    /**
      * Update memories
      *
      * Starts an update that writes conversation memories into the specified memory store.
