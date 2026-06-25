@@ -13,7 +13,6 @@ import com.openai.models.ComparisonFilter;
 import com.openai.models.CompoundFilter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * File search
@@ -117,9 +116,6 @@ public final class FileSearchTool extends Tool {
             jsonWriter.writeFieldName("filters");
             this.filters.writeTo(jsonWriter);
         }
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -140,9 +136,6 @@ public final class FileSearchTool extends Tool {
             Long maxResults = null;
             RankingOptions rankingOptions = null;
             BinaryData filters = null;
-            String name = null;
-            String description = null;
-            Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -156,12 +149,6 @@ public final class FileSearchTool extends Tool {
                     rankingOptions = RankingOptions.fromJson(reader);
                 } else if ("filters".equals(fieldName)) {
                     filters = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -171,9 +158,6 @@ public final class FileSearchTool extends Tool {
             deserializedFileSearchTool.maxResults = maxResults;
             deserializedFileSearchTool.rankingOptions = rankingOptions;
             deserializedFileSearchTool.filters = filters;
-            deserializedFileSearchTool.name = name;
-            deserializedFileSearchTool.description = description;
-            deserializedFileSearchTool.toolConfigs = toolConfigs;
             return deserializedFileSearchTool;
         });
     }
@@ -318,95 +302,5 @@ public final class FileSearchTool extends Tool {
             }
         }
         return null;
-    }
-
-    /*
-     * Optional user-defined name for this tool or configuration.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Optional user-defined description for this tool or configuration.
-     */
-    @Generated
-    private String description;
-
-    /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
-     *
-     * @param name the name value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
-     *
-     * @return the description value.
-     */
-    @Generated
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
-     *
-     * @param description the description value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
-    }
-
-    /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
-        return this;
     }
 }

@@ -262,7 +262,15 @@ public final class ToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -294,7 +302,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -345,7 +361,15 @@ public final class ToolboxesImpl {
      *     }
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -377,7 +401,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -717,7 +749,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -793,7 +833,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -862,7 +910,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -935,7 +991,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -984,7 +1048,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [
@@ -1037,7 +1109,15 @@ public final class ToolboxesImpl {
      *     created_at: long (Required)
      *     tools (Required): [
      *          (Required){
-     *             type: String(function/file_search/computer/computer_use_preview/web_search/mcp/code_interpreter/image_generation/local_shell/shell/custom/namespace/tool_search/web_search_preview/apply_patch/a2a_preview/bing_custom_search_preview/browser_automation_preview/fabric_dataagent_preview/sharepoint_grounding_preview/memory_search_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview/reminder_preview/azure_ai_search/azure_function/bing_grounding/capture_structured_outputs/openapi) (Required)
+     *             type: String(code_interpreter/file_search/web_search/mcp/azure_ai_search/openapi/a2a_preview/browser_automation_preview/reminder_preview/work_iq_preview/fabric_iq_preview/toolbox_search_preview) (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             tool_configs (Optional): {
+     *                 String (Required): {
+     *                     pin: Boolean (Optional)
+     *                     additional_search_text: String (Optional)
+     *                 }
+     *             }
      *         }
      *     ]
      *     skills (Optional): [

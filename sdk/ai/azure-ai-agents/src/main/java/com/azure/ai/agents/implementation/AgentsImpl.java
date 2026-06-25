@@ -796,12 +796,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -898,12 +910,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -981,12 +1005,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1058,12 +1094,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1142,12 +1190,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1219,12 +1279,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1324,12 +1396,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1435,12 +1519,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1563,12 +1659,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1689,12 +1797,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1796,12 +1916,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1908,12 +2040,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2033,12 +2177,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2153,12 +2309,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2273,12 +2441,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2394,12 +2574,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2604,12 +2796,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2728,12 +2932,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2846,12 +3062,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2968,12 +3196,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -3849,12 +4089,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -3926,12 +4178,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -3998,12 +4262,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -4075,12 +4351,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -4437,14 +4725,6 @@ public final class AgentsImpl {
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4501,14 +4781,6 @@ public final class AgentsImpl {
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4563,14 +4835,6 @@ public final class AgentsImpl {
      * Get a session
      * 
      * Retrieves the details of a hosted agent session by agent name and session identifier.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4612,14 +4876,6 @@ public final class AgentsImpl {
      * Get a session
      * 
      * Retrieves the details of a hosted agent session by agent name and session identifier.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4661,14 +4917,6 @@ public final class AgentsImpl {
      * 
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -4691,14 +4939,6 @@ public final class AgentsImpl {
      * 
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -4780,14 +5020,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4849,14 +5081,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4911,14 +5135,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4977,14 +5193,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5144,14 +5352,6 @@ public final class AgentsImpl {
      * 
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -5198,14 +5398,6 @@ public final class AgentsImpl {
      * 
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -5250,14 +5442,6 @@ public final class AgentsImpl {
      * 
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5289,14 +5473,6 @@ public final class AgentsImpl {
      * 
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5351,14 +5527,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5420,14 +5588,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5484,14 +5644,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5552,14 +5704,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5601,14 +5745,6 @@ public final class AgentsImpl {
      * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -5640,14 +5776,6 @@ public final class AgentsImpl {
      * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
@@ -5698,8 +5826,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -5769,8 +5898,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -5834,8 +5964,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -5903,8 +6034,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
