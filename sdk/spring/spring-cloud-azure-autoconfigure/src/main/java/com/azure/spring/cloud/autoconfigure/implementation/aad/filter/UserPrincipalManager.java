@@ -233,7 +233,9 @@ public class UserPrincipalManager {
                         if (!isMultiTenantValue(trimmedTenantId)) {
                             Object tidClaim = claimsSet.getClaim(AadJwtClaimNames.TID);
                             String tokenTid = tidClaim != null ? tidClaim.toString() : null;
-                            String normalizedTokenTid = tokenTid != null ? tokenTid.trim().toLowerCase(java.util.Locale.ROOT) : null;
+                            String normalizedTokenTid = tokenTid != null
+                                ? tokenTid.trim().toLowerCase(java.util.Locale.ROOT)
+                                : null;
                             if (!trimmedTenantId.equals(normalizedTokenTid)) {
                                 throw new BadJWTException("Invalid token tenant. Token tid claim '" + tokenTid
                                     + "' does not match the configured tenant '" + configuredTenantId + "'.");
