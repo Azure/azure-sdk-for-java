@@ -149,22 +149,22 @@ class UserPrincipalManagerTests {
 
     @Test
     void tenantIdValidationSkippedWhenNoTenantConfigured() throws Exception {
-        // Setup: create UserPrincipalManager WITHOUT configured tenant ID
+        // Setup: create UserPrincipalManager with default multi-tenant value "common"
         AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
         AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
-        Mockito.when(profileProperties.getTenantId()).thenReturn(null);  // No tenant configured
+        Mockito.when(profileProperties.getTenantId()).thenReturn("common");  // Default when not configured
         
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         setAadAuthenticationProperties(userPrincipalManager, properties);
         
-        // Create JWT claims set with any tenant ID - should be accepted
+        // Create JWT claims set with any tenant ID - should be accepted since "common" is multi-tenant
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .issuer("https://sts.windows.net/any-tenant")
                 .claim(AadJwtClaimNames.TID, "any-tenant")
                 .build();
         
-        // Execute: verification should NOT throw exception when tenant not configured
+        // Execute: verification should NOT throw exception for multi-tenant config
         ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
         assertThatCode(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
             .doesNotThrowAnyException();
@@ -172,11 +172,11 @@ class UserPrincipalManagerTests {
 
     @Test
     void tenantIdValidationSkippedWhenTenantPropertyIsEmpty() throws Exception {
-        // Setup: create UserPrincipalManager with empty string tenant ID
+        // Setup: create UserPrincipalManager with multi-tenant value "organizations"
         AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
         AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
-        Mockito.when(profileProperties.getTenantId()).thenReturn("");  // Empty tenant
+        Mockito.when(profileProperties.getTenantId()).thenReturn("organizations");  // Multi-tenant setting
         
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         setAadAuthenticationProperties(userPrincipalManager, properties);
@@ -187,7 +187,7 @@ class UserPrincipalManagerTests {
                 .claim(AadJwtClaimNames.TID, "any-tenant")
                 .build();
         
-        // Execute: verification should NOT throw exception when tenant is empty string
+        // Execute: verification should NOT throw exception for multi-tenant config
         ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
         assertThatCode(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
             .doesNotThrowAnyException();
@@ -220,12 +220,12 @@ class UserPrincipalManagerTests {
      */
     @SuppressWarnings("unchecked")
     private ConfigurableJWTProcessor<SecurityContext> getValidator(UserPrincipalManager manager,
-            Object algorithm) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+            JWSAlgorithm algorithm) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method method = UserPrincipalManager.class.getDeclaredMethod("getValidator",
                 JWSAlgorithm.class);
         method.setAccessible(true);
-        // Use RS256 as default algorithm
-        JWSAlgorithm alg = JWSAlgorithm.RS256;
+        // Use RS256 as default algorithm if null
+        JWSAlgorithm alg = (algorithm != null) ? algorithm : JWSAlgorithm.RS256;
         return (ConfigurableJWTProcessor<SecurityContext>) method.invoke(manager, alg);
     }
 

@@ -224,20 +224,35 @@ public class UserPrincipalManager {
                             + " does not match either the client-id or AppIdUri.");
                     }
                 }
-                // Validate tenant ID claim if tenant is configured
+                // Validate tenant ID claim if tenant is configured (skip for multi-tenant values)
                 if (aadAuthenticationProperties != null) {
                     String configuredTenantId = aadAuthenticationProperties.getProfile().getTenantId();
                     if (StringUtils.hasText(configuredTenantId)) {
-                        String tokenTid = (String) claimsSet.getClaim(AadJwtClaimNames.TID);
-                        if (!configuredTenantId.equals(tokenTid)) {
-                            throw new BadJWTException("Invalid token tenant. Token tid claim '" + tokenTid
-                                + "' does not match the configured tenant '" + configuredTenantId + "'.");
+                        // Skip validation for multi-tenant values: common, organizations, consumers
+                        String trimmedTenantId = configuredTenantId.trim().toLowerCase();
+                        if (!isMultiTenantValue(trimmedTenantId)) {
+                            String tokenTid = (String) claimsSet.getClaim(AadJwtClaimNames.TID);
+                            String normalizedTokenTid = tokenTid != null ? tokenTid.trim().toLowerCase() : null;
+                            if (!trimmedTenantId.equals(normalizedTokenTid)) {
+                                throw new BadJWTException("Invalid token tenant. Token tid claim '" + tokenTid
+                                    + "' does not match the configured tenant '" + configuredTenantId + "'.");
+                            }
+                            LOGGER.debug("Token tenant validated: [{}]", tokenTid);
                         }
-                        LOGGER.debug("Token tenant validated: [{}]", tokenTid);
                     }
                 }
             }
         });
         return jwtProcessor;
+    }
+
+    /**
+     * Checks if the given tenant ID represents a multi-tenant configuration.
+     * Multi-tenant values (common, organizations, consumers) should skip tenant ID validation.
+     */
+    private boolean isMultiTenantValue(String normalizedTenantId) {
+        return "common".equals(normalizedTenantId)
+            || "organizations".equals(normalizedTenantId)
+            || "consumers".equals(normalizedTenantId);
     }
 }
