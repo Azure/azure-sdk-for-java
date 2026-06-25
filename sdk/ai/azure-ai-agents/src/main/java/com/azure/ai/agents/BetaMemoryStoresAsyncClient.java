@@ -1041,12 +1041,10 @@ public final class BetaMemoryStoresAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteMemoryWithResponse(String name, String memoryId,
-                                                                RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
         return internalDeleteMemoryWithResponse(name, memoryId, requestOptions)
             .map(response -> new SimpleResponse<>(response, null));
     }
-
 
     /**
      * Delete a memory item
@@ -1070,11 +1068,10 @@ public final class BetaMemoryStoresAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response for deleting a memory item from a memory store along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a {@link Mono} that completes when the memory item has been deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> internalDeleteMemoryWithResponse(String name, String memoryId) {
+    public Mono<Void> deleteMemory(String name, String memoryId) {
         RequestOptions requestOptions = new RequestOptions();
         return deleteMemoryWithResponse(name, memoryId, requestOptions).flatMap(FluxUtil::toMono);
     }

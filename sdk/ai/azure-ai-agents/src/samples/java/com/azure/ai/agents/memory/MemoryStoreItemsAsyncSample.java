@@ -14,7 +14,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 /**
- * Sample demonstrating CRUD operations on memory store items (create, update, retrieve, list) using the
+ * Sample demonstrating CRUD operations on memory store items (create, update, retrieve, list, delete) using the
  * asynchronous {@link BetaMemoryStoresAsyncClient}.
  *
  * <p>Memory stores are a preview feature. Before running, set the following environment variables:</p>
@@ -23,9 +23,6 @@ import reactor.core.publisher.Mono;
  *   <li>{@code AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME} - a chat completion model deployment name.</li>
  *   <li>{@code AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME} - an embedding model deployment name.</li>
  * </ul>
- *
- * <p>Note: the SDK does not currently expose a per-item delete operation, so the sample cleans up by
- * deleting the entire memory store, which removes its items.</p>
  */
 public class MemoryStoreItemsAsyncSample {
     private static final String MEMORY_STORE_NAME = "memory_items_store_java";
@@ -78,6 +75,12 @@ public class MemoryStoreItemsAsyncSample {
                                         new ListMemoriesOptions(storeName, scope)))
                                     .doOnNext(item -> System.out.printf("    item %s: %s%n",
                                         item.getMemoryId(), item.getContent()))
+                                    .then(memoryStoresAsyncClient.deleteMemory(storeName, customerData.getMemoryId())
+                                        .doOnSuccess(unused -> System.out.printf("Deleted memory item %s%n",
+                                            customerData.getMemoryId())))
+                                    .then(memoryStoresAsyncClient.deleteMemory(storeName, orangeSku.getMemoryId())
+                                        .doOnSuccess(unused -> System.out.printf("Deleted memory item %s%n",
+                                            orangeSku.getMemoryId())))
                                     .then();
                             });
                     })

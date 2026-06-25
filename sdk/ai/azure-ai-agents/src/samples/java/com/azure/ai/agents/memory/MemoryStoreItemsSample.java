@@ -15,7 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Sample demonstrating CRUD operations on memory store items (create, update, retrieve, list) using the
+ * Sample demonstrating CRUD operations on memory store items (create, update, retrieve, list, delete) using the
  * synchronous {@link BetaMemoryStoresClient}.
  *
  * <p>Memory stores are a preview feature. Before running, set the following environment variables:</p>
@@ -24,9 +24,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  *   <li>{@code AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME} - a chat completion model deployment name.</li>
  *   <li>{@code AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME} - an embedding model deployment name.</li>
  * </ul>
- *
- * <p>Note: the SDK does not currently expose a per-item delete operation, so the sample cleans up by
- * deleting the entire memory store, which removes its items.</p>
  */
 public class MemoryStoreItemsSample {
     private static final String MEMORY_STORE_NAME = "memory_items_store_java";
@@ -83,8 +80,15 @@ public class MemoryStoreItemsSample {
                     new ListMemoriesOptions(memoryStore.getName(), scope))) {
                 System.out.printf("    item %s: %s%n", item.getMemoryId(), item.getContent());
             }
+
+            // BEGIN:com.azure.ai.agents.memory.MemoryStoreItemsSample.deleteItems
+            memoryStoresClient.deleteMemory(memoryStore.getName(), customerData.getMemoryId());
+            System.out.printf("Deleted memory item %s%n", customerData.getMemoryId());
+            memoryStoresClient.deleteMemory(memoryStore.getName(), orangeSku.getMemoryId());
+            System.out.printf("Deleted memory item %s%n", orangeSku.getMemoryId());
+            // END:com.azure.ai.agents.memory.MemoryStoreItemsSample.deleteItems
         } finally {
-            // Per-item delete is not currently exposed; deleting the store removes its items.
+            // Delete the memory store to clean up.
             memoryStoresClient.deleteMemoryStore(memoryStore.getName());
             System.out.printf("Memory store deleted (name: %s)%n", memoryStore.getName());
         }

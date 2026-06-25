@@ -981,7 +981,8 @@ public final class BetaMemoryStoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
-        return new SimpleResponse<>(this.serviceClient.internalDeleteMemoryWithResponse(name, memoryId, requestOptions), null);
+        return new SimpleResponse<>(this.serviceClient.internalDeleteMemoryWithResponse(name, memoryId, requestOptions),
+            null);
     }
 
     /**
