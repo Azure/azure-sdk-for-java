@@ -15,6 +15,8 @@
 
 ### Other Changes
 
+- Added routines samples covering CRUD (`RoutinesSample` / `RoutinesAsyncSample`), schedule trigger, timer trigger, and manual dispatch, with a shared `RoutinesSampleUtils` helper.
+
 ## 2.1.0 (2026-06-01)
 
 ### Features Added

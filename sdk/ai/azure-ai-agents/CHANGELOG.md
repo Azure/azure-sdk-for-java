@@ -18,6 +18,8 @@
 
 ### Other Changes
 
+- Added samples demonstrating external agent CRUD (`ExternalAgentSample` / `ExternalAgentAsyncSample`) and memory store item CRUD (`MemoryStoreItemsSample` / `MemoryStoreItemsAsyncSample`).
+
 ## 2.1.0 (2026-06-01)
 
 ### Features Added
