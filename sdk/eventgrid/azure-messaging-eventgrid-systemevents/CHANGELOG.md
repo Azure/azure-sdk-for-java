@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Updated system events with the latest Event Grid system event definitions, adding Virtual Machine Scale Set lifecycle hook events and Azure Communication Services chat retention-policy support.
 
 ## 1.0.0 (2025-06-26)
 
