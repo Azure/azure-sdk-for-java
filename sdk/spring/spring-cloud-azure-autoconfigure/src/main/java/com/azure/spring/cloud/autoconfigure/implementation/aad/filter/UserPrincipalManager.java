@@ -26,6 +26,7 @@ import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -221,6 +222,18 @@ public class UserPrincipalManager {
                     } else {
                         throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
                             + " does not match either the client-id or AppIdUri.");
+                    }
+                }
+                // Validate tenant ID claim if tenant is configured
+                if (aadAuthenticationProperties != null) {
+                    String configuredTenantId = aadAuthenticationProperties.getProfile().getTenantId();
+                    if (StringUtils.hasText(configuredTenantId)) {
+                        String tokenTid = (String) claimsSet.getClaim(AadJwtClaimNames.TID);
+                        if (!configuredTenantId.equals(tokenTid)) {
+                            throw new BadJWTException("Invalid token tenant. Token tid claim '" + tokenTid
+                                + "' does not match the configured tenant '" + configuredTenantId + "'.");
+                        }
+                        LOGGER.debug("Token tenant validated: [{}]", tokenTid);
                     }
                 }
             }
