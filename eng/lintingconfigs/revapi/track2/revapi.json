@@ -380,6 +380,12 @@
           "justification" : "Replace deprecated parameterType"
         },
         {
+          "code" : "java.field.typeChanged",
+          "old" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.OBJECT_MAPPER",
+          "new" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.OBJECT_MAPPER",
+          "justification" : "Jackson 2 to Jackson 3 migration to align with Spring Boot 4: the field type changed from com.fasterxml.jackson.databind.ObjectMapper to tools.jackson.databind.ObjectMapper. This is an intentional breaking change for these beta Spring libraries (see issue 49538)."
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",

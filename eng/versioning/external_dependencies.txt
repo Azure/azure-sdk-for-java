@@ -294,7 +294,6 @@ storage_com.microsoft.azure:azure-storage;8.6.6
 # sdk\spring\pom.xml modules
 springboot4_com.diffplug.spotless:spotless-maven-plugin;2.30.0
 springboot4_com.fasterxml.jackson.core:jackson-annotations;2.21
-springboot4_com.fasterxml.jackson.core:jackson-databind;2.21.4
 springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.21.4
 springboot4_com.fasterxml.jackson.module:jackson-module-parameter-names;2.21.4
 springboot4_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
@@ -346,6 +345,7 @@ springboot4_org.springframework.boot:spring-boot-data-redis;4.1.0
 springboot4_org.springframework.boot:spring-boot-docker-compose;4.1.0
 springboot4_org.springframework.boot:spring-boot-health;4.1.0
 springboot4_org.springframework.boot:spring-boot-http-converter;4.1.0
+springboot4_org.springframework.boot:spring-boot-jackson;4.1.0
 springboot4_org.springframework.boot:spring-boot-jackson2;4.1.0
 springboot4_org.springframework.boot:spring-boot-jdbc;4.1.0
 springboot4_org.springframework.boot:spring-boot-jms;4.1.0
@@ -387,6 +387,7 @@ springboot4_org.springframework:spring-web;7.0.8
 springboot4_org.springframework:spring-webmvc;7.0.8
 springboot4_org.testcontainers:testcontainers-junit-jupiter;2.0.5
 springboot4_org.testcontainers:testcontainers-azure;2.0.5
+springboot4_tools.jackson.core:jackson-databind;3.1.4
 springboot4_jakarta.annotation:jakarta.annotation-api;3.0.0
 springboot4_ch.qos.logback:logback-classic;1.5.34
 springboot4_org.awaitility:awaitility;4.3.0
