@@ -39,8 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * rejection paths are validated against genuine Arrow output rather than hand-crafted bytes. The remaining cases cover
  * malformed/edge inputs that the writer cannot produce (null and empty streams).
  * <p>
- * Behavioral parity for <em>supported</em> content lives in {@link BlobListArrowStreamReaderTests}; enum/ordinal
- * fidelity lives in {@link BlobListArrowFlatbufConstantsTest}.
+ * Fidelity parity lives in {@link BlobListArrowFlatbufConstantsTest}.
  */
 public class BlobListArrowStreamReaderRejectionTests {
 

@@ -65,10 +65,13 @@
 
   <build>
     <plugins>
-      <!-- Arrow 19+ marks classes with Java 9+ @Deprecated(since/forRemoval). The parent also test-compiles at
-           release 8, where java.lang.Deprecated lacks those methods, so javac emits an unconditional (non-lint)
-           warning that failOnWarning makes fatal. The Arrow tests only run on the 11+ JVM, so relax failOnWarning for
-           the release-8 pass only; default-testCompile still fails on real warnings. -->
+      <!-- Arrow 19+ ships Java 11 bytecode and uses Java 9+ APIs. The parent also test-compiles at release 8
+           (the base java version identified in azure-client-sdk-parent/pom.xml), where these tests cannot compile.
+           The tests that exercise the official Arrow writer only run on the 11+ JVM, so exclude them from the
+           release-8 pass; default-testCompile (11+) still compiles and runs them. The remaining Arrow tests use
+           only the internal vendored reader and compile on Java 8, but Arrow 19+ marks classes with
+           @Deprecated(since/forRemoval) which javac on release 8 reports as an unconditional (non-lint) warning
+           that failOnWarning makes fatal, so relax failOnWarning for the release-8 pass only. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -78,6 +81,10 @@
             <id>base-testCompile</id>
             <configuration>
               <failOnWarning>false</failOnWarning>
+              <testExcludes>
+                <testExclude>**/implementation/util/BlobListArrowAccessorParityTests.java</testExclude>
+                <testExclude>**/implementation/util/BlobListArrowStreamReaderRejectionTests.java</testExclude>
+              </testExcludes>
             </configuration>
           </execution>
         </executions>
