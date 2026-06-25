@@ -107,7 +107,7 @@ If the new symbol is a model, restore the previous Java name:
 @@clientName(Microsoft.Example.Assessment, "AssessmentResource", "java");
 ```
 
-If the model is not present, inspect `back-compatible.tsp` for an existing `@@clientName` that maps to this name, and add a Java-specific override in `client.tsp`.
+If the model is not present, inspect the TypeSpec project’s back-compatibility customization file (if any) for an existing `@@clientName` mapping, and add a Java-specific override in `client.tsp`.
 
 ## Property or Accessor Renaming
 
