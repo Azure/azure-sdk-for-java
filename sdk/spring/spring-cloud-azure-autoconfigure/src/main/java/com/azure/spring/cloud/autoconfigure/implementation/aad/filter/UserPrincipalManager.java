@@ -229,10 +229,11 @@ public class UserPrincipalManager {
                     String configuredTenantId = aadAuthenticationProperties.getProfile().getTenantId();
                     if (StringUtils.hasText(configuredTenantId)) {
                         // Skip validation for multi-tenant values: common, organizations, consumers
-                        String trimmedTenantId = configuredTenantId.trim().toLowerCase();
+                        String trimmedTenantId = configuredTenantId.trim().toLowerCase(java.util.Locale.ROOT);
                         if (!isMultiTenantValue(trimmedTenantId)) {
-                            String tokenTid = (String) claimsSet.getClaim(AadJwtClaimNames.TID);
-                            String normalizedTokenTid = tokenTid != null ? tokenTid.trim().toLowerCase() : null;
+                            Object tidClaim = claimsSet.getClaim(AadJwtClaimNames.TID);
+                            String tokenTid = tidClaim != null ? tidClaim.toString() : null;
+                            String normalizedTokenTid = tokenTid != null ? tokenTid.trim().toLowerCase(java.util.Locale.ROOT) : null;
                             if (!trimmedTenantId.equals(normalizedTokenTid)) {
                                 throw new BadJWTException("Invalid token tenant. Token tid claim '" + tokenTid
                                     + "' does not match the configured tenant '" + configuredTenantId + "'.");

@@ -171,7 +171,7 @@ class UserPrincipalManagerTests {
     }
 
     @Test
-    void tenantIdValidationSkippedWhenTenantPropertyIsEmpty() throws Exception {
+    void tenantIdValidationSkippedWhenOrganizationsConfigured() throws Exception {
         // Setup: create UserPrincipalManager with multi-tenant value "organizations"
         AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
         AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
