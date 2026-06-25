@@ -399,8 +399,7 @@ model ExampleResource {
 
 **Breaking**:
 
-Callers must switch from plain string values to `UUID` instances, which changes construction, comparison, and serialization at call sites.
-
+Callers must switch from `UUID` instances to plain string values, which changes construction, comparison, and serialization at call sites.
 **Reason**:
 
 Emitter change during TypeSpec migration.
