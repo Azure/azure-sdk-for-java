@@ -3,7 +3,7 @@
 
 package com.azure.ai.agents.implementation;
 
-import com.azure.ai.agents.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;

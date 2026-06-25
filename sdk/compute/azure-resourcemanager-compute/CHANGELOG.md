@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
+## 2.59.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,65 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.58.0 (2026-06-17)
+
+### Features Added
+
+* `models.InterconnectBlockProperties` was added
+
+* `models.InterconnectInstanceView` was added
+
+* `models.AutomaticSkuMigrationPolicy` was added
+
+* `models.InterconnectBlockProfile` was added
+
+* `models.InterconnectBlockUpdate` was added
+
+* `models.InterconnectBlockExpandTypes` was added
+
+* `models.InterconnectGroupProfile` was added
+
+* `models.InterconnectBlockInstanceView` was added
+
+#### `models.VirtualMachineScaleSetVMProfile` was modified
+
+* `interconnectBlockProfile()` was added
+* `withInterconnectBlockProfile(models.InterconnectBlockProfile)` was added
+
+#### `models.VirtualMachineScaleSetVMNetworkProfileConfiguration` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.NetworkProfile` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.VirtualMachineScaleSetNetworkProfile` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.VirtualMachineScaleSetUpdateVMProfile` was modified
+
+* `interconnectBlockProfile()` was added
+* `withInterconnectBlockProfile(models.InterconnectBlockProfile)` was added
+
+#### `models.VirtualMachineScaleSetUpdateNetworkProfile` was modified
+
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+* `interconnectGroupProfile()` was added
+
+#### `models.SkuProfile` was modified
+
+* `automaticSkuMigrationPolicy()` was added
+* `withAutomaticSkuMigrationPolicy(models.AutomaticSkuMigrationPolicy)` was added
+
+### Other Changes
+
+- Updated `ComputeRP api-version` to `2026-03-01`.
 
 ## 2.57.1 (2026-05-05)
 

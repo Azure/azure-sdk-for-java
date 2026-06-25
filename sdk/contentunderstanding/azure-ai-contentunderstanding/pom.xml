@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-contentunderstanding</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-contentunderstanding;current} -->
+  <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-contentunderstanding;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Azure Content Understanding in Foundry Tools</name>
@@ -66,7 +66,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    </dependency>
+    <!--
+      azure-storage-blob is used by Sample16_CreateAnalyzerWithLabels (Option B) and tests to
+      upload labeled training data and generate a User Delegation SAS URL via DefaultAzureCredential.
+      Sample sources under src/samples/java are compiled as test sources, so test scope is
+      sufficient and avoids forcing this dependency on end users of the published library.
+    -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.35.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

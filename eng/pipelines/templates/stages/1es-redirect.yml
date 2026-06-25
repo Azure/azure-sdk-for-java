@@ -40,9 +40,9 @@ extends:
         - 1ES.PT.Tag-refs/tags/canary
     settings:
       skipBuildTagsForGitHubPullRequests: true
-      # Set network isolation policy to Permissive, CFSClean which our pipeline are currently compliant with.
+      # Set network isolation policy to Permissive, CFSClean, CFSClean3 which our pipelines are currently compliant with.
       # https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-build/cloudbuild/security/1espt-network-isolation#shared-policies-for-common-use-cases
-      networkIsolationPolicy: Permissive, CFSClean
+      networkIsolationPolicy: Permissive, CFSClean, CFSClean3
     sdl:
       ${{ if and(eq(variables['Build.DefinitionName'], 'java - core'), eq(variables['Build.SourceBranchName'], 'main'), eq(variables['System.TeamProject'], 'internal')) }}:
         autobaseline:

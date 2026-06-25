@@ -71,8 +71,8 @@ public class DevTestLabsManagerTests extends TestProxyTestBase {
             // @embedmeStart
             lab = devTestLabsManager.labs()
                 .define(labName)
-                .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
+                .withRegion(REGION)
                 .create();
             // @embedmeEnd
             lab.refresh();
