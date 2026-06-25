@@ -694,6 +694,76 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         assertScalarDirectAndThinClientMatch("SELECT VALUE c.category FROM c", String.class);
     }
 
+    // ==================== QueryOracle-derived coverage ====================
+    // The CosmosDB QueryOracle (CloudTest "Release-QueryOracle") fuzzes queries from category
+    // configs (Like, ScalarExpression, Builtin, Aggregate, ...). These tests bring the LIKE and
+    // scalar-expression categories that were not yet exercised above into the Direct-vs-thin-client
+    // oracle. Geospatial (ST_DISTANCE/ST_WITHIN) and UDF categories are intentionally NOT covered
+    // here because they require a geospatial-indexed container and registered user-defined
+    // functions respectively, which the shared seeded fixture does not provide.
+
+    // ---- LIKE: advanced patterns (character classes, single-char wildcard, negation) ----
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testLikeSingleCharWildcard() {
+        // '_' matches exactly one character: 'electronic_' matches "electronics".
+        assertDirectAndThinClientMatch("SELECT * FROM c WHERE c.category LIKE 'electronic_'");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testLikeCharacterClassRange() {
+        // Character range '[a-c]' — categories starting with a..c (books, clothing).
+        assertDirectAndThinClientMatch("SELECT * FROM c WHERE c.category LIKE '[a-c]%'");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testLikeNegatedCharacterClass() {
+        // Negated character class '[^bc]' — categories NOT starting with b or c (electronics, toys).
+        assertDirectAndThinClientMatch("SELECT * FROM c WHERE c.category LIKE '[^bc]%'");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testNotLike() {
+        assertDirectAndThinClientMatch("SELECT * FROM c WHERE c.category NOT LIKE 'elec%'");
+    }
+
+    // ---- Scalar expressions: coalesce, computed member access, array literal, unary, modulo, ternary ----
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCoalesceOperator() {
+        // '??' returns the right operand when the left is undefined.
+        assertScalarDirectAndThinClientMatch("SELECT VALUE (c.missingField ?? c.category) FROM c", String.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testComputedMemberIndexer() {
+        // Quoted/computed property accessor c["category"].
+        assertScalarDirectAndThinClientMatch("SELECT VALUE c[\"category\"] FROM c", String.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testArrayLiteralProjection() {
+        // Array-create scalar expression in the projection.
+        assertDirectAndThinClientMatch("SELECT c.id, [c.age, c.idx] AS pair FROM c");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testUnaryNegation() {
+        assertScalarDirectAndThinClientMatch("SELECT VALUE -c.age FROM c", Integer.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testModuloOperator() {
+        assertScalarDirectAndThinClientMatch("SELECT VALUE (c.age % 2) FROM c", Integer.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testTernaryConditional() {
+        // Ternary '?:' — distinct parse path from IIF(...).
+        assertScalarDirectAndThinClientMatch(
+            "SELECT VALUE (c.age >= 18 ? 'adult' : 'minor') FROM c", String.class);
+    }
+
     // ==================== Cross-Partition Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)

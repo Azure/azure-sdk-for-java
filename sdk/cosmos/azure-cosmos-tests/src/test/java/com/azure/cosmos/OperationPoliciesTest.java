@@ -577,7 +577,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
     public void readAllItems(String[] changedOptions) throws Exception {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();
-        container.readAllItems(InternalObjectNode.class).byPage()
+        // Drain only the first page. This test asserts request charge, a non-empty page, and the
+        // applied request options (via CosmosDiagnostics) - all present on the first page. The shared
+        // multi-partition container is continuously grown by the other tests in this class, so a full
+        // cross-partition enumeration would blow the overall test timeout; take(1) cancels after the
+        // first page so no further page round-trips are issued.
+        container.readAllItems(InternalObjectNode.class).byPage().take(1)
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
                 assertThat(feedResponse.getRequestCharge()).isGreaterThan(0);
@@ -588,7 +593,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         changeProperties(changedOptions);
 
-        container.readAllItems(InternalObjectNode.class).byPage()
+        container.readAllItems(InternalObjectNode.class).byPage().take(1)
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
                 assertThat(feedResponse.getRequestCharge()).isGreaterThan(0);
