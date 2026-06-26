@@ -18,7 +18,10 @@ import java.nio.file.StandardOpenOption;
 /**
  * Internal utilities for file operations.
  */
-public class FileUtils {
+public final class FileUtils {
+
+    private FileUtils() {
+    }
 
     /**
      * Writes to file.
