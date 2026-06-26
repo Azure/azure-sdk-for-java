@@ -256,6 +256,9 @@ public class UserPrincipalManager {
                                     + "' does not match the configured tenant '" + configuredTenantId + "'.");
                             }
                             LOGGER.debug("Token tenant validated: [{}]", tokenTid);
+                        } else {
+                            LOGGER.debug("Tenant ID verification skipped: multi-tenant configuration detected [{}]",
+                                configuredTenantId);
                         }
                     }
                 }
