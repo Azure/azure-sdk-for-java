@@ -5,9 +5,10 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.McpTool;
-import com.azure.ai.agents.models.Tool;
+import com.azure.ai.agents.models.McpToolboxTool;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -35,10 +36,10 @@ public class CreateToolboxVersion {
                 .endpoint(endpoint)
                 .buildToolboxesClient();
 
-        List<Tool> tools = Arrays.asList(
-                new McpTool("api_specs")
+        List<ToolboxTool> tools = Arrays.asList(
+                new McpToolboxTool("api_specs")
                         .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                        .setRequireApproval("never")
+                        .setRequireApproval(BinaryData.fromString("\"never\""))
         );
 
         ToolboxVersionDetails toolboxVersion = toolboxesClient.createToolboxVersion(

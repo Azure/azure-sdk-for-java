@@ -5,11 +5,12 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesAsyncClient;
-import com.azure.ai.agents.models.McpTool;
-import com.azure.ai.agents.models.Tool;
+import com.azure.ai.agents.models.McpToolboxTool;
 import com.azure.ai.agents.models.ToolboxDetails;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -40,15 +41,15 @@ public class ToolboxesAsyncSample {
             .endpoint(endpoint)
             .buildToolboxesAsyncClient();
 
-        List<Tool> toolsWithMcpApprovalNever = Collections.singletonList(
-            new McpTool("api_specs")
+        List<ToolboxTool> toolsWithMcpApprovalNever = Collections.singletonList(
+            new McpToolboxTool("api_specs")
                 .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval("never"));
+                .setRequireApproval(BinaryData.fromString("\"never\"")));
 
-        List<Tool> toolsWithMcpApprovalAlways = Collections.singletonList(
-            new McpTool("api_specs")
+        List<ToolboxTool> toolsWithMcpApprovalAlways = Collections.singletonList(
+            new McpToolboxTool("api_specs")
                 .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval("always"));
+                .setRequireApproval(BinaryData.fromString("\"always\"")));
 
         Mono<Void> workflow = toolboxesAsyncClient.deleteToolbox(toolboxName)
             .doOnSuccess(unused -> System.out.printf("Toolbox `%s` deleted%n", toolboxName))
@@ -94,12 +95,12 @@ public class ToolboxesAsyncSample {
             .doOnNext(version -> printMcpRequireApproval(version.getTools()));
     }
 
-    private static void printMcpRequireApproval(List<Tool> tools) {
-        for (Tool tool : tools) {
-            if (tool instanceof McpTool) {
-                McpTool mcpTool = (McpTool) tool;
+    private static void printMcpRequireApproval(List<ToolboxTool> tools) {
+        for (ToolboxTool tool : tools) {
+            if (tool instanceof McpToolboxTool) {
+                McpToolboxTool mcpTool = (McpToolboxTool) tool;
                 System.out.printf("  - MCP `%s` require_approval: %s%n", mcpTool.getServerLabel(),
-                    mcpTool.getRequireApprovalAsString());
+                    mcpTool.getRequireApproval());
             }
         }
     }

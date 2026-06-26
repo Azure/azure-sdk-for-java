@@ -84,7 +84,7 @@ public final class HostedAgentsSampleUtils {
 
         if (resources.getSession() != null) {
             try {
-                agentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId(), null);
+                agentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId());
                 System.out.printf("Session with id: %s deleted.%n", resources.getSession().getAgentSessionId());
             } catch (ResourceNotFoundException ignored) {
                 // The sample may have already deleted the session.
@@ -110,7 +110,7 @@ public final class HostedAgentsSampleUtils {
         Mono<Void> deleteSession = Mono.empty();
         if (resources.getSession() != null) {
             String sessionId = resources.getSession().getAgentSessionId();
-            deleteSession = agentsAsyncClient.deleteSession(agentName, sessionId, null)
+            deleteSession = agentsAsyncClient.deleteSession(agentName, sessionId)
                 .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n", sessionId))
                 .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty());
         }

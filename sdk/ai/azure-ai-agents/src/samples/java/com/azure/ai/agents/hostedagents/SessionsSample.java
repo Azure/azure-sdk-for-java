@@ -39,18 +39,18 @@ public class SessionsSample {
             resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
             AgentSessionResource session = resources.getSession();
 
-            AgentSessionResource fetched = agentsClient.getSession(agentName, session.getAgentSessionId(), null);
+            AgentSessionResource fetched = agentsClient.getSession(agentName, session.getAgentSessionId());
             System.out.printf("Retrieved session (id: %s, status: %s)%n", fetched.getAgentSessionId(),
                 fetched.getStatus());
 
             System.out.println("Listing sessions for the agent...");
-            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName, null, null, null, null, null);
+            PagedIterable<AgentSessionResource> sessions = agentsClient.listSessions(agentName, null, null, null, null);
             for (AgentSessionResource item : sessions) {
                 System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(), item.getStatus());
             }
 
             System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-            agentsClient.deleteSession(agentName, session.getAgentSessionId(), null);
+            agentsClient.deleteSession(agentName, session.getAgentSessionId());
             System.out.printf("Session with id: %s deleted.%n", session.getAgentSessionId());
         } finally {
             HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);

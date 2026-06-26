@@ -76,7 +76,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
     }
 
     private static Mono<Void> deleteSessionAsync(AgentsAsyncClient client) {
-        return client.deleteSession(AGENT_NAME, SESSION_ID, null).onErrorResume(error -> Mono.empty());
+        return client.deleteSession(AGENT_NAME, SESSION_ID).onErrorResume(error -> Mono.empty());
     }
 
     private static void assertSessionLogEvents(List<SessionLogEvent> events) {

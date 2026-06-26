@@ -87,7 +87,7 @@ public class SessionLogSyncTest extends ClientTestBase {
 
     private static void deleteSession(AgentsClient client) {
         try {
-            client.deleteSession(AGENT_NAME, SESSION_ID, null);
+            client.deleteSession(AGENT_NAME, SESSION_ID);
         } catch (RuntimeException ignored) {
             // Cleanup best effort.
         }

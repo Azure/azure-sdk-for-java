@@ -46,29 +46,29 @@ public class SessionFilesSample {
             String sessionId = resources.getSession().getAgentSessionId();
 
             agentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                BinaryData.fromString("Sample session file 1."), null);
+                BinaryData.fromString("Sample session file 1."));
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_1);
 
             agentsClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                BinaryData.fromString("Sample session file 2."), null);
+                BinaryData.fromString("Sample session file 2."));
             System.out.printf("Uploaded session file: %s%n", REMOTE_FILE_PATH_2);
 
             System.out.println("Listing session files for the session at path '/remote'...");
-            for (SessionDirectoryEntry entry : agentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null, null)) {
+            for (SessionDirectoryEntry entry : agentsClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null)) {
                 System.out.printf("  - name=%s, size=%d, isDirectory=%s%n", entry.getName(), entry.getSize(),
                     entry.isDirectory());
             }
 
             System.out.printf("Downloading and printing content from '%s'%n", REMOTE_FILE_PATH_1);
-            BinaryData downloaded = agentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, null);
+            BinaryData downloaded = agentsClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1);
             String fileContent = new String(downloaded.toBytes(), StandardCharsets.UTF_8);
             System.out.printf("Session file content (%s):%n%s%n", REMOTE_FILE_PATH_1, fileContent);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_1);
-            agentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false, null);
+            agentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false);
 
             System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_2);
-            agentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false, null);
+            agentsClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false);
         } finally {
             HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
