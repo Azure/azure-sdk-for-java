@@ -185,6 +185,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeJsonField("definition", this.definition);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("draft", this.draft);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
@@ -208,6 +209,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
             OffsetDateTime createdAt = null;
             AgentDefinition definition = null;
             String description = null;
+            Boolean draft = null;
             AgentVersionStatus status = null;
             AgentIdentity instanceIdentity = null;
             AgentIdentity blueprint = null;
@@ -230,6 +232,8 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
                     definition = AgentDefinition.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("draft".equals(fieldName)) {
+                    draft = reader.getNullable(JsonReader::getBoolean);
                 } else if ("status".equals(fieldName)) {
                     status = AgentVersionStatus.fromString(reader.getString());
                 } else if ("instance_identity".equals(fieldName)) {
@@ -247,6 +251,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
             AgentVersionDetails deserializedAgentVersionDetails
                 = new AgentVersionDetails(metadata, id, name, version, createdAt, definition);
             deserializedAgentVersionDetails.description = description;
+            deserializedAgentVersionDetails.draft = draft;
             deserializedAgentVersionDetails.status = status;
             deserializedAgentVersionDetails.instanceIdentity = instanceIdentity;
             deserializedAgentVersionDetails.blueprint = blueprint;
@@ -352,5 +357,23 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
     @Generated
     public AgentVersionStatus getStatus() {
         return this.status;
+    }
+
+    /*
+     * Whether this agent version is a draft (candidate) rather than a release. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted. Defaults to false.
+     */
+    @Generated
+    private Boolean draft;
+
+    /**
+     * Get the draft property: Whether this agent version is a draft (candidate) rather than a release. Draft versions
+     * are recorded but excluded from default 'latest' resolution and are not auto-promoted. Defaults to false.
+     *
+     * @return the draft value.
+     */
+    @Generated
+    public Boolean isDraft() {
+        return this.draft;
     }
 }

@@ -254,4 +254,38 @@ public final class CreateAgentOptions {
         this.state = state;
         return this;
     }
+
+    /*
+     * (Preview) Whether this agent version is a draft (candidate) rather than a release. The service defaults to
+     * `false` if a value is not specified by the caller. Draft versions are recorded but excluded from default 'latest'
+     * resolution and are not auto-promoted.
+     */
+    @Generated
+    private Boolean draft;
+
+    /**
+     * Get the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @return the draft value.
+     */
+    @Generated
+    public Boolean isDraft() {
+        return this.draft;
+    }
+
+    /**
+     * Set the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @param draft the draft value to set.
+     * @return the CreateAgentOptions object itself.
+     */
+    @Generated
+    public CreateAgentOptions setDraft(Boolean draft) {
+        this.draft = draft;
+        return this;
+    }
 }

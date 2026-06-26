@@ -775,6 +775,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -889,6 +890,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -996,6 +998,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
      *             version_selection_rules (Optional, Required on create): [
@@ -1073,6 +1076,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1181,6 +1185,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
      *             version_selection_rules (Optional, Required on create): [
@@ -1258,6 +1263,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1375,6 +1381,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1498,6 +1505,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1638,6 +1646,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1776,6 +1785,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1895,6 +1905,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2019,6 +2030,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2156,6 +2168,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2288,6 +2301,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2420,6 +2434,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2553,6 +2568,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2775,6 +2791,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2911,6 +2928,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -3041,6 +3059,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -3175,6 +3194,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -3275,6 +3295,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -3299,6 +3320,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3357,6 +3379,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -3381,6 +3404,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3458,6 +3482,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3535,6 +3560,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3595,6 +3621,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3653,6 +3680,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3798,6 +3826,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3820,6 +3851,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3876,6 +3908,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3898,6 +3933,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3947,6 +3983,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3969,6 +4008,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -4022,6 +4062,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4044,6 +4087,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -4157,6 +4201,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -4330,6 +4375,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -4446,6 +4492,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -4513,6 +4560,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)

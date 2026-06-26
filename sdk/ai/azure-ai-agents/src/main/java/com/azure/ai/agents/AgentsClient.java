@@ -90,6 +90,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -194,6 +195,7 @@ public final class AgentsClient {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -218,6 +220,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -321,6 +324,9 @@ public final class AgentsClient {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -343,6 +349,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -492,6 +499,7 @@ public final class AgentsClient {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
      *             version_selection_rules (Optional, Required on create): [
@@ -569,6 +577,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -702,6 +711,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -869,6 +879,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -998,6 +1009,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1122,6 +1134,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -1352,6 +1365,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -1460,52 +1474,6 @@ public final class AgentsClient {
     }
 
     /**
-     * List agent versions
-     *
-     * Returns a paged collection of versions for the specified agent.
-     *
-     * @param agentName The name of the agent to retrieve versions for.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit, PageOrder order,
-        String after, String before) {
-        // Generated convenience method for listAgentVersions
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listAgentVersions(agentName, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
-    }
-
-    /**
      * List agents
      *
      * Returns a paged collection of agent resources.
@@ -1557,6 +1525,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1916,6 +1885,7 @@ public final class AgentsClient {
                 .setMetadata(options.getMetadata())
                 .setDescription(options.getDescription())
                 .setBlueprintReference(options.getBlueprintReference())
+                .setDraft(options.isDraft())
                 .setAgentEndpoint(options.getAgentEndpoint())
                 .setAgentCard(options.getAgentCard());
         BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
@@ -2167,6 +2137,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2288,6 +2259,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2463,6 +2435,7 @@ public final class AgentsClient {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2576,6 +2549,7 @@ public final class AgentsClient {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -4029,5 +4003,56 @@ public final class AgentsClient {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
         deleteSessionFileWithResponse(agentName, agentSessionId, path, requestOptions).getValue();
+    }
+
+    /**
+     * List agent versions
+     *
+     * Returns a paged collection of versions for the specified agent.
+     *
+     * @param agentName The name of the agent to retrieve versions for.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param includeDrafts (Preview) Whether to include draft versions in the listing. The service defaults to `false`
+     * if a value is not specified by the caller (only non-draft versions are returned).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit, PageOrder order,
+        String after, String before, Boolean includeDrafts) {
+        // Generated convenience method for listAgentVersions
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (includeDrafts != null) {
+            requestOptions.addQueryParam("include_drafts", String.valueOf(includeDrafts), false);
+        }
+        return serviceClient.listAgentVersions(agentName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
     }
 }

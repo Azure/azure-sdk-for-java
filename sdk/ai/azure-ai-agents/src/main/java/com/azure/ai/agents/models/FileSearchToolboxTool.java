@@ -178,12 +178,14 @@ public final class FileSearchToolboxTool extends ToolboxTool {
     }
 
     /**
-     * {@inheritDoc}
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the FileSearchToolboxTool object itself.
      */
     @Generated
-    @Override
     public FileSearchToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        super.setToolConfigs(toolConfigs);
+        this.toolConfigs = toolConfigs;
         return this;
     }
 
@@ -196,7 +198,6 @@ public final class FileSearchToolboxTool extends ToolboxTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("max_num_results", this.maxResults);
         jsonWriter.writeJsonField("ranking_options", this.rankingOptions);
@@ -204,6 +205,7 @@ public final class FileSearchToolboxTool extends ToolboxTool {
             jsonWriter.writeFieldName("filters");
             this.filters.writeTo(jsonWriter);
         }
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("vector_store_ids", this.vectorStoreIds,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -228,9 +230,6 @@ public final class FileSearchToolboxTool extends ToolboxTool {
                     deserializedFileSearchToolboxTool.setName(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedFileSearchToolboxTool.setDescription(reader.getString());
-                } else if ("tool_configs".equals(fieldName)) {
-                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                    deserializedFileSearchToolboxTool.setToolConfigs(toolConfigs);
                 } else if ("type".equals(fieldName)) {
                     deserializedFileSearchToolboxTool.type = ToolboxToolType.fromString(reader.getString());
                 } else if ("max_num_results".equals(fieldName)) {
@@ -240,6 +239,9 @@ public final class FileSearchToolboxTool extends ToolboxTool {
                 } else if ("filters".equals(fieldName)) {
                     deserializedFileSearchToolboxTool.filters
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedFileSearchToolboxTool.toolConfigs = toolConfigs;
                 } else if ("vector_store_ids".equals(fieldName)) {
                     List<String> vectorStoreIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedFileSearchToolboxTool.vectorStoreIds = vectorStoreIds;
@@ -249,5 +251,21 @@ public final class FileSearchToolboxTool extends ToolboxTool {
             }
             return deserializedFileSearchToolboxTool;
         });
+    }
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
     }
 }

@@ -25,13 +25,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
     private AgentKind kind = AgentKind.HOSTED;
 
     /*
-     * An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     */
-    @Generated
-    private List<Tool> tools;
-
-    /*
      * The CPU configuration for the hosted agent.
      */
     @Generated
@@ -58,30 +51,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
     @Override
     public AgentKind getKind() {
         return this.kind;
-    }
-
-    /**
-     * Get the tools property: An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     *
-     * @return the tools value.
-     */
-    @Generated
-    public List<Tool> getTools() {
-        return this.tools;
-    }
-
-    /**
-     * Set the tools property: An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     *
-     * @param tools the tools value to set.
-     * @return the HostedAgentDefinition object itself.
-     */
-    @Generated
-    public HostedAgentDefinition setTools(List<Tool> tools) {
-        this.tools = tools;
-        return this;
     }
 
     /**
@@ -147,7 +116,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
         jsonWriter.writeStringField("cpu", this.cpu);
         jsonWriter.writeStringField("memory", this.memory);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("environment_variables", this.environmentVariables,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("container_configuration", this.containerConfiguration);
@@ -174,7 +142,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
             String cpu = null;
             String memory = null;
             AgentKind kind = AgentKind.HOSTED;
-            List<Tool> tools = null;
             Map<String, String> environmentVariables = null;
             ContainerConfiguration containerConfiguration = null;
             List<ProtocolVersionRecord> protocolVersions = null;
@@ -191,8 +158,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
                     memory = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = AgentKind.fromString(reader.getString());
-                } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
                 } else if ("environment_variables".equals(fieldName)) {
                     environmentVariables = reader.readMap(reader1 -> reader1.getString());
                 } else if ("container_configuration".equals(fieldName)) {
@@ -210,7 +175,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
             HostedAgentDefinition deserializedHostedAgentDefinition = new HostedAgentDefinition(cpu, memory);
             deserializedHostedAgentDefinition.setRaiConfig(raiConfig);
             deserializedHostedAgentDefinition.kind = kind;
-            deserializedHostedAgentDefinition.tools = tools;
             deserializedHostedAgentDefinition.environmentVariables = environmentVariables;
             deserializedHostedAgentDefinition.containerConfiguration = containerConfiguration;
             deserializedHostedAgentDefinition.protocolVersions = protocolVersions;

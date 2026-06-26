@@ -182,12 +182,14 @@ public final class WebSearchToolboxTool extends ToolboxTool {
     }
 
     /**
-     * {@inheritDoc}
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the WebSearchToolboxTool object itself.
      */
     @Generated
-    @Override
     public WebSearchToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        super.setToolConfigs(toolConfigs);
+        this.toolConfigs = toolConfigs;
         return this;
     }
 
@@ -200,12 +202,12 @@ public final class WebSearchToolboxTool extends ToolboxTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("filters", this.filters);
         jsonWriter.writeJsonField("user_location", this.userLocation);
         jsonWriter.writeStringField("search_context_size",
             this.searchContextSize == null ? null : this.searchContextSize.toString());
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("custom_search_configuration", this.customSearchConfiguration);
         return jsonWriter.writeEndObject();
     }
@@ -229,9 +231,6 @@ public final class WebSearchToolboxTool extends ToolboxTool {
                     deserializedWebSearchToolboxTool.setName(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.setDescription(reader.getString());
-                } else if ("tool_configs".equals(fieldName)) {
-                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                    deserializedWebSearchToolboxTool.setToolConfigs(toolConfigs);
                 } else if ("type".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.type = ToolboxToolType.fromString(reader.getString());
                 } else if ("filters".equals(fieldName)) {
@@ -241,6 +240,9 @@ public final class WebSearchToolboxTool extends ToolboxTool {
                 } else if ("search_context_size".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.searchContextSize
                         = WebSearchToolSearchContextSize.fromString(reader.getString());
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedWebSearchToolboxTool.toolConfigs = toolConfigs;
                 } else if ("custom_search_configuration".equals(fieldName)) {
                     deserializedWebSearchToolboxTool.customSearchConfiguration
                         = WebSearchConfiguration.fromJson(reader);
@@ -250,5 +252,21 @@ public final class WebSearchToolboxTool extends ToolboxTool {
             }
             return deserializedWebSearchToolboxTool;
         });
+    }
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
     }
 }

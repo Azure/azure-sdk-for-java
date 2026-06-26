@@ -81,12 +81,14 @@ public final class OpenApiToolboxTool extends ToolboxTool {
     }
 
     /**
-     * {@inheritDoc}
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the OpenApiToolboxTool object itself.
      */
     @Generated
-    @Override
     public OpenApiToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        super.setToolConfigs(toolConfigs);
+        this.toolConfigs = toolConfigs;
         return this;
     }
 
@@ -99,9 +101,9 @@ public final class OpenApiToolboxTool extends ToolboxTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("openapi", this.openApi);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -119,9 +121,9 @@ public final class OpenApiToolboxTool extends ToolboxTool {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            Map<String, ToolConfig> toolConfigs = null;
             OpenApiFunctionDefinition openApi = null;
             ToolboxToolType type = ToolboxToolType.OPENAPI;
+            Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -129,12 +131,12 @@ public final class OpenApiToolboxTool extends ToolboxTool {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else if ("openapi".equals(fieldName)) {
                     openApi = OpenApiFunctionDefinition.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ToolboxToolType.fromString(reader.getString());
+                } else if ("tool_configs".equals(fieldName)) {
+                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -142,9 +144,25 @@ public final class OpenApiToolboxTool extends ToolboxTool {
             OpenApiToolboxTool deserializedOpenApiToolboxTool = new OpenApiToolboxTool(openApi);
             deserializedOpenApiToolboxTool.setName(name);
             deserializedOpenApiToolboxTool.setDescription(description);
-            deserializedOpenApiToolboxTool.setToolConfigs(toolConfigs);
             deserializedOpenApiToolboxTool.type = type;
+            deserializedOpenApiToolboxTool.toolConfigs = toolConfigs;
             return deserializedOpenApiToolboxTool;
         });
+    }
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
     }
 }

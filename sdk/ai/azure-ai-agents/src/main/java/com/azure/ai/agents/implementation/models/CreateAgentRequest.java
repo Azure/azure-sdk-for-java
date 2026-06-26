@@ -159,6 +159,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("blueprint_reference", this.blueprintReference);
+        jsonWriter.writeBooleanField("draft", this.draft);
         jsonWriter.writeJsonField("agent_endpoint", this.agentEndpoint);
         jsonWriter.writeJsonField("agent_card", this.agentCard);
         return jsonWriter.writeEndObject();
@@ -182,6 +183,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
             Map<String, String> metadata = null;
             String description = null;
             AgentBlueprintReference blueprintReference = null;
+            Boolean draft = null;
             AgentEndpointConfig agentEndpoint = null;
             AgentCard agentCard = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -199,6 +201,8 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
                     description = reader.getString();
                 } else if ("blueprint_reference".equals(fieldName)) {
                     blueprintReference = AgentBlueprintReference.fromJson(reader);
+                } else if ("draft".equals(fieldName)) {
+                    draft = reader.getNullable(JsonReader::getBoolean);
                 } else if ("agent_endpoint".equals(fieldName)) {
                     agentEndpoint = AgentEndpointConfig.fromJson(reader);
                 } else if ("agent_card".equals(fieldName)) {
@@ -212,6 +216,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
             deserializedCreateAgentRequest.metadata = metadata;
             deserializedCreateAgentRequest.description = description;
             deserializedCreateAgentRequest.blueprintReference = blueprintReference;
+            deserializedCreateAgentRequest.draft = draft;
             deserializedCreateAgentRequest.agentEndpoint = agentEndpoint;
             deserializedCreateAgentRequest.agentCard = agentCard;
             return deserializedCreateAgentRequest;
@@ -329,6 +334,40 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
     @Generated
     public CreateAgentRequest setState(AgentState state) {
         this.state = state;
+        return this;
+    }
+
+    /*
+     * (Preview) Whether this agent version is a draft (candidate) rather than a release. The service defaults to
+     * `false` if a value is not specified by the caller. Draft versions are recorded but excluded from default 'latest'
+     * resolution and are not auto-promoted.
+     */
+    @Generated
+    private Boolean draft;
+
+    /**
+     * Get the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @return the draft value.
+     */
+    @Generated
+    public Boolean isDraft() {
+        return this.draft;
+    }
+
+    /**
+     * Set the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @param draft the draft value to set.
+     * @return the CreateAgentRequest object itself.
+     */
+    @Generated
+    public CreateAgentRequest setDraft(Boolean draft) {
+        this.draft = draft;
         return this;
     }
 }
