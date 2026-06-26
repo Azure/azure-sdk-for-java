@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `deleteMemory(String, String)` to `BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` for deleting an individual memory item from a memory store.
 - Added protocol-style `listOptimizationCandidates(String, com.azure.core.http.rest.RequestOptions)` overloads on `AgentsClient` and `AgentsAsyncClient` for listing raw optimization candidate pages as `BinaryData`.
 
 ### Breaking Changes
@@ -17,6 +18,8 @@
 - Fixed OpenAI and Responses clients built from `AgentsClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
 
 ### Other Changes
+
+- Added samples demonstrating external agent CRUD (`ExternalAgentSample` / `ExternalAgentAsyncSample`) and memory store item CRUD (`MemoryStoreItemsSample` / `MemoryStoreItemsAsyncSample`).
 
 ## 2.1.0 (2026-06-01)
 
