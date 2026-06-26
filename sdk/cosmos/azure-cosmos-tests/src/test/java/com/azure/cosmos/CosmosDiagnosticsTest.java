@@ -1072,7 +1072,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> createResponse = null;
         try {
             createResponse = containerDirect.createItem(internalObjectNode);
-            
+
             // Verify item creation is fully propagated before testing with wrong partition key
             // Use retry-based polling instead of fixed sleep for CI resilience
             String itemId = BridgeInternal.getProperties(createResponse).getId();
@@ -1088,7 +1088,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     Thread.sleep(200);
                 }
             }
-            
+
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<InternalObjectNode> readResponse =
