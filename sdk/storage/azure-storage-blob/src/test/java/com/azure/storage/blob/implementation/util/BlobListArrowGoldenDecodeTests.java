@@ -97,8 +97,8 @@ public class BlobListArrowGoldenDecodeTests {
         // column is added to KNOWN_COLUMNS without regenerating the fixture (or vice versa), this fails loudly.
         Set<String> fixtureColumns;
         try (InputStream stream = openFixture("allcolumns.arrow.base64")) {
-            BlobListArrowStreamReader.Parsed parsed = BlobListArrowStreamReader.read(stream);
-            fixtureColumns = parsed.getBatches().get(0).getColumnNames();
+            BlobListArrowStreamReader.DecodedArrowStream decodedArrowStream = BlobListArrowStreamReader.read(stream);
+            fixtureColumns = decodedArrowStream.getBatches().get(0).getColumnNames();
         }
         assertEquals(ArrowBlobListDeserializer.knownColumns(), fixtureColumns);
     }

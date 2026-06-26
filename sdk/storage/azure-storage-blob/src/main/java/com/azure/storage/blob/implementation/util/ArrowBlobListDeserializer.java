@@ -12,7 +12,7 @@ import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.Bool
 import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.Column;
 import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.IntColumn;
 import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.MapColumn;
-import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.Parsed;
+import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.DecodedArrowStream;
 import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.StringColumn;
 import com.azure.storage.blob.implementation.util.BlobListArrowStreamReader.TimestampColumn;
 import com.azure.storage.blob.models.AccessTier;
@@ -89,9 +89,9 @@ public final class ArrowBlobListDeserializer {
         String nextMarker = null;
         Integer numberOfRecords = null;
 
-        Parsed parsed = BlobListArrowStreamReader.read(arrowStream);
+        DecodedArrowStream decodedArrowStream = BlobListArrowStreamReader.read(arrowStream);
 
-        Map<String, String> schemaMetadata = parsed.getSchemaMetadata();
+        Map<String, String> schemaMetadata = decodedArrowStream.getSchemaMetadata();
         if (schemaMetadata != null) {
             nextMarker = schemaMetadata.get("NextMarker");
             if (nextMarker != null && nextMarker.isEmpty()) {
@@ -109,7 +109,7 @@ public final class ArrowBlobListDeserializer {
             }
         }
 
-        for (Batch batch : parsed.getBatches()) {
+        for (Batch batch : decodedArrowStream.getBatches()) {
             validateKnownColumns(batch);
             int rowCount = batch.getRowCount();
             for (int i = 0; i < rowCount; i++) {

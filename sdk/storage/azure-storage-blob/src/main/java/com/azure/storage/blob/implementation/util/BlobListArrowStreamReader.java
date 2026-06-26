@@ -54,11 +54,11 @@ final class BlobListArrowStreamReader {
     /**
      * The decoded contents of an Arrow IPC stream.
      */
-    static final class Parsed {
+    static final class DecodedArrowStream {
         private final Map<String, String> schemaMetadata;
         private final List<Batch> batches;
 
-        Parsed(Map<String, String> schemaMetadata, List<Batch> batches) {
+        DecodedArrowStream(Map<String, String> schemaMetadata, List<Batch> batches) {
             this.schemaMetadata = schemaMetadata;
             this.batches = batches;
         }
@@ -104,7 +104,7 @@ final class BlobListArrowStreamReader {
      * @return the decoded schema metadata and record batches.
      * @throws BlobListArrowParseException if the stream is malformed or uses an unsupported feature.
      */
-    static Parsed read(InputStream stream) {
+    static DecodedArrowStream read(InputStream stream) {
         byte[] bytes;
         try {
             bytes = readAll(stream);
@@ -112,7 +112,7 @@ final class BlobListArrowStreamReader {
             throw new BlobListArrowParseException("ListBlobs Arrow parse failure: unable to read IPC stream.", e);
         }
 
-        ByteBuffer body = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuffer steamBuffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
 
         Map<String, String> schemaMetadata = null;
         List<ArrowField> fields = null;
@@ -120,16 +120,16 @@ final class BlobListArrowStreamReader {
 
         int pos = 0;
         int length = bytes.length;
-        while (pos + 4 <= length) {
-            int marker = body.getInt(pos);
+        while (atLeastFourBytesRemaining(pos, length)) {
+            int marker = steamBuffer.getInt(pos);
             pos += 4;
 
             int metadataLength;
-            if (marker == CONTINUATION_MARKER) {
+            if (isModernStream(marker)) {
                 if (pos + 4 > length) {
                     break;
                 }
-                metadataLength = body.getInt(pos);
+                metadataLength = steamBuffer.getInt(pos);
                 pos += 4;
             } else {
                 // Pre-0.15 streams used a bare length prefix without the continuation marker.
@@ -140,7 +140,7 @@ final class BlobListArrowStreamReader {
                 // End-of-stream marker.
                 break;
             }
-            if (metadataLength < 0 || pos + metadataLength > length) {
+            if (isMessageOutOfBounds(metadataLength, pos, length)) {
                 throw new BlobListArrowParseException(
                     "ListBlobs Arrow parse failure: message metadata length is out of bounds.");
             }
@@ -151,20 +151,16 @@ final class BlobListArrowStreamReader {
             pos += metadataLength;
 
             long bodyLength = message.bodyLength();
-            if (bodyLength < 0 || pos + bodyLength > length) {
+            if (isMessageOutOfBounds(bodyLength, pos, length)) {
                 throw new BlobListArrowParseException(
-                    "ListBlobs Arrow parse failure: message body length is out of bounds.");
+                    "ListBlobs Arrow parse failure: message steamBuffer length is out of bounds.");
             }
             int bodyStart = pos;
             pos += (int) bodyLength;
 
             byte headerType = message.headerType();
             if (headerType == MessageHeader.SCHEMA) {
-                Schema schema = (Schema) message.header(new Schema());
-                if (schema == null) {
-                    throw new BlobListArrowParseException(
-                        "ListBlobs Arrow parse failure: schema message header is missing.");
-                }
+                Schema schema = requireHeader((Schema) message.header(new Schema()), "schema");
                 if (schema.endianness() != Endianness.LITTLE) {
                     throw new BlobListArrowParseException(
                         "ListBlobs Arrow parse failure: only little-endian streams are supported.");
@@ -176,28 +172,48 @@ final class BlobListArrowStreamReader {
                     throw new BlobListArrowParseException(
                         "ListBlobs Arrow parse failure: record batch encountered before schema.");
                 }
-                RecordBatch recordBatch = (RecordBatch) message.header(new RecordBatch());
-                if (recordBatch == null) {
-                    throw new BlobListArrowParseException(
-                        "ListBlobs Arrow parse failure: record batch message header is missing.");
-                }
+                RecordBatch recordBatch
+                    = requireHeader((RecordBatch) message.header(new RecordBatch()), "record batch");
                 if (recordBatch.compression() != null) {
                     throw new BlobListArrowParseException(
                         "ListBlobs Arrow parse failure: compressed record batches are not supported.");
                 }
-                batches.add(buildBatch(fields, recordBatch, body, bodyStart));
+                batches.add(buildBatch(fields, recordBatch, steamBuffer, bodyStart));
             } else if (headerType == MessageHeader.DICTIONARY_BATCH) {
                 throw new BlobListArrowParseException(
                     "ListBlobs Arrow parse failure: dictionary-encoded streams are not supported.");
             }
-            // Other header types (Tensor, SparseTensor) are not expected and are ignored.
+            // Other header types (NONE, and the commented-out Tensor/SparseTensor members of the Arrow MessageHeader
+            // union) are not expected in a ListBlobs response and are ignored. See MessageHeader for why those two
+            // constants are kept (commented out) and how to revive them if the service ever starts emitting them.
         }
 
         if (fields == null) {
             throw new BlobListArrowParseException("ListBlobs Arrow parse failure: stream contained no schema.");
         }
 
-        return new Parsed(schemaMetadata == null ? new HashMap<>() : schemaMetadata, batches);
+        Map<String, String> finalSchemaMetadata = schemaMetadata == null ? new HashMap<>() : schemaMetadata;
+        return new DecodedArrowStream(finalSchemaMetadata, batches);
+    }
+
+    private static boolean isMessageOutOfBounds(long bodyLength, int pos, int length) {
+        return bodyLength < 0 || pos + bodyLength > length;
+    }
+
+    private static boolean isModernStream(int marker) {
+        return marker == CONTINUATION_MARKER;
+    }
+
+    private static boolean atLeastFourBytesRemaining(int pos, int length) {
+        return pos + 4 <= length;
+    }
+
+    private static <T> T requireHeader(T header, String description) {
+        if (header == null) {
+            throw new BlobListArrowParseException(
+                "ListBlobs Arrow parse failure: " + description + " message header is missing.");
+        }
+        return header;
     }
 
     private static Batch buildBatch(List<ArrowField> fields, RecordBatch recordBatch, ByteBuffer body, int bodyStart) {

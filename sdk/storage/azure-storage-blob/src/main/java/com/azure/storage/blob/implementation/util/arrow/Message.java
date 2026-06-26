@@ -31,7 +31,9 @@ public final class Message extends Table {
      */
     public static Message getRootAsMessage(ByteBuffer bb, Message obj) {
         bb.order(ByteOrder.LITTLE_ENDIAN);
-        return obj.__assign(bb.getInt(bb.position()) + bb.position(), bb);
+        // A FlatBuffer begins with a 4-byte offset (relative to here) pointing to the root table.
+        int rootTableOffset = bb.getInt(bb.position()) + bb.position();
+        return obj.__assign(rootTableOffset, bb);
     }
 
     /**
