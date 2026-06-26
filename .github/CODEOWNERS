@@ -712,7 +712,7 @@
 # ServiceOwners:                                                   @ahmedelnably @fabiocav
 
 # AzureSdkOwners:                                                 
-# ServiceLabel: %graalvm
+# ServiceLabel: %graalvm                                           @jonathangiles
 
 # ServiceLabel: %Graph.Microsoft
 # ServiceOwners:                                                   @baywet @dkershaw10
