@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `InputStreamContent` wrapped in `LengthValidatingInputStream` could prematurely close the underlying stream between retry attempts, breaking stream replayability. ([#49650](https://github.com/Azure/azure-sdk-for-java/pull/49650))
+
 ### Other Changes
 
 ## 1.58.1 (2026-06-08)
