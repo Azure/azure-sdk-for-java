@@ -1,12 +1,20 @@
 # Release History
 
-## 7.18.0-beta.2 (Unreleased)
+## 7.18.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.18.0-beta.2 (2026-06-22)
 
 ### Features Added
 
 - Added `drainTimeout(Duration)` to `ServiceBusProcessorClientBuilder` and `ServiceBusSessionProcessorClientBuilder` to configure the maximum wait time for in-flight message handlers during processor shutdown. Defaults to 30 seconds.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
