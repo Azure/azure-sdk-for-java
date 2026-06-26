@@ -66,10 +66,33 @@ public final class Type {
     public static final byte LARGE_LIST_VIEW = 26;
 
     private static final String[] NAMES = {
-        "NONE", "Null", "Int", "FloatingPoint", "Binary", "Utf8", "Bool", "Decimal", "Date", "Time", "Timestamp",
-        "Interval", "List", "Struct_", "Union", "FixedSizeBinary", "FixedSizeList", "Map", "Duration", "LargeBinary",
-        "LargeUtf8", "LargeList", "RunEndEncoded", "BinaryView", "Utf8View", "ListView", "LargeListView"
-    };
+        "NONE",
+        "Null",
+        "Int",
+        "FloatingPoint",
+        "Binary",
+        "Utf8",
+        "Bool",
+        "Decimal",
+        "Date",
+        "Time",
+        "Timestamp",
+        "Interval",
+        "List",
+        "Struct_",
+        "Union",
+        "FixedSizeBinary",
+        "FixedSizeList",
+        "Map",
+        "Duration",
+        "LargeBinary",
+        "LargeUtf8",
+        "LargeList",
+        "RunEndEncoded",
+        "BinaryView",
+        "Utf8View",
+        "ListView",
+        "LargeListView" };
 
     /**
      * Gets the canonical Arrow name for a {@code Type} union discriminator, for diagnostic messages.
@@ -81,4 +104,3 @@ public final class Type {
         return NAMES[e];
     }
 }
-

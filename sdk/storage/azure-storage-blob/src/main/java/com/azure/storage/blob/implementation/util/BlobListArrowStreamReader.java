@@ -25,10 +25,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Minimal Apache Arrow IPC stream reader scoped to the needs of the ListBlobs Arrow response.
@@ -43,7 +45,7 @@ import java.util.Map;
  * bodies directly, so it does not require the {@code arrow-vector} runtime.
  */
 final class BlobListArrowStreamReader {
-
+    // This is hex representation of the maximum value of an unsigned 32-bit integer.
     private static final int CONTINUATION_MARKER = 0xFFFFFFFF;
 
     private BlobListArrowStreamReader() {
@@ -88,6 +90,10 @@ final class BlobListArrowStreamReader {
 
         Column getColumn(String name) {
             return columns.get(name);
+        }
+
+        Set<String> getColumnNames() {
+            return Collections.unmodifiableSet(columns.keySet());
         }
     }
 

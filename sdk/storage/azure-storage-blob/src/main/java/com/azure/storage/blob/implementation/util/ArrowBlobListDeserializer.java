@@ -30,9 +30,13 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Deserializes an Apache Arrow IPC stream from the ListBlobs response into a list of {@link BlobItemInternal} objects.
@@ -40,49 +44,33 @@ import java.util.Map;
 public final class ArrowBlobListDeserializer {
 
     /**
-     * Result of deserializing an Arrow ListBlobs response.
+     * The authoritative set of Arrow column names this deserializer knows how to read. It must mirror exactly the
+     * field names requested by {@link #readRow(Batch, int)}; the {@code alltypes} golden fixture drift-guard test
+     * asserts they stay in sync. Any column present in the response schema but absent from this set means the service
+     * has emitted a field this SDK version does not understand, which {@link #validateKnownColumns(Batch)} rejects.
      */
-    public static final class ArrowListBlobsResult {
-        private final List<BlobItemInternal> blobItems;
-        private final String nextMarker;
-        private final Integer numberOfRecords;
-
-        /**
-         * Creates an ArrowListBlobsResult.
-         *
-         * @param blobItems the deserialized blob items
-         * @param nextMarker the continuation token for the next page, or null if this is the last page
-         * @param numberOfRecords the total number of records reported by the service, or null if not present
-         */
-        public ArrowListBlobsResult(List<BlobItemInternal> blobItems, String nextMarker, Integer numberOfRecords) {
-            this.blobItems = blobItems;
-            this.nextMarker = nextMarker;
-            this.numberOfRecords = numberOfRecords;
-        }
-
-        /**
-         * @return the deserialized blob items
-         */
-        public List<BlobItemInternal> getBlobItems() {
-            return blobItems;
-        }
-
-        /**
-         * @return the continuation token for the next page, or null if this is the last page
-         */
-        public String getNextMarker() {
-            return nextMarker;
-        }
-
-        /**
-         * @return the total number of records reported by the service, or null if not present
-         */
-        public Integer getNumberOfRecords() {
-            return numberOfRecords;
-        }
-    }
+    private static final Set<String> KNOWN_COLUMNS = Collections.unmodifiableSet(new HashSet<>(
+        Arrays.asList("Name", "ResourceType", "Deleted", "Snapshot", "VersionId", "IsCurrentVersion", "HasVersionsOnly",
+            "Metadata", "OrMetadata", "Tags", "Creation-Time", "Last-Modified", "Etag", "Content-Length",
+            "Content-Type", "Content-Encoding", "Content-Language", "Content-Disposition", "Cache-Control",
+            "Content-MD5", "BlobType", "AccessTier", "AccessTierInferred", "AccessTierChangeTime", "SmartAccessTier",
+            "LeaseStatus", "LeaseState", "LeaseDuration", "ServerEncrypted", "CustomerProvidedKeySha256",
+            "EncryptionScope", "IncrementalCopy", "CopyId", "CopyStatus", "CopySource", "CopyProgress",
+            "CopyCompletionTime", "CopyStatusDescription", "CopyDestinationSnapshot", "x-ms-blob-sequence-number",
+            "Sealed", "LegalHold", "DeletedTime", "LastAccessTime", "ImmutabilityPolicyUntilDate",
+            "ImmutabilityPolicyMode", "ArchiveStatus", "RehydratePriority", "TagCount", "RemainingRetentionDays")));
 
     private ArrowBlobListDeserializer() {
+    }
+
+    /**
+     * Exposes the authoritative set of columns this deserializer understands, for the drift-guard test that asserts it
+     * stays in sync with the full-schema golden fixture. Package-private: not part of the public API.
+     *
+     * @return the immutable set of known column names
+     */
+    static Set<String> knownColumns() {
+        return KNOWN_COLUMNS;
     }
 
     /**
@@ -122,6 +110,7 @@ public final class ArrowBlobListDeserializer {
         }
 
         for (Batch batch : parsed.getBatches()) {
+            validateKnownColumns(batch);
             int rowCount = batch.getRowCount();
             for (int i = 0; i < rowCount; i++) {
                 results.add(readRow(batch, i));
@@ -129,6 +118,31 @@ public final class ArrowBlobListDeserializer {
         }
 
         return new ArrowListBlobsResult(results, nextMarker, numberOfRecords);
+    }
+
+    /**
+     * Fails loudly if the batch schema contains any column this deserializer does not handle, so that a newly added
+     * service field surfaces as an error instead of being silently dropped.
+     *
+     * @param batch the record batch to validate
+     * @throws BlobListArrowParseException if the batch contains one or more columns absent from {@link #KNOWN_COLUMNS}
+     */
+    private static void validateKnownColumns(Batch batch) {
+        List<String> unknownColumns = null;
+        for (String columnName : batch.getColumnNames()) {
+            if (!KNOWN_COLUMNS.contains(columnName)) {
+                if (unknownColumns == null) {
+                    unknownColumns = new ArrayList<>();
+                }
+                unknownColumns.add(columnName);
+            }
+        }
+
+        if (unknownColumns != null) {
+            Collections.sort(unknownColumns);
+            throw new BlobListArrowParseException(
+                "ListBlobs Arrow parse failure: response contains unhandled column(s) " + unknownColumns + ".");
+        }
     }
 
     private static BlobItemInternal readRow(Batch batch, int index) {
@@ -269,67 +283,90 @@ public final class ArrowBlobListDeserializer {
         return item;
     }
 
+    private static <T extends Column> T getColumn(Batch batch, String name, int index, Class<T> type,
+        String typeLabel) {
+        Column column = batch.getColumn(name);
+        if (column == null || column.isNull(index)) {
+            return null;
+        }
+        if (!type.isInstance(column)) {
+            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name + "' has unsupported "
+                + typeLabel + " column type '" + column.getClass().getSimpleName() + "'.");
+        }
+        return type.cast(column);
+    }
+
     // region Arrow helpers
 
     private static String getVarChar(Batch batch, String name, int index) {
-        Column column = batch.getColumn(name);
-        if (column == null || column.isNull(index)) {
-            return null;
-        }
-        if (!(column instanceof StringColumn)) {
-            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
-                + "' has unsupported string column type '" + column.getClass().getSimpleName() + "'.");
-        }
-        return ((StringColumn) column).get(index);
+        StringColumn column = getColumn(batch, name, index, StringColumn.class, "string");
+        return column == null ? null : column.get(index);
     }
 
     private static Long getUInt64(Batch batch, String name, int index) {
-        Column column = batch.getColumn(name);
-        if (column == null || column.isNull(index)) {
-            return null;
-        }
-        if (!(column instanceof IntColumn)) {
-            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
-                + "' has unsupported integer column type '" + column.getClass().getSimpleName() + "'.");
-        }
-        return ((IntColumn) column).get(index);
+        IntColumn column = getColumn(batch, name, index, IntColumn.class, "integer");
+        return column == null ? null : column.get(index);
     }
 
     private static Boolean getBit(Batch batch, String name, int index) {
-        Column column = batch.getColumn(name);
-        if (column == null || column.isNull(index)) {
-            return null;
-        }
-        if (!(column instanceof BoolColumn)) {
-            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
-                + "' has unsupported boolean column type '" + column.getClass().getSimpleName() + "'.");
-        }
-        return ((BoolColumn) column).get(index);
+        BoolColumn column = getColumn(batch, name, index, BoolColumn.class, "boolean");
+        return column == null ? null : column.get(index);
     }
 
     private static OffsetDateTime getTimestamp(Batch batch, String name, int index) {
-        Column column = batch.getColumn(name);
-        if (column == null || column.isNull(index)) {
+        TimestampColumn column = getColumn(batch, name, index, TimestampColumn.class, "timestamp");
+        if (column == null) {
             return null;
         }
-        if (!(column instanceof TimestampColumn)) {
-            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
-                + "' has unsupported timestamp column type '" + column.getClass().getSimpleName() + "'.");
-        }
-        long epochSeconds = ((TimestampColumn) column).getEpochSeconds(index);
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds), ZoneOffset.UTC);
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(column.getEpochSeconds(index)), ZoneOffset.UTC);
     }
 
     private static Map<String, String> getMap(Batch batch, String name, int index) {
-        Column column = batch.getColumn(name);
-        if (column == null || column.isNull(index)) {
-            return null;
+        MapColumn column = getColumn(batch, name, index, MapColumn.class, "map");
+        return column == null ? null : column.get(index);
+    }
+
+    /**
+     * Result of deserializing an Arrow ListBlobs response.
+     */
+    public static final class ArrowListBlobsResult {
+        private final List<BlobItemInternal> blobItems;
+        private final String nextMarker;
+        private final Integer numberOfRecords;
+
+        /**
+         * Creates an ArrowListBlobsResult.
+         *
+         * @param blobItems       the deserialized blob items
+         * @param nextMarker      the continuation token for the next page, or null if this is the last page
+         * @param numberOfRecords the total number of records reported by the service, or null if not present
+         */
+        public ArrowListBlobsResult(List<BlobItemInternal> blobItems, String nextMarker, Integer numberOfRecords) {
+            this.blobItems = blobItems;
+            this.nextMarker = nextMarker;
+            this.numberOfRecords = numberOfRecords;
         }
-        if (!(column instanceof MapColumn)) {
-            throw new BlobListArrowParseException("ListBlobs Arrow parse failure: field '" + name
-                + "' has unsupported map column type '" + column.getClass().getSimpleName() + "'.");
+
+        /**
+         * @return the deserialized blob items
+         */
+        public List<BlobItemInternal> getBlobItems() {
+            return blobItems;
         }
-        return ((MapColumn) column).get(index);
+
+        /**
+         * @return the continuation token for the next page, or null if this is the last page
+         */
+        public String getNextMarker() {
+            return nextMarker;
+        }
+
+        /**
+         * @return the total number of records reported by the service, or null if not present
+         */
+        public Integer getNumberOfRecords() {
+            return numberOfRecords;
+        }
     }
 
     //endregion

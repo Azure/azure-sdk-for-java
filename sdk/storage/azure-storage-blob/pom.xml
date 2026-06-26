@@ -56,41 +56,11 @@
       --add-reads com.azure.storage.blob=com.azure.core.http.okhttp
       --add-reads com.azure.storage.blob=com.azure.core.http.jdk.httpclient
       --add-reads com.azure.storage.blob=com.azure.core.http.vertx
-      --add-opens java.base/java.nio=ALL-UNNAMED <!-- Arrow's BufferAllocator uses sun.misc.Unsafe to allocate direct byte buffers, which requires this open. -->
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
 
     <spotbugs.skip>false</spotbugs.skip>
   </properties>
-
-  <build>
-    <plugins>
-      <!-- Arrow 19+ ships Java 11 bytecode and uses Java 9+ APIs. The parent also test-compiles at release 8
-           (the base java version identified in azure-client-sdk-parent/pom.xml), where these tests cannot compile.
-           The tests that exercise the official Arrow writer only run on the 11+ JVM, so exclude them from the
-           release-8 pass; default-testCompile (11+) still compiles and runs them. The remaining Arrow tests use
-           only the internal vendored reader and compile on Java 8, but Arrow 19+ marks classes with
-           @Deprecated(since/forRemoval) which javac on release 8 reports as an unconditional (non-lint) warning
-           that failOnWarning makes fatal, so relax failOnWarning for the release-8 pass only. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- `base-testCompile` is the base java version that is identified in azure-client-sdk-parent/pom.xml -->
-            <id>base-testCompile</id>
-            <configuration>
-              <failOnWarning>false</failOnWarning>
-              <testExcludes>
-                <testExclude>**/implementation/util/BlobListArrowAccessorParityTests.java</testExclude>
-                <testExclude>**/implementation/util/BlobListArrowStreamReaderRejectionTests.java</testExclude>
-              </testExcludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
   <dependencies>
     <dependency>
@@ -169,41 +139,17 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Arrow dependencies -->
+    <!-- Arrow dependency -->
     <!-- The internal ListBlobs Arrow reader decodes the IPC stream using vendored FlatBuffer metadata accessors
          (com.azure.storage.blob.implementation.util.arrow) backed by flatbuffers-java, so flatbuffers-java is the sole
-         compile-scoped dependency needed to parse the Arrow format. The arrow-format artifact is deliberately NOT a
-         compile dependency: it ships Java 11 bytecode and would break the Java 8 baseline build. arrow-vector /
-         arrow-memory-* / arrow-format / checker-qual are test-only: they back the parity test that builds a real Arrow
-         payload with the official writer to validate the internal reader (and run on the Java 11+ test JVM). -->
+         dependency needed to parse the Arrow format. The arrow-format artifact is deliberately NOT a dependency: it
+         ships Java 11 bytecode and would break the Java 8 baseline build. The reader's behavior is validated against
+         committed golden base64 fixtures (src/test/resources/arrow) rather than the official arrow-vector writer, so no
+         Apache Arrow test dependency is required. -->
     <dependency>
       <groupId>com.google.flatbuffers</groupId>
       <artifactId>flatbuffers-java</artifactId>
       <version>24.3.25</version> <!-- {x-version-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-vector</artifactId>
-      <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-vector;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-memory-core</artifactId>
-      <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.arrow</groupId>
-      <artifactId>arrow-memory-unsafe</artifactId>
-      <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-memory-unsafe;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.checkerframework</groupId>
-      <artifactId>checker-qual</artifactId>
-      <version>3.42.0</version> <!-- {x-version-update;org.checkerframework:checker-qual;external_dependency} -->
-      <scope>test</scope>
     </dependency>
 
   </dependencies>
