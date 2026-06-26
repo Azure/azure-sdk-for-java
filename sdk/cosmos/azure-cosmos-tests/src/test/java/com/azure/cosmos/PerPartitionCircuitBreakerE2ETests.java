@@ -105,7 +105,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         .build();
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstPreferredRegionOnly = (ctx) -> {
-        String firstPreferredRegionName = this.firstPreferredRegion.toLowerCase(Locale.ROOT);
+        String firstPreferredRegionName = getRegionNameForAssertion(this.firstPreferredRegion);
         assertContactedRegionCount(
             ctx,
             1,
@@ -121,7 +121,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasSecondPreferredRegionOnly = (ctx) -> {
-        String secondPreferredRegionName = this.secondPreferredRegion.toLowerCase(Locale.ROOT);
+        String secondPreferredRegionName = getRegionNameForAssertion(this.secondPreferredRegion);
         assertContactedRegionCount(
             ctx,
             1,
@@ -137,8 +137,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstAndSecondPreferredRegions = (ctx) -> {
-        String firstPreferredRegionName = this.firstPreferredRegion.toLowerCase(Locale.ROOT);
-        String secondPreferredRegionName = this.secondPreferredRegion.toLowerCase(Locale.ROOT);
+        String firstPreferredRegionName = getRegionNameForAssertion(this.firstPreferredRegion);
+        String secondPreferredRegionName = getRegionNameForAssertion(this.secondPreferredRegion);
         assertContactedRegionCount(
             ctx,
             2,
@@ -183,13 +183,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAllRegions = (ctx) -> {
+        List<String> writeRegionsForAssertion = getExpectedRegionsForAssertion(
+            ctx,
+            this.writeRegions,
+            "Expected diagnostics context to include all write regions");
+
         assertContactedRegionCount(
             ctx,
-            this.writeRegions.size(),
-            String.format("Expected diagnostics context to include all write regions <%s>", this.writeRegions));
+            writeRegionsForAssertion.size(),
+            String.format("Expected diagnostics context to include all write regions <%s>", writeRegionsForAssertion));
 
-        for (String region : this.writeRegions) {
-            String writeRegionName = region.toLowerCase(Locale.ROOT);
+        for (String region : writeRegionsForAssertion) {
+            String writeRegionName = getRegionNameForAssertion(region);
             assertContactedRegionsContain(
                 ctx,
                 writeRegionName,
@@ -199,6 +204,26 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     this.writeRegions));
         }
     };
+
+    private String getRegionNameForAssertion(String regionName) {
+        return regionName == null ? null : regionName.toLowerCase(Locale.ROOT);
+    }
+
+    private List<String> getExpectedRegionsForAssertion(
+        CosmosDiagnosticsContext ctx,
+        List<String> expectedRegions,
+        String expectation) {
+
+        if (expectedRegions == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null expected regions",
+                ctx == null ? null : ctx.getContactedRegionNames(),
+                ctx));
+        }
+
+        return expectedRegions;
+    }
 
     private void assertContactedRegionCount(
         CosmosDiagnosticsContext ctx,

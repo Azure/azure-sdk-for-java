@@ -231,6 +231,23 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             : this.serviceOrderedReadableRegions;
     }
 
+    private List<String> getExpectedServiceOrderedRegionsForMessage(OperationType operationType, int maxRegionCount) {
+        List<String> serviceOrderedRegions = getServiceOrderedRegionsForOperation(operationType);
+        if (serviceOrderedRegions == null) {
+            return Collections.emptyList();
+        }
+
+        return serviceOrderedRegions.subList(0, Math.min(maxRegionCount, serviceOrderedRegions.size()));
+    }
+
+    private List<String> getExpectedPreferredRegionsForMessage(int maxRegionCount) {
+        if (this.preferredRegions == null) {
+            return Collections.emptyList();
+        }
+
+        return this.preferredRegions.subList(0, Math.min(maxRegionCount, this.preferredRegions.size()));
+    }
+
     @DataProvider(name = "channelAcquisitionExceptionArgProvider")
     public static Object[][] channelAcquisitionExceptionArgProvider() {
         return new Object[][]{
@@ -505,7 +522,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 2,
                 String.format(
                     "Expected address refresh read retry diagnostics to include first two preferred regions <%s>",
-                    this.preferredRegions.subList(0, 2)));
+                    getExpectedPreferredRegionsForMessage(2)));
             assertContactedRegionsContain(
                 diagnostics,
                 this.preferredRegions.get(0),
@@ -777,7 +794,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
                     CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
-                    List<String> expectedRegions = getServiceOrderedRegionsForOperation(operationType).subList(0, 2);
+                    List<String> expectedRegions = getExpectedServiceOrderedRegionsForMessage(operationType, 2);
 
                     assertContactedRegionCount(
                         diagnosticsContext,
@@ -907,10 +924,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
-                List<String> serviceOrderedRegions = getServiceOrderedRegionsForOperation(operationType);
-                List<String> expectedRegions = serviceOrderedRegions == null
-                    ? null
-                    : serviceOrderedRegions.subList(0, Math.min(2, serviceOrderedRegions.size()));
+                List<String> expectedRegions = getExpectedServiceOrderedRegionsForMessage(operationType, 2);
 
                 assertContactedRegionCount(
                     diagnosticsContext,
@@ -1032,13 +1046,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         3,
                         String.format(
                             "Expected channel acquisition diagnostics to include between 2 and 3 regions, including first two preferred regions <%s>",
-                            this.preferredRegions.subList(0, 2)));
+                            getExpectedPreferredRegionsForMessage(2)));
                     assertContactedRegionsContainAll(
                         diagnostics,
-                        this.preferredRegions.subList(0, 2),
+                        getExpectedPreferredRegionsForMessage(2),
                         String.format(
                             "Expected channel acquisition diagnostics to include first two preferred regions <%s>",
-                            this.preferredRegions.subList(0, 2)));
+                            getExpectedPreferredRegionsForMessage(2)));
 
                     if (isChannelAcquisitionExceptionTriggeredRegionRetryExists(diagnostics.toString())) {
                         channelAcquisitionExceptionTriggeredRetryExists.compareAndSet(false, true);
