@@ -16,6 +16,7 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.CreateSessionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
+import com.azure.ai.agents.implementation.utils.FileUtils;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentDetails;
@@ -48,6 +49,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.models.conversations.Conversation;
+
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
@@ -67,7 +70,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -180,7 +183,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -200,9 +203,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -329,7 +332,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -503,7 +506,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -572,9 +575,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -685,7 +688,7 @@ public final class AgentsAsyncClient {
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -705,9 +708,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -856,7 +859,7 @@ public final class AgentsAsyncClient {
      *
      * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -872,9 +875,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -987,7 +990,7 @@ public final class AgentsAsyncClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1002,9 +1005,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1117,7 +1120,7 @@ public final class AgentsAsyncClient {
      *
      * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1132,9 +1135,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1371,7 +1374,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1595,7 +1598,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1778,7 +1781,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1900,7 +1903,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1941,7 +1944,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2246,7 +2249,7 @@ public final class AgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2368,7 +2371,7 @@ public final class AgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2488,7 +2491,7 @@ public final class AgentsAsyncClient {
      *
      * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2542,9 +2545,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2664,7 +2667,7 @@ public final class AgentsAsyncClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2742,7 +2745,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -2764,13 +2767,80 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent.
+     * Returns the previously-uploaded zip (`application/zip`).
+     *
+     * If `agent_version` is supplied, returns that version's code zip; otherwise
+     * returns the latest version's code zip.
+     *
+     * The SHA-256 digest of the returned bytes matches the `content_hash` on the
+     * resolved version's `code_configuration`.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>agent_version</td><td>String</td><td>No</td><td>The version of the agent whose code zip should be
+     * downloaded.
+     * If omitted, the latest version's code zip is returned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param filePath The path to file in disk for the download. If a file already exists at this path, the returned
+     * {@link Mono} fails; use the {@code overwrite} overload to replace it.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadAgentCodeWithResponse(String agentName, String filePath,
+        RequestOptions requestOptions) {
+        return downloadAgentCodeWithResponse(agentName, filePath, false, requestOptions);
+    }
+
+    /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent and writes it to {@code filePath}.
+     *
+     * @param agentName The name of the agent.
+     * @param filePath The path to file in disk for the download.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the returned
+     * {@link Mono} fails if a file already exists at the destination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadAgentCodeWithResponse(String agentName, String filePath, boolean overwrite,
+        RequestOptions requestOptions) {
+        return this.serviceClient.downloadAgentCodeWithResponseAsync(agentName, requestOptions)
+            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath, overwrite));
+    }
+
+    /**
      * Create a session
      *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2781,9 +2851,9 @@ public final class AgentsAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2821,7 +2891,7 @@ public final class AgentsAsyncClient {
      *
      * Retrieves the details of a hosted agent session by agent name and session identifier.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2924,7 +2994,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2985,7 +3055,7 @@ public final class AgentsAsyncClient {
      * The stream remains open until the client disconnects or the server
      * terminates the connection. Clients should handle reconnection as needed.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3022,15 +3092,15 @@ public final class AgentsAsyncClient {
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3061,12 +3131,63 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Upload a session file
+     *
+     * Uploads binary file content to the specified path in the session sandbox.
+     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     path: String (Required)
+     *     bytes_written: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The destination file path within the sandbox, relative to the session home directory.
+     * @param filePath The path to the local file whose contents will be uploaded.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from uploading a file to a session sandbox along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> uploadSessionFileWithResponse(String agentName, String agentSessionId,
+        String path, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.uploadSessionFileWithResponseAsync(agentName, agentSessionId, path,
+            BinaryData.fromFile(Paths.get(filePath)), requestOptions);
+    }
+
+    /**
      * Download a session file
      *
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -3088,6 +3209,71 @@ public final class AgentsAsyncClient {
     public Mono<Response<BinaryData>> downloadSessionFileWithResponse(String agentName, String agentSessionId,
         String path, RequestOptions requestOptions) {
         return this.serviceClient.downloadSessionFileWithResponseAsync(agentName, agentSessionId, path, requestOptions);
+    }
+
+    /**
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path as a binary stream.
+     * The path is resolved relative to the session home directory.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
+     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param filePath destination file for the download. If a file already exists at this path, the returned
+     * {@link Mono} fails; use the {@code overwrite} overload to replace it.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+        String filePath, RequestOptions requestOptions) {
+        return downloadSessionFileWithResponse(agentName, agentSessionId, path, filePath, false, requestOptions);
+    }
+
+    /**
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path and writes it to {@code filePath}.
+     * The path is resolved relative to the session home directory.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param filePath destination file for the download.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the returned
+     * {@link Mono} fails if a file already exists at the destination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+        String filePath, boolean overwrite, RequestOptions requestOptions) {
+        return this.serviceClient.downloadSessionFileWithResponseAsync(agentName, agentSessionId, path, requestOptions)
+            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath, overwrite));
     }
 
     /**
@@ -3119,7 +3305,7 @@ public final class AgentsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3363,6 +3549,61 @@ public final class AgentsAsyncClient {
             requestOptions.addQueryParam("agent_version", agentVersion, false);
         }
         return downloadAgentCodeWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent.
+     * Returns the previously-uploaded zip (`application/zip`).
+     *
+     * If `agent_version` is supplied, returns that version's code zip; otherwise
+     * returns the latest version's code zip.
+     *
+     * The SHA-256 digest of the returned bytes matches the `content_hash` on the
+     * resolved version's `code_configuration`.
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent whose code zip should be downloaded.
+     * @param filePath destination file for the download. If a file already exists at this path, the returned
+     * {@link Mono} fails; use the {@code overwrite} overload to replace it.
+     * If omitted, the latest version's code zip is returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> downloadAgentCode(String agentName, String agentVersion, String filePath) {
+        return downloadAgentCode(agentName, agentVersion, filePath, false);
+    }
+
+    /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent and writes it to {@code filePath}.
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent whose code zip should be downloaded.
+     * If omitted, the latest version's code zip is returned.
+     * @param filePath destination file for the download.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the returned
+     * {@link Mono} fails if a file already exists at the destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> downloadAgentCode(String agentName, String agentVersion, String filePath, boolean overwrite) {
+        return downloadAgentCode(agentName, agentVersion)
+            .flatMap(content -> FileUtils.writeToFileAsync(content, filePath, overwrite));
     }
 
     /**

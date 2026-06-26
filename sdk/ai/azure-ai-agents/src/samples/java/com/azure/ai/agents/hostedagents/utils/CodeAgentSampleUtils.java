@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.hostedagents.utils;
 
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeConfiguration;
@@ -12,11 +13,11 @@ import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
-import com.azure.core.util.BinaryData;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -28,27 +29,37 @@ import java.util.zip.ZipOutputStream;
 
 public final class CodeAgentSampleUtils {
     public static final String SAMPLE_AGENT_NAME = "java-code-agent-sample";
+    private static final String CODE_AGENT_ASSETS_PATH = "assets/";
+    private static final int READ_BUFFER_SIZE = 8192;
 
     private CodeAgentSampleUtils() {
     }
 
-    public static CreateAgentVersionFromCodeContent createAgentVersionFromCodeContent(BinaryData codeZip) {
-        return new CreateAgentVersionFromCodeContent(createMetadata(), createCodeFileDetails(codeZip));
+    public static CreateAgentVersionFromCodeContent createAgentVersionFromCodeContent(Path codeZipPath) {
+        return new CreateAgentVersionFromCodeContent(createMetadata(), createCodeFileDetails(codeZipPath));
     }
 
-    public static BinaryData createCodeZip() throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-            addZipEntry(zipOutputStream, "main.py", createMainPy());
-            addZipEntry(zipOutputStream, "requirements.txt", createRequirementsTxt());
+    public static Path createCodeZip() throws IOException {
+        Path codeZipPath = Files.createTempFile("responses-echo-agent-", ".zip");
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(codeZipPath))) {
+            addZipEntry(zipOutputStream, "main.py", SampleUtils.getResourcePath(CODE_AGENT_ASSETS_PATH + "main.py"));
+            addZipEntry(zipOutputStream, "requirements.txt",
+                SampleUtils.getResourcePath(CODE_AGENT_ASSETS_PATH + "requirements.txt"));
         }
-        return BinaryData.fromBytes(outputStream.toByteArray());
+        return codeZipPath;
     }
 
-    public static String sha256(BinaryData data) {
+    public static String sha256(Path filePath) throws IOException {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(data.toBytes());
+            byte[] buffer = new byte[READ_BUFFER_SIZE];
+            try (InputStream inputStream = Files.newInputStream(filePath)) {
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    digest.update(buffer, 0, bytesRead);
+                }
+            }
+            byte[] hash = digest.digest();
             StringBuilder builder = new StringBuilder(hash.length * 2);
             for (byte value : hash) {
                 builder.append(String.format("%02x", value));
@@ -89,46 +100,15 @@ public final class CodeAgentSampleUtils {
                 new ProtocolVersionRecord(AgentEndpointProtocol.RESPONSES, "1.0.0")));
     }
 
-    private static CodeFileDetails createCodeFileDetails(BinaryData codeZip) {
-        return new CodeFileDetails(codeZip)
+    private static CodeFileDetails createCodeFileDetails(Path codeZipPath) {
+        return new CodeFileDetails(codeZipPath.toString())
             .setFilename("responses-echo-agent.zip")
             .setContentType("application/zip");
     }
 
-    private static void addZipEntry(ZipOutputStream zipOutputStream, String name, String content) throws IOException {
+    private static void addZipEntry(ZipOutputStream zipOutputStream, String name, Path sourcePath) throws IOException {
         zipOutputStream.putNextEntry(new ZipEntry(name));
-        zipOutputStream.write(content.getBytes(StandardCharsets.UTF_8));
+        zipOutputStream.write(Files.readAllBytes(sourcePath));
         zipOutputStream.closeEntry();
-    }
-
-    private static String createMainPy() {
-        return "import asyncio\n"
-            + "import logging\n\n"
-            + "from azure.ai.agentserver.responses import (\n"
-            + "    CreateResponse,\n"
-            + "    ResponseContext,\n"
-            + "    ResponsesAgentServerHost,\n"
-            + "    TextResponse,\n"
-            + ")\n\n"
-            + "logging.basicConfig(level=logging.INFO)\n"
-            + "logger = logging.getLogger(__name__)\n"
-            + "app = ResponsesAgentServerHost()\n\n"
-            + "@app.create_handler\n"
-            + "async def handler(request: CreateResponse, context: ResponseContext, "
-            + "cancellation_signal: asyncio.Event):\n"
-            + "    input_text = await context.get_input_text()\n"
-            + "    logger.info('Received input: %s', input_text)\n"
-            + "    return TextResponse(context, request, text=f'Echo: {input_text}')\n\n"
-            + "def main() -> None:\n"
-            + "    app.run()\n\n"
-            + "if __name__ == '__main__':\n"
-            + "    main()\n";
-    }
-
-    private static String createRequirementsTxt() {
-        return "--index-url https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/\n"
-            + "azure-ai-agentserver-core==2.0.0a20260410006\n"
-            + "azure-ai-agentserver-invocations==1.0.0a20260410006\n"
-            + "azure-ai-agentserver-responses==1.0.0a20260410006\n";
     }
 }
