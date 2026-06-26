@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Namespace
@@ -42,21 +41,7 @@ public final class NamespaceTool extends Tool {
      * The function/custom tools available inside this namespace.
      */
     @Generated
-    private final List<BinaryData> tools;
-
-    /**
-     * Creates an instance of NamespaceTool class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param tools the tools value to set.
-     */
-    @Generated
-    public NamespaceTool(String name, String description, List<BinaryData> tools) {
-        this.name = name;
-        this.description = description;
-        this.tools = tools;
-    }
+    private final BinaryData tools;
 
     /**
      * Get the type property: The type property.
@@ -95,7 +80,7 @@ public final class NamespaceTool extends Tool {
      * @return the tools value.
      */
     @Generated
-    public List<BinaryData> getTools() {
+    public BinaryData getTools() {
         return this.tools;
     }
 
@@ -108,13 +93,8 @@ public final class NamespaceTool extends Tool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> {
-            if (element == null) {
-                writer.writeNull();
-            } else {
-                element.writeTo(writer);
-            }
-        });
+        jsonWriter.writeFieldName("tools");
+        this.tools.writeTo(jsonWriter);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -133,7 +113,7 @@ public final class NamespaceTool extends Tool {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            List<BinaryData> tools = null;
+            BinaryData tools = null;
             ToolType type = ToolType.NAMESPACE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -143,8 +123,7 @@ public final class NamespaceTool extends Tool {
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    tools = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else {
@@ -155,5 +134,19 @@ public final class NamespaceTool extends Tool {
             deserializedNamespaceTool.type = type;
             return deserializedNamespaceTool;
         });
+    }
+
+    /**
+     * Creates an instance of NamespaceTool class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param tools the tools value to set.
+     */
+    @Generated
+    public NamespaceTool(String name, String description, BinaryData tools) {
+        this.name = name;
+        this.description = description;
+        this.tools = tools;
     }
 }

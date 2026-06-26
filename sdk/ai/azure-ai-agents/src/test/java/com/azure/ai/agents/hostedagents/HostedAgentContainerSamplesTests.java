@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.models.AgentEndpointConfig;
+import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AgentVersionStatus;
@@ -232,7 +233,7 @@ public class HostedAgentContainerSamplesTests extends ClientTestBase {
 
         if (resources.getSession() != null) {
             try {
-                agentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId(), null);
+                agentsClient.deleteSession(agentName, resources.getSession().getAgentSessionId());
             } catch (ResourceNotFoundException ignored) {
                 // The test may have already deleted the session.
             }
