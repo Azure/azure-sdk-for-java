@@ -185,7 +185,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static final ImmutableList<Protocol> protocols;
 
     protected static final AzureKeyCredential credential;
-    protected static final boolean useAadAuth;
 
     protected int subscriberValidationTimeout = TIMEOUT;
 
@@ -273,19 +272,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
 
         credential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
-        useAadAuth = Boolean.parseBoolean(System.getProperty("COSMOS.USE_AAD_AUTH", "false"))
-            || Boolean.parseBoolean(System.getenv("COSMOS_USE_AAD_AUTH"));
     }
 
     private static <T> ImmutableList<T> immutableListOrNull(List<T> list) {
         return list != null ? ImmutableList.copyOf(list) : null;
-    }
-
-    protected static CosmosClientBuilder applyCredential(CosmosClientBuilder builder) {
-        if (useAadAuth) {
-            return builder.credential(new com.azure.identity.DefaultAzureCredentialBuilder().build());
-        }
-        return builder.credential(credential);
     }
 
     private static class DatabaseManagerImpl implements CosmosDatabaseForTest.DatabaseManager {
@@ -1814,11 +1804,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        return applyCredential(new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+        return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+                                        .credential(credential)
                                         .gatewayMode(gatewayConnectionConfig)
                                         .throttlingRetryOptions(options)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                        .consistencyLevel(ConsistencyLevel.SESSION));
+                                        .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(
@@ -1857,12 +1848,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
         }
 
-        CosmosClientBuilder builder = applyCredential(new CosmosClientBuilder().endpoint(endpoint)
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(endpoint)
+            .credential(credential)
             .gatewayMode(gatewayConnectionConfig)
             .multipleWriteRegionsEnabled(multiMasterEnabled)
             .preferredRegions(preferredRegions)
             .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-            .consistencyLevel(consistencyLevel));
+            .consistencyLevel(consistencyLevel);
         ImplementationBridgeHelpers
             .CosmosClientBuilderHelper
             .getCosmosClientBuilderAccessor()
@@ -1885,12 +1877,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled,
                                                                       boolean retryOnThrottledRequests) {
-        CosmosClientBuilder builder = applyCredential(
-            new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .directMode(DirectConnectionConfig.getDefaultConfig())
-                .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                .consistencyLevel(consistencyLevel));
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+                                                               .credential(credential)
+                                                               .directMode(DirectConnectionConfig.getDefaultConfig())
+                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                                                               .consistencyLevel(consistencyLevel);
 
         if (preferredRegions != null) {
             builder.preferredRegions(preferredRegions);

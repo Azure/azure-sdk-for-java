@@ -1,6 +1,6 @@
 # Thin Client (Gateway V2) QueryPlan — E2E Test Specification
 
-**Primary suite:** `sdk/cosmos/azure-cosmos-tests/.../rx/ThinClientQueryE2ETest.java` (84 `@Test` methods)
+**Primary suite:** `sdk/cosmos/azure-cosmos-tests/.../rx/ThinClientQueryE2ETest.java` (97 `@Test` methods)
 **Sibling suites:** `ThinClientPointOperationE2ETest` (3), `ThinClientChangeFeedE2ETest` (3), `ThinClientStoredProcedureE2ETest` (3)
 **TestNG group:** `thinclient` · **Status:** reverse-engineered from the committed test code
 
@@ -69,10 +69,12 @@ Asserts the thin-client pages actually traversed `:10250`. This guards against a
 
 ### 4.2 Document-set equality — `assertSameDocumentIds(gw, tc, ordered, desc)`
 - **Count** must match first.
-- **`ORDER BY` queries** (`isOrderedQuery` = query text contains `ORDER BY`): IDs compared **in sequence** — order is significant.
-- **All other queries**: IDs compared as **sorted sets** — cross-partition / cross-page ordering is undefined and must *not* be asserted as sequence.
+- Whether the comparison is order-sensitive is decided by **`isStrictlyOrdered(queryText, options)`**:
+  - **strict sequence** when the query has an `ORDER BY` **or** runs against a single logical partition (a partition key is set on the options, i.e. `partitionedOptions()`). The large majority of §5 tests fall here.
+  - **sorted set** only when order is genuinely undefined — a **cross-partition** query (no partition key on the options) **without** an `ORDER BY`.
+- **Comparison key:** when every row projects an `id` it is used as the key; otherwise (projections that don't select `id`, e.g. `SELECT <expr> AS x`) the **full rows** are compared instead — numeric leaves within `NUMERIC_TOLERANCE` — so coverage is not silently dropped. The unordered full-row path is a multiset match (each baseline row consumes one distinct thin-client row).
 
-This split is the key correctness nuance: it asserts ordering exactly where the contract guarantees it and not where it doesn't (avoiding false failures while still catching real ordering bugs in ORDER BY).
+This split is the key correctness nuance: it asserts ordering exactly where it is defined (ORDER BY, or single-partition) and relaxes to set comparison only where cross-partition / cross-page ordering is genuinely undefined — catching real ordering bugs without false failures.
 
 ### 4.3 Scalar aggregates — `assertScalarValueEquals` (COUNT/SUM/AVG/MIN/MAX)
 Numeric values compared within `NUMERIC_TOLERANCE = 1e-6`; falls back to string equality for non-numerics. Prevents false mismatches from float formatting differences between the two serialization paths while still catching real aggregate errors.
@@ -85,43 +87,46 @@ All helpers **fully drain** the feed (iterate every page, accumulate results + p
 
 ---
 
-## 5. Test Matrix — `ThinClientQueryE2ETest` (84)
+## 5. Test Matrix — `ThinClientQueryE2ETest` (97)
 
-Unless noted, each test calls `assertDirectAndThinClientMatch(...)` (§4.1–4.2) with `partitionedOptions()` (single-PK).
+Unless noted, each test calls `assertDirectAndThinClientMatch(...)` (§4.1–4.2) with `partitionedOptions()` (single-PK), so per `isStrictlyOrdered` (§4.2) results are compared in **strict sequence** unless the row says otherwise.
 
 | # | Category | Tests | Count | Notable assertion |
 |---|----------|-------|-------|-------------------|
-| 1 | **Filtering (WHERE)** | SelectAll, WhereEquality, WhereEqualityParameterized, WhereRangeGreaterThan, WhereRangeLessThanOrEqual, WhereRangeBetween, WhereIn, WhereCompoundAndOr, WhereNotEqual, WhereBooleanField, WhereIsDefined, WhereStartsWith, WhereContains, WhereArrayContains, WhereNestedProperty, Between | 16 | set-equality |
-| 2 | **Projection** | SelectSpecificFields, SelectComputedAlias, SelectValueObject, SelectValueScalar | 4 | set-equality |
-| 3 | **ORDER BY** | OrderByAsc, OrderByDesc | 2 | **sequence**-equality |
-| 4 | **DISTINCT** | DistinctValue, DistinctValueBoolean | 2 | set-equality |
-| 5 | **TOP** | Top, TopWithOrderBy | 2 | seq for ORDER BY variant |
-| 6 | **Aggregates** | Count, Sum, Avg, Min, Max | 5 | scalar ±1e-6 |
+| 1 | **Filtering (WHERE)** | SelectAll, WhereEquality, WhereEqualityParameterized, WhereRangeGreaterThan, WhereRangeLessThanOrEqual, WhereRangeBetween, WhereIn, WhereCompoundAndOr, WhereNotEqual, WhereBooleanField, WhereIsDefined, WhereStartsWith, WhereContains, WhereArrayContains, WhereNestedProperty, Between | 16 | strict-seq (single-PK) |
+| 2 | **Projection** | SelectSpecificFields, SelectComputedAlias, SelectValueObject, SelectValueScalar | 4 | field/scalar parity; strict-seq |
+| 3 | **ORDER BY** | OrderByAsc, OrderByDesc, MultipleOrderBy | 3 | **sequence**; MultipleOrderBy uses a (category ASC, age DESC) composite-indexed container |
+| 4 | **DISTINCT** | DistinctValue, DistinctValueBoolean | 2 | scalar set |
+| 5 | **TOP** | Top, TopWithOrderBy | 2 | strict-seq |
+| 6 | **Aggregates** | Count, Sum, Avg, Min, Max, DCount | 6 | scalar ±1e-6 |
 | 7 | **GROUP BY** | GroupByCount, GroupBySumAvg | 2 | keyed-set + tolerant deep-equal |
 | 8 | **OFFSET/LIMIT** | OffsetLimit | 1 | **sequence** (has ORDER BY) |
-| 9 | **JOIN (self, arrays)** | JoinScoresArray, JoinWithFilter, JoinTagsArray | 3 | set-equality |
-| 10 | **EXISTS subquery** | ExistsSubquery, ExistsSubqueryWithStringMatch, ExistsAliasInProjection | 3 | set-equality |
-| 11 | **LIKE** | LikePrefix, LikeSuffix, LikeContains | 3 | set-equality |
-| 12 | **String functions** | Concat, EndsWith, Lower, Upper, Length, Substring, Replace, IndexOf, Left, Reverse, Trim, RegexMatch | 12 | set-equality |
-| 13 | **Type-check functions** | IsArray, IsBool, IsNull, IsNumber, IsString, IsObject | 6 | set-equality |
-| 14 | **Math functions** | MathAbs, MathCeilingFloor, MathRound, MathPower, MathSqrt | 5 | set-equality |
-| 15 | **Array functions** | ArrayLength, ArraySlice | 2 | set-equality |
-| 16 | **Conditional** | Iif | 1 | set-equality |
-| 17 | **Date/Time** | GetCurrentDateTime | 1 | scalar |
-| 18 | **Cross-partition** | CrossPartitionSelectAll, CrossPartitionWhereFilter | 2 | no PK filter; ORDER BY idx → sequence |
-| 19 | **Multi-range (own container, 24k RU)** | MultiRangeIN(3/5), MultiRangeOR(2/3), MultiRangeMany(10/10) | 3 | exact count + sorted-ID equality across N physical partitions |
-| 20 | **Continuation draining** | ContinuationTokenDraining | 1 | see §6.1 |
-| 21 | **Error handling** | InvalidQueryReturnsBadRequest | 1 | see §6.2 |
-| 22 | **Vector / Full-Text / Hybrid** | VectorSearch, FullTextSearch, FullTextScoreRanking, HybridSearch | 4 | see §6.3 |
-| 23 | **readManyByPartitionKeys (validation QueryPlan path)** | NoCustomQuery, WithCustomQuery, WithParameterizedCustomQuery | 3 | see §6.4 |
+| 9 | **JOIN (self, arrays)** | JoinScoresArray, JoinWithFilter, JoinTagsArray | 3 | strict-seq |
+| 10 | **EXISTS subquery** | ExistsSubquery, ExistsSubqueryWithStringMatch, ExistsAliasInProjection | 3 | strict-seq |
+| 11 | **LIKE (basic)** | LikePrefix, LikeSuffix, LikeContains | 3 | strict-seq |
+| 12 | **String functions** | Concat, EndsWith, Lower, Upper, Length, Substring, Replace, IndexOf, Left, Reverse, Trim, RegexMatch | 12 | strict-seq |
+| 13 | **Type-check functions** | IsArray, IsBool, IsNull, IsNumber, IsString, IsObject | 6 | strict-seq |
+| 14 | **Math functions** | MathAbs, MathCeilingFloor, MathRound, MathPower, MathSqrt | 5 | strict-seq |
+| 15 | **Array functions** | ArrayLength, ArraySlice | 2 | strict-seq |
+| 16 | **Conditional** | Iif | 1 | strict-seq |
+| 17 | **Date/Time** | GetCurrentDateTime | 1 | ISO-8601 shape only (values differ by design) |
+| 18 | **QueryOracle — LIKE patterns** | LikeSingleCharWildcard, LikeCharacterClassRange, LikeNegatedCharacterClass, NotLike | 4 | strict-seq |
+| 19 | **QueryOracle — scalar expressions** | CoalesceOperator, ComputedMemberIndexer, ArrayLiteralProjection, UnaryNegation, ModuloOperator, TernaryConditional | 6 | scalar / strict-seq |
+| 20 | **Query-plan caching** | CachedQueryPlanFromProxyExecutesCorrectly | 1 | see §6.5 |
+| 21 | **Cross-partition** | CrossPartitionSelectAll, CrossPartitionWhereFilter | 2 | no PK filter; ORDER BY idx → sequence; asserts fan-out >1 PKRange |
+| 22 | **Multi-range (own container, 24k RU)** | MultiRangeIN(3/5), MultiRangeOR(2/3), MultiRangeMany(10/10) | 3 | exact count + sorted-ID equality; Many asserts >1 PKRange |
+| 23 | **Continuation draining** | ContinuationTokenDraining | 1 | see §6.1 |
+| 24 | **Error handling** | InvalidQueryReturnsBadRequest | 1 | see §6.2 |
+| 25 | **Vector / Full-Text / Hybrid** | VectorSearch, FullTextSearch, FullTextScoreRanking, HybridSearch | 4 | see §6.3 |
+| 26 | **readManyByPartitionKeys (validation QueryPlan path)** | NoCustomQuery, WithCustomQuery, WithParameterizedCustomQuery | 3 | see §6.4 |
 
-**Total: 84.**
+**Total: 97.**
 
 ---
 
-## 6. Special-case tests (hardened — F1–F5)
+## 6. Special-case tests (hardened — F1–F6)
 
-These five were strengthened beyond simple parity because they guard the specific failure modes the thin-client change introduces. A reviewer should weigh these most heavily.
+These were strengthened beyond simple parity because they guard the specific failure modes the thin-client change introduces. A reviewer should weigh these most heavily.
 
 ### 6.1 `testContinuationTokenDraining` (F-drain)
 Drains the thin client with **page size 3** to force multiple continuations, against a fully-drained Direct baseline.
@@ -145,6 +150,9 @@ Exercises the **validation QueryPlan path** that bifurcates between Compute Gate
 - **WithParameterizedCustomQuery**: `@cat` binding; asserts parity and every row `category=='electronics'`.
 This is the test that proves the routing rule `useGatewayMode = (partitionKeyDefinition == null)` behaves correctly for both branches.
 
+### 6.5 `testCachedQueryPlanFromProxyExecutesCorrectly` (F-cache)
+Runs a single-partition GROUP BY (which requires a query plan) **twice**. Because a partition key is set on the options, the proxy-generated query plan is cached on the client after the first execution and reused on the second. Both executions assert GROUP BY parity with Direct — proving a cached, proxy-generated `QueryPlan` continues to execute correctly (does not go stale or get mis-applied) on reuse.
+
 ---
 
 ## 7. Query-feature coverage vs. the advertised contract
@@ -155,12 +163,12 @@ This is the test that proves the routing rule `useGatewayMode = (partitionKeyDef
 |--------------------|-----------|------|
 | Aggregate / NonValueAggregate | §6 Aggregates (Count/Sum/Avg/Min/Max) | — |
 | GroupBy | GroupByCount, GroupBySumAvg | — |
-| OrderBy / MultipleOrderBy / NonStreamingOrderBy | OrderBy*, vector/FTS ranking | MultipleOrderBy (multi-key) not explicit |
+| OrderBy / MultipleOrderBy / NonStreamingOrderBy | OrderBy*, MultipleOrderBy (composite index), vector/FTS ranking | — |
 | OffsetAndLimit | OffsetLimit | — |
 | Distinct | DistinctValue* | — |
 | Top | Top, TopWithOrderBy | — |
 | HybridSearch / WeightedRankFusion | HybridSearch (RRF) | — |
-| DCount | — | **No dedicated test** |
+| DCount | DCount | — |
 | CompositeAggregate / MultipleAggregates | GroupBySumAvg (two aggs) | partial |
 
 **Intentionally NOT advertised** (documented in code, should be noted to the reviewer):
@@ -172,13 +180,12 @@ This is the test that proves the routing rule `useGatewayMode = (partitionKeyDef
 
 ## 8. Known gaps / limitations (for reviewer sign-off)
 
-1. **`DCount` has no dedicated test** — highest-priority coverage gap.
-2. **`MultipleOrderBy`** (multi-key `ORDER BY a, b`) is not exercised explicitly.
-3. **Cross-partition aggregate/GROUP BY** — aggregates run within a single logical partition (`partitionedOptions`); cross-partition aggregate merge through the proxy is not directly asserted.
-4. **Large result drain** — continuation draining uses 10 docs / page size 3 (multiple pages, but small). No high-cardinality (hundreds/thousands of docs) drain to stress merge/continuation under realistic volume.
-5. **Tolerance-based scalar/JSON compare** could in principle mask a genuine sub-1e-6 aggregate discrepancy; acceptable but worth noting.
-6. **Mixed/empty-result edge cases** (query matching zero docs, null-projection rows) are implicit at best.
-7. Sibling suites (point-op, change feed, sproc) are summarized in §0 but specced separately.
+1. **Cross-partition aggregate/GROUP BY** — aggregates run within a single logical partition (`partitionedOptions`); cross-partition aggregate merge through the proxy is not directly asserted.
+2. **Large result drain** — continuation draining uses 10 docs / page size 3 (multiple pages, but small). No high-cardinality (hundreds/thousands of docs) drain to stress merge/continuation under realistic volume.
+3. **Geospatial (`ST_DISTANCE`/`ST_WITHIN`) and UDF query categories** are intentionally not covered — they require a geospatial-indexed container and registered user-defined functions respectively, which the shared seeded fixture does not provide (noted in the QueryOracle-derived section of the test).
+4. **Tolerance-based scalar/JSON compare** could in principle mask a genuine sub-1e-6 aggregate discrepancy; acceptable but worth noting.
+5. **Mixed/empty-result edge cases** (query matching zero docs, null-projection rows) are implicit at best.
+6. Sibling suites (point-op, change feed, sproc) are summarized in the header but specced separately.
 
 ---
 
@@ -188,8 +195,8 @@ This is the test that proves the routing rule `useGatewayMode = (partitionKeyDef
 - [ ] The **ordered-vs-unordered** split (§4.2) matches the service ordering contract for each query class.
 - [ ] **Endpoint provenance** (§4.1) is genuinely sufficient to prove no Direct fallback (i.e. `assertThinClientEndpointUsed` inspects the actual transport, not a cached/first-hop signal).
 - [ ] The **error contract** test (§6.2) asserts the right status/substatus for the proxy's actual error frame.
-- [ ] Agreement on the **gap list** (§8) — especially whether `DCount`/`MultipleOrderBy` must be added before merge.
-- [ ] Multi-range test (§6.4 / row 19) actually spans **multiple physical partitions** (24k RU container) so EPK-range sort correctness through `convertToSortedEpkRanges` is exercised.
+- [ ] Agreement on the **gap list** (§8) — especially whether cross-partition aggregate merge and a high-volume drain must be added before merge.
+- [ ] Multi-range test (row 22) actually spans **multiple physical partitions** (24k RU container) so EPK-range sort correctness through `convertToSortedEpkRanges` is exercised.
 
 ---
 
