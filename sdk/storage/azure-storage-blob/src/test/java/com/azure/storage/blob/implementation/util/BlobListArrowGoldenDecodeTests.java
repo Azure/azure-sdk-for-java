@@ -98,7 +98,7 @@ public class BlobListArrowGoldenDecodeTests {
         Set<String> fixtureColumns;
         try (InputStream stream = openFixture("allcolumns.arrow.base64")) {
             BlobListArrowStreamReader.DecodedArrowStream decodedArrowStream = BlobListArrowStreamReader.read(stream);
-            fixtureColumns = decodedArrowStream.getBatches().get(0).getColumnNames();
+            fixtureColumns = decodedArrowStream.batches().get(0).getColumnNames();
         }
         assertEquals(ArrowBlobListDeserializer.knownColumns(), fixtureColumns);
     }
