@@ -5,17 +5,12 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.filter;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AadJwtClaimNames;
-import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-
-import java.util.Optional;
-
-import java.util.Optional;
 
 /**
  * Custom JWT claims verifier that adds tenant ID validation for AAD authentication.
