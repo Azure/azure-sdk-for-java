@@ -818,14 +818,7 @@ public final class CosmosDiagnosticsContext {
             int subStatusCode = 0;
             String activityId = requestStats.getActivityId();
             if (responseDiagnostics != null) {
-                // Certain store responses (for example transient transport errors in direct mode)
-                // do not carry a server-side activity id. Fall back to the request-level activity id
-                // in that case so the non-null CosmosDiagnosticsRequestInfo contract is preserved.
-                // This mirrors the same null-fallback used when recording gateway statistics in
-                // ClientSideRequestStatistics.
-                if (responseDiagnostics.getActivityId() != null) {
-                    activityId = responseDiagnostics.getActivityId();
-                }
+                activityId = responseDiagnostics.getActivityId();
                 requestCharge = responseDiagnostics.getRequestCharge();
                 responsePayloadLength = responseDiagnostics.getResponsePayloadLength();
                 statusCode = responseDiagnostics.getStatusCode();
