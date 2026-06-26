@@ -53,14 +53,17 @@ final class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.j
         
         // Audience validation
         if (explicitAudienceCheck) {
-            java.util.Optional<String> matchedAudience = claimsSet.getAudience()
-                                                        .stream()
-                                                        .filter(validAudiences::contains)
-                                                        .findFirst();
+            java.util.List<String> audiences = claimsSet.getAudience();
+            if (audiences == null || audiences.isEmpty()) {
+                throw new BadJWTException("Invalid token audience. No audience claim found in token.");
+            }
+            java.util.Optional<String> matchedAudience = audiences.stream()
+                .filter(validAudiences::contains)
+                .findFirst();
             if (matchedAudience.isPresent()) {
                 LOGGER.debug("Matched audience: [{}]", matchedAudience.get());
             } else {
-                throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
+                throw new BadJWTException("Invalid token audience. Provided value " + audiences
                     + " does not match either the client-id or AppIdUri.");
             }
         }
