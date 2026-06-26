@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -25,6 +26,8 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealth
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.guava25.base.Function;
@@ -68,6 +71,7 @@ import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -88,6 +92,13 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
         = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor
+        = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private static final Duration TRANSIENT_404_1002_RETRY_DELAY = Duration.ofSeconds(5);
+
+    private static final Duration TRANSIENT_404_1002_MAX_RETRY_DURATION = Duration.ofMinutes(5);
 
     private List<String> writeRegions;
     private List<String> readRegions;
@@ -122,6 +133,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasSecondPreferredRegionOnly = (ctx) -> {
         String secondPreferredRegionName = getRegionNameForAssertion(this.secondPreferredRegion);
+
         assertContactedRegionCount(
             ctx,
             1,
@@ -3756,7 +3768,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
-                    ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    ResponseWrapper<?> response = executeDataPlaneOperationWithTransient4041002Retry(
+                        testId,
+                        executeDataPlaneOperation,
+                        operationInvocationParamsWrapper);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3838,7 +3853,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
-                    ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    ResponseWrapper<?> response = executeDataPlaneOperationWithTransient4041002Retry(
+                        testId,
+                        executeDataPlaneOperation,
+                        operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
 
                     if (response.cosmosItemResponse != null) {
@@ -3895,6 +3913,125 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             return response.batchResponse.getDiagnostics().getDiagnosticsContext();
         }
         return null;
+    }
+
+    private ResponseWrapper<?> executeDataPlaneOperationWithTransient4041002Retry(
+        String testId,
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
+        OperationInvocationParamsWrapper operationInvocationParamsWrapper) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        int retryAttempt = 0;
+        ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+        while (hasNonFaultInjected4041002Response(response)) {
+            Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+            if (elapsed.compareTo(TRANSIENT_404_1002_MAX_RETRY_DURATION) >= 0) {
+                logger.warn(
+                    "Detected non-fault-injected 404/1002 in diagnostics for test {} for {}. "
+                        + "Continuing with latest response so normal assertions can report diagnostics.",
+                    testId,
+                    elapsed);
+                return response;
+            }
+
+            retryAttempt++;
+            logger.warn(
+                "Detected non-fault-injected 404/1002 in diagnostics for test {}. "
+                    + "Waiting {} before retry attempt {}.",
+                testId,
+                TRANSIENT_404_1002_RETRY_DELAY,
+                retryAttempt);
+            Thread.sleep(TRANSIENT_404_1002_RETRY_DELAY.toMillis());
+            response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+        }
+
+        return response;
+    }
+
+    private static boolean hasNonFaultInjected4041002Response(ResponseWrapper<?> response) {
+        CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+        if (diagnosticsContext == null || diagnosticsContext.getDiagnostics() == null) {
+            return false;
+        }
+
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> clientSideRequestStatisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (clientSideRequestStatisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics clientSideRequestStatistics : clientSideRequestStatisticsCollection) {
+                if (clientSideRequestStatistics == null) {
+                    continue;
+                }
+
+                if (hasNonFaultInjected4041002GatewayResponse(clientSideRequestStatistics.getGatewayStatisticsList())) {
+                    return true;
+                }
+
+                if (hasNonFaultInjected4041002StoreResponse(clientSideRequestStatistics.getResponseStatisticsList())
+                    || hasNonFaultInjected4041002StoreResponse(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasNonFaultInjected4041002GatewayResponse(
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
+
+        if (gatewayStatisticsList == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics : gatewayStatisticsList) {
+            if (gatewayStatistics != null
+                && is4041002(gatewayStatistics.getStatusCode(), gatewayStatistics.getSubStatusCode())
+                && isNullOrEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasNonFaultInjected4041002StoreResponse(
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatisticsCollection) {
+
+        if (storeResponseStatisticsCollection == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : storeResponseStatisticsCollection) {
+            StoreResultDiagnostics storeResultDiagnostics =
+                storeResponseStatistics == null ? null : storeResponseStatistics.getStoreResult();
+            StoreResponseDiagnostics storeResponseDiagnostics =
+                storeResultDiagnostics == null ? null : storeResultDiagnostics.getStoreResponseDiagnostics();
+
+            if (storeResponseDiagnostics != null
+                && is4041002(storeResponseDiagnostics.getStatusCode(), storeResponseDiagnostics.getSubStatusCode())
+                && isNullOrEmpty(storeResponseDiagnostics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean is4041002(int statusCode, int subStatusCode) {
+        return statusCode == HttpConstants.StatusCodes.NOTFOUND
+            && subStatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE;
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
