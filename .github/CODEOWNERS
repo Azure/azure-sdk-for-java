@@ -711,8 +711,8 @@
 # ServiceLabel: %Functions
 # ServiceOwners:                                                   @ahmedelnably @fabiocav
 
-# AzureSdkOwners:                                                 
-# ServiceLabel: %graalvm                                           @jonathangiles
+# AzureSdkOwners:                                                  @jonathangiles
+# ServiceLabel: %graalvm
 
 # ServiceLabel: %Graph.Microsoft
 # ServiceOwners:                                                   @baywet @dkershaw10
