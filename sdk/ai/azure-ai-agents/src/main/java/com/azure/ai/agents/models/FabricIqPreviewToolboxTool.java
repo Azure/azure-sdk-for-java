@@ -17,7 +17,7 @@ import java.util.Map;
  * A FabricIQ tool stored in a toolbox.
  */
 @Fluent
-public final class FabricIQPreviewToolboxTool extends ToolboxTool {
+public final class FabricIqPreviewToolboxTool extends ToolboxTool {
     /*
      * The type of tool.
      */
@@ -49,12 +49,12 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
     private BinaryData requireApproval;
 
     /**
-     * Creates an instance of FabricIQPreviewToolboxTool class.
+     * Creates an instance of FabricIqPreviewToolboxTool class.
      * 
      * @param projectConnectionId the projectConnectionId value to set.
      */
     @Generated
-    public FabricIQPreviewToolboxTool(String projectConnectionId) {
+    public FabricIqPreviewToolboxTool(String projectConnectionId) {
         this.projectConnectionId = projectConnectionId;
     }
 
@@ -93,10 +93,10 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
      * Set the serverLabel property: (Optional) The label of the FabricIQ MCP server to connect to.
      * 
      * @param serverLabel the serverLabel value to set.
-     * @return the FabricIQPreviewToolboxTool object itself.
+     * @return the FabricIqPreviewToolboxTool object itself.
      */
     @Generated
-    public FabricIQPreviewToolboxTool setServerLabel(String serverLabel) {
+    public FabricIqPreviewToolboxTool setServerLabel(String serverLabel) {
         this.serverLabel = serverLabel;
         return this;
     }
@@ -117,10 +117,10 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
      * project connection will be used.
      * 
      * @param serverUrl the serverUrl value to set.
-     * @return the FabricIQPreviewToolboxTool object itself.
+     * @return the FabricIqPreviewToolboxTool object itself.
      */
     @Generated
-    public FabricIQPreviewToolboxTool setServerUrl(String serverUrl) {
+    public FabricIqPreviewToolboxTool setServerUrl(String serverUrl) {
         this.serverUrl = serverUrl;
         return this;
     }
@@ -141,10 +141,10 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
      * Default is always.
      * 
      * @param requireApproval the requireApproval value to set.
-     * @return the FabricIQPreviewToolboxTool object itself.
+     * @return the FabricIqPreviewToolboxTool object itself.
      */
     @Generated
-    public FabricIQPreviewToolboxTool setRequireApproval(BinaryData requireApproval) {
+    public FabricIqPreviewToolboxTool setRequireApproval(BinaryData requireApproval) {
         this.requireApproval = requireApproval;
         return this;
     }
@@ -154,7 +154,7 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public FabricIQPreviewToolboxTool setName(String name) {
+    public FabricIqPreviewToolboxTool setName(String name) {
         super.setName(name);
         return this;
     }
@@ -164,7 +164,7 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public FabricIQPreviewToolboxTool setDescription(String description) {
+    public FabricIqPreviewToolboxTool setDescription(String description) {
         super.setDescription(description);
         return this;
     }
@@ -174,7 +174,7 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public FabricIQPreviewToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+    public FabricIqPreviewToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         super.setToolConfigs(toolConfigs);
         return this;
     }
@@ -201,16 +201,16 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Reads an instance of FabricIQPreviewToolboxTool from the JsonReader.
+     * Reads an instance of FabricIqPreviewToolboxTool from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FabricIQPreviewToolboxTool if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of FabricIqPreviewToolboxTool if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the FabricIQPreviewToolboxTool.
+     * @throws IOException If an error occurs while reading the FabricIqPreviewToolboxTool.
      */
     @Generated
-    public static FabricIQPreviewToolboxTool fromJson(JsonReader jsonReader) throws IOException {
+    public static FabricIqPreviewToolboxTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
@@ -245,17 +245,17 @@ public final class FabricIQPreviewToolboxTool extends ToolboxTool {
                     reader.skipChildren();
                 }
             }
-            FabricIQPreviewToolboxTool deserializedFabricIQPreviewToolboxTool
-                = new FabricIQPreviewToolboxTool(projectConnectionId);
-            deserializedFabricIQPreviewToolboxTool.setName(name);
-            deserializedFabricIQPreviewToolboxTool.setDescription(description);
-            deserializedFabricIQPreviewToolboxTool.setToolConfigs(toolConfigs);
-            deserializedFabricIQPreviewToolboxTool.type = type;
-            deserializedFabricIQPreviewToolboxTool.serverLabel = serverLabel;
-            deserializedFabricIQPreviewToolboxTool.serverUrl = serverUrl;
-            deserializedFabricIQPreviewToolboxTool.requireApproval = requireApproval;
+            FabricIqPreviewToolboxTool deserializedFabricIqPreviewToolboxTool
+                = new FabricIqPreviewToolboxTool(projectConnectionId);
+            deserializedFabricIqPreviewToolboxTool.setName(name);
+            deserializedFabricIqPreviewToolboxTool.setDescription(description);
+            deserializedFabricIqPreviewToolboxTool.setToolConfigs(toolConfigs);
+            deserializedFabricIqPreviewToolboxTool.type = type;
+            deserializedFabricIqPreviewToolboxTool.serverLabel = serverLabel;
+            deserializedFabricIqPreviewToolboxTool.serverUrl = serverUrl;
+            deserializedFabricIqPreviewToolboxTool.requireApproval = requireApproval;
 
-            return deserializedFabricIQPreviewToolboxTool;
+            return deserializedFabricIqPreviewToolboxTool;
         });
     }
 }

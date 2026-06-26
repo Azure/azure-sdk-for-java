@@ -17,7 +17,7 @@ import java.util.Map;
  * An MCP tool stored in a toolbox.
  */
 @Fluent
-public final class MCPToolboxTool extends ToolboxTool {
+public final class McpToolboxTool extends ToolboxTool {
     /*
      * The type of tool.
      */
@@ -100,12 +100,12 @@ public final class MCPToolboxTool extends ToolboxTool {
     private String projectConnectionId;
 
     /**
-     * Creates an instance of MCPToolboxTool class.
+     * Creates an instance of McpToolboxTool class.
      * 
      * @param serverLabel the serverLabel value to set.
      */
     @Generated
-    public MCPToolboxTool(String serverLabel) {
+    public McpToolboxTool(String serverLabel) {
         this.serverLabel = serverLabel;
     }
 
@@ -146,10 +146,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * provided.
      * 
      * @param serverUrl the serverUrl value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setServerUrl(String serverUrl) {
+    public McpToolboxTool setServerUrl(String serverUrl) {
         this.serverUrl = serverUrl;
         return this;
     }
@@ -190,10 +190,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * - SharePoint: `connector_sharepoint`.
      * 
      * @param connectorType the connectorType value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setConnectorType(McpToolConnectorId connectorType) {
+    public McpToolboxTool setConnectorType(McpToolConnectorId connectorType) {
         this.connectorType = connectorType;
         return this;
     }
@@ -216,10 +216,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * must handle the OAuth authorization flow and provide the token here.
      * 
      * @param authorization the authorization value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setAuthorization(String authorization) {
+    public McpToolboxTool setAuthorization(String authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -238,10 +238,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * Set the serverDescription property: Optional description of the MCP server, used to provide more context.
      * 
      * @param serverDescription the serverDescription value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setServerDescription(String serverDescription) {
+    public McpToolboxTool setServerDescription(String serverDescription) {
         this.serverDescription = serverDescription;
         return this;
     }
@@ -260,10 +260,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * Set the headers property: The headers property.
      * 
      * @param headers the headers value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setHeaders(Map<String, String> headers) {
+    public McpToolboxTool setHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
     }
@@ -282,10 +282,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * Set the allowedTools property: The allowed_tools property.
      * 
      * @param allowedTools the allowedTools value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setAllowedTools(BinaryData allowedTools) {
+    public McpToolboxTool setAllowedTools(BinaryData allowedTools) {
         this.allowedTools = allowedTools;
         return this;
     }
@@ -304,10 +304,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * Set the requireApproval property: The require_approval property.
      * 
      * @param requireApproval the requireApproval value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setRequireApproval(BinaryData requireApproval) {
+    public McpToolboxTool setRequireApproval(BinaryData requireApproval) {
         this.requireApproval = requireApproval;
         return this;
     }
@@ -326,10 +326,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * Set the deferLoading property: Whether this MCP tool is deferred and discovered via tool search.
      * 
      * @param deferLoading the deferLoading value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setDeferLoading(Boolean deferLoading) {
+    public McpToolboxTool setDeferLoading(Boolean deferLoading) {
         this.deferLoading = deferLoading;
         return this;
     }
@@ -350,10 +350,10 @@ public final class MCPToolboxTool extends ToolboxTool {
      * authentication and other connection details needed to connect to the MCP server.
      * 
      * @param projectConnectionId the projectConnectionId value to set.
-     * @return the MCPToolboxTool object itself.
+     * @return the McpToolboxTool object itself.
      */
     @Generated
-    public MCPToolboxTool setProjectConnectionId(String projectConnectionId) {
+    public McpToolboxTool setProjectConnectionId(String projectConnectionId) {
         this.projectConnectionId = projectConnectionId;
         return this;
     }
@@ -363,7 +363,7 @@ public final class MCPToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public MCPToolboxTool setName(String name) {
+    public McpToolboxTool setName(String name) {
         super.setName(name);
         return this;
     }
@@ -373,7 +373,7 @@ public final class MCPToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public MCPToolboxTool setDescription(String description) {
+    public McpToolboxTool setDescription(String description) {
         super.setDescription(description);
         return this;
     }
@@ -383,7 +383,7 @@ public final class MCPToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public MCPToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+    public McpToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         super.setToolConfigs(toolConfigs);
         return this;
     }
@@ -419,16 +419,16 @@ public final class MCPToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Reads an instance of MCPToolboxTool from the JsonReader.
+     * Reads an instance of McpToolboxTool from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MCPToolboxTool if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of McpToolboxTool if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MCPToolboxTool.
+     * @throws IOException If an error occurs while reading the McpToolboxTool.
      */
     @Generated
-    public static MCPToolboxTool fromJson(JsonReader jsonReader) throws IOException {
+    public static McpToolboxTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
@@ -482,22 +482,22 @@ public final class MCPToolboxTool extends ToolboxTool {
                     reader.skipChildren();
                 }
             }
-            MCPToolboxTool deserializedMCPToolboxTool = new MCPToolboxTool(serverLabel);
-            deserializedMCPToolboxTool.setName(name);
-            deserializedMCPToolboxTool.setDescription(description);
-            deserializedMCPToolboxTool.setToolConfigs(toolConfigs);
-            deserializedMCPToolboxTool.type = type;
-            deserializedMCPToolboxTool.serverUrl = serverUrl;
-            deserializedMCPToolboxTool.connectorType = connectorType;
-            deserializedMCPToolboxTool.authorization = authorization;
-            deserializedMCPToolboxTool.serverDescription = serverDescription;
-            deserializedMCPToolboxTool.headers = headers;
-            deserializedMCPToolboxTool.allowedTools = allowedTools;
-            deserializedMCPToolboxTool.requireApproval = requireApproval;
-            deserializedMCPToolboxTool.deferLoading = deferLoading;
-            deserializedMCPToolboxTool.projectConnectionId = projectConnectionId;
+            McpToolboxTool deserializedMcpToolboxTool = new McpToolboxTool(serverLabel);
+            deserializedMcpToolboxTool.setName(name);
+            deserializedMcpToolboxTool.setDescription(description);
+            deserializedMcpToolboxTool.setToolConfigs(toolConfigs);
+            deserializedMcpToolboxTool.type = type;
+            deserializedMcpToolboxTool.serverUrl = serverUrl;
+            deserializedMcpToolboxTool.connectorType = connectorType;
+            deserializedMcpToolboxTool.authorization = authorization;
+            deserializedMcpToolboxTool.serverDescription = serverDescription;
+            deserializedMcpToolboxTool.headers = headers;
+            deserializedMcpToolboxTool.allowedTools = allowedTools;
+            deserializedMcpToolboxTool.requireApproval = requireApproval;
+            deserializedMcpToolboxTool.deferLoading = deferLoading;
+            deserializedMcpToolboxTool.projectConnectionId = projectConnectionId;
 
-            return deserializedMCPToolboxTool;
+            return deserializedMcpToolboxTool;
         });
     }
 }

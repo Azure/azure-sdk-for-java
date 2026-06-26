@@ -16,7 +16,7 @@ import java.util.Map;
  * A WorkIQ tool stored in a toolbox.
  */
 @Fluent
-public final class WorkIQPreviewToolboxTool extends ToolboxTool {
+public final class WorkIqPreviewToolboxTool extends ToolboxTool {
     /*
      * The type of tool.
      */
@@ -30,12 +30,12 @@ public final class WorkIQPreviewToolboxTool extends ToolboxTool {
     private final String projectConnectionId;
 
     /**
-     * Creates an instance of WorkIQPreviewToolboxTool class.
+     * Creates an instance of WorkIqPreviewToolboxTool class.
      * 
      * @param projectConnectionId the projectConnectionId value to set.
      */
     @Generated
-    public WorkIQPreviewToolboxTool(String projectConnectionId) {
+    public WorkIqPreviewToolboxTool(String projectConnectionId) {
         this.projectConnectionId = projectConnectionId;
     }
 
@@ -65,7 +65,7 @@ public final class WorkIQPreviewToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public WorkIQPreviewToolboxTool setName(String name) {
+    public WorkIqPreviewToolboxTool setName(String name) {
         super.setName(name);
         return this;
     }
@@ -75,7 +75,7 @@ public final class WorkIQPreviewToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public WorkIQPreviewToolboxTool setDescription(String description) {
+    public WorkIqPreviewToolboxTool setDescription(String description) {
         super.setDescription(description);
         return this;
     }
@@ -85,7 +85,7 @@ public final class WorkIQPreviewToolboxTool extends ToolboxTool {
      */
     @Generated
     @Override
-    public WorkIQPreviewToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+    public WorkIqPreviewToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         super.setToolConfigs(toolConfigs);
         return this;
     }
@@ -106,16 +106,16 @@ public final class WorkIQPreviewToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Reads an instance of WorkIQPreviewToolboxTool from the JsonReader.
+     * Reads an instance of WorkIqPreviewToolboxTool from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of WorkIQPreviewToolboxTool if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of WorkIqPreviewToolboxTool if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the WorkIQPreviewToolboxTool.
+     * @throws IOException If an error occurs while reading the WorkIqPreviewToolboxTool.
      */
     @Generated
-    public static WorkIQPreviewToolboxTool fromJson(JsonReader jsonReader) throws IOException {
+    public static WorkIqPreviewToolboxTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
@@ -140,14 +140,14 @@ public final class WorkIQPreviewToolboxTool extends ToolboxTool {
                     reader.skipChildren();
                 }
             }
-            WorkIQPreviewToolboxTool deserializedWorkIQPreviewToolboxTool
-                = new WorkIQPreviewToolboxTool(projectConnectionId);
-            deserializedWorkIQPreviewToolboxTool.setName(name);
-            deserializedWorkIQPreviewToolboxTool.setDescription(description);
-            deserializedWorkIQPreviewToolboxTool.setToolConfigs(toolConfigs);
-            deserializedWorkIQPreviewToolboxTool.type = type;
+            WorkIqPreviewToolboxTool deserializedWorkIqPreviewToolboxTool
+                = new WorkIqPreviewToolboxTool(projectConnectionId);
+            deserializedWorkIqPreviewToolboxTool.setName(name);
+            deserializedWorkIqPreviewToolboxTool.setDescription(description);
+            deserializedWorkIqPreviewToolboxTool.setToolConfigs(toolConfigs);
+            deserializedWorkIqPreviewToolboxTool.type = type;
 
-            return deserializedWorkIQPreviewToolboxTool;
+            return deserializedWorkIqPreviewToolboxTool;
         });
     }
 }
