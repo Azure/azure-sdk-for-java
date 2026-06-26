@@ -104,7 +104,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("test");
 
-        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
 
         // Create JWT claims set with matching tenant ID
@@ -127,7 +127,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("test");
 
-        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
 
         // Create JWT claims set with different tenant ID (mismatched)
@@ -151,7 +151,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("common");
 
-        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
 
         // Create JWT claims set with any tenant ID - should be accepted since "common" is multi-tenant
@@ -174,7 +174,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("organizations");
 
-        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
 
         // Create JWT claims set with any tenant ID
@@ -197,7 +197,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("consumers");
 
-        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
 
         // Create JWT claims set with any tenant ID

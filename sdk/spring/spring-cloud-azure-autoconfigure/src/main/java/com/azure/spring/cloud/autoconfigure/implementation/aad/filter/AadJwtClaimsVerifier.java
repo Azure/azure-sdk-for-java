@@ -32,13 +32,13 @@ final class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.j
      * @param explicitAudienceCheck whether to explicitly check the audience
      * @param validAudiences valid audience values for explicit audience check
      */
-    public AadJwtClaimsVerifier(AadAuthenticationProperties aadAuthenticationProperties,
-                                boolean explicitAudienceCheck,
-                                java.util.Set<String> validAudiences) {
+    AadJwtClaimsVerifier(AadAuthenticationProperties aadAuthenticationProperties,
+                         boolean explicitAudienceCheck,
+                         java.util.Set<String> validAudiences) {
         super(null, null);
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.explicitAudienceCheck = explicitAudienceCheck;
-        this.validAudiences = validAudiences;
+        this.validAudiences = validAudiences != null ? validAudiences : java.util.Collections.emptySet();
     }
 
     @Override
