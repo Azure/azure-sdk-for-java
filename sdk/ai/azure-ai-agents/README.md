@@ -522,9 +522,7 @@ Connect agents to Fabric IQ project connections for enterprise data grounding:
 
 FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
     .setServerLabel("fabric_iq")
-    .setRequireApproval("never")
-    .setName("fabric_iq_lookup")
-    .setDescription("Use FabricIQ to answer questions grounded in enterprise data.");
+    .setRequireApproval("never");
 
 ```
 
@@ -626,7 +624,7 @@ Use `ToolboxSearchPreviewTool` inside a toolbox version to let an agent search t
 
 ```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
 
-ToolboxSearchPreviewTool toolboxSearchTool = new ToolboxSearchPreviewTool()
+ToolboxSearchPreviewToolboxTool toolboxSearchTool = new ToolboxSearchPreviewToolboxTool()
     .setName("search_tools")
     .setDescription("Search over available toolbox tools at runtime.");
 
@@ -640,7 +638,7 @@ ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
 
 System.out.printf("Created toolbox: %s%n", version.getName());
 System.out.printf("Toolbox version: %s%n", version.getVersion());
-for (Tool tool : version.getTools()) {
+for (ToolboxTool tool : version.getTools()) {
     System.out.printf("Tool type: %s%n", tool.getType());
 }
 

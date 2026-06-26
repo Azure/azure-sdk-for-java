@@ -2036,9 +2036,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // account's default consistency level in Compute Gateway will result in a 400 Bad Request
             // even when it is done for resource types / operations where this header should simply be ignored
             // making the change here to restrict adding the header to when it is relevant.
-            if ((operationType.isReadOnlyOperation() || operationType == OperationType.Batch) && (resourceType.isMasterResource() || resourceType == ResourceType.Document)) {
-                headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
-            }
+            putConsistencyLevelHeaderIfSupported(headers, consistencyLevel, resourceType, operationType);
         }
 
         if (readConsistencyStrategy != null
@@ -2062,6 +2060,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (!this.contentResponseOnWriteEnabled && resourceType.equals(ResourceType.Document) && operationType.isWriteOperation()) {
                 headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
             }
+
+            removeUnsupportedConsistencyLevelHeader(headers);
             return headers;
         }
 
@@ -2110,8 +2110,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && !headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
             // Only set ConsistencyLevel when ReadConsistencyStrategy is NOT already present.
             // readConsistencyStrategy takes precedence — setting both causes gateway rejection.
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
+            putConsistencyLevelHeaderIfSupported(headers, options.getConsistencyLevel(), resourceType, operationType);
         }
+
+        removeUnsupportedConsistencyLevelHeader(headers);
 
         if (options.getIndexingDirective() != null) {
             headers.put(HttpConstants.HttpHeaders.INDEXING_DIRECTIVE, options.getIndexingDirective().toString());
@@ -2196,6 +2198,39 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return headers;
     }
 
+    private void putConsistencyLevelHeaderIfSupported(
+        Map<String, String> headers,
+        ConsistencyLevel requestedConsistencyLevel,
+        ResourceType resourceType,
+        OperationType operationType) {
+
+        if (isConsistencyLevelHeaderApplicable(resourceType, operationType)
+            && !isUnsupportedConsistencyLevelUpgrade(requestedConsistencyLevel)) {
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, requestedConsistencyLevel.toString());
+        }
+    }
+
+    private boolean isConsistencyLevelHeaderApplicable(ResourceType resourceType, OperationType operationType) {
+        return (operationType.isReadOnlyOperation() || operationType == OperationType.Batch)
+            && (resourceType.isMasterResource() || resourceType == ResourceType.Document);
+    }
+
+    private void removeUnsupportedConsistencyLevelHeader(Map<String, String> headers) {
+        String requestedConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        if (Strings.isNullOrEmpty(requestedConsistencyLevel)) {
+            return;
+        }
+
+        ConsistencyLevel consistencyLevelFromHeader = BridgeInternal.fromServiceSerializedFormat(requestedConsistencyLevel);
+        if (consistencyLevelFromHeader != null && isUnsupportedConsistencyLevelUpgrade(consistencyLevelFromHeader)) {
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        }
+    }
+
+    private boolean isUnsupportedConsistencyLevelUpgrade(ConsistencyLevel requestedConsistencyLevel) {
+        return Utils.isConsistencyLevelUpgrade(this.getDefaultConsistencyLevelOfAccount(), requestedConsistencyLevel);
+    }
+
     public IRetryPolicyFactory getResetSessionTokenRetryPolicy() {
         return this.resetSessionTokenRetryPolicy;
     }
@@ -2268,6 +2303,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             );
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+
             if (serializationDiagnosticsContext != null) {
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             } else if (crossRegionAvailabilityContextForRequest != null) {

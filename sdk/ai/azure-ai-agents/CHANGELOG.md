@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added convenience methods on `AgentsClient` and `AgentsAsyncClient` to read and write hosted-agent files directly from and to disk using a `String` file path. `downloadAgentCode`, `downloadAgentCodeWithResponse`, and `downloadSessionFileWithResponse` write the downloaded content to the supplied path and accept an optional `overwrite` flag; when the flag is omitted the operation fails if a file already exists at the destination. `uploadSessionFileWithResponse` and the new `CodeFileDetails(String)` constructor read the upload content from a `String` file path.
+- Added `deleteMemory(String, String)` to `BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` for deleting an individual memory item from a memory store.
 - Added protocol-style `listOptimizationCandidates(String, com.azure.core.http.rest.RequestOptions)` overloads on `AgentsClient` and `AgentsAsyncClient` for listing raw optimization candidate pages as `BinaryData`.
 
 ### Breaking Changes
@@ -18,6 +19,8 @@
 - Fixed OpenAI and Responses clients built from `AgentsClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
 
 ### Other Changes
+
+- Added samples demonstrating external agent CRUD (`ExternalAgentSample` / `ExternalAgentAsyncSample`) and memory store item CRUD (`MemoryStoreItemsSample` / `MemoryStoreItemsAsyncSample`).
 
 ## 2.1.0 (2026-06-01)
 

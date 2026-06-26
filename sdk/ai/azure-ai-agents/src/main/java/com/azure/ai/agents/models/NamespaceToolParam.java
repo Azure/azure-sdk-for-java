@@ -45,20 +45,6 @@ public final class NamespaceToolParam extends Tool {
     private final List<BinaryData> tools;
 
     /**
-     * Creates an instance of NamespaceToolParam class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param tools the tools value to set.
-     */
-    @Generated
-    public NamespaceToolParam(String name, String description, List<BinaryData> tools) {
-        this.name = name;
-        this.description = description;
-        this.tools = tools;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -155,5 +141,19 @@ public final class NamespaceToolParam extends Tool {
             deserializedNamespaceToolParam.type = type;
             return deserializedNamespaceToolParam;
         });
+    }
+
+    /**
+     * Creates an instance of NamespaceToolParam class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param tools the tools value to set.
+     */
+    @Generated
+    public NamespaceToolParam(String name, String description, List<BinaryData> tools) {
+        this.name = name;
+        this.description = description;
+        this.tools = tools;
     }
 }

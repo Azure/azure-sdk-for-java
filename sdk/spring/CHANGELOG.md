@@ -19,6 +19,80 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Other Changes
 
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure
+
+This section includes changes in `spring-messaging-azure` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure Event Hubs
+
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure Service Bus
+
+This section includes changes in `spring-messaging-azure-servicebus` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure Storage Queue
+
+This section includes changes in `spring-messaging-azure-storage-queue` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure App Configuration Config
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure App Configuration Config Web
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config-web` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Feature Management
+
+This section includes changes in `spring-cloud-azure-feature-management` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Actuator Autoconfigure
+
+This section includes changes in `spring-cloud-azure-actuator-autoconfigure` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Docker Compose
+
+This section includes changes in `spring-cloud-azure-docker-compose` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
 ## 6.4.0 (2026-06-01)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0-2025.0.2. (Note: 2025.0.x (x>2) should be supported, but they aren't tested with this release.)

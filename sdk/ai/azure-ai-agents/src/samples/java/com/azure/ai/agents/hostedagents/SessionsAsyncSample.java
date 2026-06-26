@@ -44,16 +44,16 @@ public class SessionsAsyncSample {
                 resourcesRef.set(resources);
                 AgentSessionResource session = resources.getSession();
 
-                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId(), null)
+                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId())
                     .doOnNext(fetched -> System.out.printf("Retrieved session (id: %s, status: %s)%n",
                         fetched.getAgentSessionId(), fetched.getStatus()))
-                    .thenMany(agentsAsyncClient.listSessions(agentName, null, null, null, null, null)
+                    .thenMany(agentsAsyncClient.listSessions(agentName, null, null, null, null)
                         .doOnSubscribe(unused -> System.out.println("Listing sessions for the agent..."))
                         .doOnNext(item -> System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(),
                             item.getStatus())))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId(), null)
+                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId())
                             .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n",
                                 session.getAgentSessionId()));
                     }));

@@ -8,8 +8,9 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.http.rest.RequestOptions;
@@ -55,7 +56,7 @@ public class SessionLogStreamSample {
                 .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
                     new FixedRatioVersionSelectionRule(100)
                         .setAgentVersion(resources.getAgent().getVersion()))))
-                .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
+                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
             agentsClient.updateAgentDetails(agentName,
                 new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));

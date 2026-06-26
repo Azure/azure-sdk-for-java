@@ -49,9 +49,7 @@ public class FabricIQAsync {
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
             .setServerLabel("fabric_iq")
-            .setRequireApproval("never")
-            .setName("fabric_iq_lookup")
-            .setDescription("Use FabricIQ to answer questions grounded in enterprise data.");
+            .setRequireApproval("never");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("Use the available Fabric IQ tools to answer questions and perform tasks.")

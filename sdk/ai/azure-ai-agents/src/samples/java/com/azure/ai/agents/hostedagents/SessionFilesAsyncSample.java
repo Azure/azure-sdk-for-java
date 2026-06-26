@@ -50,19 +50,19 @@ public class SessionFilesAsyncSample {
                 String sessionId = resources.getSession().getAgentSessionId();
 
                 return agentsAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1,
-                    BinaryData.fromString("Sample session file 1."), null)
+                    BinaryData.fromString("Sample session file 1."))
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
                     .then(agentsAsyncClient.uploadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2,
-                        BinaryData.fromString("Sample session file 2."), null))
+                        BinaryData.fromString("Sample session file 2.")))
                     .doOnNext(response -> System.out.printf("Uploaded session file: %s%n", response.getPath()))
                     .then(Mono.defer(() -> {
                         System.out.println("Listing session files for the session at path '/remote'...");
-                        return agentsAsyncClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null, null)
+                        return agentsAsyncClient.listSessionFiles(agentName, sessionId, "/remote", null, null, null, null)
                             .doOnNext(entry -> System.out.printf("  - name=%s, size=%d, isDirectory=%s%n",
                                 entry.getName(), entry.getSize(), entry.isDirectory()))
                             .then();
                     }))
-                    .then(agentsAsyncClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, null))
+                    .then(agentsAsyncClient.downloadSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1))
                     .doOnNext(downloaded -> {
                         System.out.printf("Downloading and printing content from '%s'%n", REMOTE_FILE_PATH_1);
                         String fileContent = new String(downloaded.toBytes(), StandardCharsets.UTF_8);
@@ -70,11 +70,11 @@ public class SessionFilesAsyncSample {
                     })
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_1);
-                        return agentsAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false, null);
+                        return agentsAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_1, false);
                     }))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session file at path: %s...%n", REMOTE_FILE_PATH_2);
-                        return agentsAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false, null);
+                        return agentsAsyncClient.deleteSessionFile(agentName, sessionId, REMOTE_FILE_PATH_2, false);
                     }));
             });
 

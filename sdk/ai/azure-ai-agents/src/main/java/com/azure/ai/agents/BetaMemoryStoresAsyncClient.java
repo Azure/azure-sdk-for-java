@@ -73,7 +73,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Creates a memory store resource with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -88,9 +88,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -131,7 +131,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Updates the specified memory store with the supplied configuration changes.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -142,9 +142,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -186,7 +186,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the specified memory store and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -248,7 +248,7 @@ public final class BetaMemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -286,7 +286,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes the specified memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -334,7 +334,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Searches the specified memory store for memories relevant to the provided conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -349,9 +349,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -474,7 +474,7 @@ public final class BetaMemoryStoresAsyncClient {
      * Starts an update that writes conversation memories into the specified memory store.
      * The operation returns a long-running status location for polling the update result.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -487,9 +487,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -609,7 +609,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the status and result of a memory store update operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -746,7 +746,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes all memories in the specified memory store that are associated with the provided scope.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -754,9 +754,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -790,7 +790,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Creates a memory item in the specified memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -800,9 +800,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -837,7 +837,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Updates the specified memory item in the memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -845,9 +845,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -883,7 +883,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Retrieves the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -942,7 +942,7 @@ public final class BetaMemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -950,9 +950,9 @@ public final class BetaMemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -986,7 +986,7 @@ public final class BetaMemoryStoresAsyncClient {
      *
      * Deletes the specified memory item from the memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1012,6 +1012,68 @@ public final class BetaMemoryStoresAsyncClient {
     Mono<Response<BinaryData>> internalDeleteMemoryWithResponse(String name, String memoryId,
         RequestOptions requestOptions) {
         return this.serviceClient.internalDeleteMemoryWithResponseAsync(name, memoryId, requestOptions);
+    }
+
+    /**
+     * Delete a memory item
+     *
+     * Deletes the specified memory item from the memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     memory_id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for deleting a memory item from a memory store along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
+        return internalDeleteMemoryWithResponse(name, memoryId, requestOptions)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Delete a memory item
+     *
+     * Deletes the specified memory item from the memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     memory_id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a {@link Mono} that completes when the memory item has been deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteMemory(String name, String memoryId) {
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteMemoryWithResponse(name, memoryId, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

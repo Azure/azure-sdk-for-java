@@ -11,7 +11,7 @@ pr:
     include:
       - "*"
     exclude:
-      - .github/skills/**
+      - .github/skills/azsdk-common-*/**
 
 parameters:
   - name: Service
