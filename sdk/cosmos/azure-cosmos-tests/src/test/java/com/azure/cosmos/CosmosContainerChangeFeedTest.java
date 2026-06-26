@@ -190,7 +190,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator", "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
-        client = getClientBuilder().buildClient();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions()
+            .setMaxRetryAttemptsOnThrottledRequests(100)
+            .setMaxRetryWaitTime(Duration.ofSeconds(60));
+
+        client = getClientBuilder()
+            .throttlingRetryOptions(throttlingRetryOptions)
+            .buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         createdAsyncDatabase = client.asyncClient().getDatabase(createdDatabase.getId());
     }
