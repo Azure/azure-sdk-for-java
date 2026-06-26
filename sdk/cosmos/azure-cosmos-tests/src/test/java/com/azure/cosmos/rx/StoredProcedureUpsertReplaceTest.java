@@ -6,7 +6,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
@@ -17,15 +19,22 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
+
+    private static final Duration STORED_PROCEDURE_NOT_FOUND_RETRY_DELAY = Duration.ofSeconds(1);
+
+    private static final int STORED_PROCEDURE_NOT_FOUND_MAX_RETRY_ATTEMPTS = 12;
 
     private CosmosAsyncContainer createdCollection;
 
@@ -36,7 +45,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void replaceStoredProcedure() throws Exception {
 
         // create a stored procedure
@@ -51,8 +60,8 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        Mono<CosmosStoredProcedureResponse> readObservable = createdCollection.getScripts()
-                                                                              .getStoredProcedure(readBackSp.getId()).read(null);
+        Mono<CosmosStoredProcedureResponse> readObservable = retryOnStoredProcedureNotFound(
+            createdCollection.getScripts().getStoredProcedure(readBackSp.getId()).read(null));
 
         // validate stored procedure creation
         CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
@@ -62,13 +71,28 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         // update stored procedure
         readBackSp.setBody("function() {var x = 11;}");
 
-        Mono<CosmosStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
-                                                                                 .getStoredProcedure(readBackSp.getId()).replace(readBackSp);
+        Mono<CosmosStoredProcedureResponse> replaceObservable = retryOnStoredProcedureNotFound(
+            createdCollection.getScripts().getStoredProcedure(readBackSp.getId()).replace(readBackSp));
 
         // validate stored procedure replace
         CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
                 .withId(readBackSp.getId()).withStoredProcedureBody("function() {var x = 11;}").notNullEtag().build();
         validateSuccess(replaceObservable, validatorForReplace);
+    }
+
+    private static Mono<CosmosStoredProcedureResponse> retryOnStoredProcedureNotFound(
+        Mono<CosmosStoredProcedureResponse> responseMono) {
+
+        return responseMono.retryWhen(
+            Retry.fixedDelay(STORED_PROCEDURE_NOT_FOUND_MAX_RETRY_ATTEMPTS, STORED_PROCEDURE_NOT_FOUND_RETRY_DELAY)
+                .filter(StoredProcedureUpsertReplaceTest::isNotFound)
+                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
+    private static boolean isNotFound(Throwable throwable) {
+        Throwable unwrappedException = Exceptions.unwrap(throwable);
+        return unwrappedException instanceof CosmosException
+            && ((CosmosException) unwrappedException).getStatusCode() == HttpConstants.StatusCodes.NOTFOUND;
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
