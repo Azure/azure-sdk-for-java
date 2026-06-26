@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class VirtualMachineScaleSetLifeCycleHookEventsUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Update.json
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Update.json
      */
     /**
      * Sample code: The operation to update the virtual machine scale set lifecycle hook event.

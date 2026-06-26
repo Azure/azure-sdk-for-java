@@ -4,7 +4,7 @@
 package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ToolboxesClient;
+import com.azure.ai.agents.BetaToolboxesClient;
 import com.azure.ai.agents.models.Tool;
 import com.azure.ai.agents.models.ToolboxSearchPreviewTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
@@ -25,10 +25,10 @@ public class ToolboxSearchToolboxSample {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String toolboxName = "toolbox-search-tool-java";
 
-        ToolboxesClient toolboxesClient = new AgentsClientBuilder()
+        BetaToolboxesClient toolboxesClient = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .buildToolboxesClient();
+            .beta().buildBetaToolboxesClient();
 
         try {
             toolboxesClient.deleteToolbox(toolboxName);

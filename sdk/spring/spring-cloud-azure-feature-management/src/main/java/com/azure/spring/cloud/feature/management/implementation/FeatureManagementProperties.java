@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.azure.spring.cloud.feature.management.models.FeatureDefinition;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Configuration Properties for Feature Management. Processes the configurations to be usable by Feature Management.

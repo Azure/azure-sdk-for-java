@@ -11,15 +11,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Sample demonstrating model version operations using the synchronous ModelsClient.
+ * Sample demonstrating model version operations using the synchronous BetaModelsClient.
  *
  * <p>Before running, set {@code FOUNDRY_PROJECT_ENDPOINT} to your Azure AI Foundry project endpoint.</p>
  */
 public class ModelsSample {
-    private static final ModelsClient MODELS_CLIENT = new AIProjectClientBuilder()
+    private static final BetaModelsClient MODELS_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildModelsClient();
+        .beta().buildBetaModelsClient();
 
     public static void main(String[] args) {
         listLatestModelVersions();

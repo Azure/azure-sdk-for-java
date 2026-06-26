@@ -45,7 +45,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * Get a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -72,8 +74,10 @@ public final class ConnectionsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, without populating connection credentials along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -82,7 +86,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, with its connection credentials.
+     * Get a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -109,7 +115,9 @@ public final class ConnectionsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, with its connection credentials along with {@link Response} on successful
+     * @return a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @Generated
@@ -141,15 +149,17 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
+     *
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
+     * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
      * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
-     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
+     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -187,7 +197,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * Get a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values.
      *
      * @param name The friendly name of the connection, provided by the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +208,10 @@ public final class ConnectionsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, without populating connection credentials on successful completion of {@link Mono}.
+     * @return a connection
+     *
+     * Retrieves the specified connection and its configuration details without including credential values on
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -208,7 +223,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * Get a connection by name, with its connection credentials.
+     * Get a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values.
      *
      * @param name The friendly name of the connection, provided by the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,7 +234,9 @@ public final class ConnectionsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, with its connection credentials on successful completion of {@link Mono}.
+     * @return a connection with credentials
+     *
+     * Retrieves the specified connection together with its credential values on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -229,10 +248,12 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
      *
-     * @param connectionType List connections of this specific type.
-     * @param defaultConnection List connections that are default connections.
+     * Returns the connections available in the current project, optionally filtered by type or default status.
+     *
+     * @param connectionType Lists connections of this specific type.
+     * @param defaultConnection Lists connections that are default connections.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -268,7 +289,9 @@ public final class ConnectionsAsyncClient {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
+     *
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
