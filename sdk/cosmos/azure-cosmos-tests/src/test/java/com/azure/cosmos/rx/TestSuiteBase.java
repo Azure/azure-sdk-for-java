@@ -280,14 +280,19 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return feedResponseReference.get();
     }
 
-    protected static void validateWithRetry(Runnable validator, String context) throws InterruptedException {
+    @FunctionalInterface
+    protected interface RetryableValidation {
+        void validate() throws InterruptedException;
+    }
+
+    protected static void validateWithRetry(RetryableValidation validator, String context) throws InterruptedException {
 
         long retryStartNanos = System.nanoTime();
         AssertionError lastAssertionError;
 
         do {
             try {
-                validator.run();
+                validator.validate();
                 return;
             } catch (AssertionError assertionError) {
                 lastAssertionError = assertionError;
