@@ -81,7 +81,8 @@ final class LengthValidatingInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
-        inner.close();
+        // No-op. The user/caller is responsible for closing the underlying stream's lifecycle,
+        // in line with the BinaryData.fromStream contract. Closing it here breaks stream replayability on retries.
     }
 
     @Override
