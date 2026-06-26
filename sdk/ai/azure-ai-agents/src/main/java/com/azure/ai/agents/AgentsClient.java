@@ -49,7 +49,7 @@ import com.azure.core.util.IterableStream;
 import com.openai.models.conversations.Conversation;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 /**
@@ -2692,14 +2692,39 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws IOException file write operation failure.
+     * @throws IOException file write operation failure. A {@link java.nio.file.FileAlreadyExistsException} is thrown if
+     * a file already exists at {@code filePath}; use the {@code overwrite} overload to replace it.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadAgentCodeWithResponse(String agentName, Path filePath, RequestOptions requestOptions)
-        throws IOException {
+    public Response<Void> downloadAgentCodeWithResponse(String agentName, String filePath,
+        RequestOptions requestOptions) throws IOException {
+        return downloadAgentCodeWithResponse(agentName, filePath, false, requestOptions);
+    }
+
+    /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent and writes it to {@code filePath}.
+     *
+     * @param agentName The name of the agent.
+     * @param filePath The path to the file where the downloaded code zip will be saved.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the operation
+     * fails if a file already exists at the destination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws IOException file write operation failure. A {@link java.nio.file.FileAlreadyExistsException} is thrown if
+     * {@code overwrite} is {@code false} and a file already exists at {@code filePath}.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadAgentCodeWithResponse(String agentName, String filePath, boolean overwrite,
+        RequestOptions requestOptions) throws IOException {
         Response<BinaryData> response = this.serviceClient.downloadAgentCodeWithResponse(agentName, requestOptions);
-        FileUtils.writeToFile(response, filePath);
+        FileUtils.writeToFile(response, filePath, overwrite);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
 
@@ -3030,7 +3055,7 @@ public final class AgentsClient {
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
-     * @param filePath The content parameter.
+     * @param filePath The path to the local file whose contents will be uploaded.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3040,9 +3065,9 @@ public final class AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String agentSessionId, String path,
-        Path filePath, RequestOptions requestOptions) {
+        String filePath, RequestOptions requestOptions) {
         return this.serviceClient.uploadSessionFileWithResponse(agentName, agentSessionId, path,
-            BinaryData.fromFile(filePath), requestOptions);
+            BinaryData.fromFile(Paths.get(filePath)), requestOptions);
     }
 
     /**
@@ -3105,15 +3130,43 @@ public final class AgentsClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws IOException file write operation failure.
+     * @throws IOException file write operation failure. A {@link java.nio.file.FileAlreadyExistsException} is thrown if
+     * a file already exists at {@code filePath}; use the {@code overwrite} overload to replace it.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
-        Path filePath, RequestOptions requestOptions) throws IOException {
+        String filePath, RequestOptions requestOptions) throws IOException {
+        return downloadSessionFileWithResponse(agentName, agentSessionId, path, filePath, false, requestOptions);
+    }
+
+    /**
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path and writes it to {@code filePath}.
+     * The path is resolved relative to the session home directory.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param filePath path to disc in file where to save the downloaded file.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the operation
+     * fails if a file already exists at the destination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws IOException file write operation failure. A {@link java.nio.file.FileAlreadyExistsException} is thrown if
+     * {@code overwrite} is {@code false} and a file already exists at {@code filePath}.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+        String filePath, boolean overwrite, RequestOptions requestOptions) throws IOException {
         Response<BinaryData> response
             = this.serviceClient.downloadSessionFileWithResponse(agentName, agentSessionId, path, requestOptions);
-        FileUtils.writeToFile(response, filePath);
+        FileUtils.writeToFile(response, filePath, overwrite);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
 
@@ -3410,15 +3463,38 @@ public final class AgentsClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @throws IOException file write operation failure.
+     * @throws IOException file write operation failure. A {@link java.nio.file.FileAlreadyExistsException} is thrown if
+     * a file already exists at {@code filePath}; use the {@code overwrite} overload to replace it.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadAgentCode(String agentName, String agentVersion, Path filePath) throws IOException {
-        RequestOptions requestOptions = new RequestOptions();
-        if (agentVersion != null) {
-            requestOptions.addQueryParam("agent_version", agentVersion, false);
-        }
-        FileUtils.writeToFile(downloadAgentCode(agentName, agentVersion), filePath);
+    public void downloadAgentCode(String agentName, String agentVersion, String filePath) throws IOException {
+        downloadAgentCode(agentName, agentVersion, filePath, false);
+    }
+
+    /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent and writes it to {@code filePath}.
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent whose code zip should be downloaded.
+     * If omitted, the latest version's code zip is returned.
+     * @param filePath destination file.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the operation
+     * fails if a file already exists at the destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws IOException file write operation failure. A {@link java.nio.file.FileAlreadyExistsException} is thrown if
+     * {@code overwrite} is {@code false} and a file already exists at {@code filePath}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadAgentCode(String agentName, String agentVersion, String filePath, boolean overwrite)
+        throws IOException {
+        FileUtils.writeToFile(downloadAgentCode(agentName, agentVersion), filePath, overwrite);
     }
 
     /**

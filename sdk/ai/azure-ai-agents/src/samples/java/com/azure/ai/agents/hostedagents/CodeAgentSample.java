@@ -56,7 +56,7 @@ public class CodeAgentSample {
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode
 
             Path downloadPath = Files.createTempDirectory(agentName + "-").resolve("code.zip");
-            agentsClient.downloadAgentCodeWithResponse(agentName, downloadPath, new RequestOptions());
+            agentsClient.downloadAgentCodeWithResponse(agentName, downloadPath.toString(), new RequestOptions());
             System.out.println("Downloaded code package path: " + downloadPath);
 
             // END: com.azure.ai.agents.hostedagents.CodeAgentSample.downloadAgentCode

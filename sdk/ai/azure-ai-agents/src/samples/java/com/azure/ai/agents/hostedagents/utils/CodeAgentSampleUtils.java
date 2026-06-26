@@ -101,7 +101,7 @@ public final class CodeAgentSampleUtils {
     }
 
     private static CodeFileDetails createCodeFileDetails(Path codeZipPath) {
-        return new CodeFileDetails(codeZipPath)
+        return new CodeFileDetails(codeZipPath.toString())
             .setFilename("responses-echo-agent.zip")
             .setContentType("application/zip");
     }

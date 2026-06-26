@@ -11,9 +11,10 @@ import org.junit.jupiter.api.io.TempDir;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.charset.StandardCharsets;
 
 public class FileUtilsTest {
     @TempDir
@@ -23,18 +24,58 @@ public class FileUtilsTest {
     public void writeToFileAsyncCreatesNewFile() throws IOException {
         Path destinationFile = temporaryDirectory.resolve("new-file.txt");
 
-        StepVerifier.create(FileUtils.writeToFileAsync(BinaryData.fromString("new content"), destinationFile))
+        StepVerifier
+            .create(FileUtils.writeToFileAsync(BinaryData.fromString("new content"), destinationFile.toString(), false))
             .verifyComplete();
 
         Assertions.assertEquals("new content", new String(Files.readAllBytes(destinationFile), StandardCharsets.UTF_8));
     }
 
     @Test
-    public void writeToFileAsyncOverwritesExistingFile() throws IOException {
+    public void writeToFileAsyncFailsWhenFileExistsAndOverwriteDisabled() throws IOException {
         Path destinationFile = Files.createFile(temporaryDirectory.resolve("existing-file.txt"));
 
-        StepVerifier.create(FileUtils.writeToFileAsync(BinaryData.fromString("updated content"), destinationFile))
+        StepVerifier
+            .create(
+                FileUtils.writeToFileAsync(BinaryData.fromString("updated content"), destinationFile.toString(), false))
+            .verifyError(FileAlreadyExistsException.class);
+    }
+
+    @Test
+    public void writeToFileAsyncOverwritesExistingFileWhenOverwriteEnabled() throws IOException {
+        Path destinationFile = Files.createFile(temporaryDirectory.resolve("existing-file.txt"));
+
+        StepVerifier
+            .create(
+                FileUtils.writeToFileAsync(BinaryData.fromString("updated content"), destinationFile.toString(), true))
             .verifyComplete();
+
+        Assertions.assertEquals("updated content",
+            new String(Files.readAllBytes(destinationFile), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void writeToFileCreatesNewFile() throws IOException {
+        Path destinationFile = temporaryDirectory.resolve("new-sync-file.txt");
+
+        FileUtils.writeToFile(BinaryData.fromString("new content"), destinationFile.toString(), false);
+
+        Assertions.assertEquals("new content", new String(Files.readAllBytes(destinationFile), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void writeToFileFailsWhenFileExistsAndOverwriteDisabled() throws IOException {
+        Path destinationFile = Files.createFile(temporaryDirectory.resolve("existing-sync-file.txt"));
+
+        Assertions.assertThrows(FileAlreadyExistsException.class,
+            () -> FileUtils.writeToFile(BinaryData.fromString("updated content"), destinationFile.toString(), false));
+    }
+
+    @Test
+    public void writeToFileOverwritesExistingFileWhenOverwriteEnabled() throws IOException {
+        Path destinationFile = Files.createFile(temporaryDirectory.resolve("existing-sync-file.txt"));
+
+        FileUtils.writeToFile(BinaryData.fromString("updated content"), destinationFile.toString(), true);
 
         Assertions.assertEquals("updated content",
             new String(Files.readAllBytes(destinationFile), StandardCharsets.UTF_8));

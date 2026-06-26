@@ -50,7 +50,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.models.conversations.Conversation;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
@@ -2795,7 +2795,8 @@ public final class AgentsAsyncClient {
      * </pre>
      *
      * @param agentName The name of the agent.
-     * @param filePath The path to file in disk for the download.
+     * @param filePath The path to file in disk for the download. If a file already exists at this path, the returned
+     * {@link Mono} fails; use the {@code overwrite} overload to replace it.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2804,10 +2805,32 @@ public final class AgentsAsyncClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> downloadAgentCodeWithResponse(String agentName, Path filePath,
+    public Mono<Response<Void>> downloadAgentCodeWithResponse(String agentName, String filePath,
+        RequestOptions requestOptions) {
+        return downloadAgentCodeWithResponse(agentName, filePath, false, requestOptions);
+    }
+
+    /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent and writes it to {@code filePath}.
+     *
+     * @param agentName The name of the agent.
+     * @param filePath The path to file in disk for the download.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the returned
+     * {@link Mono} fails if a file already exists at the destination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadAgentCodeWithResponse(String agentName, String filePath, boolean overwrite,
         RequestOptions requestOptions) {
         return this.serviceClient.downloadAgentCodeWithResponseAsync(agentName, requestOptions)
-            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath));
+            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath, overwrite));
     }
 
     /**
@@ -3142,7 +3165,7 @@ public final class AgentsAsyncClient {
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
-     * @param filePath Path to file in disc.
+     * @param filePath The path to the local file whose contents will be uploaded.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3153,9 +3176,9 @@ public final class AgentsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadSessionFileWithResponse(String agentName, String agentSessionId,
-        String path, Path filePath, RequestOptions requestOptions) {
+        String path, String filePath, RequestOptions requestOptions) {
         return this.serviceClient.uploadSessionFileWithResponseAsync(agentName, agentSessionId, path,
-            BinaryData.fromFile(filePath), requestOptions);
+            BinaryData.fromFile(Paths.get(filePath)), requestOptions);
     }
 
     /**
@@ -3212,7 +3235,8 @@ public final class AgentsAsyncClient {
      * @param agentName The name of the agent.
      * @param agentSessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
-     * @param filePath destination file for the download.
+     * @param filePath destination file for the download. If a file already exists at this path, the returned
+     * {@link Mono} fails; use the {@code overwrite} overload to replace it.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3222,9 +3246,34 @@ public final class AgentsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
-        Path filePath, RequestOptions requestOptions) {
+        String filePath, RequestOptions requestOptions) {
+        return downloadSessionFileWithResponse(agentName, agentSessionId, path, filePath, false, requestOptions);
+    }
+
+    /**
+     * Download a session file
+     *
+     * Downloads the file at the specified sandbox path and writes it to {@code filePath}.
+     * The path is resolved relative to the session home directory.
+     *
+     * @param agentName The name of the agent.
+     * @param agentSessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param filePath destination file for the download.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the returned
+     * {@link Mono} fails if a file already exists at the destination.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+        String filePath, boolean overwrite, RequestOptions requestOptions) {
         return this.serviceClient.downloadSessionFileWithResponseAsync(agentName, agentSessionId, path, requestOptions)
-            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath));
+            .flatMap(response -> FileUtils.writeToFileWithResponseAsync(response, filePath, overwrite));
     }
 
     /**
@@ -3516,7 +3565,8 @@ public final class AgentsAsyncClient {
      *
      * @param agentName The name of the agent.
      * @param agentVersion The version of the agent whose code zip should be downloaded.
-     * @param filePath destination file for the download.
+     * @param filePath destination file for the download. If a file already exists at this path, the returned
+     * {@link Mono} fails; use the {@code overwrite} overload to replace it.
      * If omitted, the latest version's code zip is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3527,14 +3577,33 @@ public final class AgentsAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadAgentCode(String agentName, String agentVersion, Path filePath) {
-        // Generated convenience method for downloadAgentCodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (agentVersion != null) {
-            requestOptions.addQueryParam("agent_version", agentVersion, false);
-        }
-        return downloadAgentCodeWithResponse(agentName, requestOptions).flatMap(FluxUtil::toMono)
-            .flatMap(content -> FileUtils.writeToFileAsync(content, filePath));
+    public Mono<Void> downloadAgentCode(String agentName, String agentVersion, String filePath) {
+        return downloadAgentCode(agentName, agentVersion, filePath, false);
+    }
+
+    /**
+     * Download agent code
+     *
+     * Downloads the code zip for a code-based hosted agent and writes it to {@code filePath}.
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent whose code zip should be downloaded.
+     * If omitted, the latest version's code zip is returned.
+     * @param filePath destination file for the download.
+     * @param overwrite Whether to overwrite an existing file at {@code filePath}. When {@code false}, the returned
+     * {@link Mono} fails if a file already exists at the destination.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> downloadAgentCode(String agentName, String agentVersion, String filePath, boolean overwrite) {
+        return downloadAgentCode(agentName, agentVersion)
+            .flatMap(content -> FileUtils.writeToFileAsync(content, filePath, overwrite));
     }
 
     /**

@@ -95,7 +95,7 @@ public class CodeAgentAsyncSample {
             return downloadPath;
         }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(downloadPath -> agentsAsyncClient.downloadAgentCodeWithResponse(
-                agentName, downloadPath, new RequestOptions()).thenReturn(downloadPath))
+                agentName, downloadPath.toString(), new RequestOptions()).thenReturn(downloadPath))
             .doOnNext(downloadPath -> System.out.println("Downloaded code package path: " + downloadPath));
     }
 }

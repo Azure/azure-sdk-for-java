@@ -86,7 +86,7 @@ public class CodeAgentSamplesTests extends ClientTestBase {
             Assertions.assertNotNull(version.getVersion());
 
             Path downloadPath = Files.createTempDirectory(agentName + "-").resolve("code.zip");
-            agentsClient.downloadAgentCodeWithResponse(agentName, downloadPath, new RequestOptions());
+            agentsClient.downloadAgentCodeWithResponse(agentName, downloadPath.toString(), new RequestOptions());
             Assertions.assertTrue(Files.size(downloadPath) > 0);
 
             AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
@@ -123,7 +123,8 @@ public class CodeAgentSamplesTests extends ClientTestBase {
                 Assertions.assertEquals(agentName, version.getName());
                 Assertions.assertNotNull(version.getVersion());
 
-                return agentsAsyncClient.downloadAgentCodeWithResponse(agentName, downloadPath, new RequestOptions());
+                return agentsAsyncClient.downloadAgentCodeWithResponse(agentName, downloadPath.toString(),
+                    new RequestOptions());
             })
             .then(Mono.fromCallable(() -> {
                 Assertions.assertTrue(Files.size(downloadPath) > 0);
@@ -196,7 +197,7 @@ public class CodeAgentSamplesTests extends ClientTestBase {
     }
 
     private static CodeFileDetails createCodeFileDetails(Path codeZipPath) {
-        return new CodeFileDetails(codeZipPath).setFilename("responses-echo-agent.zip")
+        return new CodeFileDetails(codeZipPath.toString()).setFilename("responses-echo-agent.zip")
             .setContentType("application/zip");
     }
 
