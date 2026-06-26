@@ -144,9 +144,15 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
 
+    private static final int SHARED_SUITE_SETUP_TIMEOUT = 600_000;
+
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
+
+    private static final Duration COLLECTION_READINESS_MAX_WAIT = Duration.ofMinutes(2);
+
+    private static final Duration COLLECTION_READINESS_PROBE_TIMEOUT = Duration.ofSeconds(10);
 
     private static final Duration NOT_FOUND_RETRY_DELAY = Duration.ofSeconds(1);
 
@@ -454,7 +460,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SUITE_SETUP_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "fi-customer-workflows", "fi-sm-customer-workflows", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong", "manual-http-network-fault", "consistency-overrides"}, timeOut = SHARED_SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -773,7 +779,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .filter(region -> primary == null || !region.equalsIgnoreCase(primary))
             .collect(Collectors.toList());
 
-        Duration maxWait = Duration.ofMinutes(2);
+        Duration maxWait = COLLECTION_READINESS_MAX_WAIT;
         long deadlineNanos = System.nanoTime() + maxWait.toNanos();
 
         if (nonPrimaryRegions.isEmpty()) {
@@ -806,10 +812,31 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         int attempts = 0;
         Throwable lastError = null;
 
+        logger.info(
+            "Waiting for container '{}' to become readable{} with excludedRegions={} for up to {} seconds.",
+            container.getId(),
+            targetRegion != null ? " in region '" + targetRegion + "'" : "",
+            excludedRegions,
+            maxWait.getSeconds());
+
         while (true) {
+            long remainingNanos = deadlineNanos - System.nanoTime();
+            if (remainingNanos <= 0) {
+                break;
+            }
+
             attempts++;
             try {
+                Duration attemptTimeout = Duration.ofMillis(
+                    Math.max(
+                        1,
+                        Math.min(
+                            COLLECTION_READINESS_PROBE_TIMEOUT.toMillis(),
+                            TimeUnit.NANOSECONDS.toMillis(remainingNanos))));
                 CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                options.setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(attemptTimeout)
+                        .build());
                 if (!excludedRegions.isEmpty()) {
                     options.setExcludedRegions(excludedRegions);
                 }
@@ -817,13 +844,19 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 // targeted region.
                 container.queryItems("SELECT TOP 1 c.id FROM c", options, Object.class)
                     .byPage(1)
-                    .blockFirst();
+                    .blockFirst(attemptTimeout);
+
+                logger.info(
+                    "Container '{}' became readable{} after {} attempt(s).",
+                    container.getId(),
+                    targetRegion != null ? " in region '" + targetRegion + "'" : "",
+                    attempts);
                 return;
             } catch (Exception error) {
                 lastError = error;
             }
 
-            long remainingNanos = deadlineNanos - System.nanoTime();
+            remainingNanos = deadlineNanos - System.nanoTime();
             if (remainingNanos <= 0) {
                 break;
             }
@@ -840,11 +873,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         throw new AssertionError(
             String.format(
-                "Container '%s' was not available to read%s within %d seconds (%d attempts).",
+                "Container '%s' was not available to read%s within %d seconds (%d attempts). Excluded regions: %s.",
                 container.getId(),
                 targetRegion != null ? " in region '" + targetRegion + "'" : "",
                 maxWait.getSeconds(),
-                attempts),
+                attempts,
+                excludedRegions),
             lastError);
     }
 
