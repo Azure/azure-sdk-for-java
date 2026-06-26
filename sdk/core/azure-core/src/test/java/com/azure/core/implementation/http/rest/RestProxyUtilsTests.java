@@ -226,7 +226,7 @@ public class RestProxyUtilsTests {
             validatingStream.close();
 
             // Validate that closing the wrapper does not close the underlying stream.
-            assertTrue(!closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
+            org.junit.jupiter.api.Assertions.assertFalse(closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
         }
     }
 
