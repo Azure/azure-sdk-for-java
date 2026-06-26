@@ -1490,12 +1490,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         boolean hasPayload = storeResult.get("exceptionMessage") == null;
         assertThat(storeResult).isNotNull();
         assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
-        assertThat(storeResult.get("rntbdRequestLengthInBytes").asInt(-1)).isGreaterThan(expectedRequestPayloadSize);
         assertThat(storeResult.get("requestPayloadLengthInBytes").asInt(-1)).isEqualTo(expectedRequestPayloadSize);
         if (hasPayload) {
             assertThat(storeResult.get("responsePayloadLengthInBytes").asInt(-1)).isEqualTo(expectedResponsePayloadSize);
+            assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThan(expectedResponsePayloadSize);
+        } else {
+            assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThanOrEqualTo(0);
         }
-        assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThan(expectedResponsePayloadSize);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

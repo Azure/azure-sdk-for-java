@@ -75,7 +75,6 @@ import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedResponse;
@@ -148,9 +147,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
 
-    private static final Duration STORED_PROCEDURE_NOT_FOUND_RETRY_DELAY = Duration.ofSeconds(1);
+    private static final Duration NOT_FOUND_RETRY_DELAY = Duration.ofSeconds(1);
 
-    private static final int STORED_PROCEDURE_NOT_FOUND_MAX_RETRY_ATTEMPTS = 12;
+    private static final int NOT_FOUND_MAX_RETRY_ATTEMPTS = 12;
 
     private static final Duration STORED_PROCEDURE_QUERY_RETRY_DELAY = Duration.ofSeconds(1);
 
@@ -194,13 +193,34 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    protected static Mono<CosmosStoredProcedureResponse> retryOnStoredProcedureNotFound(
-        Mono<CosmosStoredProcedureResponse> responseMono) {
+    protected static <T> Mono<T> retryOnNotFound(Mono<T> responseMono) {
 
         return responseMono.retryWhen(
-            Retry.fixedDelay(STORED_PROCEDURE_NOT_FOUND_MAX_RETRY_ATTEMPTS, STORED_PROCEDURE_NOT_FOUND_RETRY_DELAY)
+            Retry.fixedDelay(NOT_FOUND_MAX_RETRY_ATTEMPTS, NOT_FOUND_RETRY_DELAY)
                 .filter(TestSuiteBase::isNotFound)
                 .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
+    protected static <T> T retryOnNotFound(Supplier<T> responseSupplier) throws InterruptedException {
+        for (int attempt = 0; attempt <= NOT_FOUND_MAX_RETRY_ATTEMPTS; attempt++) {
+            try {
+                return responseSupplier.get();
+            } catch (CosmosException cosmosException) {
+                if (cosmosException.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND
+                    || attempt == NOT_FOUND_MAX_RETRY_ATTEMPTS) {
+
+                    throw cosmosException;
+                }
+
+                logger.warn(
+                    "Retrying NotFound response after {}. Retry attempt {}.",
+                    NOT_FOUND_RETRY_DELAY,
+                    attempt + 1);
+                Thread.sleep(NOT_FOUND_RETRY_DELAY.toMillis());
+            }
+        }
+
+        throw new IllegalStateException("Retry loop completed unexpectedly.");
     }
 
     protected static <T> void validateCosmosPagedIterableWithRetry(

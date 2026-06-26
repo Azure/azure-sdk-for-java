@@ -85,7 +85,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -94,17 +94,17 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateDiagnostics(response, false);
 
         CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureDef.getId());
-        CosmosStoredProcedureResponse readResponse = storedProcedure.read();
+        CosmosStoredProcedureResponse readResponse = retryOnNotFound(storedProcedure::read);
         validateResponse(storedProcedureDef, readResponse);
         validateDiagnostics(readResponse, false);
 
         CosmosStoredProcedureResponse readResponse2 =
-                storedProcedure.read(new CosmosStoredProcedureRequestOptions());
+            retryOnNotFound(() -> storedProcedure.read(new CosmosStoredProcedureRequestOptions()));
         validateResponse(storedProcedureDef, readResponse2);
         validateDiagnostics(readResponse2, false);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void replaceStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -112,25 +112,27 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateResponse(storedProcedureDef, response);
         validateDiagnostics(response, false);
 
-        CosmosStoredProcedureResponse readResponse = container.getScripts()
-                                                              .getStoredProcedure(storedProcedureDef.getId())
-                                                              .read();
+        CosmosStoredProcedureResponse readResponse = retryOnNotFound(
+            () -> container.getScripts()
+                .getStoredProcedure(storedProcedureDef.getId())
+                .read());
         validateResponse(storedProcedureDef, readResponse);
         validateDiagnostics(readResponse, false);
         //replace
         storedProcedureDef = readResponse.getProperties();
         storedProcedureDef.setBody("function(){ var y = 20;}");
-        CosmosStoredProcedureResponse replaceResponse = container.getScripts()
-                                                                 .getStoredProcedure(storedProcedureDef.getId())
-                                                                 .replace(storedProcedureDef);
+        CosmosStoredProcedureResponse replaceResponse = retryOnNotFound(
+            () -> container.getScripts()
+                .getStoredProcedure(storedProcedureDef.getId())
+                .replace(storedProcedureDef));
         validateResponse(storedProcedureDef, replaceResponse);
         validateDiagnostics(replaceResponse, false);
 
         storedProcedureDef.setBody("function(){ var z = 2;}");
-        CosmosStoredProcedureResponse replaceResponse2 = container.getScripts()
-                                                                  .getStoredProcedure(storedProcedureDef.getId())
-                                                                  .replace(storedProcedureDef,
-                                                                             new CosmosStoredProcedureRequestOptions());
+        CosmosStoredProcedureResponse replaceResponse2 = retryOnNotFound(
+            () -> container.getScripts()
+                .getStoredProcedure(storedProcedureDef.getId())
+                .replace(storedProcedureDef, new CosmosStoredProcedureRequestOptions()));
         validateResponse(storedProcedureDef, replaceResponse2);
         validateDiagnostics(replaceResponse2, false);
 

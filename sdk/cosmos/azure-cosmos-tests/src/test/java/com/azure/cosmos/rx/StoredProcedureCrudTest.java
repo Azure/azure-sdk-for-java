@@ -65,7 +65,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         CosmosAsyncStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureResponse.getProperties().getId());
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        Mono<CosmosStoredProcedureResponse> readObservable = retryOnStoredProcedureNotFound(storedProcedure.read(null));
+        Mono<CosmosStoredProcedureResponse> readObservable = retryOnNotFound(storedProcedure.read(null));
 
         CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
             .withId(storedProcedureDef.getId())

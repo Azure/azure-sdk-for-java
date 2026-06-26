@@ -51,7 +51,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        Mono<CosmosStoredProcedureResponse> readObservable = retryOnStoredProcedureNotFound(
+        Mono<CosmosStoredProcedureResponse> readObservable = retryOnNotFound(
             createdCollection.getScripts().getStoredProcedure(readBackSp.getId()).read(null));
 
         // validate stored procedure creation
@@ -62,7 +62,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         // update stored procedure
         readBackSp.setBody("function() {var x = 11;}");
 
-        Mono<CosmosStoredProcedureResponse> replaceObservable = retryOnStoredProcedureNotFound(
+        Mono<CosmosStoredProcedureResponse> replaceObservable = retryOnNotFound(
             createdCollection.getScripts().getStoredProcedure(readBackSp.getId()).replace(readBackSp));
 
         // validate stored procedure replace

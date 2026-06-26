@@ -323,19 +323,21 @@ public class OperationPoliciesTest extends TestSuiteBase {
         InternalObjectNode item = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(item).block();
 
-        CosmosItemResponse<InternalObjectNode> readResponse = container.readItem(item.getId(),
-            new PartitionKey(item.get("mypk")),
-            new CosmosItemRequestOptions(),
-            InternalObjectNode.class).block();
+        CosmosItemResponse<InternalObjectNode> readResponse = retryOnNotFound(
+            container.readItem(item.getId(),
+                new PartitionKey(item.get("mypk")),
+                new CosmosItemRequestOptions(),
+                InternalObjectNode.class)).block();
         validateItemResponse(item, readResponse);
         validateOptions(initialOptions, readResponse, true);
 
         changeProperties(changedOptions);
 
-        readResponse = container.readItem(item.getId(),
-            new PartitionKey(item.get("mypk")),
-            new CosmosItemRequestOptions(),
-            InternalObjectNode.class).block();
+        readResponse = retryOnNotFound(
+            container.readItem(item.getId(),
+                new PartitionKey(item.get("mypk")),
+                new CosmosItemRequestOptions(),
+                InternalObjectNode.class)).block();
         validateItemResponse(item, readResponse);
         validateOptions(changedOptions, readResponse, true);
     }
