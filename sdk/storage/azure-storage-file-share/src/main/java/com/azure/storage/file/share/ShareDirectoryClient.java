@@ -951,27 +951,19 @@ public class ShareDirectoryClient {
         if (modifiedOptions.includeAll()) {
             includeTypes.add(ListFilesIncludeType.ALL);
         } else {
-            if (modifiedOptions.includeAttributes()) {
-                includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
-            }
-            if (modifiedOptions.includeETag()) {
-                includeTypes.add(ListFilesIncludeType.ETAG);
-            }
-            if (modifiedOptions.includeTimestamps()) {
-                includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
-            }
-            if (modifiedOptions.includePermissionKey()) {
-                includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
-            }
-            if (modifiedOptions.includeLinkCount()) {
-                includeTypes.add(ListFilesIncludeType.LINK_COUNT);
-            }
-            if (modifiedOptions.includePermissions()) {
-                includeTypes.add(ListFilesIncludeType.PERMISSIONS);
-            }
-            if (modifiedOptions.includeNfsAttributes()) {
-                includeTypes.add(ListFilesIncludeType.NFS_ATTRIBUTES);
-            }
+            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeAttributes(),
+                ListFilesIncludeType.ATTRIBUTES);
+            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeETag(), ListFilesIncludeType.ETAG);
+            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeTimestamps(),
+                ListFilesIncludeType.TIMESTAMPS);
+            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includePermissionKey(),
+                ListFilesIncludeType.PERMISSION_KEY);
+            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeLinkCount(),
+                ListFilesIncludeType.LINK_COUNT);
+            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includePermissions(),
+                ListFilesIncludeType.PERMISSIONS);
+            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeNfsAttributes(),
+                ListFilesIncludeType.NFS_ATTRIBUTES);
         }
 
         // these options must be absent from request if empty or false

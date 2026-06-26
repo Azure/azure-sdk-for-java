@@ -50,6 +50,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
@@ -662,6 +663,12 @@ public class ModelHelper {
         Function<T, ShareFileItem> mapper) {
         if (items != null) {
             items.forEach(item -> shareFileItems.add(mapper.apply(item)));
+        }
+    }
+
+    public static <T> void addOptionToList(List<T> includeTypes, boolean isInOptionsBag, T type) {
+        if (isInOptionsBag) {
+            includeTypes.add(type);
         }
     }
 
