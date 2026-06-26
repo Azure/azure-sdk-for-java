@@ -710,7 +710,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410,
                 ruleId,
-                true
+                true,
+                1
             );
 
         } finally {
@@ -1691,6 +1692,26 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             false);
     }
 
+    private void validateFaultInjectionRuleApplied(
+        CosmosDiagnostics cosmosDiagnostics,
+        OperationType operationType,
+        int statusCode,
+        int subStatusCode,
+        String ruleId,
+        boolean canRetryOnFaultInjectedError,
+        int minResponseStatisticsCountWhenRetrying) throws JsonProcessingException {
+
+        validateFaultInjectionRuleApplied(
+            cosmosDiagnostics,
+            operationType,
+            statusCode,
+            subStatusCode,
+            ruleId,
+            canRetryOnFaultInjectedError,
+            false,
+            minResponseStatisticsCountWhenRetrying);
+    }
+
     private void validateFaultInjectionRuleAppliedForBarrier(
         CosmosDiagnostics cosmosDiagnostics,
         OperationType operationType,
@@ -1705,7 +1726,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             subStatusCode,
             ruleId,
             true,
-            true);
+            true,
+            2);
     }
 
     private void validateFaultInjectionRuleApplied(
@@ -1716,6 +1738,27 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         String ruleId,
         boolean canRetryOnFaultInjectedError,
         boolean validateForBarrier) throws JsonProcessingException {
+
+        validateFaultInjectionRuleApplied(
+            cosmosDiagnostics,
+            operationType,
+            statusCode,
+            subStatusCode,
+            ruleId,
+            canRetryOnFaultInjectedError,
+            validateForBarrier,
+            2);
+    }
+
+    private void validateFaultInjectionRuleApplied(
+        CosmosDiagnostics cosmosDiagnostics,
+        OperationType operationType,
+        int statusCode,
+        int subStatusCode,
+        String ruleId,
+        boolean canRetryOnFaultInjectedError,
+        boolean validateForBarrier,
+        int minResponseStatisticsCountWhenRetrying) throws JsonProcessingException {
 
         List<ObjectNode> clientSideRequestStatisticsNodes = new ArrayList<>();
         assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
@@ -1746,7 +1789,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
 
         if (canRetryOnFaultInjectedError) {
-            assertThat(responseStatisticsNodes.size()).isGreaterThanOrEqualTo(2);
+            assertThat(responseStatisticsNodes.size()).isGreaterThanOrEqualTo(minResponseStatisticsCountWhenRetrying);
         } else {
             assertThat(responseStatisticsNodes.size()).isOne();
         }
