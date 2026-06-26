@@ -56,21 +56,10 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
 
     protected static void enableThinClientForTest() {
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        // Thin-client routing tests in this hierarchy assert that requests actually went
-        // through the proxy on port 10250 via assertThinClientEndpointUsed. The connectivity
-        // probe is enabled by default in production, but the proxy-side /connectivity-probe
-        // endpoint is not deployed in every CI test account yet. With the default failure
-        // threshold of 1, a single failed probe cycle flips routing from the proxy to
-        // Gateway V1, breaking these assertions. Disable the probe here so the routing path
-        // under test is exercised deterministically; production callers still get the probe
-        // ON by default. Cleared in clearThinClientForTest() to avoid leaking into other
-        // test classes.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
     }
 
     protected static void clearThinClientForTest() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
     }
 
     /**

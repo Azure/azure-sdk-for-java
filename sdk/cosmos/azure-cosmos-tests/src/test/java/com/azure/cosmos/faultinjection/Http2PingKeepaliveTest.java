@@ -86,16 +86,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
         // set externally (Maven profile or -D) so a single test class covers both transports
         // across two pipeline runs.
         System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-        // Disable the thin-client connectivity probe only when this test is exercising
-        // the pure Compute Gateway (Gateway V2) path on port 443. In that branch
-        // thin-client routing is off entirely, so the periodic probe POSTs to the
-        // thin-client endpoint on port 10250 are pure noise -- they cannot influence
-        // routing for this test and only add traffic + log clutter. In the thin-client
-        // branch (port 10250) the probe is intentionally left enabled so the same
-        // production code path that gates thin-client routing is exercised.
-        if (!THIN_CLIENT_ENABLED) {
-            System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
-        }
         logger.info("Transport selected: thinClient={}, h2Port={}", THIN_CLIENT_ENABLED, H2_PORT);
 
         this.client = getClientBuilder().buildAsyncClient();
@@ -111,9 +101,6 @@ public class Http2PingKeepaliveTest extends FaultInjectionTestBase {
     public void afterClass() {
         safeClose(this.client);
         System.clearProperty("COSMOS.HTTP2_ENABLED");
-        if (!THIN_CLIENT_ENABLED) {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        }
     }
 
     @BeforeMethod(groups = {"manual-http-network-fault"})

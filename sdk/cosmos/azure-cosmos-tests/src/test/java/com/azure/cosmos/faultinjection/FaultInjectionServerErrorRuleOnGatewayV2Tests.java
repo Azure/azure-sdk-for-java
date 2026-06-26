@@ -87,11 +87,6 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         //Uncomment below line to enable thin client if running tests locally
         //System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
-        // Disable the connectivity probe so the fi-thinclient-multi-master tests can assert
-        // thin-client routing deterministically. See PerPartitionCircuitBreakerE2ETests.beforeClass
-        // for the full rationale. Cleared in @AfterClass.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
-
         this.client = getClientBuilder().buildAsyncClient();
 
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
@@ -114,7 +109,6 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     @AfterClass(groups = {"fi-thinclient-multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         //System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
         safeClose(this.client);
     }
 

@@ -12,9 +12,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -38,9 +36,9 @@ import static org.mockito.ArgumentMatchers.any;
  * <p>These tests cover the integration boundary that the routing gate
  * {@code RxDocumentClientImpl.useThinClientStoreModel} relies on:
  * <ul>
- *   <li>{@code isProxyProbeHealthy()} is optimistic ({@code true}) when no orchestrator is
+ *   <li>{@code getProxyProbeDecision()} renders no decision ({@code null}) when no orchestrator is
  *       wired (preserves pre-existing GW v1 / direct-mode behavior).</li>
- *   <li>Once an orchestrator is wired, the gate is conservative: it stays {@code false}
+ *   <li>Once an orchestrator is wired, the gate is conservative: the decision stays {@code FALSE}
  *       until every known thin-client region has a cached successful probe.</li>
  *   <li>Once an HttpClient is wired, the orchestrator probes the regional endpoints
  *       discovered by {@code LocationCache.getThinClientRegionalEndpoints()}.</li>
@@ -78,25 +76,12 @@ public class ThinClientProbeWiringTests {
         databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
     }
 
-    @BeforeMethod(groups = { "unit" })
-    public void resetSystemProperties() {
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-    }
-
-    @AfterMethod(groups = { "unit" })
-    public void clearSystemProperties() {
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-    }
-
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
-    public void isProxyProbeHealthy_returnsTrueWhenNoOrchestratorWired() throws Exception {
+    public void getProxyProbeDecision_returnsNullWhenNoOrchestratorWired() throws Exception {
         GlobalEndpointManager gem = newGemWithAccount(DB_ACCOUNT_WITH_THINCLIENT_LOCATIONS);
         try {
-            // No setThinClientHttpClient() called -> optimistic default keeps existing routing decisions intact.
-            assertThat(gem.isProxyProbeHealthy()).isTrue();
-            assertThat(gem.getThinClientProbeDiagnostics()).isNull();
+            // No setThinClientHttpClient() called -> no decision can be rendered; routing is left to other gate inputs.
+            assertThat(gem.getProxyProbeDecision()).isNull();
         } finally {
             LifeCycleUtils.closeQuietly(gem);
         }
@@ -158,10 +143,7 @@ public class ThinClientProbeWiringTests {
             waitForProbeCallCount(probeCallCount, 2, Duration.ofSeconds(5));
 
             assertThat(probeCallCount.get()).as("probe was issued for each thin-client region").isGreaterThanOrEqualTo(2);
-            assertThat(gem.isProxyProbeHealthy()).as("after all-200 cycle, proxy is healthy").isTrue();
-            assertThat(gem.getThinClientProbeDiagnostics()).isNotNull();
-            assertThat(gem.getThinClientProbeDiagnostics().getLastCycleSuccess()).isEqualTo(Boolean.TRUE);
-            assertThat(gem.getThinClientProbeDiagnostics().getLastStateUpdatedAt()).isNotNull();
+            assertThat(gem.getProxyProbeDecision()).as("after all-200 cycle, proxy is healthy").isEqualTo(Boolean.TRUE);
         } finally {
             LifeCycleUtils.closeQuietly(gem);
         }
@@ -169,9 +151,7 @@ public class ThinClientProbeWiringTests {
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void setThinClientHttpClient_redProbesKeepProxyUnhealthy() throws Exception {
-        // No in-cycle retries so each region records exactly one failed attempt per cycle.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
-
+        // Each region is attempted exactly once per cycle (no in-cycle retry).
         AtomicInteger probeCallCount = new AtomicInteger(0);
         Map<URI, Integer> statusByEndpoint = new HashMap<>();
         statusByEndpoint.put(URI.create("https://testaccount-eastus.documents.azure.com:10250/connectivity-probe"), 503);
@@ -197,12 +177,9 @@ public class ThinClientProbeWiringTests {
             assertThat(probeCallCount.get())
                 .as("probe was issued for each thin-client region")
                 .isGreaterThanOrEqualTo(2);
-            assertThat(gem.isProxyProbeHealthy())
+            assertThat(gem.getProxyProbeDecision())
                 .as("no region recorded a successful probe, so the proxy gate stays unhealthy")
-                .isFalse();
-            assertThat(gem.getThinClientProbeDiagnostics()).isNotNull();
-            assertThat(gem.getThinClientProbeDiagnostics().getLastCycleSuccess()).isEqualTo(Boolean.FALSE);
-            assertThat(gem.getThinClientProbeDiagnostics().getSucceededRegionCount()).isEqualTo(0);
+                .isEqualTo(Boolean.FALSE);
         } finally {
             LifeCycleUtils.closeQuietly(gem);
         }

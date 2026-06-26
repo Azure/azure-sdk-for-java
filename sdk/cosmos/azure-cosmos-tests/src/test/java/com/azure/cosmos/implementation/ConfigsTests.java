@@ -254,117 +254,34 @@ public class ConfigsTests {
     }
 
     @Test(groups = { "unit" })
-    public void thinClientProbeEnabledDefaultTest() {
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        try {
-            assertThat(Configs.isThinClientProbeEnabled()).isTrue();
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientProbeEnabledOverrideTest() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
-        try {
-            assertThat(Configs.isThinClientProbeEnabled()).isFalse();
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientProbeMaxRetriesDefaultTest() {
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-        try {
-            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(3);
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientProbeMaxRetriesOverrideTest() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "5");
-        try {
-            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(5);
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientProbeMaxRetriesCoercionTest() {
-        // 0 is a valid value (no in-cycle retries) and must be preserved.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "0");
-        try {
-            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(0);
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-        }
-        // Negative values are coerced up to 0.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "-3");
-        try {
-            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(0);
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientProbeMaxRetriesInvalidFallsBackToDefaultTest() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES", "not-a-number");
-        try {
-            assertThat(Configs.getThinClientProbeMaxRetries()).isEqualTo(3);
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_MAX_RETRIES");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientExplicitlyEnabledDefaultTest() {
+    public void thinClientEnabledExplicitlyDefaultTest() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         try {
-            // Not explicitly present -> false, so the probe gate applies.
-            assertThat(Configs.isThinClientExplicitlyEnabled()).isFalse();
+            // Not set -> null, so the probe may run and gates routing.
+            assertThat(Configs.isThinClientEnabledExplicitly()).isNull();
+            assertThat(Configs.isThinClientEnabled()).isTrue();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
     @Test(groups = { "unit" })
-    public void thinClientExplicitlyEnabledOverrideTest() {
+    public void thinClientEnabledExplicitlyOverrideTest() {
+        // Explicitly enabled (true) -> hard opt-in, probe not required.
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
-            assertThat(Configs.isThinClientExplicitlyEnabled()).isTrue();
+            assertThat(Configs.isThinClientEnabledExplicitly()).isTrue();
+            assertThat(Configs.isThinClientEnabled()).isTrue();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
+        // Explicitly disabled (false) -> hard opt-out, thin-client off and no probe.
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "false");
         try {
-            assertThat(Configs.isThinClientExplicitlyEnabled()).isFalse();
+            assertThat(Configs.isThinClientEnabledExplicitly()).isFalse();
+            assertThat(Configs.isThinClientEnabled()).isFalse();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientProbePathDefaultTest() {
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
-        try {
-            assertThat(Configs.getThinClientProbePath()).isEqualTo("/connectivity-probe");
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
-        }
-    }
-
-    @Test(groups = { "unit" })
-    public void thinClientProbePathOverrideTest() {
-        System.setProperty("COSMOS.THINCLIENT_PROBE_PATH", "/custom-probe");
-        try {
-            assertThat(Configs.getThinClientProbePath()).isEqualTo("/custom-probe");
-        } finally {
-            System.clearProperty("COSMOS.THINCLIENT_PROBE_PATH");
         }
     }
 

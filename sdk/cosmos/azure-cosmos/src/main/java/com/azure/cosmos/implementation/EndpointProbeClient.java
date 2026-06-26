@@ -5,19 +5,17 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.retry.Retry;
 
 import java.io.Closeable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -26,17 +24,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Drives the thin-client HTTP/2 connectivity probe lifecycle using a per-region,
  * one-shot probe-and-cache model.
  *
  * <p>For every thin-client regional endpoint discovered via {@code GlobalEndpointManager}
- * topology refresh, this client issues a {@code POST /connectivity-probe} (path
- * configurable via {@link Configs#getThinClientProbePath()}) over the thin-client HTTP/2
- * {@link HttpClient}. The probe contract is strict:
+ * topology refresh, this client issues a {@code POST /connectivity-probe} over the thin-client
+ * HTTP/2 {@link HttpClient}. The probe contract is strict:
  * <ul>
  *   <li><b>HTTP 200</b> &rarr; region succeeded.</li>
  *   <li>Any other status (notably 503 when {@code enableConnectivityProbe} is OFF, 400
@@ -48,32 +43,35 @@ import java.util.concurrent.atomic.AtomicReference;
  * the lifetime of this client and that region is never probed again. Each cycle only probes
  * the <em>delta</em> &mdash; the currently-known endpoints that have not yet recorded a
  * success. A failed region is simply left un-cached and is naturally re-probed on the next
- * topology refresh; this is the across-refresh retry mechanism. Within a single cycle, each
- * region is retried up to {@link Configs#getThinClientProbeMaxRetries()} times before being
- * treated as failed for that cycle.
+ * topology refresh; this across-refresh re-probing is the only retry mechanism (there is no
+ * in-cycle retry &mdash; each region is attempted exactly once per cycle).
  *
- * <p><b>Routing gate.</b> {@link #isProxyHealthy()} returns {@code true} only when every
+ * <p><b>Routing gate.</b> {@link #isThinClientRoutable()} returns {@code true} only when every
  * currently-known thin-client endpoint has a cached success. The startup default is
  * <em>conservative</em>: until at least one non-empty topology has been observed and all of
  * its regions have succeeded, the gate is {@code false} and the SDK routes data-plane traffic
- * to Gateway V1. When the kill switch {@link Configs#isThinClientProbeEnabled()} is
- * {@code false}, the gate is bypassed and always reports healthy.
+ * to Gateway V1. Whether a probe client exists at all is governed solely by the wiring decision
+ * (see {@link ThinClientConnectivityConfig#canThinClientBeImplicitlyEnabled()}): it is wired only
+ * when thin-client is enabled by default — neither explicitly opted into nor out of — and GATEWAY
+ * mode plus HTTP/2 hold. An explicit opt-in/opt-out skips the probe entirely.
  *
  * <p>Routing decisions are made strictly at refresh boundaries; this class does not implement
- * any per-request circuit-breaker. The data-plane routing site is expected to AND its existing
- * thin-client-eligibility check with {@link #isProxyHealthy()}.
+ * any per-request circuit-breaker. The data-plane routing site
+ * ({@link ThinClientConnectivityConfig#shouldUseThinClientStoreModel(boolean, boolean, boolean, Boolean, RxDocumentServiceRequest)})
+ * ANDs the thin-client capability, topology availability, and request eligibility with this gate
+ * (surfaced via {@code GlobalEndpointManager.getProxyProbeDecision()} → {@link #isThinClientRoutable()}).
  *
  * <p>This class is internal; it is not part of the published public API.
  */
 public class EndpointProbeClient implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(EndpointProbeClient.class);
-    private static final byte[] EMPTY_BODY = new byte[0];
+
+    // Fixed proxy-contract path (CosmosDB PR 2107592); not configurable.
+    private static final String PROBE_PATH = "/connectivity-probe";
 
     private final HttpClient httpClient;
-    private final int maxRetries;
     private final Duration perProbeTimeout;
-    private final String probePath;
 
     // Per-region success cache. Only successful probes are ever recorded (endpoint -> TRUE);
     // a region's presence as a key means "this region has been proven reachable and must never
@@ -92,41 +90,28 @@ public class EndpointProbeClient implements Closeable {
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final AtomicBoolean cycleInProgress = new AtomicBoolean(false);
-    private final AtomicLong cycleIdSeq = new AtomicLong(0);
-    // Lean diagnostic surface: effective gate health at last state update (true/false/null) and
-    // the wall-clock instant at which it was recorded. Anything beyond this is best observed via
-    // logs to keep the diagnostic shape stable across releases.
-    private final AtomicReference<Boolean> lastCycleSuccess = new AtomicReference<>(null);
-    private final AtomicReference<Instant> lastStateUpdatedAt = new AtomicReference<>(null);
 
     public EndpointProbeClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(
             httpClient,
             "EndpointProbeClient requires a non-null thin-client HttpClient (HTTP/2). "
                 + "Wire it via GlobalEndpointManager#setThinClientHttpClient before init().");
-        this.maxRetries = Configs.getThinClientProbeMaxRetries();
         this.perProbeTimeout = Duration.ofMillis(Configs.getThinClientConnectionTimeoutInMs());
-        this.probePath = Configs.getThinClientProbePath();
     }
 
     /**
      * Runs one probe cycle against the supplied set of thin-client regional endpoints,
      * probing only the regions that have not yet recorded a cached success, and emits the
-     * post-cycle value of {@link #isProxyHealthy()}.
-     *
-     * <p>When the feature flag {@link Configs#isThinClientProbeEnabled()} is {@code false},
-     * this is a no-op that emits the current (bypassed) health value without issuing any HTTP
-     * traffic.
+     * post-cycle value of {@link #isThinClientRoutable()}.
      *
      * <p>When the endpoint collection is {@code null} or empty (no thin-client regions
      * discovered), the cycle is a no-op; {@code GlobalEndpointManager} is expected to call
      * {@link #forceUnhealthy(String)} in that scenario.
      *
      * <p>When every currently-known region already has a cached success the cycle is a no-op
-     * that re-records diagnostics and returns the current (healthy) gate value &mdash; no HTTP
-     * traffic is issued.
+     * that returns the current (healthy) gate value &mdash; no HTTP traffic is issued.
      *
-     * <p>The returned Mono never errors; internal exceptions are absorbed and recorded so that
+     * <p>The returned Mono never errors; internal exceptions are absorbed and logged so that
      * probe failures do not propagate out and fail topology refresh.
      */
     public Mono<Boolean> runProbeCycle(Collection<URI> regionalEndpoints) {
@@ -134,23 +119,19 @@ public class EndpointProbeClient implements Closeable {
         // cancellation (e.g. GlobalEndpointManager.close() disposing the swap-disposable)
         // is honored before any HTTP I/O is initiated.
         return Mono.defer(() -> {
-            if (this.closed.get()) {
-                return Mono.fromSupplier(this::isProxyHealthy);
-            }
+            // Every no-op fast path below emits this: the current gate value, evaluated lazily.
+            final Mono<Boolean> currentGate = Mono.fromSupplier(this::isThinClientRoutable);
 
-            if (!Configs.isThinClientProbeEnabled()) {
-                return Mono.fromSupplier(this::isProxyHealthy);
-            }
-
-            if (regionalEndpoints == null || regionalEndpoints.isEmpty()) {
-                // No thin-client regions in topology -> probe is moot. GEM drives forceUnhealthy().
-                return Mono.fromSupplier(this::isProxyHealthy);
+            // Nothing to probe when the client is closed or no endpoints were supplied.
+            if (this.closed.get() || regionalEndpoints == null) {
+                return currentGate;
             }
 
             Set<URI> endpoints = new LinkedHashSet<>(regionalEndpoints);
             endpoints.removeIf(Objects::isNull);
             if (endpoints.isEmpty()) {
-                return Mono.fromSupplier(this::isProxyHealthy);
+                // No thin-client regions in topology -> probe is moot. GEM drives forceUnhealthy().
+                return currentGate;
             }
 
             // A valid, non-empty topology was observed: clear any stale force-unhealthy latch and
@@ -158,43 +139,30 @@ public class EndpointProbeClient implements Closeable {
             this.forcedUnhealthy.set(false);
             this.knownEndpoints = Collections.unmodifiableSet(endpoints);
 
-            // Delta: only probe regions without a cached success.
-            Set<URI> delta = new LinkedHashSet<>();
-            for (URI endpoint : endpoints) {
-                if (!Boolean.TRUE.equals(this.probeSucceeded.get(endpoint))) {
-                    delta.add(endpoint);
-                }
-            }
-
-            final Instant stateAt = Instant.now();
-
+            // Delta: only probe regions that have not yet recorded a cached success.
+            Set<URI> delta = new LinkedHashSet<>(endpoints);
+            delta.removeIf(endpoint -> Boolean.TRUE.equals(this.probeSucceeded.get(endpoint)));
             if (delta.isEmpty()) {
-                // Every known region already proven; nothing to probe. Refresh diagnostics only.
-                recordState(stateAt);
-                return Mono.fromSupplier(this::isProxyHealthy);
+                // Every known region already proven; nothing to probe.
+                return currentGate;
             }
 
-            // Single-flight: if a cycle is already running, skip this trigger. knownEndpoints has
-            // already been refreshed above so the gate reflects the latest topology regardless.
+            // Single-flight: skip if a cycle is already running. knownEndpoints was refreshed above
+            // so the gate still reflects the latest topology regardless.
             if (!this.cycleInProgress.compareAndSet(false, true)) {
                 logger.debug("Thin-client probe cycle already in progress; skipping overlapping trigger.");
-                return Mono.fromSupplier(this::isProxyHealthy);
+                return currentGate;
             }
-
-            final long cycleId = this.cycleIdSeq.incrementAndGet();
 
             return Flux
                 .fromIterable(delta)
-                .flatMap(this::probeEndpointWithRetry)
+                .flatMap(this::probeEndpointOnce)
                 .collectList()
-                .map(results -> applyCycleResult(results, stateAt, cycleId))
+                .map(this::applyCycleResult)
                 .onErrorResume(t -> {
                     logger.warn(
                         "Thin-client probe cycle threw an unexpected error; leaving failed regions un-cached.", t);
-                    return Mono.fromSupplier(() -> {
-                        recordState(Instant.now());
-                        return isProxyHealthy();
-                    });
+                    return currentGate;
                 })
                 .doFinally(s -> this.cycleInProgress.set(false));
         });
@@ -202,16 +170,11 @@ public class EndpointProbeClient implements Closeable {
 
     /**
      * @return current routing-gate value. {@code true} means the SDK may route the data plane
-     * to the thin-client proxy. The gate is bypassed (always {@code true}) when probing is
-     * disabled; otherwise it is {@code true} only when at least one non-empty topology has been
-     * observed, the force-unhealthy latch is clear, and every currently-known endpoint has a
+     * to the thin-client proxy. It is {@code true} only when at least one non-empty topology has
+     * been observed, the force-unhealthy latch is clear, and every currently-known endpoint has a
      * cached success.
      */
-    public boolean isProxyHealthy() {
-        if (!Configs.isThinClientProbeEnabled()) {
-            // Kill switch: behave exactly as if the probe machinery did not exist.
-            return true;
-        }
+    public boolean isThinClientRoutable() {
         if (this.forcedUnhealthy.get()) {
             return false;
         }
@@ -245,42 +208,14 @@ public class EndpointProbeClient implements Closeable {
         if (this.closed.get()) {
             return;
         }
-        // Honor the COSMOS.THINCLIENT_PROBE_ENABLED kill switch end-to-end: when probing is
-        // disabled, no code path (HTTP cycle OR resolution-mismatch safeguard) is allowed to
-        // mutate the routing gate. isProxyHealthy() already bypasses to true in that mode.
-        if (!Configs.isThinClientProbeEnabled()) {
-            logger.debug(
-                "forceUnhealthy(reason='{}') skipped because COSMOS.THINCLIENT_PROBE_ENABLED is false.",
-                reason);
-            return;
-        }
-        boolean wasHealthy = isProxyHealthy();
+        boolean wasHealthy = isThinClientRoutable();
         this.forcedUnhealthy.set(true);
-        this.lastCycleSuccess.set(Boolean.FALSE);
-        this.lastStateUpdatedAt.set(Instant.now());
         if (wasHealthy) {
             logger.warn(
                 "Thin-client probe gate forced UNHEALTHY without an HTTP cycle (reason='{}'). "
                     + "SDK will route data plane to Gateway V1 until a subsequent non-empty probe cycle proves all known regions.",
                 reason);
         }
-    }
-
-    /** @return read-only snapshot of probe state suitable for diagnostics. */
-    public EndpointProbeDiagnosticsSnapshot getDiagnosticsSnapshot() {
-        Set<URI> known = this.knownEndpoints;
-        int knownCount = known.size();
-        int succeededCount = 0;
-        for (URI endpoint : known) {
-            if (Boolean.TRUE.equals(this.probeSucceeded.get(endpoint))) {
-                succeededCount++;
-            }
-        }
-        return new EndpointProbeDiagnosticsSnapshot(
-            this.lastCycleSuccess.get(),
-            this.lastStateUpdatedAt.get(),
-            knownCount,
-            succeededCount);
     }
 
     /**
@@ -301,40 +236,13 @@ public class EndpointProbeClient implements Closeable {
         }
     }
 
-    /**
-     * Probes a single region, retrying up to {@link #maxRetries} times on failure. Total
-     * attempts = {@code 1 + maxRetries}. The returned Mono never errors: a region that fails
-     * every attempt resolves to its last failed {@link EndpointProbeResult}.
-     */
-    private Mono<EndpointProbeResult> probeEndpointWithRetry(URI regionalEndpoint) {
-        return Mono
-            .defer(() -> probeEndpointOnce(regionalEndpoint))
-            .flatMap(result -> result.success
-                ? Mono.just(result)
-                : Mono.error(new ProbeRetryException(result)))
-            .retryWhen(Retry.max(this.maxRetries))
-            .onErrorResume(t -> {
-                Throwable cause = (t instanceof ProbeRetryException) ? t : t.getCause();
-                if (cause instanceof ProbeRetryException) {
-                    // Retries exhausted: surface the last failed result.
-                    return Mono.just(((ProbeRetryException) cause).result);
-                }
-                // Any other unexpected error: treat the region as failed for this cycle.
-                logger.debug(
-                    "Thin-client probe to {} failed unexpectedly during retry: {}",
-                    regionalEndpoint, t.toString());
-                return Mono.just(new EndpointProbeResult(
-                    regionalEndpoint, false, "retry-error:" + t.getClass().getSimpleName()));
-            });
-    }
-
     private Mono<EndpointProbeResult> probeEndpointOnce(URI regionalEndpoint) {
         URI probeUri;
         try {
-            probeUri = buildProbeUri(regionalEndpoint, this.probePath);
+            probeUri = buildProbeUri(regionalEndpoint);
         } catch (URISyntaxException e) {
             logger.warn("Failed to build probe URI for {}: {}", regionalEndpoint, e.getMessage());
-            return Mono.just(new EndpointProbeResult(regionalEndpoint, false, "bad-uri"));
+            return Mono.just(new EndpointProbeResult(regionalEndpoint, false));
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -348,7 +256,6 @@ public class EndpointProbeClient implements Closeable {
             probeUri.getPort(),
             headers);
         request.withThinClientRequest(true);
-        request.withBody(EMPTY_BODY);
 
         return this.httpClient
             .send(request, this.perProbeTimeout)
@@ -363,16 +270,20 @@ public class EndpointProbeClient implements Closeable {
                 // outside `perProbeTimeout`. doFinally + onErrorResume guarantee that
                 // status-based success classification still wins regardless of how the
                 // drain stream terminates.
-                final EndpointProbeResult result = new EndpointProbeResult(regionalEndpoint, ok, "status:" + status);
+                final EndpointProbeResult result = new EndpointProbeResult(regionalEndpoint, ok);
                 return response.body()
                     .doOnNext(buf -> {
-                        if (buf != null) {
-                            buf.release();
+                        // body() emits a single aggregated ByteBuf that this subscriber owns. The
+                        // probe discards the body, so release it exactly once. Mirror reactor-netty's
+                        // releaseOnNotSubscribedResponse / RxGatewayStoreModel safe-release idiom:
+                        // a refCnt guard + ReferenceCountUtil.safeRelease so a release race cannot
+                        // throw IllegalReferenceCountException into the drain stream.
+                        if (buf != null && buf.refCnt() > 0) {
+                            ReferenceCountUtil.safeRelease(buf);
                         }
                     })
                     .then(Mono.just(result))
                     .timeout(this.perProbeTimeout)
-                    .doFinally(s -> safeClose(response))
                     .onErrorResume(drainError -> {
                         logger.debug("Thin-client probe body drain to {} failed: {}",
                             regionalEndpoint, drainError.toString());
@@ -382,21 +293,17 @@ public class EndpointProbeClient implements Closeable {
             .onErrorResume(t -> {
                 logger.debug(
                     "Thin-client probe to {} failed: {}", regionalEndpoint, t.toString());
-                return Mono.just(new EndpointProbeResult(regionalEndpoint, false, "transport:" + t.getClass().getSimpleName()));
+                return Mono.just(new EndpointProbeResult(regionalEndpoint, false));
             });
     }
 
-    private Boolean applyCycleResult(
-        List<EndpointProbeResult> results,
-        Instant stateAt,
-        long cycleId) {
+    private Boolean applyCycleResult(List<EndpointProbeResult> results) {
 
         // If the probe client was closed (e.g. CosmosClient.close()) while this cycle was
         // in flight, drop the result so we don't mutate state on a dead client.
         if (this.closed.get()) {
-            logger.debug(
-                "Thin-client probe cycle {} completed after close; dropping result.", cycleId);
-            return isProxyHealthy();
+            logger.debug("Thin-client probe cycle completed after close; dropping result.");
+            return isThinClientRoutable();
         }
 
         int successCount = 0;
@@ -408,72 +315,30 @@ public class EndpointProbeClient implements Closeable {
             }
         }
         int failureCount = results.size() - successCount;
+        boolean healthy = isThinClientRoutable();
 
-        recordState(stateAt);
-        boolean healthy = isProxyHealthy();
-
-        if (failureCount == 0) {
-            logger.info(
-                "Thin-client probe cycle {} complete: {} new region(s) proven; gate healthy={} "
-                    + "(known={} succeeded={}).",
-                cycleId, successCount, healthy, this.knownEndpoints.size(), succeededKnownCount());
+        if (failureCount > 0) {
+            logger.warn(
+                "Thin-client probe cycle complete: {} region(s) proven, {} still failing "
+                    + "(will re-probe next refresh); gate healthy={}.",
+                successCount, failureCount, healthy);
         } else {
-            logger.info(
-                "Thin-client probe cycle {} complete: {} new region(s) proven, {} still failing "
-                    + "(will re-probe next refresh); gate healthy={} (known={} succeeded={}).",
-                cycleId, successCount, failureCount, healthy, this.knownEndpoints.size(), succeededKnownCount());
+            logger.debug(
+                "Thin-client probe cycle complete: {} new region(s) proven; gate healthy={}.",
+                successCount, healthy);
         }
 
         return healthy;
     }
 
-    private void recordState(Instant stateAt) {
-        this.lastCycleSuccess.set(isProxyHealthy());
-        this.lastStateUpdatedAt.set(stateAt);
-    }
-
-    private int succeededKnownCount() {
-        int count = 0;
-        for (URI endpoint : this.knownEndpoints) {
-            if (Boolean.TRUE.equals(this.probeSucceeded.get(endpoint))) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    private static URI buildProbeUri(URI regionalEndpoint, String probePath) throws URISyntaxException {
-        String normalizedPath = probePath.startsWith("/") ? probePath : "/" + probePath;
+    private static URI buildProbeUri(URI regionalEndpoint) throws URISyntaxException {
         return new URI(
             regionalEndpoint.getScheme(),
             null,
             regionalEndpoint.getHost(),
             regionalEndpoint.getPort(),
-            normalizedPath,
+            PROBE_PATH,
             null,
             null);
-    }
-
-    private static void safeClose(HttpResponse response) {
-        try {
-            response.close();
-        } catch (Exception ignored) {
-            // best-effort
-        }
-    }
-
-    /**
-     * Internal signal used to drive {@code retryWhen}. Carries the failed
-     * {@link EndpointProbeResult} so the last failure can be surfaced once retries are
-     * exhausted. Never escapes the class.
-     */
-    private static final class ProbeRetryException extends RuntimeException {
-        private static final long serialVersionUID = 1L;
-        private final transient EndpointProbeResult result;
-
-        ProbeRetryException(EndpointProbeResult result) {
-            super(null, null, false, false);
-            this.result = result;
-        }
     }
 }

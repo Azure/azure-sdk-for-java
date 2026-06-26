@@ -51,30 +51,10 @@ public class Configs {
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
     private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
-    private static final boolean DEFAULT_THINCLIENT_ENABLED = true;
+    // Tri-state default: null means the customer has neither opted in nor opted out of thin-client.
+    private static final Boolean DEFAULT_THINCLIENT_ENABLED = null;
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
-
-    // Thin-client connectivity probe (POST /connectivity-probe over HTTP/2 to each thin-client regional endpoint).
-    // The probe runs after every successful account-topology refresh, but only for regions that have not yet
-    // recorded a successful probe (the delta). Once a region's probe succeeds it is cached and never re-probed.
-    // Data-plane routing is gated on "all currently-known thin-client regions have a cached success"; until then
-    // the SDK routes data-plane requests to Gateway V1. See proxy contract: only HTTP 200 counts as success.
-    private static final boolean DEFAULT_THINCLIENT_PROBE_ENABLED = true;
-    private static final String THINCLIENT_PROBE_ENABLED = "COSMOS.THINCLIENT_PROBE_ENABLED";
-    private static final String THINCLIENT_PROBE_ENABLED_VARIABLE = "COSMOS_THINCLIENT_PROBE_ENABLED";
-
-    // Maximum number of in-cycle retries for a single region's connectivity probe before it is treated as a
-    // failure for that cycle. A failed region is simply left un-cached and naturally re-probed on the next
-    // topology refresh. Total attempts per region per cycle = 1 + THINCLIENT_PROBE_MAX_RETRIES. Values less
-    // than 0 are coerced to 0.
-    private static final int DEFAULT_THINCLIENT_PROBE_MAX_RETRIES = 3;
-    private static final String THINCLIENT_PROBE_MAX_RETRIES = "COSMOS.THINCLIENT_PROBE_MAX_RETRIES";
-    private static final String THINCLIENT_PROBE_MAX_RETRIES_VARIABLE = "COSMOS_THINCLIENT_PROBE_MAX_RETRIES";
-
-    private static final String DEFAULT_THINCLIENT_PROBE_PATH = "/connectivity-probe";
-    private static final String THINCLIENT_PROBE_PATH = "COSMOS.THINCLIENT_PROBE_PATH";
-    private static final String THINCLIENT_PROBE_PATH_VARIABLE = "COSMOS_THINCLIENT_PROBE_PATH";
 
     private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
     private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
@@ -592,7 +572,38 @@ public class Configs {
         return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
     }
 
+    /**
+     * @return whether thin-client is <em>effectively enabled</em>: {@code true} unless the customer
+     * explicitly opted out via {@code COSMOS.THINCLIENT_ENABLED=false}. This is a derived
+     * convenience over the tri-state {@link #isThinClientEnabledExplicitly()} for the many observers
+     * (diagnostics, user-agent, tests) that only need the effective on/off bit; the unset
+     * ({@code null}) default is treated as enabled. The probe-bypass decision instead consumes the
+     * raw tri-state via {@link #hasUserExplicitlyEnabledThinClient()}.
+     */
     public static boolean isThinClientEnabled() {
+        return !Boolean.FALSE.equals(isThinClientEnabledExplicitly());
+    }
+
+    /**
+     * Reads the raw thin-client enablement configuration from the
+     * {@code COSMOS.THINCLIENT_ENABLED} system property or {@code COSMOS_THINCLIENT_ENABLED}
+     * environment variable as a <em>nullable</em> {@link Boolean}. The {@code null} vs
+     * non-{@code null} distinction is what differentiates an explicit setting (enablement or
+     * disablement) from no setting at all — a plain {@code boolean} cannot express it.
+     *
+     * <p>A customer can configure thin-client three ways:
+     * <ul>
+     *   <li>{@code Boolean.TRUE}  — explicitly enabled. Hard opt-in: thin-client is used and the
+     *       connectivity probe is skipped (routing goes to the thin-client endpoints directly).</li>
+     *   <li>{@code Boolean.FALSE} — explicitly disabled. Hard opt-out: thin-client is not used and
+     *       no probe runs.</li>
+     *   <li>{@code null}          — not set: neither opt-in nor opt-out
+     *       ({@link #DEFAULT_THINCLIENT_ENABLED}). Thin-client is still treated as enabled (the
+     *       default-on behavior is the absence of an explicit opt-out) and the connectivity probe
+     *       gates routing (provided HTTP/2 is opted into).</li>
+     * </ul>
+     */
+    public static Boolean isThinClientEnabledExplicitly() {
         String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
             return Boolean.parseBoolean(valueFromSystemProperty);
@@ -607,112 +618,14 @@ public class Configs {
     }
 
     /**
-     * Returns whether thin-client was <em>explicitly</em> opted into via the
-     * {@code COSMOS.THINCLIENT_ENABLED} system property or {@code COSMOS_THINCLIENT_ENABLED}
-     * environment variable, and that explicit value parses to {@code true}.
-     *
-     * <p>This is distinct from {@link #isThinClientEnabled()}, which returns {@code true} by
-     * default even when no value is set. When thin-client is explicitly enabled the SDK treats
-     * it as a hard opt-in: the connectivity probe is skipped entirely and data-plane traffic is
-     * routed to the thin-client endpoints without waiting for a probe to succeed. When the value
-     * is only defaulted (not explicitly present), this returns {@code false} so the probe gate
-     * applies.
+     * @return whether thin-client was <em>explicitly enabled</em> — {@code COSMOS.THINCLIENT_ENABLED}
+     * (or {@code COSMOS_THINCLIENT_ENABLED}) explicitly set to {@code true}. This is distinct from
+     * the default-on case where the flag is left unset (see {@link #isThinClientEnabledExplicitly()}
+     * for the underlying nullable value); an explicit {@code true} is a hard opt-in that bypasses
+     * the connectivity-probe gate.
      */
-    public static boolean isThinClientExplicitlyEnabled() {
-        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Boolean.parseBoolean(valueFromSystemProperty);
-        }
-
-        String valueFromEnvVariable = System.getenv(THINCLIENT_ENABLED_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Boolean.parseBoolean(valueFromEnvVariable);
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns whether the thin-client connectivity probe is enabled. When true, the SDK
-     * issues {@code POST /connectivity-probe} against every thin-client regional endpoint
-     * after each topology refresh and gates data-plane routing on the result.
-     * Default: true. Override with {@code COSMOS.THINCLIENT_PROBE_ENABLED} or
-     * {@code COSMOS_THINCLIENT_PROBE_ENABLED}.
-     */
-    public static boolean isThinClientProbeEnabled() {
-        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_ENABLED);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return Boolean.parseBoolean(valueFromSystemProperty);
-        }
-
-        String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_ENABLED_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return Boolean.parseBoolean(valueFromEnvVariable);
-        }
-
-        return DEFAULT_THINCLIENT_PROBE_ENABLED;
-    }
-
-    /**
-     * Maximum number of in-cycle retries for a single region's thin-client connectivity probe
-     * before that region is treated as failed for the current cycle. A failed region is left
-     * un-cached and is naturally re-probed on the next topology refresh. Total attempts per
-     * region per cycle = {@code 1 + getThinClientProbeMaxRetries()}. Default: 3. Override with
-     * {@code COSMOS.THINCLIENT_PROBE_MAX_RETRIES} or {@code COSMOS_THINCLIENT_PROBE_MAX_RETRIES}.
-     * Values less than 0 are coerced to 0.
-     */
-    public static int getThinClientProbeMaxRetries() {
-        int value = DEFAULT_THINCLIENT_PROBE_MAX_RETRIES;
-
-        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_MAX_RETRIES);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            try {
-                value = Integer.parseInt(valueFromSystemProperty);
-            } catch (NumberFormatException ignored) {
-                logger.warn(
-                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
-                    valueFromSystemProperty,
-                    THINCLIENT_PROBE_MAX_RETRIES);
-                valueFromSystemProperty = null;
-            }
-        }
-
-        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
-            String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_MAX_RETRIES_VARIABLE);
-            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-                try {
-                    value = Integer.parseInt(valueFromEnvVariable);
-                } catch (NumberFormatException ignored) {
-                    logger.warn(
-                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
-                        valueFromEnvVariable,
-                        THINCLIENT_PROBE_MAX_RETRIES_VARIABLE,
-                        DEFAULT_THINCLIENT_PROBE_MAX_RETRIES);
-                }
-            }
-        }
-
-        return Math.max(0, value);
-    }
-
-    /**
-     * URL path for the thin-client connectivity probe. Default: {@code /connectivity-probe}
-     * (matches proxy contract from CosmosDB PR 2107592). Override with
-     * {@code COSMOS.THINCLIENT_PROBE_PATH} or {@code COSMOS_THINCLIENT_PROBE_PATH}; intended
-     * primarily for testing.
-     */
-    public static String getThinClientProbePath() {
-        String valueFromSystemProperty = System.getProperty(THINCLIENT_PROBE_PATH);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            return valueFromSystemProperty;
-        }
-
-        String valueFromEnvVariable = System.getenv(THINCLIENT_PROBE_PATH_VARIABLE);
-        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return valueFromEnvVariable;
-        }
-
-        return DEFAULT_THINCLIENT_PROBE_PATH;
+    public static boolean hasUserExplicitlyEnabledThinClient() {
+        return Boolean.TRUE.equals(isThinClientEnabledExplicitly());
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {

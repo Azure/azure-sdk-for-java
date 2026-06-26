@@ -405,11 +405,6 @@ public class GlobalEndpointManager implements AutoCloseable {
      * Wires the thin-client HTTP/2 {@link HttpClient} used by the connectivity-probe
      * probeClient. Must be invoked by the client bootstrap before {@link #init()} so
      * that the very first topology refresh can issue probes.
-     *
-     * <p>If {@link Configs#isThinClientProbeEnabled()} is {@code false}, the probeClient
-     * is still instantiated but {@link EndpointProbeClient#runProbeCycle(Collection)}
-     * short-circuits to a no-op and {@link EndpointProbeClient#isProxyHealthy()} stays
-     * optimistically {@code true}, preserving today's behavior.
      */
     public void setThinClientHttpClient(HttpClient httpClient) {
         if (httpClient == null) {
@@ -419,30 +414,31 @@ public class GlobalEndpointManager implements AutoCloseable {
             this.thinClientProbeClient.compareAndSet(null, new EndpointProbeClient(httpClient));
         } catch (Throwable t) {
             // Probe wiring must never trip CosmosClient initialization. If the probe client
-            // can't be constructed for any reason, leave it null — `isProxyProbeHealthy()`
-            // then returns true (optimistic) and routing behaves as if no probe were wired.
+            // can't be constructed for any reason, leave it null — `getProxyProbeDecision()`
+            // then renders no decision (null) and routing behaves as if no probe were wired.
             logger.warn("Failed to wire thin-client connectivity-probe client; thin-client routing will proceed without probe gating.", t);
         }
     }
 
     /**
-     * Returns {@code true} when the thin-client connectivity-probe client considers
-     * the proxy fleet healthy enough to receive data-plane traffic. Returns {@code true}
-     * by default (optimistic) when no probe client has been wired (e.g. tests, or
-     * non-thin-client clients) so existing routing decisions are unaffected.
+     * Returns the thin-client connectivity-probe's current routing decision as a tri-state:
+     * <ul>
+     *   <li>{@code null} &mdash; <b>no decision</b>: no probe client is wired (the client either
+     *       explicitly opted into/out of thin-client, or is not a thin-client client, so no probe
+     *       runs). The caller must treat this as neither healthy nor unhealthy and leave the routing
+     *       decision to the other gate inputs.</li>
+     *   <li>{@code TRUE} &mdash; an active probe considers the proxy fleet routable.</li>
+     *   <li>{@code FALSE} &mdash; an active probe is gating traffic to Gateway V1 until its regions are proven.</li>
+     * </ul>
+     * Only an active, wired probe can return a non-null decision.
      */
-    public boolean isProxyProbeHealthy() {
+    public Boolean getProxyProbeDecision() {
         EndpointProbeClient probeClient = this.thinClientProbeClient.get();
-        return probeClient == null || probeClient.isProxyHealthy();
-    }
-
-    /**
-     * @return a read-only diagnostics snapshot of the probe state, or {@code null} when
-     *         no probe client has been wired.
-     */
-    public EndpointProbeDiagnosticsSnapshot getThinClientProbeDiagnostics() {
-        EndpointProbeClient probeClient = this.thinClientProbeClient.get();
-        return probeClient == null ? null : probeClient.getDiagnosticsSnapshot();
+        if (probeClient == null) {
+            // No probe wired -> no decision can be rendered.
+            return null;
+        }
+        return probeClient.isThinClientRoutable();
     }
 
     private Mono<Void> runThinClientProbeCycleMono() {
@@ -461,7 +457,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                 // is derived from the resolved LocationCache contexts (which can drop endpoints when
                 // gateway and thin-client region names fail to normalize-match). Without this branch a
                 // prior successful probe cycle would leave the per-region cache populated, keeping the
-                // routing gate (`useThinClientStoreModel`) GREEN via `isProxyProbeHealthy()` — and pin
+                // routing gate (`useThinClientStoreModel`) GREEN via `getProxyProbeDecision()` — and pin
                 // data-plane traffic to a thin-client model that has no resolved endpoint to route to.
                 // forceUnhealthy latches the gate RED (overriding the cache) so the SDK falls back to
                 // Gateway V1 until the resolution mismatch clears; the next non-empty cycle clears it.

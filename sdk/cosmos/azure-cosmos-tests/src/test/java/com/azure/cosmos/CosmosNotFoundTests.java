@@ -51,8 +51,6 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         super(clientBuilder);
     }
 
-    private static final String THINCLIENT_PROBE_ENABLED_PROPERTY = "COSMOS.THINCLIENT_PROBE_ENABLED";
-
     /**
      * The "fast"-group tests in this class exercise the legacy Gateway V1 routing path
      * (no proxy). With thin-client enabled by default, an HTTP/2-capable Gateway client
@@ -73,16 +71,6 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"fast", "thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosNotFoundTests() {
-        // Thin-client routing tests in this class (the "thinclient" group) assert that
-        // requests actually went through the proxy on port 10250 via assertThinClientEndpointUsed
-        // and rely on proxy-specific substatus codes (e.g. OWNER_RESOURCE_NOT_EXISTS = 1003).
-        // The connectivity probe is enabled by default in production, but the proxy-side
-        // /connectivity-probe endpoint is not deployed in every CI test account yet. With the
-        // default failure threshold of 1, a single failed probe cycle flips routing from the
-        // proxy to Gateway V1, breaking those assertions. Disable the probe here so the routing
-        // path under test is exercised deterministically; production callers still get the
-        // probe ON by default. Cleared in @AfterClass to avoid leaking into other test classes.
-        //
         // The class validates that 3 distinct connection modes all surface a 404 with the
         // expected substatus on a missing container:
         //   - DIRECT  (from data provider; data plane over RNTBD, never proxy-eligible)
@@ -90,7 +78,6 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         //                 so the thin-client routing site cannot select the proxy)
         //   - Gateway V2 / thin client (built inline in "thinclient"-group tests with
         //                               HTTP/2 explicitly enabled to opt in to the proxy)
-        System.setProperty(THINCLIENT_PROBE_ENABLED_PROPERTY, "false");
         executeWithRetry(() -> {
             safeClose(this.commonAsyncClient);
             this.commonAsyncClient = forceHttp1IfGatewayMode(getClientBuilder()).buildAsyncClient();
@@ -126,11 +113,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
     @AfterClass(groups = {"fast", "thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        try {
-            safeClose(this.commonAsyncClient);
-        } finally {
-            System.clearProperty(THINCLIENT_PROBE_ENABLED_PROPERTY);
-        }
+        safeClose(this.commonAsyncClient);
     }
 
     @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)

@@ -469,10 +469,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
     @BeforeClass(groups = {"multi-region", "fi-thinclient-multi-region"})
     public void beforeClass() {
-        // Disable the connectivity probe so the "fi-thinclient-multi-region" tests can assert
-        // thin-client routing deterministically (see PerPartitionCircuitBreakerE2ETests.beforeClass
-        // for the full rationale). Cleared in @AfterClass.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
         this.sharedClient = getClientBuilder().buildAsyncClient();
 
         this.sharedDatabase = getSharedCosmosDatabase(this.sharedClient);
@@ -496,7 +492,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         safeClose(this.sharedClient);
         System.gc();
         Thread.sleep(10_000);
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
     }
 
     @DataProvider(name = "ppafTestConfigsWithWriteOps")

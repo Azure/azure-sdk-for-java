@@ -172,10 +172,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     }
 
-    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
-        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
-    }
-
     private static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor() {
         return ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     }
@@ -300,7 +296,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingOverrideEnabled;
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
-    private final boolean useThinClient;
+    private final ThinClientConnectivityConfig thinClientConnectivityConfig;
     private List<CosmosOperationPolicy> operationPolicies;
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
@@ -750,13 +746,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
-            this.useThinClient = Configs.isThinClientEnabled()
-                && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
-                && this.connectionPolicy.getHttp2ConnectionConfig() != null
-                && httpCfgAccessor()
-                    .isEffectivelyEnabled(
-                        this.connectionPolicy.getHttp2ConnectionConfig()
-                    );
+            this.thinClientConnectivityConfig = new ThinClientConnectivityConfig(this.connectionPolicy);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -885,17 +875,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // Wire thin-client HttpClient into GEM so the connectivity-probe orchestrator
             // can fan out probes after every topology refresh. Must happen BEFORE
             // globalEndpointManager.init() so the first refresh probes immediately.
-            // Caveats — probe is only wired when:
-            //   1. Connection mode is GATEWAY (skip for Direct mode), AND
-            //   2. HTTP/2 is configured and effectively enabled, AND
-            //   3. Thin-client is enabled via Configs (all three encoded in `this.useThinClient`), AND
-            //   4. Thin-client was NOT *explicitly* opted into. An explicit opt-in is a hard
-            //      contract that thin-client must be used as-is, so we skip the probe entirely
-            //      (point 5 of the design). With no probe wired, GEM's probeClient stays null and
-            //      `isProxyProbeHealthy()` returns true, so thin-client is used without gating.
-            // If not wired, no probe overhead is incurred. Wiring itself is guarded inside GEM so
-            // any failure cannot trip client init.
-            if (this.useThinClient && !Configs.isThinClientExplicitlyEnabled()) {
+            // The probe client is wired whenever thin-client is enabled by default — i.e.
+            // COSMOS.THINCLIENT_ENABLED is unset (an explicit true/false skips the probe entirely);
+            // see ThinClientConnectivityConfig.canThinClientBeImplicitlyEnabled(). When the probe is
+            // not wired, GEM's probeClient stays null and `getProxyProbeDecision()` renders no
+            // decision (null), so thin-client (if enabled) is used without gating. Wiring itself is
+            // guarded inside GEM so any failure cannot trip client init.
+            if (this.thinClientConnectivityConfig.canThinClientBeImplicitlyEnabled()) {
                 try {
                     this.globalEndpointManager.setThinClientHttpClient(this.reactorHttpClient);
                 } catch (Throwable t) {
@@ -1042,7 +1028,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-                logger.info("Getting database account endpoint from {} - useThinClient: {}", endpoint, useThinClient);
+                logger.info("Getting database account endpoint from {} - useThinClient: {}",
+                    endpoint, RxDocumentClientImpl.this.thinClientConnectivityConfig.canThinClientBeUsed());
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
             }
 
@@ -7411,7 +7398,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
             // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
-            if (useThinClient) {
+            if (this.thinClientConnectivityConfig.canThinClientBeUsed()) {
                 request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
             }
             return this.populateHeadersAsync(request, RequestVerb.GET)
@@ -9047,60 +9034,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public boolean useThinClient() {
-        return useThinClient;
+        return this.thinClientConnectivityConfig.canThinClientBeUsed();
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        // The probe-health gate is bypassed (treated as healthy) in two cases:
-        //   1. Thin-client was *explicitly* opted into (COSMOS.THINCLIENT_ENABLED set to true).
-        //      That is a hard contract to use thin-client as-is; no probe is wired, so routing
-        //      must not wait on a probe signal (point 5 of the design).
-        //   2. The probe kill switch is OFF (COSMOS.THINCLIENT_PROBE_ENABLED=false). Routing is
-        //      then driven solely by COSMOS.THINCLIENT_ENABLED (already folded into useThinClient
-        //      at construction time) because no probe cycles run, making the probe-health signal
-        //      meaningless.
-        // Otherwise the gate is the live per-region probe health from GlobalEndpointManager.
-        boolean proxyProbeHealthy = Configs.isThinClientExplicitlyEnabled()
-            || !Configs.isThinClientProbeEnabled()
-            || this.globalEndpointManager.isProxyProbeHealthy();
-
-        return shouldUseThinClientStoreModel(
-            this.useThinClient,
+        // The routing decision is a pure function of these signals. The connectivity-probe verdict is
+        // forwarded as a tri-state (null = no decision rendered) so a null never collapses into a
+        // boolean clause here — ThinClientConnectivityConfig is the single authority that interprets
+        // it. All inputs are read lazily so a dynamic System property / env var change is honored per
+        // request.
+        return ThinClientConnectivityConfig.shouldUseThinClientStoreModel(
+            this.thinClientConnectivityConfig.canThinClientBeUsed(),
             this.globalEndpointManager.hasThinClientReadLocations(),
-            proxyProbeHealthy,
+            this.thinClientConnectivityConfig.isExplicitThinClientOptIn(),
+            this.globalEndpointManager.getProxyProbeDecision(),
             request);
-    }
-
-    /**
-     * Pure-function gate predicate exposed at package visibility so unit tests can verify
-     * routing-fallback behavior (probe-unhealthy =&gt; gateway V1) without standing up a full
-     * {@link RxDocumentClientImpl}. All four inputs must be supplied by the caller; this
-     * method does not touch any client state.
-     */
-    static boolean shouldUseThinClientStoreModel(
-        boolean useThinClient,
-        boolean hasThinClientReadLocations,
-        boolean isProxyProbeHealthy,
-        RxDocumentServiceRequest request) {
-
-        if (!useThinClient
-            || !hasThinClientReadLocations
-            || !isProxyProbeHealthy
-            || (request.getResourceType() != ResourceType.Document
-                && !request.isExecuteStoredProcedureBasedRequest())) {
-
-            return false;
-        }
-
-        OperationType operationType = request.getOperationType();
-
-        return operationType.isPointOperation()
-                    || operationType == OperationType.Query
-                    || operationType == OperationType.Batch
-                    || (request.isChangeFeedRequest()
-                        && !request.isAllVersionsAndDeletesChangeFeedMode())
-                    || request.isExecuteStoredProcedureBasedRequest()
-                    || operationType == OperationType.QueryPlan;
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(

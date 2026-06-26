@@ -83,11 +83,6 @@ public class GatewayReadConsistencyStrategyE2ETest {
     @BeforeClass(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void beforeClass() {
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        // Disable the connectivity-probe gate: the CI thin-client accounts do not
-        // yet expose /connectivity-probe, so the first failed probe trips
-        // proxyHealthy=false and routing falls back to Gateway V1, breaking the
-        // assertEndpointForMode(...) port-10250 assertions below.
-        System.setProperty("COSMOS.THINCLIENT_PROBE_ENABLED", "false");
 
         databaseId = "readConsistencyStrategy-e2e-" + UUID.randomUUID().toString().substring(0, 8);
         containerId = "testcontainer";
@@ -115,7 +110,6 @@ public class GatewayReadConsistencyStrategyE2ETest {
 
     @AfterClass(groups = {"thinclient"}, alwaysRun = true)
     public void afterClass() {
-        System.clearProperty("COSMOS.THINCLIENT_PROBE_ENABLED");
         if (database != null) {
             try {
                 database.delete().block();
