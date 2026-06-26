@@ -22,7 +22,6 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
-import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -219,61 +218,8 @@ public class UserPrincipalManager {
         final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
         jwtProcessor.setJWSKeySelector(keySelector);
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
-        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>(null, null) {
-            @Override
-            public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
-                super.verify(claimsSet, ctx);
-                final String issuer = claimsSet.getIssuer();
-                if (!isAadIssuer(issuer)) {
-                    throw new BadJWTException("Invalid token issuer");
-                }
-                if (explicitAudienceCheck) {
-                    Optional<String> matchedAudience = claimsSet.getAudience()
-                                                                .stream()
-                                                                .filter(validAudiences::contains)
-                                                                .findFirst();
-                    if (matchedAudience.isPresent()) {
-                        LOGGER.debug("Matched audience: [{}]", matchedAudience.get());
-                    } else {
-                        throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
-                            + " does not match either the client-id or AppIdUri.");
-                    }
-                }
-                // Validate tenant ID claim if tenant is configured (skip for multi-tenant values)
-                if (aadAuthenticationProperties != null) {
-                    String configuredTenantId = aadAuthenticationProperties.getProfile().getTenantId();
-                    if (StringUtils.hasText(configuredTenantId)) {
-                        // Skip validation for multi-tenant values: common, organizations, consumers
-                        String trimmedTenantId = configuredTenantId.trim().toLowerCase(java.util.Locale.ROOT);
-                        if (!isMultiTenantValue(trimmedTenantId)) {
-                            Object tidClaim = claimsSet.getClaim(AadJwtClaimNames.TID);
-                            String tokenTid = tidClaim != null ? tidClaim.toString() : null;
-                            String normalizedTokenTid = tokenTid != null
-                                ? tokenTid.trim().toLowerCase(java.util.Locale.ROOT)
-                                : null;
-                            if (!trimmedTenantId.equals(normalizedTokenTid)) {
-                                throw new BadJWTException("Invalid token tenant. Token tid claim '" + tokenTid
-                                    + "' does not match the configured tenant '" + configuredTenantId + "'.");
-                            }
-                            LOGGER.debug("Token tenant validated: [{}]", tokenTid);
-                        } else {
-                            LOGGER.debug("Tenant ID verification skipped: multi-tenant configuration detected [{}]",
-                                configuredTenantId);
-                        }
-                    }
-                }
-            }
-        });
+        jwtProcessor.setJWTClaimsSetVerifier(new AadJwtClaimsVerifier(aadAuthenticationProperties,
+            explicitAudienceCheck, validAudiences));
         return jwtProcessor;
-    }
-
-    /**
-     * Checks if the given tenant ID represents a multi-tenant configuration.
-     * Multi-tenant values (common, organizations, consumers) should skip tenant ID validation.
-     */
-    private boolean isMultiTenantValue(String normalizedTenantId) {
-        return "common".equals(normalizedTenantId)
-            || "organizations".equals(normalizedTenantId)
-            || "consumers".equals(normalizedTenantId);
     }
 }
