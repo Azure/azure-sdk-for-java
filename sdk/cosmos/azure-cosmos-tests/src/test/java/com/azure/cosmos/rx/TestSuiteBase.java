@@ -69,6 +69,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
@@ -151,6 +152,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final int NOT_FOUND_MAX_RETRY_ATTEMPTS = 12;
 
+    private static final Duration TRANSIENT_CLEANUP_RETRY_DELAY = Duration.ofSeconds(1);
+
+    private static final int TRANSIENT_CLEANUP_MAX_RETRY_ATTEMPTS = 30;
+
     private static final Duration STORED_PROCEDURE_QUERY_RETRY_DELAY = Duration.ofSeconds(1);
 
     private static final int STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT = 5_000;
@@ -223,17 +228,66 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         throw new IllegalStateException("Retry loop completed unexpectedly.");
     }
 
+    private static <T> Mono<T> retryOnTransientCleanupFailure(Mono<T> responseMono) {
+        return responseMono.retryWhen(
+            Retry.fixedDelay(TRANSIENT_CLEANUP_MAX_RETRY_ATTEMPTS, TRANSIENT_CLEANUP_RETRY_DELAY)
+                .filter(TestSuiteBase::isTransientCleanupFailure)
+                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
+    private static boolean isTransientCleanupFailure(Throwable throwable) {
+        Throwable unwrappedException = Exceptions.unwrap(throwable);
+        if (!(unwrappedException instanceof CosmosException)) {
+            return false;
+        }
+
+        int statusCode = ((CosmosException) unwrappedException).getStatusCode();
+        return statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+            || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+            || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+    }
+
     protected static <T> void validateCosmosPagedIterableWithRetry(
         Supplier<CosmosPagedIterable<T>> pagedIterableSupplier,
         Consumer<CosmosPagedIterable<T>> validator,
         String context) throws InterruptedException {
+
+        validateWithRetry(() -> validator.accept(pagedIterableSupplier.get()), context);
+    }
+
+    protected static <T extends Resource> FeedResponse<T> readManyWithRetry(
+        CosmosAsyncContainer container,
+        List<CosmosItemIdentity> cosmosItemIdentities,
+        Collection<String> expectedIds,
+        Class<T> classType) throws InterruptedException {
+
+        AtomicReference<FeedResponse<T>> feedResponseReference = new AtomicReference<>();
+
+        validateWithRetry(() -> {
+            FeedResponse<T> feedResponse = container.readMany(cosmosItemIdentities, classType).block();
+
+            assertThat(feedResponse).isNotNull();
+            assertThat(feedResponse.getResults()).isNotNull();
+            assertThat(feedResponse.getResults()).hasSize(expectedIds.size());
+
+            for (T fetchedResult : feedResponse.getResults()) {
+                assertThat(expectedIds.contains(fetchedResult.getId())).isTrue();
+            }
+
+            feedResponseReference.set(feedResponse);
+        }, "readMany visibility after item creation");
+
+        return feedResponseReference.get();
+    }
+
+    protected static void validateWithRetry(Runnable validator, String context) throws InterruptedException {
 
         long retryStartNanos = System.nanoTime();
         AssertionError lastAssertionError;
 
         do {
             try {
-                validator.accept(pagedIterableSupplier.get());
+                validator.run();
                 return;
             } catch (AssertionError assertionError) {
                 lastAssertionError = assertionError;
@@ -256,27 +310,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         FeedResponseListValidator<T> validator,
         String context) throws InterruptedException {
 
-        long retryStartNanos = System.nanoTime();
-        AssertionError lastAssertionError;
-
-        do {
-            try {
-                validateQuerySuccess(feedResponseSupplier.get(), validator, STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT);
-                return;
-            } catch (AssertionError assertionError) {
-                lastAssertionError = assertionError;
-                Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
-                if (elapsed.compareTo(STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION) >= 0) {
-                    throw lastAssertionError;
-                }
-
-                logger.warn(
-                    "{} did not return expected results yet. Retrying after {}.",
-                    context,
-                    STORED_PROCEDURE_QUERY_RETRY_DELAY);
-                Thread.sleep(STORED_PROCEDURE_QUERY_RETRY_DELAY.toMillis());
-            }
-        } while (true);
+        validateWithRetry(
+            () -> validateQuerySuccess(feedResponseSupplier.get(), validator, STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT),
+            context);
     }
 
     private static boolean isNotFound(Throwable throwable) {
@@ -582,7 +618,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                             return Mono.empty();
                         }
                     }
-                    return Mono.error(ex);
+                    return retryOnTransientCleanupFailure(Mono.error(ex));
                 }
                 if (response.getResponse() != null
                     && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
@@ -594,7 +630,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                         response.getResponse().getStatusCode(),
                         "Bulk delete operation failed with status code " + response.getResponse().getStatusCode());
                     BridgeInternal.setSubStatusCode(bulkException, response.getResponse().getSubStatusCode());
-                    return Mono.error(bulkException);
+                    return retryOnTransientCleanupFailure(Mono.error(bulkException));
                 }
                 return Mono.just(response);
             })
@@ -608,9 +644,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                        .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
-                       .flatMap(trigger -> {
-                           return cosmosContainer.getScripts().getTrigger(trigger.getId()).delete();
-                       }).then().block();
+                       .flatMap(trigger -> retryOnTransientCleanupFailure(
+                           cosmosContainer.getScripts().getTrigger(trigger.getId()).delete()))
+                       .then().block();
 
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
@@ -618,9 +654,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                        .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
-                       .flatMap(storedProcedure -> {
-                           return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions());
-                       }).then().block();
+                       .flatMap(storedProcedure -> retryOnTransientCleanupFailure(
+                           cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions())))
+                       .then().block();
 
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
@@ -628,9 +664,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                        .byPage(maxItemCount)
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
-                       .flatMap(udf -> {
-                           return cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete();
-                       }).then().block();
+                       .flatMap(udf -> retryOnTransientCleanupFailure(
+                           cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete()))
+                       .then().block();
 
         logger.info("Finished truncating collection {}.", cosmosContainerId);
     }
@@ -2420,7 +2456,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                         return Mono.empty();
                                     }
                                 }
-                                return Mono.error(ex);
+                                return retryOnTransientCleanupFailure(Mono.error(ex));
                             }
                             if (response.getResponse() != null
                                 && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
@@ -2432,7 +2468,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                     response.getResponse().getStatusCode(),
                                     "Bulk delete operation failed with status code " + response.getResponse().getStatusCode());
                                 BridgeInternal.setSubStatusCode(bulkException, response.getResponse().getSubStatusCode());
-                                return Mono.error(bulkException);
+                                return retryOnTransientCleanupFailure(Mono.error(bulkException));
                             }
                             return Mono.just(response);
                         })
@@ -2446,7 +2482,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .byPage()
                 .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
-                .flatMap(trigger -> container.getScripts().getTrigger(trigger.getId()).delete()).then().block();
+                .flatMap(trigger -> retryOnTransientCleanupFailure(
+                    container.getScripts().getTrigger(trigger.getId()).delete()))
+                .then().block();
 
             logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
 
@@ -2457,7 +2495,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(storedProcedure -> {
-                    return container.getScripts().getStoredProcedure(storedProcedure.getId()).delete();
+                    return retryOnTransientCleanupFailure(
+                        container.getScripts().getStoredProcedure(storedProcedure.getId()).delete());
                 })
                 .then()
                 .block();
@@ -2470,7 +2509,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .byPage()
                 .publishOn(Schedulers.parallel()).flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {
-                    return container.getScripts().getUserDefinedFunction(udf.getId()).delete();
+                    return retryOnTransientCleanupFailure(
+                        container.getScripts().getUserDefinedFunction(udf.getId()).delete());
                 })
                 .then()
                 .block();

@@ -3924,11 +3924,11 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         int retryAttempt = 0;
         ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
 
-        while (hasNonFaultInjected4041002Response(response)) {
+        while (hasNonFaultInjected404RetryableResponse(response)) {
             Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
             if (elapsed.compareTo(TRANSIENT_404_1002_MAX_RETRY_DURATION) >= 0) {
                 logger.warn(
-                    "Detected non-fault-injected 404/1002 in diagnostics for test {} for {}. "
+                    "Detected non-fault-injected retryable 404 in diagnostics for test {} for {}. "
                         + "Continuing with latest response so normal assertions can report diagnostics.",
                     testId,
                     elapsed);
@@ -3937,7 +3937,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             retryAttempt++;
             logger.warn(
-                "Detected non-fault-injected 404/1002 in diagnostics for test {}. "
+                "Detected non-fault-injected retryable 404 in diagnostics for test {}. "
                     + "Waiting {} before retry attempt {}.",
                 testId,
                 TRANSIENT_404_1002_RETRY_DELAY,
@@ -3949,7 +3949,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         return response;
     }
 
-    private static boolean hasNonFaultInjected4041002Response(ResponseWrapper<?> response) {
+    private static boolean hasNonFaultInjected404RetryableResponse(ResponseWrapper<?> response) {
         CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
         if (diagnosticsContext == null || diagnosticsContext.getDiagnostics() == null) {
             return false;
@@ -3967,12 +3967,12 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     continue;
                 }
 
-                if (hasNonFaultInjected4041002GatewayResponse(clientSideRequestStatistics.getGatewayStatisticsList())) {
+                if (hasNonFaultInjected404RetryableGatewayResponse(clientSideRequestStatistics.getGatewayStatisticsList())) {
                     return true;
                 }
 
-                if (hasNonFaultInjected4041002StoreResponse(clientSideRequestStatistics.getResponseStatisticsList())
-                    || hasNonFaultInjected4041002StoreResponse(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
+                if (hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getResponseStatisticsList())
+                    || hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
 
                     return true;
                 }
@@ -3982,7 +3982,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         return false;
     }
 
-    private static boolean hasNonFaultInjected4041002GatewayResponse(
+    private static boolean hasNonFaultInjected404RetryableGatewayResponse(
         List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
 
         if (gatewayStatisticsList == null) {
@@ -3991,7 +3991,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
         for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics : gatewayStatisticsList) {
             if (gatewayStatistics != null
-                && is4041002(gatewayStatistics.getStatusCode(), gatewayStatistics.getSubStatusCode())
+                && isRetryable404(gatewayStatistics.getStatusCode(), gatewayStatistics.getSubStatusCode())
                 && isNullOrEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
 
                 return true;
@@ -4001,7 +4001,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         return false;
     }
 
-    private static boolean hasNonFaultInjected4041002StoreResponse(
+    private static boolean hasNonFaultInjected404RetryableStoreResponse(
         Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatisticsCollection) {
 
         if (storeResponseStatisticsCollection == null) {
@@ -4015,7 +4015,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 storeResultDiagnostics == null ? null : storeResultDiagnostics.getStoreResponseDiagnostics();
 
             if (storeResponseDiagnostics != null
-                && is4041002(storeResponseDiagnostics.getStatusCode(), storeResponseDiagnostics.getSubStatusCode())
+                && isRetryable404(storeResponseDiagnostics.getStatusCode(), storeResponseDiagnostics.getSubStatusCode())
                 && isNullOrEmpty(storeResponseDiagnostics.getFaultInjectionRuleId())) {
 
                 return true;
@@ -4025,9 +4025,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         return false;
     }
 
-    private static boolean is4041002(int statusCode, int subStatusCode) {
+    private static boolean isRetryable404(int statusCode, int subStatusCode) {
         return statusCode == HttpConstants.StatusCodes.NOTFOUND
-            && subStatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE;
+            && (subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN
+            || subStatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
     }
 
     private static boolean isNullOrEmpty(String value) {

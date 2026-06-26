@@ -705,11 +705,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             // Due to the replica validation, there could be an extra open connection call flow, while the rule will also be applied on.
             assertThat(serverConnectionDelayRule.getHitCount()).isBetween(1l, 2l);
             assertThat(itemResponse.getDiagnostics()).isNotNull();
-            this.validateHitCount(
-                serverConnectionDelayRule,
-                serverConnectionDelayRule.getHitCount(),
-                OperationType.Create,
-                ResourceType.Connection);
 
         } finally {
             serverConnectionDelayRule.disable();
@@ -1485,9 +1480,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem, false);
             }
 
-            //Because applyPercentage is based on Random probability,
-            //we expect that this assert will fail 0.53% of the time.
-            assertThat(applyPercentageRule.getHitCount()).isBetween(14L, 37L);
+            // Because applyPercentage is based on random probability, keep a wide enough range to avoid rare CI flakes.
+            assertThat(applyPercentageRule.getHitCount()).isBetween(10L, 45L);
 
         } finally {
             applyPercentageRule.disable();

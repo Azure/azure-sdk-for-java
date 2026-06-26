@@ -615,28 +615,19 @@ public class OperationPoliciesTest extends TestSuiteBase {
             idSet.add(document.getId());
         }
 
-        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class).block();
-
-        assertThat(feedResponse).isNotNull();
-        assertThat(feedResponse.getResults()).isNotNull();
-        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
-
-        for (int i = 0; i < feedResponse.getResults().size(); i++) {
-            InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
-            assertThat(idSet.contains(fetchedResult.getId())).isTrue();
-        }
+        FeedResponse<InternalObjectNode> feedResponse = readManyWithRetry(
+            container,
+            cosmosItemIdentities,
+            idSet,
+            InternalObjectNode.class);
         validateOptions(initialOptions, feedResponse, false, true);
         changeProperties(changedOptions);
-        feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class).block();
 
-        assertThat(feedResponse).isNotNull();
-        assertThat(feedResponse.getResults()).isNotNull();
-        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
-
-        for (int i = 0; i < feedResponse.getResults().size(); i++) {
-            InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
-            assertThat(idSet.contains(fetchedResult.getId())).isTrue();
-        }
+        feedResponse = readManyWithRetry(
+            container,
+            cosmosItemIdentities,
+            idSet,
+            InternalObjectNode.class);
 
         validateOptions(changedOptions, feedResponse, false, true);
     }

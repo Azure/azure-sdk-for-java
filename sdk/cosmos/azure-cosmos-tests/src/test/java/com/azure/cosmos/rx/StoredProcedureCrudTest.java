@@ -97,9 +97,10 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 
-        Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
-        validateFailure(readObservable, notFoundValidator);
+        validateWithRetry(
+            () -> validateFailure(storedProcedure.read(null), notFoundValidator),
+            "Stored procedure delete visibility");
     }
 
     @BeforeClass(groups = { "fast" }, timeOut = 10_000 * SETUP_TIMEOUT)

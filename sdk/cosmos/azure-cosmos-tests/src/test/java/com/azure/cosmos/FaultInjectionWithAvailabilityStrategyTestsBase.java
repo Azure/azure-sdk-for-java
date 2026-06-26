@@ -96,7 +96,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     private final static ThresholdBasedAvailabilityStrategy noAvailabilityStrategy = null;
     private final static ThresholdBasedAvailabilityStrategy eagerThresholdAvailabilityStrategy =
         new ThresholdBasedAvailabilityStrategy(
-            Duration.ofMillis(1), Duration.ofMillis(10)
+            Duration.ofMillis(500), Duration.ofMillis(100)
         );
     private final static ThresholdBasedAvailabilityStrategy reluctantThresholdAvailabilityStrategy =
         new ThresholdBasedAvailabilityStrategy(
