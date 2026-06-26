@@ -6,7 +6,6 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

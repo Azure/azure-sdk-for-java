@@ -5,6 +5,7 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -16,7 +17,7 @@ import java.io.IOException;
  * Hosted or BYOT tool search configuration for deferred tools.
  */
 @Fluent
-public final class ToolSearchToolParam extends Tool {
+public final class ToolSearchTool extends Tool {
 
     /*
      * The type property.
@@ -40,13 +41,13 @@ public final class ToolSearchToolParam extends Tool {
      * The parameters property.
      */
     @Generated
-    private EmptyModelParam parameters;
+    private BinaryData parameters;
 
     /**
-     * Creates an instance of ToolSearchToolParam class.
+     * Creates an instance of ToolSearchTool class.
      */
     @Generated
-    public ToolSearchToolParam() {
+    public ToolSearchTool() {
     }
 
     /**
@@ -74,10 +75,10 @@ public final class ToolSearchToolParam extends Tool {
      * Set the execution property: Whether tool search is executed by the server or by the client.
      *
      * @param execution the execution value to set.
-     * @return the ToolSearchToolParam object itself.
+     * @return the ToolSearchTool object itself.
      */
     @Generated
-    public ToolSearchToolParam setExecution(ToolSearchExecutionType execution) {
+    public ToolSearchTool setExecution(ToolSearchExecutionType execution) {
         this.execution = execution;
         return this;
     }
@@ -96,10 +97,10 @@ public final class ToolSearchToolParam extends Tool {
      * Set the description property: The description property.
      *
      * @param description the description value to set.
-     * @return the ToolSearchToolParam object itself.
+     * @return the ToolSearchTool object itself.
      */
     @Generated
-    public ToolSearchToolParam setDescription(String description) {
+    public ToolSearchTool setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -110,7 +111,7 @@ public final class ToolSearchToolParam extends Tool {
      * @return the parameters value.
      */
     @Generated
-    public EmptyModelParam getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
     }
 
@@ -118,10 +119,10 @@ public final class ToolSearchToolParam extends Tool {
      * Set the parameters property: The parameters property.
      *
      * @param parameters the parameters value to set.
-     * @return the ToolSearchToolParam object itself.
+     * @return the ToolSearchTool object itself.
      */
     @Generated
-    public ToolSearchToolParam setParameters(EmptyModelParam parameters) {
+    public ToolSearchTool setParameters(BinaryData parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -136,38 +137,42 @@ public final class ToolSearchToolParam extends Tool {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("execution", this.execution == null ? null : this.execution.toString());
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeJsonField("parameters", this.parameters);
+        if (this.parameters != null) {
+            jsonWriter.writeFieldName("parameters");
+            this.parameters.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ToolSearchToolParam from the JsonReader.
+     * Reads an instance of ToolSearchTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ToolSearchToolParam if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ToolSearchTool if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ToolSearchToolParam.
+     * @throws IOException If an error occurs while reading the ToolSearchTool.
      */
     @Generated
-    public static ToolSearchToolParam fromJson(JsonReader jsonReader) throws IOException {
+    public static ToolSearchTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ToolSearchToolParam deserializedToolSearchToolParam = new ToolSearchToolParam();
+            ToolSearchTool deserializedToolSearchTool = new ToolSearchTool();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedToolSearchToolParam.type = ToolType.fromString(reader.getString());
+                    deserializedToolSearchTool.type = ToolType.fromString(reader.getString());
                 } else if ("execution".equals(fieldName)) {
-                    deserializedToolSearchToolParam.execution = ToolSearchExecutionType.fromString(reader.getString());
+                    deserializedToolSearchTool.execution = ToolSearchExecutionType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
-                    deserializedToolSearchToolParam.description = reader.getString();
+                    deserializedToolSearchTool.description = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    deserializedToolSearchToolParam.parameters = EmptyModelParam.fromJson(reader);
+                    deserializedToolSearchTool.parameters
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedToolSearchToolParam;
+            return deserializedToolSearchTool;
         });
     }
 }

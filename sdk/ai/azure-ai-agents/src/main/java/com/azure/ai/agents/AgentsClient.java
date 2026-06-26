@@ -47,7 +47,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.openai.models.conversations.Conversation;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -66,7 +65,7 @@ public final class AgentsClient {
      *
      * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -178,7 +177,7 @@ public final class AgentsClient {
      *
      * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -198,9 +197,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -325,7 +324,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -474,7 +473,7 @@ public final class AgentsClient {
      *
      * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -543,9 +542,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -656,7 +655,7 @@ public final class AgentsClient {
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -676,9 +675,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -827,7 +826,7 @@ public final class AgentsClient {
      *
      * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -843,9 +842,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -957,7 +956,7 @@ public final class AgentsClient {
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -972,9 +971,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1087,7 +1086,7 @@ public final class AgentsClient {
      *
      * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1102,9 +1101,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1334,7 +1333,7 @@ public final class AgentsClient {
      *
      * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1533,7 +1532,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1715,7 +1714,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1824,7 +1823,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1865,7 +1864,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2143,7 +2142,7 @@ public final class AgentsClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2264,7 +2263,7 @@ public final class AgentsClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2383,7 +2382,7 @@ public final class AgentsClient {
      *
      * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2437,9 +2436,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2558,7 +2557,7 @@ public final class AgentsClient {
      * irrelevant).
      * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2636,7 +2635,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -2735,7 +2734,7 @@ public final class AgentsClient {
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2746,9 +2745,9 @@ public final class AgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2786,7 +2785,7 @@ public final class AgentsClient {
      *
      * Retrieves the details of a hosted agent session by agent name and session identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2886,7 +2885,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2947,7 +2946,7 @@ public final class AgentsClient {
      * The stream remains open until the client disconnects or the server
      * terminates the connection. Clients should handle reconnection as needed.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2983,15 +2982,15 @@ public final class AgentsClient {
      * Uploads binary file content to the specified path in the session sandbox.
      * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3076,7 +3075,7 @@ public final class AgentsClient {
      * Downloads the file at the specified sandbox path as a binary stream.
      * The path is resolved relative to the session home directory.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -3199,7 +3198,7 @@ public final class AgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

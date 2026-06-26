@@ -18,7 +18,7 @@ import java.util.List;
  * Groups function/custom tools under a shared namespace.
  */
 @Immutable
-public final class NamespaceToolParam extends Tool {
+public final class NamespaceTool extends Tool {
 
     /*
      * The type property.
@@ -43,6 +43,20 @@ public final class NamespaceToolParam extends Tool {
      */
     @Generated
     private final List<BinaryData> tools;
+
+    /**
+     * Creates an instance of NamespaceTool class.
+     *
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param tools the tools value to set.
+     */
+    @Generated
+    public NamespaceTool(String name, String description, List<BinaryData> tools) {
+        this.name = name;
+        this.description = description;
+        this.tools = tools;
+    }
 
     /**
      * Get the type property: The type property.
@@ -106,16 +120,16 @@ public final class NamespaceToolParam extends Tool {
     }
 
     /**
-     * Reads an instance of NamespaceToolParam from the JsonReader.
+     * Reads an instance of NamespaceTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NamespaceToolParam if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of NamespaceTool if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the NamespaceToolParam.
+     * @throws IOException If an error occurs while reading the NamespaceTool.
      */
     @Generated
-    public static NamespaceToolParam fromJson(JsonReader jsonReader) throws IOException {
+    public static NamespaceTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
@@ -137,23 +151,9 @@ public final class NamespaceToolParam extends Tool {
                     reader.skipChildren();
                 }
             }
-            NamespaceToolParam deserializedNamespaceToolParam = new NamespaceToolParam(name, description, tools);
-            deserializedNamespaceToolParam.type = type;
-            return deserializedNamespaceToolParam;
+            NamespaceTool deserializedNamespaceTool = new NamespaceTool(name, description, tools);
+            deserializedNamespaceTool.type = type;
+            return deserializedNamespaceTool;
         });
-    }
-
-    /**
-     * Creates an instance of NamespaceToolParam class.
-     *
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param tools the tools value to set.
-     */
-    @Generated
-    public NamespaceToolParam(String name, String description, List<BinaryData> tools) {
-        this.name = name;
-        this.description = description;
-        this.tools = tools;
     }
 }
