@@ -210,6 +210,25 @@ public class RestProxyUtilsTests {
         }
     }
 
+    @Test
+    public void lengthValidatingInputStreamCloseDoesNotCloseUnderlying() throws IOException {
+        final boolean[] closed = new boolean[1];
+        InputStream innerStream = new ByteArrayInputStream(EXPECTED) {
+            @Override
+            public void close() throws IOException {
+                closed[0] = true;
+                super.close();
+            }
+        };
+
+        LengthValidatingInputStream validatingStream = new LengthValidatingInputStream(innerStream, EXPECTED.length);
+
+        validatingStream.close();
+
+        // Assert that the underlying stream is still open (not closed)
+        assertTrue(!closed[0]);
+    }
+
     private static Mono<byte[]> validateAndCollectRequestAsync(HttpRequest request) {
         return RestProxyUtils.validateLengthAsync(request)
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody()));
