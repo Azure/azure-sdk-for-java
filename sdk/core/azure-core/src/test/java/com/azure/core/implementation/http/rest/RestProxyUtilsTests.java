@@ -213,20 +213,22 @@ public class RestProxyUtilsTests {
     @Test
     public void lengthValidatingInputStreamCloseDoesNotCloseUnderlying() throws IOException {
         final boolean[] closed = new boolean[1];
-        InputStream innerStream = new ByteArrayInputStream(EXPECTED) {
+
+        try (InputStream innerStream = new ByteArrayInputStream(EXPECTED) {
             @Override
             public void close() throws IOException {
                 closed[0] = true;
                 super.close();
             }
-        };
+        }) {
+            LengthValidatingInputStream validatingStream = new LengthValidatingInputStream(innerStream, EXPECTED.length);
 
-        LengthValidatingInputStream validatingStream = new LengthValidatingInputStream(innerStream, EXPECTED.length);
+            validatingStream.close();
 
-        validatingStream.close();
-
-        // Assert that the underlying stream is still open (not closed)
-        assertTrue(!closed[0]);
+            // Validate that closing the wrapper does not close the underlying stream.
+            org.junit.jupiter.api.Assertions.assertFalse(closed[0],
+                "LengthValidatingInputStream.close() must not close the underlying stream.");
+        }
     }
 
     private static Mono<byte[]> validateAndCollectRequestAsync(HttpRequest request) {
