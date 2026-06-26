@@ -173,8 +173,18 @@
     <!--Jackson-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-jackson</artifactId>
+      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jackson;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-jackson2</artifactId>
       <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jackson2;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>3.1.4</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
 
     <!-- Azure SDKs-->
@@ -533,6 +543,7 @@
                 <include>org.springframework.boot:spring-boot-data-redis:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-data-redis;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-http-converter:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-http-converter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-kafka:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-kafka;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-jackson:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jackson;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jackson2:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jackson2;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jdbc:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jms:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jms;external_dependency} -->
@@ -543,6 +554,7 @@
                 <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[5.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
                 <include>org.springframework:spring-context-support:[7.0.8]</include> <!-- {x-include-update;springboot4_org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework:spring-tx:[7.0.8]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+                <include>tools.jackson.core:jackson-databind:[3.1.4]</include> <!-- {x-include-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
