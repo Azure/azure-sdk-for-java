@@ -15,13 +15,11 @@ import org.springframework.util.StringUtils;
 /**
  * Custom JWT claims verifier that adds tenant ID validation for AAD authentication.
  * Extends {@link DefaultJWTClaimsVerifier} to validate that JWT tokens contain the expected tenant ID (tid claim).
+ * Package-private implementation detail of the filter package.
  */
-public class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.jose.proc.SecurityContext> {
+final class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.jose.proc.SecurityContext> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadJwtClaimsVerifier.class);
-    private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
-    private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
-    private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
 
     private final AadAuthenticationProperties aadAuthenticationProperties;
     private final boolean explicitAudienceCheck;
@@ -49,7 +47,7 @@ public class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.
         
         // Issuer validation
         final String issuer = claimsSet.getIssuer();
-        if (!isAadIssuer(issuer)) {
+        if (!AadIssuerValidator.isValidAadIssuer(issuer)) {
             throw new BadJWTException("Invalid token issuer");
         }
         
@@ -90,15 +88,6 @@ public class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.
                 }
             }
         }
-    }
-
-    private static boolean isAadIssuer(String issuer) {
-        if (issuer == null) {
-            return false;
-        }
-        return issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-            || issuer.startsWith(STS_WINDOWS_ISSUER)
-            || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER);
     }
 
     /**

@@ -189,6 +189,29 @@ class UserPrincipalManagerTests {
             .doesNotThrowAnyException();
     }
 
+    @Test
+    void tenantIdValidationSkippedWhenConsumersConfigured() throws Exception {
+        // Setup: create mocked AadAuthenticationProperties with multi-tenant value "consumers"
+        AadAuthenticationProperties properties = Mockito.mock(AadAuthenticationProperties.class);
+        AadProfileProperties profileProperties = Mockito.mock(AadProfileProperties.class);
+        Mockito.when(properties.getProfile()).thenReturn(profileProperties);
+        Mockito.when(profileProperties.getTenantId()).thenReturn("consumers");
+        
+        // Create UserPrincipalManager with both JWKSource and properties (no reflection needed)
+        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
+        
+        // Create JWT claims set with any tenant ID
+        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+                .issuer("https://sts.windows.net/any-tenant")
+                .claim(AadJwtClaimNames.TID, "any-tenant")
+                .build();
+        
+        // Execute: verification should NOT throw exception for multi-tenant config
+        ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
+        assertThatCode(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
+            .doesNotThrowAnyException();
+    }
+
     private void rolesExtractedAsExpected(Object rolesClaimValue, Collection<String> expected) {
         JWTClaimsSet set = new JWTClaimsSet.Builder()
                 .claim("roles", rolesClaimValue)

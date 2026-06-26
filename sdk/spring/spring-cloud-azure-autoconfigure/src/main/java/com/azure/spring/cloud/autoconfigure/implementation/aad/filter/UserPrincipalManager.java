@@ -41,10 +41,6 @@ import java.util.stream.StreamSupport;
 public class UserPrincipalManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipalManager.class);
-    private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
-    private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
-    private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
-
     private static final String MSG_MALFORMED_AD_KEY_DISCOVERY_URI = "Failed to parse active directory key discovery uri.";
 
     private final JWKSource<SecurityContext> keySource;
@@ -194,20 +190,11 @@ public class UserPrincipalManager {
     public boolean isTokenIssuedByAad(String token) {
         try {
             final JWT jwt = JWTParser.parse(token);
-            return isAadIssuer(jwt.getJWTClaimsSet().getIssuer());
+            return AadIssuerValidator.isValidAadIssuer(jwt.getJWTClaimsSet().getIssuer());
         } catch (ParseException e) {
             LOGGER.info("Fail to parse JWT {}, exception {}", token, e);
         }
         return false;
-    }
-
-    private static boolean isAadIssuer(String issuer) {
-        if (issuer == null) {
-            return false;
-        }
-        return issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-            || issuer.startsWith(STS_WINDOWS_ISSUER)
-            || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER);
     }
 
     private ConfigurableJWTProcessor<SecurityContext> getValidator(JWSAlgorithm jwsAlgorithm) {
