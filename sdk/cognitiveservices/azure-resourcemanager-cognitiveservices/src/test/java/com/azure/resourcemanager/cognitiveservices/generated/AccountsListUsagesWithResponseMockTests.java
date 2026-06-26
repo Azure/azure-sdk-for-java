@@ -24,7 +24,7 @@ public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"spkladydgnhau\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"gpmnmabe\",\"localizedValue\":\"qilwgdfpfqfpcvs\"},\"quotaPeriod\":\"l\",\"limit\":78.12429323242544,\"currentValue\":28.685630340870205,\"nextResetTime\":\"wxbsmtbl\",\"status\":\"InOverage\",\"scopeType\":\"Regional\",\"scopeId\":\"ifkwdvbtbrekqhs\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"wpq\",\"localizedValue\":\"ejuwyqwdqigmghgi\"},\"quotaPeriod\":\"txlujkhnjcmr\",\"limit\":97.19060237494223,\"currentValue\":5.319027231728701,\"nextResetTime\":\"twmlmhjnqtqeah\",\"status\":\"Unknown\",\"scopeType\":\"Regional\",\"scopeId\":\"gpokddxejhhkvgu\"}]}";
+            = "{\"nextLink\":\"pcqydeykvsk\",\"value\":[{\"unit\":\"Bytes\",\"name\":{\"value\":\"eizikgqaboohxbms\",\"localizedValue\":\"cqsxrmdvewu\"},\"quotaPeriod\":\"aeohpjhgejkbvhh\",\"limit\":36.396393370026814,\"currentValue\":16.961813759748978,\"nextResetTime\":\"xaex\",\"status\":\"Unknown\",\"scopeType\":\"Global\",\"scopeId\":\"joezlqxrkdknkobe\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"z\",\"localizedValue\":\"tzamicbig\"},\"quotaPeriod\":\"dgzsez\",\"limit\":14.188725307797224,\"currentValue\":75.54402214953816,\"nextResetTime\":\"raabmdlqjb\",\"status\":\"InOverage\",\"scopeType\":\"Global\",\"scopeId\":\"lhupmomihzbdnpxp\"},{\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"eyxel\",\"localizedValue\":\"cghf\"},\"quotaPeriod\":\"ufssjyghsfxr\",\"limit\":78.65387903381382,\"currentValue\":49.44907921858409,\"nextResetTime\":\"qfmefgvqcpdwj\",\"status\":\"InOverage\",\"scopeType\":\"Classic\",\"scopeId\":\"ysla\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class AccountsListUsagesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UsageListResult response = manager.accounts()
-            .listUsagesWithResponse("kmi", "wnnra", "libbf", com.azure.core.util.Context.NONE)
+            .listUsagesWithResponse("wmh", "gzotfriyrgkoekvz", "xxyxhighctxbxm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("spkladydgnhau", response.nextLink());
-        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, response.value().get(0).unit());
-        Assertions.assertEquals("gpmnmabe", response.value().get(0).name().value());
-        Assertions.assertEquals("qilwgdfpfqfpcvs", response.value().get(0).name().localizedValue());
-        Assertions.assertEquals("l", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(78.12429323242544D, response.value().get(0).limit());
-        Assertions.assertEquals(28.685630340870205D, response.value().get(0).currentValue());
-        Assertions.assertEquals("wxbsmtbl", response.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.IN_OVERAGE, response.value().get(0).status());
-        Assertions.assertEquals(QuotaScopeType.REGIONAL, response.value().get(0).scopeType());
-        Assertions.assertEquals("ifkwdvbtbrekqhs", response.value().get(0).scopeId());
+        Assertions.assertEquals("pcqydeykvsk", response.nextLink());
+        Assertions.assertEquals(UnitType.BYTES, response.value().get(0).unit());
+        Assertions.assertEquals("eizikgqaboohxbms", response.value().get(0).name().value());
+        Assertions.assertEquals("cqsxrmdvewu", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("aeohpjhgejkbvhh", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(36.396393370026814D, response.value().get(0).limit());
+        Assertions.assertEquals(16.961813759748978D, response.value().get(0).currentValue());
+        Assertions.assertEquals("xaex", response.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, response.value().get(0).status());
+        Assertions.assertEquals(QuotaScopeType.GLOBAL, response.value().get(0).scopeType());
+        Assertions.assertEquals("joezlqxrkdknkobe", response.value().get(0).scopeId());
     }
 }

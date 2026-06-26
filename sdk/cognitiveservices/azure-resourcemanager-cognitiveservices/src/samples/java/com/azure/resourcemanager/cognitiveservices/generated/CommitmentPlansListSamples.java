@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class CommitmentPlansListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListCommitmentPlans.json
+     * x-ms-original-file: 2026-05-15-preview/ListCommitmentPlans.json
      */
     /**
      * Sample code: ListCommitmentPlans.

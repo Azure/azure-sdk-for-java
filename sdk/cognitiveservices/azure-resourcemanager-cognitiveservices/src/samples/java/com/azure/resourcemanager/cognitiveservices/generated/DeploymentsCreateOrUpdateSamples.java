@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
+import com.azure.resourcemanager.cognitiveservices.models.DeploymentSpeculativeDecoding;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentState;
 import com.azure.resourcemanager.cognitiveservices.models.ServiceTier;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
@@ -15,7 +16,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/PutDeployment.json
+     * x-ms-original-file: 2026-05-15-preview/PutDeployment.json
      */
     /**
      * Sample code: PutDeployment.
@@ -31,6 +32,34 @@ public final class DeploymentsCreateOrUpdateSamples {
                 .withServiceTier(ServiceTier.PRIORITY)
                 .withDeploymentState(DeploymentState.RUNNING))
             .withSku(new Sku().withName("Standard").withCapacity(1))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-15-preview/PutDeploymentWithSpeculativeDecoding.json
+     */
+    /**
+     * Sample code: PutDeploymentWithSpeculativeDecoding.
+     * 
+     * @param manager Entry point to CognitiveServicesManager.
+     */
+    public static void putDeploymentWithSpeculativeDecoding(
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.deployments()
+            .define("deploymentName")
+            .withExistingAccount("resourceGroupName", "accountName")
+            .withProperties(new DeploymentProperties()
+                .withModel(new DeploymentModel().withFormat("Fireworks").withName("FW-Qwen3-14B").withVersion("1"))
+                .withSpeculativeDecoding(new DeploymentSpeculativeDecoding().withDraftModel(new DeploymentModel()
+                    .withFormat("FireworksCustom")
+                    .withName("testDraftModel")
+                    .withVersion("1")
+                    .withSource(
+                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/projectName"))
+                    .withDraftTokenCount(4))
+                .withServiceTier(ServiceTier.DEFAULT)
+                .withDeploymentState(DeploymentState.RUNNING))
+            .withSku(new Sku().withName("GlobalProvisionedManaged").withCapacity(80))
             .create();
     }
 }
