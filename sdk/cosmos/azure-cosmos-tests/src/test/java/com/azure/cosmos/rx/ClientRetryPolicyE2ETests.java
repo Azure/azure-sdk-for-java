@@ -907,7 +907,10 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
-                List<String> expectedRegions = getServiceOrderedRegionsForOperation(operationType).subList(0, 2);
+List<String> serviceOrderedRegions = getServiceOrderedRegionsForOperation(operationType);
+List<String> expectedRegions = serviceOrderedRegions == null
+    ? null
+    : serviceOrderedRegions.subList(0, Math.min(2, serviceOrderedRegions.size()));
 
                 assertContactedRegionCount(
                     diagnosticsContext,
