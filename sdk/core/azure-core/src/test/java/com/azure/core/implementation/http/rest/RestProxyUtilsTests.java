@@ -221,12 +221,14 @@ public class RestProxyUtilsTests {
                 super.close();
             }
         }) {
-            LengthValidatingInputStream validatingStream = new LengthValidatingInputStream(innerStream, EXPECTED.length);
+            LengthValidatingInputStream validatingStream
+                = new LengthValidatingInputStream(innerStream, EXPECTED.length);
 
             validatingStream.close();
 
             // Validate that closing the wrapper does not close the underlying stream.
-            org.junit.jupiter.api.Assertions.assertFalse(closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
+            org.junit.jupiter.api.Assertions.assertFalse(closed[0],
+                "LengthValidatingInputStream.close() must not close the underlying stream.");
         }
     }
 
