@@ -15,12 +15,19 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ReadFeedStoredProceduresTest extends TestSuiteBase {
+
+    private static final Duration STORED_PROCEDURE_READ_FEED_RETRY_DELAY = Duration.ofSeconds(1);
+
+    private static final int STORED_PROCEDURE_READ_FEED_ATTEMPT_TIMEOUT = 5_000;
+
+    private static final Duration STORED_PROCEDURE_READ_FEED_MAX_RETRY_DURATION = Duration.ofSeconds(30);
 
     private CosmosAsyncContainer createdCollection;
     private List<CosmosStoredProcedureProperties> createdStoredProcedures = new ArrayList<>();
@@ -35,10 +42,6 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readStoredProcedures() throws Exception {
         int maxItemCount = 2;
-
-        CosmosPagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
-                                                                                           .readAllStoredProcedures();
-
         int expectedPageSize = (createdStoredProcedures.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
@@ -49,7 +52,35 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
+        validateReadStoredProceduresWithRetry(maxItemCount, validator);
+    }
+
+    private void validateReadStoredProceduresWithRetry(
+        int maxItemCount,
+        FeedResponseListValidator<CosmosStoredProcedureProperties> validator) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        AssertionError lastAssertionError;
+
+        do {
+            try {
+                CosmosPagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
+                    .readAllStoredProcedures();
+                validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, STORED_PROCEDURE_READ_FEED_ATTEMPT_TIMEOUT);
+                return;
+            } catch (AssertionError assertionError) {
+                lastAssertionError = assertionError;
+                Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+                if (elapsed.compareTo(STORED_PROCEDURE_READ_FEED_MAX_RETRY_DURATION) >= 0) {
+                    throw lastAssertionError;
+                }
+
+                logger.warn(
+                    "Stored procedure read feed did not return all created stored procedures yet. Retrying after {}.",
+                    STORED_PROCEDURE_READ_FEED_RETRY_DELAY);
+                Thread.sleep(STORED_PROCEDURE_READ_FEED_RETRY_DELAY.toMillis());
+            }
+        } while (true);
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
