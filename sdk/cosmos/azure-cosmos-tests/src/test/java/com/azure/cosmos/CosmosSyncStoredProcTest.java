@@ -11,7 +11,6 @@ import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -229,9 +228,10 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
-                container.getScripts().readAllStoredProcedures(cosmosQueryRequestOptions);
-        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+        validateCosmosPagedIterableWithRetry(
+            () -> container.getScripts().readAllStoredProcedures(cosmosQueryRequestOptions),
+            feedResponseIterator -> assertThat(feedResponseIterator.iterator().hasNext()).isTrue(),
+            "Stored procedure read feed");
 
     }
 
@@ -244,14 +244,16 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
-                container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions);
-        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+        validateCosmosPagedIterableWithRetry(
+            () -> container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions),
+            feedResponseIterator -> assertThat(feedResponseIterator.iterator().hasNext()).isTrue(),
+            "Stored procedure string query");
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator2 =
-                container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions);
-        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
+        validateCosmosPagedIterableWithRetry(
+            () -> container.getScripts().queryStoredProcedures(querySpec, cosmosQueryRequestOptions),
+            feedResponseIterator -> assertThat(feedResponseIterator.iterator().hasNext()).isTrue(),
+            "Stored procedure SqlQuerySpec query");
     }
 
     private void validateResponse(CosmosStoredProcedureProperties properties,

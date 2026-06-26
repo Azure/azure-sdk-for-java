@@ -89,6 +89,7 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -117,6 +118,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.extractConfigs;
@@ -148,6 +151,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     private static final Duration STORED_PROCEDURE_NOT_FOUND_RETRY_DELAY = Duration.ofSeconds(1);
 
     private static final int STORED_PROCEDURE_NOT_FOUND_MAX_RETRY_ATTEMPTS = 12;
+
+    private static final Duration STORED_PROCEDURE_QUERY_RETRY_DELAY = Duration.ofSeconds(1);
+
+    private static final int STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT = 5_000;
+
+    private static final Duration STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION = Duration.ofSeconds(30);
 
     private static boolean isTransientCreateFailure(Throwable t) {
         if (t instanceof CosmosException) {
@@ -192,6 +201,62 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             Retry.fixedDelay(STORED_PROCEDURE_NOT_FOUND_MAX_RETRY_ATTEMPTS, STORED_PROCEDURE_NOT_FOUND_RETRY_DELAY)
                 .filter(TestSuiteBase::isNotFound)
                 .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
+    protected static <T> void validateCosmosPagedIterableWithRetry(
+        Supplier<CosmosPagedIterable<T>> pagedIterableSupplier,
+        Consumer<CosmosPagedIterable<T>> validator,
+        String context) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        AssertionError lastAssertionError;
+
+        do {
+            try {
+                validator.accept(pagedIterableSupplier.get());
+                return;
+            } catch (AssertionError assertionError) {
+                lastAssertionError = assertionError;
+                Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+                if (elapsed.compareTo(STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION) >= 0) {
+                    throw lastAssertionError;
+                }
+
+                logger.warn(
+                    "{} did not return expected results yet. Retrying after {}.",
+                    context,
+                    STORED_PROCEDURE_QUERY_RETRY_DELAY);
+                Thread.sleep(STORED_PROCEDURE_QUERY_RETRY_DELAY.toMillis());
+            }
+        } while (true);
+    }
+
+    protected static <T> void validateFeedResponseListWithRetry(
+        Supplier<Flux<FeedResponse<T>>> feedResponseSupplier,
+        FeedResponseListValidator<T> validator,
+        String context) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        AssertionError lastAssertionError;
+
+        do {
+            try {
+                validateQuerySuccess(feedResponseSupplier.get(), validator, STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT);
+                return;
+            } catch (AssertionError assertionError) {
+                lastAssertionError = assertionError;
+                Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+                if (elapsed.compareTo(STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION) >= 0) {
+                    throw lastAssertionError;
+                }
+
+                logger.warn(
+                    "{} did not return expected results yet. Retrying after {}.",
+                    context,
+                    STORED_PROCEDURE_QUERY_RETRY_DELAY);
+                Thread.sleep(STORED_PROCEDURE_QUERY_RETRY_DELAY.toMillis());
+            }
+        } while (true);
     }
 
     private static boolean isNotFound(Throwable throwable) {

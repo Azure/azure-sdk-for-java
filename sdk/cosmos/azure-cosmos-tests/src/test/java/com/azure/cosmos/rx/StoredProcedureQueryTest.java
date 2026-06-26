@@ -17,7 +17,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,12 +25,6 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoredProcedureQueryTest extends TestSuiteBase {
-
-    private static final Duration STORED_PROCEDURE_QUERY_RETRY_DELAY = Duration.ofSeconds(1);
-
-    private static final int STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT = 5_000;
-
-    private static final Duration STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION = Duration.ofSeconds(30);
 
     private CosmosAsyncContainer createdCollection;
     private List<CosmosStoredProcedureProperties> createdStoredProcs = new ArrayList<>();
@@ -66,7 +59,10 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateStoredProcedureQueryWithRetry(query, options, maxItemCount, validator);
+        validateFeedResponseListWithRetry(
+            () -> createdCollection.getScripts().queryStoredProcedures(query, options).byPage(maxItemCount),
+            validator,
+            "Stored procedure query: " + query);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
@@ -104,38 +100,10 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateStoredProcedureQueryWithRetry(query, options, maxItemCount, validator);
-    }
-
-    private void validateStoredProcedureQueryWithRetry(
-        String query,
-        CosmosQueryRequestOptions options,
-        int maxItemCount,
-        FeedResponseListValidator<CosmosStoredProcedureProperties> validator) throws InterruptedException {
-
-        long retryStartNanos = System.nanoTime();
-        AssertionError lastAssertionError;
-
-        do {
-            try {
-                CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
-                    .queryStoredProcedures(query, options);
-                validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, STORED_PROCEDURE_QUERY_ATTEMPT_TIMEOUT);
-                return;
-            } catch (AssertionError assertionError) {
-                lastAssertionError = assertionError;
-                Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
-                if (elapsed.compareTo(STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION) >= 0) {
-                    throw lastAssertionError;
-                }
-
-                logger.warn(
-                    "Stored procedure query did not return expected created stored procedures yet. Query: {}. Retrying after {}.",
-                    query,
-                    STORED_PROCEDURE_QUERY_RETRY_DELAY);
-                Thread.sleep(STORED_PROCEDURE_QUERY_RETRY_DELAY.toMillis());
-            }
-        } while (true);
+        validateFeedResponseListWithRetry(
+            () -> createdCollection.getScripts().queryStoredProcedures(query, options).byPage(maxItemCount),
+            validator,
+            "Stored procedure query: " + query);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
