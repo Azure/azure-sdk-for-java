@@ -44,13 +44,13 @@ final class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.j
     @Override
     public void verify(JWTClaimsSet claimsSet, com.nimbusds.jose.proc.SecurityContext ctx) throws BadJWTException {
         super.verify(claimsSet, ctx);
-        
+
         // Issuer validation
         final String issuer = claimsSet.getIssuer();
         if (!AadIssuerValidator.isValidAadIssuer(issuer)) {
             throw new BadJWTException("Invalid token issuer");
         }
-        
+
         // Audience validation
         if (explicitAudienceCheck) {
             java.util.List<String> audiences = claimsSet.getAudience();
@@ -67,7 +67,7 @@ final class AadJwtClaimsVerifier extends DefaultJWTClaimsVerifier<com.nimbusds.j
                     + " does not match either the client-id or AppIdUri.");
             }
         }
-        
+
         // Tenant ID validation
         if (aadAuthenticationProperties != null) {
             String configuredTenantId = aadAuthenticationProperties.getProfile().getTenantId();
