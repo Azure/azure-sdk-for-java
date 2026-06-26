@@ -450,20 +450,11 @@ public class GlobalEndpointManager implements AutoCloseable {
             if (!this.hasThinClientReadLocations.get()) {
                 return Mono.empty();
             }
+            // Resolve the current thin-client regional endpoints. An empty set (e.g.
+            // hasThinClientReadLocations is true but LocationCache cannot normalize-match a single
+            // thin-client region) is passed straight through: runProbeCycle adopts it and the routing
+            // gate goes RED, so the SDK falls back to Gateway V1 until resolution recovers.
             Set<URI> endpoints = this.locationCache.getThinClientRegionalEndpoints();
-            if (endpoints.isEmpty()) {
-                // Safeguard against eligibility/resolution disagreement: hasThinClientReadLocations is
-                // derived from the raw account-topology response, while getThinClientRegionalEndpoints
-                // is derived from the resolved LocationCache contexts (which can drop endpoints when
-                // gateway and thin-client region names fail to normalize-match). Without this branch a
-                // prior successful probe cycle would leave the per-region cache populated, keeping the
-                // routing gate (`useThinClientStoreModel`) GREEN via `getProxyProbeDecision()` — and pin
-                // data-plane traffic to a thin-client model that has no resolved endpoint to route to.
-                // forceUnhealthy latches the gate RED (overriding the cache) so the SDK falls back to
-                // Gateway V1 until the resolution mismatch clears; the next non-empty cycle clears it.
-                probeClient.forceUnhealthy("hasThinClientReadLocations=true but resolved endpoint set is empty");
-                return Mono.empty();
-            }
             // Chained into the topology-refresh reactor pipeline. Cancellation propagates
             // through the outer subscription (disposed in close() via backgroundRefreshDisposable).
             // The probe client's internal single-flight CAS guarantees only one cycle runs at

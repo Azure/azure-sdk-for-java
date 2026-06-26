@@ -18,10 +18,8 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -39,12 +37,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *   <li>Connection error / TLS failure / HTTP/2 negotiation failure / timeout &rarr; failed.</li>
  * </ul>
  *
- * <p><b>Per-region cache (delta probing).</b> A successful probe for a region is cached for
- * the lifetime of this client and that region is never probed again. Each cycle only probes
- * the <em>delta</em> &mdash; the currently-known endpoints that have not yet recorded a
- * success. A failed region is simply left un-cached and is naturally re-probed on the next
- * topology refresh; this across-refresh re-probing is the only retry mechanism (there is no
- * in-cycle retry &mdash; each region is attempted exactly once per cycle).
+ * <p><b>Per-region cache (delta probing).</b> A successful probe is recorded against its region
+ * and that region is skipped on subsequent cycles for as long as it remains in the topology. Each
+ * cycle only probes the <em>delta</em> &mdash; the currently-known endpoints not yet proven. A
+ * failed region is left un-proven and is naturally re-probed on the next topology refresh; this
+ * across-refresh re-probing is the only retry mechanism (there is no in-cycle retry &mdash; each
+ * region is attempted exactly once per cycle).
  *
  * <p><b>Routing gate.</b> {@link #isThinClientRoutable()} returns {@code true} only when every
  * currently-known thin-client endpoint has a cached success. The startup default is
@@ -73,20 +71,12 @@ public class EndpointProbeClient implements Closeable {
     private final HttpClient httpClient;
     private final Duration perProbeTimeout;
 
-    // Per-region success cache. Only successful probes are ever recorded (endpoint -> TRUE);
-    // a region's presence as a key means "this region has been proven reachable and must never
-    // be probed again". Failures are intentionally NOT recorded so the region re-enters the
-    // delta on the next refresh.
-    private final ConcurrentHashMap<URI, Boolean> probeSucceeded = new ConcurrentHashMap<>();
-    // Snapshot of the most recently observed non-empty thin-client topology. The routing gate
-    // is evaluated against exactly this set. Replaced wholesale (never mutated) on each valid
-    // cycle so reads are consistent without locking.
-    private volatile Set<URI> knownEndpoints = Collections.emptySet();
-    // Latch set by forceUnhealthy(...) when a refresh resolves an empty thin-client endpoint set
-    // after a prior successful cycle. Without it, the now-stale knownEndpoints / probeSucceeded
-    // would keep the gate healthy even though the account no longer exposes thin-client regions.
-    // Cleared automatically by the next valid (non-empty) cycle.
-    private final AtomicBoolean forcedUnhealthy = new AtomicBoolean(false);
+    // Single source of truth: every currently-known thin-client endpoint mapped to its probe
+    // success state (TRUE = proven reachable, FALSE = known but not yet proven). Keys are the
+    // current topology — reconciled on each cycle so vanished regions are dropped; values flip to
+    // TRUE as probes succeed. The routing gate is simply "non-empty AND every value TRUE". A single
+    // ConcurrentHashMap keeps reads lock-free without a second structure to keep in sync.
+    private final ConcurrentHashMap<URI, Boolean> probeEndpointToProbeSuccessState = new ConcurrentHashMap<>();
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final AtomicBoolean cycleInProgress = new AtomicBoolean(false);
@@ -104,12 +94,13 @@ public class EndpointProbeClient implements Closeable {
      * probing only the regions that have not yet recorded a cached success, and emits the
      * post-cycle value of {@link #isThinClientRoutable()}.
      *
-     * <p>When the endpoint collection is {@code null} or empty (no thin-client regions
-     * discovered), the cycle is a no-op; {@code GlobalEndpointManager} is expected to call
-     * {@link #forceUnhealthy(String)} in that scenario.
+     * <p>When the endpoint collection is {@code null} or empty (no thin-client regions resolved),
+     * the reconciled map empties and the gate falls to its conservative {@code false} (route to
+     * Gateway V1); the probe Flux then iterates nothing, so no HTTP traffic is issued.
      *
-     * <p>When every currently-known region already has a cached success the cycle is a no-op
-     * that returns the current (healthy) gate value &mdash; no HTTP traffic is issued.
+     * <p>There are no short-circuit fast paths: every cycle iterates the provided collection and
+     * probes only the not-yet-proven endpoints. When all are already proven the filter yields
+     * nothing and the cycle is an inexpensive no-op that re-emits the current (healthy) gate.
      *
      * <p>The returned Mono never errors; internal exceptions are absorbed and logged so that
      * probe failures do not propagate out and fail topology refresh.
@@ -122,40 +113,40 @@ public class EndpointProbeClient implements Closeable {
             // Every no-op fast path below emits this: the current gate value, evaluated lazily.
             final Mono<Boolean> currentGate = Mono.fromSupplier(this::isThinClientRoutable);
 
-            // Nothing to probe when the client is closed or no endpoints were supplied.
-            if (this.closed.get() || regionalEndpoints == null) {
+            if (this.closed.get()) {
                 return currentGate;
             }
 
-            Set<URI> endpoints = new LinkedHashSet<>(regionalEndpoints);
-            endpoints.removeIf(Objects::isNull);
-            if (endpoints.isEmpty()) {
-                // No thin-client regions in topology -> probe is moot. GEM drives forceUnhealthy().
-                return currentGate;
+            // Normalize a null topology to an empty iteration (reference only — no copy).
+            Collection<URI> endpoints = regionalEndpoints == null ? Collections.emptyList() : regionalEndpoints;
+
+            // Reconcile the single source of truth directly against the provided collection — no
+            // intermediate copies. Register newly-seen endpoints as not-yet-proven (preserving any
+            // existing TRUE), then drop the ones that have vanished. Add-before-remove so a concurrent
+            // gate read never transiently observes an over-healthy state. When the collection is
+            // null/empty the map empties and the gate is false, so the SDK falls back to Gateway V1 —
+            // no separate force-unhealthy latch needed.
+            for (URI endpoint : endpoints) {
+                if (endpoint != null) {
+                    this.probeEndpointToProbeSuccessState.putIfAbsent(endpoint, Boolean.FALSE);
+                }
             }
+            this.probeEndpointToProbeSuccessState.keySet().retainAll(endpoints);
 
-            // A valid, non-empty topology was observed: clear any stale force-unhealthy latch and
-            // adopt this set as the gate's evaluation basis.
-            this.forcedUnhealthy.set(false);
-            this.knownEndpoints = Collections.unmodifiableSet(endpoints);
-
-            // Delta: only probe regions that have not yet recorded a cached success.
-            Set<URI> delta = new LinkedHashSet<>(endpoints);
-            delta.removeIf(endpoint -> Boolean.TRUE.equals(this.probeSucceeded.get(endpoint)));
-            if (delta.isEmpty()) {
-                // Every known region already proven; nothing to probe.
-                return currentGate;
-            }
-
-            // Single-flight: skip if a cycle is already running. knownEndpoints was refreshed above
-            // so the gate still reflects the latest topology regardless.
+            // Single-flight: skip if a cycle is already running. The map was reconciled above so the
+            // gate already reflects the latest topology regardless of whether we probe this round.
             if (!this.cycleInProgress.compareAndSet(false, true)) {
                 logger.debug("Thin-client probe cycle already in progress; skipping overlapping trigger.");
                 return currentGate;
             }
 
+            // No fast paths: always iterate the provided collection and probe only the not-yet-proven
+            // endpoints. When everything is already proven (or the collection is empty) the filter
+            // yields nothing and the cycle is an inexpensive no-op that re-emits the current gate.
             return Flux
-                .fromIterable(delta)
+                .fromIterable(endpoints)
+                .filter(endpoint -> endpoint != null
+                    && !Boolean.TRUE.equals(this.probeEndpointToProbeSuccessState.get(endpoint)))
                 .flatMap(this::probeEndpointOnce)
                 .collectList()
                 .map(this::applyCycleResult)
@@ -169,53 +160,22 @@ public class EndpointProbeClient implements Closeable {
     }
 
     /**
-     * @return current routing-gate value. {@code true} means the SDK may route the data plane
-     * to the thin-client proxy. It is {@code true} only when at least one non-empty topology has
-     * been observed, the force-unhealthy latch is clear, and every currently-known endpoint has a
-     * cached success.
+     * @return current routing-gate value. {@code true} means the SDK may route the data plane to the
+     * thin-client proxy: {@code true} only when at least one thin-client region is currently known and
+     * every currently-known region has a proven (HTTP 200) probe.
      */
     public boolean isThinClientRoutable() {
-        if (this.forcedUnhealthy.get()) {
+        if (this.probeEndpointToProbeSuccessState.isEmpty()) {
+            // No known thin-client regions (conservative startup, or regions vanished): route to
+            // Gateway V1 until a region is proven reachable.
             return false;
         }
-        Set<URI> known = this.knownEndpoints;
-        if (known.isEmpty()) {
-            // Conservative startup: route to Gateway V1 until a region is proven reachable.
-            return false;
-        }
-        for (URI endpoint : known) {
-            if (!Boolean.TRUE.equals(this.probeSucceeded.get(endpoint))) {
+        for (Boolean proven : this.probeEndpointToProbeSuccessState.values()) {
+            if (!Boolean.TRUE.equals(proven)) {
                 return false;
             }
         }
         return true;
-    }
-
-    /**
-     * Forces the routing gate to {@code false} without running a probe cycle. Used by
-     * {@code GlobalEndpointManager} as a safeguard when account topology reports thin-client
-     * read locations but {@code LocationCache} cannot resolve a single thin-client regional
-     * endpoint (e.g. name-normalization mismatch, or the account no longer exposing thin-client
-     * regions after previously doing so). In that scenario no probe can fire, so without this
-     * latch the stale per-region cache from an earlier successful cycle would keep the gate
-     * healthy and silently bypass the safety net.
-     *
-     * <p>The latch is cleared automatically by the next valid (non-empty) probe cycle.
-     *
-     * @param reason short human-readable reason captured in the log.
-     */
-    public void forceUnhealthy(String reason) {
-        if (this.closed.get()) {
-            return;
-        }
-        boolean wasHealthy = isThinClientRoutable();
-        this.forcedUnhealthy.set(true);
-        if (wasHealthy) {
-            logger.warn(
-                "Thin-client probe gate forced UNHEALTHY without an HTTP cycle (reason='{}'). "
-                    + "SDK will route data plane to Gateway V1 until a subsequent non-empty probe cycle proves all known regions.",
-                reason);
-        }
     }
 
     /**
@@ -309,8 +269,9 @@ public class EndpointProbeClient implements Closeable {
         int successCount = 0;
         for (EndpointProbeResult r : results) {
             if (r.success && r.endpoint != null) {
-                // Cache the success permanently; this region will be excluded from future deltas.
-                this.probeSucceeded.put(r.endpoint, Boolean.TRUE);
+                // Flip to proven, but only if the region is still current: replace() is a no-op when
+                // a concurrent reconcile has already dropped it, so vanished regions aren't resurrected.
+                this.probeEndpointToProbeSuccessState.replace(r.endpoint, Boolean.TRUE);
                 successCount++;
             }
         }

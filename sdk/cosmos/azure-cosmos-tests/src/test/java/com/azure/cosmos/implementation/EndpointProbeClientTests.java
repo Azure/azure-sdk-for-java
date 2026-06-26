@@ -183,52 +183,41 @@ public class EndpointProbeClientTests {
     }
 
     @Test(groups = { "unit" })
-    public void forceUnhealthy_flipsHealthyGateToRedWithoutRunningProbe() {
-        // Safeguard path used by GlobalEndpointManager when account topology says thin-client
+    public void emptyEndpoints_flipHealthyGateToRed() {
+        // GlobalEndpointManager passes an empty endpoint set when account topology says thin-client
         // is eligible but LocationCache cannot resolve a single thin-client regional endpoint.
-        // Prove a healthy gate first, then assert the latch flips it to UNHEALTHY without a cycle.
+        // Prove a healthy gate first, then assert an empty cycle flips it to UNHEALTHY without probing.
         Map<URI, Integer> greenByEndpoint = new HashMap<>();
         greenByEndpoint.put(REGION_EAST, 200);
+        AtomicInteger sendCount = new AtomicInteger();
         EndpointProbeClient probeClient =
-            new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
+            new EndpointProbeClient(mockClient(greenByEndpoint, sendCount, false));
 
         assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
         assertThat(probeClient.isThinClientRoutable()).isTrue();
 
-        probeClient.forceUnhealthy("test: endpoint resolution mismatch");
+        // Regions vanished -> gate goes RED, and no additional probe traffic is issued.
+        assertThat(probeClient.runProbeCycle(Collections.emptyList()).block()).isFalse();
         assertThat(probeClient.isThinClientRoutable()).isFalse();
+        assertThat(sendCount.get()).isEqualTo(1);
     }
 
     @Test(groups = { "unit" })
-    public void forceUnhealthy_latchIsClearedByNextValidCycle() {
+    public void emptyEndpoints_recoverOnNextNonEmptyCycle() {
         Map<URI, Integer> greenByEndpoint = new HashMap<>();
         greenByEndpoint.put(REGION_EAST, 200);
         EndpointProbeClient probeClient =
             new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
 
-        // Prove healthy, then force the latch.
+        // Prove healthy, then collapse the topology to empty -> gate RED.
         probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block();
-        probeClient.forceUnhealthy("test: transient resolution mismatch");
+        assertThat(probeClient.runProbeCycle(Collections.emptyList()).block()).isFalse();
         assertThat(probeClient.isThinClientRoutable()).isFalse();
 
-        // A subsequent valid non-empty cycle clears the latch; the already-cached region keeps the
-        // gate healthy without re-probing.
+        // A subsequent non-empty cycle restores the gate; the already-cached region keeps it
+        // healthy without re-probing.
         assertThat(probeClient.runProbeCycle(Collections.singletonList(REGION_EAST)).block()).isTrue();
         assertThat(probeClient.isThinClientRoutable()).isTrue();
-    }
-
-    @Test(groups = { "unit" })
-    public void forceUnhealthy_onClosedProbeClient_isNoOp() {
-        Map<URI, Integer> greenByEndpoint = new HashMap<>();
-        greenByEndpoint.put(REGION_EAST, 200);
-        EndpointProbeClient probeClient =
-            new EndpointProbeClient(mockClient(greenByEndpoint, new AtomicInteger(), false));
-        probeClient.close();
-
-        // Closed probe clients must not mutate any state; forceUnhealthy is a no-op.
-        probeClient.forceUnhealthy("test");
-        // No cycle ever ran, so the gate stays at its conservative startup value.
-        assertThat(probeClient.isThinClientRoutable()).isFalse();
     }
 
     // --- Mock helpers ---
