@@ -112,27 +112,30 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateResponse(storedProcedureDef, response);
         validateDiagnostics(response, false);
 
+        final String storedProcedureId = storedProcedureDef.getId();
         CosmosStoredProcedureResponse readResponse = retryOnNotFound(
             () -> container.getScripts()
-                .getStoredProcedure(storedProcedureDef.getId())
+                .getStoredProcedure(storedProcedureId)
                 .read());
         validateResponse(storedProcedureDef, readResponse);
         validateDiagnostics(readResponse, false);
         //replace
         storedProcedureDef = readResponse.getProperties();
         storedProcedureDef.setBody("function(){ var y = 20;}");
+        final CosmosStoredProcedureProperties firstReplacement = storedProcedureDef;
         CosmosStoredProcedureResponse replaceResponse = retryOnNotFound(
             () -> container.getScripts()
-                .getStoredProcedure(storedProcedureDef.getId())
-                .replace(storedProcedureDef));
+                .getStoredProcedure(firstReplacement.getId())
+                .replace(firstReplacement));
         validateResponse(storedProcedureDef, replaceResponse);
         validateDiagnostics(replaceResponse, false);
 
         storedProcedureDef.setBody("function(){ var z = 2;}");
+        final CosmosStoredProcedureProperties secondReplacement = storedProcedureDef;
         CosmosStoredProcedureResponse replaceResponse2 = retryOnNotFound(
             () -> container.getScripts()
-                .getStoredProcedure(storedProcedureDef.getId())
-                .replace(storedProcedureDef, new CosmosStoredProcedureRequestOptions()));
+                .getStoredProcedure(secondReplacement.getId())
+                .replace(secondReplacement, new CosmosStoredProcedureRequestOptions()));
         validateResponse(storedProcedureDef, replaceResponse2);
         validateDiagnostics(replaceResponse2, false);
 
