@@ -100,14 +100,12 @@ public final class CodeInterpreterToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the CodeInterpreterToolboxTool object itself.
+     * {@inheritDoc}
      */
     @Generated
+    @Override
     public CodeInterpreterToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
+        super.setToolConfigs(toolConfigs);
         return this;
     }
 
@@ -120,12 +118,12 @@ public final class CodeInterpreterToolboxTool extends ToolboxTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         if (this.container != null) {
             jsonWriter.writeFieldName("container");
             this.container.writeTo(jsonWriter);
         }
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -148,35 +146,19 @@ public final class CodeInterpreterToolboxTool extends ToolboxTool {
                     deserializedCodeInterpreterToolboxTool.setName(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedCodeInterpreterToolboxTool.setDescription(reader.getString());
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedCodeInterpreterToolboxTool.setToolConfigs(toolConfigs);
                 } else if ("type".equals(fieldName)) {
                     deserializedCodeInterpreterToolboxTool.type = ToolboxToolType.fromString(reader.getString());
                 } else if ("container".equals(fieldName)) {
                     deserializedCodeInterpreterToolboxTool.container
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else if ("tool_configs".equals(fieldName)) {
-                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                    deserializedCodeInterpreterToolboxTool.toolConfigs = toolConfigs;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedCodeInterpreterToolboxTool;
         });
-    }
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
     }
 }

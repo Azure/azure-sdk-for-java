@@ -81,14 +81,12 @@ public final class AzureAISearchToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the AzureAISearchToolboxTool object itself.
+     * {@inheritDoc}
      */
     @Generated
+    @Override
     public AzureAISearchToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
+        super.setToolConfigs(toolConfigs);
         return this;
     }
 
@@ -101,9 +99,9 @@ public final class AzureAISearchToolboxTool extends ToolboxTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("azure_ai_search", this.azureAISearch);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -121,9 +119,9 @@ public final class AzureAISearchToolboxTool extends ToolboxTool {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            Map<String, ToolConfig> toolConfigs = null;
             AzureAISearchToolResource azureAISearch = null;
             ToolboxToolType type = ToolboxToolType.AZURE_AI_SEARCH;
-            Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -131,12 +129,12 @@ public final class AzureAISearchToolboxTool extends ToolboxTool {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else if ("azure_ai_search".equals(fieldName)) {
                     azureAISearch = AzureAISearchToolResource.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ToolboxToolType.fromString(reader.getString());
-                } else if ("tool_configs".equals(fieldName)) {
-                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -144,25 +142,9 @@ public final class AzureAISearchToolboxTool extends ToolboxTool {
             AzureAISearchToolboxTool deserializedAzureAISearchToolboxTool = new AzureAISearchToolboxTool(azureAISearch);
             deserializedAzureAISearchToolboxTool.setName(name);
             deserializedAzureAISearchToolboxTool.setDescription(description);
+            deserializedAzureAISearchToolboxTool.setToolConfigs(toolConfigs);
             deserializedAzureAISearchToolboxTool.type = type;
-            deserializedAzureAISearchToolboxTool.toolConfigs = toolConfigs;
             return deserializedAzureAISearchToolboxTool;
         });
-    }
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
     }
 }

@@ -16,7 +16,12 @@ public enum AgentDefinitionOptInKeys {
     /**
      * Enum value ExternalAgents=V1Preview.
      */
-    EXTERNAL_AGENTS_V1_PREVIEW("ExternalAgents=V1Preview");
+    EXTERNAL_AGENTS_V1_PREVIEW("ExternalAgents=V1Preview"),
+
+    /**
+     * Enum value DraftAgents=V1Preview.
+     */
+    DRAFT_AGENTS_V1_PREVIEW("DraftAgents=V1Preview");
 
     /**
      * The actual serialized value for a AgentDefinitionOptInKeys instance.

@@ -17,7 +17,7 @@ import java.util.Map;
  * The CreateAgentVersionInput model.
  */
 @Fluent
-@Beta(warningText = "Preview API. ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
+@Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
 public final class CreateAgentVersionInput implements JsonSerializable<CreateAgentVersionInput> {
 
     /*

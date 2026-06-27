@@ -1,7 +1,8 @@
 type;class_name;annotation_description;member_name
-class;com.azure.ai.agents.models.AgentDefinition;Preview API. ExternalAgents=V1Preview, WorkflowAgents=V1Preview;
+class;com.azure.ai.agents.models.AgentDefinition;Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview;
+field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores=V1Preview;
-class;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. ExternalAgents=V1Preview, WorkflowAgents=V1Preview;
+class;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview;
 class;com.azure.ai.agents.models.ExternalAgentDefinition;Preview API. ExternalAgents=V1Preview;
 class;com.azure.ai.agents.models.MemoryItem;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryItemKind;Preview API. MemoryStores=V1Preview;
@@ -14,6 +15,7 @@ class;com.azure.ai.agents.models.MemoryStoreDefaultOptions;Preview API. MemorySt
 class;com.azure.ai.agents.models.MemoryStoreDefinition;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreDetails;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreKind;Preview API. MemoryStores=V1Preview;
+class;com.azure.ai.agents.models.MemoryStoreObjectType;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreOperationUsage;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreSearchResponse;Preview API. MemoryStores=V1Preview;
 class;com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;Preview API. MemoryStores=V1Preview;
@@ -23,6 +25,7 @@ class;com.azure.ai.agents.models.OptimizationAgentIdentifier;Preview API. Agents
 class;com.azure.ai.agents.models.OptimizationCandidate;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.OptimizationDatasetCriterion;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.OptimizationDatasetInput;Preview API. AgentsOptimization=V2Preview;
+class;com.azure.ai.agents.models.OptimizationDatasetInputType;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.OptimizationDatasetItem;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.OptimizationEvaluatorRef;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.OptimizationInlineDatasetInput;Preview API. AgentsOptimization=V2Preview;

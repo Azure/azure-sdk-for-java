@@ -17,6 +17,7 @@ import java.util.Map;
  * Code-based evaluator definition using python code.
  */
 @Fluent
+@Beta(warningText = "Preview API. Evaluations=V1Preview")
 public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
 
     /*
@@ -151,14 +152,12 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * The entry point Python file name for the uploaded evaluator code (e.g. 'answer_length_evaluator.py')
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private String entryPoint;
 
     /*
      * The container image tag to use for evaluator code execution
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private String imageTag;
 
     /**
@@ -196,7 +195,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the entryPoint value.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public String getEntryPoint() {
         return this.entryPoint;
     }
@@ -209,7 +207,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public CodeBasedEvaluatorDefinition setEntryPoint(String entryPoint) {
         this.entryPoint = entryPoint;
         return this;
@@ -221,7 +218,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the imageTag value.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public String getImageTag() {
         return this.imageTag;
     }
@@ -233,7 +229,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public CodeBasedEvaluatorDefinition setImageTag(String imageTag) {
         this.imageTag = imageTag;
         return this;
@@ -243,7 +238,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * The blob URI for the evaluator storage
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     private String blobUrl;
 
     /**
@@ -252,7 +246,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the blobUrl value.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public String getBlobUrl() {
         return this.blobUrl;
     }
@@ -264,7 +257,6 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    @Beta(warningText = "Preview API. Evaluations=V1Preview")
     public CodeBasedEvaluatorDefinition setBlobUrl(String blobUrl) {
         this.blobUrl = blobUrl;
         return this;

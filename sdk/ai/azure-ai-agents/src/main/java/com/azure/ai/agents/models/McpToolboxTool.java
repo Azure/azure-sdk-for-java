@@ -379,14 +379,12 @@ public final class McpToolboxTool extends ToolboxTool {
     }
 
     /**
-     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the McpToolboxTool object itself.
+     * {@inheritDoc}
      */
     @Generated
+    @Override
     public McpToolboxTool setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
+        super.setToolConfigs(toolConfigs);
         return this;
     }
 
@@ -399,6 +397,7 @@ public final class McpToolboxTool extends ToolboxTool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("tool_configs", getToolConfigs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("server_label", this.serverLabel);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("server_url", this.serverUrl);
@@ -416,7 +415,6 @@ public final class McpToolboxTool extends ToolboxTool {
         }
         jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
         jsonWriter.writeStringField("project_connection_id", this.projectConnectionId);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -434,6 +432,7 @@ public final class McpToolboxTool extends ToolboxTool {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            Map<String, ToolConfig> toolConfigs = null;
             String serverLabel = null;
             ToolboxToolType type = ToolboxToolType.MCP;
             String serverUrl = null;
@@ -445,7 +444,6 @@ public final class McpToolboxTool extends ToolboxTool {
             BinaryData requireApproval = null;
             Boolean deferLoading = null;
             String projectConnectionId = null;
-            Map<String, ToolConfig> toolConfigs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -453,6 +451,8 @@ public final class McpToolboxTool extends ToolboxTool {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else if ("server_label".equals(fieldName)) {
                     serverLabel = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -477,8 +477,6 @@ public final class McpToolboxTool extends ToolboxTool {
                     deferLoading = reader.getNullable(JsonReader::getBoolean);
                 } else if ("project_connection_id".equals(fieldName)) {
                     projectConnectionId = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -486,6 +484,7 @@ public final class McpToolboxTool extends ToolboxTool {
             McpToolboxTool deserializedMcpToolboxTool = new McpToolboxTool(serverLabel);
             deserializedMcpToolboxTool.setName(name);
             deserializedMcpToolboxTool.setDescription(description);
+            deserializedMcpToolboxTool.setToolConfigs(toolConfigs);
             deserializedMcpToolboxTool.type = type;
             deserializedMcpToolboxTool.serverUrl = serverUrl;
             deserializedMcpToolboxTool.connectorType = connectorType;
@@ -496,24 +495,7 @@ public final class McpToolboxTool extends ToolboxTool {
             deserializedMcpToolboxTool.requireApproval = requireApproval;
             deserializedMcpToolboxTool.deferLoading = deferLoading;
             deserializedMcpToolboxTool.projectConnectionId = projectConnectionId;
-            deserializedMcpToolboxTool.toolConfigs = toolConfigs;
             return deserializedMcpToolboxTool;
         });
-    }
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
     }
 }
