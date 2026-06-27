@@ -81,8 +81,8 @@ final class LengthValidatingInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
-        // No-op. The user/caller is responsible for closing the underlying stream's lifecycle,
-        // in line with the BinaryData.fromStream contract. Closing it here breaks stream replayability on retries.
+        // No-op. RestProxy length validation can wrap InputStreamContent during retryable requests. Closing the
+        // wrapper must not prematurely close the underlying stream between retry attempts.
     }
 
     @Override

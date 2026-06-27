@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -214,21 +215,53 @@ public class RestProxyUtilsTests {
     public void lengthValidatingInputStreamCloseDoesNotCloseUnderlying() throws IOException {
         final boolean[] closed = new boolean[1];
 
-        try (InputStream innerStream = new ByteArrayInputStream(EXPECTED) {
+        try (InputStream innerStream = new InputStream() {
+            private final ByteArrayInputStream delegate = new ByteArrayInputStream(EXPECTED);
+
+            private void ensureOpen() throws IOException {
+                if (closed[0]) {
+                    throw new IOException("Stream closed");
+                }
+            }
+
             @Override
             public void close() throws IOException {
                 closed[0] = true;
-                super.close();
+                delegate.close();
+            }
+
+            @Override
+            public synchronized int read() throws IOException {
+                ensureOpen();
+                return delegate.read();
+            }
+
+            @Override
+            public synchronized void mark(int readlimit) {
+                delegate.mark(readlimit);
+            }
+
+            @Override
+            public synchronized void reset() throws IOException {
+                ensureOpen();
+                delegate.reset();
+            }
+
+            @Override
+            public boolean markSupported() {
+                return delegate.markSupported();
             }
         }) {
             LengthValidatingInputStream validatingStream
                 = new LengthValidatingInputStream(innerStream, EXPECTED.length);
 
+            validatingStream.mark(EXPECTED.length);
+            assertEquals(EXPECTED[0], validatingStream.read());
             validatingStream.close();
+            validatingStream.reset();
 
-            // Validate that closing the wrapper does not close the underlying stream.
-            org.junit.jupiter.api.Assertions.assertFalse(closed[0],
-                "LengthValidatingInputStream.close() must not close the underlying stream.");
+            assertFalse(closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
+            assertEquals(EXPECTED[0], validatingStream.read());
         }
     }
 
