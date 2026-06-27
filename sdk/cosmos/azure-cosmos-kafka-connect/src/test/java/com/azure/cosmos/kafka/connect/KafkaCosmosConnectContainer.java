@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.kafka.connect;
 
-import com.azure.core.exception.ResourceNotFoundException;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -17,6 +16,7 @@ import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 import org.sourcelab.kafka.connect.apiclient.rest.exceptions.InvalidRequestException;
+import org.sourcelab.kafka.connect.apiclient.rest.exceptions.ResourceNotFoundException;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -322,8 +322,7 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     }
 
     private static boolean isTransientKafkaConnectRestNotFound(InvalidRequestException exception) {
-        return exception.getErrorCode() == 404
-            || (exception.getMessage() != null && exception.getMessage().contains("Not Found"));
+        return exception.getErrorCode() == 404;
     }
 
     private static void sleepBeforeKafkaConnectRestRetry(String operationName) {
