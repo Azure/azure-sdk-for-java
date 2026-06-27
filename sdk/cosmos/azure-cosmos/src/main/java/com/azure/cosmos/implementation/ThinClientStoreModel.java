@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdFramer;
@@ -13,9 +14,9 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -99,8 +100,16 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
-        // need to have thin client endpoint here
-        return this.globalEndpointManager.resolveServiceEndpoint(request).getThinclientRegionalEndpoint();
+        RegionalRoutingContext regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request);
+        URI thinClientEndpoint = regionalRoutingContext.getThinclientRegionalEndpoint();
+
+        if (thinClientEndpoint == null) {
+            throw new IllegalStateException(
+                "Thin client endpoint is not available for resolved gateway endpoint "
+                    + regionalRoutingContext.getGatewayRegionalEndpoint());
+        }
+
+        return thinClientEndpoint;
     }
 
     @Override
