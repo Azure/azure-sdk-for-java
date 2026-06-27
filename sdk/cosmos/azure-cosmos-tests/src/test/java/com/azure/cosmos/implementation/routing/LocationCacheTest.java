@@ -595,15 +595,15 @@ public class LocationCacheTest {
     }
 
     @Test(groups = "unit")
-    public void defaultRegionalEndpointShouldResolveThinClientEndpoint() {
+    public void unmatchedPreferredRegionShouldResolveThinClientEndpoint() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setMultipleWriteRegionsEnabled(true);
-        connectionPolicy.setPreferredRegions(Collections.emptyList());
+        connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
 
         LocationCache locationCache = new LocationCache(
             connectionPolicy,
-            LocationCacheTest.DefaultRegionalEndpoint,
+            LocationCacheTest.DefaultEndpoint,
             configs);
 
         locationCache.onDatabaseAccountRead(createDatabaseAccountWithThinClientLocations(true));
@@ -616,7 +616,7 @@ public class LocationCacheTest {
 
         RegionalRoutingContext resolvedRoutingContext = locationCache.resolveServiceEndpoint(request);
 
-        assertThat(resolvedRoutingContext.getGatewayRegionalEndpoint()).isEqualTo(LocationCacheTest.DefaultRegionalEndpoint);
+        assertThat(resolvedRoutingContext.getGatewayRegionalEndpoint()).isEqualTo(LocationCacheTest.Location1Endpoint);
         assertThat(resolvedRoutingContext.getThinclientRegionalEndpoint()).isEqualTo(LocationCacheTest.Location1ThinClientEndpoint);
     }
 

@@ -236,14 +236,31 @@ public class LocationCache {
             return regionalRoutingContext;
         }
 
+        Iterable<RegionalRoutingContext> primaryRoutingContexts = request.getOperationType().isWriteOperation()
+            ? this.locationInfo.availableWriteRegionalRoutingContexts
+            : this.locationInfo.availableReadRegionalRoutingContexts;
+        Iterable<RegionalRoutingContext> secondaryRoutingContexts = request.getOperationType().isWriteOperation()
+            ? this.locationInfo.availableReadRegionalRoutingContexts
+            : this.locationInfo.availableWriteRegionalRoutingContexts;
+
         RegionalRoutingContext thinClientRoutingContext = this.getThinClientRoutingContextForGatewayEndpoint(
             regionalRoutingContext,
-            this.locationInfo.availableReadRegionalRoutingContexts);
+            primaryRoutingContexts);
 
         if (thinClientRoutingContext == null) {
             thinClientRoutingContext = this.getThinClientRoutingContextForGatewayEndpoint(
                 regionalRoutingContext,
-                this.locationInfo.availableWriteRegionalRoutingContexts);
+                secondaryRoutingContexts);
+        }
+
+        if (thinClientRoutingContext == null
+            && regionalRoutingContext.getGatewayRegionalEndpoint().equals(this.defaultRoutingContext.getGatewayRegionalEndpoint())) {
+
+            thinClientRoutingContext = this.getFirstThinClientRoutingContext(primaryRoutingContexts);
+
+            if (thinClientRoutingContext == null) {
+                thinClientRoutingContext = this.getFirstThinClientRoutingContext(secondaryRoutingContexts);
+            }
         }
 
         return thinClientRoutingContext != null ? thinClientRoutingContext : regionalRoutingContext;
@@ -261,6 +278,20 @@ public class LocationCache {
             if (candidateRoutingContext.getThinclientRegionalEndpoint() != null
                 && candidateRoutingContext.getGatewayRegionalEndpoint().equals(regionalRoutingContext.getGatewayRegionalEndpoint())) {
 
+                return candidateRoutingContext;
+            }
+        }
+
+        return null;
+    }
+
+    private RegionalRoutingContext getFirstThinClientRoutingContext(Iterable<RegionalRoutingContext> routingContexts) {
+        if (routingContexts == null) {
+            return null;
+        }
+
+        for (RegionalRoutingContext candidateRoutingContext : routingContexts) {
+            if (candidateRoutingContext.getThinclientRegionalEndpoint() != null) {
                 return candidateRoutingContext;
             }
         }
@@ -1080,6 +1111,11 @@ public class LocationCache {
 
                                 this.defaultRoutingContext.setThinclientRegionalEndpoint(endpoint);
                             }
+                        } else {
+                            logger.warn(
+                                "Skipping thin client endpoint add for location = [{}] and endpoint = [{}] because no matching gateway endpoint was found.",
+                                thinclientDbAccountLocation.getName(),
+                                thinclientDbAccountLocation.getEndpoint());
                         }
                     } catch (Exception e) {
                         logger.warn("Skipping add for location = [{}] and endpoint = [{}] due to exception [{}]",
