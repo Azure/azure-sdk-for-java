@@ -253,15 +253,22 @@ public class RestProxyUtilsTests {
             }
         }) {
             LengthValidatingInputStream validatingStream
-                = new LengthValidatingInputStream(innerStream, EXPECTED.length);
-
+                = new LengthValidatingInputStream(innerStream, EXPECTED.length);;
+            // Simulate the retry scenario: the wrapper is closed after an attempt, then the pipeline tries to reset.
             validatingStream.mark(EXPECTED.length);
-            assertEquals(EXPECTED[0], validatingStream.read());
-            validatingStream.close();
-            validatingStream.reset();
+            assertTrue(validatingStream.read() != -1);
 
-            assertFalse(closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
-            assertEquals(EXPECTED[0], validatingStream.read());
+            validatingStream.close();
+            
+            try {
+                 validatingStream.reset();
+             } catch (IOException e) {
+                 fail("Expected LengthValidatingInputStream.reset() to succeed after close(), but it failed.", e);
+             }
+             byte[] actual = new byte[EXPECTED.length];
+             assertEquals(EXPECTED.length, validatingStream.read(actual));
+             assertArraysEqual(EXPECTED, actual);
+             assertTrue(!closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
         }
     }
 

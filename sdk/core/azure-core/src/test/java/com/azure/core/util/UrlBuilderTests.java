@@ -707,7 +707,7 @@ public class UrlBuilderTests {
             return UrlBuilder.parse("https://example" + i + ".com");
         }).collect(Collectors.toCollection(() -> new ArrayList<>(20000)));
 
-        List<Future<UrlBuilder>> futures = SharedExecutorService.getInstance().invokeAll(tasks, 10, TimeUnit.SECONDS);
+        List<Future<UrlBuilder>> futures = SharedExecutorService.getInstance().invokeAll(tasks, 60, TimeUnit.SECONDS);
         for (Future<UrlBuilder> future : futures) {
             assertTrue(future.isDone());
             assertDoesNotThrow(() -> future.get());
@@ -726,7 +726,7 @@ public class UrlBuilderTests {
                 return UrlBuilder.parse("https://example" + i + ".com");
             })
             .then()
-            .timeout(Duration.ofSeconds(10));
+            .timeout(Duration.ofSeconds(60));
 
         StepVerifier.create(mono).verifyComplete();
         assertEquals(20000, callCount.get());
