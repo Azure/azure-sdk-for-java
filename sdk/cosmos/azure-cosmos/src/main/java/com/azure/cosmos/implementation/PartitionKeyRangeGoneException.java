@@ -15,8 +15,9 @@ import java.util.Map;
  * This exception is thrown when DocumentServiceRequest contains x-ms-documentdb-partitionkeyrangeid
  * header and such range id doesn't exist.
  * <p>
- * No retries should be made in this case, as either split or merge might have happened and query/readfeed
- * must take appropriate actions.
+ * No retries should generally be made in this case, as either split or merge might have happened and query/readfeed
+ * must take appropriate actions. Direct-mode address resolution may opt into retrying with a routing map refresh when
+ * this exception is caused by stale address or routing state.
  */
 public class PartitionKeyRangeGoneException extends CosmosException {
     private boolean shouldRetryWithRoutingMapRefresh;
