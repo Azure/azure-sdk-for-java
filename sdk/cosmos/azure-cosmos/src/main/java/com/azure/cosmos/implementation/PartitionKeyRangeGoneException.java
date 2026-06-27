@@ -92,7 +92,7 @@ public class PartitionKeyRangeGoneException extends CosmosException {
         return this.shouldRetryWithRoutingMapRefresh;
     }
 
-    public PartitionKeyRangeGoneException setShouldRetryWithRoutingMapRefresh() {
+    public PartitionKeyRangeGoneException markRetryWithRoutingMapRefresh() {
         this.shouldRetryWithRoutingMapRefresh = true;
         return this;
     }

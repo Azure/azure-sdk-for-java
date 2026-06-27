@@ -337,7 +337,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
-            .shouldRetry(new PartitionKeyRangeGoneException().setShouldRetryWithRoutingMapRefresh());
+            .shouldRetry(new PartitionKeyRangeGoneException().markRetryWithRoutingMapRefresh());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(request.forcePartitionKeyRangeRefresh).isTrue();
@@ -369,12 +369,12 @@ public class GoneAndRetryWithRetryPolicyTest {
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 0);
 
         ShouldRetryResult shouldRetryResult = goneAndRetryWithRetryPolicy
-            .shouldRetry(new PartitionKeyRangeGoneException().setShouldRetryWithRoutingMapRefresh())
+            .shouldRetry(new PartitionKeyRangeGoneException().markRetryWithRoutingMapRefresh())
             .block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
 
         shouldRetryResult = goneAndRetryWithRetryPolicy
-            .shouldRetry(new PartitionKeyRangeGoneException().setShouldRetryWithRoutingMapRefresh())
+            .shouldRetry(new PartitionKeyRangeGoneException().markRetryWithRoutingMapRefresh())
             .block();
 
         assertThat(shouldRetryResult.shouldRetry).isFalse();

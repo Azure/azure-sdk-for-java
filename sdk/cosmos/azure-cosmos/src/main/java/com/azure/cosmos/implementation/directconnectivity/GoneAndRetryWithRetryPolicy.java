@@ -317,9 +317,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionKeyIsSplittingException(PartitionKeyRangeIsSplittingException exception) {
-            this.request.requestContext.resolvedPartitionKeyRange = null;
-            this.request.requestContext.quorumSelectedLSN = -1;
-            this.request.requestContext.quorumSelectedStoreResponse = null;
+            resetRequestContextForPartitionKeyRangeRefresh();
             logger.debug("Received partition key range splitting exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
             return Pair.of(null, false);
@@ -329,12 +327,16 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             // PartitionKeyRangeGoneException is generally treated as non-retriable, but when it is thrown while resolving
             // addresses in direct mode it typically indicates stale routing/partition state; clear the cached target and
             // force a routing-map (partition key range) refresh to allow the request to be re-routed.
-            this.request.requestContext.resolvedPartitionKeyRange = null;
-            this.request.requestContext.quorumSelectedLSN = -1;
-            this.request.requestContext.quorumSelectedStoreResponse = null;
+            resetRequestContextForPartitionKeyRangeRefresh();
             logger.debug("Received partition key range gone exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
             return Pair.of(null, false);
+        }
+
+        private void resetRequestContextForPartitionKeyRangeRefresh() {
+            this.request.requestContext.resolvedPartitionKeyRange = null;
+            this.request.requestContext.quorumSelectedLSN = -1;
+            this.request.requestContext.quorumSelectedStoreResponse = null;
         }
     }
 

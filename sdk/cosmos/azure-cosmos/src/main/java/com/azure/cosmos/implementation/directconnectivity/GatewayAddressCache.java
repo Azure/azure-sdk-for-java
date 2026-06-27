@@ -733,7 +733,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 collectionRid);
 
                             PartitionKeyRangeGoneException e = new PartitionKeyRangeGoneException(errorMessage)
-                                .setShouldRetryWithRoutingMapRefresh();
+                                .markRetryWithRoutingMapRefresh();
                             BridgeInternal.setResourceAddress(e, collectionRid);
 
                             return Mono.error(e);
