@@ -594,6 +594,20 @@ public class LocationCacheTest {
         return databaseAccount;
     }
 
+    private static DatabaseAccount createDatabaseAccountWithThinClientReadableLocationsOnly(boolean useMultipleWriteLocations) {
+        DatabaseAccount databaseAccount = createDatabaseAccount(useMultipleWriteLocations);
+
+        databaseAccount.set(
+            Constants.Properties.THINCLIENT_READABLE_LOCATIONS,
+            ImmutableList.of(
+                createDatabaseAccountLocation("location1", LocationCacheTest.Location1ThinClientEndpoint.toString()),
+                createDatabaseAccountLocation("location2", LocationCacheTest.Location2ThinClientEndpoint.toString()),
+                createDatabaseAccountLocation("location3", LocationCacheTest.Location3ThinClientEndpoint.toString()),
+                createDatabaseAccountLocation("location4", LocationCacheTest.Location4ThinClientEndpoint.toString())));
+
+        return databaseAccount;
+    }
+
     @Test(groups = "unit")
     public void unmatchedPreferredRegionShouldResolveThinClientEndpoint() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
@@ -645,6 +659,32 @@ public class LocationCacheTest {
 
         assertThat(resolvedRoutingContext.getGatewayRegionalEndpoint()).isEqualTo(LocationCacheTest.Location2Endpoint);
         assertThat(resolvedRoutingContext.getThinclientRegionalEndpoint()).isEqualTo(LocationCacheTest.Location2ThinClientEndpoint);
+    }
+
+    @Test(groups = "unit")
+    public void writeRequestShouldNotResolveToThinClientReadEndpoint() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
+
+        LocationCache locationCache = new LocationCache(
+            connectionPolicy,
+            LocationCacheTest.DefaultEndpoint,
+            configs);
+
+        locationCache.onDatabaseAccountRead(createDatabaseAccountWithThinClientReadableLocationsOnly(true));
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Batch,
+            ResourceType.Document);
+        request.useThinClientMode = true;
+
+        RegionalRoutingContext resolvedRoutingContext = locationCache.resolveServiceEndpoint(request);
+
+        assertThat(resolvedRoutingContext.getGatewayRegionalEndpoint()).isEqualTo(LocationCacheTest.DefaultEndpoint);
+        assertThat(resolvedRoutingContext.getThinclientRegionalEndpoint()).isNull();
     }
 
     private void initialize(

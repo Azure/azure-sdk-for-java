@@ -241,7 +241,7 @@ public class LocationCache {
             ? currentLocationInfo.availableWriteRegionalRoutingContexts
             : currentLocationInfo.availableReadRegionalRoutingContexts;
         Iterable<RegionalRoutingContext> secondaryRoutingContexts = request.getOperationType().isWriteOperation()
-            ? currentLocationInfo.availableReadRegionalRoutingContexts
+            ? null
             : currentLocationInfo.availableWriteRegionalRoutingContexts;
 
         RegionalRoutingContext thinClientRoutingContext = this.getThinClientRoutingContextForGatewayEndpoint(
