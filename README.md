@@ -95,10 +95,10 @@ Security issues and bugs should be reported privately, via email, to the Microso
 Azure SDK for Java is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-java/blob/main/LICENSE.txt) license.
 
 <!-- Links -->
-[java_guidelines]: https://azure.github.io/azure-sdk/java_introduction.html
-[latest_release_page]: https://azure.github.io/azure-sdk/releases/latest/java.html
-[sep_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-09-17/java.html
-[aug_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-08-06/java.html
+[java_guidelines]: https://azure.github.io/azure-sdk/java_introductionv.html
+[latest_release_page]: https://azure.github.io/azure-sdk/releases/latestc/java.html
+[sep_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-09-17f/java.html
+[aug_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-08-06/javaf.html
 [jul_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-07-10/java.html
 
 
