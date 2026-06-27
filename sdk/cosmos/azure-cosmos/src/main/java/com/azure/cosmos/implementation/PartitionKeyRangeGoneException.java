@@ -19,6 +19,7 @@ import java.util.Map;
  * must take appropriate actions.
  */
 public class PartitionKeyRangeGoneException extends CosmosException {
+    private boolean shouldRetryWithRoutingMapRefresh;
 
     /**
      * Instantiates a new Partition key range gone exception.
@@ -84,5 +85,14 @@ public class PartitionKeyRangeGoneException extends CosmosException {
     private void setSubstatus() {
         this.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS,
             Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
+    }
+
+    public boolean shouldRetryWithRoutingMapRefresh() {
+        return this.shouldRetryWithRoutingMapRefresh;
+    }
+
+    public PartitionKeyRangeGoneException setShouldRetryWithRoutingMapRefresh() {
+        this.shouldRetryWithRoutingMapRefresh = true;
+        return this;
     }
 }

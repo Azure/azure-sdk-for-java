@@ -38,6 +38,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
     }
 
+    private static boolean isPartitionKeyRangeGoneExceptionWithRoutingMapRefresh(Exception exception) {
+        return exception instanceof PartitionKeyRangeGoneException &&
+            ((PartitionKeyRangeGoneException) exception).shouldRetryWithRoutingMapRefresh();
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final GoneRetryPolicy goneRetryPolicy;
     private final RetryWithRetryPolicy retryWithRetryPolicy;
@@ -127,7 +132,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             if (exception instanceof GoneException ||
                 exception instanceof PartitionIsMigratingException ||
                 exception instanceof PartitionKeyRangeIsSplittingException ||
-                exception instanceof PartitionKeyRangeGoneException ||
+                isPartitionKeyRangeGoneExceptionWithRoutingMapRefresh(exception) ||
                 exception instanceof LeaseNotFoundException) {
 
                 return false;
@@ -293,7 +298,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 return handlePartitionIsMigratingException((PartitionIsMigratingException)exception);
             } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
                 return handlePartitionKeyIsSplittingException((PartitionKeyRangeIsSplittingException) exception);
-            } else if (exception instanceof PartitionKeyRangeGoneException) {
+            } else if (isPartitionKeyRangeGoneExceptionWithRoutingMapRefresh(exception)) {
                 return handlePartitionKeyRangeGoneException((PartitionKeyRangeGoneException) exception);
             }
 
