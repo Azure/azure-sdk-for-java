@@ -268,7 +268,7 @@ public class RestProxyUtilsTests {
             byte[] actual = new byte[EXPECTED.length];
             assertEquals(EXPECTED.length, validatingStream.read(actual));
             assertArraysEqual(EXPECTED, actual);
-            assertTrue(!closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
+            assertFalse(closed[0], "LengthValidatingInputStream.close() must not close the underlying stream.");
         }
     }
 
