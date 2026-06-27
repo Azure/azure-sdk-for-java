@@ -236,12 +236,13 @@ public class LocationCache {
             return regionalRoutingContext;
         }
 
+        DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
         Iterable<RegionalRoutingContext> primaryRoutingContexts = request.getOperationType().isWriteOperation()
-            ? this.locationInfo.availableWriteRegionalRoutingContexts
-            : this.locationInfo.availableReadRegionalRoutingContexts;
+            ? currentLocationInfo.availableWriteRegionalRoutingContexts
+            : currentLocationInfo.availableReadRegionalRoutingContexts;
         Iterable<RegionalRoutingContext> secondaryRoutingContexts = request.getOperationType().isWriteOperation()
-            ? this.locationInfo.availableReadRegionalRoutingContexts
-            : this.locationInfo.availableWriteRegionalRoutingContexts;
+            ? currentLocationInfo.availableReadRegionalRoutingContexts
+            : currentLocationInfo.availableWriteRegionalRoutingContexts;
 
         RegionalRoutingContext thinClientRoutingContext = this.getThinClientRoutingContextForGatewayEndpoint(
             regionalRoutingContext,

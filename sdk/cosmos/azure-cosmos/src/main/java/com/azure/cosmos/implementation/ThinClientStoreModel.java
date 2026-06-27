@@ -106,7 +106,10 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         if (thinClientEndpoint == null) {
             throw new IllegalStateException(
                 "Thin client endpoint is not available for resolved gateway endpoint "
-                    + regionalRoutingContext.getGatewayRegionalEndpoint());
+                    + regionalRoutingContext.getGatewayRegionalEndpoint()
+                    + ", operation type " + request.getOperationType()
+                    + ", resource type " + request.getResourceType()
+                    + ", activity id " + request.getActivityId());
         }
 
         return thinClientEndpoint;
