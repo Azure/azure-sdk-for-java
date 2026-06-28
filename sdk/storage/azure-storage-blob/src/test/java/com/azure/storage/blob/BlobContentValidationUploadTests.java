@@ -315,9 +315,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setContentValidationAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
 
-        assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertNotNull(
+            client.appendBlockWithResponse(data, UNDER_4MB, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
@@ -333,9 +334,9 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, TEN_MB).setContentValidationAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
 
-        assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertNotNull(client.appendBlockWithResponse(data, TEN_MB, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
@@ -349,10 +350,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
-        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
+        AppendBlobAppendBlockOptions options
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
-        assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertNotNull(client.appendBlockWithResponse(data, TEN_MB, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
@@ -375,11 +376,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
         InputStream data = new ByteArrayInputStream(randomData);
 
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(algorithm);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
 
-        assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertNotNull(
+            client.uploadPagesWithResponse(pageRange, data, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
@@ -394,11 +395,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
         InputStream data = new ByteArrayInputStream(randomData);
 
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(algorithm);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
 
-        assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertNotNull(
+            client.uploadPagesWithResponse(pageRange, data, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
@@ -413,10 +414,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
+            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
 
-        assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertNotNull(
+            client.uploadPagesWithResponse(pageRange, data, options, null, Context.NONE).getValue().getETag());
         assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
@@ -939,10 +941,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         InputStream data = new ByteArrayInputStream(randomData);
 
-        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        AppendBlobAppendBlockOptions options
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        client.appendBlockWithResponse(options, null, Context.NONE);
+        client.appendBlockWithResponse(data, TEN_MB, options, null, Context.NONE);
 
         byte[] downloaded = blobClient.downloadContent().toBytes();
         assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (append block)");
@@ -958,10 +960,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         InputStream data = new ByteArrayInputStream(randomData);
 
         PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
 
-        client.uploadPagesWithResponse(options, null, Context.NONE);
+        client.uploadPagesWithResponse(pageRange, data, options, null, Context.NONE);
 
         byte[] downloaded = blobClient.downloadContent().toBytes();
         assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (page blob upload pages)");
@@ -1096,10 +1098,9 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                             totalRead += n;
                         }
                         ByteArrayInputStream chunkStream = new ByteArrayInputStream(buf, 0, chunk);
-                        AppendBlobAppendBlockOptions appendOptions
-                            = new AppendBlobAppendBlockOptions(chunkStream, chunk)
-                                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                        client.appendBlockWithResponse(appendOptions, null, Context.NONE);
+                        AppendBlobAppendBlockOptions appendOptions = new AppendBlobAppendBlockOptions()
+                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                        client.appendBlockWithResponse(chunkStream, chunk, appendOptions, null, Context.NONE);
                         remaining -= chunk;
                     }
                 }
@@ -1375,12 +1376,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         byte[] randomData = DATA.getDefaultBytes();
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(new ByteArrayInputStream(randomData), randomData.length)
-                .setContentValidationAlgorithm(algorithm)
-                .setContentMd5(DEFAULT_MD5);
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm).setContentMd5(DEFAULT_MD5);
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
-            () -> client.appendBlockWithResponse(options, null, Context.NONE));
+            () -> client.appendBlockWithResponse(new ByteArrayInputStream(randomData), randomData.length, options, null,
+                Context.NONE));
         assertEquals(400, e.getStatusCode());
         assertTrue(e.getMessage().contains(MESSAGE));
     }
@@ -1395,11 +1395,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
         byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
         PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1),
-                new ByteArrayInputStream(randomData)).setContentValidationAlgorithm(algorithm).setContentMd5(md5);
+            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm).setContentMd5(md5);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
 
-        BlobStorageException e = assertThrows(BlobStorageException.class,
-            () -> client.uploadPagesWithResponse(options, null, Context.NONE));
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> client
+            .uploadPagesWithResponse(pageRange, new ByteArrayInputStream(randomData), options, null, Context.NONE));
         assertEquals(400, e.getStatusCode());
         assertTrue(e.getMessage().contains(MESSAGE));
     }

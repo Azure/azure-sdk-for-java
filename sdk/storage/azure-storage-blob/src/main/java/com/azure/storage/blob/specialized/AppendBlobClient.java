@@ -181,7 +181,6 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream() {
         return getBlobOutputStream((AppendBlobRequestConditions) null);
     }
@@ -195,7 +194,6 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         AppendBlobRequestConditions requestConditions = null;
         if (!overwrite) {
@@ -216,7 +214,6 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(AppendBlobRequestConditions requestConditions) {
         return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, requestConditions);
     }
@@ -227,7 +224,6 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param options {@link AppendBlobOutputStreamOptions}
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobOutputStream getBlobOutputStream(AppendBlobOutputStreamOptions options) {
         options = options == null ? new AppendBlobOutputStreamOptions() : options;
         return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, options.getRequestConditions(),
@@ -474,7 +470,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem appendBlock(InputStream data, long length) {
-        return appendBlockWithResponse(data, length, null, null, null, Context.NONE).getValue();
+        return appendBlockWithResponse(data, length, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -520,38 +516,35 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
-        return appendBlockWithResponse(new AppendBlobAppendBlockOptions(data, length).setContentMd5(contentMd5)
+        return appendBlockWithResponse(data, length, new AppendBlobAppendBlockOptions().setContentMd5(contentMd5)
             .setRequestConditions(appendBlobRequestConditions), timeout, context);
     }
 
     /**
      * Commits a new block of data to the end of the existing append blob with options.
      *
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data.
      * @param options {@link AppendBlobAppendBlockOptions} containing the block data.
      * @param timeout An optional timeout value.
      * @param context Additional context.
      * @return The information of the append blob operation.
-     * @throws NullPointerException If {@code options} is null.
-     * @throws IllegalArgumentException If {@code options} is not constructed with {@link InputStream}.
+     * @throws NullPointerException if {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Duration timeout,
-        Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        if (options.getDataStream() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "AppendBlobAppendBlockOptions must be constructed with InputStream for sync client."));
-        }
-        Flux<ByteBuffer> fbb;
+    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
+        AppendBlobAppendBlockOptions options, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("data", data);
 
         // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
         // support up to 4MB
-        fbb = Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(), getMaxAppendBlockBytes(),
-            true);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
 
         Mono<Response<AppendBlobItem>> response
-            = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, options.getLength(), options.getContentMd5(),
-                options.getRequestConditions(), options.getContentValidationAlgorithm(), context);
+            = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, length, options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
