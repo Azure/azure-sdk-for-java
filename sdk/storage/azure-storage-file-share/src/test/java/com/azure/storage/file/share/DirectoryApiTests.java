@@ -948,6 +948,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(fileItem.getProperties().getChangedOn());
         assertNotNull(fileItem.getProperties().getLastModified());
         assertNotNull(fileItem.getProperties().getETag());
+
         assertNull(fileItem.getLinkCount());
         assertNull(fileItem.getFileType());
         assertNull(fileItem.getProperties().getOwner());
@@ -970,6 +971,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(dirItem.getProperties().getChangedOn());
         assertNotNull(dirItem.getProperties().getLastModified());
         assertNotNull(dirItem.getProperties().getETag());
+
         assertNull(dirItem.getLinkCount());
         assertNull(dirItem.getFileType());
         assertNull(dirItem.getProperties().getOwner());
@@ -979,7 +981,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-12-06")
     @Test
-    public void listFilesAndDirectoriesNfsWithEachSetter() {
+    public void listFilesAndDirectoriesNfs() {
         ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
 
         try {
