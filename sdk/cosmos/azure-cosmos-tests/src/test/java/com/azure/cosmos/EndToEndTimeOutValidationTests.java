@@ -302,7 +302,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = 10000L, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryItemWithEndToEndTimeoutPolicyInOptionsShouldNotTimeoutWhenSuppressed() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -335,7 +335,8 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
             StepVerifier.create(queryPagedFlux)
                 .expectNextCount(1L)
-                .verifyComplete();
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
         } finally {
             if (faultInjectionRule != null) {
                 faultInjectionRule.disable();
