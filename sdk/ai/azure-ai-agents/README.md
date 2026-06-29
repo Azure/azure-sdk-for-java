@@ -57,11 +57,11 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform generally available operations related to agents, such as creating, retrieving, updating, and deleting agents.
-- `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent operations, including hosted-agent sessions, session files, code package operations, and preview agent optimization operations.
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. When `allowPreview(true)` is configured, these clients can also use preview hosted-agent sessions, session files, and code package operations.
+- `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent optimization operations.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
-- `BetaToolboxesClient` / `BetaToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions.
+- `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -85,9 +85,9 @@ ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 // Memory Stores sub-clients (preview).
 BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
 BetaMemoryStoresAsyncClient memoryStoresAsyncClient = builder.beta().buildBetaMemoryStoresAsyncClient();
-// Toolboxes sub-clients (preview).
-BetaToolboxesClient toolboxesClient = builder.beta().buildBetaToolboxesClient();
-BetaToolboxesAsyncClient toolboxesAsyncClient = builder.beta().buildBetaToolboxesAsyncClient();
+// Toolboxes sub-clients.
+ToolboxesClient toolboxesClient = builder.buildToolboxesClient();
+ToolboxesAsyncClient toolboxesAsyncClient = builder.buildToolboxesAsyncClient();
 ```
 
 The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be built directly from the `AgentsClientBuilder`. Use it to access conversation operations and other OpenAI services:
@@ -115,11 +115,16 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `AzureAISearchTool` | Azure AI Search |
 | `AzureFunctionTool` | Azure Functions |
 | `BingGroundingTool` | Bing grounding |
+| `CaptureStructuredOutputsTool` | Structured output capture |
 | `CodeInterpreterTool` | Code interpreter |
 | `FileSearchTool` | File search |
 | `FunctionTool` | Custom function calling |
 | `ImageGenTool` | Image generation |
+| `McpTool` | Model Context Protocol (MCP) |
+| `NamespaceTool` | Namespaces for grouping function and custom tools |
 | `OpenApiTool` | OpenAPI spec-based tools |
+| `ToolSearchTool` | Deferred tool search |
+| `WebSearchTool` | Web search |
 
 **Preview tools:**
 
@@ -130,11 +135,10 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `BrowserAutomationPreviewTool` | Browser automation |
 | `ComputerUsePreviewTool` | Computer use |
 | `FabricIqPreviewTool` | Fabric IQ |
-| `McpTool` | Model Context Protocol (MCP) |
 | `MemorySearchPreviewTool` | Memory search |
 | `MicrosoftFabricPreviewTool` | Microsoft Fabric |
+| `ReminderPreviewTool` | Reminder scheduling |
 | `SharepointPreviewTool` | SharePoint grounding |
-| `ToolboxSearchPreviewTool` | Toolbox search |
 | `WebSearchPreviewTool` | Web search |
 | `WorkIqPreviewTool` | Work IQ |
 
@@ -143,6 +147,8 @@ Supported tool classes may also expose optional `name`, `description`, and `tool
 ### Preview operation groups and beta clients
 
 Several operation groups in the Agents client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.
+
+APIs annotated with `@Beta` are part of the SDK's preview surface, even when they appear on a non-Beta client. These APIs are subject to breaking changes in future releases and should be used with the same compatibility expectations as other preview features.
 
 Use `AgentsClientBuilder.allowPreview(true)` when building non-Beta clients that support preview service behavior. For example, `AgentsClient` and `AgentsAsyncClient` use this builder setting to allow the service to return preview response types:
 
@@ -159,15 +165,14 @@ Clients whose names start with `Beta` always opt in to their corresponding previ
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentsClient` | `HostedAgents=V1Preview,WorkflowAgents=V1Preview,AgentEndpoints=V1Preview,CodeAgents=V1Preview,ExternalAgents=V1Preview,AgentsOptimization=V1Preview` |
+| `BetaAgentsClient` | `HostedAgents=V1Preview,WorkflowAgents=V1Preview,AgentEndpoints=V1Preview,CodeAgents=V1Preview,ExternalAgents=V1Preview,AgentsOptimization=V2Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
-| `BetaToolboxesClient` | `Toolboxes=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ### Memory item management
 
-`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`.
+`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See `MemoryStoreItemsSample` and `MemoryStoreItemsAsyncSample` for complete examples.
 
 ### Using OpenAI's official library
 
@@ -616,11 +621,11 @@ See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure
 
 #### Toolbox Tools
 
-Toolbox tools are defined in toolbox versions and managed through `BetaToolboxesClient` / `BetaToolboxesAsyncClient`.
+Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`. Toolbox versions use `ToolboxTool` subclasses rather than agent `Tool` subclasses.
 
 ##### **Toolbox Search (Preview)**
 
-Use `ToolboxSearchPreviewTool` inside a toolbox version to let an agent search the available toolbox tools at runtime:
+Use `ToolboxSearchPreviewToolboxTool` inside a toolbox version to let an agent search the available toolbox tools at runtime:
 
 ```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
 
