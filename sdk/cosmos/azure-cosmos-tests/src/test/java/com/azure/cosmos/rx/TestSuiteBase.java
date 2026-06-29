@@ -717,32 +717,51 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      */
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput, CosmosAsyncClient probeClient) {
-        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
-            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e), e -> {
-                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
-                return Mono.empty();
-            })
-            .block();
+        Runnable ensureContainerExists = () -> createCollectionIfNotExists(
+            database,
+            cosmosContainerProperties,
+            options,
+            throughput);
 
-        // Creating a container is async - especially on multi-partition or multi-region accounts
-        CosmosAsyncClient client = ImplementationBridgeHelpers
-            .CosmosAsyncDatabaseHelper
-            .getCosmosAsyncDatabaseAccessor()
-            .getCosmosAsyncClient(database);
-        boolean isMultiRegional = ImplementationBridgeHelpers
-            .CosmosAsyncClientHelper
-            .getCosmosAsyncClientAccessor()
-            .getPreferredRegions(client).size() > 1;
-        if (throughput > 6000 || isMultiRegional) {
-            waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
-        }
+        ensureContainerExists.run();
+
+        // Creating a container is async. Even single-region, low-throughput containers can briefly fail reads
+        // with 404/1013 ("Collection is not yet available for read") after create returns. If a concurrent
+        // cleanup races with the test and deletes the container before it becomes readable, reissue create on
+        // failed readiness attempts and treat 409 as success.
+        waitForCollectionToBeAvailableToRead(
+            database.getContainer(cosmosContainerProperties.getId()),
+            probeClient,
+            ensureContainerExists);
 
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
+    private static void createCollectionIfNotExists(
+        CosmosAsyncDatabase database,
+        CosmosContainerProperties cosmosContainerProperties,
+        CosmosContainerRequestOptions options,
+        int throughput) {
+
+        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.info("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                return Mono.empty();
+            })
+            .block();
+    }
+
     protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
+        waitForCollectionToBeAvailableToRead(container, probeClient, null);
+    }
+
+    private static void waitForCollectionToBeAvailableToRead(
+        CosmosAsyncContainer container,
+        CosmosAsyncClient probeClient,
+        Runnable ensureContainerExistsOnReadFailure) {
+
         // Creating a container is asynchronous - especially on multi-region accounts the new collection can
         // take time to become readable in the non-write regions. Until then, reads routed to those regions fail
         // with 404/1013 ("Collection is not yet available for read"). Instead of a fixed sleep, verify - against
@@ -785,7 +804,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         if (nonPrimaryRegions.isEmpty()) {
             // Single-region account: there is no non-primary region to verify, but the collection still needs
             // to be readable (for example while physical partitions are provisioned).
-            awaitContainerReadableInRegion(probeContainer, null, Collections.emptyList(), deadlineNanos, maxWait);
+            awaitContainerReadableInRegion(
+                probeContainer,
+                null,
+                Collections.emptyList(),
+                deadlineNanos,
+                maxWait,
+                ensureContainerExistsOnReadFailure);
             return;
         }
 
@@ -796,7 +821,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .stream()
                 .filter(other -> !other.equalsIgnoreCase(target))
                 .collect(Collectors.toList());
-            awaitContainerReadableInRegion(probeContainer, region, excludedRegions, deadlineNanos, maxWait);
+            awaitContainerReadableInRegion(
+                probeContainer,
+                region,
+                excludedRegions,
+                deadlineNanos,
+                maxWait,
+                ensureContainerExistsOnReadFailure);
         }
     }
 
@@ -805,11 +836,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         String targetRegion,
         List<String> excludedRegions,
         long deadlineNanos,
-        Duration maxWait) {
+        Duration maxWait,
+        Runnable ensureContainerExistsOnReadFailure) {
 
         long backoffMillis = 100;
         long maxBackoffMillis = 5000;
         int attempts = 0;
+        int createRetryAttempts = 0;
         Throwable lastError = null;
 
         logger.info(
@@ -854,6 +887,18 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return;
             } catch (Exception error) {
                 lastError = error;
+                if (ensureContainerExistsOnReadFailure != null) {
+                    createRetryAttempts++;
+                    try {
+                        ensureContainerExistsOnReadFailure.run();
+                    } catch (RuntimeException recreateError) {
+                        logger.warn(
+                            "Failed to reissue create for container '{}' while waiting for readability.",
+                            container.getId(),
+                            recreateError);
+                        lastError = recreateError;
+                    }
+                }
             }
 
             remainingNanos = deadlineNanos - System.nanoTime();
@@ -873,11 +918,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         throw new AssertionError(
             String.format(
-                "Container '%s' was not available to read%s within %d seconds (%d attempts). Excluded regions: %s.",
+                "Container '%s' was not available to read%s within %d seconds (%d attempts, %d create retries). Excluded regions: %s.",
                 container.getId(),
                 targetRegion != null ? " in region '" + targetRegion + "'" : "",
                 maxWait.getSeconds(),
                 attempts,
+                createRetryAttempts,
                 excludedRegions),
             lastError);
     }
