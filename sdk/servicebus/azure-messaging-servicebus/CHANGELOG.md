@@ -1,14 +1,39 @@
 # Release History
 
-## 7.18.0-beta.2 (Unreleased)
+## 7.18.0-beta.2 (2026-06-22)
 
 ### Features Added
 
-### Breaking Changes
+- Added `drainTimeout(Duration)` to `ServiceBusProcessorClientBuilder` and `ServiceBusSessionProcessorClientBuilder` to configure the maximum wait time for in-flight message handlers during processor shutdown. Defaults to 30 seconds.
 
 ### Bugs Fixed
 
+- Fixed `ServiceBusProcessorClient.close()` disposing the receiver before in-flight message handlers could complete settlement, causing `IllegalStateException`. The processor now drains active handlers before closing. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
+- Fixed `ServiceBusMessageBatch` accepting messages beyond the service-enforced batch size limit on
+  Premium large-message entities by reading the `com.microsoft:max-message-batch-size` vendor property
+  from the AMQP sender link instead of using `max-message-size`. ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+- Fixed `ServiceBusAdministrationClient.updateSubscription()` silently ignoring `defaultMessageTimeToLive` changes. The property was incorrectly nullified before serialization. ([#48495](https://github.com/Azure/azure-sdk-for-java/issues/48495))
+
 ### Other Changes
+
+- Implemented support for the `com.microsoft:max-message-batch-size` AMQP vendor property in
+  `createMessageBatch`. The Service Bus service has advertised this property on sender links for some
+  time to communicate the broker-enforced batch size limit; the SDK now reads it and sizes batches
+  against this value, falling back to `max-message-size` when the property is absent. Previously the
+  batch path used `max-message-size` directly, which on Premium large-message entities (link advertises
+  up to 100 MB while the batch limit stays at 1 MB) caused the broker to reject oversized batches.
+  Single-message sends (`sendMessage`, `scheduleMessage`) continue using `max-message-size`.
+  ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
+## 7.17.18 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-amqp` from `2.11.3` to version `2.11.4`.
 
 ## 7.17.17 (2026-01-29)
 

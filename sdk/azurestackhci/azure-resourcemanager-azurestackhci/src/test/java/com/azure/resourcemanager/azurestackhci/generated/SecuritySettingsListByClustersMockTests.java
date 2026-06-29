@@ -23,7 +23,7 @@ public final class SecuritySettingsListByClustersMockTests {
     @Test
     public void testListByClusters() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"wdacComplianceAssignment\":\"ApplyAndAutoCorrect\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Pending\",\"wdacCompliance\":\"Pending\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"Compliant\",\"lastUpdated\":\"2021-10-13T21:53:45Z\"},\"provisioningState\":\"Error\"},\"id\":\"twk\",\"name\":\"jdpayx\",\"type\":\"pqiwuzr\"}]}";
+            = "{\"value\":[{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"wdacComplianceAssignment\":\"ApplyAndAutoCorrect\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"ApplyAndAutoCorrect\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Compliant\",\"wdacCompliance\":\"Pending\",\"dataAtRestEncrypted\":\"Pending\",\"dataInTransitProtected\":\"Pending\",\"lastUpdated\":\"2021-07-12T00:26:02Z\"},\"provisioningState\":\"Deleted\"},\"id\":\"udxdyyrudmahswt\",\"name\":\"dkxbq\",\"type\":\"sgfenffdxb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class SecuritySettingsListByClustersMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SecuritySetting> response = manager.securitySettings()
-            .listByClusters("eivjqutxr", "gbzgfhzdzahktxv", com.azure.core.util.Context.NONE);
+        PagedIterable<SecuritySetting> response
+            = manager.securitySettings().listByClusters("mjw", "njcytesmfucrtfod", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
             response.iterator().next().securedCoreComplianceAssignment());
         Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
             response.iterator().next().wdacComplianceAssignment());
-        Assertions.assertEquals(ComplianceAssignmentType.AUDIT,
+        Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
             response.iterator().next().smbEncryptionForIntraClusterTrafficComplianceAssignment());
     }
 }

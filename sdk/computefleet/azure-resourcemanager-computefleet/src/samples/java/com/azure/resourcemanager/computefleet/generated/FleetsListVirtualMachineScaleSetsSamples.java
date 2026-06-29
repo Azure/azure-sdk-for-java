@@ -9,15 +9,15 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsListVirtualMachineScaleSetsSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Fleets_ListVirtualMachineScaleSets.json
+     * x-ms-original-file: 2026-04-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Fleets_ListVirtualMachineScaleSets.
+     * Sample code: Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.
      * 
      * @param manager Entry point to ComputeFleetManager.
      */
-    public static void
-        fleetsListVirtualMachineScaleSets(com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
+    public static void fleetsListVirtualMachineScaleSetsMaximumSetGen(
+        com.azure.resourcemanager.computefleet.ComputeFleetManager manager) {
         manager.fleets().listVirtualMachineScaleSets("rgazurefleet", "myFleet", com.azure.core.util.Context.NONE);
     }
 }

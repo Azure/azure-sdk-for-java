@@ -11,6 +11,6 @@ public final class HciValidationFailureDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciValidationFailureDetail model
-            = BinaryData.fromString("{\"exception\":\"ndljdjuskbr\"}").toObject(HciValidationFailureDetail.class);
+            = BinaryData.fromString("{\"exception\":\"dykalsygaolnjpnn\"}").toObject(HciValidationFailureDetail.class);
     }
 }

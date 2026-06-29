@@ -14,7 +14,7 @@ import java.io.IOException;
  * Represents a viseme ID delta update for animation based on audio.
  */
 @Immutable
-public final class SessionUpdateResponseAnimationVisemeDelta extends SessionUpdate {
+public final class SessionUpdateResponseAnimationVisemeDelta extends SessionServerEvent {
 
     /*
      * The type of event.

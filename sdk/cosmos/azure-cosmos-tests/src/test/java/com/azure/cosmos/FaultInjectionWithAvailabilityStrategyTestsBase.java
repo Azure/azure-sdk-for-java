@@ -22,6 +22,7 @@ import org.testng.SkipException;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -54,6 +55,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -193,6 +195,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     private String SECOND_REGION_NAME = null;
 
     private List<String> writeableRegions;
+    private List<String> nonCanonicalWriteableRegions;
 
     private String testDatabaseId;
     private String testContainerId;
@@ -235,6 +238,12 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             this.writeableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
+
+            // Build non-canonical (space-stripped) region names for normalization tests
+            this.nonCanonicalWriteableRegions = new ArrayList<>();
+            for (String region : this.writeableRegions) {
+                this.nonCanonicalWriteableRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
+            }
 
             FIRST_REGION_NAME = this.writeableRegions.get(0).toLowerCase(Locale.ROOT);
             SECOND_REGION_NAME = this.writeableRegions.get(1).toLowerCase(Locale.ROOT);
@@ -339,6 +348,111 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             safeClose(dummyClient);
         }
     }
+
+    @Test(groups = {"fi-multi-master"})
+    public void readAfterCreation_nonCanonicalPreferredRegions_shouldRouteCorrectly() {
+        // Verify that a client built with space-stripped preferred regions (e.g., "westus3")
+        // routes correctly with availability strategy — fault injection in first region
+        // should cause failover to second region via hedging
+
+        CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(10))
+                .enable(true)
+                .availabilityStrategy(eagerThresholdAvailabilityStrategy)
+                .build();
+
+        CosmosAsyncClient clientWithNonCanonicalRegions = null;
+
+        try {
+            clientWithNonCanonicalRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .preferredRegions(this.nonCanonicalWriteableRegions)
+                .multipleWriteRegionsEnabled(true)
+                .directMode()
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container = clientWithNonCanonicalRegions
+                .getDatabase(this.testDatabaseId)
+                .getContainer(this.testContainerId);
+
+            ObjectNode testItem = Utils.getSimpleObjectMapper().createObjectNode();
+            testItem.put("id", UUID.randomUUID().toString());
+            testItem.put("mypk", testItem.get("id").asText());
+
+            CosmosItemResponse<ObjectNode> createResponse = container
+                .createItem(testItem, new PartitionKey(testItem.get("mypk").asText()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(201);
+
+            // Step 1: Read without fault injection — should contact first preferred region
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+            readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            CosmosItemResponse<ObjectNode> readResponse = container
+                .readItem(testItem.get("id").asText(), new PartitionKey(testItem.get("mypk").asText()), readOptions, ObjectNode.class)
+                .block();
+
+            assertThat(readResponse).isNotNull();
+            assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+            CosmosDiagnosticsContext diagnosticsContext = readResponse.getDiagnostics().getDiagnosticsContext();
+            assertThat(diagnosticsContext).isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames())
+                .as("Without faults, should contact first preferred region")
+                .isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames().contains(FIRST_REGION_NAME))
+                .as("Without faults, should contact first preferred region")
+                .isTrue();
+
+            // Step 2: Inject 503 into first region — availability strategy should hedge to second region
+            String ruleName = "nonCanonical-503-" + UUID.randomUUID();
+            FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .delay(Duration.ofMillis(5))
+                .build();
+
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder(ruleName)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .region(this.writeableRegions.get(0))
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build())
+                .result(serviceUnavailableResult)
+                .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
+
+            try {
+                CosmosItemResponse<ObjectNode> readWithFaultResponse = container
+                    .readItem(testItem.get("id").asText(), new PartitionKey(testItem.get("mypk").asText()), readOptions, ObjectNode.class)
+                    .block();
+
+                assertThat(readWithFaultResponse).isNotNull();
+                assertThat(readWithFaultResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext faultDiagnostics = readWithFaultResponse.getDiagnostics().getDiagnosticsContext();
+                assertThat(faultDiagnostics).isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames())
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames().contains(SECOND_REGION_NAME))
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .isTrue();
+            } finally {
+                faultRule.disable();
+            }
+        } finally {
+            safeClose(clientWithNonCanonicalRegions);
+        }
+    }
+
     @AfterClass(groups = { "fi-multi-master", "fi-thinclient-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()

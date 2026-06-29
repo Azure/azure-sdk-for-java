@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
  */
 public final class AdministratorsMicrosoftEntraCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AdministratorsMicrosoftEntraAdd.json
+     * x-ms-original-file: 2026-04-01-preview/AdministratorsMicrosoftEntraAdd.json
      */
     /**
      * Sample code: Add a server administrator associated to a Microsoft Entra principal.

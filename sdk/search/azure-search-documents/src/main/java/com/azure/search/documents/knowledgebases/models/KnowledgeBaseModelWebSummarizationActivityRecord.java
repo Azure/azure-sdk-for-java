@@ -53,9 +53,11 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
         jsonWriter.writeIntField("id", getId());
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
+        jsonWriter.writeStringField("warning", getWarning());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("inputTokens", this.inputTokensCount);
         jsonWriter.writeNumberField("outputTokens", this.outputTokensCount);
+        jsonWriter.writeStringField("modelName", this.modelName);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,9 +76,11 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
             int id = 0;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
+            String warning = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION;
             Integer inputTokensCount = null;
             Integer outputTokensCount = null;
+            String modelName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -86,12 +90,16 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
                     error = KnowledgeBaseErrorDetail.fromJson(reader);
+                } else if ("warning".equals(fieldName)) {
+                    warning = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseActivityRecordType.fromString(reader.getString());
                 } else if ("inputTokens".equals(fieldName)) {
                     inputTokensCount = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
                     outputTokensCount = reader.getNullable(JsonReader::getInt);
+                } else if ("modelName".equals(fieldName)) {
+                    modelName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -100,9 +108,11 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
                 = new KnowledgeBaseModelWebSummarizationActivityRecord(id);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setError(error);
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setWarning(warning);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.type = type;
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.inputTokensCount = inputTokensCount;
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.outputTokensCount = outputTokensCount;
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.modelName = modelName;
             return deserializedKnowledgeBaseModelWebSummarizationActivityRecord;
         });
     }
@@ -137,5 +147,21 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
     @Generated
     public Integer getOutputTokensCount() {
         return this.outputTokensCount;
+    }
+
+    /*
+     * The name of the model used for the LLM web summarization activity.
+     */
+    @Generated
+    private String modelName;
+
+    /**
+     * Get the modelName property: The name of the model used for the LLM web summarization activity.
+     *
+     * @return the modelName value.
+     */
+    @Generated
+    public String getModelName() {
+        return this.modelName;
     }
 }

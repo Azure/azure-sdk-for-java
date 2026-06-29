@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  */
 public final class ProjectConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/ProjectConnection/create.json
+     * x-ms-original-file: 2026-03-15-preview/ProjectConnection/create.json
      */
     /**
      * Sample code: CreateProjectConnection.

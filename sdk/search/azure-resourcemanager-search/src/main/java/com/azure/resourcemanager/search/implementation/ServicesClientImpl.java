@@ -1183,7 +1183,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
@@ -1220,7 +1221,8 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName,
@@ -1255,7 +1257,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgradeAsync(String resourceGroupName,
@@ -1274,7 +1276,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgradeAsync(String resourceGroupName,
@@ -1293,7 +1295,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgrade(String resourceGroupName,
@@ -1310,7 +1312,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginUpgrade(String resourceGroupName,
@@ -1326,7 +1328,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceInner> upgradeAsync(String resourceGroupName, String searchServiceName) {
@@ -1343,7 +1345,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes an Azure AI Search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SearchServiceInner> upgradeAsync(String resourceGroupName, String searchServiceName, Context context) {
@@ -1359,7 +1361,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceInner upgrade(String resourceGroupName, String searchServiceName) {
@@ -1375,7 +1377,7 @@ public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes an Azure AI Search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceInner upgrade(String resourceGroupName, String searchServiceName, Context context) {

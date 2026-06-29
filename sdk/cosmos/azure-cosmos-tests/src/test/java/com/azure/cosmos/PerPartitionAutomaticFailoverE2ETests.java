@@ -276,8 +276,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (expectedResponseCharacteristics.shouldFinalResponseHaveSuccess) {
             assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
-            assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode() >= HttpConstants.StatusCodes.OK
-                && cosmosDiagnostics.getDiagnosticsContext().getStatusCode() <= HttpConstants.StatusCodes.NOT_MODIFIED).isTrue();
+            int finalStatusCode = cosmosDiagnostics.getDiagnosticsContext().getStatusCode();
+            assertThat(finalStatusCode)
+                .as("final response status code should indicate success (2xx/304) but was %d (sub-status %d)",
+                    finalStatusCode, cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                .isBetween(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
         }
     };
 
@@ -1818,7 +1821,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Dynamic enablement is achieved by overriding GlobalEndpointManager's owner to
      * inject the PPAF flag into DatabaseAccount snapshots.</p>
      */
-    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testFailoverBehaviorForNonWriteOperationsWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,

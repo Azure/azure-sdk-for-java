@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class VirtualMachinesDeallocateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_WithForceDeallocate.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_WithForceDeallocate.json
      */
     /**
      * Sample code: VirtualMachine_Deallocate_WithForceDeallocate.
@@ -24,7 +24,7 @@ public final class VirtualMachinesDeallocateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_Deallocate_MinimumSet_Gen.
@@ -38,7 +38,7 @@ public final class VirtualMachinesDeallocateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_WithHibernation.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_WithHibernation.json
      */
     /**
      * Sample code: VirtualMachine_Deallocate_WithHibernation.
@@ -51,4 +51,5 @@ public final class VirtualMachinesDeallocateSamples {
             .getVirtualMachines()
             .deallocate("rgcompute", "aaaaaaaaaaaaaaaa", true, null, com.azure.core.util.Context.NONE);
     }
+
 }
