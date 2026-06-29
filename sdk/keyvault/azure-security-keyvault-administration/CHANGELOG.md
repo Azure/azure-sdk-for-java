@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Added `KeyVaultEkmClient`, `KeyVaultEkmAsyncClient` and `KeyVaultEkmClientBuilder` to manage the External Key Manager
+  (EKM) connection of a Managed HSM account, including creating, getting, updating, deleting and checking the EKM
+  connection, as well as retrieving the EKM proxy client certificate.
+- Added the `KeyVaultEkmConnection`, `KeyVaultEkmProxyInfo` and `KeyVaultEkmProxyClientCertificateInfo` models.
+
 ### Breaking Changes
 
 ### Bugs Fixed
