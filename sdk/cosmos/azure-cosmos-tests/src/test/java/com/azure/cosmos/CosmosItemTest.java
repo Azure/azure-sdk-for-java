@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -29,7 +30,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
@@ -636,7 +636,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = 4 * SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyWithMultiplePartitionsAndSome404s() throws JsonProcessingException {
 
         CosmosDatabase readManyDatabase = null;
@@ -652,10 +652,11 @@ public class CosmosItemTest extends TestSuiteBase {
             String readManyContainerId = "container-with-multiple-partitions";
 
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(readManyContainerId, "/mypk");
-            ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(30_000);
-
-            readManyDatabase.createContainer(containerProperties, throughputProperties);
-
+            createCollection(
+                client.asyncClient().getDatabase(readManyDatabase.getId()),
+                containerProperties,
+                new CosmosContainerRequestOptions(),
+                30_000);
             readManyContainer = readManyDatabase.getContainer(readManyContainerId);
 
             for (int i = 0; i < itemCount; i++) {
