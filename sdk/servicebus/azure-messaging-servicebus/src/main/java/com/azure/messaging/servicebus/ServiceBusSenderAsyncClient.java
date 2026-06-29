@@ -10,7 +10,9 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,6 +26,8 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -44,7 +48,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
-import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_SENDER;
@@ -240,6 +243,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final Runnable onClientClose;
     private final String entityName;
+    private final ConnectionCacheWrapper connectionCacheWrapper;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final String fullyQualifiedNamespace;
     private final String viaEntityName;
@@ -260,6 +264,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
         Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionCacheWrapper = connectionCacheWrapper;
         this.connectionProcessor = connectionCacheWrapper.getConnection();
         this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
@@ -468,24 +473,24 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final int maxSize = options.getMaximumSizeInBytes();
 
-        return getSendLinkWithRetry("create-batch")
-            .flatMap(link -> link.getMaxBatchSize().flatMap(batchSizeFromLink -> {
-                // Use the value from getMaxBatchSize() (vendor property, or standard max-message-size fallback
-                // in ReactorSender). If neither is available (batchSizeFromLink <= 0), use 1 MB as a
-                // last-resort default to prevent oversized batches on broken links.
-                final int maximumBatchSize = batchSizeFromLink > 0 ? batchSizeFromLink : DEFAULT_MAX_BATCH_SIZE_BYTES;
-                if (maxSize > maximumBatchSize) {
-                    return monoError(logger,
-                        new IllegalArgumentException(String.format(Locale.US,
-                            "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
-                                + " batch size (%s bytes).",
-                            maxSize, maximumBatchSize)));
-                }
-                final int batchSize = maxSize > 0 ? maxSize : maximumBatchSize;
-                return Mono.just(
-                    new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
-            }))
-            .onErrorMap(this::mapError);
+        return getSendLinkAndMaxBatchSizeWithRetry("create-batch").flatMap(t -> {
+            final AmqpSendLink link = t.getT1();
+            final int batchSizeFromLink = t.getT2();
+            // Use the value from getMaxBatchSize() (vendor property, or standard max-message-size fallback
+            // in ReactorSender). If neither is available (batchSizeFromLink <= 0), use 1 MB as a
+            // last-resort default to prevent oversized batches on broken links.
+            final int maximumBatchSize = batchSizeFromLink > 0 ? batchSizeFromLink : DEFAULT_MAX_BATCH_SIZE_BYTES;
+            if (maxSize > maximumBatchSize) {
+                return monoError(logger,
+                    new IllegalArgumentException(String.format(Locale.US,
+                        "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
+                            + " batch size (%s bytes).",
+                        maxSize, maximumBatchSize)));
+            }
+            final int batchSize = maxSize > 0 ? maxSize : maximumBatchSize;
+            return Mono
+                .just(new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
+        }).onErrorMap(this::mapError);
     }
 
     /**
@@ -822,7 +827,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return tracer.traceScheduleMono("ServiceBus.scheduleMessage",
-            getSendLinkWithRetry("schedule-message").flatMap(link -> link.getLinkSize().flatMap(size -> {
+            getSendLinkAndSizeWithRetry("schedule-message").flatMap(t -> {
+                final AmqpSendLink link = t.getT1();
+                final int size = t.getT2();
                 final int maxSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                 return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityName, entityType))
                     .flatMap(
@@ -830,7 +837,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                             .schedule(Arrays.asList(message), scheduledEnqueueTime, maxSize, link.getLinkName(),
                                 transactionContext)
                             .next());
-            })), message, message.getContext()).onErrorMap(this::mapError);
+            }), message, message.getContext()).onErrorMap(this::mapError);
     }
 
     /**
@@ -870,7 +877,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             messages.add(message);
         });
 
+        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
         final Mono<Void> sendMessage = getSendLink("send-batch").flatMap(link -> {
+            operationLink.set(link);
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 final TransactionalState deliveryState = new TransactionalState();
                 deliveryState.setTxnId(Binary.create(transactionContext.getTransactionId()));
@@ -882,8 +891,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             }
         });
 
-        final String message = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
-        final Mono<Void> withRetry = withRetry(sendMessage, retryOptions, message).onErrorMap(this::mapError);
+        final String timeoutMessage = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
+        final Mono<Void> withRetry = RetryUtil.withRetry(
+            sendMessage.onErrorResume(
+                e -> recoverBeforeRetry(e, "sendBatch", operationLink).then(Mono.error(RecoveryUtils.asRetriable(e)))),
+            retryOptions, timeoutMessage).onErrorMap(this::mapError);
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
 
@@ -894,23 +906,34 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
 
+        // Apply retry+recovery to BOTH link acquisition and link-size negotiation. Keeping
+        // messages.collect() outside the retry boundary avoids re-subscribing the user-provided
+        // Flux on each retry attempt, which could duplicate side-effects or re-consume a hot
+        // publisher. A getLinkSize() failure (link never ACTIVE, link disposed during negotiation)
+        // now triggers the same tiered recovery as a getSendLink() failure.
+        //
         // Uses getLinkSize() intentionally — this path is for single-message sends only (sendMessage()).
         // Single messages should use the full link capacity (up to 100 MB on Premium large-message),
         // not the batch-size cap. The batch path (sendMessages(Iterable), scheduleMessages(Iterable))
         // goes through createMessageBatch() which calls getMaxBatchSize() for the vendor-property-based cap.
-        final Mono<List<ServiceBusMessageBatch>> batchList
-            = getSendLinkWithRetry("send-batches").flatMap(link -> link.getLinkSize().flatMap(size -> {
-                final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                final CreateMessageBatchOptions batchOptions
-                    = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
-                return messages.collect(
-                    new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
-            }));
+        final Mono<Tuple2<AmqpSendLink, Integer>> linkAndSize = getSendLinkAndSizeWithRetry("send-batches");
 
-        return batchList.flatMap(list -> Flux.fromIterable(list)
+        final Mono<List<ServiceBusMessageBatch>> batchListMono = linkAndSize.flatMap(t -> {
+            final AmqpSendLink link = t.getT1();
+            final int size = t.getT2();
+            final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+            final CreateMessageBatchOptions batchOptions
+                = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
+            return messages.collect(
+                new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
+        });
+
+        final Mono<Void> sendOperation = batchListMono.flatMap(list -> Flux.fromIterable(list)
             .flatMap(batch -> sendBatchInternal(batch, transactionContext))
             .then()
-            .doOnError(error -> logger.error("Error sending batch.", error))).onErrorMap(this::mapError);
+            .doOnError(error -> logger.error("Error sending batch.", error)));
+
+        return sendOperation.onErrorMap(this::mapError);
     }
 
     private Mono<AmqpSendLink> getSendLink(String callSite) {
@@ -940,8 +963,46 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return getSendLink;
     }
 
-    private Mono<AmqpSendLink> getSendLinkWithRetry(String callSite) {
-        return withRetry(getSendLink(callSite), retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+    /**
+     * Acquires a send link AND its negotiated maximum message size inside a single retry+recovery
+     * boundary. A failure during {@code getLinkSize()} (e.g., the link never reaches ACTIVE within
+     * the timeout, or the link becomes disposed mid-negotiation) triggers the same tiered recovery
+     * as a failure during {@code getSendLink()} — without it, transient size-negotiation faults
+     * would short-circuit the operation without LINK or CONNECTION recovery.
+     *
+     * @param callSite identifier used in recovery diagnostics.
+     * @return a Mono emitting (link, size) on success, retried with recovery on transient failures.
+     */
+    private Mono<Tuple2<AmqpSendLink, Integer>> getSendLinkAndSizeWithRetry(String callSite) {
+        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
+        return RetryUtil.withRetry(
+            getSendLink(callSite).doOnNext(operationLink::set)
+                .flatMap(link -> link.getLinkSize().map(size -> Tuples.of(link, size)))
+                .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndSize-" + callSite, operationLink)
+                    .then(Mono.error(RecoveryUtils.asRetriable(e)))),
+            retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+    }
+
+    /**
+     * Acquires a send link AND its negotiated maximum batch size inside a single retry+recovery
+     * boundary. Used by {@code createMessageBatch()} which caps batch size at the vendor-property
+     * limit (see {@link #DEFAULT_MAX_BATCH_SIZE_BYTES}) rather than full link capacity. A failure
+     * during {@code getMaxBatchSize()} (e.g., the link never reaches ACTIVE within the timeout, or
+     * the link becomes disposed mid-negotiation) triggers the same tiered recovery as a failure
+     * during {@code getSendLink()} — without it, transient size-negotiation faults would
+     * short-circuit the operation without LINK or CONNECTION recovery.
+     *
+     * @param callSite identifier used in recovery diagnostics.
+     * @return a Mono emitting (link, batchSize) on success, retried with recovery on transient failures.
+     */
+    private Mono<Tuple2<AmqpSendLink, Integer>> getSendLinkAndMaxBatchSizeWithRetry(String callSite) {
+        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
+        return RetryUtil.withRetry(
+            getSendLink(callSite).doOnNext(operationLink::set)
+                .flatMap(link -> link.getMaxBatchSize().map(size -> Tuples.of(link, size)))
+                .onErrorResume(e -> recoverBeforeRetry(e, "getSendLinkAndMaxBatchSize-" + callSite, operationLink)
+                    .then(Mono.error(RecoveryUtils.asRetriable(e)))),
+            retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
     }
 
     private Throwable mapError(Throwable throwable) {
@@ -949,6 +1010,54 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return new ServiceBusException(throwable, ServiceBusErrorSource.SEND);
         }
         return throwable;
+    }
+
+    /**
+     * Performs reactive tiered recovery based on the classified error. For LINK recovery, closes the
+     * send link so the next retry creates a fresh one. For CONNECTION recovery, closes the link and
+     * invalidates the connection so the cache creates everything fresh.
+     *
+     * <p>Called from {@code onErrorResume} at each send call site so that recovery completes before
+     * the error is re-emitted and the standard retry logic re-subscribes.</p>
+     */
+    private Mono<Void> recoverBeforeRetry(Throwable error, String callSite, AtomicReference<AmqpSendLink> linkRef) {
+        final RecoveryKind kind = RecoveryKind.classify(error);
+        if (kind != RecoveryKind.LINK && kind != RecoveryKind.CONNECTION) {
+            return Mono.empty();
+        }
+
+        logger.atWarning()
+            .addKeyValue(ENTITY_PATH_KEY, entityName)
+            .addKeyValue("recoveryKind", kind)
+            .addKeyValue("callSite", callSite)
+            .log("Performing {} recovery before retry.", kind, error);
+
+        // Close the operation-scoped send link so the next retry creates a fresh one.
+        // Using a per-operation AtomicReference (not a class-level field) prevents concurrent send
+        // operations from accidentally closing each other's links.
+        // Use closeAsync() rather than dispose() to avoid blocking the Reactor thread.
+        Mono<Void> recovery = Mono.empty();
+        final AmqpSendLink link = linkRef != null ? linkRef.getAndSet(null) : null;
+        if (link != null) {
+            recovery = Mono.defer(() -> {
+                Mono<Void> close = link.closeAsync();
+                return close != null ? close : Mono.empty();
+            }).onErrorResume(closeErr -> {
+                logger.atVerbose()
+                    .addKeyValue(ENTITY_PATH_KEY, entityName)
+                    .log("Error closing stale send link during recovery.", closeErr);
+                return Mono.empty();
+            });
+        }
+        linkName.set(null);
+
+        // For CONNECTION errors, invalidate the cached connection so the next get() closes it
+        // and creates a fresh one. Matches Go SDK's Namespace.Recover().
+        if (kind == RecoveryKind.CONNECTION) {
+            recovery = recovery.then(Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection()));
+        }
+
+        return recovery;
     }
 
     private String entityId() {

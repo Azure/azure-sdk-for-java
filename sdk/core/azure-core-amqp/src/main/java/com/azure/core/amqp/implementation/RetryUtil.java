@@ -129,4 +129,5 @@ public final class RetryUtil {
             .filter(error -> error instanceof TimeoutException
                 || (error instanceof AmqpException && ((AmqpException) error).isTransient()));
     }
+
 }
