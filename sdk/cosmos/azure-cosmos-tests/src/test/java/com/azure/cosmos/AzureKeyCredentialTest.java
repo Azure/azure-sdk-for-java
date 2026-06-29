@@ -103,8 +103,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         // sanity check
         assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        database.createContainer(collectionDefinition).block();
-        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
+        CosmosAsyncContainer collection = createCollection(database, collectionDefinition, new CosmosContainerRequestOptions());
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
         Mono<CosmosContainerResponse> readObservable = collection.read();
@@ -126,8 +125,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         // sanity check
         assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        database.createContainer(collectionDefinition).block();
-        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
+        CosmosAsyncContainer collection = createCollection(database, collectionDefinition, new CosmosContainerRequestOptions());
 
         credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
         Mono<CosmosContainerResponse> deleteObservable = collection.delete();
@@ -144,8 +142,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
     public void replaceCollectionWithSecondaryKey(String collectionName) throws InterruptedException  {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
-        database.createContainer(collectionDefinition).block();
-        CosmosAsyncContainer collection = database.getContainer(collectionDefinition.getId());
+        CosmosAsyncContainer collection = createCollection(database, collectionDefinition, new CosmosContainerRequestOptions());
 
         // sanity check
         assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
