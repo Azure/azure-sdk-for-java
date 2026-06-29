@@ -952,6 +952,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options) {
+        return createCollection(database, cosmosContainerProperties, options, /* probeClient */ null);
+    }
+
+    public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
+                                                        CosmosContainerRequestOptions options, CosmosAsyncClient probeClient) {
         database.createContainer(cosmosContainerProperties, options)
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
@@ -960,7 +965,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return Mono.empty();
             })
             .block();
-        waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), /* probeClient */ null);
+        waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
         return database.getContainer(cosmosContainerProperties.getId());
     }
 

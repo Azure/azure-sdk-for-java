@@ -1753,10 +1753,13 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } else if (shouldSinglePartitionContainerBeSplit) {
             String containerId = UUID.randomUUID() + "-" + "container";
             expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
-            resolvedContainer = createCollection(
-                database,
-                expectedCosmosContainerProperties,
-                new CosmosContainerRequestOptions());
+            try (CosmosAsyncClient setupClient = buildSetupClient()) {
+                resolvedContainer = createCollection(
+                    database,
+                    expectedCosmosContainerProperties,
+                    new CosmosContainerRequestOptions(),
+                    setupClient);
+            }
             shouldDeleteContainer = true;
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
@@ -1825,10 +1828,13 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } else if (shouldSinglePartitionContainerBeSplit) {
             String containerId = UUID.randomUUID() + "-" + "container";
             expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
-            resolvedContainer = createCollection(
-                database,
-                expectedCosmosContainerProperties,
-                new CosmosContainerRequestOptions());
+            try (CosmosAsyncClient setupClient = buildSetupClient()) {
+                resolvedContainer = createCollection(
+                    database,
+                    expectedCosmosContainerProperties,
+                    new CosmosContainerRequestOptions(),
+                    setupClient);
+            }
             shouldDeleteContainer = true;
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
@@ -1890,11 +1896,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
         CosmosAsyncContainer resolvedContainer;
 
-        resolvedContainer = createCollection(
-            database,
-            expectedCosmosContainerProperties,
-            new CosmosContainerRequestOptions(),
-            50_000);
+        try (CosmosAsyncClient setupClient = buildSetupClient()) {
+            resolvedContainer = createCollection(
+                database,
+                expectedCosmosContainerProperties,
+                new CosmosContainerRequestOptions(),
+                50_000,
+                setupClient);
+        }
 
         Thread.sleep(30_000);
 
@@ -1946,11 +1955,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
         CosmosAsyncContainer resolvedContainer;
 
-        resolvedContainer = createCollection(
-            database,
-            expectedCosmosContainerProperties,
-            new CosmosContainerRequestOptions(),
-            50_000);
+        try (CosmosAsyncClient setupClient = buildSetupClient()) {
+            resolvedContainer = createCollection(
+                database,
+                expectedCosmosContainerProperties,
+                new CosmosContainerRequestOptions(),
+                50_000,
+                setupClient);
+        }
 
         Thread.sleep(30_000);
 
@@ -2074,6 +2086,15 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             .multipleWriteRegionsEnabled(true);
         cosmosClientBuilderAccessor.setRegionScopedSessionCapturingEnabled(clientBuilder, isRegionScopedSessionCapturingEnabled);
         return clientBuilder.buildAsyncClient();
+    }
+
+    private static CosmosAsyncClient buildSetupClient() {
+        return new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .directMode()
+            .buildAsyncClient();
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
