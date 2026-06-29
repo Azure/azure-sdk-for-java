@@ -4,7 +4,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.CreateSkillVersionFromFilesBody;
 import com.azure.ai.projects.models.SkillFileDetails;
-import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.BinaryData;
@@ -21,7 +21,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Sample demonstrating uploading and downloading a skill package using the synchronous SkillsClient.
+ * Sample demonstrating uploading and downloading a skill package using the synchronous BetaSkillsClient.
  *
  * <p>Skills are a preview feature. Before running, set the following environment variable:</p>
  * <ul>
@@ -31,10 +31,11 @@ import java.util.zip.ZipOutputStream;
 public class SkillsPackageSample {
     private static final String SKILL_NAME = "java-sample-skill-package";
 
-    private static final SkillsClient SKILLS_CLIENT = new AIProjectClientBuilder()
+    private static final BetaSkillsClient SKILLS_CLIENT = new AIProjectClientBuilder()
+        .allowPreview(true)
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildSkillsClient();
+        .beta().buildBetaSkillsClient();
 
     public static void main(String[] args) throws IOException {
         try {
@@ -56,7 +57,7 @@ public class SkillsPackageSample {
 
             // BEGIN:com.azure.ai.projects.SkillsPackageSample.getSkillContent
 
-            Skill fetched = SKILLS_CLIENT.getSkill(imported.getName());
+            SkillDetails fetched = SKILLS_CLIENT.getSkill(imported.getName());
             System.out.println("Fetched imported skill: " + fetched.getName());
 
             BinaryData downloaded = SKILLS_CLIENT.getSkillContent(fetched.getName());

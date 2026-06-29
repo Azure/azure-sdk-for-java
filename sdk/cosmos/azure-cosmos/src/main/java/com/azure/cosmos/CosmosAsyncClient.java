@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -750,11 +751,13 @@ public final class CosmosAsyncClient implements Closeable {
             return this.accountConsistencyLevel;
         }
 
-        if (desiredConsistencyLevelOfOperation != null) {
+        if (desiredConsistencyLevelOfOperation != null
+            && !Utils.isConsistencyLevelUpgrade(this.accountConsistencyLevel, desiredConsistencyLevelOfOperation)) {
             return desiredConsistencyLevelOfOperation;
         }
 
-        if (this.desiredConsistencyLevel != null) {
+        if (this.desiredConsistencyLevel != null
+            && !Utils.isConsistencyLevelUpgrade(this.accountConsistencyLevel, this.desiredConsistencyLevel)) {
             return desiredConsistencyLevel;
         }
 

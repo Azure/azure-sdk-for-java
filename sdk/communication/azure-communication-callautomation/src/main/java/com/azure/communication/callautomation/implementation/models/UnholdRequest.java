@@ -18,8 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     /*
-     * Participants to be hold from the call.
-     * Only ACS Users are supported.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel targetParticipant;
@@ -45,8 +46,9 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     }
 
     /**
-     * Get the targetParticipant property: Participants to be hold from the call.
-     * Only ACS Users are supported.
+     * Get the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @return the targetParticipant value.
      */
@@ -56,8 +58,9 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     }
 
     /**
-     * Set the targetParticipant property: Participants to be hold from the call.
-     * Only ACS Users are supported.
+     * Set the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the UnholdRequest object itself.
