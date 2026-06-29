@@ -785,25 +785,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             allRegions.add(location.getName());
         }
 
-        // The primary region is the first writable location; propagation lag manifests in the other regions.
-        String primaryRegion = null;
-        for (DatabaseAccountLocation location : databaseAccount.getWritableLocations()) {
-            primaryRegion = location.getName();
-            break;
-        }
-        final String primary = primaryRegion;
-
-        List<String> nonPrimaryRegions = allRegions
-            .stream()
-            .filter(region -> primary == null || !region.equalsIgnoreCase(primary))
-            .collect(Collectors.toList());
-
         Duration maxWait = COLLECTION_READINESS_MAX_WAIT;
         long deadlineNanos = System.nanoTime() + maxWait.toNanos();
 
-        if (nonPrimaryRegions.isEmpty()) {
-            // Single-region account: there is no non-primary region to verify, but the collection still needs
-            // to be readable (for example while physical partitions are provisioned).
+        if (allRegions.isEmpty()) {
+            // Defensive fallback: if account metadata has not exposed locations, still verify that the collection
+            // is readable using the client's normal routing.
             awaitContainerReadableInRegion(
                 probeContainer,
                 null,
@@ -814,8 +801,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             return;
         }
 
-        // Verify the collection is readable in each non-primary region.
-        for (String region : nonPrimaryRegions) {
+        // Verify the collection is readable in every account region. Multi-write accounts can route writes and
+        // metadata reads to any configured preferred region, including a region that would otherwise be treated as
+        // the first writable location.
+        for (String region : allRegions) {
             final String target = region;
             List<String> excludedRegions = allRegions
                 .stream()

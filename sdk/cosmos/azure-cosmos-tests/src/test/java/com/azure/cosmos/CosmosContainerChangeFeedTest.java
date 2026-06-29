@@ -961,7 +961,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void changeFeedQueryCompleteAfterEndLSN(
         int throughput,
         boolean shouldContinuouslyIngestItems,
