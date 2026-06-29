@@ -244,7 +244,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             }
 
             feedRanges.set(currentFeedRanges);
-        }, 5, context);
+        }, 10, context);
 
         return feedRanges.get();
     }
