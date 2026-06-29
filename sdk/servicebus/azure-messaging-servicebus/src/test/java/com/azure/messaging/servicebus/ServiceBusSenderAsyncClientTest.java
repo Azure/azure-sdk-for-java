@@ -991,7 +991,7 @@ class ServiceBusSenderAsyncClientTest {
 
     /**
      * Verifies that sendMessage(single) does NOT cap at DEFAULT_MAX_BATCH_SIZE_BYTES on a Premium-like link
-     * (100 MB). The single-message path goes through sendFluxInternal → AmqpMessageCollector which bypasses
+     * (100 MB). The single-message path goes through sendMessageInternal → AmqpMessageCollector which bypasses
      * createMessageBatch() and therefore is not subject to the 1 MB batch cap.
      */
     @ParameterizedTest
@@ -1171,7 +1171,7 @@ class ServiceBusSenderAsyncClientTest {
 
     /**
      * Verifies that sendMessage(single) with a message larger than 1 MB succeeds on a large link.
-     * This proves the single-message path (sendFluxInternal -> AmqpMessageCollector) is NOT capped
+     * This proves the single-message path (sendMessageInternal -> AmqpMessageCollector) is NOT capped
      * at the default 1 MB batch size limit. On Premium namespaces with large per-entity limits,
      * individual messages exceeding 1 MB are valid.
      */
@@ -1190,7 +1190,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(any(org.apache.qpid.proton.message.Message.class))).thenReturn(Mono.empty());
 
         // Act & Assert - A 2 MB message on a 5 MB link succeeds because sendMessage(single) uses the raw
-        // link size (5 MB) via sendFluxInternal, NOT the 1 MB batch cap.
+        // link size (5 MB) via sendMessageInternal, NOT the 1 MB batch cap.
         StepVerifier.create(sender.sendMessage(largeMessage)).expectComplete().verify(DEFAULT_TIMEOUT);
 
         verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class));
