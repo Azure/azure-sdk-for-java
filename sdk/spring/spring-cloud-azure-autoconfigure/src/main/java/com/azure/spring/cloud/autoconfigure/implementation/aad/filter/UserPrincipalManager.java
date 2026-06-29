@@ -62,21 +62,6 @@ public class UserPrincipalManager {
     }
 
     /**
-     * Creates a new {@link UserPrincipalManager} with a predefined {@link JWKSource} and AAD authentication properties.
-     * <p>
-     * Package-private constructor for unit testing. This avoids reflective mutation of final fields and
-     * allows tests to inject both the JWK source and authentication properties without modifying private state.
-     *
-     * @param keySource - {@link JWKSource} containing at least one key
-     * @param aadAuthenticationProperties - AAD authentication properties for tenant validation
-     */
-    UserPrincipalManager(JWKSource<SecurityContext> keySource, AadAuthenticationProperties aadAuthenticationProperties) {
-        this.keySource = keySource;
-        this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.explicitAudienceCheck = false;
-    }
-
-    /**
      * Create a new {@link UserPrincipalManager} based of the
      * {@link AadAuthorizationServerEndpoints#getJwkSetEndpoint()}
      *

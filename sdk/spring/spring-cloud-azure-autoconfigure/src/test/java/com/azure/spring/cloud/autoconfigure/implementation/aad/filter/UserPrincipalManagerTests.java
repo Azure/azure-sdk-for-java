@@ -6,14 +6,12 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.filter;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadProfileProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AadJwtClaimNames;
-import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.BadJWTException;
-import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,8 +19,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -104,8 +100,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("test");
 
-        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
+        AadJwtClaimsVerifier verifier = new AadJwtClaimsVerifier(properties, false, java.util.Collections.emptySet());
 
         // Create JWT claims set with matching tenant ID
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -113,10 +108,7 @@ class UserPrincipalManagerTests {
                 .claim(AadJwtClaimNames.TID, "test")
                 .build();
 
-        // Execute: get validator and verify claims - should NOT throw exception
-        ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
-        assertThatCode(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> verifier.verify(claimsSet, null)).doesNotThrowAnyException();
     }
 
     @Test
@@ -127,8 +119,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("test");
 
-        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
+        AadJwtClaimsVerifier verifier = new AadJwtClaimsVerifier(properties, false, java.util.Collections.emptySet());
 
         // Create JWT claims set with different tenant ID (mismatched)
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -136,9 +127,7 @@ class UserPrincipalManagerTests {
                 .claim(AadJwtClaimNames.TID, "other-tenant-id")
                 .build();
 
-        // Execute: verification should throw BadJWTException
-        ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
-        assertThatThrownBy(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
+        assertThatThrownBy(() -> verifier.verify(claimsSet, null))
             .isInstanceOf(BadJWTException.class)
             .hasMessageContaining("Invalid token tenant");
     }
@@ -151,8 +140,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("common");
 
-        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
+        AadJwtClaimsVerifier verifier = new AadJwtClaimsVerifier(properties, false, java.util.Collections.emptySet());
 
         // Create JWT claims set with any tenant ID - should be accepted since "common" is multi-tenant
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -160,10 +148,7 @@ class UserPrincipalManagerTests {
                 .claim(AadJwtClaimNames.TID, "any-tenant")
                 .build();
 
-        // Execute: verification should NOT throw exception for multi-tenant config
-        ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
-        assertThatCode(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> verifier.verify(claimsSet, null)).doesNotThrowAnyException();
     }
 
     @Test
@@ -174,8 +159,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("organizations");
 
-        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
+        AadJwtClaimsVerifier verifier = new AadJwtClaimsVerifier(properties, false, java.util.Collections.emptySet());
 
         // Create JWT claims set with any tenant ID
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -183,10 +167,7 @@ class UserPrincipalManagerTests {
                 .claim(AadJwtClaimNames.TID, "any-tenant")
                 .build();
 
-        // Execute: verification should NOT throw exception for multi-tenant config
-        ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
-        assertThatCode(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> verifier.verify(claimsSet, null)).doesNotThrowAnyException();
     }
 
     @Test
@@ -197,8 +178,7 @@ class UserPrincipalManagerTests {
         Mockito.when(properties.getProfile()).thenReturn(profileProperties);
         Mockito.when(profileProperties.getTenantId()).thenReturn("consumers");
 
-        // Create UserPrincipalManager with both JWKSource and properties (avoids reflective field mutation)
-        userPrincipalManager = new UserPrincipalManager(immutableJWKSet, properties);
+        AadJwtClaimsVerifier verifier = new AadJwtClaimsVerifier(properties, false, java.util.Collections.emptySet());
 
         // Create JWT claims set with any tenant ID
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -206,10 +186,7 @@ class UserPrincipalManagerTests {
                 .claim(AadJwtClaimNames.TID, "any-tenant")
                 .build();
 
-        // Execute: verification should NOT throw exception for multi-tenant config
-        ConfigurableJWTProcessor<SecurityContext> validator = getValidator(userPrincipalManager, null);
-        assertThatCode(() -> validator.getJWTClaimsSetVerifier().verify(claimsSet, null))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> verifier.verify(claimsSet, null)).doesNotThrowAnyException();
     }
 
     private void rolesExtractedAsExpected(Object rolesClaimValue, Collection<String> expected) {
@@ -220,21 +197,6 @@ class UserPrincipalManagerTests {
         assertEquals(expected.size(), actual.size());
         assertTrue(expected.containsAll(actual));
         assertTrue(actual.containsAll(expected));
-    }
-
-    /**
-     * Helper method to invoke the private getValidator method via reflection.
-     * This allows us to test the validator logic without making network calls.
-     */
-    @SuppressWarnings("unchecked")
-    private ConfigurableJWTProcessor<SecurityContext> getValidator(UserPrincipalManager manager,
-            JWSAlgorithm algorithm) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method method = UserPrincipalManager.class.getDeclaredMethod("getValidator",
-                JWSAlgorithm.class);
-        method.setAccessible(true);
-        // Use RS256 as default algorithm if null
-        JWSAlgorithm alg = (algorithm != null) ? algorithm : JWSAlgorithm.RS256;
-        return (ConfigurableJWTProcessor<SecurityContext>) method.invoke(manager, alg);
     }
 
     private String readJwtValidIssuerTxt() {
