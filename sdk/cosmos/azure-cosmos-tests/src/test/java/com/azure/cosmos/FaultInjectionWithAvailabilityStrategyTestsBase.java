@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import org.testng.SkipException;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -5077,16 +5078,14 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         // setup db and container and pass their ids accordingly
         // ensure the container has a partition key definition of /mypk
 
-        databaseWithSeveralWriteableRegions
-            .createContainerIfNotExists(
-                new CosmosContainerProperties(
-                    containerId,
-                    new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))),
-                // for PHYSICAL_PARTITION_COUNT partitions
-                ThroughputProperties.createManualThroughput(6_000 * PHYSICAL_PARTITION_COUNT))
-            .block();
-
-        return databaseWithSeveralWriteableRegions.getContainer(containerId);
+        return createCollection(
+            databaseWithSeveralWriteableRegions,
+            new CosmosContainerProperties(
+                containerId,
+                new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))),
+            new CosmosContainerRequestOptions(),
+            // for PHYSICAL_PARTITION_COUNT partitions
+            6_000 * PHYSICAL_PARTITION_COUNT);
     }
 
     private static void inject(

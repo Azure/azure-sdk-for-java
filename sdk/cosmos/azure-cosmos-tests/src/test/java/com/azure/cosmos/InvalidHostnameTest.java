@@ -19,7 +19,8 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.buffer.ByteBuf;
@@ -123,10 +124,11 @@ public class InvalidHostnameTest extends TestSuiteBase {
 
             String dbName = CosmosDatabaseForTest.generateId();
             createdDatabase = createSyncDatabase(client, dbName);
-            createdDatabase.createContainer(
-                "TestContainer",
-                "/id",
-                ThroughputProperties.createManualThroughput(400));
+            createCollection(
+                client.asyncClient().getDatabase(dbName),
+                new CosmosContainerProperties("TestContainer", "/id"),
+                new CosmosContainerRequestOptions(),
+                400);
             CosmosContainer createdContainer = client.getDatabase(dbName).getContainer("TestContainer");
             ObjectNode newObject = Utils.getSimpleObjectMapper().createObjectNode();
             newObject.put("id", UUID.randomUUID().toString());

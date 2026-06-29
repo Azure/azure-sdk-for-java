@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -365,8 +366,10 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             String containerName = "container_" + UUID.randomUUID();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
             setupClient.createDatabaseIfNotExists(dbname).block();
-            setupClient.getDatabase(dbname)
-                .createContainerIfNotExists(properties).block();
+            createCollection(
+                setupClient.getDatabase(dbname),
+                properties,
+                new CosmosContainerRequestOptions());
             CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(dbname)
                 .getContainer(containerName);
             CosmosAsyncContainer setupContainer = setupClient.getDatabase(dbname)

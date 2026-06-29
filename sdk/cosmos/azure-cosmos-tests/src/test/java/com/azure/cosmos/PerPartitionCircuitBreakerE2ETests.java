@@ -35,6 +35,8 @@ import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -429,7 +431,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.sharedMultiPartitionAsyncContainerIdWhereMyPkIsPartitionKey = sharedAsyncMultiPartitionContainerWithMyPkAsPartitionKey.getId();
 
             this.singlePartitionAsyncContainerId = UUID.randomUUID().toString();
-            sharedAsyncDatabase.createContainerIfNotExists(this.singlePartitionAsyncContainerId, "/id").block();
+            createCollection(
+                sharedAsyncDatabase,
+                new CosmosContainerProperties(this.singlePartitionAsyncContainerId, "/id"),
+                new CosmosContainerRequestOptions());
 
             ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.DIRECT);
             ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.GATEWAY);

@@ -31,6 +31,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -94,8 +96,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         for (int i = 1; i <= numContainers; i++) {
             String containerId = String.format("id%d", i);
-            cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-            asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
+            asyncContainers.add(createCollection(
+                cosmosAsyncDatabase,
+                new CosmosContainerProperties(containerId, "/mypk"),
+                new CosmosContainerRequestOptions()));
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
         }
 
@@ -158,9 +162,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
 
             String containerId = "id1" + UUID.randomUUID();
-            cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(containerId);
+            cosmosAsyncContainer = createCollection(
+                cosmosAsyncDatabase,
+                new CosmosContainerProperties(containerId, "/mypk"),
+                new CosmosContainerRequestOptions());
 
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
 
@@ -263,8 +268,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 1; i <= containerCount; i++) {
                 String containerId = String.format("id%d", i);
-                cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-                asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
+                asyncContainers.add(createCollection(
+                    cosmosAsyncDatabase,
+                    new CosmosContainerProperties(containerId, "/mypk"),
+                    new CosmosContainerRequestOptions()));
                 cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
             }
 
@@ -436,8 +443,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 1; i <= containerCount; i++) {
                 String containerId = String.format("id%d", i);
-                cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-                asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
+                asyncContainers.add(createCollection(
+                    cosmosAsyncDatabase,
+                    new CosmosContainerProperties(containerId, "/mypk"),
+                    new CosmosContainerRequestOptions()));
                 cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
             }
 
@@ -589,8 +598,10 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 0; i < containerCount; i++) {
                 String containerId = String.format("id%d", i);
-                cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
-                asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
+                asyncContainers.add(createCollection(
+                    cosmosAsyncDatabase,
+                    new CosmosContainerProperties(containerId, "/mypk"),
+                    new CosmosContainerRequestOptions()));
                 cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
             }
 

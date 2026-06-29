@@ -22,7 +22,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -63,9 +64,11 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .directMode()
                 .buildAsyncClient();
         directCosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
-        directCosmosAsyncDatabase.createContainerIfNotExists(CONTAINER_ID, "/mypk",
-                ThroughputProperties.createManualThroughput(20000)).block();
-        directCosmosAsyncContainer = directCosmosAsyncDatabase.getContainer(CONTAINER_ID);
+        directCosmosAsyncContainer = createCollection(
+            directCosmosAsyncDatabase,
+            new CosmosContainerProperties(CONTAINER_ID, "/mypk"),
+            new CosmosContainerRequestOptions(),
+            20000);
 
         gatewayCosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)

@@ -43,6 +43,7 @@ import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -747,9 +748,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void queryDiagnosticsOnOrderBy() {
         //  create container with more than 4 physical partitions
         String containerId = "testcontainer";
-        cosmosAsyncDatabase.createContainer(containerId, "/mypk",
-            ThroughputProperties.createManualThroughput(40000)).block();
-        CosmosAsyncContainer testcontainer = cosmosAsyncDatabase.getContainer(containerId);
+        CosmosAsyncContainer testcontainer = createCollection(
+            cosmosAsyncDatabase,
+            new CosmosContainerProperties(containerId, "/mypk"),
+            new CosmosContainerRequestOptions(),
+            40000);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
         testcontainer.createItem(getInternalObjectNode()).block();

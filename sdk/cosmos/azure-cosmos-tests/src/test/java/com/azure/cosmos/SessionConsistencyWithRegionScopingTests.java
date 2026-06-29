@@ -33,6 +33,7 @@ import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -1752,8 +1753,10 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } else if (shouldSinglePartitionContainerBeSplit) {
             String containerId = UUID.randomUUID() + "-" + "container";
             expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
-            database.createContainerIfNotExists(expectedCosmosContainerProperties).block();
-            resolvedContainer = database.getContainer(containerId);
+            resolvedContainer = createCollection(
+                database,
+                expectedCosmosContainerProperties,
+                new CosmosContainerRequestOptions());
             shouldDeleteContainer = true;
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
@@ -1822,8 +1825,10 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         } else if (shouldSinglePartitionContainerBeSplit) {
             String containerId = UUID.randomUUID() + "-" + "container";
             expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/mypk");
-            database.createContainerIfNotExists(expectedCosmosContainerProperties).block();
-            resolvedContainer = database.getContainer(containerId);
+            resolvedContainer = createCollection(
+                database,
+                expectedCosmosContainerProperties,
+                new CosmosContainerRequestOptions());
             shouldDeleteContainer = true;
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
@@ -1882,12 +1887,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
         String containerId = UUID.randomUUID().toString();
         CosmosContainerProperties expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
 
         CosmosAsyncContainer resolvedContainer;
 
-        database.createContainerIfNotExists(expectedCosmosContainerProperties, throughputProperties).block();
-        resolvedContainer = database.getContainer(containerId);
+        resolvedContainer = createCollection(
+            database,
+            expectedCosmosContainerProperties,
+            new CosmosContainerRequestOptions(),
+            50_000);
 
         Thread.sleep(30_000);
 
@@ -1936,12 +1943,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
         String containerId = UUID.randomUUID().toString();
         CosmosContainerProperties expectedCosmosContainerProperties = new CosmosContainerProperties(containerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
 
         CosmosAsyncContainer resolvedContainer;
 
-        database.createContainerIfNotExists(expectedCosmosContainerProperties, throughputProperties).block();
-        resolvedContainer = database.getContainer(containerId);
+        resolvedContainer = createCollection(
+            database,
+            expectedCosmosContainerProperties,
+            new CosmosContainerRequestOptions(),
+            50_000);
 
         Thread.sleep(30_000);
 
