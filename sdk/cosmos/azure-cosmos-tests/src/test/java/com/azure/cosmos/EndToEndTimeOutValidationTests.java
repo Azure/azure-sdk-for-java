@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationCancelledException;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -55,22 +54,30 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     }
 
     public CosmosAsyncClient initializeClient(CosmosEndToEndOperationLatencyPolicyConfig e2eDefaultConfig) {
-        CosmosAsyncClient client = this
-            .getClientBuilder()
-            .endToEndOperationLatencyPolicyConfig(e2eDefaultConfig)
-            .buildAsyncClient();
+        CosmosAsyncClient client = null;
+        CosmosAsyncClient setupClient = null;
 
         try {
-            createdContainer = getSharedMultiPartitionCosmosContainer(client);
-            cleanUpContainer(createdContainer);
+            client = this
+                .getClientBuilder()
+                .endToEndOperationLatencyPolicyConfig(e2eDefaultConfig)
+                .buildAsyncClient();
+            setupClient = copyCosmosClientBuilder(getClientBuilder()).buildAsyncClient();
 
-            createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+            createdContainer = getSharedMultiPartitionCosmosContainer(client);
+            CosmosAsyncContainer setupContainer = getSharedMultiPartitionCosmosContainer(setupClient);
+            cleanUpContainer(setupContainer);
+
+            createdDocuments.clear();
+            createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, setupContainer));
 
             return client;
         } catch (Throwable t) {
             safeClose(client);
 
             throw t;
+        } finally {
+            safeClose(setupClient);
         }
     }
 
@@ -343,31 +350,33 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
-        CosmosClientBuilder builder = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
-            .credential(credential);
-
         FaultInjectionRule readItemFaultInjectionRule = null;
         FaultInjectionRule queryItemFaultInjectionRule = null;
+        CosmosAsyncClient setupClient = null;
         CosmosAsyncClient cosmosAsyncClient = null;
         String dbname = "db_" + UUID.randomUUID();
 
         try {
-            cosmosAsyncClient = builder.buildAsyncClient();
+            setupClient = copyCosmosClientBuilder(getClientBuilder()).buildAsyncClient();
+            cosmosAsyncClient = copyCosmosClientBuilder(getClientBuilder())
+                .endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
+                .buildAsyncClient();
+
             String containerName = "container_" + UUID.randomUUID();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
-            cosmosAsyncClient.createDatabaseIfNotExists(dbname).block();
-            cosmosAsyncClient.getDatabase(dbname)
+            setupClient.createDatabaseIfNotExists(dbname).block();
+            setupClient.getDatabase(dbname)
                 .createContainerIfNotExists(properties).block();
             CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(dbname)
+                .getContainer(containerName);
+            CosmosAsyncContainer setupContainer = setupClient.getDatabase(dbname)
                 .getContainer(containerName);
 
             TestObject obj = new TestObject(UUID.randomUUID().toString(),
                 "name123",
                 2,
                 UUID.randomUUID().toString());
-            container.createItem(obj).block();
+            setupContainer.createItem(obj).block();
 
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
                 container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
@@ -437,8 +446,9 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 queryItemFaultInjectionRule.disable();
             }
 
-            if (cosmosAsyncClient != null) {
-                cosmosAsyncClient
+            CosmosAsyncClient cleanupClient = setupClient != null ? setupClient : cosmosAsyncClient;
+            if (cleanupClient != null) {
+                cleanupClient
                     .getDatabase(dbname)
                     .delete()
                     .onErrorResume(throwable -> {
@@ -446,6 +456,13 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                         return Mono.empty();
                     })
                     .block();
+            }
+
+            if (setupClient != null) {
+                safeClose(setupClient);
+            }
+
+            if (cosmosAsyncClient != null) {
                 safeClose(cosmosAsyncClient);
             }
         }
