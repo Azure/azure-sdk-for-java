@@ -58,6 +58,7 @@ public class CustomerWorkflowPartitionLevelCircuitBreakerTest extends CustomerWo
             this.container,
             FaultInjectionOperationType.READ_ITEM,
             FaultInjectionServerErrorType.SERVICE_UNAVAILABLE,
+            null,
             1);
 
         try {
