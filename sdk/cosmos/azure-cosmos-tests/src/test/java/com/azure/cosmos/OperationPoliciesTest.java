@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.SuperFlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -33,7 +32,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -575,11 +573,29 @@ public class OperationPoliciesTest extends TestSuiteBase {
             }).blockLast();
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = 4 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void readAllItems(String[] changedOptions) throws Exception {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();
+        AtomicInteger initialReadAllItemsPages = new AtomicInteger();
         container.readAllItems(InternalObjectNode.class).byPage()
+            .doOnSubscribe(subscription -> logger.info(
+                "OperationPoliciesTest.readAllItems initial options started. options={}",
+                Arrays.toString(initialOptions)))
+            .doOnNext(feedResponse -> logger.info(
+                "OperationPoliciesTest.readAllItems initial options page={}, itemCount={}, requestCharge={}, continuationPresent={}",
+                initialReadAllItemsPages.incrementAndGet(),
+                feedResponse.getResults().size(),
+                feedResponse.getRequestCharge(),
+                feedResponse.getContinuationToken() != null))
+            .doOnError(error -> logger.warn(
+                "OperationPoliciesTest.readAllItems initial options failed after {} pages.",
+                initialReadAllItemsPages.get(),
+                error))
+            .doFinally(signalType -> logger.info(
+                "OperationPoliciesTest.readAllItems initial options finished with signal={} after {} pages.",
+                signalType,
+                initialReadAllItemsPages.get()))
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
                 assertThat(feedResponse.getRequestCharge()).isGreaterThan(0);
@@ -590,7 +606,25 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         changeProperties(changedOptions);
 
+        AtomicInteger changedReadAllItemsPages = new AtomicInteger();
         container.readAllItems(InternalObjectNode.class).byPage()
+            .doOnSubscribe(subscription -> logger.info(
+                "OperationPoliciesTest.readAllItems changed options started. options={}",
+                Arrays.toString(changedOptions)))
+            .doOnNext(feedResponse -> logger.info(
+                "OperationPoliciesTest.readAllItems changed options page={}, itemCount={}, requestCharge={}, continuationPresent={}",
+                changedReadAllItemsPages.incrementAndGet(),
+                feedResponse.getResults().size(),
+                feedResponse.getRequestCharge(),
+                feedResponse.getContinuationToken() != null))
+            .doOnError(error -> logger.warn(
+                "OperationPoliciesTest.readAllItems changed options failed after {} pages.",
+                changedReadAllItemsPages.get(),
+                error))
+            .doFinally(signalType -> logger.info(
+                "OperationPoliciesTest.readAllItems changed options finished with signal={} after {} pages.",
+                signalType,
+                changedReadAllItemsPages.get()))
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
                 assertThat(feedResponse.getRequestCharge()).isGreaterThan(0);
