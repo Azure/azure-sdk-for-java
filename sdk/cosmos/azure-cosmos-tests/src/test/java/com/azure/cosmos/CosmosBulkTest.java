@@ -4,11 +4,14 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -20,6 +23,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -530,9 +534,18 @@ public class CosmosBulkTest  extends BatchTestBase {
     public void bulkSessionTokenTest() {
         this.createJsonTestDocs(bulkContainer);
 
+        String secondWriteRegion = getSecondWriteRegionName();
+        CosmosItemRequestOptions baselineReadOptions = new CosmosItemRequestOptions();
+        CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+        if (secondWriteRegion != null) {
+            baselineReadOptions.setExcludedRegions(Collections.singletonList(secondWriteRegion));
+            bulkExecutionOptions.setExcludedRegions(Collections.singletonList(secondWriteRegion));
+        }
+
         CosmosItemResponse<TestDoc> readResponse = bulkContainer.readItem(
             this.TestDocPk1ExistingC.getId(),
             this.getPartitionKey(this.partitionKey1),
+            baselineReadOptions,
             TestDoc.class);
 
         assertThat(readResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
@@ -554,25 +567,56 @@ public class CosmosBulkTest  extends BatchTestBase {
         operations.add(
             CosmosBulkOperations.getDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
 
-        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = Lists.newArrayList(bulkContainer.executeBulkOperations(operations));
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = Lists.newArrayList(
+            bulkContainer.executeBulkOperations(operations, bulkExecutionOptions));
 
         assertThat(bulkResponses.size()).isEqualTo(operations.size());
 
         assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(this.getSessionToken((bulkResponses.get(0).getResponse().getSessionToken())).getLSN())
-            .isGreaterThan(sessionToken.getLSN());
+        assertSessionTokenAdvanced(bulkResponses.get(0), sessionToken, "create");
 
         assertThat(bulkResponses.get(1).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(this.getSessionToken((bulkResponses.get(1).getResponse().getSessionToken())).getLSN())
-            .isGreaterThan(sessionToken.getLSN());
+        assertSessionTokenAdvanced(bulkResponses.get(1), sessionToken, "replace");
 
         assertThat(bulkResponses.get(2).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(this.getSessionToken((bulkResponses.get(2).getResponse().getSessionToken())).getLSN())
-            .isGreaterThan(sessionToken.getLSN());
+        assertSessionTokenAdvanced(bulkResponses.get(2), sessionToken, "upsert");
 
         assertThat(bulkResponses.get(3).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
-        assertThat(this.getSessionToken((bulkResponses.get(2).getResponse().getSessionToken())).getLSN())
-            .isGreaterThan(sessionToken.getLSN());
+        assertSessionTokenAdvanced(bulkResponses.get(3), sessionToken, "delete");
+    }
+
+    private void assertSessionTokenAdvanced(
+        com.azure.cosmos.models.CosmosBulkOperationResponse<Object> bulkResponse,
+        ISessionToken originalSessionToken,
+        String operationName) {
+
+        long originalLsn = originalSessionToken.getLSN();
+        String responseSessionToken = bulkResponse.getResponse().getSessionToken();
+        assertThat(responseSessionToken).isNotNull();
+
+        long responseLsn = this.getSessionToken(responseSessionToken).getLSN();
+        assertThat(responseLsn)
+            .as("%s bulk operation response session token LSN should advance", operationName)
+            .isGreaterThan(originalLsn);
+    }
+
+    private String getSecondWriteRegionName() {
+        DatabaseAccount databaseAccount = bulkClient.asyncClient()
+            .getContextClient()
+            .getGlobalEndpointManager()
+            .getLatestDatabaseAccount();
+
+        assertThat(databaseAccount).isNotNull();
+        int writeRegionIndex = 0;
+        for (DatabaseAccountLocation location : databaseAccount.getWritableLocations()) {
+            if (writeRegionIndex == 1) {
+                return location.getName();
+            }
+
+            writeRegionIndex++;
+        }
+
+        return null;
     }
 
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
