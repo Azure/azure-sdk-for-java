@@ -382,10 +382,23 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 UUID.randomUUID().toString());
             setupContainer.createItem(obj).block();
 
-            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
-                container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
+            CosmosItemRequestOptions e2eDisabledItemRequestOptions = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .enable(false)
+                        .build());
 
-            // Should read item properly before injecting failure
+            CosmosQueryRequestOptions e2eDisabledQueryRequestOptions = new CosmosQueryRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .enable(false)
+                        .build());
+
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+                container.readItem(obj.id, new PartitionKey(obj.mypk), e2eDisabledItemRequestOptions, TestObject.class);
+
+            // Warm up and verify the item exists before injecting failure. This setup read should not be constrained
+            // by the intentionally tiny client-level E2E timeout.
             StepVerifier.create(cosmosItemResponseMono)
                 .expectNextCount(1)
                 .expectComplete()
@@ -394,14 +407,16 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             readItemFaultInjectionRule = injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
 
             // Should timeout after injected delay
+            cosmosItemResponseMono = container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
             verifyExpectError(cosmosItemResponseMono);
 
             String queryText = "select top 1 * from c";
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-            CosmosPagedFlux<TestObject> queryPagedFlux = container.queryItems(sqlQuerySpec, TestObject.class);
+            CosmosPagedFlux<TestObject> queryPagedFlux = container.queryItems(sqlQuerySpec, e2eDisabledQueryRequestOptions, TestObject.class);
 
-            // Should query item properly before injecting failure
+            // Warm up and verify query works before injecting failure. This setup query can perform metadata and
+            // query-plan work, so it should not be constrained by the intentionally tiny client-level E2E timeout.
             StepVerifier.create(queryPagedFlux)
                 .expectNextCount(1)
                 .expectComplete()
@@ -410,19 +425,15 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             queryItemFaultInjectionRule = injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
 
             // Should timeout after injected delay
+            queryPagedFlux = container.queryItems(sqlQuerySpec, TestObject.class);
             StepVerifier.create(queryPagedFlux)
                 .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException)
                 .verify();
 
             // Enabling at client level and disabling at the read item operation level should not fail the request even
             // with injected delay
-            CosmosItemRequestOptions options = new CosmosItemRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(
-                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
-                        .enable(false)
-                        .build());
             cosmosItemResponseMono =
-                container.readItem(obj.id, new PartitionKey(obj.mypk), options, TestObject.class);
+                container.readItem(obj.id, new PartitionKey(obj.mypk), e2eDisabledItemRequestOptions, TestObject.class);
             StepVerifier.create(cosmosItemResponseMono)
                 .expectNextCount(1)
                 .expectComplete()
@@ -430,12 +441,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
             // Enabling at client level and disabling at the query item operation level should not fail the request even
             // with injected delay
-            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(
-                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
-                        .enable(false)
-                        .build());
-            queryPagedFlux = container.queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class);
+            queryPagedFlux = container.queryItems(sqlQuerySpec, e2eDisabledQueryRequestOptions, TestObject.class);
             StepVerifier.create(queryPagedFlux)
                 .expectNextCount(1)
                 .expectComplete()
