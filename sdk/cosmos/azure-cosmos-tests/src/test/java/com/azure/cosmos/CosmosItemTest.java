@@ -222,6 +222,10 @@ public class CosmosItemTest extends TestSuiteBase {
                 .getDatabase(container.asyncContainer.getDatabase().getId())
                 .getContainer(container.getId());
 
+            containerWithClientLevelThresholds
+                .readItem(id, new PartitionKey(id), ObjectNode.class)
+                .block();
+
             FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder("extremelyLongResponseDelayRead");
             FaultInjectionConditionBuilder conditionBuilder = new FaultInjectionConditionBuilder()
                 .operationType(FaultInjectionOperationType.READ_ITEM);
