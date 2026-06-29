@@ -179,8 +179,14 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
+            CosmosItemRequestOptions setupOptions = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .enable(false)
+                        .build());
+
             TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
-            createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options).block();
+            createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), setupOptions).block();
             rule = injectFailure(createdContainer, FaultInjectionOperationType.REPLACE_ITEM, null);
             inputObject.setName("replaceName");
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
