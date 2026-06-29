@@ -321,7 +321,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
-        return sendFluxInternal(Flux.just(message), null);
+        return sendMessageInternal(message, null);
     }
 
     /**
@@ -346,7 +346,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return sendFluxInternal(Flux.just(message), transactionContext);
+        return sendMessageInternal(message, transactionContext);
     }
 
     /**
@@ -843,6 +843,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     private Mono<Void> sendBatchInternal(ServiceBusMessageBatch batch,
         ServiceBusTransactionContext transactionContext) {
+        return sendBatchInternal(batch, transactionContext, true);
+    }
+
+    private Mono<Void> sendBatchInternal(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext,
+        boolean instrument) {
         if (isDisposed.get()) {
             return monoError(logger,
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessages")));
@@ -884,15 +889,21 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final String message = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
         final Mono<Void> withRetry = withRetry(sendMessage, retryOptions, message).onErrorMap(this::mapError);
+        // The single-message send path (sendMessageInternal) starts the "ServiceBus.send" span itself on the
+        // subscribing thread, so it sends this batch with instrument=false to avoid a duplicate span.
+        if (!instrument) {
+            return withRetry;
+        }
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
 
-    private Mono<Void> sendFluxInternal(Flux<ServiceBusMessage> messages,
-        ServiceBusTransactionContext transactionContext) {
+    private Mono<Void> sendMessageInternal(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger,
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
+
+        final List<ServiceBusMessage> messageList = Collections.singletonList(message);
 
         // Uses getLinkSize() intentionally — this path is for single-message sends only (sendMessage()).
         // Single messages should use the full link capacity (up to 100 MB on Premium large-message),
@@ -903,14 +914,27 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                 final CreateMessageBatchOptions batchOptions
                     = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
-                return messages.collect(
-                    new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
+                return Flux.fromIterable(messageList)
+                    .collect(new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer,
+                        messageSerializer));
             }));
 
-        return batchList.flatMap(list -> Flux.fromIterable(list)
-            .flatMap(batch -> sendBatchInternal(batch, transactionContext))
+        // The raw send pipeline, without span instrumentation. Instrumentation is applied as the
+        // outermost operator below so the span is created on the subscribing thread (instrument=false here).
+        final Mono<Void> send = batchList.flatMap(list -> Flux.fromIterable(list)
+            .flatMap(batch -> sendBatchInternal(batch, transactionContext, false))
             .then()
             .doOnError(error -> logger.error("Error sending batch.", error))).onErrorMap(this::mapError);
+
+        // Start the producer message span and the "ServiceBus.send" span on the subscribing (caller) thread,
+        // BEFORE the first send triggers AMQP connection/link establishment on a background thread. Starting
+        // the spans here ensures the caller's ambient (thread-local) trace context is used as the parent.
+        // Doing this lazily downstream (after the connection thread hop) is what caused the first send to get
+        // a new, disconnected trace id. See https://github.com/Azure/azure-sdk-for-java/issues/44958.
+        return Mono.defer(() -> {
+            tracer.reportMessageSpan(message);
+            return instrumentation.instrumentSendBatch("ServiceBus.send", send, messageList);
+        });
     }
 
     private Mono<AmqpSendLink> getSendLink(String callSite) {
