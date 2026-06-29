@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.Skill;
+import com.azure.ai.projects.models.SkillDetails;
 import com.azure.ai.projects.models.SkillInlineContent;
 import com.azure.ai.projects.models.SkillVersion;
 import com.azure.core.util.Configuration;
@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Sample demonstrating CRUD operations on Skills using the asynchronous SkillsAsyncClient.
+ * Sample demonstrating CRUD operations on Skills using the asynchronous BetaSkillsAsyncClient.
  *
  * <p>Skills are a preview feature. Before running, set the following environment variable:
  * <ul>
@@ -20,11 +20,11 @@ import reactor.core.publisher.Mono;
  */
 public class SkillsAsyncSample {
 
-    private static SkillsAsyncClient skillsAsyncClient
+    private static BetaSkillsAsyncClient skillsAsyncClient
         = new AIProjectClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildSkillsAsyncClient();
+            .beta().buildBetaSkillsAsyncClient();
 
     public static void main(String[] args) {
         // Using block() to wait for the async operations to complete in the sample
@@ -52,7 +52,7 @@ public class SkillsAsyncSample {
         // END:com.azure.ai.projects.SkillsAsyncSample.createSkillVersion
     }
 
-    public static Mono<Skill> getSkill() {
+    public static Mono<SkillDetails> getSkill() {
         // BEGIN:com.azure.ai.projects.SkillsAsyncSample.getSkill
 
         String skillName = "product-support-skill";
@@ -67,7 +67,7 @@ public class SkillsAsyncSample {
         // END:com.azure.ai.projects.SkillsAsyncSample.getSkill
     }
 
-    public static Mono<Skill> updateSkill() {
+    public static Mono<SkillDetails> updateSkill() {
         // BEGIN:com.azure.ai.projects.SkillsAsyncSample.updateSkill
 
         String skillName = "product-support-skill";
@@ -81,7 +81,7 @@ public class SkillsAsyncSample {
         // END:com.azure.ai.projects.SkillsAsyncSample.updateSkill
     }
 
-    public static Flux<Skill> listSkills() {
+    public static Flux<SkillDetails> listSkills() {
         // BEGIN:com.azure.ai.projects.SkillsAsyncSample.listSkills
 
         return skillsAsyncClient.listSkills()

@@ -1,23 +1,19 @@
 <#
 .SYNOPSIS
-Runs code generation for either Swagger or TypeSpec, based on configuration, and compares the generated code against
+Runs code generation for TypeSpec, based on configuration, and compares the generated code against
 the state of the current codebase.
 
 .DESCRIPTION
-Runs code generation for either Swagger or TypeSpec, based on configuration, and compares the generated code against
+Runs code generation for TypeSpec, based on configuration, and compares the generated code against
 the state of the current codebase.
 
 If the regenerated code is different than the current codebase this will report the differences and exit with a failure
 status.
 
 .PARAMETER ServiceDirectories
-The service directories that will be searched for either 'Update-Codegeneration.ps1' or 'tsp-location.yaml' files to
+The service directories that will be searched for 'tsp-location.yaml' files to
 run code regeneration. If this parameter is not specified, the script will not check any directories and will exit
 with a success status.
-
-.PARAMETER RegenerationType
-The type of regeneration to perform. This can be 'All', 'Swagger', or 'TypeSpec'. If not specified, the script will use
-'All' as the default, which means it will run both Swagger and TypeSpec code generation.
 
 .PARAMETER Parallelization
 The number of parallel jobs to run. The default is the number of processors on the machine. If unspecified or
@@ -27,10 +23,6 @@ less than 1, it will default to 1.
 param(
   [Parameter(Mandatory = $false)]
   [string]$ServiceDirectories,
-
-  [Parameter(Mandatory = $false)]
-  [ValidateSet('All', 'Swagger', 'TypeSpec')]
-  [string]$RegenerationType = 'All',
 
   [Parameter(Mandatory = $false)]
   [int]$Parallelization = [Environment]::ProcessorCount
@@ -44,12 +36,12 @@ class GenerationInformation {
   [string]$LibraryFolder
 
   # The path to the script that will perform the code generation.
-  # This can be 'Update-Codegeneration.ps1' for Swagger or 'tsp-location.yaml' for TypeSpec.
+  # This can be 'tsp-location.yaml' for TypeSpec.
   [string]$ScriptPath
 
-  # The type of code generation this script performs, either 'Swagger' or 'TypeSpec'.
+  # The type of code generation this script performs, 'TypeSpec'.
   # This is used to determine actions to take based on the type of code generation.
-  [ValidateSet('Swagger', 'TypeSpec')]
+  [ValidateSet('TypeSpec')]
   [string]$Type
 
   GenerationInformation([string]$libraryFolder, [string]$scriptPath, [string]$type) {
@@ -66,24 +58,16 @@ function Find-GenerationInformation {
   )
 
   $path = Join-Path -Path $sdkFolder $LibraryFolder
-  if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
-    # Search for 'Update-Codegeneration.ps1' script in the specified service directory.
-    Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse | ForEach-Object {
-      $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'Swagger')) | Out-Null
-    }
+
+  if ($LibraryFolder.Contains("-v2")) {
+    # Skip v2 libraries for TypeSpec regeneration as they are not supported.
+    Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
+    return
   }
 
-  if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-    if ($LibraryFolder.Contains("-v2")) {
-      # Skip v2 libraries for TypeSpec regeneration as they are not supported.
-      Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
-      return
-    }
-
-    # Search for 'tsp-location.yaml' script in the specified service directory.
-    Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
-      $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
-    }
+  # Search for 'tsp-location.yaml' script in the specified service directory.
+  Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
+    $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
   }
 }
 
@@ -100,8 +84,8 @@ if ($Parallelization -lt 1) {
 
 # Normalize, deduplicate, and sort ServiceDirectories so top-level services are processed
 # before specific libraries. This prevents duplicate work when both are provided.
-# Then search for 'Update-Codegeneration.ps1' or 'tsp-location.yaml' scripts in those directories,
-# based on RegenerationType, and store the results in a list of GenerationInformation objects.
+# Then search for 'tsp-location.yaml' files in those directories and store the results in a
+# list of GenerationInformation objects.
 $generationInformations = New-Object 'Collections.ArrayList'
 $orderedServiceDirectories = $ServiceDirectories.Split(',') |
   ForEach-Object { $_.Trim().Trim('/') } |
@@ -139,54 +123,21 @@ foreach ($serviceDirectory in $orderedServiceDirectories) {
 }
 
 if ($generationInformations.Count -eq 0) {
-  $kind = $RegenerationType -eq 'All' ? 'Swagger or TypeSpec' : $RegenerationType
-  Write-Host "No $kind generation files to regenerate in directories: $ServiceDirectories."
+  Write-Host "No TypeSpec generation files to regenerate in directories: $ServiceDirectories."
   exit 0
 }
 
-if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
-  # Ensure Autorest is installed.
-  $output = (& npm install -g autorest 2>&1)
-  if ($LASTEXITCODE -ne 0) {
-    Write-Error "Failed to install Autorest for Swagger regeneration.`n$output"
-    exit 1
-  }
-}
-
-if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-  $output = (& npm --prefix "$tspClientFolder" ci 2>&1)
-  if ($LASTEXITCODE -ne 0) {
-    Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
-    exit 1
-  }
+$output = (& npm --prefix "$tspClientFolder" ci 2>&1)
+if ($LASTEXITCODE -ne 0) {
+  Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
+  exit 1
 }
 
 $generateScript = {
   $separatorBar = "======================================"
   $directory = $_.LibraryFolder
-  $updateCodegenScript = $_.ScriptPath
-
-  if ($_.Type -eq 'Swagger') {
-    # 6>&1 redirects Write-Host calls in the script to the output stream, so we can capture it.
-    # 2>&1 redirects stderr to stdout to suppress autorest deprecation messages that would fail the pipeline.
-    $generateOutput = (& $updateCodegenScript 2>&1 6>&1)
-
-    if ($LastExitCode -ne 0) {
-      Write-Host "$separatorBar`nError running Swagger regeneration $updateCodegenScript`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
-      throw
-    } else {
-      # prevent warning related to EOL differences which triggers an exception for some reason
-      (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java") | Out-Null
-
-      if ($LastExitCode -ne 0) {
-        $status = (git status -s "$directory" | Out-String)
-        Write-Host "$separatorBar`nThe following Swagger generated files in directoy $directory are out of date`n$status`n$separatorBar"
-        throw
-      } else {
-        Write-Host "$separatorBar`nSuccessfully ran Swagger regneration with no diff $updateCodegenScript`n$separatorBar"
-      }
-    }
-  } elseif ($_.Type -eq 'TypeSpec') {
+  
+  if ($_.Type -eq 'TypeSpec') {
     Push-Location $directory
     try {
       try {
@@ -220,8 +171,7 @@ $generateScript = {
     }
 
     # prevent warning related to EOL differences which triggers an exception for some reason
-    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":
-  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
+    (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)

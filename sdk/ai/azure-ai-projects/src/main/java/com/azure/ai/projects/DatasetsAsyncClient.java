@@ -60,7 +60,9 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get dataset credentials
+     *
+     * Gets the SAS credential to access the storage account associated with a Dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -85,7 +87,9 @@ public final class DatasetsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with a Dataset version along with
+     * @return dataset credentials
+     *
+     * Gets the SAS credential to access the storage account associated with a Dataset version along with
      * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -96,7 +100,9 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get dataset credentials
+     *
+     * Gets the SAS credential to access the storage account associated with a Dataset version.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
@@ -106,8 +112,10 @@ public final class DatasetsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS credential to access the storage account associated with a Dataset version on successful
-     * completion of {@link Mono}.
+     * @return dataset credentials
+     *
+     * Gets the SAS credential to access the storage account associated with a Dataset version on successful completion
+     * of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -331,7 +339,9 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * Start a pending upload
+     *
+     * Initiates a new pending upload or retrieves an existing one for the specified dataset version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -383,7 +393,9 @@ public final class DatasetsAsyncClient {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * Start a pending upload
+     *
+     * Initiates a new pending upload or retrieves an existing one for the specified dataset version.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to operate on.
@@ -408,6 +420,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * Get a version
+     *
      * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
      * does not exist.
      * <p><strong>Response Body Schema</strong></p>
@@ -437,7 +451,9 @@ public final class DatasetsAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response} on successful completion of
+     * @return a version
+     *
+     * Get the specific version of the DatasetVersion along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
@@ -448,6 +464,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * Get a version
+     *
      * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
      * does not exist.
      *
@@ -459,7 +477,9 @@ public final class DatasetsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the DatasetVersion on successful completion of {@link Mono}.
+     * @return a version
+     *
+     * Get the specific version of the DatasetVersion on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -471,6 +491,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -507,6 +529,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -542,6 +566,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * Delete a version
+     *
      * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
      * deleted successfully or if the DatasetVersion does not exist.
      *
@@ -562,6 +588,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * Create or update a version
+     *
      * Create a new or update an existing DatasetVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -622,6 +650,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given DatasetVersion.
      *
      * @param name The name of the resource.
@@ -654,6 +684,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each DatasetVersion.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -684,6 +716,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * Delete a version
+     *
      * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
      * deleted successfully or if the DatasetVersion does not exist.
      *
@@ -706,6 +740,8 @@ public final class DatasetsAsyncClient {
     }
 
     /**
+     * Create or update a version
+     *
      * Create a new or update an existing DatasetVersion with the given version id.
      *
      * @param name The name of the resource.

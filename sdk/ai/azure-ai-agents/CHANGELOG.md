@@ -4,9 +4,17 @@
 
 ### Features Added
 
+- Added protocol-style `listOptimizationCandidates(String, com.azure.core.http.rest.RequestOptions)` overloads on `AgentsClient` and `AgentsAsyncClient` for listing raw optimization candidate pages as `BinaryData`.
+
 ### Breaking Changes
 
+- Preview operation groups now use beta-prefixed clients built through `AgentsClientBuilder.beta()`: `MemoryStoresClient` / `MemoryStoresAsyncClient` renamed to `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient`, `ToolboxesClient` / `ToolboxesAsyncClient` renamed to `BetaToolboxesClient` / `BetaToolboxesAsyncClient`, and preview agent/session operations moved to `BetaAgentsClient` / `BetaAgentsAsyncClient`. `AgentSessionFilesClient` / `AgentSessionFilesAsyncClient` were removed; use the session-file methods on `BetaAgentsClient` / `BetaAgentsAsyncClient` instead.
+- `listOptimizationCandidates` on `AgentsClient` and `AgentsAsyncClient` now returns paged optimization candidates (`PagedIterable<OptimizationCandidate>` / `PagedFlux<OptimizationCandidate>`) instead of `OptimizationCandidatePagedResult` / `Mono<OptimizationCandidatePagedResult>`. The `OptimizationCandidatePagedResult` model was removed. The protocol methods where adjusted accordingly.
+
 ### Bugs Fixed
+
+- Fixed the agent-scoped OpenAI client returned by `AgentsClientBuilder.buildAgentScopedOpenAIClient` and `buildAgentScopedOpenAIAsyncClient` so requests to a hosted-agent endpoint target the correct URL. Previously the request path was duplicated (`.../protocols/openai/openai/responses`) and used an unsupported default `api-version`, causing `400` errors when invoking the OpenAI Responses API or streaming session logs through an agent endpoint. The client now uses the unified Azure URL path mode and sends `api-version=v1`.
+- Fixed OpenAI and Responses clients built from `AgentsClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
 
 ### Other Changes
 

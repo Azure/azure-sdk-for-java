@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
+import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.ResilientVMDeletionStatus;
@@ -147,6 +148,11 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * only applicable to Virtual Machine Scale Sets with Flexible orchestration mode. Minimum api-version: 2025-11-01.
      */
     private String virtualMachineResourceId;
+
+    /*
+     * Specifies the Interconnect Block related details of a Scale Set VM instance. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectBlockProfile interconnectBlockProfile;
 
     /**
      * Creates an instance of VirtualMachineScaleSetVMPropertiesInner class.
@@ -522,6 +528,29 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     }
 
     /**
+     * Get the interconnectBlockProfile property: Specifies the Interconnect Block related details of a Scale Set VM
+     * instance. Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectBlockProfile value.
+     */
+    public InterconnectBlockProfile interconnectBlockProfile() {
+        return this.interconnectBlockProfile;
+    }
+
+    /**
+     * Set the interconnectBlockProfile property: Specifies the Interconnect Block related details of a Scale Set VM
+     * instance. Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectBlockProfile the interconnectBlockProfile value to set.
+     * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
+     */
+    public VirtualMachineScaleSetVMPropertiesInner
+        withInterconnectBlockProfile(InterconnectBlockProfile interconnectBlockProfile) {
+        this.interconnectBlockProfile = interconnectBlockProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -557,6 +586,9 @@ public final class VirtualMachineScaleSetVMPropertiesInner
         if (protectionPolicy() != null) {
             protectionPolicy().validate();
         }
+        if (interconnectBlockProfile() != null) {
+            interconnectBlockProfile().validate();
+        }
     }
 
     /**
@@ -579,6 +611,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner
         jsonWriter.writeStringField("licenseType", this.licenseType);
         jsonWriter.writeJsonField("protectionPolicy", this.protectionPolicy);
         jsonWriter.writeStringField("userData", this.userData);
+        jsonWriter.writeJsonField("interconnectBlockProfile", this.interconnectBlockProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -650,6 +683,9 @@ public final class VirtualMachineScaleSetVMPropertiesInner
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("virtualMachineResourceId".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMPropertiesInner.virtualMachineResourceId = reader.getString();
+                } else if ("interconnectBlockProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.interconnectBlockProfile
+                        = InterconnectBlockProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

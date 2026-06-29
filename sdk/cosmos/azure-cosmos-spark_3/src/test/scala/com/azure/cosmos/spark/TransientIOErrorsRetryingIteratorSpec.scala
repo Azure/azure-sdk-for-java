@@ -4,6 +4,9 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.SparkRowItem
+import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedStateV1}
+import com.azure.cosmos.implementation.feedranges.{FeedRangeContinuation, FeedRangeEpkImpl}
+import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.models.{FeedResponse, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.UtilBridgeInternal
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.publisher.Flux
 
 import java.time.Duration
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
@@ -178,6 +182,89 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     iterator.close()
 
     factoryCallCount.get shouldEqual 1
+  }
+
+  "Bounded change feed read" should "throw IllegalStateException when paginator stops before reaching endLsn" in {
+    val containerRid = "testContainerRid"
+    val midLsn = 15L
+    val boundLsn = 20L
+    val continuationToken = buildChangeFeedStateJson(containerRid, midLsn)
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => buildSinglePageFluxWithContinuation(continuationToken),
+      pageSize,
+      1,
+      None,
+      Some(boundLsn)
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    val ex = intercept[IllegalStateException] {
+      iterator.count(_ => true)
+    }
+    ex.getMessage should include (s"endLsn=$boundLsn")
+    ex.getMessage should include (s"continuation=$midLsn")
+      .or(include(s"LSN in latest continuation=$midLsn"))
+  }
+
+  "Bounded change feed read" should "complete normally when continuation has reached endLsn" in {
+    val containerRid = "testContainerRid"
+    val boundLsn = 20L
+    val continuationToken = buildChangeFeedStateJson(containerRid, boundLsn)
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => buildSinglePageFluxWithContinuation(continuationToken),
+      pageSize,
+      1,
+      None,
+      Some(boundLsn)
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    // Drain the iterator - should not throw
+    noException should be thrownBy iterator.count(_ => true)
+  }
+
+  "Bounded change feed read" should "throw IllegalStateException when no continuation is produced" in {
+    val boundLsn = 20L
+
+    val iterator = new TransientIOErrorsRetryingIterator(
+      _ => UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.empty[FeedResponse[SparkRowItem]]()),
+      pageSize,
+      1,
+      None,
+      Some(boundLsn)
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    val ex = intercept[IllegalStateException] {
+      iterator.count(_ => true)
+    }
+    ex.getMessage should include (s"endLsn=$boundLsn")
+    ex.getMessage should include ("no continuation was produced")
+  }
+
+  private def buildChangeFeedStateJson(containerRid: String, lsn: Long): String = {
+    val fullRange = FeedRangeEpkImpl.forFullRange()
+    val continuation = FeedRangeContinuation.create(
+      containerRid,
+      fullRange,
+      Collections.singletonList(
+        new CompositeContinuationToken("\"" + lsn + "\"", fullRange.getRange)))
+    new ChangeFeedStateV1(
+      containerRid,
+      fullRange,
+      ChangeFeedMode.INCREMENTAL,
+      ChangeFeedStartFromInternal.createFromBeginning(),
+      continuation).toString
+  }
+
+  private def buildSinglePageFluxWithContinuation(continuationToken: String) = {
+    val response = ModelBridgeInternal.createFeedResponse(
+      Collections.emptyList[SparkRowItem](),
+      new ConcurrentHashMap[String, String]())
+    ModelBridgeInternal.setFeedResponseContinuationToken(continuationToken, response)
+    UtilBridgeInternal.createCosmosPagedFlux(_ => Flux.fromArray(Array(response)))
   }
 
   "TransientIOErrors" should "drain long runs of empty pages without hitting the end-to-end timeout" in {

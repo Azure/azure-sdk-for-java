@@ -26,46 +26,45 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-webmvc</artifactId>
-      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
+      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-bus</artifactId>
-      <version>5.0.1</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+      <version>5.0.2</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.0.6</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
-    <!-- Add mockito-core 4.11.0 to work with Java 21 -->
+    <!-- Mockito dependency to work with Java 21. -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.20.0</version> <!-- {x-version-update;springboot4_org.mockito:mockito-core;external_dependency} -->
+      <version>5.23.0</version> <!-- {x-version-update;springboot4_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
+    <!-- byte-buddy dependencies are required for Mockito to work with Java 21. -->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.10</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -74,7 +73,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.15.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
@@ -113,14 +112,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[4.0.6]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-webmvc:[4.0.6]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-bus:[5.0.1]</include> <!-- {x-include-update;springboot4_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-webmvc:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter-webmvc;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-bus:[5.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -129,7 +128,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

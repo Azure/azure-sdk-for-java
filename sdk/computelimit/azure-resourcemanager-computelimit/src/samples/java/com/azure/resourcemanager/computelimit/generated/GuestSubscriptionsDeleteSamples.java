@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class GuestSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/GuestSubscriptions_Delete.json
+     * x-ms-original-file: 2026-07-01/GuestSubscriptions_Delete.json
      */
     /**
      * Sample code: Delete a guest subscription.

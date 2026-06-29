@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+     * x-ms-original-file: 2026-04-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration with Maintenance Window.

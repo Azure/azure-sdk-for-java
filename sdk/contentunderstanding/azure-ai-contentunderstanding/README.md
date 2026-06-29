@@ -15,6 +15,32 @@ If you have encountered issues or want to suggest features, please [file an issu
 
 [Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_docs] | [Product documentation][product_docs]
 
+## Table of Contents
+
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Configuring Microsoft Foundry resource](#configuring-microsoft-foundry-resource)
+  - [Adding the package to your product](#adding-the-package-to-your-product)
+  - [Authenticate the client](#authenticate-the-client)
+- [Key concepts](#key-concepts)
+  - [Prebuilt analyzers](#prebuilt-analyzers)
+  - [Content types](#content-types)
+  - [Asynchronous operations](#asynchronous-operations)
+  - [Main classes](#main-classes)
+  - [Thread safety](#thread-safety)
+  - [Additional concepts](#additional-concepts)
+- [Examples](#examples)
+  - [Running samples](#running-samples)
+- [Troubleshooting](#troubleshooting)
+  - [Common issues](#common-issues)
+  - [Enable logging](#enable-logging)
+- [GitHub Copilot Skills](#github-copilot-skills)
+  - [Available Skills](#available-skills)
+  - [Using Skills in VS Code](#using-skills-in-vs-code)
+  - [Troubleshooting Skill Selection](#troubleshooting-skill-selection)
+- [Next steps](#next-steps)
+- [Contributing](#contributing)
+
 ## Getting started
 
 ### Prerequisites
@@ -129,7 +155,7 @@ To run the configuration sample, you'll need to add the SDK to your project and 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentunderstanding</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.2</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
@@ -165,7 +191,7 @@ If you encounter errors:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentunderstanding</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -439,7 +465,7 @@ fields:
     figure illustrating monthly values, and describes the AI Document
     Intelligence service...
 ---
-<!-- page 1 -->
+<!-- InputPageNumber: 1 -->
 # ==This is title==
 ## 1. Text
 [Latin](https://en.wikipedia.org/wiki/Latin) refers to an ancient Italic language...
@@ -450,6 +476,45 @@ fields:
 ![Values...](figures/1.1 "Bar chart with six bars: Jan=200, Feb=300...")
 ...
 ```
+
+> **About `<!-- InputPageNumber: N -->`**
+>
+> The helper emits `<!-- InputPageNumber: N -->` markers at page boundaries in
+> the markdown body. `N` is the **original 1-based page number from the source
+> document** (i.e., the page index in the analyzed PDF), not a counter that
+> restarts at 1 for each call. Downstream consumers (RAG indexers, page-citation
+> prompts) can rely on the marker value to cite the correct source page even
+> when only a subset of pages was analyzed.
+>
+> **Why this matters when a page range is specified**
+>
+> Use `ContentRange` on the analyze input to analyze only a subset of pages in
+> a multi-page document. The markers in the rendered output preserve the
+> original page identity:
+>
+> ```java
+> // Analyze pages 2-3 and page 5 of a 10-page PDF.
+> SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
+>     = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch",
+>         Arrays.asList(new AnalysisInput()
+>             .setUrl(multiPageUrl)
+>             .setContentRange(new ContentRange("2-3,5"))));
+>
+> AnalysisResult result = poller.getFinalResult();
+> String text = LlmInputHelper.toLlmInput(result);
+> // Output contains markers for the *original* page numbers, not 1, 2, 3:
+> //   pages: 2-3, 5
+> //   ...
+> //   <!-- InputPageNumber: 2 -->
+> //   ...page 2 content...
+> //   <!-- InputPageNumber: 3 -->
+> //   ...page 3 content...
+> //   <!-- InputPageNumber: 5 -->
+> //   ...page 5 content...
+> ```
+>
+> An LLM or RAG indexer can therefore cite "see page 5" with the correct page
+> number, even though page 5 is the *third* segment in the response.
 
 See the [advanced sample][java_cu_sample_to_llm_input] for output options (fields-only,
 markdown-only, custom metadata), multi-page content ranges, and multi-segment video.
@@ -487,8 +552,43 @@ ContentUnderstandingClient client = new ContentUnderstandingClientBuilder()
 
 For more information, see [Azure SDK for Java logging][logging].
 
+## GitHub Copilot Skills
+
+This package includes [GitHub Copilot][github_copilot] skills under `.github/skills/` that provide interactive, AI-assisted workflows for common tasks. In VS Code, Copilot can use these skills to help with environment setup, running samples, and understanding the service.
+
+### Available Skills
+
+| Skill | Description | How to Use |
+|-------|-------------|------------|
+| [**cu-sdk-setup**][cu_sdk_setup_skill] | Interactive environment setup — creates and configures your `.env` file with endpoint, credentials, and model deployment settings | In VS Code Copilot Chat, ask: *"Set up my Java environment for Content Understanding"* or reference the skill directly |
+| [**cu-sdk-sample-run**][cu_sdk_sample_run_skill] | Guided sample runner — helps you build the SDK, configure credentials, and run specific samples with Maven | Ask: *"Run Sample02_AnalyzeUrl"* or *"Run the invoice analysis sample"* |
+| [**cu-sdk-common-knowledge**][cu_sdk_common_knowledge_skill] | Domain knowledge reference — answers questions about Content Understanding concepts, analyzers, field schemas, API operations, and Java SDK usage | Ask: *"What prebuilt analyzers are available?"* or *"How do I create a custom analyzer?"* |
+
+### Using Skills in VS Code
+
+1. In VS Code, open the package folder `sdk/contentunderstanding/azure-ai-contentunderstanding` (File → Open Folder). This is required for VS Code to discover the skills in `.github/skills/`.
+2. Ensure [GitHub Copilot][github_copilot] is installed and activated
+3. Open Copilot Chat from the Chat view or Command Palette
+4. Ask a question related to Content Understanding; Copilot can use the relevant skill when appropriate
+
+**Example prompts:**
+- *"Set up my Content Understanding environment"* → likely uses `cu-sdk-setup`
+- *"Run Sample03_AnalyzeInvoice"* → likely uses `cu-sdk-sample-run`
+- *"Explain how custom analyzers work"* → likely uses `cu-sdk-common-knowledge`
+
+### Troubleshooting Skill Selection
+
+If Copilot does not use the expected skill, try the following:
+
+1. Be explicit about intent and context in one prompt (for example: *"Use cu-sdk-sample-run to run Sample01_AnalyzeBinary"*).
+2. Include your goal and current state (for example: *"My .env is configured; help me run Sample02_AnalyzeUrl"*).
+3. Ask for a step-by-step interactive flow when needed (for example: *"Guide me step by step to set up my environment"*).
+4. For build or runtime errors, mention the exact error text so Copilot can apply the right troubleshooting path.
+
 ## Next steps
 
+* [Sample 00: Configure model deployment defaults][sample00] - Required one-time setup to configure model deployments for prebuilt and custom analyzers
+* [Sample 01: Analyze a document from binary data][sample01] - Analyze PDF files from disk using `prebuilt-documentSearch`
 * Explore the [samples directory][samples_directory] for complete code examples
 * Read the [Azure AI Content Understanding documentation][product_docs] for detailed service information
 
@@ -518,8 +618,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
+[sample00]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
+[sample01]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample01_AnalyzeBinary.java
 [sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
-[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
+[logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [java_cu_sample_to_llm_input]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java
 [azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
 [azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
@@ -529,4 +631,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [opencode_email]: mailto:opencode@microsoft.com
+[github_copilot]: https://github.com/features/copilot
+[cu_sdk_setup_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-setup
+[cu_sdk_sample_run_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-sample-run
+[cu_sdk_common_knowledge_skill]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/cu-sdk-common-knowledge
 [file_issue]: https://github.com/Azure/azure-sdk-for-java/issues/new?labels=Cognitive%20-%20Content%20Understanding&title=[ContentUnderstanding]%20&body=%23%23%20Library%20Version%0A%0A%23%23%20Repro%20Steps%0A%0A%23%23%20Expected%20Result%0A%0A%23%23%20Actual%20Result

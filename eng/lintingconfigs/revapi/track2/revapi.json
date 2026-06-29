@@ -10,6 +10,16 @@
     }
   },
   {
+    "extension": "revapi.java.filter.annotated",
+    "configuration": {
+      "exclude": [
+        "@com.azure.ai.projects.implementation.utils.Beta",
+        "@com.azure.ai.agents.implementation.utils.Beta"
+
+      ]
+    }
+  },
+  {
     "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
@@ -368,6 +378,12 @@
           "old" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===org.springframework.util.concurrent.ListenableFutureCallback<java.lang.Void>===)",
           "new" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===java.util.function.BiConsumer<java.lang.Void, java.lang.Throwable>===)",
           "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.field.typeChanged",
+          "old" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.OBJECT_MAPPER",
+          "new" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.OBJECT_MAPPER",
+          "justification" : "Jackson 2 to Jackson 3 migration to align with Spring Boot 4: the field type changed from com.fasterxml.jackson.databind.ObjectMapper to tools.jackson.databind.ObjectMapper. This is an intentional breaking change for these beta Spring libraries (see issue 49538)."
         },
         {
           "code": "java.method.numberOfParametersChanged",
@@ -1882,45 +1898,52 @@
         },
         {
           "ignore": true,
-          "code" : "java.method.visibilityIncreased",
-          "old" : "method void com.azure.ai.agents.models.ChatSummaryMemoryItem::<init>(java.lang.String, java.time.OffsetDateTime, java.lang.String, java.lang.String)",
-          "justification": "Non-breaking change: constructor visibility increased on classes in ai agents beta operations."
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.AgentsPagedResultOptimizationCandidate",
+          "justification": "Fixed issue with spec causing bad generation of pageable model. This class is no longer needed."
         },
         {
           "ignore": true,
-          "code": "java.method.numberOfParametersChanged",
-          "old": "method void com.azure.ai.agents.models.HostedAgentDefinition::<init>(java.util.List<com.azure.ai.agents.models.ProtocolVersionRecord>, java.lang.String, java.lang.String)",
-          "justification": "Breaking change in beta operation: HostedAgentDefinition constructor parameters changed as containerProtocolVersions was removed from the model."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method java.util.List<com.azure.ai.agents.models.ProtocolVersionRecord> com.azure.ai.agents.models.HostedAgentDefinition::getContainerProtocolVersions()",
-          "justification": "Breaking change in beta operation: containerProtocolVersions property removed from HostedAgentDefinition."
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.DeleteMemoryResponse",
+          "justification": "Beta operation assocatied change."
         },
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.ai.agents.models.HostedAgentDefinition::getImage()",
-          "justification": "Breaking change in beta operation: image property removed from HostedAgentDefinition."
+          "old": "method java.lang.String com.azure.ai.agents.models.OptimizationCandidate::getEvalId()",
+          "justification": "Beta operation assocatied change."
         },
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": "method com.azure.ai.agents.models.HostedAgentDefinition com.azure.ai.agents.models.HostedAgentDefinition::setImage(java.lang.String)",
-          "justification": "Breaking change in beta operation: image property removed from HostedAgentDefinition."
+          "old": "method java.lang.String com.azure.ai.agents.models.OptimizationCandidate::getEvalRunId()",
+          "justification": "Beta operation assocatied change."
         },
         {
           "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method void com.azure.ai.agents.models.MemoryItem::<init>(java.lang.String, java.time.OffsetDateTime, java.lang.String, java.lang.String)",
-          "justification": "Non-breaking change: constructor visibility increased on classes in ai agents beta operations."
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.azure.ai.agents.models.OptimizationTaskResult::getTokens()",
+          "new": "method long com.azure.ai.agents.models.OptimizationTaskResult::getTokens()",
+          "justification": "Beta operation assocatied change."
         },
         {
           "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old": "method void com.azure.ai.agents.models.UserProfileMemoryItem::<init>(java.lang.String, java.time.OffsetDateTime, java.lang.String, java.lang.String)",
-          "justification": "Non-breaking change: constructor visibility increased on classes in ai agents beta operations."
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.PromoteCandidateRequest",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.PromoteCandidateResponse",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.SessionFileWriteResponse",
+          "justification": "Beta operation assocatied change."
         },
         {
           "ignore": true,
@@ -1963,6 +1986,163 @@
           "code": "java.method.returnTypeChanged",
           "old": "method double com.azure.ai.projects.models.ModelSamplingParams::getTopP()",
           "justification": "Breaking change in beta operation: return type changed from primitive double to boxed Double to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter void com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::<init>(===java.util.List<com.azure.ai.projects.models.FilesFileDetails>===)",
+          "new": "parameter void com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::<init>(===java.util.List<com.azure.ai.projects.models.SkillFileDetails>===)",
+          "parameterIndex": "0",
+          "justification": "Breaking change in beta operations."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old": "method java.util.List<com.azure.ai.projects.models.FilesFileDetails> com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::getFiles()",
+          "new": "method java.util.List<com.azure.ai.projects.models.SkillFileDetails> com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::getFiles()",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.DispatchRoutineResponse",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.EvaluatorCredentialRequest",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.FilesFileDetails",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelCredentialRequest",
+          "justification": "ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelPendingUploadRequest",
+          "justification": "Breaking change in beta operation."
+
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelPendingUploadResponse",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.UpdateModelVersionRequest",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.ai\\.agents\\.(AgentSessionFiles|MemoryStores|Toolboxes)(Async)?Client"
+          },
+          "justification": "Beta operations were moved out of the main agents client into dedicated beta clients: the AgentSessionFiles, MemoryStores and Toolboxes sub-clients are removed and their operations now live on BetaAgentsClient/BetaAgentsAsyncClient, BetaMemoryStoresClient/BetaMemoryStoresAsyncClient and BetaToolboxesClient/BetaToolboxesAsyncClient."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method com\\.azure\\.ai\\.agents\\.(AgentSessionFiles|MemoryStores|Toolboxes)(Async)?Client com\\.azure\\.ai\\.agents\\.AgentsClientBuilder::build(AgentSessionFiles|MemoryStores|Toolboxes)(Async)?Client\\(\\)"
+          },
+          "justification": "Beta operations were moved into dedicated beta clients: the AgentsClientBuilder factory methods for the AgentSessionFiles, MemoryStores and Toolboxes sub-clients are removed and replaced by buildBetaAgentsClient/buildBetaMemoryStoresClient/buildBetaToolboxesClient (and their async variants)."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::(createSession|getSession|listSessions|deleteSession|stopSession|getSessionLogStream|cancelOptimizationJob|createOptimizationJob|deleteOptimizationJob|getOptimizationJob|listOptimizationJobs|getOptimizationCandidate|listOptimizationCandidates|promoteOptimizationCandidate|createAgentVersionFromCode|updateAgentDetails|updateAgentFromCode|downloadAgentCode)\\w*\\(.*\\)"
+          },
+          "justification": "Beta operations were moved out of AgentsClient/AgentsAsyncClient into the dedicated beta clients: session, optimization-job/candidate and agent-version/code operations were removed from the main client and now live on BetaAgentsClient/BetaAgentsAsyncClient."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::createAgentVersion\\(.*\\)"
+          },
+          "justification": "Breaking change in beta operation: createAgentVersion is retained on AgentsClient/AgentsAsyncClient but the AgentDefinitionOptInKeys parameter was dropped from its signature. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::createAgentVersion\\(.*\\)"
+          },
+          "justification": "Breaking change in beta operation: the createAgentVersion overload taking AgentDefinitionOptInKeys (and AgentBlueprintReference) was removed from AgentsClient/AgentsAsyncClient. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly; callers that need to set a blueprint reference should supply the blueprint reference via the CreateAgentVersionInput model instead."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.ai\\.agents\\.models\\.(AgentDefinitionOptInKeys|FoundryFeaturesOptInKeys)"
+          },
+          "justification": "Breaking change in beta operation: the AgentDefinitionOptInKeys and FoundryFeaturesOptInKeys opt-in enums were removed from the public models package and relocated to implementation.models (made internal). The opt-in key is now sent implicitly, so users are no longer meant to use the opt-in keys directly."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.OptimizationCandidatePagedResult",
+          "justification": "Breaking change in beta operation: OptimizationCandidatePagedResult was removed; listOptimizationCandidates now returns standard PagedIterable<OptimizationCandidate> instead of a custom paged-result wrapper."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.ai\\.projects\\.(DataGenerationJobs|EvaluationTaxonomies|Evaluators|Insights|Models|RedTeams|Routines|Schedules|Skills)(Async)?Client"
+          },
+          "justification": "Beta operations were moved out of the AI Projects client into dedicated beta clients: these sub-clients are removed and their operations now live on the matching BetaEvaluationTaxonomies/BetaEvaluators/BetaInsights/BetaModels/BetaRedTeams/BetaRoutines/BetaSchedules/BetaSkills clients (data generation job operations moved onto BetaDatasetsClient)."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method com\\.azure\\.ai\\.projects\\.\\w+ com\\.azure\\.ai\\.projects\\.AIProjectClientBuilder::build(DataGenerationJobs|EvaluationTaxonomies|Evaluators|Insights|Models|RedTeams|Routines|Schedules|Skills)(Async)?Client\\(\\)"
+          },
+          "justification": "Beta operations were moved into dedicated beta clients: the AIProjectClientBuilder factory methods for these sub-clients are removed and replaced by the corresponding buildBeta*Client factory methods (and their async variants)."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "enum com.azure.ai.projects.models.FoundryFeaturesOptInKeys",
+          "justification": "Breaking change in beta operation: the FoundryFeaturesOptInKeys opt-in enum was removed from the public models package and relocated to implementation.models (made internal). The opt-in key is now sent implicitly, so users are no longer meant to use the opt-in keys directly."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.Skill",
+          "justification": "Breaking change in beta operation: the Skill model was removed and replaced by the restructured SkillDetails/SkillVersion (and related) models."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.projects\\.EvaluationRules(Async)?Client::createOrUpdateEvaluationRule\\(.*FoundryFeaturesOptInKeys\\)"
+          },
+          "justification": "Breaking change in beta operation: EvaluationRulesClient/EvaluationRulesAsyncClient are retained; only the overload of createOrUpdateEvaluationRule that took FoundryFeaturesOptInKeys was removed. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
         }
       ]
     }

@@ -1,5 +1,6 @@
 # Release History
 ## 7.4.0-beta.1 (Unreleased)
+- Upgrade Spring Boot dependencies to `4.1.0` and Spring Cloud dependencies to `2025.1.2`.
 
 ### Spring Cloud Azure Autoconfigure
 
@@ -11,11 +12,95 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 
+- Fixed the AAD authentication filter (`AadAuthenticationFilter` and `AadAppRoleStatelessAuthenticationFilter`) not validating the `tid` (tenant ID) claim in JWT tokens against the configured tenant, allowing tokens from other tenants to be accepted. The JWT token validator now validates that the token's `tid` claim matches the configured tenant ID, preventing cross-tenant authentication bypass. This hardening is only enforced when a specific tenant ID is configured. ([#49631](https://github.com/Azure/azure-sdk-for-java/pull/49631))
+- Fixed the AAD and B2C OpenID Connect login (`oauth2Login`) ID token decoders not validating the `iss` (issuer) and `aud` (audience) claims. `AadOidcIdTokenDecoderFactory` and `AadB2cOidcIdTokenDecoderFactory` now validate the standard OIDC ID token claims (audience, expiry, issued-at and subject) and the issuer. For single tenant applications the issuer must belong to the configured tenant, and for multi-tenant applications (the `common`, `organizations` or `consumers` endpoints) the issuer must be a trusted Microsoft identity platform issuer consistent with the token's own `tid` claim. This prevents users from unauthorized tenants from signing in to multi-tenant applications that rely on the issuer/tenant claim for tenant restriction  ([#49423](https://github.com/Azure/azure-sdk-for-java/pull/49423)).
 - Fixed the missing bean name in `@ConditionalOnMissingBean` for `LettuceClientConfigurationBuilderCustomizer` ([#49290](https://github.com/Azure/azure-sdk-for-java/issues/49290)).
 - Fixed the AAD and B2C resource server JWT decoder not honoring the `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, and `spring.cloud.azure.active-directory.b2c.jwt-read-timeout` configuration properties ([#49329](https://github.com/Azure/azure-sdk-for-java/pull/49329)).
 - Fixed AAD resource server JWK retrieval not honoring the `spring.cloud.azure.active-directory.jwk-set-cache-lifespan` and `spring.cloud.azure.active-directory.jwk-set-cache-refresh-time` configuration properties ([#42159](https://github.com/Azure/azure-sdk-for-java/issues/42159)).
 
 #### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure
+
+This section includes changes in `spring-messaging-azure` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure Event Hubs
+
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure Service Bus
+
+This section includes changes in `spring-messaging-azure-servicebus` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Messaging Azure Storage Queue
+
+This section includes changes in `spring-messaging-azure-storage-queue` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure App Configuration Config
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure App Configuration Config Web
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config-web` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Feature Management
+
+This section includes changes in `spring-cloud-azure-feature-management` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Actuator Autoconfigure
+
+This section includes changes in `spring-cloud-azure-actuator-autoconfigure` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Docker Compose
+
+This section includes changes in `spring-cloud-azure-docker-compose` module.
+
+#### Other Changes
+
+- Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Stream Binder Service Bus
+
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Bugs Fixed
+
+- Fixed a regression where dead-letter reason and error description were not transmitted because a no-arg `deadLetter()` call settled the message before `deadLetter(options)` was invoked ([#41883](https://github.com/Azure/azure-sdk-for-java/issues/41883)).
 
 ## 6.4.0 (2026-06-01)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)

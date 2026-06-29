@@ -3,13 +3,11 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.SessionLogEventType;
 import com.azure.ai.agents.models.VersionRefIndicator;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
@@ -43,9 +41,8 @@ public class SessionLogSyncTest extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     @Disabled
     public void validatesSessionLogStream(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        AgentsClient client = getAgentsSyncClient(httpClient, serviceVersion);
-        RequestOptions featureOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
-            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
+        BetaAgentsClient client = getClientBuilder(httpClient, serviceVersion).beta().buildBetaAgentsClient();
+        RequestOptions featureOptions = new RequestOptions();
 
         deleteSession(client);
         AgentSessionResource session = client
@@ -80,7 +77,7 @@ public class SessionLogSyncTest extends ClientTestBase {
         }
     }
 
-    private ScheduledFuture<?> scheduleSessionDelete(AgentsClient client, ScheduledExecutorService executor) {
+    private ScheduledFuture<?> scheduleSessionDelete(BetaAgentsClient client, ScheduledExecutorService executor) {
         return executor.schedule(() -> {
             if (getTestMode() != TestMode.PLAYBACK) {
                 deleteSession(client);
@@ -88,9 +85,9 @@ public class SessionLogSyncTest extends ClientTestBase {
         }, 20, TimeUnit.SECONDS);
     }
 
-    private static void deleteSession(AgentsClient client) {
+    private static void deleteSession(BetaAgentsClient client) {
         try {
-            client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null);
+            client.deleteSession(AGENT_NAME, SESSION_ID, null);
         } catch (RuntimeException ignored) {
             // Cleanup best effort.
         }

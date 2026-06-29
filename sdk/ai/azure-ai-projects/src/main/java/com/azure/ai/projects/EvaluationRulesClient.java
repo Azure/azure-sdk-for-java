@@ -6,7 +6,6 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.implementation.EvaluationRulesImpl;
 import com.azure.ai.projects.models.EvaluationRule;
 import com.azure.ai.projects.models.EvaluationRuleActionType;
-import com.azure.ai.projects.models.FoundryFeaturesOptInKeys;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -15,7 +14,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -41,7 +39,9 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -71,7 +71,9 @@ public final class EvaluationRulesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an evaluation rule along with {@link Response}.
+     * @return an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -80,7 +82,9 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     *
+     * Removes the specified evaluation rule from the project.
      *
      * @param id Unique identifier for the evaluation rule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -97,18 +101,9 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * Create or update an evaluation rule.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create or update an evaluation rule
+     *
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -172,7 +167,10 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     *
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -220,7 +218,9 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * Get an evaluation rule.
+     * Get an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration.
      *
      * @param id Unique identifier for the evaluation rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +229,9 @@ public final class EvaluationRulesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an evaluation rule.
+     * @return an evaluation rule
+     *
+     * Retrieves the specified evaluation rule and its configuration.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -240,7 +242,9 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * Delete an evaluation rule.
+     * Delete an evaluation rule
+     *
+     * Removes the specified evaluation rule from the project.
      *
      * @param id Unique identifier for the evaluation rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,36 +263,9 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * Create or update an evaluation rule.
+     * Create or update an evaluation rule
      *
-     * @param id Unique identifier for the evaluation rule.
-     * @param evaluationRule Evaluation rule resource.
-     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
-     * preview resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return evaluation rule model.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EvaluationRule createOrUpdateEvaluationRule(String id, EvaluationRule evaluationRule,
-        FoundryFeaturesOptInKeys foundryFeatures) {
-        // Generated convenience method for createOrUpdateEvaluationRuleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryFeatures != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
-        }
-        return createOrUpdateEvaluationRuleWithResponse(id, BinaryData.fromObject(evaluationRule), requestOptions)
-            .getValue()
-            .toObject(EvaluationRule.class);
-    }
-
-    /**
-     * Create or update an evaluation rule.
+     * Creates a new evaluation rule, or replaces the existing rule when the identifier matches.
      *
      * @param id Unique identifier for the evaluation rule.
      * @param evaluationRule Evaluation rule resource.
@@ -311,7 +288,10 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     *
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -330,7 +310,10 @@ public final class EvaluationRulesClient {
     }
 
     /**
-     * List all evaluation rules.
+     * List evaluation rules
+     *
+     * Returns the evaluation rules configured for the project, optionally filtered by action type, agent name, or
+     * enabled state.
      *
      * @param actionType Filter by the type of evaluation rule.
      * @param agentName Filter by the agent name.

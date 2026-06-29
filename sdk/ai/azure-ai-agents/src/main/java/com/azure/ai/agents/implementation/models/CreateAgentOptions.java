@@ -6,7 +6,6 @@ package com.azure.ai.agents.implementation.models;
 import com.azure.ai.agents.models.AgentBlueprintReference;
 import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
@@ -17,12 +16,6 @@ import java.util.Map;
  */
 @Fluent
 public final class CreateAgentOptions {
-
-    /*
-     * A feature flag opt-in required when using preview operations or modifying persisted preview resources.
-     */
-    @Generated
-    private AgentDefinitionOptInKeys foundryFeatures;
 
     /*
      * The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
@@ -84,30 +77,6 @@ public final class CreateAgentOptions {
     public CreateAgentOptions(String agentName, AgentDefinition definition) {
         this.agentName = agentName;
         this.definition = definition;
-    }
-
-    /**
-     * Get the foundryFeatures property: A feature flag opt-in required when using preview operations or modifying
-     * persisted preview resources.
-     *
-     * @return the foundryFeatures value.
-     */
-    @Generated
-    public AgentDefinitionOptInKeys getFoundryFeatures() {
-        return this.foundryFeatures;
-    }
-
-    /**
-     * Set the foundryFeatures property: A feature flag opt-in required when using preview operations or modifying
-     * persisted preview resources.
-     *
-     * @param foundryFeatures the foundryFeatures value to set.
-     * @return the CreateAgentOptions object itself.
-     */
-    @Generated
-    public CreateAgentOptions setFoundryFeatures(AgentDefinitionOptInKeys foundryFeatures) {
-        this.foundryFeatures = foundryFeatures;
-        return this;
     }
 
     /**
