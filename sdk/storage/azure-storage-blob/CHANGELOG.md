@@ -17,6 +17,12 @@
   logs a warning and signals end-of-file when such an error occurs at or past the known end of the resource.
 
 ### Other Changes
+- Deprecated `AppendBlobAsyncClient.appendBlockWithResponse(Flux, long, byte[], AppendBlobRequestConditions)` and
+  `AppendBlobClient.appendBlockWithResponse(InputStream, long, byte[], AppendBlobRequestConditions, Duration, Context)`
+  in favor of the new `appendBlockWithResponse` overloads that accept an `AppendBlobAppendBlockOptions` options bag.
+- Deprecated `PageBlobAsyncClient.uploadPagesWithResponse(PageRange, Flux, byte[], PageBlobRequestConditions)` and
+  `PageBlobClient.uploadPagesWithResponse(PageRange, InputStream, byte[], PageBlobRequestConditions, Duration, Context)`
+  in favor of the new `uploadPagesWithResponse` overloads that accept a `PageBlobUploadPagesOptions` options bag.
 
 ## 12.35.0 (2026-06-11)
 

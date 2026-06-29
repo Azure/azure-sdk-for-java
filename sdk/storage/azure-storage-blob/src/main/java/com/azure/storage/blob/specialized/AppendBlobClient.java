@@ -512,7 +512,11 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the append blob operation.
      * @throws NullPointerException if the input data is null.
+     * @deprecated Use {@link #appendBlockWithResponse(InputStream, long, AppendBlobAppendBlockOptions, Duration,
+     * Context)}. The optional parameters are now carried by {@link AppendBlobAppendBlockOptions}, which is also
+     * forward-compatible with future optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {

@@ -450,7 +450,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param appendBlobRequestConditions {@link AppendBlobRequestConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
+     * @deprecated Use {@link #appendBlockWithResponse(Flux, long, AppendBlobAppendBlockOptions)}. The optional
+     * parameters are now carried by {@link AppendBlobAppendBlockOptions}, which is also forward-compatible with future
+     * optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {

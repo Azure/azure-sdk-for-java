@@ -491,7 +491,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * operation will fail.
      * @param pageBlobRequestConditions {@link PageBlobRequestConditions}
      * @return A reactive response containing the information of the uploaded pages.
+     * @deprecated Use {@link #uploadPagesWithResponse(PageRange, Flux, PageBlobUploadPagesOptions)}. The optional
+     * parameters are now carried by {@link PageBlobUploadPagesOptions}, which is also forward-compatible with
+     * future optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {

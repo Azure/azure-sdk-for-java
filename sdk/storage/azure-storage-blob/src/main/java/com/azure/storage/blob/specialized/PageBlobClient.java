@@ -551,7 +551,11 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
+     * @deprecated Use {@link #uploadPagesWithResponse(PageRange, InputStream, PageBlobUploadPagesOptions, Duration,
+     * Context)}. The optional parameters are now carried by {@link PageBlobUploadPagesOptions}, which is also
+     * forward-compatible with future optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
