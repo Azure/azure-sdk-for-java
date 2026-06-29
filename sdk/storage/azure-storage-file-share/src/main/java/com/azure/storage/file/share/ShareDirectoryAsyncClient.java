@@ -980,28 +980,7 @@ public class ShareDirectoryAsyncClient {
         final ShareListFilesAndDirectoriesOptions modifiedOptions
             = options == null ? new ShareListFilesAndDirectoriesOptions() : options;
 
-        List<ListFilesIncludeType> includeTypes = new ArrayList<>();
-
-        if (modifiedOptions.includeAll()) {
-            includeTypes.add(ListFilesIncludeType.ALL);
-        } else {
-            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeAttributes(),
-                ListFilesIncludeType.ATTRIBUTES);
-            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeETag(), ListFilesIncludeType.ETAG);
-            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeTimestamps(),
-                ListFilesIncludeType.TIMESTAMPS);
-            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includePermissionKey(),
-                ListFilesIncludeType.PERMISSION_KEY);
-            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeLinkCount(),
-                ListFilesIncludeType.LINK_COUNT);
-            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includePermissions(),
-                ListFilesIncludeType.PERMISSIONS);
-            ModelHelper.addOptionToList(includeTypes, modifiedOptions.includeNfsAttributes(),
-                ListFilesIncludeType.NFS_ATTRIBUTES);
-        }
-
-        // these options must be absent from request if empty or false
-        final List<ListFilesIncludeType> finalIncludeTypes = includeTypes.isEmpty() ? null : includeTypes;
+        final List<ListFilesIncludeType> finalIncludeTypes = ModelHelper.getListFilesIncludeTypes(modifiedOptions);
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever
             = (marker, pageSize) -> StorageImplUtils

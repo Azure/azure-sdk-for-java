@@ -93,6 +93,7 @@ import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -625,35 +626,14 @@ public class ModelHelper {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
             FilesAndDirectoriesListSegment segment = res.getValue().getSegment();
-            Function<DirectoryItem, ShareFileItem> directoryMapper = item -> toShareFileItem(item.getName(), true,
-                item.getFileId(), item.getProperties(), item.getAttributes(), item.getPermissionKey(), null,
-                item.getLinkCount(), getDirectoryFileType(item.getLinkCount(), item.getProperties()), null, null, null);
-            Function<FileItem, ShareFileItem> fileMapper = item -> toShareFileItem(item.getName(), false,
-                item.getFileId(), item.getProperties(), item.getAttributes(), item.getPermissionKey(),
-                getContentLength(item.getProperties()), item.getLinkCount(), item.getFileType(), null, null, null);
-            Function<SymLinkItem, ShareFileItem> symLinkMapper
-                = item -> toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null,
-                    null, item.getLinkCount(), NfsFileType.SYM_LINK, item.getLinkText(), null, null);
-            Function<BlockDeviceItem, ShareFileItem> blockDeviceMapper = item -> toShareFileItem(item.getName(), false,
-                item.getFileId(), item.getProperties(), null, null, null, item.getLinkCount(), NfsFileType.BLOCK_DEVICE,
-                null, item.getDeviceMajor(), item.getDeviceMinor());
-            Function<CharDeviceItem, ShareFileItem> charDeviceMapper = item -> toShareFileItem(item.getName(), false,
-                item.getFileId(), item.getProperties(), null, null, null, item.getLinkCount(),
-                NfsFileType.CHARACTER_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
-            Function<FifoItem, ShareFileItem> fifoMapper
-                = item -> toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null,
-                    null, item.getLinkCount(), NfsFileType.FIFO, null, null, null);
-            Function<SocketItem, ShareFileItem> socketMapper
-                = item -> toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null,
-                    null, item.getLinkCount(), NfsFileType.SOCKET, null, null, null);
 
-            addShareFileItems(shareFileItems, segment.getDirectoryItems(), directoryMapper);
-            addShareFileItems(shareFileItems, segment.getFileItems(), fileMapper);
-            addShareFileItems(shareFileItems, segment.getSymLinkItems(), symLinkMapper);
-            addShareFileItems(shareFileItems, segment.getBlockDeviceItems(), blockDeviceMapper);
-            addShareFileItems(shareFileItems, segment.getCharDeviceItems(), charDeviceMapper);
-            addShareFileItems(shareFileItems, segment.getFifoItems(), fifoMapper);
-            addShareFileItems(shareFileItems, segment.getSocketItems(), socketMapper);
+            addShareFileItems(shareFileItems, segment.getDirectoryItems(), ModelHelper::createDirectoryShareItem);
+            addShareFileItems(shareFileItems, segment.getFileItems(), ModelHelper::createFileShareItem);
+            addShareFileItems(shareFileItems, segment.getSymLinkItems(), ModelHelper::createSymLinkShareItem);
+            addShareFileItems(shareFileItems, segment.getBlockDeviceItems(), ModelHelper::createBlockDeviceShareItem);
+            addShareFileItems(shareFileItems, segment.getCharDeviceItems(), ModelHelper::createCharDeviceShareItem);
+            addShareFileItems(shareFileItems, segment.getFifoItems(), ModelHelper::createFifoShareItem);
+            addShareFileItems(shareFileItems, segment.getSocketItems(), ModelHelper::createSocketShareItem);
         }
 
         return new ArrayList<>(shareFileItems);
@@ -688,9 +668,68 @@ public class ModelHelper {
         return linkCount != null || hasPosixProperties(properties) ? NfsFileType.DIRECTORY : null;
     }
 
+    public static List<ListFilesIncludeType> getListFilesIncludeTypes(ShareListFilesAndDirectoriesOptions options) {
+        if (options == null) {
+            return null;
+        }
+
+        List<ListFilesIncludeType> includeTypes = new ArrayList<>();
+
+        if (options.includeAll()) {
+            includeTypes.add(ListFilesIncludeType.ALL);
+        } else {
+            addOptionToList(includeTypes, options.includeAttributes(), ListFilesIncludeType.ATTRIBUTES);
+            addOptionToList(includeTypes, options.includeETag(), ListFilesIncludeType.ETAG);
+            addOptionToList(includeTypes, options.includeTimestamps(), ListFilesIncludeType.TIMESTAMPS);
+            addOptionToList(includeTypes, options.includePermissionKey(), ListFilesIncludeType.PERMISSION_KEY);
+            addOptionToList(includeTypes, options.includeLinkCount(), ListFilesIncludeType.LINK_COUNT);
+            addOptionToList(includeTypes, options.includePermissions(), ListFilesIncludeType.PERMISSIONS);
+            addOptionToList(includeTypes, options.includeNfsAttributes(), ListFilesIncludeType.NFS_ATTRIBUTES);
+        }
+
+        return includeTypes.isEmpty() ? null : includeTypes;
+    }
+
     private static boolean hasPosixProperties(FileProperty properties) {
         return properties != null
             && (properties.getUid() != null || properties.getGid() != null || properties.getMode() != null);
+    }
+
+    private static ShareFileItem createDirectoryShareItem(DirectoryItem item) {
+        return toShareFileItem(item.getName(), true, item.getFileId(), item.getProperties(), item.getAttributes(),
+            item.getPermissionKey(), null, item.getLinkCount(),
+            getDirectoryFileType(item.getLinkCount(), item.getProperties()), null, null, null);
+    }
+
+    private static ShareFileItem createFileShareItem(FileItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), item.getAttributes(),
+            item.getPermissionKey(), getContentLength(item.getProperties()), item.getLinkCount(), item.getFileType(),
+            null, null, null);
+    }
+
+    private static ShareFileItem createSymLinkShareItem(SymLinkItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.SYM_LINK, item.getLinkText(), null, null);
+    }
+
+    private static ShareFileItem createBlockDeviceShareItem(BlockDeviceItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.BLOCK_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
+    }
+
+    private static ShareFileItem createCharDeviceShareItem(CharDeviceItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.CHARACTER_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
+    }
+
+    private static ShareFileItem createFifoShareItem(FifoItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.FIFO, null, null, null);
+    }
+
+    private static ShareFileItem createSocketShareItem(SocketItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.SOCKET, null, null, null);
     }
 
     public static Response<ShareFileInfo>

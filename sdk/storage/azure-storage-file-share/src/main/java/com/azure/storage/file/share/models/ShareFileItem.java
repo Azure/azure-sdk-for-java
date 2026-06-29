@@ -138,45 +138,57 @@ public final class ShareFileItem {
     }
 
     /**
-     * Gets the number of hard links to the file or directory.
+     * Gets the count of hard links for this item.
+     * Applicable to all item types in NFS shares: files, directories, symbolic links, block devices, character
+     * devices, FIFOs, and sockets.
+     * Supported in version 2026-12-06 and above.
      *
-     * @return The number of hard links to the file or directory.
+     * @return The count of hard links for this item.
      */
     public Long getLinkCount() {
         return linkCount;
     }
 
     /**
-     * Gets the type of the file or directory.
+     * Gets the NFS file type for this item, intended to be used only for NFS shares.
+     * Applicable to all item types in NFS shares: files, directories, symbolic links, block devices, character
+     * devices, FIFOs, and sockets.
+     * Supported in version 2026-12-06 and above.
      *
-     * @return The type of the file or directory.
+     * @return The NFS file type for this item.
      */
     public NfsFileType getFileType() {
         return fileType;
     }
 
     /**
-     * Gets the target path of the symbolic link.
+     * Gets the link text for this item.
+     * Only applicable to symbolic links in NFS shares.
+     * Supported in version 2026-12-06 and above.
      *
-     * @return The target path of the symbolic link.
+     * @return The link text for this item.
      */
     public String getLinkText() {
         return linkText;
     }
 
     /**
-     * Gets the major device number.
+     * Gets the major device number for this item.
+     * Only applicable to block devices and character devices in NFS shares.
+     * Supported in version 2026-12-06 and above.
      *
-     * @return The major device number.
+     * @return The major device number for this item.
      */
     public Long getDeviceMajor() {
         return deviceMajor;
     }
 
     /**
-     * Gets the minor device number.
+     * Gets the minor device number for this item.
+     * Only applicable to block devices and character devices in NFS shares.
+     * Supported in version 2026-12-06 and above.
      *
-     * @return The minor device number.
+     * @return The minor device number for this item.
      */
     public Long getDeviceMinor() {
         return deviceMinor;
