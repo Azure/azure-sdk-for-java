@@ -78,7 +78,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -164,7 +164,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -239,7 +239,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -340,7 +340,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -398,7 +398,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -476,7 +476,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -534,7 +534,7 @@ public final class BetaEvaluatorsClient {
      *         String(turn/conversation) (Optional)
      *     ]
      *     definition (Required): {
-     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *         type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *         init_parameters (Optional): {
      *             String: BinaryData (Required)
      *         }
@@ -739,7 +739,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -834,7 +834,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -949,7 +949,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -1087,7 +1087,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }
@@ -1199,7 +1199,7 @@ public final class BetaEvaluatorsClient {
      *             String(turn/conversation) (Optional)
      *         ]
      *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric) (Required)
+     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
      *             init_parameters (Optional): {
      *                 String: BinaryData (Required)
      *             }

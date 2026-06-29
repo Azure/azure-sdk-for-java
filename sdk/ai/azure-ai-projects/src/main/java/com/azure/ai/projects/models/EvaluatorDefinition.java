@@ -148,6 +148,8 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
                     return PromptBasedEvaluatorDefinition.fromJson(readerToUse.reset());
                 } else if ("rubric".equals(discriminatorValue)) {
                     return RubricBasedEvaluatorDefinition.fromJson(readerToUse.reset());
+                } else if ("endpoint".equals(discriminatorValue)) {
+                    return EndpointBasedEvaluatorDefinition.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

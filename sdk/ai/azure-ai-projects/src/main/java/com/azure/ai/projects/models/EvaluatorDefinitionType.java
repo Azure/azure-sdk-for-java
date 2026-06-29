@@ -81,4 +81,10 @@ public final class EvaluatorDefinitionType extends ExpandableStringEnum<Evaluato
      */
     @Generated
     public static final EvaluatorDefinitionType RUBRIC = fromString("rubric");
+
+    /**
+     * Endpoint-based evaluator definition. References a customer-owned HTTP endpoint via a Project Connection.
+     */
+    @Generated
+    public static final EvaluatorDefinitionType ENDPOINT = fromString("endpoint");
 }
