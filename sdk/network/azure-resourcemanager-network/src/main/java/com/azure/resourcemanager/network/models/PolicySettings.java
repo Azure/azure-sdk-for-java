@@ -80,7 +80,7 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
     /*
      * Web Application Firewall CAPTCHA Cookie Expiration time in minutes.
      */
-    private Integer captchaCookieExpirationInMins;
+    private Integer captchaExpirationInMins;
 
     /**
      * Creates an instance of PolicySettings class.
@@ -335,24 +335,22 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
     }
 
     /**
-     * Get the captchaCookieExpirationInMins property: Web Application Firewall CAPTCHA Cookie Expiration time in
-     * minutes.
+     * Get the captchaExpirationInMins property: Web Application Firewall CAPTCHA Cookie Expiration time in minutes.
      * 
-     * @return the captchaCookieExpirationInMins value.
+     * @return the captchaExpirationInMins value.
      */
-    public Integer captchaCookieExpirationInMins() {
-        return this.captchaCookieExpirationInMins;
+    public Integer captchaExpirationInMins() {
+        return this.captchaExpirationInMins;
     }
 
     /**
-     * Set the captchaCookieExpirationInMins property: Web Application Firewall CAPTCHA Cookie Expiration time in
-     * minutes.
+     * Set the captchaExpirationInMins property: Web Application Firewall CAPTCHA Cookie Expiration time in minutes.
      * 
-     * @param captchaCookieExpirationInMins the captchaCookieExpirationInMins value to set.
+     * @param captchaExpirationInMins the captchaExpirationInMins value to set.
      * @return the PolicySettings object itself.
      */
-    public PolicySettings withCaptchaCookieExpirationInMins(Integer captchaCookieExpirationInMins) {
-        this.captchaCookieExpirationInMins = captchaCookieExpirationInMins;
+    public PolicySettings withCaptchaExpirationInMins(Integer captchaExpirationInMins) {
+        this.captchaExpirationInMins = captchaExpirationInMins;
         return this;
     }
 
@@ -385,7 +383,7 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
         jsonWriter.writeStringField("customBlockResponseBody", this.customBlockResponseBody);
         jsonWriter.writeJsonField("logScrubbing", this.logScrubbing);
         jsonWriter.writeNumberField("jsChallengeCookieExpirationInMins", this.jsChallengeCookieExpirationInMins);
-        jsonWriter.writeNumberField("captchaCookieExpirationInMins", this.captchaCookieExpirationInMins);
+        jsonWriter.writeNumberField("captchaExpirationInMins", this.captchaExpirationInMins);
         return jsonWriter.writeEndObject();
     }
 
@@ -430,8 +428,8 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
                 } else if ("jsChallengeCookieExpirationInMins".equals(fieldName)) {
                     deserializedPolicySettings.jsChallengeCookieExpirationInMins
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("captchaCookieExpirationInMins".equals(fieldName)) {
-                    deserializedPolicySettings.captchaCookieExpirationInMins = reader.getNullable(JsonReader::getInt);
+                } else if ("captchaExpirationInMins".equals(fieldName)) {
+                    deserializedPolicySettings.captchaExpirationInMins = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

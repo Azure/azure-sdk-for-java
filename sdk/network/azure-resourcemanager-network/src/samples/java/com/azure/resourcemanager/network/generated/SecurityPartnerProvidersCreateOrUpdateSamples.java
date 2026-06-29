@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class SecurityPartnerProvidersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SecurityPartnerProviderPut.json
+     * x-ms-original-file: 2025-07-01/SecurityPartnerProviderPut.json
      */
     /**
      * Sample code: Create Security Partner Provider.

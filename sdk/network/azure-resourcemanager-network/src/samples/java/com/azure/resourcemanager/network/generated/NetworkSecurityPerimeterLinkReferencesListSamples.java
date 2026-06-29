@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterLinkReferencesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspLinkReferenceList.json
+     * x-ms-original-file: 2025-07-01/NspLinkReferenceList.json
      */
     /**
      * Sample code: NspLinkReferenceList.

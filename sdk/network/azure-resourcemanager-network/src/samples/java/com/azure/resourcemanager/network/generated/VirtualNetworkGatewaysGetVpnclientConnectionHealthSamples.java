@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetVpnclientConnectionHealthSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayVpnclientConnectionHealth.

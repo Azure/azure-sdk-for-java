@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityUserRuleCollectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerSecurityUserRuleCollectionGet.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerSecurityUserRuleCollectionGet.json
      */
     /**
      * Sample code: Gets security user rule collection.

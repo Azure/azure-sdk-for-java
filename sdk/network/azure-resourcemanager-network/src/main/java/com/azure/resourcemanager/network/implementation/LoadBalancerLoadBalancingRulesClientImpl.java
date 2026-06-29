@@ -144,7 +144,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancingRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -188,7 +188,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancingRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -277,7 +277,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -318,7 +318,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -428,7 +428,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancingRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.health(this.client.getEndpoint(), apiVersion,
@@ -471,7 +471,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancingRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.health(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), groupName,

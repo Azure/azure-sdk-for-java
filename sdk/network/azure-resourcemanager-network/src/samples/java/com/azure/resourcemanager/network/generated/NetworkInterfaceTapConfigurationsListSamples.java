@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfaceTapConfigurationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceTapConfigurationList.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceTapConfigurationList.json
      */
     /**
      * Sample code: List virtual network tap configurations.

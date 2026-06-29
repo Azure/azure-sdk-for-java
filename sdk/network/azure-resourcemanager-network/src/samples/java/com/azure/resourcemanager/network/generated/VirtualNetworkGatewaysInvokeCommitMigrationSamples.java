@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysInvokeCommitMigrationSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayCommitMigration.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayCommitMigration.json
      */
     /**
      * Sample code: VirtualNetworkGatewayCommitMigration.

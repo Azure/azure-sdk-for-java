@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.PrivateEndpointBillingSku;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
@@ -371,6 +372,29 @@ public final class PrivateEndpointInner extends Resource {
             this.innerProperties = new PrivateEndpointPropertiesInner();
         }
         this.innerProperties().withCustomNetworkInterfaceName(customNetworkInterfaceName);
+        return this;
+    }
+
+    /**
+     * Get the billingSku property: The billing sku of the private endpoint.
+     * 
+     * @return the billingSku value.
+     */
+    public PrivateEndpointBillingSku billingSku() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingSku();
+    }
+
+    /**
+     * Set the billingSku property: The billing sku of the private endpoint.
+     * 
+     * @param billingSku the billingSku value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withBillingSku(PrivateEndpointBillingSku billingSku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withBillingSku(billingSku);
         return this;
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class BastionHostsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostDeveloperDelete.json
+     * x-ms-original-file: 2025-07-01/BastionHostDeveloperDelete.json
      */
     /**
      * Sample code: Delete Developer Bastion Host.
@@ -23,7 +23,7 @@ public final class BastionHostsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostDelete.json
+     * x-ms-original-file: 2025-07-01/BastionHostDelete.json
      */
     /**
      * Sample code: Delete Bastion Host.

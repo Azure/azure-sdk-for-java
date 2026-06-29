@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualRouterPeeringsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualRouterPeeringGet.json
+     * x-ms-original-file: 2025-07-01/VirtualRouterPeeringGet.json
      */
     /**
      * Sample code: Get Virtual Router Peering.

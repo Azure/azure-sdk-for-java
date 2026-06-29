@@ -173,7 +173,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -214,7 +214,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -310,7 +310,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -359,7 +359,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -559,7 +559,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualHubName, connectionName, context))
@@ -599,7 +599,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualHubName, connectionName, context);
@@ -777,7 +777,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -816,7 +816,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -922,7 +922,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLearnedRoutes(this.client.getEndpoint(), apiVersion,
@@ -963,7 +963,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listLearnedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1155,7 +1155,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAdvertisedRoutes(this.client.getEndpoint(), apiVersion,
@@ -1196,7 +1196,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAdvertisedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

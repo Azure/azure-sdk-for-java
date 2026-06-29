@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortAuthoriza
  */
 public final class ExpressRoutePortAuthorizationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRoutePortAuthorizationCreate.json
+     * x-ms-original-file: 2025-07-01/ExpressRoutePortAuthorizationCreate.json
      */
     /**
      * Sample code: Create ExpressRoutePort Authorization.

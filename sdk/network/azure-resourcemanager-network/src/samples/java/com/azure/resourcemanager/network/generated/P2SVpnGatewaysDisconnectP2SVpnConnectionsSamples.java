@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class P2SVpnGatewaysDisconnectP2SVpnConnectionsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/P2sVpnGatewaysDisconnectP2sVpnConnections.json
+     * x-ms-original-file: 2025-07-01/P2sVpnGatewaysDisconnectP2sVpnConnections.json
      */
     /**
      * Sample code: Disconnect VpnConnections from P2sVpn Gateway.
