@@ -528,7 +528,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
 
         // getting one item from each feedRange
-        List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+        List<FeedRange> feedRanges = getFeedRangesWithRetry(
+            cosmosAsyncContainer,
+            "get feed ranges for direct fault injection partition setup");
         assertThat(feedRanges.size()).isGreaterThan(1);
 
         String query = "select * from c";
@@ -809,7 +811,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                     .getContainer(cosmosAsyncContainer.getId());
 
             logger.info("serverConnectionDelayWarmupRule: get all the addresses");
-            List<FeedRange> feedRanges = container.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                container,
+                "get feed ranges for direct fault injection warmup setup");
             for (FeedRange feedRange : feedRanges) {
                 String feedRangeRuleId = "serverErrorRule-test-feedRang" + feedRange.toString();
                 FaultInjectionRule feedRangeRule =
@@ -836,7 +840,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayWarmupRule)).block();
 
-            int partitionSize = container.getFeedRanges().block().size();
+            int partitionSize = getFeedRangesWithRetry(
+                container,
+                "get feed ranges for direct fault injection warmup validation").size();
             container.openConnectionsAndInitCaches().block();
 
             if (primaryAddressesOnly) {
@@ -1186,7 +1192,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     public void faultInjectionServerErrorRuleTests_includePrimary() throws JsonProcessingException {
         TestObject createdItem = TestObject.create();
         CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(clientWithoutPreferredRegions);
-        List<FeedRange> feedRanges = singlePartitionContainer.getFeedRanges().block();
+        List<FeedRange> feedRanges = getFeedRangesWithRetry(
+            singlePartitionContainer,
+            "get feed ranges for direct fault injection single-partition setup");
 
         // Test if includePrimary=true, then primary replica address will always be returned
         String serverGoneIncludePrimaryRuleId = "serverErrorRule-includePrimary-" + UUID.randomUUID();

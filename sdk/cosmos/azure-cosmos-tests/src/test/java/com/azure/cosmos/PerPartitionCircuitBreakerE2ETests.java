@@ -3216,7 +3216,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3326,7 +3328,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3438,7 +3442,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             deleteAllDocuments(asyncContainer);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3549,7 +3555,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             deleteAllDocuments(asyncContainer);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -4205,7 +4213,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");

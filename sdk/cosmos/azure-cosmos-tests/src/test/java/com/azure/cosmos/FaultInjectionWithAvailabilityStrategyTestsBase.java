@@ -2409,7 +2409,11 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         final int TWO_REGIONS = 2;
 
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition =
-            (c, operationType) -> injectReadSessionNotAvailableError(c, this.getFirstRegion(), operationType, c.getFeedRanges().block().get(0));
+            (c, operationType) -> injectReadSessionNotAvailableError(
+                c,
+                this.getFirstRegion(),
+                operationType,
+                getFeedRangesWithRetry(c, "get feed ranges for availability strategy fault injection setup").get(0));
 
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithDefaultPageSize = (query, params) ->
             queryReturnsTotalRecordCountCore(query, params, 100);

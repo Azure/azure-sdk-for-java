@@ -168,6 +168,9 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        getFeedRangesWithRetry(
+            asyncContainer,
+            "warm up shared multi-partition container routing map for item serializer tests");
     }
 
     @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

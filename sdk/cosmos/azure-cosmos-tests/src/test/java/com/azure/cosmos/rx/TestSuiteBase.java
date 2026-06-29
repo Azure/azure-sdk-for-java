@@ -78,6 +78,7 @@ import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -232,6 +233,20 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         throw new IllegalStateException("Retry loop completed unexpectedly.");
+    }
+
+    protected static List<FeedRange> getFeedRangesWithRetry(CosmosAsyncContainer container, String context) {
+        AtomicReference<List<FeedRange>> feedRanges = new AtomicReference<>();
+        executeWithRetry(() -> {
+            List<FeedRange> currentFeedRanges = container.getFeedRanges().block();
+            if (currentFeedRanges == null || currentFeedRanges.isEmpty()) {
+                throw new IllegalStateException("Feed ranges were not available for container " + container.getId());
+            }
+
+            feedRanges.set(currentFeedRanges);
+        }, 5, context);
+
+        return feedRanges.get();
     }
 
     private static <T> Mono<T> retryOnTransientCleanupFailure(Mono<T> responseMono) {

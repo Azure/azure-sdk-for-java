@@ -251,6 +251,9 @@ public class OperationPoliciesTest extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         container = getSharedMultiPartitionCosmosContainer(this.client);
+        getFeedRangesWithRetry(
+            container,
+            "warm up shared multi-partition container routing map for operation policy tests");
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

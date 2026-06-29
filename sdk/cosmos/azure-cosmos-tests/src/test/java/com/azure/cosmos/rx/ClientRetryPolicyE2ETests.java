@@ -63,10 +63,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -1240,7 +1238,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             }
 
             if (operationType == OperationType.ReadFeed) {
-                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    cosmosAsyncContainer,
+                    "get feed ranges for client retry policy setup");
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
@@ -1297,11 +1297,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         List<String> serviceOrderedReadableRegions = new ArrayList<>();
         List<String> serviceOrderedWriteableRegions = new ArrayList<>();
-        Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
-            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
 
             if (writeOnly) {
                 serviceOrderedWriteableRegions.add(accountLocation.getName());
@@ -1312,8 +1310,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         return new AccountLevelLocationContext(
             serviceOrderedReadableRegions,
-            serviceOrderedWriteableRegions,
-            regionMap);
+            serviceOrderedWriteableRegions);
     }
 
     private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
@@ -1332,16 +1329,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
         private final List<String> serviceOrderedWriteableRegions;
-        private final Map<String, String> regionNameToEndpoint;
 
         public AccountLevelLocationContext(
             List<String> serviceOrderedReadableRegions,
-            List<String> serviceOrderedWriteableRegions,
-            Map<String, String> regionNameToEndpoint) {
+            List<String> serviceOrderedWriteableRegions) {
 
             this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
-            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }
