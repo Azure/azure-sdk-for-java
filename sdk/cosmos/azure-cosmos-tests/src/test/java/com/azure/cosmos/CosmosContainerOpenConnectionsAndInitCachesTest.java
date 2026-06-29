@@ -64,11 +64,23 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .directMode()
                 .buildAsyncClient();
         directCosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
-        directCosmosAsyncContainer = createCollection(
-            directCosmosAsyncDatabase,
-            new CosmosContainerProperties(CONTAINER_ID, "/mypk"),
-            new CosmosContainerRequestOptions(),
-            20000);
+            // Keep the clients under test cold before assertions that inspect their caches and RNTBD endpoints.
+        CosmosAsyncClient setupProbeClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .gatewayMode()
+                .buildAsyncClient();
+        try {
+            directCosmosAsyncContainer = createCollection(
+                directCosmosAsyncDatabase,
+                new CosmosContainerProperties(CONTAINER_ID, "/mypk"),
+                new CosmosContainerRequestOptions(),
+                20000,
+                setupProbeClient);
+        } finally {
+            safeClose(setupProbeClient);
+        }
 
         gatewayCosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
