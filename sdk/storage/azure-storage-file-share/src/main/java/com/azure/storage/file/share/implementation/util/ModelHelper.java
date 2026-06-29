@@ -703,8 +703,8 @@ public class ModelHelper {
 
     private static ShareFileItem createFileShareItem(FileItem item) {
         return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), item.getAttributes(),
-            item.getPermissionKey(), getContentLength(item.getProperties()), item.getLinkCount(), item.getFileType(),
-            null, null, null);
+            item.getPermissionKey(), getContentLength(item.getProperties()), item.getLinkCount(),
+            item.getFileType() == null ? NfsFileType.REGULAR : item.getFileType(), null, null, null);
     }
 
     private static ShareFileItem createSymLinkShareItem(SymLinkItem item) {

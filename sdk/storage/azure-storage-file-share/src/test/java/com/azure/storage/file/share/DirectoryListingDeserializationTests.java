@@ -83,7 +83,7 @@ public class DirectoryListingDeserializationTests {
         assertEquals("\"0x8DEAF1479E1C087\"", dir.getProperties().getETag());
 
         List<ShareFileItem> files = items.stream()
-            .filter(item -> !item.isDirectory() && item.getFileType() == null)
+            .filter(item -> !item.isDirectory() && item.getFileType() == NfsFileType.REGULAR)
             .collect(Collectors.toList());
         assertEquals(4, files.size());
         files.forEach(file -> {
