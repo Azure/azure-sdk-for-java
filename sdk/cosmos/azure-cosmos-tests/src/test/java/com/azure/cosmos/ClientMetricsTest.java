@@ -340,7 +340,8 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    // TestState constructor creates a new client and collection, which can exceed 40s in CI.
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManySingleItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -379,7 +380,8 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    // TestState constructor creates a new client and collection, which can exceed 40s in CI.
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyMultipleItems() throws Exception {
         List<InternalObjectNode> createdDocs = new ArrayList<>();
         List<CosmosItemIdentity> tuplesToBeRead = new ArrayList<>();
