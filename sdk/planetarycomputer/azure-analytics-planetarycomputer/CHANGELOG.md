@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.0.0 (2026-06-29)
 
 - Initial GA release of the Azure Planetary Computer client library for Java targeting API version `2026-04-15`.
 
