@@ -763,10 +763,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         Runnable ensureContainerExistsOnReadFailure) {
 
         // Creating a container is asynchronous - especially on multi-region accounts the new collection can
-        // take time to become readable in the non-write regions. Until then, reads routed to those regions fail
-        // with 404/1013 ("Collection is not yet available for read"). Instead of a fixed sleep, verify - against
-        // every non-primary region of the account - that the collection is readable, probing each region (by
-        // excluding all other regions) with exponential back-off until it succeeds, bounded to two minutes total.
+        // take time to become readable in a routed region. Until then, metadata reads can fail with 404/1013
+        // ("Collection is not yet available for read"). Instead of a fixed sleep, verify that the collection is
+        // readable through the caller's normal route and, when configured, through the caller's preferred regions.
         // The probe is issued through probeClient when provided (so a throwaway client does not warm the caller's
         // caches); otherwise the container's own client is used.
         CosmosAsyncClient client = probeClient != null
@@ -788,31 +787,39 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         Duration maxWait = COLLECTION_READINESS_MAX_WAIT;
         long deadlineNanos = System.nanoTime() + maxWait.toNanos();
 
-        if (allRegions.isEmpty()) {
-            // Defensive fallback: if account metadata has not exposed locations, still verify that the collection
-            // is readable using the client's normal routing.
-            awaitContainerReadableInRegion(
-                probeContainer,
-                null,
-                Collections.emptyList(),
-                deadlineNanos,
-                maxWait,
-                ensureContainerExistsOnReadFailure);
+        awaitContainerReadableInRegion(
+            probeContainer,
+            null,
+            Collections.emptyList(),
+            deadlineNanos,
+            maxWait,
+            ensureContainerExistsOnReadFailure);
+
+        List<String> preferredRegions = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getPreferredRegions(client);
+        if (preferredRegions == null || preferredRegions.isEmpty() || allRegions.isEmpty()) {
             return;
         }
 
-        // Verify the collection is readable in every account region. Multi-write accounts can route writes and
-        // metadata reads to any configured preferred region, including a region that would otherwise be treated as
-        // the first writable location.
-        for (String region : allRegions) {
-            final String target = region;
+        for (String preferredRegion : preferredRegions) {
+            boolean readableRegion = allRegions
+                .stream()
+                .anyMatch(region -> region.equalsIgnoreCase(preferredRegion));
+
+            if (!readableRegion) {
+                continue;
+            }
+
+            final String target = preferredRegion;
             List<String> excludedRegions = allRegions
                 .stream()
                 .filter(other -> !other.equalsIgnoreCase(target))
                 .collect(Collectors.toList());
             awaitContainerReadableInRegion(
                 probeContainer,
-                region,
+                preferredRegion,
                 excludedRegions,
                 deadlineNanos,
                 maxWait,
