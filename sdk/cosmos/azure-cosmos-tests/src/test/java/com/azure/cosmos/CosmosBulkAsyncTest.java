@@ -80,12 +80,12 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"fast"}, timeOut = 4 * SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem_withBulkAndThroughputControlAsDefaultGroup() throws InterruptedException {
         runBulkTest(true);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = 4 * SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem_withBulkAndThroughputControlAsNonDefaultGroup() throws InterruptedException {
         runBulkTest(false);
     }

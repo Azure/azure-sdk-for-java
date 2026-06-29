@@ -960,10 +960,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
                 .filter(TestSuiteBase::isTransientCreateFailure))
             .onErrorResume(e -> isConflictException(e), e -> {
-                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                logger.info("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
                 return Mono.empty();
             })
             .block();
+        waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), /* probeClient */ null);
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
@@ -1082,15 +1083,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncClient client, String dbId, CosmosContainerProperties collectionDefinition) {
         CosmosAsyncDatabase database = client.getDatabase(dbId);
-        database.createContainer(collectionDefinition)
-            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
-                .filter(TestSuiteBase::isTransientCreateFailure))
-            .onErrorResume(e -> isConflictException(e), e -> {
-                logger.warn("Container {} already exists (409 Conflict), treating as success", collectionDefinition.getId());
-                return Mono.empty();
-            })
-            .block();
-        return database.getContainer(collectionDefinition.getId());
+        return createCollection(database, collectionDefinition, new CosmosContainerRequestOptions());
     }
 
     public static void deleteCollection(CosmosAsyncClient client, String dbId, String collectionId) {
