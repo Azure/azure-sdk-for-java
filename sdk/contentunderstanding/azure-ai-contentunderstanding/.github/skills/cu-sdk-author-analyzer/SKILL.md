@@ -37,7 +37,7 @@ package — the same client `Sample04_CreateAnalyzerAsync.java` and
 > - If the user says **document** → continue with this skill.
 > - If the user says **audio**, **video**, or **image** → stop this skill and
 >   point them at the typed-model samples
->   ([`Sample04_CreateAnalyzerAsync.java`](../../../samples/Sample04_CreateAnalyzerAsync.java)
+>   ([`Sample04_CreateAnalyzerAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample04_CreateAnalyzerAsync.java)
 >   with `prebuilt-audio` / `prebuilt-video` / `prebuilt-image`) or the
 >   [REST tutorial](https://learn.microsoft.com/azure/ai-services/content-understanding/tutorial/create-custom-analyzer).
 
@@ -47,7 +47,7 @@ Required: the `Azure.AI.ContentUnderstanding` SDK built locally (the skill
 tool references the built DLL by path), `.env` or environment variables
 with `CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
 `az login`), and the model defaults configured for this resource (see
-[`Sample00_UpdateDefaultsAsync.java`](../../../samples/Sample00_UpdateDefaultsAsync.java)).
+[`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java)).
 
 > **[COPILOT] Probe first, then route on failure — do not duplicate setup logic here.**
 >
@@ -65,7 +65,7 @@ with `CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
 > | `java: MISSING` | install JDK 17+ from https://adoptium.net |
 > | endpoint `MISSING` | create or edit `.env` at the repo root with `CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/`, then resume |
 > | endpoint `ok`, key `empty`, `az: not logged in` | run `az login` **or** add `CONTENTUNDERSTANDING_KEY` to `.env`, then resume |
-> | All env checks pass but service calls fail with model errors | run [`Sample00_UpdateDefaultsAsync.java`](../../../samples/Sample00_UpdateDefaultsAsync.java) once for this resource, then resume |
+> | All env checks pass but service calls fail with model errors | run [`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java) once for this resource, then resume |
 > | All ok | ✅ Proceed to Step 1. |
 >
 > Never ask the user to paste an endpoint or API key into chat — they edit `.env` directly or run `az login`.
@@ -128,7 +128,7 @@ want to extract from — labels (`"Invoice #:"`), section headings
 (`"Bill To"`), table headers, etc.
 
 > **Reference**: this is the same call pattern as
-> [`Sample01_AnalyzeBinaryAsync.java`](../../../samples/Sample01_AnalyzeBinaryAsync.java)
+> [`Sample01_AnalyzeBinaryAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample01_AnalyzeBinaryAsync.java)
 > using `prebuilt-documentSearch`.
 
 ### Step 2 — Draft a JSON field schema
@@ -183,7 +183,7 @@ shapes. Delete the example fields you don't need.
 > **`models.completion` is effectively required**: whenever `fieldSchema` is
 > present, the service needs a completion model. Leave the `models` block in
 > the template populated unless you've run
-> [`Sample00_UpdateDefaultsAsync.java`](../../../samples/Sample00_UpdateDefaultsAsync.java)
+> [`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java)
 > to set resource defaults. Omitting it fails with `InvalidRequest:
 > 'models.completion' is not set` *after* a misleadingly successful
 > `[CREATE]` log line. `create-and-test` prints a `[WARN]` if the schema
@@ -231,7 +231,7 @@ The local validator (Step 3) rejects any value not on that list.
 ```
 
 > **Reference**: see
-> [`Sample04_CreateAnalyzerAsync.java`](../../../samples/Sample04_CreateAnalyzerAsync.java)
+> [`Sample04_CreateAnalyzerAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample04_CreateAnalyzerAsync.java)
 > for the typed-model equivalent. The `create-and-test` tool sends the JSON
 > directly so the schema may include any properties supported by the
 > service, even if the typed model doesn't expose them.
@@ -277,7 +277,7 @@ For each input document the script writes two files into `--output`:
 
 - `<doc>.json` — full per-document `AnalysisResult` (fields, grounding, confidences).
 - `<doc>.llm.md` — same result rendered via the SDK's
-  [`AnalysisResultExtensions.ToLlmInput`](../../../samples/Sample_Advanced_ToLlmInput.md) helper:
+  [`AnalysisResultExtensions.ToLlmInput`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java) helper:
   YAML front matter (category, page range, fields) plus the document text.
   Drop this straight into an LLM prompt, or skim it in VS Code for a fast
   human review.
@@ -344,13 +344,13 @@ their own code.
 >    save it somewhere outside `.local_only/` for future reference; they
 >    can also inspect any existing analyzer's schema directly via the SDK
 >    (see
->    [`Sample06_GetAnalyzer.md`](../../../samples/Sample06_GetAnalyzer.md)).
+>    [`Sample06_GetAnalyzer.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample06_GetAnalyzer.java)).
 > 3. **Next-step samples** — point the user to:
->    - [`Sample04_CreateAnalyzerAsync.java`](../../../samples/Sample04_CreateAnalyzerAsync.java)
+>    - [`Sample04_CreateAnalyzerAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample04_CreateAnalyzerAsync.java)
 >      — how to (re)create a custom analyzer from a schema JSON in their own code.
->    - [`Sample01_AnalyzeBinaryAsync.java`](../../../samples/Sample01_AnalyzeBinaryAsync.java)
+>    - [`Sample01_AnalyzeBinaryAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample01_AnalyzeBinaryAsync.java)
 >      and
->      [`Sample02_AnalyzeUrl.md`](../../../samples/Sample02_AnalyzeUrl.md)
+>      [`Sample02_AnalyzeUrl.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample02_AnalyzeUrl.java)
 >      — how to call the analyzer on real input from their own code.
 >
 >    Remind the user that the analyzer you just built is **already deployed**
@@ -375,11 +375,11 @@ mvn -B -q -f sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skil
 > iterating. Edit the schema → hash changes → new analyzer is created.
 
 For explicit lifecycle management see
-[`Sample06_GetAnalyzer.md`](../../../samples/Sample06_GetAnalyzer.md),
-[`Sample07_ListAnalyzers.md`](../../../samples/Sample07_ListAnalyzers.md),
-[`Sample08_UpdateAnalyzer.md`](../../../samples/Sample08_UpdateAnalyzer.md),
+[`Sample06_GetAnalyzer.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample06_GetAnalyzer.java),
+[`Sample07_ListAnalyzers.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample07_ListAnalyzers.java),
+[`Sample08_UpdateAnalyzer.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample08_UpdateAnalyzer.java),
 and
-[`Sample09_DeleteAnalyzer.md`](../../../samples/Sample09_DeleteAnalyzer.md).
+[`Sample09_DeleteAnalyzer.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample09_DeleteAnalyzer.java).
 
 ## Exit codes
 

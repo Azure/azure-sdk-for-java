@@ -41,7 +41,7 @@ Required: the `Azure.AI.ContentUnderstanding` SDK built locally (the skill
 tool references the built DLL by path), `.env` or environment variables
 with `CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
 `az login`), and the model defaults configured for this resource (see
-[`Sample00_UpdateDefaultsAsync.java`](../../../samples/Sample00_UpdateDefaultsAsync.java)).
+[`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java)).
 
 > **[COPILOT] Probe first, then route on failure — do not duplicate setup logic here.**
 >
@@ -59,7 +59,7 @@ with `CONTENTUNDERSTANDING_ENDPOINT` (plus `CONTENTUNDERSTANDING_KEY` or
 > | `java: MISSING` | install JDK 17+ from https://adoptium.net |
 > | endpoint `MISSING` | create or edit `.env` with `CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/`, then resume |
 > | endpoint `ok`, key `empty`, `az: not logged in` | run `az login` **or** add `CONTENTUNDERSTANDING_KEY` to `.env`, then resume |
-> | All env checks pass but service calls fail with model errors | run [`Sample00_UpdateDefaultsAsync.java`](../../../samples/Sample00_UpdateDefaultsAsync.java) once for this resource, then resume |
+> | All env checks pass but service calls fail with model errors | run [`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java) once for this resource, then resume |
 > | All ok | ✅ Proceed to the Packet check below. |
 >
 > Never ask the user to paste an endpoint or API key into chat — they edit `.env` directly or run `az login`.
@@ -184,7 +184,7 @@ the full field-schema walkthrough.
 > values, and keep the field count focused.
 
 > **Reference**:
-> [`Sample05_CreateClassifierAsync.java`](../../../samples/Sample05_CreateClassifierAsync.java)
+> [`Sample05_CreateClassifierAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample05_CreateClassifierAsync.java)
 > ships a complete worked example using
 > `samples/sample_files/mixed_financial_docs.pdf` with three categories —
 > Invoice, Bank_Statement, Loan_Application.
@@ -339,7 +339,7 @@ For each input document the tool writes two files into `--output`:
 
 - `<doc>.json` — full `AnalysisResult` with all per-segment fields and grounding.
 - `<doc>.llm.md` — the same result rendered via the SDK's
-  [`AnalysisResultExtensions.ToLlmInput`](../../../samples/Sample_Advanced_ToLlmInput.md) helper.
+  [`AnalysisResultExtensions.ToLlmInput`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample_Advanced_ToLlmInput.java) helper.
   For classify-and-route, the helper expands each classified segment into
   its own block with the **category in the YAML front matter**, separated by
   `*****` dividers — drop it into an LLM prompt or skim it in VS Code.
@@ -352,7 +352,7 @@ For each input document the tool writes two files into `--output`:
 > **`models.completion` for inner schemas**: each inner schema (which has a
 > `fieldSchema`) needs `models.completion` set unless the resource has
 > defaults configured via
-> [`Sample00_UpdateDefaultsAsync.java`](../../../samples/Sample00_UpdateDefaultsAsync.java).
+> [`Sample00_UpdateDefaultsAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaultsAsync.java).
 > `create-and-test-router` prints a `[WARN]` per inner schema that is
 > missing it, before any service call.
 
@@ -436,15 +436,15 @@ from their own code.
 >    `.local_only/schemas/invoice_v3.json`, etc.). Recommend the user save
 >    them somewhere outside `.local_only/` for future reference; they can
 >    also inspect any existing analyzer's schema directly via the SDK (see
->    [`Sample06_GetAnalyzer.md`](../../../samples/Sample06_GetAnalyzer.md)).
+>    [`Sample06_GetAnalyzer.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample06_GetAnalyzer.java)).
 > 3. **Next-step samples** — point the user to:
->    - [`Sample05_CreateClassifierAsync.java`](../../../samples/Sample05_CreateClassifierAsync.java)
+>    - [`Sample05_CreateClassifierAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample05_CreateClassifierAsync.java)
 >      — how to (re)build the full classify-and-route pipeline from schema
 >      JSON in their own code (handles inner-first creation ordering and
 >      `contentCategories.analyzerId` wiring the same way our tool did).
->    - [`Sample01_AnalyzeBinaryAsync.java`](../../../samples/Sample01_AnalyzeBinaryAsync.java)
+>    - [`Sample01_AnalyzeBinaryAsync.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample01_AnalyzeBinaryAsync.java)
 >      and
->      [`Sample02_AnalyzeUrl.md`](../../../samples/Sample02_AnalyzeUrl.md)
+>      [`Sample02_AnalyzeUrl.java`](../../../src/samples/java/com/azure/ai/contentunderstanding/samples/Sample02_AnalyzeUrl.java)
 >      — how to call the analyzer on real input from their own code. Use
 >      the **outer classifier's** analyzer ID as `analyzerId`.
 >
