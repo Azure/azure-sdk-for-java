@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.NetworkVirtualApplianceBootDiagn
  */
 public final class NetworkVirtualAppliancesGetBootDiagnosticLogsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkVirtualApplianceBootDiagnostics.json
+     * x-ms-original-file: 2025-07-01/NetworkVirtualApplianceBootDiagnostics.json
      */
     /**
      * Sample code: Retrieve Boot Diagnostic logs for a given NVA VMSS instance.

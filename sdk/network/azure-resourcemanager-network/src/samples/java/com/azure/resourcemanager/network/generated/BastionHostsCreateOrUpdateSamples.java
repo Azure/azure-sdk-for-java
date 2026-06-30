@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class BastionHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostPutWithPrivateOnly.json
+     * x-ms-original-file: 2025-07-01/BastionHostPutWithPrivateOnly.json
      */
     /**
      * Sample code: Create Bastion Host With Private Only.
@@ -35,7 +35,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostDeveloperPut.json
+     * x-ms-original-file: 2025-07-01/BastionHostDeveloperPut.json
      */
     /**
      * Sample code: Create Developer Bastion Host.
@@ -54,7 +54,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostPut.json
+     * x-ms-original-file: 2025-07-01/BastionHostPut.json
      */
     /**
      * Sample code: Create Bastion Host.
@@ -75,7 +75,7 @@ public final class BastionHostsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/BastionHostPutWithZones.json
+     * x-ms-original-file: 2025-07-01/BastionHostPutWithZones.json
      */
     /**
      * Sample code: Create Bastion Host With Zones.

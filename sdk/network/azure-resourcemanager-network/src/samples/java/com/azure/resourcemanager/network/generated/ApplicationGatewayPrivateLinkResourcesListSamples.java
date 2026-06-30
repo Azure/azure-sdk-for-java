@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewayPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayPrivateLinkResourceList.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayPrivateLinkResourceList.json
      */
     /**
      * Sample code: Lists all private link resources on application gateway.

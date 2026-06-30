@@ -15,11 +15,11 @@ public final class RaiPolicyContentFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyContentFilter model = BinaryData.fromString(
-            "{\"name\":\"kpnb\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Prompt\",\"action\":\"RETRY\"}")
+            "{\"name\":\"dftuljltduce\",\"enabled\":true,\"severityThreshold\":\"High\",\"blocking\":false,\"source\":\"Prompt\",\"action\":\"RETRY\"}")
             .toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("kpnb", model.name());
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
+        Assertions.assertEquals("dftuljltduce", model.name());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(ContentLevel.HIGH, model.severityThreshold());
         Assertions.assertFalse(model.blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
         Assertions.assertEquals(RaiActionType.RETRY, model.action());
@@ -27,16 +27,16 @@ public final class RaiPolicyContentFilterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("kpnb")
-            .withEnabled(false)
-            .withSeverityThreshold(ContentLevel.MEDIUM)
+        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("dftuljltduce")
+            .withEnabled(true)
+            .withSeverityThreshold(ContentLevel.HIGH)
             .withBlocking(false)
             .withSource(RaiPolicyContentSource.PROMPT)
             .withAction(RaiActionType.RETRY);
         model = BinaryData.fromObject(model).toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("kpnb", model.name());
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
+        Assertions.assertEquals("dftuljltduce", model.name());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(ContentLevel.HIGH, model.severityThreshold());
         Assertions.assertFalse(model.blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
         Assertions.assertEquals(RaiActionType.RETRY, model.action());

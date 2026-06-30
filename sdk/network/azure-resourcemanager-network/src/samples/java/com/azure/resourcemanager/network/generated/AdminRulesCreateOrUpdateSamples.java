@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class AdminRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerAdminRulePut_NetworkGroupSource.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerAdminRulePut_NetworkGroupSource.json
      */
     /**
      * Sample code: Create a admin rule with network group as source or destination.
@@ -46,7 +46,7 @@ public final class AdminRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerAdminRulePut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerAdminRulePut.json
      */
     /**
      * Sample code: Create an admin rule.

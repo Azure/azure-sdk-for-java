@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayUpdateTags.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayUpdateTags.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGatewayTags.

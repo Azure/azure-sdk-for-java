@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NatGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NatGatewayUpdateTags.json
+     * x-ms-original-file: 2025-07-01/NatGatewayUpdateTags.json
      */
     /**
      * Sample code: Update nat gateway tags.
@@ -28,7 +28,7 @@ public final class NatGatewaysUpdateTagsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NatGatewayUpdateTagsStandardV2Sku.json
+     * x-ms-original-file: 2025-07-01/NatGatewayUpdateTagsStandardV2Sku.json
      */
     /**
      * Sample code: Update nat gateway with StandardV2 Sku tags.

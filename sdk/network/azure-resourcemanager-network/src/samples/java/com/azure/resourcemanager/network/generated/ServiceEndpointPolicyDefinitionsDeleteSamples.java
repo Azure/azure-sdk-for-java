@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceEndpointPolicyDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceEndpointPolicyDefinitionDelete.json
+     * x-ms-original-file: 2025-07-01/ServiceEndpointPolicyDefinitionDelete.json
      */
     /**
      * Sample code: Delete service endpoint policy definitions from service endpoint policy.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysInvokeExecuteMigrationSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayExecuteMigration.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayExecuteMigration.json
      */
     /**
      * Sample code: VirtualNetworkGatewayExecuteMigration.

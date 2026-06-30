@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ReachabilityAnalysisIntentsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ReachabilityAnalysisIntentList.json
+     * x-ms-original-file: 2025-07-01/ReachabilityAnalysisIntentList.json
      */
     /**
      * Sample code: ReachabilityAnalysisIntentList.

@@ -12,17 +12,17 @@ public final class CommitmentPeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPeriod model = BinaryData.fromString(
-            "{\"tier\":\"mewzsyyc\",\"count\":1576556557,\"quota\":{\"quantity\":893213064865433061,\"unit\":\"ud\"},\"startDate\":\"rx\",\"endDate\":\"thzvaytdwkqbrqu\"}")
+            "{\"tier\":\"zqwhxxbuyqaxzfeq\",\"count\":1560492687,\"quota\":{\"quantity\":6081524595721581276,\"unit\":\"xorjaltolmncwsob\"},\"startDate\":\"csdbnwdcfhuc\",\"endDate\":\"pfuvglsbjjca\"}")
             .toObject(CommitmentPeriod.class);
-        Assertions.assertEquals("mewzsyyc", model.tier());
-        Assertions.assertEquals(1576556557, model.count());
+        Assertions.assertEquals("zqwhxxbuyqaxzfeq", model.tier());
+        Assertions.assertEquals(1560492687, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPeriod model = new CommitmentPeriod().withTier("mewzsyyc").withCount(1576556557);
+        CommitmentPeriod model = new CommitmentPeriod().withTier("zqwhxxbuyqaxzfeq").withCount(1560492687);
         model = BinaryData.fromObject(model).toObject(CommitmentPeriod.class);
-        Assertions.assertEquals("mewzsyyc", model.tier());
-        Assertions.assertEquals(1576556557, model.count());
+        Assertions.assertEquals("zqwhxxbuyqaxzfeq", model.tier());
+        Assertions.assertEquals(1560492687, model.count());
     }
 }

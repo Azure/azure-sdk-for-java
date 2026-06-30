@@ -33,18 +33,23 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkFailoverAllTestsDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkFailoverSingleTestDetailsInner;
 import com.azure.resourcemanager.network.implementation.models.ExpressRouteCircuitListResult;
+import com.azure.resourcemanager.network.models.ExpressRouteLinkFailoverStopApiParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -144,6 +149,45 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/getCircuitLinkFailoverAllTestsDetails")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverAllTestsDetails(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("circuitName") String circuitName,
+            @QueryParam("failoverTestType") String failoverTestType, @QueryParam("fetchLatest") Boolean fetchLatest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/getCircuitLinkFailoverSingleTestDetails")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverSingleTestDetails(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("circuitName") String circuitName,
+            @QueryParam("linkType") String linkType, @QueryParam("circuitTestCategory") String circuitTestCategory,
+            @QueryParam("failoverTestId") String failoverTestId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/startCircuitLinkFailoverTest")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> startCircuitLinkFailoverTest(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("circuitName") String circuitName,
+            @QueryParam("linkType") String linkType, @QueryParam("circuitTestCategory") String circuitTestCategory,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/stopCircuitLinkFailoverTest")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stopCircuitLinkFailoverTest(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("circuitName") String circuitName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/arpTables/{devicePath}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -228,7 +272,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -266,7 +310,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -355,7 +399,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -398,7 +442,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -590,7 +634,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -635,7 +679,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -722,7 +766,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, circuitName, context))
@@ -758,7 +802,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             circuitName, context);
@@ -918,7 +962,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -954,7 +998,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1042,7 +1086,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1072,7 +1116,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1162,7 +1206,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStats(this.client.getEndpoint(), apiVersion,
@@ -1200,7 +1244,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStats(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1256,6 +1300,1099 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
     }
 
     /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverAllTestsDetailsWithResponseAsync(
+        String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getCircuitLinkFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, circuitName, failoverTestType, fetchLatest, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverAllTestsDetailsWithResponseAsync(
+        String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getCircuitLinkFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, circuitName, failoverTestType, fetchLatest, accept,
+            context);
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName,
+            String failoverTestType, Boolean fetchLatest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = getCircuitLinkFailoverAllTestsDetailsWithResponseAsync(
+            resourceGroupName, circuitName, failoverTestType, fetchLatest);
+        return this.client
+            .<List<ExpressRouteLinkFailoverAllTestsDetailsInner>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName) {
+        final String failoverTestType = null;
+        final Boolean fetchLatest = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = getCircuitLinkFailoverAllTestsDetailsWithResponseAsync(
+            resourceGroupName, circuitName, failoverTestType, fetchLatest);
+        return this.client
+            .<List<ExpressRouteLinkFailoverAllTestsDetailsInner>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName,
+            String failoverTestType, Boolean fetchLatest, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getCircuitLinkFailoverAllTestsDetailsWithResponseAsync(
+            resourceGroupName, circuitName, failoverTestType, fetchLatest, context);
+        return this.client
+            .<List<ExpressRouteLinkFailoverAllTestsDetailsInner>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>() {
+                }.getJavaType(), context);
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetails(String resourceGroupName, String circuitName) {
+        final String failoverTestType = null;
+        final Boolean fetchLatest = null;
+        return this
+            .beginGetCircuitLinkFailoverAllTestsDetailsAsync(resourceGroupName, circuitName, failoverTestType,
+                fetchLatest)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>, List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        beginGetCircuitLinkFailoverAllTestsDetails(String resourceGroupName, String circuitName,
+            String failoverTestType, Boolean fetchLatest, Context context) {
+        return this
+            .beginGetCircuitLinkFailoverAllTestsDetailsAsync(resourceGroupName, circuitName, failoverTestType,
+                fetchLatest, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteLinkFailoverAllTestsDetailsInner>> getCircuitLinkFailoverAllTestsDetailsAsync(
+        String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest) {
+        return beginGetCircuitLinkFailoverAllTestsDetailsAsync(resourceGroupName, circuitName, failoverTestType,
+            fetchLatest).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>
+        getCircuitLinkFailoverAllTestsDetailsAsync(String resourceGroupName, String circuitName) {
+        final String failoverTestType = null;
+        final Boolean fetchLatest = null;
+        return beginGetCircuitLinkFailoverAllTestsDetailsAsync(resourceGroupName, circuitName, failoverTestType,
+            fetchLatest).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<List<ExpressRouteLinkFailoverAllTestsDetailsInner>> getCircuitLinkFailoverAllTestsDetailsAsync(
+        String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest, Context context) {
+        return beginGetCircuitLinkFailoverAllTestsDetailsAsync(resourceGroupName, circuitName, failoverTestType,
+            fetchLatest, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteLinkFailoverAllTestsDetailsInner>
+        getCircuitLinkFailoverAllTestsDetails(String resourceGroupName, String circuitName) {
+        final String failoverTestType = null;
+        final Boolean fetchLatest = null;
+        return getCircuitLinkFailoverAllTestsDetailsAsync(resourceGroupName, circuitName, failoverTestType, fetchLatest)
+            .block();
+    }
+
+    /**
+     * Retrieves the details of all the link failover tests performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param failoverTestType The type of failover test.
+     * @param fetchLatest Fetch only the latest tests.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteLinkFailoverAllTestsDetailsInner> getCircuitLinkFailoverAllTestsDetails(
+        String resourceGroupName, String circuitName, String failoverTestType, Boolean fetchLatest, Context context) {
+        return getCircuitLinkFailoverAllTestsDetailsAsync(resourceGroupName, circuitName, failoverTestType, fetchLatest,
+            context).block();
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverSingleTestDetailsWithResponseAsync(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (linkType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkType is required and cannot be null."));
+        }
+        if (circuitTestCategory == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
+        }
+        if (failoverTestId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getCircuitLinkFailoverSingleTestDetails(this.client.getEndpoint(),
+                apiVersion, this.client.getSubscriptionId(), resourceGroupName, circuitName, linkType,
+                circuitTestCategory, failoverTestId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getCircuitLinkFailoverSingleTestDetailsWithResponseAsync(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (linkType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkType is required and cannot be null."));
+        }
+        if (circuitTestCategory == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
+        }
+        if (failoverTestId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getCircuitLinkFailoverSingleTestDetails(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, circuitName, linkType, circuitTestCategory,
+            failoverTestId, accept, context);
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
+        beginGetCircuitLinkFailoverSingleTestDetailsAsync(String resourceGroupName, String circuitName, String linkType,
+            String circuitTestCategory, String failoverTestId) {
+        Mono<Response<Flux<ByteBuffer>>> mono = getCircuitLinkFailoverSingleTestDetailsWithResponseAsync(
+            resourceGroupName, circuitName, linkType, circuitTestCategory, failoverTestId);
+        return this.client
+            .<List<ExpressRouteLinkFailoverSingleTestDetailsInner>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
+        beginGetCircuitLinkFailoverSingleTestDetailsAsync(String resourceGroupName, String circuitName, String linkType,
+            String circuitTestCategory, String failoverTestId, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getCircuitLinkFailoverSingleTestDetailsWithResponseAsync(
+            resourceGroupName, circuitName, linkType, circuitTestCategory, failoverTestId, context);
+        return this.client
+            .<List<ExpressRouteLinkFailoverSingleTestDetailsInner>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), context);
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
+        beginGetCircuitLinkFailoverSingleTestDetails(String resourceGroupName, String circuitName, String linkType,
+            String circuitTestCategory, String failoverTestId) {
+        return this
+            .beginGetCircuitLinkFailoverSingleTestDetailsAsync(resourceGroupName, circuitName, linkType,
+                circuitTestCategory, failoverTestId)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>, List<ExpressRouteLinkFailoverSingleTestDetailsInner>>
+        beginGetCircuitLinkFailoverSingleTestDetails(String resourceGroupName, String circuitName, String linkType,
+            String circuitTestCategory, String failoverTestId, Context context) {
+        return this
+            .beginGetCircuitLinkFailoverSingleTestDetailsAsync(resourceGroupName, circuitName, linkType,
+                circuitTestCategory, failoverTestId, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteLinkFailoverSingleTestDetailsInner>> getCircuitLinkFailoverSingleTestDetailsAsync(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId) {
+        return beginGetCircuitLinkFailoverSingleTestDetailsAsync(resourceGroupName, circuitName, linkType,
+            circuitTestCategory, failoverTestId).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<List<ExpressRouteLinkFailoverSingleTestDetailsInner>> getCircuitLinkFailoverSingleTestDetailsAsync(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId, Context context) {
+        return beginGetCircuitLinkFailoverSingleTestDetailsAsync(resourceGroupName, circuitName, linkType,
+            circuitTestCategory, failoverTestId, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteLinkFailoverSingleTestDetailsInner> getCircuitLinkFailoverSingleTestDetails(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId) {
+        return getCircuitLinkFailoverSingleTestDetailsAsync(resourceGroupName, circuitName, linkType,
+            circuitTestCategory, failoverTestId).block();
+    }
+
+    /**
+     * Retrieves the details of a particular link failover test performed on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteLinkFailoverSingleTestDetailsInner> getCircuitLinkFailoverSingleTestDetails(
+        String resourceGroupName, String circuitName, String linkType, String circuitTestCategory,
+        String failoverTestId, Context context) {
+        return getCircuitLinkFailoverSingleTestDetailsAsync(resourceGroupName, circuitName, linkType,
+            circuitTestCategory, failoverTestId, context).block();
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (linkType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkType is required and cannot be null."));
+        }
+        if (circuitTestCategory == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.startCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, circuitName, linkType, circuitTestCategory, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> startCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (linkType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter linkType is required and cannot be null."));
+        }
+        if (circuitTestCategory == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.startCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, circuitName, linkType, circuitTestCategory, accept,
+            context);
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<String>, String> beginStartCircuitLinkFailoverTestAsync(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory) {
+        Mono<Response<Flux<ByteBuffer>>> mono = startCircuitLinkFailoverTestWithResponseAsync(resourceGroupName,
+            circuitName, linkType, circuitTestCategory);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<String>, String> beginStartCircuitLinkFailoverTestAsync(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = startCircuitLinkFailoverTestWithResponseAsync(resourceGroupName,
+            circuitName, linkType, circuitTestCategory, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStartCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory) {
+        return this
+            .beginStartCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, linkType, circuitTestCategory)
+            .getSyncPoller();
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStartCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, String linkType, String circuitTestCategory, Context context) {
+        return this
+            .beginStartCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, linkType, circuitTestCategory,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> startCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName, String linkType,
+        String circuitTestCategory) {
+        return beginStartCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, linkType, circuitTestCategory)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<String> startCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName,
+        String linkType, String circuitTestCategory, Context context) {
+        return beginStartCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, linkType, circuitTestCategory,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String startCircuitLinkFailoverTest(String resourceGroupName, String circuitName, String linkType,
+        String circuitTestCategory) {
+        return startCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, linkType, circuitTestCategory).block();
+    }
+
+    /**
+     * Starts link failover simulation on the express route circuit for the specified link type and test category.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param linkType The link type.
+     * @param circuitTestCategory The circuit test category.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String startCircuitLinkFailoverTest(String resourceGroupName, String circuitName, String linkType,
+        String circuitTestCategory, Context context) {
+        return startCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, linkType, circuitTestCategory, context)
+            .block();
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> stopCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (stopParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stopParameters is required and cannot be null."));
+        } else {
+            stopParameters.validate();
+        }
+        final String apiVersion = "2025-07-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.stopCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, circuitName, contentType, accept, stopParameters,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> stopCircuitLinkFailoverTestWithResponseAsync(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (stopParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stopParameters is required and cannot be null."));
+        } else {
+            stopParameters.validate();
+        }
+        final String apiVersion = "2025-07-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.stopCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, circuitName, contentType, accept, stopParameters,
+            context);
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<String>, String> beginStopCircuitLinkFailoverTestAsync(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopCircuitLinkFailoverTestWithResponseAsync(resourceGroupName, circuitName, stopParameters);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<String>, String> beginStopCircuitLinkFailoverTestAsync(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopCircuitLinkFailoverTestWithResponseAsync(resourceGroupName, circuitName, stopParameters, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStopCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters) {
+        return this.beginStopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStopCircuitLinkFailoverTest(String resourceGroupName,
+        String circuitName, ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context) {
+        return this.beginStopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> stopCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName,
+        ExpressRouteLinkFailoverStopApiParameters stopParameters) {
+        return beginStopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<String> stopCircuitLinkFailoverTestAsync(String resourceGroupName, String circuitName,
+        ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context) {
+        return beginStopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String stopCircuitLinkFailoverTest(String resourceGroupName, String circuitName,
+        ExpressRouteLinkFailoverStopApiParameters stopParameters) {
+        return stopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters).block();
+    }
+
+    /**
+     * Stops link failover simulation on the express route circuit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param stopParameters Parameters supplied to stop the link failover simulation on the express route circuit.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String stopCircuitLinkFailoverTest(String resourceGroupName, String circuitName,
+        ExpressRouteLinkFailoverStopApiParameters stopParameters, Context context) {
+        return stopCircuitLinkFailoverTestAsync(resourceGroupName, circuitName, stopParameters, context).block();
+    }
+
+    /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1292,7 +2429,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1339,7 +2476,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listArpTable(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1557,7 +2694,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listRoutesTable(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, circuitName, peeringName, devicePath, accept, context))
@@ -1602,7 +2739,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTable(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1820,7 +2957,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listRoutesTableSummary(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, circuitName, peeringName, devicePath, accept, context))
@@ -1865,7 +3002,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTableSummary(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2084,7 +3221,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPeeringStats(this.client.getEndpoint(), apiVersion,
@@ -2126,7 +3263,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPeeringStats(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2292,4 +3429,12 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
+
+    private static final TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>> TYPE_REFERENCE_LIST_EXPRESS_ROUTE_LINK_FAILOVER_ALL_TESTS_DETAILS_INNER
+        = new TypeReference<List<ExpressRouteLinkFailoverAllTestsDetailsInner>>() {
+        };
+
+    private static final TypeReference<List<ExpressRouteLinkFailoverSingleTestDetailsInner>> TYPE_REFERENCE_LIST_EXPRESS_ROUTE_LINK_FAILOVER_SINGLE_TEST_DETAILS_INNER
+        = new TypeReference<List<ExpressRouteLinkFailoverSingleTestDetailsInner>>() {
+        };
 }

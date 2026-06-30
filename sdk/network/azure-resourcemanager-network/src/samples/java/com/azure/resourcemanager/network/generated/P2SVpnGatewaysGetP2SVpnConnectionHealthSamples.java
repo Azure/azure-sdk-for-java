@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class P2SVpnGatewaysGetP2SVpnConnectionHealthSamples {
     /*
-     * x-ms-original-file: 2025-05-01/P2SVpnGatewayGetConnectionHealth.json
+     * x-ms-original-file: 2025-07-01/P2SVpnGatewayGetConnectionHealth.json
      */
     /**
      * Sample code: P2SVpnGatewayGetConnectionHealth.

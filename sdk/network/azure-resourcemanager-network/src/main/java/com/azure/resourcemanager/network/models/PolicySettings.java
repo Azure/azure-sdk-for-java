@@ -385,7 +385,7 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
         jsonWriter.writeStringField("customBlockResponseBody", this.customBlockResponseBody);
         jsonWriter.writeJsonField("logScrubbing", this.logScrubbing);
         jsonWriter.writeNumberField("jsChallengeCookieExpirationInMins", this.jsChallengeCookieExpirationInMins);
-        jsonWriter.writeNumberField("captchaCookieExpirationInMins", this.captchaCookieExpirationInMins);
+        jsonWriter.writeNumberField("captchaExpirationInMins", this.captchaCookieExpirationInMins);
         return jsonWriter.writeEndObject();
     }
 
@@ -430,7 +430,7 @@ public final class PolicySettings implements JsonSerializable<PolicySettings> {
                 } else if ("jsChallengeCookieExpirationInMins".equals(fieldName)) {
                     deserializedPolicySettings.jsChallengeCookieExpirationInMins
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("captchaCookieExpirationInMins".equals(fieldName)) {
+                } else if ("captchaExpirationInMins".equals(fieldName)) {
                     deserializedPolicySettings.captchaCookieExpirationInMins = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();

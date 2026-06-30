@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkManagersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerGet.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerGet.json
      */
     /**
      * Sample code: NetworkManagersGet.

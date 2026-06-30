@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class WorkbenchesRestartSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/RestartWorkbench.json
+     * x-ms-original-file: 2026-05-15-preview/RestartWorkbench.json
      */
     /**
      * Sample code: RestartWorkbench.

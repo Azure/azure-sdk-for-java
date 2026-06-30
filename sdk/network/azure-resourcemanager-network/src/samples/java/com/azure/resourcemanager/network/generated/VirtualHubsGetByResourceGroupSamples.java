@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualHubGet.json
+     * x-ms-original-file: 2025-07-01/VirtualHubGet.json
      */
     /**
      * Sample code: VirtualHubGet.

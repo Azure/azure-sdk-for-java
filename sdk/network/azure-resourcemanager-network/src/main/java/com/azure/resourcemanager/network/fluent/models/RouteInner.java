@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RouteNextHopEcmp;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.SubResourceModel;
 import java.io.IOException;
@@ -153,6 +154,31 @@ public final class RouteInner extends SubResourceModel {
             this.innerProperties = new RoutePropertiesFormat();
         }
         this.innerProperties().withNextHopIpAddress(nextHopIpAddress);
+        return this;
+    }
+
+    /**
+     * Get the nextHop property: The next hop definition containing ECMP next hop IP addresses. Only allowed when
+     * nextHopType is VirtualApplianceEcmp.
+     * 
+     * @return the nextHop value.
+     */
+    public RouteNextHopEcmp nextHop() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextHop();
+    }
+
+    /**
+     * Set the nextHop property: The next hop definition containing ECMP next hop IP addresses. Only allowed when
+     * nextHopType is VirtualApplianceEcmp.
+     * 
+     * @param nextHop the nextHop value to set.
+     * @return the RouteInner object itself.
+     */
+    public RouteInner withNextHop(RouteNextHopEcmp nextHop) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePropertiesFormat();
+        }
+        this.innerProperties().withNextHop(nextHop);
         return this;
     }
 
