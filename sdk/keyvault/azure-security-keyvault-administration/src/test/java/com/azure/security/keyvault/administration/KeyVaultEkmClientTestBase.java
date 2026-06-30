@@ -6,7 +6,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.models.KeyVaultEkmConnection;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class KeyVaultEkmClientTestBase extends KeyVaultAdministrationClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultEkmClientTestBase.class);
 
     // Placeholder values used during playback so the tests can run without live resources or secrets.
     private static final String PLAYBACK_HOST = "ekm.contoso.com";

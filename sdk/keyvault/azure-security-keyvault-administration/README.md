@@ -656,12 +656,25 @@ An External Key Manager (EKM) connection allows a Managed HSM to communicate wit
 ### Examples
 #### Sync API
 The following sections provide several code snippets covering some of the most common Azure Key Vault EKM client tasks, including:
+- [Creating an EKM client](#create-an-ekm-client)
 - [Creating an EKM connection](#create-an-ekm-connection)
 - [Retrieving an EKM connection](#retrieve-an-ekm-connection)
 - [Updating an EKM connection](#update-an-ekm-connection)
 - [Deleting an EKM connection](#delete-an-ekm-connection)
 - [Checking an EKM connection](#check-an-ekm-connection)
 - [Retrieving the EKM proxy client certificate](#retrieve-the-ekm-proxy-client-certificate)
+
+##### Create an EKM client
+Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced **your-managed-hsm-url** with the URL for your key vault, you can create the `KeyVaultEkmClient`:
+
+```java readme-sample-createEkmClient
+KeyVaultEkmClient keyVaultEkmClient = new KeyVaultEkmClientBuilder()
+    .vaultUrl("<your-managed-hsm-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
+
+> NOTE: For using an asynchronous client use `KeyVaultEkmAsyncClient` instead of `KeyVaultEkmClient` and call `buildAsyncClient()`.
 
 ##### Create an EKM connection
 Create an EKM connection for a Managed HSM account.

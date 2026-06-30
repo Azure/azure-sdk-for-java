@@ -19,7 +19,7 @@ public final class KeyVaultEkmProxyClientCertificateInfo {
      * Creates a new {@link KeyVaultEkmProxyClientCertificateInfo} with the specified details.
      *
      * @param caCertificates The client root CA certificate chain to authenticate to the EKM proxy. A list of
-     * certificates in the certificate chain, each in DER format and base64 encoded.
+     * certificates in the certificate chain, each in DER format.
      * @param subjectCommonName The subject common name of the client certificate used to authenticate to the EKM proxy.
      */
     public KeyVaultEkmProxyClientCertificateInfo(List<byte[]> caCertificates, String subjectCommonName) {
@@ -29,7 +29,7 @@ public final class KeyVaultEkmProxyClientCertificateInfo {
 
     /**
      * Get the client root CA certificate chain to authenticate to the EKM proxy. A list of certificates in the
-     * certificate chain, each in DER format and base64 encoded.
+     * certificate chain, each in DER format.
      *
      * @return The CA certificates.
      */

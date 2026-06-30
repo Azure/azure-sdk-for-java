@@ -109,8 +109,8 @@ public final class KeyVaultEkmClientBuilder implements TokenCredentialTrait<KeyV
      *
      * @return The updated {@link KeyVaultEkmClientBuilder} object.
      *
-     * @throws IllegalArgumentException If {@code vaultUrl} is null or it cannot be parsed into a valid URL.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws IllegalArgumentException If {@code vaultUrl} cannot be parsed into a valid URL.
+     * @throws NullPointerException If {@code vaultUrl} is {@code null}.
      */
     public KeyVaultEkmClientBuilder vaultUrl(String vaultUrl) {
         if (vaultUrl == null) {

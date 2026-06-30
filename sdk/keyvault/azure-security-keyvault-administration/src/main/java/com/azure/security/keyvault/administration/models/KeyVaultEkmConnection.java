@@ -28,7 +28,7 @@ public final class KeyVaultEkmConnection {
      * @param host The EKM proxy FQDN (Fully Qualified Domain Name). Only allowed characters are {@code a-z},
      * {@code A-Z}, {@code 0-9}, hyphen ({@code -}), dot ({@code .}), and colon ({@code :}).
      * @param serverCaCertificates The root CA certificate chain that issued the proxy server's certificate. A list of
-     * certificates in the certificate chain, each in DER format and base64 encoded.
+     * certificates in the certificate chain, each in DER format.
      * @throws IllegalArgumentException if {@code host} is {@code null} or empty.
      * @throws NullPointerException if {@code serverCaCertificates} is {@code null}.
      */
@@ -55,7 +55,7 @@ public final class KeyVaultEkmConnection {
 
     /**
      * Get the root CA certificate chain that issued the proxy server's certificate. A list of certificates in the
-     * certificate chain, each in DER format and base64 encoded.
+     * certificate chain, each in DER format.
      *
      * @return The server CA certificates.
      */
