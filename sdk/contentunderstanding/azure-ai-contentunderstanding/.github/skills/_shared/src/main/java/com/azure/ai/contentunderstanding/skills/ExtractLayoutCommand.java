@@ -191,7 +191,7 @@ final class ExtractLayoutCommand {
             // an exclude API (unlike .NET), and its ManagedIdentity probe
             // blocks for ~30s on dev boxes (WSL, laptops) before timing out.
             // Build a focused chain: Environment first (CI), then Azure CLI
-            // (dev boxes). This covers both worlds without the IMDS stall.
+            // (dev boxes). This covers both worlds without the metadata-service stall.
             TokenCredential cred = new ChainedTokenCredentialBuilder()
                 .addLast(new EnvironmentCredentialBuilder().build())
                 .addLast(new AzureCliCredentialBuilder().build())

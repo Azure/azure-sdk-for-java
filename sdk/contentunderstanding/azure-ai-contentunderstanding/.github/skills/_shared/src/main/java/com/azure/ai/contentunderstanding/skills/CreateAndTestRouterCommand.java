@@ -338,14 +338,14 @@ final class CreateAndTestRouterCommand {
                 int denom = rows.size();
                 long filled = rows.stream().filter(r -> r.value != null).count();
                 double fillRate = denom == 0 ? 0.0 : (double) filled / denom;
-                List<Double> confs = new ArrayList<>();
-                for (RowEntry r : rows) {
+                List<Double> confidences = new ArrayList<>();
+                for (RowEntry r : field.getValue()) {
                     if (r.value != null && r.confidence != null) {
-                        confs.add(r.confidence);
+                        confidences.add(r.confidence);
                     }
                 }
-                String confStr = confs.isEmpty() ? "n/a"
-                    : String.format("%.3f", confs.stream().mapToDouble(Double::doubleValue).average().orElse(0));
+                String confStr = confidences.isEmpty() ? "n/a"
+                    : String.format("%.3f", confidences.stream().mapToDouble(Double::doubleValue).average().orElse(0));
                 sb.append(String.format(
                     "  %-30s %-9s %s%n",
                     field.getKey(),

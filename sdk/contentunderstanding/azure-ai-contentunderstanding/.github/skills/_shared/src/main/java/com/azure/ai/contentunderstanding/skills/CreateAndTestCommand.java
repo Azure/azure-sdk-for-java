@@ -433,14 +433,14 @@ final class CreateAndTestCommand {
                 int denom = rows.size();
                 long filled = rows.stream().filter(r -> r.value != null).count();
                 double fillRate = denom == 0 ? 0.0 : (double) filled / denom;
-                List<Double> confs = new ArrayList<>();
+                List<Double> confidences = new ArrayList<>();
                 for (RowEntry r : rows) {
                     if (r.value != null && r.confidence != null) {
-                        confs.add(r.confidence);
+                        confidences.add(r.confidence);
                     }
                 }
-                String confStr = confs.isEmpty() ? "n/a"
-                    : String.format("%.3f", confs.stream().mapToDouble(Double::doubleValue).average().orElse(0));
+                String confStr = confidences.isEmpty() ? "n/a"
+                    : String.format("%.3f", confidences.stream().mapToDouble(Double::doubleValue).average().orElse(0));
                 sb.append(String.format(
                     "  %-40s %-9s %s%n",
                     field.getKey(),
@@ -490,10 +490,10 @@ final class CreateAndTestCommand {
             Iterator<Map.Entry<String, JsonNode>> it = fields.fields();
             while (it.hasNext()) {
                 Map.Entry<String, JsonNode> e = it.next();
-                if (!(e.getValue() instanceof ObjectNode fobj)) {
+                if (!(e.getValue() instanceof ObjectNode fieldObj)) {
                     continue;
                 }
-                for (PathLeaf pl : recurse(e.getKey(), fobj)) {
+                for (PathLeaf pl : recurse(e.getKey(), fieldObj)) {
                     out.add(new FieldRecord(category, pl.path, pl.leaf));
                 }
             }
@@ -507,8 +507,8 @@ final class CreateAndTestCommand {
         if (arr != null && arr.isArray()) {
             for (JsonNode item : arr) {
                 if (item instanceof ObjectNode itemObj && itemObj.has("valueObject")
-                    && itemObj.get("valueObject") instanceof ObjectNode vobj) {
-                    Iterator<Map.Entry<String, JsonNode>> it = vobj.fields();
+                    && itemObj.get("valueObject") instanceof ObjectNode valueObj) {
+                    Iterator<Map.Entry<String, JsonNode>> it = valueObj.fields();
                     while (it.hasNext()) {
                         Map.Entry<String, JsonNode> e = it.next();
                         if (e.getValue() instanceof ObjectNode childObj) {

@@ -47,8 +47,8 @@ public final class SchemaValidator {
 
     /**
      * Valid {@code baseAnalyzerId} values for custom analyzers. Only modality-level
-     * prebuilts are accepted by the service for {@code baseAnalyzerId}; {@code *Search}
-     * variants and task-specific prebuilts ({@code prebuilt-invoice}, {@code prebuilt-receipt})
+     * prebuilt analyzers are accepted by the service for {@code baseAnalyzerId}; {@code *Search}
+     * variants and task-specific prebuilt analyzers ({@code prebuilt-invoice}, {@code prebuilt-receipt})
      * return {@code InvalidBaseAnalyzerId} if used here. See
      * <a href="https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/analyzer-reference#baseanalyzerid">
      * the analyzer reference docs</a>.
