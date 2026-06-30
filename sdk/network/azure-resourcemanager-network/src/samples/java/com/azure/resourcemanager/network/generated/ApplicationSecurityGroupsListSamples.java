@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationSecurityGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationSecurityGroupListAll.json
+     * x-ms-original-file: 2025-07-01/ApplicationSecurityGroupListAll.json
      */
     /**
      * Sample code: List all application security groups.

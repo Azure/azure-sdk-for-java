@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 public final class NetworkSecurityPerimeterAssociationsReconcileSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspAssociationReconcile.json
+     * x-ms-original-file: 2025-07-01/NspAssociationReconcile.json
      */
     /**
      * Sample code: NspAssociationReconcile.

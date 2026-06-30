@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkApplianceIpConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkApplianceIpVersionType;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,12 +24,17 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
     /*
      * Bandwidth of the VirtualNetworkAppliance resource in Gbps.
      */
-    private String bandwidthInGbps;
+    private Double bandwidthInGbps;
 
     /*
      * A list of IPConfigurations of the virtual network appliance.
      */
     private List<VirtualNetworkApplianceIpConfiguration> ipConfigurations;
+
+    /*
+     * Whether the specific virtual network appliance is IPv4 or Dual Stack. Default is IPv4.
+     */
+    private VirtualNetworkApplianceIpVersionType privateIPAddressVersion;
 
     /*
      * The provisioning state of the virtual network appliance resource.
@@ -56,7 +62,7 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
      * 
      * @return the bandwidthInGbps value.
      */
-    public String bandwidthInGbps() {
+    public Double bandwidthInGbps() {
         return this.bandwidthInGbps;
     }
 
@@ -66,7 +72,7 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the VirtualNetworkAppliancePropertiesFormatInner object itself.
      */
-    public VirtualNetworkAppliancePropertiesFormatInner withBandwidthInGbps(String bandwidthInGbps) {
+    public VirtualNetworkAppliancePropertiesFormatInner withBandwidthInGbps(Double bandwidthInGbps) {
         this.bandwidthInGbps = bandwidthInGbps;
         return this;
     }
@@ -78,6 +84,29 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
      */
     public List<VirtualNetworkApplianceIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
+    }
+
+    /**
+     * Get the privateIPAddressVersion property: Whether the specific virtual network appliance is IPv4 or Dual Stack.
+     * Default is IPv4.
+     * 
+     * @return the privateIPAddressVersion value.
+     */
+    public VirtualNetworkApplianceIpVersionType privateIPAddressVersion() {
+        return this.privateIPAddressVersion;
+    }
+
+    /**
+     * Set the privateIPAddressVersion property: Whether the specific virtual network appliance is IPv4 or Dual Stack.
+     * Default is IPv4.
+     * 
+     * @param privateIPAddressVersion the privateIPAddressVersion value to set.
+     * @return the VirtualNetworkAppliancePropertiesFormatInner object itself.
+     */
+    public VirtualNetworkAppliancePropertiesFormatInner
+        withPrivateIPAddressVersion(VirtualNetworkApplianceIpVersionType privateIPAddressVersion) {
+        this.privateIPAddressVersion = privateIPAddressVersion;
+        return this;
     }
 
     /**
@@ -138,7 +167,9 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("bandwidthInGbps", this.bandwidthInGbps);
+        jsonWriter.writeNumberField("bandwidthInGbps", this.bandwidthInGbps);
+        jsonWriter.writeStringField("privateIPAddressVersion",
+            this.privateIPAddressVersion == null ? null : this.privateIPAddressVersion.toString());
         jsonWriter.writeJsonField("subnet", this.subnet);
         return jsonWriter.writeEndObject();
     }
@@ -160,11 +191,15 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
                 reader.nextToken();
 
                 if ("bandwidthInGbps".equals(fieldName)) {
-                    deserializedVirtualNetworkAppliancePropertiesFormatInner.bandwidthInGbps = reader.getString();
+                    deserializedVirtualNetworkAppliancePropertiesFormatInner.bandwidthInGbps
+                        = reader.getNullable(JsonReader::getDouble);
                 } else if ("ipConfigurations".equals(fieldName)) {
                     List<VirtualNetworkApplianceIpConfiguration> ipConfigurations
                         = reader.readArray(reader1 -> VirtualNetworkApplianceIpConfiguration.fromJson(reader1));
                     deserializedVirtualNetworkAppliancePropertiesFormatInner.ipConfigurations = ipConfigurations;
+                } else if ("privateIPAddressVersion".equals(fieldName)) {
+                    deserializedVirtualNetworkAppliancePropertiesFormatInner.privateIPAddressVersion
+                        = VirtualNetworkApplianceIpVersionType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualNetworkAppliancePropertiesFormatInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());

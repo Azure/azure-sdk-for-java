@@ -6,13 +6,14 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 
 /**
  * Samples for VirtualHubBgpConnections CreateOrUpdate.
  */
 public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualHubBgpConnectionPut.json
+     * x-ms-original-file: 2025-07-01/VirtualHubBgpConnectionPut.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.
@@ -25,7 +26,11 @@ public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
             .createOrUpdate("rg1", "hub1", "conn1", new BgpConnectionInner().withPeerAsn(20000L)
                 .withPeerIp("192.168.1.5")
                 .withHubVirtualNetworkConnection(new SubResource().withId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1/hubVirtualNetworkConnections/hubVnetConn1")),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1/hubVirtualNetworkConnections/hubVnetConn1"))
+                .withRoutingConfiguration(new RoutingConfiguration().withInboundRouteMap(new SubResource().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1/routeMaps/routeMap1"))
+                    .withOutboundRouteMap(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1/routeMaps/routeMap2"))),
                 com.azure.core.util.Context.NONE);
     }
 }

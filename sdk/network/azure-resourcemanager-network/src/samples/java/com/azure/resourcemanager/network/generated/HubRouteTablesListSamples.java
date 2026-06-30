@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class HubRouteTablesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/HubRouteTableList.json
+     * x-ms-original-file: 2025-07-01/HubRouteTableList.json
      */
     /**
      * Sample code: RouteTableList.

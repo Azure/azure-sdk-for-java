@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.HubBgpConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.SubResourceModel;
 import java.io.IOException;
 
@@ -171,6 +172,31 @@ public final class BgpConnectionInner extends SubResourceModel {
      */
     public HubBgpConnectionStatus connectionState() {
         return this.innerProperties() == null ? null : this.innerProperties().connectionState();
+    }
+
+    /**
+     * Get the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
+    }
+
+    /**
+     * Set the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @param routingConfiguration the routingConfiguration value to set.
+     * @return the BgpConnectionInner object itself.
+     */
+    public BgpConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BgpConnectionProperties();
+        }
+        this.innerProperties().withRoutingConfiguration(routingConfiguration);
+        return this;
     }
 
     /**

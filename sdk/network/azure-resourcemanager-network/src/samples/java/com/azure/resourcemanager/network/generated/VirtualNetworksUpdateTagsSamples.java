@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class VirtualNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkUpdateTags.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkUpdateTags.json
      */
     /**
      * Sample code: Update virtual network tags.

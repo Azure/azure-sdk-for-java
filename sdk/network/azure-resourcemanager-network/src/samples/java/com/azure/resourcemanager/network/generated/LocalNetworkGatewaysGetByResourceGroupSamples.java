@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LocalNetworkGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LocalNetworkGatewayGet.json
+     * x-ms-original-file: 2025-07-01/LocalNetworkGatewayGet.json
      */
     /**
      * Sample code: GetLocalNetworkGateway.

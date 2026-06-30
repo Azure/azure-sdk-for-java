@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpAddressesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressListAll.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressListAll.json
      */
     /**
      * Sample code: List all public IP addresses.

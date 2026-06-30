@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityUserConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerSecurityUserConfigurationGet.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerSecurityUserConfigurationGet.json
      */
     /**
      * Sample code: Get security user configurations.

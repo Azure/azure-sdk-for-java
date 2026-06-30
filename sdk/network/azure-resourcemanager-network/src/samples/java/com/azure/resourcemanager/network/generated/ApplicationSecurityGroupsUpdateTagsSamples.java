@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ApplicationSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationSecurityGroupUpdateTags.json
+     * x-ms-original-file: 2025-07-01/ApplicationSecurityGroupUpdateTags.json
      */
     /**
      * Sample code: Update application security group tags.

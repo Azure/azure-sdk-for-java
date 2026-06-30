@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkPeeringsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkPeeringList.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkPeeringList.json
      */
     /**
      * Sample code: List peerings.
@@ -21,7 +21,7 @@ public final class VirtualNetworkPeeringsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: List peerings with remote virtual network encryption.

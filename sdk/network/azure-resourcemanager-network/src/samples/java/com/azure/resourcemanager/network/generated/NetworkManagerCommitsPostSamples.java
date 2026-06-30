@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NetworkManagerCommitsPostSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerCommitPost.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerCommitPost.json
      */
     /**
      * Sample code: NetworkManageCommitPost.

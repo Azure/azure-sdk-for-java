@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewayNatRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayNatRuleGet.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayNatRuleGet.json
      */
     /**
      * Sample code: VirtualNetworkGatewayNatRuleGet.

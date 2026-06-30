@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class InboundNatRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/InboundNatRuleGet.json
+     * x-ms-original-file: 2025-07-01/InboundNatRuleGet.json
      */
     /**
      * Sample code: InboundNatRuleGet.

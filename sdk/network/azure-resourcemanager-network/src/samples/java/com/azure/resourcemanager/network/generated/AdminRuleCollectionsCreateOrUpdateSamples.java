@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class AdminRuleCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerAdminRuleCollectionPut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerAdminRuleCollectionPut.json
      */
     /**
      * Sample code: Create or Update an admin rule collection.

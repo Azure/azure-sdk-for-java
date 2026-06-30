@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.GenerateExpressRoutePortsLoaRequ
  */
 public final class ExpressRoutePortsGenerateLoaSamples {
     /*
-     * x-ms-original-file: 2025-05-01/GenerateExpressRoutePortsLOA.json
+     * x-ms-original-file: 2025-07-01/GenerateExpressRoutePortsLOA.json
      */
     /**
      * Sample code: GenerateExpressRoutePortLOA.
