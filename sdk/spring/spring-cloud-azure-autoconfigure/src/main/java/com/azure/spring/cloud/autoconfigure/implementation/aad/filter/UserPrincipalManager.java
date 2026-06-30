@@ -20,9 +20,7 @@ import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
-import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
-import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +30,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,10 +41,6 @@ import java.util.stream.StreamSupport;
 public class UserPrincipalManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipalManager.class);
-    private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
-    private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
-    private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
-
     private static final String MSG_MALFORMED_AD_KEY_DISCOVERY_URI = "Failed to parse active directory key discovery uri.";
 
     private final JWKSource<SecurityContext> keySource;
@@ -182,20 +175,11 @@ public class UserPrincipalManager {
     public boolean isTokenIssuedByAad(String token) {
         try {
             final JWT jwt = JWTParser.parse(token);
-            return isAadIssuer(jwt.getJWTClaimsSet().getIssuer());
+            return AadIssuerValidator.isValidAadIssuer(jwt.getJWTClaimsSet().getIssuer());
         } catch (ParseException e) {
             LOGGER.info("Fail to parse JWT {}, exception {}", token, e);
         }
         return false;
-    }
-
-    private static boolean isAadIssuer(String issuer) {
-        if (issuer == null) {
-            return false;
-        }
-        return issuer.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-            || issuer.startsWith(STS_WINDOWS_ISSUER)
-            || issuer.startsWith(STS_CHINA_CLOUD_API_ISSUER);
     }
 
     private ConfigurableJWTProcessor<SecurityContext> getValidator(JWSAlgorithm jwsAlgorithm) {
@@ -203,28 +187,8 @@ public class UserPrincipalManager {
         final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
         jwtProcessor.setJWSKeySelector(keySelector);
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
-        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>(null, null) {
-            @Override
-            public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
-                super.verify(claimsSet, ctx);
-                final String issuer = claimsSet.getIssuer();
-                if (!isAadIssuer(issuer)) {
-                    throw new BadJWTException("Invalid token issuer");
-                }
-                if (explicitAudienceCheck) {
-                    Optional<String> matchedAudience = claimsSet.getAudience()
-                                                                .stream()
-                                                                .filter(validAudiences::contains)
-                                                                .findFirst();
-                    if (matchedAudience.isPresent()) {
-                        LOGGER.debug("Matched audience: [{}]", matchedAudience.get());
-                    } else {
-                        throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
-                            + " does not match either the client-id or AppIdUri.");
-                    }
-                }
-            }
-        });
+        jwtProcessor.setJWTClaimsSetVerifier(new AadJwtClaimsVerifier(aadAuthenticationProperties,
+            explicitAudienceCheck, validAudiences));
         return jwtProcessor;
     }
 }
