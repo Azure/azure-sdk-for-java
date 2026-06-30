@@ -1,5 +1,14 @@
 # Release History
 
+## 1.1.40 (2026-06-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
+
 ## 1.1.39 (2026-05-05)
 
 ### Other Changes
