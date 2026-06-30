@@ -524,9 +524,18 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * A builder for creating a new instance of the beta AgentsClient type.
+     * Returns the sub-builder used to create beta clients for preview-only service areas.
+     * <p>
+     * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
+     * policies, retry settings, logging options, client options, and service version. Use this method
+     * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
+     * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, or {@link BetaMemoryStoresAsyncClient}.
+     * <p>
+     * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
+     * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
+     * clients; that setting only controls supported preview behavior on non-beta clients.
      *
-     * @return a builder for creating a new instance of the beta AgentsClient type.
+     * @return a builder for creating beta Agents service clients.
      */
     @Beta
     public BetaAgentsClientBuilder beta() {
@@ -534,7 +543,11 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * A builder for creating a new instance of the beta AgentsClient type.
+     * A sub-builder for creating beta Agents service clients.
+     * <p>
+     * Instances are created by calling {@link AgentsClientBuilder#beta()}. Build methods on this class use the
+     * enclosing {@link AgentsClientBuilder}'s configuration and automatically add the {@code Foundry-Features} header
+     * required by the beta service area they target.
      */
     @Beta
     @ServiceClientBuilder(
@@ -546,13 +559,18 @@ public final class AgentsClientBuilder
     public final class BetaAgentsClientBuilder {
 
         /**
-         * Creates a new instance of BetaAgentsClientBuilder.
+         * Creates a new instance of BetaAgentsClientBuilder. Use {@link AgentsClientBuilder#beta()} to get an instance.
          */
         private BetaAgentsClientBuilder() {
         }
 
         /**
-         * Builds an instance of BetaAgentsAsyncClient class.
+         * Builds an asynchronous beta Agents client for preview agent optimization operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for beta agent operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaAgentsAsyncClient.
          */
@@ -562,7 +580,12 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an instance of BetaMemoryStoresAsyncClient class.
+         * Builds an asynchronous beta Memory Stores client for preview memory store operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for memory store preview operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaMemoryStoresAsyncClient.
          */
@@ -573,7 +596,12 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an instance of BetaAgentsClient class.
+         * Builds a synchronous beta Agents client for preview agent optimization operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for beta agent operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaAgentsClient.
          */
@@ -583,7 +611,12 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an instance of BetaMemoryStoresClient class.
+         * Builds a synchronous beta Memory Stores client for preview memory store operations.
+         * <p>
+         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
+         * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
+         * {@code Foundry-Features} header required for memory store preview operations, so
+         * {@link AgentsClientBuilder#allowPreview(boolean)} does not need to be enabled.
          *
          * @return an instance of BetaMemoryStoresClient.
          */
