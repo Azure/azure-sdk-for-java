@@ -653,7 +653,7 @@ public class CosmosItemTest extends TestSuiteBase {
             readManyDatabase = client
                 .getDatabase(container.asyncContainer.getDatabase().getId());
 
-            String readManyContainerId = "container-with-multiple-partitions";
+            String readManyContainerId = "container-with-multiple-partitions-" + UUID.randomUUID();
 
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(readManyContainerId, "/mypk");
             createCollection(
@@ -672,7 +672,9 @@ public class CosmosItemTest extends TestSuiteBase {
                 readManyContainer.createItem(objectNode);
             }
 
-            List<FeedRange> feedRanges = readManyContainer.getFeedRanges();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                readManyContainer.asyncContainer,
+                "get feed ranges for readManyWithMultiplePartitionsAndSome404s setup");
 
             assertThat(feedRanges).isNotNull();
             assertThat(feedRanges.size()).isGreaterThan(1);
