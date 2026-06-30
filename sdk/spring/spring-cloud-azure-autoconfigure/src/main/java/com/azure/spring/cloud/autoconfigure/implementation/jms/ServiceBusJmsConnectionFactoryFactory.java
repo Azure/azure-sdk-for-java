@@ -24,7 +24,8 @@ class ServiceBusJmsConnectionFactoryFactory {
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
     }
 
-    ServiceBusJmsConnectionFactory createConnectionFactory(AzureServiceBusJmsConnectionFactoryFactory instanceFactory) {
+    ServiceBusJmsConnectionFactory createConnectionFactory(
+        AzureServiceBusJmsConnectionFactoryFactory instanceFactory) {
         Assert.notNull(instanceFactory, "AzureServiceBusJmsConnectionFactoryFactory must not be null");
         ServiceBusJmsConnectionFactory factory = createConnectionFactoryInstance(instanceFactory);
         Assert.notNull(
@@ -54,7 +55,8 @@ class ServiceBusJmsConnectionFactoryFactory {
             String.valueOf(prefetchProperties.getTopicPrefetch()));
     }
 
-    private ServiceBusJmsConnectionFactory createConnectionFactoryInstance(AzureServiceBusJmsConnectionFactoryFactory instanceFactory) {
+    private ServiceBusJmsConnectionFactory createConnectionFactoryInstance(
+        AzureServiceBusJmsConnectionFactoryFactory instanceFactory) {
         return instanceFactory.createServiceBusJmsConnectionFactory();
     }
 

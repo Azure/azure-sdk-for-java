@@ -72,26 +72,27 @@ public class ServiceBusJmsAutoConfiguration {
     @ConditionalOnMissingBean
     AzureServiceBusJmsConnectionFactoryFactory azureServiceBusJmsConnectionFactoryFactory(
         final AzureServiceBusJmsProperties properties) {
+        if (!properties.isPasswordlessEnabled()) {
+            return () -> new ServiceBusJmsConnectionFactory(
+                properties.getConnectionString(),
+                new ServiceBusJmsConnectionFactorySettings());
+        }
+
+        String hostName =
+            properties.getNamespace()
+                + "."
+                + properties.getProfile().getEnvironment().getServiceBusDomainName();
+        Properties passwordlessProperties = properties.toPasswordlessProperties();
+        enhancePasswordlessProperties(AzureServiceBusJmsProperties.PREFIX, properties, passwordlessProperties);
+        TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(
+            new TokenCredentialProviderOptions(passwordlessProperties));
+
         return () -> {
-            if (properties.isPasswordlessEnabled()) {
-                String hostName =
-                    properties.getNamespace()
-                        + "."
-                        + properties.getProfile().getEnvironment().getServiceBusDomainName();
-                Properties passwordlessProperties = properties.toPasswordlessProperties();
-                enhancePasswordlessProperties(AzureServiceBusJmsProperties.PREFIX, properties, passwordlessProperties);
-                TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(
-                    new TokenCredentialProviderOptions(passwordlessProperties));
-                TokenCredential tokenCredential = tokenCredentialProvider.get();
-                return new ServiceBusJmsConnectionFactory(
-                    tokenCredential,
-                    hostName,
-                    new ServiceBusJmsConnectionFactorySettings());
-            } else {
-                return new ServiceBusJmsConnectionFactory(
-                    properties.getConnectionString(),
-                    new ServiceBusJmsConnectionFactorySettings());
-            }
+            TokenCredential tokenCredential = tokenCredentialProvider.get();
+            return new ServiceBusJmsConnectionFactory(
+                tokenCredential,
+                hostName,
+                new ServiceBusJmsConnectionFactorySettings());
         };
     }
 

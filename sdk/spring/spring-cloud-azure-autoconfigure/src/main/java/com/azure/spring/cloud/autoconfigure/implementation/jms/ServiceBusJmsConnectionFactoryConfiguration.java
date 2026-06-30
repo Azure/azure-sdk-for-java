@@ -51,7 +51,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
      *
      * @param properties the Azure Service Bus JMS properties
      * @param customizers the list of customizers to apply
-        * @param instanceFactory the factory used to create the ServiceBusJmsConnectionFactory instance
+      * @param instanceFactory the factory used to create the ServiceBusJmsConnectionFactory instance
      * @return a configured ServiceBusJmsConnectionFactory instance
      */
     static ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory(
@@ -198,7 +198,8 @@ class ServiceBusJmsConnectionFactoryConfiguration {
 
         private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
             AzureServiceBusJmsProperties serviceBusJmsProperties = beanFactory.getBean(AzureServiceBusJmsProperties.class);
-            AzureServiceBusJmsConnectionFactoryFactory instanceFactory = beanFactory.getBean(AzureServiceBusJmsConnectionFactoryFactory.class);
+            AzureServiceBusJmsConnectionFactoryFactory instanceFactory =
+                beanFactory.getBean(AzureServiceBusJmsConnectionFactoryFactory.class);
             ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers = beanFactory.getBeanProvider(AzureServiceBusJmsConnectionFactoryCustomizer.class);
             return ServiceBusJmsConnectionFactoryConfiguration.createServiceBusJmsConnectionFactory(
                 serviceBusJmsProperties,
