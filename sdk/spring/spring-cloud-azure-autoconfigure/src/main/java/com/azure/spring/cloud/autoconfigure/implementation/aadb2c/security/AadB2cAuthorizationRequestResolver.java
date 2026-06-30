@@ -63,7 +63,8 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     public AadB2cAuthorizationRequestResolver(String authorizationRequestBaseUri,
                                               ClientRegistrationRepository repository,
                                               AadB2cProperties properties) {
-        this(properties, new DefaultOAuth2AuthorizationRequestResolver(repository, normalizeBaseUri(authorizationRequestBaseUri)), createRequestMatcher(normalizeBaseUri(authorizationRequestBaseUri)));
+        this(authorizationRequestBaseUri, properties,
+            new DefaultOAuth2AuthorizationRequestResolver(repository, normalizeBaseUri(authorizationRequestBaseUri)));
     }
 
     /**
@@ -170,12 +171,14 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     private static String normalizeBaseUri(String authorizationRequestBaseUri) {
         Assert.hasText(authorizationRequestBaseUri, "authorizationRequestBaseUri must contain text.");
 
-        String normalizedBaseUri = authorizationRequestBaseUri;
+        String normalizedBaseUri = authorizationRequestBaseUri.trim();
         if (!normalizedBaseUri.startsWith("/")) {
             normalizedBaseUri = "/" + normalizedBaseUri;
         }
         // Remove all trailing slashes to handle multiple trailing slashes and ensure idempotent normalization
         normalizedBaseUri = normalizedBaseUri.replaceAll("/+$", "");
+        // Ensure result is not empty (e.g., from inputs like "/" or " / ")
+        Assert.hasText(normalizedBaseUri, "authorizationRequestBaseUri must normalize to a non-empty value.");
         return normalizedBaseUri;
     }
 

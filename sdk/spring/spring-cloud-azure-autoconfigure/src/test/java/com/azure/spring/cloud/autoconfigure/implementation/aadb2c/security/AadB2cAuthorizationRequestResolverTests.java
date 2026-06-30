@@ -118,6 +118,40 @@ class AadB2cAuthorizationRequestResolverTests {
             resolved.getAdditionalParameters().get("x-client-SKU"));
     }
 
+    @Test
+    void testBaseUriNormalizationWithoutLeadingSlash() {
+        // Base URI without leading '/' should be normalized to include it
+        final String baseUriWithoutLeadingSlash = "oauth2/authorization";
+        final String registrationId = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+        final AadB2cAuthorizationRequestResolver resolver = new AadB2cAuthorizationRequestResolver(
+            baseUriWithoutLeadingSlash,
+            new InMemoryClientRegistrationRepository(createClientRegistration(registrationId)),
+            new AadB2cProperties());
+
+        // Request with leading '/' should match
+        HttpServletRequest request = getHttpServletRequest("/oauth2/authorization/" + registrationId);
+        final org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest resolved =
+            resolver.resolve(request);
+        Assertions.assertNotNull(resolved);
+    }
+
+    @Test
+    void testBaseUriNormalizationWithMultipleTrailingSlashes() {
+        // Base URI with multiple trailing slashes should be normalized
+        final String baseUriWithTrailingSlashes = "/oauth2/authorization///";
+        final String registrationId = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+        final AadB2cAuthorizationRequestResolver resolver = new AadB2cAuthorizationRequestResolver(
+            baseUriWithTrailingSlashes,
+            new InMemoryClientRegistrationRepository(createClientRegistration(registrationId)),
+            new AadB2cProperties());
+
+        // Request should match against normalized path
+        HttpServletRequest request = getHttpServletRequest("/oauth2/authorization/" + registrationId);
+        final org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest resolved =
+            resolver.resolve(request);
+        Assertions.assertNotNull(resolved);
+    }
+
     private ClientRegistration createClientRegistration(String registrationId) {
         return ClientRegistration.withRegistrationId(registrationId)
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
