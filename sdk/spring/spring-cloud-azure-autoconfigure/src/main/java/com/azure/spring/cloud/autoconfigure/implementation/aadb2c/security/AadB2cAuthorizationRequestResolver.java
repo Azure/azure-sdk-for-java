@@ -176,9 +176,8 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         if (!normalizedBaseUri.startsWith("/")) {
             normalizedBaseUri = "/" + normalizedBaseUri;
         }
-        if (normalizedBaseUri.endsWith("/")) {
-            normalizedBaseUri = normalizedBaseUri.substring(0, normalizedBaseUri.length() - 1);
-        }
+        // Remove all trailing slashes to handle multiple trailing slashes and ensure idempotent normalization
+        normalizedBaseUri = normalizedBaseUri.replaceAll("/+$", "");
 
         String matcherPattern = String.format("%s/{%s}", normalizedBaseUri, REGISTRATION_ID_NAME);
         return PathPatternRequestMatcher.withDefaults().matcher(matcherPattern);
