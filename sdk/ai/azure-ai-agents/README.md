@@ -4,6 +4,12 @@ Develop Agents using the Azure AI Foundry platform, leveraging an extensive ecos
 
 The client library uses a single service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
 
+> [!IMPORTANT]
+> **Preview and beta features**
+> - Build `Beta*Client` and `Beta*AsyncClient` instances through `AgentsClientBuilder.beta()`. These clients automatically opt in to their preview service area; you do not need `allowPreview(true)` for them.
+> - Use `AgentsClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview hosted-agent sessions, session files, and code package operations on `AgentsClient` / `AgentsAsyncClient`.
+> - Classes and methods annotated with `@Beta` are preview API surface and may change in future releases. See [Preview operation groups and beta clients](#preview-operation-groups-and-beta-clients) for details.
+
 ## Documentation
 
 Various documentation is available to help you get started
@@ -71,7 +77,7 @@ To access each sub-client you need to use your `AgentsClientBuilder()`. The Agen
 AgentsClientBuilder builder = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
+                .allowPreview(true); // Only needed for preview APIs on non-Beta clients that support them.
 
 // Agents sub-clients
 AgentsClient agentsClient = builder.buildAgentsClient();
@@ -161,11 +167,11 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
 AgentsClient agentsClient = builder.buildAgentsClient();
 ```
 
-Clients whose names start with `Beta` always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
+Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. These clients always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentsClient` | `HostedAgents=V1Preview,WorkflowAgents=V1Preview,AgentEndpoints=V1Preview,CodeAgents=V1Preview,ExternalAgents=V1Preview,AgentsOptimization=V2Preview` |
+| `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,AgentsOptimization=V2Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
