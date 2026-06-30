@@ -169,6 +169,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final Duration STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION = Duration.ofSeconds(30);
 
+    private static final Duration FEED_RANGE_WARMUP_MAX_WAIT = Duration.ofSeconds(50);
+
+    private static final Duration FEED_RANGE_WARMUP_ATTEMPT_TIMEOUT = Duration.ofSeconds(30);
+
     private static boolean isTransientCreateFailure(Throwable t) {
         if (t instanceof CosmosException) {
             int statusCode = ((CosmosException) t).getStatusCode();
@@ -236,17 +240,151 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static List<FeedRange> getFeedRangesWithRetry(CosmosAsyncContainer container, String context) {
-        AtomicReference<List<FeedRange>> feedRanges = new AtomicReference<>();
-        executeWithRetry(() -> {
-            List<FeedRange> currentFeedRanges = container.getFeedRanges().block();
-            if (currentFeedRanges == null || currentFeedRanges.isEmpty()) {
-                throw new IllegalStateException("Feed ranges were not available for container " + container.getId());
+        return getFeedRangesWithRetry(container, context, FEED_RANGE_WARMUP_MAX_WAIT);
+    }
+
+    protected static List<FeedRange> getFeedRangesWithRetry(
+        CosmosAsyncContainer container,
+        String context,
+        Duration maxWait) {
+
+        long deadlineNanos = System.nanoTime() + maxWait.toNanos();
+        long backoffMillis = 1_000;
+        long maxBackoffMillis = 10_000;
+        int attempts = 0;
+        Throwable lastError = null;
+
+        while (System.nanoTime() < deadlineNanos) {
+            attempts++;
+            try {
+                long remainingNanos = deadlineNanos - System.nanoTime();
+                Duration attemptTimeout = Duration.ofMillis(
+                    Math.max(
+                        1,
+                        Math.min(
+                            FEED_RANGE_WARMUP_ATTEMPT_TIMEOUT.toMillis(),
+                            TimeUnit.NANOSECONDS.toMillis(remainingNanos))));
+
+                List<FeedRange> feedRanges = container.getFeedRanges().block(attemptTimeout);
+                if (feedRanges != null && !feedRanges.isEmpty()) {
+                    return feedRanges;
+                }
+
+                lastError = new IllegalStateException("Feed ranges were not available for container " + container.getId());
+            } catch (Exception error) {
+                lastError = error;
             }
 
-            feedRanges.set(currentFeedRanges);
-        }, 10, context);
+            if (!isRetryableFeedRangeWarmupFailure(lastError)) {
+                throw new AssertionError(
+                    String.format(
+                        "Feed ranges for container '%s' failed with a non-retryable error after %d attempt(s) during %s: %s",
+                        container.getId(),
+                        attempts,
+                        context,
+                        getFeedRangeWarmupErrorDetails(lastError)),
+                    lastError);
+            }
 
-        return feedRanges.get();
+            long remainingNanos = deadlineNanos - System.nanoTime();
+            if (remainingNanos <= 0) {
+                break;
+            }
+
+            long retryAfterMillis = getRetryAfterMillis(lastError);
+            long sleepMillis = Math.max(backoffMillis, retryAfterMillis);
+            sleepMillis = Math.max(1, Math.min(sleepMillis, TimeUnit.NANOSECONDS.toMillis(remainingNanos)));
+
+            logger.warn(
+                "Retrying {} after failure (attempt {}, next delay {} ms, max wait {} seconds): {}",
+                context,
+                attempts,
+                sleepMillis,
+                maxWait.getSeconds(),
+                getFeedRangeWarmupErrorDetails(lastError));
+
+            try {
+                TimeUnit.MILLISECONDS.sleep(sleepMillis);
+            } catch (InterruptedException interrupted) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while waiting for feed ranges during " + context, interrupted);
+            }
+
+            backoffMillis = Math.min(backoffMillis * 2, maxBackoffMillis);
+        }
+
+        throw new AssertionError(
+            String.format(
+                "Feed ranges for container '%s' were not available within %d seconds after %d attempt(s) during %s.",
+                container.getId(),
+                maxWait.getSeconds(),
+                attempts,
+                context),
+            lastError);
+    }
+
+    private static boolean isRetryableFeedRangeWarmupFailure(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            int statusCode = cosmosException.getStatusCode();
+            return statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                || statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+                || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+                || statusCode == HttpConstants.StatusCodes.GONE
+                || statusCode == HttpConstants.StatusCodes.NOTFOUND;
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException instanceof IllegalStateException) {
+            String message = unwrappedException.getMessage();
+            return message != null
+                && (message.contains("Feed ranges were not available")
+                    || message.contains("Timeout on blocking read"));
+        }
+
+        return false;
+    }
+
+    private static String getFeedRangeWarmupErrorDetails(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            return String.format(
+                "statusCode=%d subStatusCode=%d message=%s",
+                cosmosException.getStatusCode(),
+                cosmosException.getSubStatusCode(),
+                cosmosException.getMessage());
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException == null) {
+            return "unknown failure";
+        }
+
+        return unwrappedException.getClass().getSimpleName() + ": " + unwrappedException.getMessage();
+    }
+
+    private static long getRetryAfterMillis(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            Duration retryAfterDuration = cosmosException.getRetryAfterDuration();
+            return retryAfterDuration != null ? Math.max(0, retryAfterDuration.toMillis()) : 0;
+        }
+
+        return 0;
+    }
+
+    private static CosmosException getCosmosException(Throwable error) {
+        Throwable currentException = Exceptions.unwrap(error);
+        while (currentException != null) {
+            if (currentException instanceof CosmosException) {
+                return (CosmosException) currentException;
+            }
+
+            currentException = currentException.getCause();
+        }
+
+        return null;
     }
 
     private static <T> Mono<T> retryOnTransientCleanupFailure(Mono<T> responseMono) {
