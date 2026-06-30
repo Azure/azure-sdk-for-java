@@ -950,7 +950,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(fileItem.getProperties().getETag());
 
         assertNull(fileItem.getLinkCount());
-        assertNull(fileItem.getFileType());
+        assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
         assertNull(fileItem.getProperties().getOwner());
         assertNull(fileItem.getProperties().getGroup());
         assertNull(fileItem.getProperties().getFileMode());
@@ -973,7 +973,6 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(dirItem.getProperties().getETag());
 
         assertNull(dirItem.getLinkCount());
-        assertNull(dirItem.getFileType());
         assertNull(dirItem.getProperties().getOwner());
         assertNull(dirItem.getProperties().getGroup());
         assertNull(dirItem.getProperties().getFileMode());

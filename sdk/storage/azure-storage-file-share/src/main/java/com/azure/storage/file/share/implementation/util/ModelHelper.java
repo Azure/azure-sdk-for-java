@@ -664,8 +664,8 @@ public class ModelHelper {
         return properties == null ? null : properties.getContentLength();
     }
 
-    private static NfsFileType getDirectoryFileType(Long linkCount, FileProperty properties) {
-        return linkCount != null || hasPosixProperties(properties) ? NfsFileType.DIRECTORY : null;
+    private static NfsFileType getDirectoryFileType() {
+        return NfsFileType.DIRECTORY;
     }
 
     public static List<ListFilesIncludeType> getListFilesIncludeTypes(ShareListFilesAndDirectoriesOptions options) {
@@ -697,8 +697,7 @@ public class ModelHelper {
 
     private static ShareFileItem createDirectoryShareItem(DirectoryItem item) {
         return toShareFileItem(item.getName(), true, item.getFileId(), item.getProperties(), item.getAttributes(),
-            item.getPermissionKey(), null, item.getLinkCount(),
-            getDirectoryFileType(item.getLinkCount(), item.getProperties()), null, null, null);
+            item.getPermissionKey(), null, item.getLinkCount(), getDirectoryFileType(), null, null, null);
     }
 
     private static ShareFileItem createFileShareItem(FileItem item) {

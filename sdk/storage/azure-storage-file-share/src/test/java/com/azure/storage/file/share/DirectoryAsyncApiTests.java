@@ -570,7 +570,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             assertNotNull(fileItem.getProperties().getLastModified());
             assertNotNull(fileItem.getProperties().getETag());
             assertNull(fileItem.getLinkCount());
-            assertNull(fileItem.getFileType());
+            assertEquals(NfsFileType.REGULAR, fileItem.getFileType());
             assertNull(fileItem.getProperties().getOwner());
             assertNull(fileItem.getProperties().getGroup());
             assertNull(fileItem.getProperties().getFileMode());
@@ -591,7 +591,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             assertNotNull(dirItem.getProperties().getLastModified());
             assertNotNull(dirItem.getProperties().getETag());
             assertNull(dirItem.getLinkCount());
-            assertNull(dirItem.getFileType());
+
             assertNull(dirItem.getProperties().getOwner());
             assertNull(dirItem.getProperties().getGroup());
             assertNull(dirItem.getProperties().getFileMode());
