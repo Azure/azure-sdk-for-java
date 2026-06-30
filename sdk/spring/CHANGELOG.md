@@ -8,6 +8,8 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 
+- Added `AzureServiceBusJmsConnectionFactoryFactory` to allow applications to customize how `ServiceBusJmsConnectionFactory` instances are created, including support for custom subclasses.
+
 #### Breaking Changes
 
 #### Bugs Fixed
