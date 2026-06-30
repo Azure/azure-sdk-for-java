@@ -75,7 +75,9 @@ public class ServiceBusJmsAutoConfiguration {
         return () -> {
             if (properties.isPasswordlessEnabled()) {
                 String hostName =
-                    properties.getNamespace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName();
+                    properties.getNamespace()
+                        + "."
+                        + properties.getProfile().getEnvironment().getServiceBusDomainName();
                 Properties passwordlessProperties = properties.toPasswordlessProperties();
                 enhancePasswordlessProperties(AzureServiceBusJmsProperties.PREFIX, properties, passwordlessProperties);
                 TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(

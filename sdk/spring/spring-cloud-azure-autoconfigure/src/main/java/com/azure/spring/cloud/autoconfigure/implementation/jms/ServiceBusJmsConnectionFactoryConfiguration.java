@@ -51,6 +51,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
      *
      * @param properties the Azure Service Bus JMS properties
      * @param customizers the list of customizers to apply
+        * @param instanceFactory the factory used to create the ServiceBusJmsConnectionFactory instance
      * @return a configured ServiceBusJmsConnectionFactory instance
      */
     static ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory(
