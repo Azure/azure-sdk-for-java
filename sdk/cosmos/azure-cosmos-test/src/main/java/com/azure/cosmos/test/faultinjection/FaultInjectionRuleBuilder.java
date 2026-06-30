@@ -169,14 +169,22 @@ public final class FaultInjectionRuleBuilder {
                 .FaultInjectionConditionHelper
                 .getFaultInjectionConditionAccessor()
                 .isMetadataOperationType(this.condition)) {
-            if (serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.TOO_MANY_REQUEST
-                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.RESPONSE_DELAY
-            && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY
-            && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
-            && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ) {
+            if (!isSupportedMetadataServerErrorType(serverErrorResult.getServerErrorType())) {
 
                 throw new IllegalArgumentException("Error type " + serverErrorResult.getServerErrorType() + " is not supported for rule with metadata request");
             }
         }
+    }
+
+    private boolean isSupportedMetadataServerErrorType(FaultInjectionServerErrorType serverErrorType) {
+        if (serverErrorType == FaultInjectionServerErrorType.TOO_MANY_REQUEST
+            || serverErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY
+            || serverErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
+            return true;
+        }
+
+        return this.condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES
+            && (serverErrorType == FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
+            || serverErrorType == FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ);
     }
 }
