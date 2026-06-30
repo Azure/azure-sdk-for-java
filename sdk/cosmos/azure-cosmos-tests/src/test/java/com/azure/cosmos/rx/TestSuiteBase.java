@@ -532,6 +532,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     @SuppressWarnings({"fallthrough"})
     protected static void waitIfNeededForReplicasToCatchUp(CosmosClientBuilder clientBuilder) {
         ConsistencyLevel clientConsistencylevel = CosmosBridgeInternal.getConsistencyLevel(clientBuilder);
+        if (clientConsistencylevel == null) {
+            // if there is no consistency defined on client builder, default to account consistency
+            clientConsistencylevel = accountConsistency;
+        }
 
         // SDK does not allow invalid consistency upgrades, so choosing the lowest consistency level between the two
         ConsistencyLevel effectiveConsistencyLevel =
