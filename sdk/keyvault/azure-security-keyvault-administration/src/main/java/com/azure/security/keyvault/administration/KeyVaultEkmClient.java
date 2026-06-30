@@ -6,6 +6,7 @@ package com.azure.security.keyvault.administration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -28,6 +29,7 @@ import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmConnection;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmProxyClientCertificateInfo;
 import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.transformToKeyVaultEkmProxyInfo;
+import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.toKeyVaultAdministrationException;
 
 /**
  * The {@link KeyVaultEkmClient} provides synchronous methods to create, get, update, delete and check the External Key
@@ -81,6 +83,8 @@ public final class KeyVaultEkmClient {
         try {
             return transformToKeyVaultEkmConnection(
                 implClient.getEkmConnectionWithResponse(EMPTY_OPTIONS).getValue().toObject(EkmConnection.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -105,6 +109,8 @@ public final class KeyVaultEkmClient {
 
             return new SimpleResponse<>(response,
                 transformToKeyVaultEkmConnection(response.getValue().toObject(EkmConnection.class)));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -133,6 +139,8 @@ public final class KeyVaultEkmClient {
                         EMPTY_OPTIONS)
                     .getValue()
                     .toObject(EkmConnection.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -164,6 +172,8 @@ public final class KeyVaultEkmClient {
 
             return new SimpleResponse<>(response,
                 transformToKeyVaultEkmConnection(response.getValue().toObject(EkmConnection.class)));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -192,6 +202,8 @@ public final class KeyVaultEkmClient {
                         EMPTY_OPTIONS)
                     .getValue()
                     .toObject(EkmConnection.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -223,6 +235,8 @@ public final class KeyVaultEkmClient {
 
             return new SimpleResponse<>(response,
                 transformToKeyVaultEkmConnection(response.getValue().toObject(EkmConnection.class)));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -241,6 +255,8 @@ public final class KeyVaultEkmClient {
         try {
             return transformToKeyVaultEkmConnection(
                 implClient.deleteEkmConnectionWithResponse(EMPTY_OPTIONS).getValue().toObject(EkmConnection.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -265,6 +281,8 @@ public final class KeyVaultEkmClient {
 
             return new SimpleResponse<>(response,
                 transformToKeyVaultEkmConnection(response.getValue().toObject(EkmConnection.class)));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -283,6 +301,8 @@ public final class KeyVaultEkmClient {
         try {
             return transformToKeyVaultEkmProxyInfo(
                 implClient.checkEkmConnectionWithResponse(EMPTY_OPTIONS).getValue().toObject(EkmProxyInfo.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -307,6 +327,8 @@ public final class KeyVaultEkmClient {
 
             return new SimpleResponse<>(response,
                 transformToKeyVaultEkmProxyInfo(response.getValue().toObject(EkmProxyInfo.class)));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -327,6 +349,8 @@ public final class KeyVaultEkmClient {
                 implClient.getEkmCertificateWithResponse(EMPTY_OPTIONS)
                     .getValue()
                     .toObject(EkmProxyClientCertificateInfo.class));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -351,6 +375,8 @@ public final class KeyVaultEkmClient {
 
             return new SimpleResponse<>(response, transformToKeyVaultEkmProxyClientCertificateInfo(
                 response.getValue().toObject(EkmProxyClientCertificateInfo.class)));
+        } catch (HttpResponseException e) {
+            throw LOGGER.logExceptionAsError(toKeyVaultAdministrationException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
