@@ -150,12 +150,13 @@ public final class ShareFileItem {
     }
 
     /**
-     * Gets the NFS file type for this item, intended to be used only for NFS shares.
-     * Applicable to all item types in NFS shares: files, directories, symbolic links, block devices, character
-     * devices, FIFOs, and sockets.
+     * Gets the file type for this item.
+     * In SMB shares, this field is populated for files and directories.
+     * In NFS-enabled shares, this field is populated for files, directories, symbolic links, block devices,
+     * character devices, FIFOs, and sockets.
      * Supported in version 2026-12-06 and above.
      *
-     * @return The NFS file type for this item.
+     * @return The file type for this item.
      */
     public NfsFileType getFileType() {
         return fileType;
