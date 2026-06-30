@@ -331,11 +331,14 @@ final class CreateAndTestRouterCommand {
                 new ArrayList<>(table.get(cat).entrySet());
             fieldEntries.sort(Map.Entry.comparingByKey());
             for (Map.Entry<String, List<RowEntry>> field : fieldEntries) {
-                // Use the field's own row count as the denominator so array
-                // leaves don't inflate the rate. Mirrors single-type
-                // create-and-test and matches Python/.NET semantics.
+                // Denominator is the per-category segment count so a field
+                // that's only meaningful in one category isn't penalised by
+                // other categories' segment counts, but a field missing from
+                // some segments in this category still reports the correct
+                // fraction. Mirrors Python's summarize_routed and .NET's
+                // SummarizeRouted.
                 List<RowEntry> rows = field.getValue();
-                int denom = rows.size();
+                int denom = segCount;
                 long filled = rows.stream().filter(r -> r.value != null).count();
                 double fillRate = denom == 0 ? 0.0 : (double) filled / denom;
                 List<Double> confidences = new ArrayList<>();

@@ -71,10 +71,12 @@ Gets raw JSON response for custom processing.
 #### `Sample04_CreateAnalyzer`
 Creates custom analyzer with field schema for domain-specific extraction.
 - Key concepts: Field types (string, number, date, object, array), extraction methods (extract, generate, classify)
+- **Next step:** to run this workflow on your own folder of documents (validate schema → create → batch test → stdout summary), use the [`cu-sdk-author-analyzer`](../cu-sdk-author-analyzer/SKILL.md) skill.
 
 #### `Sample05_CreateClassifier`
 Creates classifier to categorize documents (Loan_Application, Invoice, Bank_Statement).
 - Key concepts: Content categories, segmentation, document routing
+- **Next step:** to run this workflow on your own mixed-document packets, use the [`cu-sdk-author-analyzer-classify-route`](../cu-sdk-author-analyzer-classify-route/SKILL.md) skill.
 
 #### `Sample16_CreateAnalyzerWithLabels`
 Builds an analyzer using **labeled training data** loaded from Azure Blob Storage. The repo ships labeled receipt data at `src/samples/resources/receipt_labels/` (`*.jpg`, `*.jpg.labels.json`, optional `*.jpg.result.json`).
