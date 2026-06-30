@@ -8,14 +8,14 @@
 
 #### `models.NetAppAccountPatch` was modified
 
-* `provisioningState()` was removed
+* `type()` was removed
+* `multiAdStatus()` was removed
 * `withLocation(java.lang.String)` was removed
+* `disableShowmount()` was removed
+* `provisioningState()` was removed
 * `id()` was removed
 * `location()` was removed
-* `disableShowmount()` was removed
 * `name()` was removed
-* `multiAdStatus()` was removed
-* `type()` was removed
 
 ### Features Added
 
@@ -290,17 +290,17 @@
 
 #### `models.Volume$Definition` was modified
 
-* `withLanguage(models.VolumeLanguage)` was added
-* `withLargeVolumeType(models.LargeVolumeType)` was added
-* `withLdapServerType(models.LdapServerType)` was added
 * `withBreakthroughMode(models.BreakthroughMode)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
 
 #### `models.NetAppAccountPatch` was modified
 
-* `ldapConfiguration()` was added
-* `entraIdConfig()` was added
 * `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 * `withLdapConfiguration(models.LdapConfigurationPatch)` was added
+* `entraIdConfig()` was added
+* `ldapConfiguration()` was added
 
 #### `models.NetAppAccount$Update` was modified
 
@@ -309,45 +309,45 @@
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `ldapServerType()` was added
-* `withLargeVolumeType(models.LargeVolumeType)` was added
-* `withLdapServerType(models.LdapServerType)` was added
-* `withLanguage(models.VolumeLanguage)` was added
-* `language()` was added
 * `largeVolumeType()` was added
-* `breakthroughMode()` was added
 * `withBreakthroughMode(models.BreakthroughMode)` was added
+* `ldapServerType()` was added
+* `breakthroughMode()` was added
+* `withLdapServerType(models.LdapServerType)` was added
+* `language()` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
 
 #### `models.Volume` was modified
 
 * `ldapServerType()` was added
-* `breakthroughMode()` was added
-* `language()` was added
 * `largeVolumeType()` was added
+* `language()` was added
+* `breakthroughMode()` was added
 
 #### `NetAppFilesManager` was modified
 
-* `elasticBackupVaults()` was added
 * `elasticBackups()` was added
-* `elasticSnapshots()` was added
-* `elasticVolumes()` was added
 * `elasticAccounts()` was added
-* `activeDirectoryConfigs()` was added
 * `elasticBackupPolicies()` was added
+* `elasticVolumes()` was added
+* `activeDirectoryConfigs()` was added
 * `elasticCapacityPools()` was added
 * `elasticSnapshotPolicies()` was added
+* `elasticSnapshots()` was added
+* `elasticBackupVaults()` was added
 
 #### `models.Accounts` was modified
 
-* `refreshLdapBindPassword(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `refreshLdapBindPassword(java.lang.String,java.lang.String)` was added
+* `refreshLdapBindPassword(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.NetAppAccount` was modified
 
-* `ldapConfiguration()` was added
-* `entraIdConfig()` was added
-* `refreshLdapBindPassword(com.azure.core.util.Context)` was added
 * `refreshLdapBindPassword()` was added
+* `refreshLdapBindPassword(com.azure.core.util.Context)` was added
+* `entraIdConfig()` was added
+* `ldapConfiguration()` was added
 
 #### `models.CredentialsAkvDetails` was modified
 
@@ -356,8 +356,8 @@
 
 #### `models.CertificateAkvDetails` was modified
 
-* `userAssignedIdentity()` was added
 * `withUserAssignedIdentity(java.lang.String)` was added
+* `userAssignedIdentity()` was added
 
 ## 2.3.0 (2026-06-10)
 
