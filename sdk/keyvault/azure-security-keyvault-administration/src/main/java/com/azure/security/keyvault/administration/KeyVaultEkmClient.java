@@ -32,8 +32,7 @@ import static com.azure.security.keyvault.administration.KeyVaultEkmAsyncClient.
 import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.toKeyVaultAdministrationException;
 
 /**
- * The {@link KeyVaultEkmClient} provides synchronous methods to create, get, update, delete and check the External Key
- * Manager (EKM) connection of an Azure Key Vault account, as well as to retrieve the EKM proxy client certificate.
+ * The {@link KeyVaultEkmClient} provides synchronous methods to manage External Key Manager (EKM) connections
  *
  * <h2>Getting Started</h2>
  *
@@ -48,6 +47,158 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  * You can find more information on different ways of authenticating and their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
  * Azure Identity documentation"</a>.</p>
+ *
+ * <p><strong>Sample: Construct Synchronous EKM Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link KeyVaultEkmClient}, using the
+ * {@link KeyVaultEkmClientBuilder} to configure it.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.instantiation -->
+ * <pre>
+ * KeyVaultEkmClient keyVaultEkmClient = new KeyVaultEkmClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.instantiation -->
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get an EKM Connection</h2>
+ * The {@link KeyVaultEkmClient} can be used to retrieve the EKM connection from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve the EKM connection from the key vault, using
+ * the {@link KeyVaultEkmClient#getEkmConnection()} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.getEkmConnection -->
+ * <pre>
+ * KeyVaultEkmConnection ekmConnection = keyVaultEkmClient.getEkmConnection&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Retrieved EKM connection with host '%s'.%n&quot;, ekmConnection.getHost&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.getEkmConnection -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create an EKM Connection</h2>
+ * The {@link KeyVaultEkmClient} can be used to create an EKM connection in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously create an EKM connection in the key vault, using the
+ * {@link KeyVaultEkmClient#createEkmConnection(KeyVaultEkmConnection)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.createEkmConnection#KeyVaultEkmConnection -->
+ * <pre>
+ * KeyVaultEkmConnection ekmConnectionToCreate =
+ *     new KeyVaultEkmConnection&#40;&quot;&lt;ekm-proxy-host&gt;&quot;,
+ *         Collections.singletonList&#40;&quot;&lt;server-ca-certificate&gt;&quot;.getBytes&#40;&#41;&#41;&#41;
+ *         .setPathPrefix&#40;&quot;&lt;path-prefix&gt;&quot;&#41;
+ *         .setServerSubjectCommonName&#40;&quot;&lt;server-subject-common-name&gt;&quot;&#41;;
+ *
+ * KeyVaultEkmConnection createdEkmConnection = keyVaultEkmClient.createEkmConnection&#40;ekmConnectionToCreate&#41;;
+ *
+ * System.out.printf&#40;&quot;Created EKM connection with host '%s'.%n&quot;, createdEkmConnection.getHost&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.createEkmConnection#KeyVaultEkmConnection -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Update an EKM Connection</h2>
+ * The {@link KeyVaultEkmClient} can be used to update an existing EKM connection in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously update an EKM connection in the key vault, using the
+ * {@link KeyVaultEkmClient#updateEkmConnection(KeyVaultEkmConnection)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.updateEkmConnection#KeyVaultEkmConnection -->
+ * <pre>
+ * KeyVaultEkmConnection ekmConnectionToUpdate =
+ *     new KeyVaultEkmConnection&#40;&quot;&lt;ekm-proxy-host&gt;&quot;,
+ *         Collections.singletonList&#40;&quot;&lt;server-ca-certificate&gt;&quot;.getBytes&#40;&#41;&#41;&#41;
+ *         .setPathPrefix&#40;&quot;&lt;path-prefix&gt;&quot;&#41;
+ *         .setServerSubjectCommonName&#40;&quot;&lt;server-subject-common-name&gt;&quot;&#41;;
+ *
+ * KeyVaultEkmConnection updatedEkmConnection = keyVaultEkmClient.updateEkmConnection&#40;ekmConnectionToUpdate&#41;;
+ *
+ * System.out.printf&#40;&quot;Updated EKM connection with host '%s'.%n&quot;, updatedEkmConnection.getHost&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.updateEkmConnection#KeyVaultEkmConnection -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete an EKM Connection</h2>
+ * The {@link KeyVaultEkmClient} can be used to delete the EKM connection from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously delete the EKM connection from the key vault, using
+ * the {@link KeyVaultEkmClient#deleteEkmConnection()} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.deleteEkmConnection -->
+ * <pre>
+ * KeyVaultEkmConnection deletedEkmConnection = keyVaultEkmClient.deleteEkmConnection&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Deleted EKM connection with host '%s'.%n&quot;, deletedEkmConnection.getHost&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.deleteEkmConnection -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Check an EKM Connection</h2>
+ * The {@link KeyVaultEkmClient} can be used to check the connectivity and authentication with the EKM proxy.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously check the EKM connection, using the
+ * {@link KeyVaultEkmClient#checkEkmConnection()} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.checkEkmConnection -->
+ * <pre>
+ * KeyVaultEkmProxyInfo ekmProxyInfo = keyVaultEkmClient.checkEkmConnection&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Checked EKM connection. Proxy vendor: '%s', proxy name: '%s'.%n&quot;,
+ *     ekmProxyInfo.getProxyVendor&#40;&#41;, ekmProxyInfo.getProxyName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.checkEkmConnection -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get the EKM Proxy Client Certificate</h2>
+ * The {@link KeyVaultEkmClient} can be used to retrieve the EKM proxy client certificate from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve the EKM proxy client certificate, using the
+ * {@link KeyVaultEkmClient#getEkmCertificate()} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultEkmClient.getEkmCertificate -->
+ * <pre>
+ * KeyVaultEkmProxyClientCertificateInfo certificateInfo = keyVaultEkmClient.getEkmCertificate&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Retrieved EKM proxy client certificate with subject common name '%s'.%n&quot;,
+ *     certificateInfo.getSubjectCommonName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultEkmClient.getEkmCertificate -->
  *
  * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyVaultEkmAsyncClient}.</p>
  *
@@ -71,7 +222,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Gets the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. This operation requires the
+     * Gets the {@link KeyVaultEkmConnection EKM connection}. This operation requires the
      * {@code ekm/read} permission.
      *
      * @return The {@link KeyVaultEkmConnection EKM connection}.
@@ -91,7 +242,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Gets the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. This operation requires the
+     * Gets the {@link KeyVaultEkmConnection EKM connection}. This operation requires the
      * {@code ekm/read} permission.
      *
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
@@ -117,7 +268,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Creates the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. If the EKM connection already
+     * Creates the {@link KeyVaultEkmConnection EKM connection}. If the EKM connection already
      * exists, this operation fails. This operation requires the {@code ekm/write} permission.
      *
      * @param ekmConnection The {@link KeyVaultEkmConnection EKM connection} to create.
@@ -147,7 +298,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Creates the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. If the EKM connection already
+     * Creates the {@link KeyVaultEkmConnection EKM connection}. If the EKM connection already
      * exists, this operation fails. This operation requires the {@code ekm/write} permission.
      *
      * @param ekmConnection The {@link KeyVaultEkmConnection EKM connection} to create.
@@ -180,7 +331,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Updates the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. If the EKM connection does not
+     * Updates the {@link KeyVaultEkmConnection EKM connection}. If the EKM connection does not
      * exist, this operation fails. This operation requires the {@code ekm/write} permission.
      *
      * @param ekmConnection The {@link KeyVaultEkmConnection EKM connection} to update.
@@ -210,7 +361,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Updates the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. If the EKM connection does not
+     * Updates the {@link KeyVaultEkmConnection EKM connection}. If the EKM connection does not
      * exist, this operation fails. This operation requires the {@code ekm/write} permission.
      *
      * @param ekmConnection The {@link KeyVaultEkmConnection EKM connection} to update.
@@ -243,7 +394,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Deletes the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. If the EKM connection does not
+     * Deletes the {@link KeyVaultEkmConnection EKM connection}. If the EKM connection does not
      * exist, this operation fails. This operation requires the {@code ekm/delete} permission.
      *
      * @return The deleted {@link KeyVaultEkmConnection EKM connection}.
@@ -263,7 +414,7 @@ public final class KeyVaultEkmClient {
     }
 
     /**
-     * Deletes the {@link KeyVaultEkmConnection EKM connection} of the Key Vault account. If the EKM connection does not
+     * Deletes the {@link KeyVaultEkmConnection EKM connection}. If the EKM connection does not
      * exist, this operation fails. This operation requires the {@code ekm/delete} permission.
      *
      * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
