@@ -843,6 +843,51 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             "SELECT * FROM c WHERE c.category = 'electronics' ORDER BY c.idx");
     }
 
+    // ============ Cross-Partition Aggregate / GROUP BY Merge Tests ============
+    // These run aggregate and GROUP BY queries with NO partition key against the dedicated
+    // multi-physical-partition container, so the thin client must fan out to every physical partition
+    // and MERGE the partial results into the final value/groups. This is distinct from the
+    // single-partition aggregate/GROUP BY tests above (which set a partition key and never merge
+    // across partitions). Each helper also asserts the Direct baseline genuinely contacted more than
+    // one partition key range, proving the cross-partition merge path actually ran.
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCrossPartitionCount() {
+        assertCrossPartitionScalarMatch("SELECT VALUE COUNT(1) FROM c", Integer.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCrossPartitionSum() {
+        assertCrossPartitionScalarMatch("SELECT VALUE SUM(c.idx) FROM c", Double.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCrossPartitionAvg() {
+        assertCrossPartitionScalarMatch("SELECT VALUE AVG(c.idx) FROM c", Double.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCrossPartitionMin() {
+        assertCrossPartitionScalarMatch("SELECT VALUE MIN(c.idx) FROM c", Integer.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCrossPartitionMax() {
+        assertCrossPartitionScalarMatch("SELECT VALUE MAX(c.idx) FROM c", Integer.class);
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCrossPartitionGroupByCount() {
+        assertCrossPartitionGroupByMatch(
+            "SELECT c.category, COUNT(1) AS cnt FROM c GROUP BY c.category", "category");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testCrossPartitionGroupBySumAvg() {
+        assertCrossPartitionGroupByMatch(
+            "SELECT c.category, SUM(c.idx) AS total, AVG(c.idx) AS avg FROM c GROUP BY c.category", "category");
+    }
+
     // ==================== Multi-EPK-Range Tests (Sort Validation) ====================
     // These tests use a dedicated higher-throughput (24,000 RU/s) container so that metadata
     // exposes multiple EPK (effective partition key) ranges. Note: on the emulator / single-box
@@ -1650,6 +1695,58 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         // fanned out and merged all rows from those partitions correctly.
         assertThat(distinctPartitionKeyRangesContacted(directResult.diagnostics))
             .as("cross-partition query must contact more than one partition key range: " + query)
+            .isGreaterThan(1);
+    }
+
+    /**
+     * Cross-partition scalar-aggregate parity check. Runs a {@code SELECT VALUE <agg>} query with no
+     * partition key on the options, so the thin client must fan out to every physical partition,
+     * collect each partition's partial aggregate, and merge them into the single returned value -
+     * exercising the cross-partition aggregate MERGE path that the single-partition aggregate tests
+     * never reach. Asserts (1) thin client routing, (2) value parity with the Direct baseline within
+     * numeric tolerance, and (3) that the Direct baseline genuinely fanned out across more than one
+     * partition key range, proving the merge actually happened.
+     */
+    private <T> void assertCrossPartitionScalarMatch(String query, Class<T> resultType) {
+        CosmosQueryRequestOptions crossPartitionOptions = new CosmosQueryRequestOptions();
+        QueryResult<T> directResult = drainQuery(directCrossPartitionContainer, query, crossPartitionOptions, resultType);
+        QueryResult<T> tcResult = drainQuery(thinClientCrossPartitionContainer, query, crossPartitionOptions, resultType);
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size()).as("Scalar count mismatch: " + query).isEqualTo(directResult.results.size());
+        for (int i = 0; i < directResult.results.size(); i++) {
+            assertScalarValueEquals(tcResult.results.get(i), directResult.results.get(i), i + ": " + query);
+        }
+
+        assertThat(distinctPartitionKeyRangesContacted(directResult.diagnostics))
+            .as("cross-partition aggregate must contact more than one partition key range: " + query)
+            .isGreaterThan(1);
+    }
+
+    /**
+     * Cross-partition GROUP BY parity check. With no partition key on the options the thin client must
+     * fan out to every physical partition and merge each partition's partial groups into the final
+     * grouped result - exercising the cross-partition GROUP BY MERGE path. Because group/page ordering
+     * across partitions is undefined, rows are compared as a set keyed on {@code groupField} (numeric
+     * fields matched within tolerance). Asserts thin client routing, set parity with Direct, and
+     * genuine multi-range fan-out on the Direct baseline.
+     */
+    private void assertCrossPartitionGroupByMatch(String query, String groupField) {
+        CosmosQueryRequestOptions crossPartitionOptions = new CosmosQueryRequestOptions();
+        QueryResult<ObjectNode> directResult = drainQuery(directCrossPartitionContainer, query, crossPartitionOptions, ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainQuery(thinClientCrossPartitionContainer, query, crossPartitionOptions, ObjectNode.class);
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size()).as("GROUP BY count mismatch: " + query).isEqualTo(directResult.results.size());
+        for (ObjectNode directRow : directResult.results) {
+            String key = directRow.get(groupField).asText();
+            boolean found = tcResult.results.stream().anyMatch(tc -> tc.get(groupField).asText().equals(key)
+                && jsonEqualsWithTolerance(tc, directRow));
+            assertThat(found).as("GROUP BY row not found in thin client results: " + key).isTrue();
+        }
+
+        assertThat(distinctPartitionKeyRangesContacted(directResult.diagnostics))
+            .as("cross-partition GROUP BY must contact more than one partition key range: " + query)
             .isGreaterThan(1);
     }
 
