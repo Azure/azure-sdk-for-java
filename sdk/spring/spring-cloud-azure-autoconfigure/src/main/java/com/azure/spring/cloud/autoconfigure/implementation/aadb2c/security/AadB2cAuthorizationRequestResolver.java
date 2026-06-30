@@ -92,19 +92,6 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         this(properties, delegateResolver, createRequestMatcher(authorizationRequestBaseUri));
     }
 
-    /**
-     * Creates a new instance of {@link AadB2cAuthorizationRequestResolver}.
-     *
-     * @param properties the AAD B2C properties.
-     * @param delegateResolver the delegate resolver.
-     * @param authorizationRequestBaseUri the base URI used to resolve authorization requests.
-     */
-    public AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
-                                              OAuth2AuthorizationRequestResolver delegateResolver,
-                                              String authorizationRequestBaseUri) {
-        this(properties, delegateResolver, createRequestMatcher(authorizationRequestBaseUri));
-    }
-
     private AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
                                                OAuth2AuthorizationRequestResolver delegateResolver,
                                                PathPatternRequestMatcher requestMatcher) {
