@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/BackupPolicies_List.json
+     * x-ms-original-file: 2026-04-15-preview/BackupPolicies_List.json
      */
     /**
      * Sample code: BackupPolicies_List.

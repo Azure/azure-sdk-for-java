@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceEndpointPolicyDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceEndpointPolicyDefinitionGet.json
+     * x-ms-original-file: 2025-07-01/ServiceEndpointPolicyDefinitionGet.json
      */
     /**
      * Sample code: Get service endpoint definition in service endpoint policy.

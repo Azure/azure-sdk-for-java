@@ -20,43 +20,44 @@ public final class ConnectionPropertiesV2BasicResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionPropertiesV2BasicResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"ModelGateway\",\"createdByWorkspaceArmId\":\"gwydyy\",\"error\":\"svkhgbv\",\"expiryTime\":\"2021-09-12T06:08:07Z\",\"group\":\"AzureAI\",\"isSharedToAll\":true,\"metadata\":{\"zjcpeogk\":\"pukhpyrne\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"uxddbhfh\",\"fpazjzoywjxhpd\",\"lontacnpq\",\"tehtuevrhrljyoog\"],\"target\":\"hnsduugwbsreur\",\"useWorkspaceManagedIdentity\":true},\"id\":\"uarenlv\",\"name\":\"htkln\",\"type\":\"nafvvkyfedev\"}")
+            "{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Spark\",\"createdByWorkspaceArmId\":\"xkumasjcaac\",\"error\":\"mmcpug\",\"expiryTime\":\"2021-09-14T23:55:36Z\",\"group\":\"AzureAI\",\"isSharedToAll\":true,\"metadata\":{\"hnl\":\"hbzehewho\",\"clgsc\":\"qnbldxe\",\"rsrrmoucsofldp\":\"orim\",\"mxuq\":\"viyfcaabeolhbhlv\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Active\",\"sharedUserList\":[\"udfbsfarf\",\"iowl\",\"jxnqp\",\"wgfstmhqykizm\"],\"target\":\"saoafcluqvox\",\"useWorkspaceManagedIdentity\":true},\"id\":\"im\",\"name\":\"yvwgcwwpbmzgwe\",\"type\":\"ydsx\"}")
             .toObject(ConnectionPropertiesV2BasicResourceInner.class);
-        Assertions.assertEquals(ConnectionCategory.MODEL_GATEWAY, model.properties().category());
-        Assertions.assertEquals("svkhgbv", model.properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T06:08:07Z"), model.properties().expiryTime());
+        Assertions.assertEquals(ConnectionCategory.SPARK, model.properties().category());
+        Assertions.assertEquals("mmcpug", model.properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T23:55:36Z"), model.properties().expiryTime());
         Assertions.assertTrue(model.properties().isSharedToAll());
-        Assertions.assertEquals("pukhpyrne", model.properties().metadata().get("zjcpeogk"));
+        Assertions.assertEquals("hbzehewho", model.properties().metadata().get("hnl"));
         Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, model.properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, model.properties().peStatus());
-        Assertions.assertEquals("uxddbhfh", model.properties().sharedUserList().get(0));
-        Assertions.assertEquals("hnsduugwbsreur", model.properties().target());
+        Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.properties().peStatus());
+        Assertions.assertEquals("udfbsfarf", model.properties().sharedUserList().get(0));
+        Assertions.assertEquals("saoafcluqvox", model.properties().target());
         Assertions.assertTrue(model.properties().useWorkspaceManagedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectionPropertiesV2BasicResourceInner model = new ConnectionPropertiesV2BasicResourceInner()
-            .withProperties(new ConnectionPropertiesV2().withCategory(ConnectionCategory.MODEL_GATEWAY)
-                .withError("svkhgbv")
-                .withExpiryTime(OffsetDateTime.parse("2021-09-12T06:08:07Z"))
+            .withProperties(new ConnectionPropertiesV2().withCategory(ConnectionCategory.SPARK)
+                .withError("mmcpug")
+                .withExpiryTime(OffsetDateTime.parse("2021-09-14T23:55:36Z"))
                 .withIsSharedToAll(true)
-                .withMetadata(mapOf("zjcpeogk", "pukhpyrne"))
+                .withMetadata(
+                    mapOf("hnl", "hbzehewho", "clgsc", "qnbldxe", "rsrrmoucsofldp", "orim", "mxuq", "viyfcaabeolhbhlv"))
                 .withPeRequirement(ManagedPERequirement.NOT_APPLICABLE)
-                .withPeStatus(ManagedPEStatus.NOT_APPLICABLE)
-                .withSharedUserList(Arrays.asList("uxddbhfh", "fpazjzoywjxhpd", "lontacnpq", "tehtuevrhrljyoog"))
-                .withTarget("hnsduugwbsreur")
+                .withPeStatus(ManagedPEStatus.ACTIVE)
+                .withSharedUserList(Arrays.asList("udfbsfarf", "iowl", "jxnqp", "wgfstmhqykizm"))
+                .withTarget("saoafcluqvox")
                 .withUseWorkspaceManagedIdentity(true));
         model = BinaryData.fromObject(model).toObject(ConnectionPropertiesV2BasicResourceInner.class);
-        Assertions.assertEquals(ConnectionCategory.MODEL_GATEWAY, model.properties().category());
-        Assertions.assertEquals("svkhgbv", model.properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T06:08:07Z"), model.properties().expiryTime());
+        Assertions.assertEquals(ConnectionCategory.SPARK, model.properties().category());
+        Assertions.assertEquals("mmcpug", model.properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T23:55:36Z"), model.properties().expiryTime());
         Assertions.assertTrue(model.properties().isSharedToAll());
-        Assertions.assertEquals("pukhpyrne", model.properties().metadata().get("zjcpeogk"));
+        Assertions.assertEquals("hbzehewho", model.properties().metadata().get("hnl"));
         Assertions.assertEquals(ManagedPERequirement.NOT_APPLICABLE, model.properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, model.properties().peStatus());
-        Assertions.assertEquals("uxddbhfh", model.properties().sharedUserList().get(0));
-        Assertions.assertEquals("hnsduugwbsreur", model.properties().target());
+        Assertions.assertEquals(ManagedPEStatus.ACTIVE, model.properties().peStatus());
+        Assertions.assertEquals("udfbsfarf", model.properties().sharedUserList().get(0));
+        Assertions.assertEquals("saoafcluqvox", model.properties().target());
         Assertions.assertTrue(model.properties().useWorkspaceManagedIdentity());
     }
 

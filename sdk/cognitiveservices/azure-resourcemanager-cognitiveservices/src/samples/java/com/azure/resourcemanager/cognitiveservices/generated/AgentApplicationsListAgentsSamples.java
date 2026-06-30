@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AgentApplicationsListAgentsSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/AgentApplication/listAgents.json
+     * x-ms-original-file: 2026-05-15-preview/AgentApplication/listAgents.json
      */
     /**
      * Sample code: List Agents for Agent Application.

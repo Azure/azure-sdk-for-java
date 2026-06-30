@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkApplianceIn
  */
 public final class VirtualNetworkAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkAppliances_CreateOrUpdate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkAppliances_CreateOrUpdate.json
      */
     /**
      * Sample code: Create virtual network appliance.
@@ -23,7 +23,7 @@ public final class VirtualNetworkAppliancesCreateOrUpdateSamples {
         manager.serviceClient()
             .getVirtualNetworkAppliances()
             .createOrUpdate("rg1", "test-vna", new VirtualNetworkApplianceInner().withLocation("eastus")
-                .withBandwidthInGbps("100")
+                .withBandwidthInGbps(100.0D)
                 .withSubnet(new SubnetInner().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/rg1-vnet/subnets/default")),
                 com.azure.core.util.Context.NONE);

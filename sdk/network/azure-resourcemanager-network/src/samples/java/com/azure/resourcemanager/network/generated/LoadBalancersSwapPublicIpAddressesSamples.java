@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersSwapPublicIpAddressesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancersSwapPublicIpAddresses.json
+     * x-ms-original-file: 2025-07-01/LoadBalancersSwapPublicIpAddresses.json
      */
     /**
      * Sample code: Swap VIPs between two load balancers.

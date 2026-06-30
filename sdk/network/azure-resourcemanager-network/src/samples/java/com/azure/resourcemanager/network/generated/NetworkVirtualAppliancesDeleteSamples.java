@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualAppliancesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkVirtualApplianceDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkVirtualApplianceDelete.json
      */
     /**
      * Sample code: Delete NetworkVirtualAppliance.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesDeleteReplicationSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Volumes_DeleteReplication.json
+     * x-ms-original-file: 2026-04-15-preview/Volumes_DeleteReplication.json
      */
     /**
      * Sample code: Volumes_DeleteReplication.

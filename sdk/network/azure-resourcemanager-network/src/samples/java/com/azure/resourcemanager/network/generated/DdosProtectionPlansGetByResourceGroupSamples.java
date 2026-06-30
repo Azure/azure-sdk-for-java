@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class DdosProtectionPlansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/DdosProtectionPlanGet.json
+     * x-ms-original-file: 2025-07-01/DdosProtectionPlanGet.json
      */
     /**
      * Sample code: Get DDoS protection plan.

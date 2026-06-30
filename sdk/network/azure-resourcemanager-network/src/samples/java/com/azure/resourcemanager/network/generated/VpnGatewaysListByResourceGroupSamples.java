@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnGatewayListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/VpnGatewayListByResourceGroup.json
      */
     /**
      * Sample code: VpnGatewayListByResourceGroup.

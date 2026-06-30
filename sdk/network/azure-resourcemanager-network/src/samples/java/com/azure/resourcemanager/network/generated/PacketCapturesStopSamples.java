@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PacketCapturesStopSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherPacketCaptureStop.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherPacketCaptureStop.json
      */
     /**
      * Sample code: Stop packet capture.

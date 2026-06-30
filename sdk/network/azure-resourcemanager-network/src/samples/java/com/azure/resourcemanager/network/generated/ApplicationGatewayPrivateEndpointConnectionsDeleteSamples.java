@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewayPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayPrivateEndpointConnectionDelete.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayPrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Delete Application Gateway Private Endpoint Connection.

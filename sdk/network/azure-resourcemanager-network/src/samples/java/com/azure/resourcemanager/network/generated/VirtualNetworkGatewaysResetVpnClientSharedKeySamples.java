@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysResetVpnClientSharedKeySamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayResetVpnClientSharedKey.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayResetVpnClientSharedKey.json
      */
     /**
      * Sample code: ResetVpnClientSharedKey.
