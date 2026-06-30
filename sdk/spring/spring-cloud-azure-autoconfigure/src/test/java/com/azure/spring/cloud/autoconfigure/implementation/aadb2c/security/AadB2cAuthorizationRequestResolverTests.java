@@ -4,6 +4,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.AadB2cAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.WebOAuth2ClientTestApp;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,9 @@ import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.util.Assert;
 
@@ -88,5 +92,41 @@ class AadB2cAuthorizationRequestResolverTests {
                     AuthorizationGrantType.AUTHORIZATION_CODE);
                 Assertions.assertTrue(resolver.resolve(request).getScopes().containsAll(Arrays.asList("openid", AadB2cConstants.TEST_CLIENT_ID)));
             });
+    }
+
+    @Test
+    void testCustomAuthorizationRequestBaseUri() {
+        final String customAuthorizationRequestBaseUri = "/login/oauth2/authorization";
+        final String registrationId = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+        final AadB2cAuthorizationRequestResolver resolver = new AadB2cAuthorizationRequestResolver(
+            customAuthorizationRequestBaseUri,
+            new InMemoryClientRegistrationRepository(createClientRegistration(registrationId)),
+            new AadB2cProperties());
+
+        HttpServletRequest defaultRequest = getHttpServletRequest("/oauth2/authorization/" + registrationId);
+        HttpServletRequest customRequest = getHttpServletRequest(customAuthorizationRequestBaseUri + "/" + registrationId);
+
+        Assertions.assertNull(resolver.resolve(defaultRequest));
+        Assertions.assertNull(resolver.resolve(defaultRequest, registrationId));
+
+        Assertions.assertNotNull(resolver.resolve(customRequest));
+        Assertions.assertNotNull(resolver.resolve(customRequest, registrationId));
+        Assertions.assertEquals(registrationId, resolver.resolve(customRequest).getAdditionalParameters().get("p"));
+        Assertions.assertEquals("spring-boot-starter",
+            resolver.resolve(customRequest).getAdditionalParameters().get("x-client-SKU"));
+    }
+
+    private ClientRegistration createClientRegistration(String registrationId) {
+        return ClientRegistration.withRegistrationId(registrationId)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
+            .scope("openid")
+            .authorizationUri("https://faketenant.b2clogin.com/oauth2/v2.0/authorize")
+            .tokenUri("https://faketenant.b2clogin.com/oauth2/v2.0/token")
+            .clientName("b2c")
+            .clientId(AadB2cConstants.TEST_CLIENT_ID)
+            .clientSecret(AadB2cConstants.TEST_CLIENT_SECRET)
+            .build();
     }
 }
