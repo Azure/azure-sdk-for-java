@@ -82,10 +82,6 @@ public final class ShareFileItemConstructorProxy {
         }
 
         assert accessor != null;
-        if (accessor == null) {
-            throw new IllegalStateException("ShareFileItemConstructorAccessor is not configured.");
-        }
-
         return accessor.create(name, isDirectory, id, properties, fileAttributes, permissionKey, fileSize, linkCount,
             fileType, linkText, deviceMajor, deviceMinor);
     }
