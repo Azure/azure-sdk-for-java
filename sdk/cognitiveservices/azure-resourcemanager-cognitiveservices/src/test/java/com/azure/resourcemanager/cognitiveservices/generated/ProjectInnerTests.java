@@ -18,29 +18,30 @@ public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"bkau\",\"description\":\"fshfph\",\"endpoints\":{\"wkojpllndnpd\":\"ulaiywzejywhs\",\"fugsnnfhyetefy\":\"rpqaf\",\"ctfjgtixr\":\"oc\",\"wolba\":\"vzuyturmlmu\"},\"isDefault\":false},\"tags\":{\"gajinnixjawrtmj\":\"ionszonwp\"},\"location\":\"myccx\",\"etag\":\"hcoxov\",\"identity\":{\"type\":\"UserAssigned\",\"tenantId\":\"nlusfnrd\",\"principalId\":\"xtxrdcqtjvidt\",\"userAssignedIdentities\":{\"qfecjxeygtuhx\":{\"principalId\":\"uslvyjtcvuwkasi\",\"clientId\":\"esfuught\"}}},\"id\":\"cbuewmrswnjlxuz\",\"name\":\"hwpusxj\",\"type\":\"aqehg\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"ccxlzhcoxovnek\",\"description\":\"nlusfnrd\",\"endpoints\":{\"ttgepuslvyjtcv\":\"txrdcqtjvi\",\"ughtuqfecjxeygtu\":\"wkasiziesf\",\"cbuewmrswnjlxuz\":\"xu\",\"aqehg\":\"hwpusxj\"},\"isDefault\":true},\"tags\":{\"nwfepbnwg\":\"jqatucoigebxn\",\"jgcgbjbgdlfgtdys\":\"m\",\"zjrwdkqze\":\"aquflqbctqha\"},\"location\":\"jleziunjx\",\"etag\":\"zantkwceg\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"nseqacjjvp\",\"principalId\":\"guooqjagmdit\",\"userAssignedIdentities\":{\"lmotoebnfxofvcj\":{\"principalId\":\"ookjbsahrtdtpde\",\"clientId\":\"ac\"},\"excmjurbuhhl\":{\"principalId\":\"dirazf\",\"clientId\":\"ejwabmdujtmvco\"},\"kffdjktsys\":{\"principalId\":\"ql\",\"clientId\":\"srogtu\"}}},\"id\":\"fvcl\",\"name\":\"lxnfuijtkbusqogs\",\"type\":\"ikayiansharuj\"}")
             .toObject(ProjectInner.class);
-        Assertions.assertEquals("bkau", model.properties().displayName());
-        Assertions.assertEquals("fshfph", model.properties().description());
-        Assertions.assertEquals("ionszonwp", model.tags().get("gajinnixjawrtmj"));
-        Assertions.assertEquals("myccx", model.location());
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ccxlzhcoxovnek", model.properties().displayName());
+        Assertions.assertEquals("nlusfnrd", model.properties().description());
+        Assertions.assertEquals("jqatucoigebxn", model.tags().get("nwfepbnwg"));
+        Assertions.assertEquals("jleziunjx", model.location());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectInner model = new ProjectInner()
-            .withProperties(new ProjectProperties().withDisplayName("bkau").withDescription("fshfph"))
-            .withTags(mapOf("gajinnixjawrtmj", "ionszonwp"))
-            .withLocation("myccx")
-            .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("qfecjxeygtuhx", new UserAssignedIdentity())));
+            .withProperties(new ProjectProperties().withDisplayName("ccxlzhcoxovnek").withDescription("nlusfnrd"))
+            .withTags(mapOf("nwfepbnwg", "jqatucoigebxn", "jgcgbjbgdlfgtdys", "m", "zjrwdkqze", "aquflqbctqha"))
+            .withLocation("jleziunjx")
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("lmotoebnfxofvcj", new UserAssignedIdentity(), "excmjurbuhhl",
+                    new UserAssignedIdentity(), "kffdjktsys", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("bkau", model.properties().displayName());
-        Assertions.assertEquals("fshfph", model.properties().description());
-        Assertions.assertEquals("ionszonwp", model.tags().get("gajinnixjawrtmj"));
-        Assertions.assertEquals("myccx", model.location());
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ccxlzhcoxovnek", model.properties().displayName());
+        Assertions.assertEquals("nlusfnrd", model.properties().description());
+        Assertions.assertEquals("jqatucoigebxn", model.tags().get("nwfepbnwg"));
+        Assertions.assertEquals("jleziunjx", model.location());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

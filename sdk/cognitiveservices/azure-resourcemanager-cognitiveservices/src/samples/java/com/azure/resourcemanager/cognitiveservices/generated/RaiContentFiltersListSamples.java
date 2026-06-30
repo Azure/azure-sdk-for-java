@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiContentFiltersListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListRaiContentFilters.json
+     * x-ms-original-file: 2026-05-15-preview/ListRaiContentFilters.json
      */
     /**
      * Sample code: ListRaiContentFilters.
