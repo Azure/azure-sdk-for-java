@@ -219,15 +219,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
-     * Fallback maximum message size (256 KB) used when the AMQP link does not report a size.
+     * The default maximum allowable size, in bytes, for a batch to be sent.
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
-    // Fallback batch size limit (1 MB) used when the service does not advertise the vendor property
-    // com.microsoft:max-message-batch-size on the AMQP sender link. When the property is present,
-    // its value is used directly. This fallback protects against older service deployments that
-    // do not advertise the property — without it, the SDK would use max-message-size (up to 100 MB
-    // on Premium large-message entities) for batch sizing, and the broker would reject.
-    static final int DEFAULT_MAX_BATCH_SIZE_BYTES = 1024 * 1024;
     private static final String TRANSACTION_LINK_NAME = "coordinator";
     private static final ServiceBusMessage END = new ServiceBusMessage(new byte[0]);
     private static final CreateMessageBatchOptions DEFAULT_BATCH_OPTIONS = new CreateMessageBatchOptions();
@@ -321,7 +315,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
-        return sendMessageInternal(message, null);
+        return sendFluxInternal(Flux.just(message), null);
     }
 
     /**
@@ -346,7 +340,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return sendMessageInternal(message, transactionContext);
+        return sendFluxInternal(Flux.just(message), transactionContext);
     }
 
     /**
@@ -468,24 +462,19 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final int maxSize = options.getMaximumSizeInBytes();
 
-        return getSendLinkWithRetry("create-batch")
-            .flatMap(link -> link.getMaxBatchSize().flatMap(batchSizeFromLink -> {
-                // Use the value from getMaxBatchSize() (vendor property, or standard max-message-size fallback
-                // in ReactorSender). If neither is available (batchSizeFromLink <= 0), use 1 MB as a
-                // last-resort default to prevent oversized batches on broken links.
-                final int maximumBatchSize = batchSizeFromLink > 0 ? batchSizeFromLink : DEFAULT_MAX_BATCH_SIZE_BYTES;
-                if (maxSize > maximumBatchSize) {
-                    return monoError(logger,
-                        new IllegalArgumentException(String.format(Locale.US,
-                            "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the maximum"
-                                + " batch size (%s bytes).",
-                            maxSize, maximumBatchSize)));
-                }
-                final int batchSize = maxSize > 0 ? maxSize : maximumBatchSize;
-                return Mono.just(
-                    new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
-            }))
-            .onErrorMap(this::mapError);
+        return getSendLinkWithRetry("create-batch").flatMap(link -> link.getLinkSize().flatMap(size -> {
+            final int maximumLinkSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+            if (maxSize > maximumLinkSize) {
+                return monoError(logger,
+                    new IllegalArgumentException(String.format(Locale.US,
+                        "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
+                            + " (%s bytes).",
+                        maxSize, maximumLinkSize)));
+            }
+            final int batchSize = maxSize > 0 ? maxSize : maximumLinkSize;
+            return Mono
+                .just(new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
+        })).onErrorMap(this::mapError);
     }
 
     /**
@@ -843,11 +832,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     private Mono<Void> sendBatchInternal(ServiceBusMessageBatch batch,
         ServiceBusTransactionContext transactionContext) {
-        return sendBatchInternal(batch, transactionContext, true);
-    }
-
-    private Mono<Void> sendBatchInternal(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext,
-        boolean instrument) {
         if (isDisposed.get()) {
             return monoError(logger,
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessages")));
@@ -889,52 +873,29 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         final String message = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
         final Mono<Void> withRetry = withRetry(sendMessage, retryOptions, message).onErrorMap(this::mapError);
-        // The single-message send path (sendMessageInternal) starts the "ServiceBus.send" span itself on the
-        // subscribing thread, so it sends this batch with instrument=false to avoid a duplicate span.
-        if (!instrument) {
-            return withRetry;
-        }
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
 
-    private Mono<Void> sendMessageInternal(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
+    private Mono<Void> sendFluxInternal(Flux<ServiceBusMessage> messages,
+        ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger,
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
 
-        final List<ServiceBusMessage> messageList = Collections.singletonList(message);
-
-        // Uses getLinkSize() intentionally — this path is for single-message sends only (sendMessage()).
-        // Single messages should use the full link capacity (up to 100 MB on Premium large-message),
-        // not the batch-size cap. The batch path (sendMessages(Iterable), scheduleMessages(Iterable))
-        // goes through createMessageBatch() which calls getMaxBatchSize() for the vendor-property-based cap.
         final Mono<List<ServiceBusMessageBatch>> batchList
             = getSendLinkWithRetry("send-batches").flatMap(link -> link.getLinkSize().flatMap(size -> {
                 final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                 final CreateMessageBatchOptions batchOptions
                     = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
-                return Flux.fromIterable(messageList)
-                    .collect(new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer,
-                        messageSerializer));
+                return messages.collect(
+                    new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
             }));
 
-        // The raw send pipeline, without span instrumentation. Instrumentation is applied as the
-        // outermost operator below so the span is created on the subscribing thread (instrument=false here).
-        final Mono<Void> send = batchList.flatMap(list -> Flux.fromIterable(list)
-            .flatMap(batch -> sendBatchInternal(batch, transactionContext, false))
+        return batchList.flatMap(list -> Flux.fromIterable(list)
+            .flatMap(batch -> sendBatchInternal(batch, transactionContext))
             .then()
             .doOnError(error -> logger.error("Error sending batch.", error))).onErrorMap(this::mapError);
-
-        // Start the producer message span and the "ServiceBus.send" span on the subscribing (caller) thread,
-        // BEFORE the first send triggers AMQP connection/link establishment on a background thread. Starting
-        // the spans here ensures the caller's ambient (thread-local) trace context is used as the parent.
-        // Doing this lazily downstream (after the connection thread hop) is what caused the first send to get
-        // a new, disconnected trace id. See https://github.com/Azure/azure-sdk-for-java/issues/44958.
-        return Mono.defer(() -> {
-            tracer.reportMessageSpan(message);
-            return instrumentation.instrumentSendBatch("ServiceBus.send", send, messageList);
-        });
     }
 
     private Mono<AmqpSendLink> getSendLink(String callSite) {

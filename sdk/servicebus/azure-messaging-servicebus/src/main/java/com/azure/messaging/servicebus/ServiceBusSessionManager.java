@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.TimeoutException;
@@ -133,7 +132,7 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
      * @return The name of the link, or {@code null} if there is no open link with that {@code sessionId}.
      */
     public String getLinkName(String sessionId) {
-        final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId.toLowerCase(Locale.ROOT));
+        final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
     }
 
@@ -176,7 +175,7 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
     private Mono<OffsetDateTime> renewSessionLock(String sessionId) {
         return validateParameter(sessionId, "sessionId", "renewSessionLock")
             .then(getManagementNode().flatMap(channel -> {
-                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId.toLowerCase(Locale.ROOT));
+                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
                 return tracer
@@ -206,7 +205,7 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                 validateParameter(lockToken, "lockToken", operation),
                 validateParameter(sessionId, "'sessionId'", operation))
             .then(Mono.defer(() -> {
-                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId.toLowerCase(Locale.ROOT));
+                final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 if (receiver == null || !receiver.containsLockToken(lockToken)) {
                     return Mono.just(false);
                 }
@@ -325,8 +324,8 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
      * @return A Mono that completes with an unnamed session receiver.
      */
     private Flux<ServiceBusMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
-        return getActiveLink().flatMap(link -> link.getSessionId()
-            .map(sessionId -> sessionReceivers.compute(sessionId.toLowerCase(Locale.ROOT), (key, existing) -> {
+        return getActiveLink().flatMap(
+            link -> link.getSessionId().map(sessionId -> sessionReceivers.compute(sessionId, (key, existing) -> {
                 if (existing != null) {
                     return existing;
                 }
@@ -341,7 +340,7 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                     .log("Closing session receiver.");
 
                 availableSchedulers.push(scheduler);
-                sessionReceivers.remove(sessionReceiver.getSessionId().toLowerCase(Locale.ROOT));
+                sessionReceivers.remove(sessionReceiver.getSessionId());
                 sessionReceiver.closeAsync().subscribe();
 
                 if (receiverOptions.isRollingSessionReceiver()) {
