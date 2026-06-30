@@ -358,11 +358,13 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
     }
 
     static class CustomServiceBusJmsConnectionFactory extends ServiceBusJmsConnectionFactory {
-        public CustomServiceBusJmsConnectionFactory(String connectionString, ServiceBusJmsConnectionFactorySettings settings) {
+        CustomServiceBusJmsConnectionFactory(
+            String connectionString,
+            ServiceBusJmsConnectionFactorySettings settings) {
             super(connectionString, settings);
         }
 
-        public CustomServiceBusJmsConnectionFactory(TokenCredential tokenCredential, String host,
+        CustomServiceBusJmsConnectionFactory(TokenCredential tokenCredential, String host,
             ServiceBusJmsConnectionFactorySettings settings) {
             super(tokenCredential, host, settings);
         }

@@ -70,18 +70,25 @@ public class ServiceBusJmsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AzureServiceBusJmsConnectionFactoryFactory azureServiceBusJmsConnectionFactoryFactory(final AzureServiceBusJmsProperties properties) {
+    AzureServiceBusJmsConnectionFactoryFactory azureServiceBusJmsConnectionFactoryFactory(
+        final AzureServiceBusJmsProperties properties) {
         return () -> {
             if (properties.isPasswordlessEnabled()) {
                 String hostName =
                     properties.getNamespace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName();
                 Properties passwordlessProperties = properties.toPasswordlessProperties();
                 enhancePasswordlessProperties(AzureServiceBusJmsProperties.PREFIX, properties, passwordlessProperties);
-                TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(passwordlessProperties));
+                TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(
+                    new TokenCredentialProviderOptions(passwordlessProperties));
                 TokenCredential tokenCredential = tokenCredentialProvider.get();
-                return new ServiceBusJmsConnectionFactory(tokenCredential, hostName, new ServiceBusJmsConnectionFactorySettings());
+                return new ServiceBusJmsConnectionFactory(
+                    tokenCredential,
+                    hostName,
+                    new ServiceBusJmsConnectionFactorySettings());
             } else {
-                return new ServiceBusJmsConnectionFactory(properties.getConnectionString(), new ServiceBusJmsConnectionFactorySettings());
+                return new ServiceBusJmsConnectionFactory(
+                    properties.getConnectionString(),
+                    new ServiceBusJmsConnectionFactorySettings());
             }
         };
     }

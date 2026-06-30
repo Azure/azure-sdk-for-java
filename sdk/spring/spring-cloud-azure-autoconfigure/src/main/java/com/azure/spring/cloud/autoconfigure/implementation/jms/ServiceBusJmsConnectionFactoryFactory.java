@@ -25,7 +25,9 @@ class ServiceBusJmsConnectionFactoryFactory {
     }
 
     ServiceBusJmsConnectionFactory createConnectionFactory(AzureServiceBusJmsConnectionFactoryFactory instanceFactory) {
+        Assert.notNull(instanceFactory, "AzureServiceBusJmsConnectionFactoryFactory must not be null");
         ServiceBusJmsConnectionFactory factory = createConnectionFactoryInstance(instanceFactory);
+        Assert.notNull(factory, "AzureServiceBusJmsConnectionFactoryFactory must create a non-null ServiceBusJmsConnectionFactory");
         setClientId(factory);
         setPrefetchPolicy(factory);
         customize(factory);
