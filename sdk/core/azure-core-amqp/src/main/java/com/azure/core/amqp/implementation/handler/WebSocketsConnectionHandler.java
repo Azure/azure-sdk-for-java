@@ -65,10 +65,11 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
         logger.info("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
 
-        final Map<String, String> headers = connectionOptions != null && connectionOptions.getClientOptions().getHeaders() != null
-            ? StreamSupport.stream(connectionOptions.getClientOptions().getHeaders().spliterator(), false)
-                .collect(Collectors.toMap(Header::getName, Header::getValue))
-            : null;
+        final Map<String, String> headers = StreamSupport.stream(connectionOptions.getClientOptions().getHeaders().spliterator(), false)
+            .collect(Collectors.collectingAndThen(
+                Collectors.toMap(Header::getName, Header::getValue, (a, b) -> a + "," + b,
+                    () -> new java.util.TreeMap<>(String.CASE_INSENSITIVE_ORDER)),
+                m -> m.isEmpty() ? null : m));
 
         webSocket.configure(hostname, SOCKET_PATH, "", 0, PROTOCOL, headers, null);
 
