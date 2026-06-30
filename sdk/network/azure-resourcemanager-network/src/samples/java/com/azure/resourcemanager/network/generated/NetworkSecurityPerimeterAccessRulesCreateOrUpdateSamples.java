@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NetworkSecurityPerimeterAccessRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspAccessRulePut.json
+     * x-ms-original-file: 2025-07-01/NspAccessRulePut.json
      */
     /**
      * Sample code: NspAccessRulePut.

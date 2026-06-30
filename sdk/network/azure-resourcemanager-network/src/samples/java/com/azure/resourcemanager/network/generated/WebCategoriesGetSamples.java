@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class WebCategoriesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/AzureWebCategoryGet.json
+     * x-ms-original-file: 2025-07-01/AzureWebCategoryGet.json
      */
     /**
      * Sample code: Get Azure Web Category by name.

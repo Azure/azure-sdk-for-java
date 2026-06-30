@@ -41,6 +41,11 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
      */
     private List<SubResource> frontEndIpConfiguration;
 
+    /*
+     * The list of public IP addresses associated with the custom policy. This list is read-only.
+     */
+    private List<SubResource> publicIPAddresses;
+
     /**
      * Creates an instance of DdosCustomPolicyPropertiesFormat class.
      */
@@ -110,6 +115,16 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     }
 
     /**
+     * Get the publicIPAddresses property: The list of public IP addresses associated with the custom policy. This list
+     * is read-only.
+     * 
+     * @return the publicIPAddresses value.
+     */
+    public List<SubResource> publicIPAddresses() {
+        return this.publicIPAddresses;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -162,6 +177,9 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
                     List<SubResource> frontEndIpConfiguration
                         = reader.readArray(reader1 -> SubResource.fromJson(reader1));
                     deserializedDdosCustomPolicyPropertiesFormat.frontEndIpConfiguration = frontEndIpConfiguration;
+                } else if ("publicIPAddresses".equals(fieldName)) {
+                    List<SubResource> publicIPAddresses = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedDdosCustomPolicyPropertiesFormat.publicIPAddresses = publicIPAddresses;
                 } else {
                     reader.skipChildren();
                 }

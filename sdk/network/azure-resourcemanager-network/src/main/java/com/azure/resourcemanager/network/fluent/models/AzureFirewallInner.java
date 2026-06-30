@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.AfcConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
@@ -483,6 +484,15 @@ public final class AzureFirewallInner extends Resource {
         }
         this.innerProperties().withAutoscaleConfiguration(autoscaleConfiguration);
         return this;
+    }
+
+    /**
+     * Get the afcConfiguration property: AFC configuration for the Azure Firewall.
+     * 
+     * @return the afcConfiguration value.
+     */
+    public AfcConfiguration afcConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().afcConfiguration();
     }
 
     /**

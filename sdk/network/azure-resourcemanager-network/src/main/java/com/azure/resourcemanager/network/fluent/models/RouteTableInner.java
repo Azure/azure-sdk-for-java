@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DisablePeeringRoute;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -180,6 +181,31 @@ public final class RouteTableInner extends Resource {
             this.innerProperties = new RouteTablePropertiesFormat();
         }
         this.innerProperties().withDisableBgpRoutePropagation(disableBgpRoutePropagation);
+        return this;
+    }
+
+    /**
+     * Get the disablePeeringRoute property: Whether to disable the routes learned by peering on the route table. 'None'
+     * means peering routes are enabled, 'All' means all peering routes are disabled.
+     * 
+     * @return the disablePeeringRoute value.
+     */
+    public DisablePeeringRoute disablePeeringRoute() {
+        return this.innerProperties() == null ? null : this.innerProperties().disablePeeringRoute();
+    }
+
+    /**
+     * Set the disablePeeringRoute property: Whether to disable the routes learned by peering on the route table. 'None'
+     * means peering routes are enabled, 'All' means all peering routes are disabled.
+     * 
+     * @param disablePeeringRoute the disablePeeringRoute value to set.
+     * @return the RouteTableInner object itself.
+     */
+    public RouteTableInner withDisablePeeringRoute(DisablePeeringRoute disablePeeringRoute) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RouteTablePropertiesFormat();
+        }
+        this.innerProperties().withDisablePeeringRoute(disablePeeringRoute);
         return this;
     }
 

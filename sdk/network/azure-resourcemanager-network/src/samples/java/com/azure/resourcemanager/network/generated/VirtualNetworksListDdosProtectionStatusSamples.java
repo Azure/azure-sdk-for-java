@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworksListDdosProtectionStatusSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGetDdosProtectionStatus.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGetDdosProtectionStatus.json
      */
     /**
      * Sample code: Get Ddos Protection Status of a Virtual Network.

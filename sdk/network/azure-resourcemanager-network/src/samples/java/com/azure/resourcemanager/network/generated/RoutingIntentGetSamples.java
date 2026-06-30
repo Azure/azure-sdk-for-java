@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RoutingIntentGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RoutingIntentGet.json
+     * x-ms-original-file: 2025-07-01/RoutingIntentGet.json
      */
     /**
      * Sample code: RouteTableGet.

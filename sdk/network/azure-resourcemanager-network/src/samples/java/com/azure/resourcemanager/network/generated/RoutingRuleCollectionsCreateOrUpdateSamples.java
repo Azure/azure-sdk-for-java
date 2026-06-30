@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class RoutingRuleCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerRoutingRuleCollectionPut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerRoutingRuleCollectionPut.json
      */
     /**
      * Sample code: Create or Update a routing rule collection.

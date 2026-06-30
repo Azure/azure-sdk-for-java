@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RoutingRuleCollectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerRoutingRuleCollectionList.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerRoutingRuleCollectionList.json
      */
     /**
      * Sample code: List routing rule collections.

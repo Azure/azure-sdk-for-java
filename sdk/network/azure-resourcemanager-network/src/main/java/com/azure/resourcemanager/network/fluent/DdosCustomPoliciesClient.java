@@ -6,6 +6,8 @@ package com.azure.resourcemanager.network.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -15,6 +17,7 @@ import com.azure.resourcemanager.network.fluent.models.DdosCustomPolicyInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,7 +25,8 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in DdosCustomPoliciesClient.
  */
-public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPolicyInner>, InnerSupportsDelete<Void> {
+public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPolicyInner>,
+    InnerSupportsListing<DdosCustomPolicyInner>, InnerSupportsDelete<Void> {
     /**
      * Gets information about the specified DDoS custom policy.
      * 
@@ -339,4 +343,73 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String ddosCustomPolicyName, Context context);
+
+    /**
+     * Gets all the DDoS custom policies in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the DDoS custom policies in a resource group as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DdosCustomPolicyInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Gets all the DDoS custom policies in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the DDoS custom policies in a resource group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DdosCustomPolicyInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Gets all the DDoS custom policies in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the DDoS custom policies in a resource group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DdosCustomPolicyInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets all the DDoS custom policies in a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the DDoS custom policies in a subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DdosCustomPolicyInner> listAsync();
+
+    /**
+     * Gets all the DDoS custom policies in a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the DDoS custom policies in a subscription as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DdosCustomPolicyInner> list();
+
+    /**
+     * Gets all the DDoS custom policies in a subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the DDoS custom policies in a subscription as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DdosCustomPolicyInner> list(Context context);
 }

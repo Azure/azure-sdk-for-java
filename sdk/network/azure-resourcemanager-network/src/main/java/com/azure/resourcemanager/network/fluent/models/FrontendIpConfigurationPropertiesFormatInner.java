@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DdosFrontendIpConfigurationSettings;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -81,6 +82,11 @@ public final class FrontendIpConfigurationPropertiesFormatInner
      * The provisioning state of the frontend IP configuration resource.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * The DDoS protection settings associated with the frontend IP configuration.
+     */
+    private DdosFrontendIpConfigurationSettings ddosSettings;
 
     /**
      * Creates an instance of FrontendIpConfigurationPropertiesFormatInner class.
@@ -277,6 +283,27 @@ public final class FrontendIpConfigurationPropertiesFormatInner
     }
 
     /**
+     * Get the ddosSettings property: The DDoS protection settings associated with the frontend IP configuration.
+     * 
+     * @return the ddosSettings value.
+     */
+    public DdosFrontendIpConfigurationSettings ddosSettings() {
+        return this.ddosSettings;
+    }
+
+    /**
+     * Set the ddosSettings property: The DDoS protection settings associated with the frontend IP configuration.
+     * 
+     * @param ddosSettings the ddosSettings value to set.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
+     */
+    public FrontendIpConfigurationPropertiesFormatInner
+        withDdosSettings(DdosFrontendIpConfigurationSettings ddosSettings) {
+        this.ddosSettings = ddosSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -287,6 +314,9 @@ public final class FrontendIpConfigurationPropertiesFormatInner
         }
         if (publicIpAddress() != null) {
             publicIpAddress().validate();
+        }
+        if (ddosSettings() != null) {
+            ddosSettings().validate();
         }
     }
 
@@ -305,6 +335,7 @@ public final class FrontendIpConfigurationPropertiesFormatInner
         jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
         jsonWriter.writeJsonField("publicIPPrefix", this.publicIPPrefix);
         jsonWriter.writeJsonField("gatewayLoadBalancer", this.gatewayLoadBalancer);
+        jsonWriter.writeJsonField("ddosSettings", this.ddosSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -358,6 +389,9 @@ public final class FrontendIpConfigurationPropertiesFormatInner
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFrontendIpConfigurationPropertiesFormatInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("ddosSettings".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.ddosSettings
+                        = DdosFrontendIpConfigurationSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

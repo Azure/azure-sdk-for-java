@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceGatewaysGetAddressLocationsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceGatewayGetAddressLocationsResponse.json
+     * x-ms-original-file: 2025-07-01/ServiceGatewayGetAddressLocationsResponse.json
      */
     /**
      * Sample code: Get address locations in service gateway.

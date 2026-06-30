@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class WebCategoriesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/AzureWebCategoriesListBySubscription.json
+     * x-ms-original-file: 2025-07-01/AzureWebCategoriesListBySubscription.json
      */
     /**
      * Sample code: List all Azure Web Categories for a given subscription.

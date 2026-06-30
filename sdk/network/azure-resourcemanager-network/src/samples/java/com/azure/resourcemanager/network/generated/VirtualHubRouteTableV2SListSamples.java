@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubRouteTableV2SListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualHubRouteTableV2List.json
+     * x-ms-original-file: 2025-07-01/VirtualHubRouteTableV2List.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2List.

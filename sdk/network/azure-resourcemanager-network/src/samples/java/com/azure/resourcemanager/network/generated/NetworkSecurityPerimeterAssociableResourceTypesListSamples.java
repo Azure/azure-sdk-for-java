@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterAssociableResourceTypesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PerimeterAssociableResourcesList.json
+     * x-ms-original-file: 2025-07-01/PerimeterAssociableResourcesList.json
      */
     /**
      * Sample code: NetworkSecurityPerimeterAssociableResourceTypes.

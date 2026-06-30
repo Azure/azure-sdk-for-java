@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.ConnectionAuthenticationType;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
@@ -182,6 +183,11 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
      * Certificate Authentication information for a certificate based authentication connection.
      */
     private CertificateAuthentication certificateAuthentication;
+
+    /*
+     * The routing configuration indicating the associated and propagated route tables for this connection.
+     */
+    private RoutingConfiguration routingConfiguration;
 
     /**
      * Creates an instance of VirtualNetworkGatewayConnectionPropertiesFormatInner class.
@@ -745,6 +751,29 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
     }
 
     /**
+     * Get the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.routingConfiguration;
+    }
+
+    /**
+     * Set the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @param routingConfiguration the routingConfiguration value to set.
+     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner
+        withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+        this.routingConfiguration = routingConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -785,6 +814,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
         }
         if (certificateAuthentication() != null) {
             certificateAuthentication().validate();
+        }
+        if (routingConfiguration() != null) {
+            routingConfiguration().validate();
         }
     }
 
@@ -830,6 +862,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
         jsonWriter.writeJsonField("certificateAuthentication", this.certificateAuthentication);
+        jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -947,6 +980,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
                 } else if ("certificateAuthentication".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.certificateAuthentication
                         = CertificateAuthentication.fromJson(reader);
+                } else if ("routingConfiguration".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.routingConfiguration
+                        = RoutingConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

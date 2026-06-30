@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ManagementGroupNetworkManagerConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerConnectionManagementGroupList.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerConnectionManagementGroupList.json
      */
     /**
      * Sample code: List Management Group Network Manager Connection.

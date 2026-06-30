@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkTapsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkTapListAll.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkTapListAll.json
      */
     /**
      * Sample code: List all virtual network taps.
