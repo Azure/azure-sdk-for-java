@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiExternalSafetyProviderDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/DeleteRaiExternalSafetyProvider.json
+     * x-ms-original-file: 2026-05-15-preview/DeleteRaiExternalSafetyProvider.json
      */
     /**
      * Sample code: DeleteRaiTopic.

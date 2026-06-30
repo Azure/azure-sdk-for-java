@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ResourceSkusListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/GetSkus.json
+     * x-ms-original-file: 2026-05-15-preview/GetSkus.json
      */
     /**
      * Sample code: Regenerate Keys.
