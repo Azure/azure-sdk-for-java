@@ -16,27 +16,20 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.security.attestation.implementation.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in MetadataConfigurations.
- */
+/** An instance of this class provides access to all the operations defined in MetadataConfigurations. */
 public final class MetadataConfigurationsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final MetadataConfigurationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AttestationClientImpl client;
 
     /**
      * Initializes an instance of MetadataConfigurationsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     MetadataConfigurationsImpl(AttestationClientImpl client) {
@@ -50,7 +43,7 @@ public final class MetadataConfigurationsImpl {
      * service to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientMetadataConfigurations")
+    @ServiceInterface(name = "AttestationClientMet")
     public interface MetadataConfigurationsService {
         @Get("/.well-known/openid-configuration")
         @ExpectedResponses({ 200 })
@@ -60,29 +53,13 @@ public final class MetadataConfigurationsImpl {
     }
 
     /**
-     * Retrieves the OpenID Configuration data for the Azure Attestation Service
-     * 
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync() {
-        return FluxUtil.withContext(context -> getWithResponseAsync(context));
-    }
-
-    /**
-     * Retrieves the OpenID Configuration data for the Azure Attestation Service
-     * 
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getWithResponseAsync(Context context) {
@@ -92,35 +69,5 @@ public final class MetadataConfigurationsImpl {
         }
         final String accept = "application/json";
         return service.get(this.client.getInstanceUrl(), accept, context);
-    }
-
-    /**
-     * Retrieves the OpenID Configuration data for the Azure Attestation Service
-     * 
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync() {
-        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves the OpenID Configuration data for the Azure Attestation Service
-     * 
-     * Retrieves metadata about the attestation signing keys in use by the attestation service.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(Context context) {
-        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 }
