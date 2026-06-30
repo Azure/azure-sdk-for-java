@@ -72,7 +72,7 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     private final AzureServiceBusJmsConnectionFactoryFactory instanceFactory;
     private final Environment environment;
     private final JmsProperties jmsProperties;
-    
+
     // Memoized dedicated listener container ConnectionFactory instances to avoid duplicates and enable lifecycle management
     // Use ConnectionFactory type instead of concrete types to avoid NoClassDefFoundError when optional dependencies are missing
     private volatile ConnectionFactory dedicatedCachingConnectionFactory;
