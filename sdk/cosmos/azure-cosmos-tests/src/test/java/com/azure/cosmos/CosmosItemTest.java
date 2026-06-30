@@ -1329,6 +1329,8 @@ public class CosmosItemTest extends TestSuiteBase {
             ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
             CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
+            waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+
             String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
             CosmosQueryRequestOptions cosmosQueryRequestOptions =
                 new CosmosQueryRequestOptions()

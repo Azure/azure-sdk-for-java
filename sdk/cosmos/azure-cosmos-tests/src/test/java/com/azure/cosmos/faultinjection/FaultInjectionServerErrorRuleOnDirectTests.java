@@ -1747,6 +1747,9 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
 
         if (canRetryOnFaultInjectedError) {
+            if (responseStatisticsNodes.size() < 2) {
+                logger.info("validateFaultInjectionRuleApplied no retry check: " + cosmosDiagnostics.toString());
+            }
             assertThat(responseStatisticsNodes.size()).isGreaterThanOrEqualTo(2);
         } else {
             assertThat(responseStatisticsNodes.size()).isOne();

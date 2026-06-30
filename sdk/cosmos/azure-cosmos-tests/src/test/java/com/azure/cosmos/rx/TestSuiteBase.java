@@ -2261,9 +2261,14 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
 
+        ThrottlingRetryOptions throttlingRetryOptionsForTruncating = new ThrottlingRetryOptions()
+            .setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE)
+            .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1));
+
         try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
             .endpoint(TestConfigurations.HOST)
+            .throttlingRetryOptions(throttlingRetryOptionsForTruncating)
             .buildAsyncClient()) {
 
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
