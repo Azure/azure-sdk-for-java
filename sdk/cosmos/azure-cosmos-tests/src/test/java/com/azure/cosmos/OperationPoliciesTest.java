@@ -246,15 +246,11 @@ public class OperationPoliciesTest extends TestSuiteBase {
         return clientBuilders;
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_OperationPoliciesTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         container = getSharedMultiPartitionCosmosContainer(this.client);
-        getFeedRangesWithRetry(
-            container,
-            "warm up shared multi-partition container routing map for operation policy tests",
-            Duration.ofMinutes(3));
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

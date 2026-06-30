@@ -169,6 +169,18 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(this.shouldRetryOnSessionNotAvailable(this.request));
         }
 
+        if (isPartitionKeyRangeMetadataNotAvailable(clientException)) {
+            logger.info(
+                "Partition key range metadata is not available on the current regional endpoint. Will retry metadata request. ",
+                clientException);
+
+            return this.shouldRetryOnBackendServiceUnavailableAsync(
+                true,
+                true,
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                clientException);
+        }
+
         if (clientException != null &&
             Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)) {
 
@@ -248,6 +260,27 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // on RxDocumentServiceRequest instance is not set back to false after address resolution completes so hard to stay what stage timed out - address resolution or the Document write
         return request.isReadOnly();
       }
+
+    private boolean isPartitionKeyRangeMetadataNotAvailable(CosmosException cosmosException) {
+        if (cosmosException == null
+            || this.request == null
+            || this.request.getOperationType() != OperationType.ReadFeed
+            || this.request.getResourceType() != ResourceType.PartitionKeyRange) {
+
+            return false;
+        }
+
+        // 404/0 is only retryable here because this branch is scoped to partition key range metadata reads.
+        // Other 404/0 cases, such as item or container reads, must keep their normal semantics.
+        if (!Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.NOTFOUND)) {
+            return false;
+        }
+
+        int subStatusCode = cosmosException.getSubStatusCode();
+        return subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN
+            || subStatusCode == HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
+            || subStatusCode == HttpConstants.SubStatusCodes.COLLECTION_NOT_AVAILABLE_FOR_READ;
+    }
 
     private ShouldRetryResult shouldRetryOnSessionNotAvailable(RxDocumentServiceRequest request) {
         this.sessionTokenRetryCount++;

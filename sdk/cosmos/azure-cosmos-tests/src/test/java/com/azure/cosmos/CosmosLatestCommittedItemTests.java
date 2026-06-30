@@ -32,7 +32,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -118,16 +117,12 @@ public class CosmosLatestCommittedItemTests extends TestSuiteBase {
         return providers.toArray(array);
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
-        getFeedRangesWithRetry(
-            asyncContainer,
-            "warm up shared multi-partition container routing map for latest committed item tests",
-            Duration.ofMinutes(3));
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -134,6 +134,18 @@ public class FaultInjectionServerErrorResultInternal {
                 cosmosException = new NotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
+            case OWNER_RESOURCE_NOT_EXISTS:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS));
+                cosmosException = new NotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case COLLECTION_NOT_AVAILABLE_FOR_READ:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.COLLECTION_NOT_AVAILABLE_FOR_READ));
+                cosmosException = new NotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
             case PARTITION_IS_MIGRATING:
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));

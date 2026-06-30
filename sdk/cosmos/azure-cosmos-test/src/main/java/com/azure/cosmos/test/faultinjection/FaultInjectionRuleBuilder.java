@@ -164,14 +164,16 @@ public final class FaultInjectionRuleBuilder {
             throw new IllegalArgumentException("STALED_ADDRESSES exception can not be injected for rule with gateway connection type");
         }
 
-        // for metadata request related rule, only CONNECTION_DELAY, RESPONSE_DELAY, TOO_MANY_REQUEST error can be injected
+        // for metadata request related rule, only metadata-safe errors can be injected
         if (ImplementationBridgeHelpers
                 .FaultInjectionConditionHelper
                 .getFaultInjectionConditionAccessor()
                 .isMetadataOperationType(this.condition)) {
             if (serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.TOO_MANY_REQUEST
                 && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.RESPONSE_DELAY
-                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY) {
+            && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY
+            && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
+            && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ) {
 
                 throw new IllegalArgumentException("Error type " + serverErrorResult.getServerErrorType() + " is not supported for rule with metadata request");
             }

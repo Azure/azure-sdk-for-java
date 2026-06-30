@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.InCompleteRoutingMapException;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
@@ -35,7 +36,7 @@ public class RxPartitionKeyRangeCacheTest {
     private RxDocumentClientImpl client;
     private RxCollectionCache collectionCache;
     private RxPartitionKeyRangeCache cache;
-    
+
     @BeforeMethod(groups = "unit")
     public void before_test() {
         client = Mockito.mock(RxDocumentClientImpl.class);
@@ -47,12 +48,12 @@ public class RxPartitionKeyRangeCacheTest {
     public void getRoutingMapUsesChangeFeedNextIfNoneMatchWhenNotEmpty() {
         String collectionRid = "collection1";
         String changeFeedToken = "token1";
-        
+
         PartitionKeyRange range1 = new PartitionKeyRange();
         range1.setId("0");
         range1.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
         range1.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
-        
+
         CollectionRoutingMap previousRoutingMap = InMemoryCollectionRoutingMap
             .tryCreateCompleteRoutingMap(Arrays.asList(ImmutablePair.of(range1, null)), collectionRid, changeFeedToken);
 
@@ -66,13 +67,13 @@ public class RxPartitionKeyRangeCacheTest {
 
         when(collectionCache.resolveCollectionAsync(any(), any()))
             .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
-        
+
         when(client.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
             .thenReturn(Flux.just(response));
 
         StepVerifier.create(cache.tryLookupAsync(null, collectionRid, previousRoutingMap, new HashMap<>()))
-            .expectNextMatches(routingMapHolder -> 
-                routingMapHolder != null && 
+            .expectNextMatches(routingMapHolder ->
+                routingMapHolder != null &&
                 routingMapHolder.v != null &&
                 changeFeedToken.equals(previousRoutingMap.getChangeFeedNextIfNoneMatch()))
             .verifyComplete();
@@ -81,12 +82,12 @@ public class RxPartitionKeyRangeCacheTest {
     @Test(groups = "unit")
     public void getRoutingMapWithEmptyChangeFeedNextIfNoneMatch() {
         String collectionRid = "collection1";
-        
+
         PartitionKeyRange range1 = new PartitionKeyRange();
         range1.setId("0");
         range1.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
         range1.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
-        
+
         CollectionRoutingMap previousRoutingMap = InMemoryCollectionRoutingMap
             .tryCreateCompleteRoutingMap(
                 Arrays.asList(ImmutablePair.of(range1, null)),
@@ -103,7 +104,7 @@ public class RxPartitionKeyRangeCacheTest {
 
         when(collectionCache.resolveCollectionAsync(any(), any()))
             .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
-        
+
         when(client.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
             .thenReturn(Flux.just(response));
 
@@ -243,6 +244,35 @@ public class RxPartitionKeyRangeCacheTest {
 
         StepVerifier.create(cache.tryLookupAsync(null, collection.getResourceId(), null, new HashMap<>()))
             .expectNextMatches(s -> s.v == null)
+            .verifyComplete();
+    }
+
+    @Test(groups = "unit")
+    public void tryLookupAsync_RetriesPartitionKeyRangeNotFound() {
+        String collectionRid = "collection1";
+
+        PartitionKeyRange range = new PartitionKeyRange();
+        range.setId("0");
+        range.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        range.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink("dbs/db1/colls/coll1");
+
+        FeedResponse<PartitionKeyRange> response = Mockito.mock(FeedResponse.class);
+        when(response.getResults()).thenReturn(Collections.singletonList(range));
+        when(response.getContinuationToken()).thenReturn(null);
+
+        when(collectionCache.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+
+        when(client.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenReturn(Flux.error(new NotFoundException("Owner resource does not exist")))
+            .thenReturn(Flux.just(response));
+
+        StepVerifier.create(cache.tryLookupAsync(null, collection.getResourceId(), null, new HashMap<>()))
+            .expectNextMatches(routingMapHolder -> routingMapHolder != null && routingMapHolder.v != null)
             .verifyComplete();
     }
 }

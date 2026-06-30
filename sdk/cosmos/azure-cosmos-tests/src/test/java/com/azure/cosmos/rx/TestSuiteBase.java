@@ -142,7 +142,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
-    protected static final int SETUP_TIMEOUT = 60000;
+    protected static final int SETUP_TIMEOUT = 300_000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
 
     private static final int SHARED_SUITE_SETUP_TIMEOUT = 600_000;

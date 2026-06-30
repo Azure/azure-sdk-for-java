@@ -19,7 +19,7 @@ public class InCompleteRoutingMapRetryPolicyTest {
     @Test(groups = {"unit"})
     public void shouldRetry_WithInCompleteRoutingMapException() {
         InCompleteRoutingMapException exception = new InCompleteRoutingMapException("test");
-        
+
         // First attempt - should retry
         StepVerifier.create(retryPolicy.shouldRetry(exception))
             .expectNext(ShouldRetryResult.RETRY_NOW)
@@ -34,10 +34,24 @@ public class InCompleteRoutingMapRetryPolicyTest {
     @Test(groups = {"unit"})
     public void shouldRetry_WithOtherException_ShouldNotRetry() {
         Exception otherException = new RuntimeException("Some other error");
-        
+
         StepVerifier.create(retryPolicy.shouldRetry(otherException))
             .expectNext(ShouldRetryResult.NO_RETRY)
             .verifyComplete();
+    }
+
+    @Test(groups = {"unit"})
+    public void shouldRetry_WithPartitionKeyRangeNotFound() {
+        NotFoundException exception = new NotFoundException("Owner resource does not exist");
+        long[] expectedBackoffInMillis = new long[] {100, 200, 400, 800, 1000};
+
+        for (long expectedBackoff : expectedBackoffInMillis) {
+            StepVerifier.create(retryPolicy.shouldRetry(exception))
+                .expectNextMatches(shouldRetryResult -> shouldRetryResult.shouldRetry
+                    && shouldRetryResult.backOffTime != null
+                    && shouldRetryResult.backOffTime.toMillis() == expectedBackoff)
+                .verifyComplete();
+        }
     }
 
     @Test(groups = {"unit"})

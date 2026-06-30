@@ -47,7 +47,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -163,16 +162,12 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         return providers.toArray(array);
     }
 
-    @BeforeClass(groups = { "fast", "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
-        getFeedRangesWithRetry(
-            asyncContainer,
-            "warm up shared multi-partition container routing map for item serializer tests",
-            Duration.ofMinutes(3));
     }
 
     @AfterClass(groups = { "fast", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -10,10 +10,10 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -62,7 +62,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
         executeWithRetry(() -> {
@@ -72,10 +72,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 .setMaxRetryWaitTime(Duration.ofDays(1));
             this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
             bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
-            getFeedRangesWithRetry(
-                bulkAsyncContainer,
-                "warm up shared multi-partition container routing map for bulk tests",
-                Duration.ofMinutes(3));
         }, 3, "CosmosBulkAsyncTest setup");
     }
 
@@ -267,14 +263,13 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             // on the same client (same async cache instances)
             // to validate correct mitigation after delete and recreate
             bulkAsyncContainer.delete().block();
-            try (CosmosAsyncClient probeClient = getClientBuilder().buildAsyncClient()) {
-                bulkAsyncContainer = createCollection(
-                    db,
-                    new CosmosContainerProperties(containerName, "/mypk"),
-                    new CosmosContainerRequestOptions(),
-                    10_100,
-                    probeClient);
-            }
+            db
+                .createContainer(
+                    containerName,
+                    "/mypk",
+                    ThroughputProperties.createManualThroughput(10_100))
+                .block();
+            bulkAsyncContainer = db.getContainer(containerName);
         }
     }
 

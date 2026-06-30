@@ -23,6 +23,12 @@ public enum FaultInjectionServerErrorType {
     /** 404-1002 from server */
     READ_SESSION_NOT_AVAILABLE,
 
+    /** 404-1003 from server */
+    OWNER_RESOURCE_NOT_EXISTS,
+
+    /** 404-1013 from server */
+    COLLECTION_NOT_AVAILABLE_FOR_READ,
+
     /** 408 from server */
     TIMEOUT,
 
