@@ -76,7 +76,20 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
      */
     public AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
                                               OAuth2AuthorizationRequestResolver delegateResolver) {
-        this(properties, delegateResolver, createRequestMatcher(REQUEST_BASE_URI));
+        this(properties, delegateResolver, REQUEST_BASE_URI);
+    }
+
+    /**
+     * Creates a new instance of {@link AadB2cAuthorizationRequestResolver}.
+     *
+     * @param properties the AAD B2C properties.
+     * @param delegateResolver the delegate resolver.
+     * @param authorizationRequestBaseUri the base URI used to resolve authorization requests.
+     */
+    public AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
+                                              OAuth2AuthorizationRequestResolver delegateResolver,
+                                              String authorizationRequestBaseUri) {
+        this(properties, delegateResolver, createRequestMatcher(authorizationRequestBaseUri));
     }
 
     private AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
@@ -157,7 +170,17 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     }
 
     private static PathPatternRequestMatcher createRequestMatcher(String authorizationRequestBaseUri) {
-        String matcherPattern = String.format("%s/{%s}", authorizationRequestBaseUri, REGISTRATION_ID_NAME);
+        Assert.hasText(authorizationRequestBaseUri, "authorizationRequestBaseUri must contain text.");
+        
+        String normalizedBaseUri = authorizationRequestBaseUri;
+        if (!normalizedBaseUri.startsWith("/")) {
+            normalizedBaseUri = "/" + normalizedBaseUri;
+        }
+        if (normalizedBaseUri.endsWith("/")) {
+            normalizedBaseUri = normalizedBaseUri.substring(0, normalizedBaseUri.length() - 1);
+        }
+        
+        String matcherPattern = String.format("%s/{%s}", normalizedBaseUri, REGISTRATION_ID_NAME);
         return PathPatternRequestMatcher.withDefaults().matcher(matcherPattern);
     }
 

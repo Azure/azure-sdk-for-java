@@ -109,11 +109,13 @@ class AadB2cAuthorizationRequestResolverTests {
         Assertions.assertNull(resolver.resolve(defaultRequest));
         Assertions.assertNull(resolver.resolve(defaultRequest, registrationId));
 
-        Assertions.assertNotNull(resolver.resolve(customRequest));
+        final org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest resolved =
+            resolver.resolve(customRequest);
+        Assertions.assertNotNull(resolved);
         Assertions.assertNotNull(resolver.resolve(customRequest, registrationId));
-        Assertions.assertEquals(registrationId, resolver.resolve(customRequest).getAdditionalParameters().get("p"));
+        Assertions.assertEquals(registrationId, resolved.getAdditionalParameters().get("p"));
         Assertions.assertEquals("spring-boot-starter",
-            resolver.resolve(customRequest).getAdditionalParameters().get("x-client-SKU"));
+            resolved.getAdditionalParameters().get("x-client-SKU"));
     }
 
     private ClientRegistration createClientRegistration(String registrationId) {
