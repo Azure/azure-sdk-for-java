@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubBgpConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualHubBgpConnectionDelete.json
+     * x-ms-original-file: 2025-07-01/VirtualHubBgpConnectionDelete.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Delete.

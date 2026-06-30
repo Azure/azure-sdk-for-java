@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationSecurityGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationSecurityGroupList.json
+     * x-ms-original-file: 2025-07-01/ApplicationSecurityGroupList.json
      */
     /**
      * Sample code: List load balancers in resource group.

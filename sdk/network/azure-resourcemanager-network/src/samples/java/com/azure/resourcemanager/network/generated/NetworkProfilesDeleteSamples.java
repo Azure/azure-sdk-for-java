@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkProfileDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkProfileDelete.json
      */
     /**
      * Sample code: Delete network profile.

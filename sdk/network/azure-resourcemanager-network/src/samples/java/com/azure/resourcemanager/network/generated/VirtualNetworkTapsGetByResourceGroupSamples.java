@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkTapsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkTapGet.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkTapGet.json
      */
     /**
      * Sample code: Get Virtual Network Tap.

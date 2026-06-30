@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationSecurityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationSecurityGroupDelete.json
+     * x-ms-original-file: 2025-07-01/ApplicationSecurityGroupDelete.json
      */
     /**
      * Sample code: Delete application security group.

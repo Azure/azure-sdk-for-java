@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class HubRouteTablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/HubRouteTablePut.json
+     * x-ms-original-file: 2025-07-01/HubRouteTablePut.json
      */
     /**
      * Sample code: RouteTablePut.

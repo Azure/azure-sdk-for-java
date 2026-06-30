@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayUpdate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayUpdate.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGateway.
@@ -98,7 +98,7 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkScalableGatewayUpdate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkScalableGatewayUpdate.json
      */
     /**
      * Sample code: UpdateVirtualNetworkScalableGateway.

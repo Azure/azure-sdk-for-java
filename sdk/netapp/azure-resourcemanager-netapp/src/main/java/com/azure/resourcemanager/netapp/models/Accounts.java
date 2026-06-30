@@ -213,6 +213,29 @@ public interface Accounts {
     void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context);
 
     /**
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshLdapBindPassword(String resourceGroupName, String accountName);
+
+    /**
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshLdapBindPassword(String resourceGroupName, String accountName, Context context);
+
+    /**
      * Get the NetApp account.
      * 
      * @param id the resource ID.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkManagersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerList.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerList.json
      */
     /**
      * Sample code: List Network Manager.

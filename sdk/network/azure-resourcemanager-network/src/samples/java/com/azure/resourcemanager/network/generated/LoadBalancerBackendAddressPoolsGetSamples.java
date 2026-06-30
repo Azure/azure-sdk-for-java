@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerBackendAddressPoolsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerBackendAddressPoolGet.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerBackendAddressPoolGet.json
      */
     /**
      * Sample code: LoadBalancerBackendAddressPoolGet.
@@ -23,7 +23,7 @@ public final class LoadBalancerBackendAddressPoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/LBBackendAddressPoolWithBackendAddressesGet.json
+     * x-ms-original-file: 2025-07-01/LBBackendAddressPoolWithBackendAddressesGet.json
      */
     /**
      * Sample code: LoadBalancer with BackendAddressPool with BackendAddresses.

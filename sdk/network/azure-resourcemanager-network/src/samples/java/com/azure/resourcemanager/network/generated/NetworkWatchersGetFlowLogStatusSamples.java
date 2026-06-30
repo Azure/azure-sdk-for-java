@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.FlowLogStatusParameters;
  */
 public final class NetworkWatchersGetFlowLogStatusSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherFlowLogStatusQuery.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherFlowLogStatusQuery.json
      */
     /**
      * Sample code: Get flow log status.

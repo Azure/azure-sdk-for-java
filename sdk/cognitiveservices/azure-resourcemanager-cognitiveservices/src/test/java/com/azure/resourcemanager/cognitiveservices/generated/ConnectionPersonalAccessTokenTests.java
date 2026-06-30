@@ -12,14 +12,14 @@ public final class ConnectionPersonalAccessTokenTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionPersonalAccessToken model
-            = BinaryData.fromString("{\"pat\":\"mv\"}").toObject(ConnectionPersonalAccessToken.class);
-        Assertions.assertEquals("mv", model.pat());
+            = BinaryData.fromString("{\"pat\":\"jxsglhsr\"}").toObject(ConnectionPersonalAccessToken.class);
+        Assertions.assertEquals("jxsglhsr", model.pat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionPersonalAccessToken model = new ConnectionPersonalAccessToken().withPat("mv");
+        ConnectionPersonalAccessToken model = new ConnectionPersonalAccessToken().withPat("jxsglhsr");
         model = BinaryData.fromObject(model).toObject(ConnectionPersonalAccessToken.class);
-        Assertions.assertEquals("mv", model.pat());
+        Assertions.assertEquals("jxsglhsr", model.pat());
     }
 }

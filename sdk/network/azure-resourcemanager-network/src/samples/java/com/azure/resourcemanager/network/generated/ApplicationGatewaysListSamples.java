@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayListAll.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayListAll.json
      */
     /**
      * Sample code: Lists all application gateways in a subscription.

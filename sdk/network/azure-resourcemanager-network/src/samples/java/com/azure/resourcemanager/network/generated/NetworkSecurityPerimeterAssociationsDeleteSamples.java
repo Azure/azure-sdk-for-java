@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterAssociationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspAssociationDelete.json
+     * x-ms-original-file: 2025-07-01/NspAssociationDelete.json
      */
     /**
      * Sample code: NspAssociationDelete.

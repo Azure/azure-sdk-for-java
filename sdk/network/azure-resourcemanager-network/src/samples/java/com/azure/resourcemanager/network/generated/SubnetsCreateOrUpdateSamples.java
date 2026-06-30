@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class SubnetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SubnetCreate.json
+     * x-ms-original-file: 2025-07-01/SubnetCreate.json
      */
     /**
      * Sample code: Create subnet.
@@ -29,7 +29,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SubnetCreateServiceEndpointNetworkIdentifier.json
+     * x-ms-original-file: 2025-07-01/SubnetCreateServiceEndpointNetworkIdentifier.json
      */
     /**
      * Sample code: Create subnet with service endpoints with network identifier.
@@ -49,7 +49,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SubnetCreateServiceEndpoint.json
+     * x-ms-original-file: 2025-07-01/SubnetCreateServiceEndpoint.json
      */
     /**
      * Sample code: Create subnet with service endpoints.
@@ -67,7 +67,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SubnetCreateWithDelegation.json
+     * x-ms-original-file: 2025-07-01/SubnetCreateWithDelegation.json
      */
     /**
      * Sample code: Create subnet with a delegation.
@@ -82,7 +82,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SubnetCreateWithServiceGateway.json
+     * x-ms-original-file: 2025-07-01/SubnetCreateWithServiceGateway.json
      */
     /**
      * Sample code: Create Subnet with service gateway.
@@ -99,7 +99,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/SubnetCreateWithSharingScope.json
+     * x-ms-original-file: 2025-07-01/SubnetCreateWithSharingScope.json
      */
     /**
      * Sample code: Create subnet with sharing scope.

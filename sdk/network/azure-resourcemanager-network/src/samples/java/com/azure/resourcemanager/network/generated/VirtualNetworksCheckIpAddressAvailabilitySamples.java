@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworksCheckIpAddressAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkCheckIPAddressAvailability.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkCheckIPAddressAvailability.json
      */
     /**
      * Sample code: Check IP address availability.

@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -28,13 +29,20 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.network.fluent.ExpressRouteGatewaysClient;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverSingleTestDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayListInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayResiliencyInformationInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayRouteSetsInformationInner;
+import com.azure.resourcemanager.network.models.ExpressRouteFailoverStopApiParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -126,6 +134,70 @@ public final class ExpressRouteGatewaysClientImpl
         Mono<Response<ExpressRouteGatewayListInner>> listBySubscription(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/getFailoverAllTestsDetails")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestsDetails(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRouteGatewayName") String expressRouteGatewayName, @QueryParam("type") String type,
+            @QueryParam("fetchLatest") Boolean fetchLatest, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/getFailoverSingleTestDetails")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetails(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRouteGatewayName") String expressRouteGatewayName,
+            @QueryParam("peeringLocation") String peeringLocation, @QueryParam("failoverTestId") String failoverTestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/startSiteFailoverTest")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> startSiteFailoverTest(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRouteGatewayName") String expressRouteGatewayName,
+            @QueryParam("peeringLocation") String peeringLocation, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/stopSiteFailoverTest")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stopSiteFailoverTest(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRouteGatewayName") String expressRouteGatewayName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExpressRouteFailoverStopApiParameters stopParameters, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/getRoutesInformation")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getRoutesInformation(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRouteGatewayName") String expressRouteGatewayName,
+            @QueryParam("attemptRefresh") Boolean attemptRefresh, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/getResiliencyInformation")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getResiliencyInformation(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRouteGatewayName") String expressRouteGatewayName,
+            @QueryParam("attemptRefresh") Boolean attemptRefresh, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -157,7 +229,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -195,7 +267,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -287,7 +359,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -334,7 +406,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -540,7 +612,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -587,7 +659,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -782,7 +854,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, context))
@@ -820,7 +892,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             expressRouteGatewayName, context);
@@ -990,7 +1062,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1023,7 +1095,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1091,7 +1163,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySubscription(this.client.getEndpoint(), apiVersion,
@@ -1118,7 +1190,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listBySubscription(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1162,4 +1234,1628 @@ public final class ExpressRouteGatewaysClientImpl
     public ExpressRouteGatewayListInner listBySubscription() {
         return listBySubscriptionWithResponse(Context.NONE).getValue();
     }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestsDetailsWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, type, fetchLatest, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestsDetailsWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, type, fetchLatest, accept,
+            context);
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetailsAsync(String resourceGroupName, String expressRouteGatewayName, String type,
+            Boolean fetchLatest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverAllTestsDetailsWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, type, fetchLatest);
+        return this.client
+            .<List<ExpressRouteFailoverTestDetailsInner>, List<ExpressRouteFailoverTestDetailsInner>>getLroResult(mono,
+                this.client.getHttpPipeline(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetailsAsync(String resourceGroupName, String expressRouteGatewayName) {
+        final String type = null;
+        final Boolean fetchLatest = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverAllTestsDetailsWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, type, fetchLatest);
+        return this.client
+            .<List<ExpressRouteFailoverTestDetailsInner>, List<ExpressRouteFailoverTestDetailsInner>>getLroResult(mono,
+                this.client.getHttpPipeline(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetailsAsync(String resourceGroupName, String expressRouteGatewayName, String type,
+            Boolean fetchLatest, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverAllTestsDetailsWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, type, fetchLatest, context);
+        return this.client
+            .<List<ExpressRouteFailoverTestDetailsInner>, List<ExpressRouteFailoverTestDetailsInner>>getLroResult(mono,
+                this.client.getHttpPipeline(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), context);
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetails(String resourceGroupName, String expressRouteGatewayName) {
+        final String type = null;
+        final Boolean fetchLatest = null;
+        return this.beginGetFailoverAllTestsDetailsAsync(resourceGroupName, expressRouteGatewayName, type, fetchLatest)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestsDetails(String resourceGroupName, String expressRouteGatewayName, String type,
+            Boolean fetchLatest, Context context) {
+        return this
+            .beginGetFailoverAllTestsDetailsAsync(resourceGroupName, expressRouteGatewayName, type, fetchLatest,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestsDetailsAsync(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest) {
+        return beginGetFailoverAllTestsDetailsAsync(resourceGroupName, expressRouteGatewayName, type, fetchLatest)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestsDetailsAsync(String resourceGroupName,
+        String expressRouteGatewayName) {
+        final String type = null;
+        final Boolean fetchLatest = null;
+        return beginGetFailoverAllTestsDetailsAsync(resourceGroupName, expressRouteGatewayName, type, fetchLatest)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestsDetailsAsync(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest, Context context) {
+        return beginGetFailoverAllTestsDetailsAsync(resourceGroupName, expressRouteGatewayName, type, fetchLatest,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestsDetails(String resourceGroupName,
+        String expressRouteGatewayName) {
+        final String type = null;
+        final Boolean fetchLatest = null;
+        return getFailoverAllTestsDetailsAsync(resourceGroupName, expressRouteGatewayName, type, fetchLatest).block();
+    }
+
+    /**
+     * Retrieves the details of all the failover tests performed on the ExpressRoute gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestsDetails(String resourceGroupName,
+        String expressRouteGatewayName, String type, Boolean fetchLatest, Context context) {
+        return getFailoverAllTestsDetailsAsync(resourceGroupName, expressRouteGatewayName, type, fetchLatest, context)
+            .block();
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetailsWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        if (failoverTestId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getFailoverSingleTestDetails(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, peeringLocation,
+                failoverTestId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetailsWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        if (failoverTestId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getFailoverSingleTestDetails(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, peeringLocation,
+            failoverTestId, accept, context);
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetailsAsync(String resourceGroupName, String expressRouteGatewayName,
+            String peeringLocation, String failoverTestId) {
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverSingleTestDetailsWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, peeringLocation, failoverTestId);
+        return this.client
+            .<List<ExpressRouteFailoverSingleTestDetailsInner>, List<ExpressRouteFailoverSingleTestDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetailsAsync(String resourceGroupName, String expressRouteGatewayName,
+            String peeringLocation, String failoverTestId, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverSingleTestDetailsWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, peeringLocation, failoverTestId, context);
+        return this.client
+            .<List<ExpressRouteFailoverSingleTestDetailsInner>, List<ExpressRouteFailoverSingleTestDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), context);
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String expressRouteGatewayName,
+            String peeringLocation, String failoverTestId) {
+        return this
+            .beginGetFailoverSingleTestDetailsAsync(resourceGroupName, expressRouteGatewayName, peeringLocation,
+                failoverTestId)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String expressRouteGatewayName,
+            String peeringLocation, String failoverTestId, Context context) {
+        return this
+            .beginGetFailoverSingleTestDetailsAsync(resourceGroupName, expressRouteGatewayName, peeringLocation,
+                failoverTestId, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteFailoverSingleTestDetailsInner>> getFailoverSingleTestDetailsAsync(
+        String resourceGroupName, String expressRouteGatewayName, String peeringLocation, String failoverTestId) {
+        return beginGetFailoverSingleTestDetailsAsync(resourceGroupName, expressRouteGatewayName, peeringLocation,
+            failoverTestId).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<List<ExpressRouteFailoverSingleTestDetailsInner>> getFailoverSingleTestDetailsAsync(
+        String resourceGroupName, String expressRouteGatewayName, String peeringLocation, String failoverTestId,
+        Context context) {
+        return beginGetFailoverSingleTestDetailsAsync(resourceGroupName, expressRouteGatewayName, peeringLocation,
+            failoverTestId, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId) {
+        return getFailoverSingleTestDetailsAsync(resourceGroupName, expressRouteGatewayName, peeringLocation,
+            failoverTestId).block();
+    }
+
+    /**
+     * Retrieves the details of a particular failover test performed on the ExpressRoute gateway based on the test Guid.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, String failoverTestId, Context context) {
+        return getFailoverSingleTestDetailsAsync(resourceGroupName, expressRouteGatewayName, peeringLocation,
+            failoverTestId, context).block();
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startSiteFailoverTestWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.startSiteFailoverTest(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, peeringLocation, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> startSiteFailoverTestWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.startSiteFailoverTest(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, expressRouteGatewayName, peeringLocation, accept, context);
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<String>, String> beginStartSiteFailoverTestAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startSiteFailoverTestWithResponseAsync(resourceGroupName, expressRouteGatewayName, peeringLocation);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<String>, String> beginStartSiteFailoverTestAsync(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = startSiteFailoverTestWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, peeringLocation, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStartSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation) {
+        return this.beginStartSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, peeringLocation)
+            .getSyncPoller();
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStartSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, String peeringLocation, Context context) {
+        return this
+            .beginStartSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, peeringLocation, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> startSiteFailoverTestAsync(String resourceGroupName, String expressRouteGatewayName,
+        String peeringLocation) {
+        return beginStartSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, peeringLocation).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<String> startSiteFailoverTestAsync(String resourceGroupName, String expressRouteGatewayName,
+        String peeringLocation, Context context) {
+        return beginStartSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, peeringLocation, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String startSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName,
+        String peeringLocation) {
+        return startSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, peeringLocation).block();
+    }
+
+    /**
+     * Starts failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String startSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName,
+        String peeringLocation, Context context) {
+        return startSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, peeringLocation, context).block();
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> stopSiteFailoverTestWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        if (stopParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stopParameters is required and cannot be null."));
+        } else {
+            stopParameters.validate();
+        }
+        final String apiVersion = "2025-07-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.stopSiteFailoverTest(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, contentType, accept,
+                stopParameters, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> stopSiteFailoverTestWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        if (stopParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stopParameters is required and cannot be null."));
+        } else {
+            stopParameters.validate();
+        }
+        final String apiVersion = "2025-07-01";
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.stopSiteFailoverTest(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, expressRouteGatewayName, contentType, accept, stopParameters, context);
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<String>, String> beginStopSiteFailoverTestAsync(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopSiteFailoverTestWithResponseAsync(resourceGroupName, expressRouteGatewayName, stopParameters);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<String>, String> beginStopSiteFailoverTestAsync(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = stopSiteFailoverTestWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, stopParameters, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStopSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters) {
+        return this.beginStopSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, stopParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStopSiteFailoverTest(String resourceGroupName,
+        String expressRouteGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        return this.beginStopSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, stopParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> stopSiteFailoverTestAsync(String resourceGroupName, String expressRouteGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters) {
+        return beginStopSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, stopParameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<String> stopSiteFailoverTestAsync(String resourceGroupName, String expressRouteGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        return beginStopSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, stopParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String stopSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters) {
+        return stopSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, stopParameters).block();
+    }
+
+    /**
+     * Stops failover simulation on the ExpressRoute gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param stopParameters Parameters supplied to stop the failover simulation on the express route gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String stopSiteFailoverTest(String resourceGroupName, String expressRouteGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        return stopSiteFailoverTestAsync(resourceGroupName, expressRouteGatewayName, stopParameters, context).block();
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getRoutesInformationWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getRoutesInformation(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, attemptRefresh, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getRoutesInformationWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getRoutesInformation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, expressRouteGatewayName, attemptRefresh, accept, context);
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformationAsync(String resourceGroupName, String expressRouteGatewayName,
+            Boolean attemptRefresh) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getRoutesInformationWithResponseAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh);
+        return this.client.<GatewayRouteSetsInformationInner, GatewayRouteSetsInformationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteSetsInformationInner.class,
+            GatewayRouteSetsInformationInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformationAsync(String resourceGroupName, String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getRoutesInformationWithResponseAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh);
+        return this.client.<GatewayRouteSetsInformationInner, GatewayRouteSetsInformationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteSetsInformationInner.class,
+            GatewayRouteSetsInformationInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformationAsync(String resourceGroupName, String expressRouteGatewayName, Boolean attemptRefresh,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getRoutesInformationWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, attemptRefresh, context);
+        return this.client.<GatewayRouteSetsInformationInner, GatewayRouteSetsInformationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteSetsInformationInner.class,
+            GatewayRouteSetsInformationInner.class, context);
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformation(String resourceGroupName, String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        return this.beginGetRoutesInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayRouteSetsInformationInner>, GatewayRouteSetsInformationInner>
+        beginGetRoutesInformation(String resourceGroupName, String expressRouteGatewayName, Boolean attemptRefresh,
+            Context context) {
+        return this.beginGetRoutesInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GatewayRouteSetsInformationInner> getRoutesInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh) {
+        return beginGetRoutesInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GatewayRouteSetsInformationInner> getRoutesInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        return beginGetRoutesInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GatewayRouteSetsInformationInner> getRoutesInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh, Context context) {
+        return beginGetRoutesInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteSetsInformationInner getRoutesInformation(String resourceGroupName,
+        String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        return getRoutesInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh).block();
+    }
+
+    /**
+     * Retrieves the route sets information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the route sets.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteSetsInformationInner getRoutesInformation(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh, Context context) {
+        return getRoutesInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh, context).block();
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getResiliencyInformationWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getResiliencyInformation(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, attemptRefresh, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getResiliencyInformationWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRouteGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getResiliencyInformation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, expressRouteGatewayName, attemptRefresh, accept, context);
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformationAsync(String resourceGroupName, String expressRouteGatewayName,
+            Boolean attemptRefresh) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getResiliencyInformationWithResponseAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh);
+        return this.client.<GatewayResiliencyInformationInner, GatewayResiliencyInformationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayResiliencyInformationInner.class,
+            GatewayResiliencyInformationInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformationAsync(String resourceGroupName, String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getResiliencyInformationWithResponseAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh);
+        return this.client.<GatewayResiliencyInformationInner, GatewayResiliencyInformationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayResiliencyInformationInner.class,
+            GatewayResiliencyInformationInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformationAsync(String resourceGroupName, String expressRouteGatewayName,
+            Boolean attemptRefresh, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getResiliencyInformationWithResponseAsync(resourceGroupName,
+            expressRouteGatewayName, attemptRefresh, context);
+        return this.client.<GatewayResiliencyInformationInner, GatewayResiliencyInformationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayResiliencyInformationInner.class,
+            GatewayResiliencyInformationInner.class, context);
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformation(String resourceGroupName, String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        return this.beginGetResiliencyInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayResiliencyInformationInner>, GatewayResiliencyInformationInner>
+        beginGetResiliencyInformation(String resourceGroupName, String expressRouteGatewayName, Boolean attemptRefresh,
+            Context context) {
+        return this
+            .beginGetResiliencyInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GatewayResiliencyInformationInner> getResiliencyInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh) {
+        return beginGetResiliencyInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GatewayResiliencyInformationInner> getResiliencyInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        return beginGetResiliencyInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GatewayResiliencyInformationInner> getResiliencyInformationAsync(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh, Context context) {
+        return beginGetResiliencyInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayResiliencyInformationInner getResiliencyInformation(String resourceGroupName,
+        String expressRouteGatewayName) {
+        final Boolean attemptRefresh = null;
+        return getResiliencyInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh).block();
+    }
+
+    /**
+     * Retrieves the resiliency information for the ExpressRoute gateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @param attemptRefresh Whether to attempt a refresh of the resiliency information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayResiliencyInformationInner getResiliencyInformation(String resourceGroupName,
+        String expressRouteGatewayName, Boolean attemptRefresh, Context context) {
+        return getResiliencyInformationAsync(resourceGroupName, expressRouteGatewayName, attemptRefresh, context)
+            .block();
+    }
+
+    private static final TypeReference<List<ExpressRouteFailoverTestDetailsInner>> TYPE_REFERENCE_LIST_EXPRESS_ROUTE_FAILOVER_TEST_DETAILS_INNER
+        = new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+        };
+
+    private static final TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>> TYPE_REFERENCE_LIST_EXPRESS_ROUTE_FAILOVER_SINGLE_TEST_DETAILS_INNER
+        = new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+        };
 }

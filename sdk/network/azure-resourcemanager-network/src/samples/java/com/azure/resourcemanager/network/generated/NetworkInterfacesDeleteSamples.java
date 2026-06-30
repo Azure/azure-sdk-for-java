@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceDelete.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceDelete.json
      */
     /**
      * Sample code: Delete network interface.
