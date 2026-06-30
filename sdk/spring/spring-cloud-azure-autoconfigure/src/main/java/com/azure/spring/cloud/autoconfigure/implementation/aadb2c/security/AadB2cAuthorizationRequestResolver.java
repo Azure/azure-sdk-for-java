@@ -131,7 +131,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         }
 
         if (StringUtils.hasText(registrationId) && requestMatcher.matches(request)) {
-            return getB2cAuthorizationRequest(delegateResolver.resolve(request), registrationId);
+            return getB2cAuthorizationRequest(delegateResolver.resolve(request, registrationId), registrationId);
         }
 
         // Return null may not be the good practice, but we need to align with oauth2.client.web
@@ -171,7 +171,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private static PathPatternRequestMatcher createRequestMatcher(String authorizationRequestBaseUri) {
         Assert.hasText(authorizationRequestBaseUri, "authorizationRequestBaseUri must contain text.");
-        
+
         String normalizedBaseUri = authorizationRequestBaseUri;
         if (!normalizedBaseUri.startsWith("/")) {
             normalizedBaseUri = "/" + normalizedBaseUri;
@@ -179,7 +179,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         if (normalizedBaseUri.endsWith("/")) {
             normalizedBaseUri = normalizedBaseUri.substring(0, normalizedBaseUri.length() - 1);
         }
-        
+
         String matcherPattern = String.format("%s/{%s}", normalizedBaseUri, REGISTRATION_ID_NAME);
         return PathPatternRequestMatcher.withDefaults().matcher(matcherPattern);
     }
