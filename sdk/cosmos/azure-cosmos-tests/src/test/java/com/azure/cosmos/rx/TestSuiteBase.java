@@ -394,6 +394,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
     }
 
+    private static <T> Flux<T> retryOnTransientCleanupFailure(Flux<T> responseFlux) {
+        return responseFlux.retryWhen(
+            Retry.fixedDelay(TRANSIENT_CLEANUP_MAX_RETRY_ATTEMPTS, TRANSIENT_CLEANUP_RETRY_DELAY)
+                .filter(TestSuiteBase::isTransientCleanupFailure)
+                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> retrySignal.failure()));
+    }
+
     private static boolean isTransientCleanupFailure(Throwable throwable) {
         Throwable unwrappedException = Exceptions.unwrap(throwable);
         if (!(unwrappedException instanceof CosmosException)) {
@@ -722,8 +729,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 .build()
         );
         options.setMaxDegreeOfParallelism(-1);
-        List<Integer> counts = cosmosContainer
+        List<Integer> counts = retryOnTransientCleanupFailure(cosmosContainer
             .queryItems("SELECT VALUE COUNT(0) FROM root", options, Integer.class)
+            .byPage())
+            .flatMap(page -> Flux.fromIterable(page.getResults()))
             .collectList()
             .block();
         assertThat(counts).hasSize(1);
@@ -731,7 +740,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     private static void cleanUpContainerInternal(CosmosAsyncContainer cosmosContainer) {
-        CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
+        CosmosContainerProperties cosmosContainerProperties = retryOnTransientCleanupFailure(cosmosContainer.read())
+            .block()
+            .getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -745,8 +756,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
         Flux<CosmosItemOperation> deleteOperations =
-            cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-                           .byPage(maxItemCount)
+            retryOnTransientCleanupFailure(cosmosContainer
+                .queryItems("SELECT * FROM root", options, InternalObjectNode.class)
+                .byPage(maxItemCount))
                            .publishOn(Schedulers.parallel())
                            .flatMap(page -> Flux.fromIterable(page.getResults()))
                            .map(doc -> {
@@ -770,7 +782,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
                     .build());
 
-        cosmosContainer
+        retryOnTransientCleanupFailure(cosmosContainer
             .executeBulkOperations(deleteOperations, truncateBulkOptions)
             .flatMap(response -> {
                 if (response.getException() != null) {
@@ -782,7 +794,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                             return Mono.empty();
                         }
                     }
-                    return retryOnTransientCleanupFailure(Mono.error(ex));
+                    return Mono.error(ex);
                 }
                 if (response.getResponse() != null
                     && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
@@ -794,18 +806,19 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                         response.getResponse().getStatusCode(),
                         "Bulk delete operation failed with status code " + response.getResponse().getStatusCode());
                     BridgeInternal.setSubStatusCode(bulkException, response.getResponse().getSubStatusCode());
-                    return retryOnTransientCleanupFailure(Mono.error(bulkException));
+                    return Mono.error(bulkException);
                 }
                 return Mono.just(response);
-            })
+            }))
             .blockLast();
 
         expectCount(cosmosContainer, 0);
 
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
-        cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
-                       .byPage(maxItemCount)
+        retryOnTransientCleanupFailure(cosmosContainer.getScripts()
+                   .queryTriggers("SELECT * FROM root", options)
+                   .byPage(maxItemCount))
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
                        .flatMap(trigger -> retryOnTransientCleanupFailure(
@@ -814,8 +827,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
-        cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
-                       .byPage(maxItemCount)
+        retryOnTransientCleanupFailure(cosmosContainer.getScripts()
+                   .queryStoredProcedures("SELECT * FROM root", options)
+                   .byPage(maxItemCount))
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
                        .flatMap(storedProcedure -> retryOnTransientCleanupFailure(
@@ -824,8 +838,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
-        cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
-                       .byPage(maxItemCount)
+        retryOnTransientCleanupFailure(cosmosContainer.getScripts()
+                   .queryUserDefinedFunctions("SELECT * FROM root", options)
+                   .byPage(maxItemCount))
                        .publishOn(Schedulers.parallel())
                        .flatMap(page -> Flux.fromIterable(page.getResults()))
                        .flatMap(udf -> retryOnTransientCleanupFailure(
