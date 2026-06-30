@@ -531,7 +531,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     @SuppressWarnings({"fallthrough"})
     protected static void waitIfNeededForReplicasToCatchUp(CosmosClientBuilder clientBuilder) {
-        switch (CosmosBridgeInternal.getConsistencyLevel(clientBuilder)) {
+        ConsistencyLevel clientConsistencylevel = CosmosBridgeInternal.getConsistencyLevel(clientBuilder);
+
+        // SDK does not allow invalid consistency upgrades, so choosing the lowest consistency level between the two
+        ConsistencyLevel effectiveConsistencyLevel =
+            clientConsistencylevel.ordinal() < accountConsistency.ordinal() ? accountConsistency : clientConsistencylevel;
+
+        switch (effectiveConsistencyLevel) {
             case EVENTUAL:
             case CONSISTENT_PREFIX:
                 logger.info(" additional wait in EVENTUAL mode so the replica catch up");

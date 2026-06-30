@@ -378,7 +378,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             operationType,
             this.writeRegionMap.values(),
             this.readRegionMap.values());
-        CosmosAsyncClient clientWithPreferredRegions;
+        CosmosAsyncClient clientWithPreferredRegions = null;
         try {
             clientWithPreferredRegions = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
@@ -421,6 +421,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         } finally {
             writeRegionServerGoneErrorRule.disable();
             primaryReplicaServerGoneErrorRule.disable();
+            safeClose(clientWithPreferredRegions);
         }
     }
 

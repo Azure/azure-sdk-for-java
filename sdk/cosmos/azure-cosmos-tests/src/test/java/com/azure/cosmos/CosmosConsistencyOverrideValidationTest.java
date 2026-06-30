@@ -223,26 +223,8 @@ public class CosmosConsistencyOverrideValidationTest extends TestSuiteBase {
 
         CosmosItemResponse<ObjectNode> createResponse = this.container.createItem(item);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
-        waitIfNeededForReplicasToCatchUp();
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         return new TestItem(id, partitionKey);
-    }
-
-    private void waitIfNeededForReplicasToCatchUp() {
-        switch (this.accountDefaultConsistency) {
-            case EVENTUAL:
-            case CONSISTENT_PREFIX:
-                logger.info(" additional wait in EVENTUAL mode so the replica catch up");
-                try {
-                    Thread.sleep(WAIT_REPLICA_CATCH_UP_IN_MILLIS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
-                }
-                break;
-
-            default:
-                break;
-        }
     }
 
     private OperationResult executeRead(TestItem item, CosmosItemRequestOptions requestOptions) {
