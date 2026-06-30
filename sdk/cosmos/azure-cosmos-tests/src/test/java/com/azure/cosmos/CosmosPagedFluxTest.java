@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -35,13 +36,17 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_CosmosPagedFluxTest() throws JsonProcessingException {
         assertThat(this.cosmosAsyncClient).isNull();
         this.cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.cosmosAsyncClient);
         cosmosAsyncContainer =
             cosmosAsyncClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        getFeedRangesWithRetry(
+            asyncContainer,
+            "warm up shared multi-partition container routing map for paged flux tests",
+            Duration.ofMinutes(3));
         createItems(NUM_OF_ITEMS);
     }
 

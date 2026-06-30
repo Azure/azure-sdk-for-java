@@ -1036,6 +1036,18 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return;
             } catch (Exception error) {
                 lastError = error;
+                if (!isRetryableCollectionReadinessFailure(lastError)) {
+                    throw new AssertionError(
+                        String.format(
+                            "Container '%s' failed with a non-retryable error while waiting for readability%s after %d attempt(s). Excluded regions: %s. Error: %s",
+                            container.getId(),
+                            targetRegion != null ? " in region '" + targetRegion + "'" : "",
+                            attempts,
+                            excludedRegions,
+                            getCollectionReadinessErrorDetails(lastError)),
+                        lastError);
+                }
+
                 if (ensureContainerExistsOnReadFailure != null) {
                     createRetryAttempts++;
                     try {
@@ -1075,6 +1087,47 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 createRetryAttempts,
                 excludedRegions),
             lastError);
+    }
+
+    private static boolean isRetryableCollectionReadinessFailure(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            int statusCode = cosmosException.getStatusCode();
+            return statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                || statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+                || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+                || statusCode == HttpConstants.StatusCodes.GONE
+                || (statusCode == HttpConstants.StatusCodes.NOTFOUND
+                    && (cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN
+                        || cosmosException.getSubStatusCode() == 1013));
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException instanceof IllegalStateException) {
+            String message = unwrappedException.getMessage();
+            return message != null && message.contains("Timeout on blocking read");
+        }
+
+        return false;
+    }
+
+    private static String getCollectionReadinessErrorDetails(Throwable error) {
+        CosmosException cosmosException = getCosmosException(error);
+        if (cosmosException != null) {
+            return String.format(
+                "statusCode=%d subStatusCode=%d message=%s",
+                cosmosException.getStatusCode(),
+                cosmosException.getSubStatusCode(),
+                cosmosException.getMessage());
+        }
+
+        Throwable unwrappedException = Exceptions.unwrap(error);
+        if (unwrappedException == null) {
+            return "unknown failure";
+        }
+
+        return unwrappedException.getClass().getSimpleName() + ": " + unwrappedException.getMessage();
     }
 
     private static DatabaseAccount getLatestDatabaseAccount(CosmosAsyncClient client) {
