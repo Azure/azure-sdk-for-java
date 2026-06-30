@@ -24,7 +24,7 @@ public final class RaiBlocklistsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"iauesugmocpcjy\"},\"etag\":\"oelrgttwfl\",\"tags\":{\"riwmmtmqrxrzqv\":\"uorinikcedpk\",\"xiqahr\":\"yczyayubtgm\",\"ibplnupoyryefqm\":\"gpx\"},\"id\":\"vyztxlno\",\"name\":\"fpbjc\",\"type\":\"egvyieztkutnj\"}";
+            = "{\"properties\":{\"description\":\"ffhtjnw\"},\"etag\":\"stfjxtvl\",\"tags\":{\"iomxeezw\":\"qfcwr\",\"egmxdbsohc\":\"hjmbji\",\"z\":\"hpyvdkgdet\",\"ekwuyckyvn\":\"canzb\"},\"id\":\"smuffiwjb\",\"name\":\"tvbpzujqj\",\"type\":\"otdxpo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class RaiBlocklistsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklist response = manager.raiBlocklists()
-            .define("fmfws")
-            .withExistingAccount("pvdvatlzmgs", "hnzrsbkkzovlzdm")
-            .withTags(mapOf("tgelgwewikfy", "yrvap", "n", "qandmy", "vsfbp", "oqjum"))
-            .withProperties(new RaiBlocklistProperties().withDescription("ofuworimmovzwde"))
+            .define("eylqlocvvujexayg")
+            .withExistingAccount("vhxowpcbapnpxra", "awbmpsp")
+            .withTags(mapOf("wjopackyhydvik", "zlvssq", "illxg", "fngp", "dye", "scizwgsoriobijei"))
+            .withProperties(new RaiBlocklistProperties().withDescription("kgjn"))
             .create();
 
-        Assertions.assertEquals("iauesugmocpcjy", response.properties().description());
-        Assertions.assertEquals("uorinikcedpk", response.tags().get("riwmmtmqrxrzqv"));
+        Assertions.assertEquals("ffhtjnw", response.properties().description());
+        Assertions.assertEquals("qfcwr", response.tags().get("iomxeezw"));
     }
 
     // Use "Map.of" if available

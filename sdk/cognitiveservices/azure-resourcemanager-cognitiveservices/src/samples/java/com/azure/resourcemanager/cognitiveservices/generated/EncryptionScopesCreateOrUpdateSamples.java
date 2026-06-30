@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.KeyVaultProperties;
  */
 public final class EncryptionScopesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/PutEncryptionScope.json
+     * x-ms-original-file: 2026-05-15-preview/PutEncryptionScope.json
      */
     /**
      * Sample code: PutEncryptionScope.

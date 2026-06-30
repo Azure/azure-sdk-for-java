@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class ComputesListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListComputes.json
+     * x-ms-original-file: 2026-05-15-preview/ListComputes.json
      */
     /**
      * Sample code: ListComputes.
