@@ -63,9 +63,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     public AadB2cAuthorizationRequestResolver(String authorizationRequestBaseUri,
                                               ClientRegistrationRepository repository,
                                               AadB2cProperties properties) {
-        this(properties,
-            new DefaultOAuth2AuthorizationRequestResolver(repository, authorizationRequestBaseUri),
-            createRequestMatcher(authorizationRequestBaseUri));
+        this(properties, new DefaultOAuth2AuthorizationRequestResolver(repository, normalizeBaseUri(authorizationRequestBaseUri)), createRequestMatcher(normalizeBaseUri(authorizationRequestBaseUri)));
     }
 
     /**
@@ -89,7 +87,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     public AadB2cAuthorizationRequestResolver(String authorizationRequestBaseUri,
                                               AadB2cProperties properties,
                                               OAuth2AuthorizationRequestResolver delegateResolver) {
-        this(properties, delegateResolver, createRequestMatcher(authorizationRequestBaseUri));
+        this(properties, delegateResolver, createRequestMatcher(normalizeBaseUri(authorizationRequestBaseUri)));
     }
 
     private AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
@@ -169,7 +167,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    private static PathPatternRequestMatcher createRequestMatcher(String authorizationRequestBaseUri) {
+    private static String normalizeBaseUri(String authorizationRequestBaseUri) {
         Assert.hasText(authorizationRequestBaseUri, "authorizationRequestBaseUri must contain text.");
 
         String normalizedBaseUri = authorizationRequestBaseUri;
@@ -178,8 +176,13 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         }
         // Remove all trailing slashes to handle multiple trailing slashes and ensure idempotent normalization
         normalizedBaseUri = normalizedBaseUri.replaceAll("/+$", "");
+        return normalizedBaseUri;
+    }
 
-        String matcherPattern = String.format("%s/{%s}", normalizedBaseUri, REGISTRATION_ID_NAME);
+    private static PathPatternRequestMatcher createRequestMatcher(String authorizationRequestBaseUri) {
+        // The URI should already be normalized by the caller; validate it has text
+        Assert.hasText(authorizationRequestBaseUri, "authorizationRequestBaseUri must contain text.");
+        String matcherPattern = String.format("%s/{%s}", authorizationRequestBaseUri, REGISTRATION_ID_NAME);
         return PathPatternRequestMatcher.withDefaults().matcher(matcherPattern);
     }
 
