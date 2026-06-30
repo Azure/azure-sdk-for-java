@@ -8,6 +8,8 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 
+- Added support for constructing `AadB2cAuthorizationRequestResolver` with a custom `authorizationRequestBaseUri`, aligning Azure AD B2C authorization request resolution with the configurability already available for AAD. ([#49674](https://github.com/Azure/azure-sdk-for-java/pull/49674))
+
 #### Breaking Changes
 
 #### Bugs Fixed
