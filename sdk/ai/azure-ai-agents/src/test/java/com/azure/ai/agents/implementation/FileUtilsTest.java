@@ -143,4 +143,25 @@ public class FileUtilsTest {
         Assertions.assertNotEquals(FileUtils.computeSha256(BinaryData.fromString("content-a")),
             FileUtils.computeSha256(BinaryData.fromString("content-b")));
     }
+
+    @Test
+    public void writeToFileFailsWhenDestinationIsADirectory() throws IOException {
+        Path directoryDestination = Files.createDirectory(temporaryDirectory.resolve("dir-destination"));
+
+        // Passing a directory where a file path is expected must fail rather than silently succeed, regardless of the
+        // overwrite flag.
+        Assertions.assertThrows(IOException.class,
+            () -> FileUtils.writeToFile(BinaryData.fromString("content"), directoryDestination.toString(), false));
+        Assertions.assertThrows(IOException.class,
+            () -> FileUtils.writeToFile(BinaryData.fromString("content"), directoryDestination.toString(), true));
+    }
+
+    @Test
+    public void writeToFileAsyncFailsWhenDestinationIsADirectory() throws IOException {
+        Path directoryDestination = Files.createDirectory(temporaryDirectory.resolve("dir-destination-async"));
+
+        StepVerifier
+            .create(FileUtils.writeToFileAsync(BinaryData.fromString("content"), directoryDestination.toString(), true))
+            .verifyError(IOException.class);
+    }
 }

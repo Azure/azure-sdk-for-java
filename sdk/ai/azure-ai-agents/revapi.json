@@ -8,7 +8,7 @@
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",
-            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::(createSession|deleteSession|downloadAgentCode|getSession|listAgentVersions|listSessions)\\(.*\\)"
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::(createAgentVersionFromCode|createSession|deleteSession|downloadAgentCode|getSession|listAgentVersions|listSessions)\\(.*\\)"
           },
           "justification": "Breaking change in beta operation: session and hosted-agent code methods no longer expose AgentDefinitionOptInKeys. The opt-in key is now sent implicitly and userIsolationKey/agentVersion are the public parameters."
         },
