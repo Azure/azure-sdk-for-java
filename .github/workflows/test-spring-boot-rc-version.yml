@@ -1,6 +1,25 @@
 name: Test Spring Boot RC Version
 on:
   workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force the update flow for testing even when no RC is detected'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Run update steps but skip push/create PR/comment side effects'
+        required: false
+        type: boolean
+        default: true
+      spring_boot_version:
+        description: 'Optional override Spring Boot version when force_update is true'
+        required: false
+        type: string
+      spring_cloud_version:
+        description: 'Optional override Spring Cloud version when force_update is true'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -23,7 +42,39 @@ jobs:
           python ./sdk/spring/scripts/generate_spring_cloud_azure_support_file.py --include-rc
       - name: Confirm Whether to Update
         run: |
-          if [[ ! -f 'spring-versions.txt' ]]; then
+          FORCE_UPDATE="${{ github.event.inputs.force_update }}"
+          MANUAL_BOOT="${{ github.event.inputs.spring_boot_version }}"
+          MANUAL_CLOUD="${{ github.event.inputs.spring_cloud_version }}"
+
+          if [[ "${FORCE_UPDATE}" == 'true' ]]; then
+            echo "Force update enabled for workflow testing."
+
+            if [[ -n "${MANUAL_BOOT}" && -n "${MANUAL_CLOUD}" ]]; then
+              TARGET_BOOT="${MANUAL_BOOT}"
+              TARGET_CLOUD="${MANUAL_CLOUD}"
+            elif [[ -f 'spring-versions.txt' ]]; then
+              mapfile -t versions < spring-versions.txt
+              TARGET_BOOT="${versions[0]}"
+              TARGET_CLOUD="${versions[1]}"
+            else
+              echo "force_update=true requires spring-versions.txt or both manual version inputs."
+              exit 1
+            fi
+
+            PR_NOTES=""
+            if [[ -f 'pr-descriptions.txt' ]]; then
+              PR_NOTES="$(<pr-descriptions.txt)"
+            fi
+
+            {
+              echo "need_update_version=true"
+              printf 'update_branch=update-spring-dependencies-%s-%s\n' "$(date +%Y%m%d)" "${GITHUB_RUN_ID}"
+              printf 'spring_boot_version=%s\n' "${TARGET_BOOT}"
+              printf 'spring_cloud_version=%s\n' "${TARGET_CLOUD}"
+              printf 'pr_descriptions=%s\n' "${PR_NOTES}"
+              printf 'PR_TITLE=Test Spring Boot RC version %s and Spring Cloud %s\n' "${TARGET_BOOT}" "${TARGET_CLOUD}"
+            } >> "$GITHUB_ENV"
+          elif [[ ! -f 'spring-versions.txt' ]]; then
             echo "No new Spring Boot version, no updates!"
           elif grep -q -- "-RC" spring-versions.txt; then
             echo "Has RC version, create PR to test!"
@@ -63,7 +114,7 @@ jobs:
         run: |
           python ./sdk/spring/scripts/update_changelog.py -b "${{ env.spring_boot_version }}" -c "${{ env.spring_cloud_version }}"
       - name: Push Commit
-        if: ${{ env.need_update_version == 'true' }}
+        if: ${{ env.need_update_version == 'true' && github.event.inputs.dry_run != 'true' }}
         run: |
           git config --global user.email github-actions@github.com
           git config --global user.name github-actions
@@ -106,7 +157,7 @@ jobs:
           git push origin "HEAD:${{ env.update_branch }}"
       - name: Create Pull Request
         id: create_pr
-        if: ${{ env.need_update_version == 'true' }}
+        if: ${{ env.need_update_version == 'true' && github.event.inputs.dry_run != 'true' }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -122,7 +173,7 @@ jobs:
             });
             core.setOutput('pull_request_number', String(pr.data.number));
       - name: Comment on Pull Request
-        if: ${{ env.need_update_version == 'true' }}
+        if: ${{ env.need_update_version == 'true' && github.event.inputs.dry_run != 'true' }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -137,3 +188,7 @@ jobs:
               issue_number: prNumber,
               body: '/azp run java - spring - tests'
             });
+      - name: Dry Run Summary
+        if: ${{ env.need_update_version == 'true' && github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "Dry run mode: update steps executed, push/PR/comment were intentionally skipped."
