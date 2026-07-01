@@ -12,12 +12,12 @@ public final class RequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Request model = BinaryData.fromString(
-            "{\"id\":\"pqqmted\",\"addr\":\"mmji\",\"host\":\"eozphv\",\"method\":\"uyqncygupkvipmd\",\"useragent\":\"wx\"}")
+            "{\"id\":\"xqhuexm\",\"addr\":\"tlstvlzywem\",\"host\":\"rncsdtclu\",\"method\":\"ypbsfgytguslfead\",\"useragent\":\"gq\"}")
             .toObject(Request.class);
-        Assertions.assertEquals("pqqmted", model.id());
-        Assertions.assertEquals("mmji", model.addr());
-        Assertions.assertEquals("eozphv", model.host());
-        Assertions.assertEquals("uyqncygupkvipmd", model.method());
-        Assertions.assertEquals("wx", model.useragent());
+        Assertions.assertEquals("xqhuexm", model.id());
+        Assertions.assertEquals("tlstvlzywem", model.addr());
+        Assertions.assertEquals("rncsdtclu", model.host());
+        Assertions.assertEquals("ypbsfgytguslfead", model.method());
+        Assertions.assertEquals("gq", model.useragent());
     }
 }
