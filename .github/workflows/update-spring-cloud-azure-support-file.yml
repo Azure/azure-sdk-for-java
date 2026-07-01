@@ -51,9 +51,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Generate Spring Cloud Azure Support File
-        run: |
-          python ./sdk/spring/scripts/generate_spring_cloud_azure_support_file.py
       - name: Set Branch Name with Timestamp
         run: |
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
@@ -74,6 +71,7 @@ jobs:
         run: |
           git fetch origin "${{ env.BASE_BRANCH }}"
           git checkout -B "${{ env.BRANCH_NAME }}" "origin/${{ env.BASE_BRANCH }}"
+          python ./sdk/spring/scripts/generate_spring_cloud_azure_support_file.py
           if [[ -n "$(git status -s)" ]]; then
             echo "NEED_UPDATE_FILE=true" >> "$GITHUB_ENV"
           else
