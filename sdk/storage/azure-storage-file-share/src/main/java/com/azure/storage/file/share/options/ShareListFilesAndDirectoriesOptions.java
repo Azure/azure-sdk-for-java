@@ -14,6 +14,10 @@ public final class ShareListFilesAndDirectoriesOptions {
     private boolean includeAttributes;
     private boolean includePermissionKey;
     private Boolean includeExtendedInfo;
+    private boolean includePermissions;
+    private boolean includeLinkCount;
+    private boolean includeNfsAttributes;
+    private boolean includeAll;
 
     /**
      * Creates a new instance of {@link ShareListFilesAndDirectoriesOptions}.
@@ -169,6 +173,86 @@ public final class ShareListFilesAndDirectoriesOptions {
      */
     public ShareListFilesAndDirectoriesOptions setIncludePermissionKey(boolean includePermissionKey) {
         this.includePermissionKey = includePermissionKey;
+        return this;
+    }
+
+    /**
+     * Gets whether to include the permissions on a listing operation.
+     *
+     * @return Whether to include the permissions on this listing operation.
+     */
+    public boolean includePermissions() {
+        return includePermissions;
+    }
+
+    /**
+     * Sets whether to include the permissions on a listing operation.
+     *
+     * @param includePermissions Whether to include the permissions on this listing operation.
+     * @return Updated options.
+     */
+    public ShareListFilesAndDirectoriesOptions setIncludePermissions(boolean includePermissions) {
+        this.includePermissions = includePermissions;
+        return this;
+    }
+
+    /**
+     * Gets whether to include NFS attributes on a listing operation.
+     *
+     * @return Whether to include NFS attributes on this listing operation.
+     */
+    public boolean includeNfsAttributes() {
+        return includeNfsAttributes;
+    }
+
+    /**
+     * Sets whether to include NFS attributes on a listing operation.
+     *
+     * @param includeNfsAttributes Whether to include NFS attributes on this listing operation.
+     * @return Updated options.
+     */
+    public ShareListFilesAndDirectoriesOptions setIncludeNfsAttributes(boolean includeNfsAttributes) {
+        this.includeNfsAttributes = includeNfsAttributes;
+        return this;
+    }
+
+    /**
+     * Gets whether to include the link count on a listing operation.
+     *
+     * @return Whether to include the link count on this listing operation.
+     */
+    public boolean includeLinkCount() {
+        return includeLinkCount;
+    }
+
+    /**
+     * Sets whether to include the link count on a listing operation.
+     *
+     * @param includeLinkCount Whether to include the link count on this listing operation.
+     * @return Updated options.
+     */
+    public ShareListFilesAndDirectoriesOptions setIncludeLinkCount(boolean includeLinkCount) {
+        this.includeLinkCount = includeLinkCount;
+        return this;
+    }
+
+    /**
+     * Gets whether to include all optional values on a listing operation.
+     *
+     * @return Whether to include all optional values on this listing operation.
+     */
+    public boolean includeAll() {
+        return includeAll;
+    }
+
+    /**
+     * Sets whether to include all optional values on a listing operation.
+     *
+     * @param includeAll Whether to include all optional values on this listing operation.
+     * @return Updated options.
+     */
+    public ShareListFilesAndDirectoriesOptions setIncludeAll(boolean includeAll) {
+        this.includeAll = includeAll;
         return this;
     }
 }

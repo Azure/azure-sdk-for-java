@@ -6,6 +6,7 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -47,6 +48,18 @@ public final class FileItem implements XmlSerializable<FileItem> {
      */
     @Generated
     private String permissionKey;
+
+    /*
+     * The LinkCount property.
+     */
+    @Generated
+    private Long linkCount;
+
+    /*
+     * Type of the file.
+     */
+    @Generated
+    private NfsFileType fileType;
 
     /**
      * Creates an instance of FileItem class.
@@ -165,6 +178,50 @@ public final class FileItem implements XmlSerializable<FileItem> {
         return this;
     }
 
+    /**
+     * Get the linkCount property: The LinkCount property.
+     * 
+     * @return the linkCount value.
+     */
+    @Generated
+    public Long getLinkCount() {
+        return this.linkCount;
+    }
+
+    /**
+     * Set the linkCount property: The LinkCount property.
+     * 
+     * @param linkCount the linkCount value to set.
+     * @return the FileItem object itself.
+     */
+    @Generated
+    public FileItem setLinkCount(Long linkCount) {
+        this.linkCount = linkCount;
+        return this;
+    }
+
+    /**
+     * Get the fileType property: Type of the file.
+     * 
+     * @return the fileType value.
+     */
+    @Generated
+    public NfsFileType getFileType() {
+        return this.fileType;
+    }
+
+    /**
+     * Set the fileType property: Type of the file.
+     * 
+     * @param fileType the fileType value to set.
+     * @return the FileItem object itself.
+     */
+    @Generated
+    public FileItem setFileType(NfsFileType fileType) {
+        this.fileType = fileType;
+        return this;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -181,6 +238,8 @@ public final class FileItem implements XmlSerializable<FileItem> {
         xmlWriter.writeXml(this.properties, "Properties");
         xmlWriter.writeStringElement("Attributes", this.attributes);
         xmlWriter.writeStringElement("PermissionKey", this.permissionKey);
+        xmlWriter.writeNumberElement("LinkCount", this.linkCount);
+        xmlWriter.writeStringElement("FileType", this.fileType == null ? null : this.fileType.toString());
         return xmlWriter.writeEndElement();
     }
 
@@ -225,6 +284,10 @@ public final class FileItem implements XmlSerializable<FileItem> {
                     deserializedFileItem.attributes = reader.getStringElement();
                 } else if ("PermissionKey".equals(elementName.getLocalPart())) {
                     deserializedFileItem.permissionKey = reader.getStringElement();
+                } else if ("LinkCount".equals(elementName.getLocalPart())) {
+                    deserializedFileItem.linkCount = reader.getNullableElement(Long::parseLong);
+                } else if ("FileType".equals(elementName.getLocalPart())) {
+                    deserializedFileItem.fileType = NfsFileType.fromString(reader.getStringElement());
                 } else {
                     reader.skipElement();
                 }

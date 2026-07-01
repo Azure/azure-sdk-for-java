@@ -980,22 +980,7 @@ public class ShareDirectoryAsyncClient {
         final ShareListFilesAndDirectoriesOptions modifiedOptions
             = options == null ? new ShareListFilesAndDirectoriesOptions() : options;
 
-        List<ListFilesIncludeType> includeTypes = new ArrayList<>();
-        if (modifiedOptions.includeAttributes()) {
-            includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
-        }
-        if (modifiedOptions.includeETag()) {
-            includeTypes.add(ListFilesIncludeType.ETAG);
-        }
-        if (modifiedOptions.includeTimestamps()) {
-            includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
-        }
-        if (modifiedOptions.includePermissionKey()) {
-            includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
-        }
-
-        // these options must be absent from request if empty or false
-        final List<ListFilesIncludeType> finalIncludeTypes = includeTypes.isEmpty() ? null : includeTypes;
+        final List<ListFilesIncludeType> finalIncludeTypes = ModelHelper.getListFilesIncludeTypes(modifiedOptions);
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever
             = (marker, pageSize) -> StorageImplUtils
