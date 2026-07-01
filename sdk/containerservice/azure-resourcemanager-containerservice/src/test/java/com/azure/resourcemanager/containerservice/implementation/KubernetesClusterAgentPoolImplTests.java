@@ -7,7 +7,6 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -22,7 +21,6 @@ public class KubernetesClusterAgentPoolImplTests {
 
     private static final Random RANDOM = new Random(3);
 
-    @Disabled
     @Test
     void testGetAgentPoolInner() throws Exception {
         // test case for the manual conversion of ManagedClusterAgentPoolProfile to AgentPoolInner
