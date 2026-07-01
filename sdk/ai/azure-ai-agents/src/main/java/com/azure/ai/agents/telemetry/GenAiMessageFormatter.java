@@ -41,7 +41,7 @@ public final class GenAiMessageFormatter {
     public static String formatToolResponseInput(String toolCallId, String content) {
         if (GenAiTracingConfiguration.isContentRecordingEnabled()) {
             return "[{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":" + jsonEscape(toolCallId)
-                + ",\"content\":" + jsonEscape(content) + "}]}]";
+                + ",\"result\":" + formatResultValue(content) + "}]}]";
         } else {
             return "[{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":" + jsonEscape(toolCallId)
                 + "}]}]";
@@ -120,6 +120,21 @@ public final class GenAiMessageFormatter {
      */
     public static String formatRaw(String messagesJson) {
         return messagesJson;
+    }
+
+    /**
+     * Formats a tool result value. If the value looks like a JSON object or array,
+     * emit it raw (unescaped). Otherwise, emit it as a JSON string.
+     */
+    private static String formatResultValue(String value) {
+        if (value == null) {
+            return "null";
+        }
+        String trimmed = value.trim();
+        if ((trimmed.startsWith("{") && trimmed.endsWith("}")) || (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
+            return trimmed;
+        }
+        return jsonEscape(value);
     }
 
     private static String jsonEscape(String text) {

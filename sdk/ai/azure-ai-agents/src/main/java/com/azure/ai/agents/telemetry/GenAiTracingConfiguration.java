@@ -30,12 +30,6 @@ public final class GenAiTracingConfiguration {
      */
     static final String ENV_CONTENT_RECORDING = "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT";
 
-    /**
-     * Environment variable that controls trace context propagation. Default is ON;
-     * set to "false" or "0" to disable.
-     */
-    static final String ENV_TRACE_CONTEXT_PROPAGATION = "AZURE_TRACING_GEN_AI_ENABLE_TRACE_CONTEXT_PROPAGATION";
-
     private static final AtomicReference<ConfigState> STATE = new AtomicReference<>(ConfigState.DEFAULTS);
 
     private GenAiTracingConfiguration() {
@@ -52,13 +46,13 @@ public final class GenAiTracingConfiguration {
      */
     public static void enableGenAiTracing(GenAiTracingOptions options) {
         GenAiTracingOptions effective = options != null ? options : new GenAiTracingOptions();
+        boolean experimentalAcknowledged = resolveBoolean(effective.isExperimental(), ENV_ENABLE_GENAI_TRACING, false);
         boolean contentRecording = resolveBoolean(effective.isContentRecording(), ENV_CONTENT_RECORDING, false);
-        boolean propagation
-            = resolveBoolean(effective.isTraceContextPropagation(), ENV_TRACE_CONTEXT_PROPAGATION, true);
 
-        STATE.set(new ConfigState(true, contentRecording, propagation));
+        STATE.set(new ConfigState(true, experimentalAcknowledged, contentRecording));
         LOGGER.atVerbose()
-            .log("GenAI tracing enabled: contentRecording={}, propagation={}", contentRecording, propagation);
+            .log("GenAI tracing enabled: experimental={}, contentRecording={}", experimentalAcknowledged,
+                contentRecording);
     }
 
     /**
@@ -71,11 +65,13 @@ public final class GenAiTracingConfiguration {
 
     /**
      * Returns whether GenAI tracing is currently enabled and applied.
+     * Tracing is only applied when both enabled and the experimental flag is acknowledged.
      *
-     * @return {@code true} if tracing is enabled.
+     * @return {@code true} if tracing is enabled and experimental is acknowledged.
      */
     public static boolean isTracingEnabled() {
-        return STATE.get().enabled;
+        ConfigState state = STATE.get();
+        return state.enabled && state.experimentalAcknowledged;
     }
 
     /**
@@ -85,15 +81,6 @@ public final class GenAiTracingConfiguration {
      */
     public static boolean isContentRecordingEnabled() {
         return STATE.get().contentRecording;
-    }
-
-    /**
-     * Returns whether trace context propagation (W3C traceparent/tracestate headers) is enabled.
-     *
-     * @return {@code true} if trace context propagation is on.
-     */
-    public static boolean isTraceContextPropagationEnabled() {
-        return STATE.get().traceContextPropagation;
     }
 
     private static boolean resolveBoolean(Boolean programmatic, String envVar, boolean defaultValue) {
@@ -112,16 +99,16 @@ public final class GenAiTracingConfiguration {
      * Internal state holder.
      */
     private static final class ConfigState {
-        static final ConfigState DEFAULTS = new ConfigState(false, false, true);
+        static final ConfigState DEFAULTS = new ConfigState(false, false, false);
 
         final boolean enabled;
+        final boolean experimentalAcknowledged;
         final boolean contentRecording;
-        final boolean traceContextPropagation;
 
-        ConfigState(boolean enabled, boolean contentRecording, boolean traceContextPropagation) {
+        ConfigState(boolean enabled, boolean experimentalAcknowledged, boolean contentRecording) {
             this.enabled = enabled;
+            this.experimentalAcknowledged = experimentalAcknowledged;
             this.contentRecording = contentRecording;
-            this.traceContextPropagation = traceContextPropagation;
         }
     }
 }

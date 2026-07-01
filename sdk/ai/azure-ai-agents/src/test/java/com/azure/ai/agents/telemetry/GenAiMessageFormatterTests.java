@@ -22,7 +22,8 @@ public class GenAiMessageFormatterTests {
     @BeforeEach
     void setUp() {
         // Start with tracing enabled, content recording OFF
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setContentRecording(false));
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(false));
     }
 
     @AfterEach
@@ -55,7 +56,8 @@ public class GenAiMessageFormatterTests {
 
     @Test
     void userTextInput_contentOn_hasContent() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setContentRecording(true));
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
 
         String result = GenAiMessageFormatter.formatUserTextInput("What is the capital of France?");
         assertEquals(
@@ -65,17 +67,19 @@ public class GenAiMessageFormatterTests {
 
     @Test
     void toolResponseInput_contentOn_hasContent() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setContentRecording(true));
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
 
         String result = GenAiMessageFormatter.formatToolResponseInput("call_123", "22 degrees");
         assertEquals(
-            "[{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_123\",\"content\":\"22 degrees\"}]}]",
+            "[{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_123\",\"result\":\"22 degrees\"}]}]",
             result);
     }
 
     @Test
     void textOutput_contentOn_hasContent() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setContentRecording(true));
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
 
         String result = GenAiMessageFormatter.formatTextOutput("Paris.", "completed");
         assertEquals(
@@ -87,7 +91,8 @@ public class GenAiMessageFormatterTests {
 
     @Test
     void userTextInput_contentOn_escapesQuotes() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setContentRecording(true));
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
 
         String result = GenAiMessageFormatter.formatUserTextInput("Say \"hello\"");
         assertEquals("[{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"Say \\\"hello\\\"\"}]}]", result);
@@ -95,7 +100,8 @@ public class GenAiMessageFormatterTests {
 
     @Test
     void userTextInput_contentOn_escapesNewlines() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setContentRecording(true));
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
 
         String result = GenAiMessageFormatter.formatUserTextInput("Line1\nLine2");
         assertEquals("[{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"Line1\\nLine2\"}]}]", result);

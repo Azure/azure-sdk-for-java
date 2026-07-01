@@ -12,30 +12,32 @@ import com.azure.ai.agents.telemetry.GenAiTracingOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 
 /**
  * Sample demonstrating GenAI tracing with a console span exporter.
  *
  * <p>Prerequisites:</p>
  * <ul>
+ *   <li>Azure Core Tracing OpenTelemetry plugin (com.azure:azure-core-tracing-opentelemetry)</li>
  *   <li>OpenTelemetry SDK on the classpath (io.opentelemetry:opentelemetry-sdk)</li>
  *   <li>Console exporter (io.opentelemetry:opentelemetry-exporter-logging)</li>
  *   <li>Azure AI Agents endpoint and credentials</li>
  * </ul>
  *
  * <p>To run this sample, add the following dependencies to your project:</p>
- * <pre>{@code
- * <dependency>
- *   <groupId>io.opentelemetry</groupId>
- *   <artifactId>opentelemetry-sdk</artifactId>
- *   <version>1.40.0</version>
- * </dependency>
- * <dependency>
- *   <groupId>io.opentelemetry</groupId>
- *   <artifactId>opentelemetry-exporter-logging</artifactId>
- *   <version>1.40.0</version>
- * </dependency>
- * }</pre>
+ * <ul>
+ *   <li>{@code com.azure:azure-ai-agents}</li>
+ *   <li>{@code com.azure:azure-core-tracing-opentelemetry}</li>
+ *   <li>{@code com.azure:azure-identity}</li>
+ *   <li>{@code io.opentelemetry:opentelemetry-sdk}</li>
+ *   <li>{@code io.opentelemetry:opentelemetry-exporter-logging}</li>
+ * </ul>
  */
 public class TracingConsoleSample {
 
@@ -46,21 +48,22 @@ public class TracingConsoleSample {
      */
     public static void main(String[] args) {
         // 1. Set up OpenTelemetry with console exporter
-        // (In a real app, configure the TracerProvider before enabling GenAI tracing)
-        //
-        // SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-        //     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
-        //     .setResource(Resource.getDefault().toBuilder()
-        //         .put(ResourceAttributes.SERVICE_NAME, "genai-tracing-sample").build())
-        //     .build();
-        // OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+            .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+            .setResource(Resource.getDefault().toBuilder()
+                .put(AttributeKey.stringKey("service.name"), "genai-tracing-sample").build())
+            .build();
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
 
-        // 2. Enable GenAI tracing (experimental)
+        // 2. Enable GenAI tracing (experimental opt-in required)
         GenAiTracingConfiguration.enableGenAiTracing(
-            new GenAiTracingOptions().setContentRecording(false));
+            new GenAiTracingOptions().setExperimental(true).setContentRecording(false));
 
         // 3. Create the agents client
-        String endpoint = System.getenv("AZURE_AI_AGENTS_ENDPOINT");
+        String endpoint = System.getenv("FOUNDRY_PROJECT_ENDPOINT");
+        String model = System.getenv("FOUNDRY_MODEL_NAME");
         AgentsClient agentsClient = new AgentsClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -73,7 +76,7 @@ public class TracingConsoleSample {
         // 4. Create an agent — this produces a "create_agent" span
         String agentName = "TracingSampleAgent";
         AgentVersionDetails agent = agentsClient.createAgentVersion(agentName,
-            new PromptAgentDefinition("gpt-4.1")
+            new PromptAgentDefinition(model)
                 .setInstructions("You are a helpful assistant that answers questions concisely.")
                 .setTemperature(0.7));
 
@@ -83,7 +86,6 @@ public class TracingConsoleSample {
         AzureCreateResponseOptions azureOptions = new AzureCreateResponseOptions()
             .setAgentReference(new AgentReference(agentName));
         ResponseCreateParams.Builder params = ResponseCreateParams.builder()
-            .model(agentName)
             .input("What is the capital of France?");
 
         Response response = responsesClient.createAzureResponse(azureOptions, params);
@@ -93,8 +95,9 @@ public class TracingConsoleSample {
         agentsClient.deleteAgent(agentName);
         System.out.println("Agent deleted.");
 
-        // 7. Disable tracing
+        // 7. Disable tracing and shut down OpenTelemetry
         GenAiTracingConfiguration.disableGenAiTracing();
+        tracerProvider.close();
         System.out.println("Tracing disabled. Check console output for spans.");
     }
 }

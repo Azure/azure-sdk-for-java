@@ -55,7 +55,7 @@ public class GenAiAgentTracingTests {
 
     @Test
     void traceCreateAgent_tracingEnabled_operationStillExecutes() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         AtomicBoolean called = new AtomicBoolean(false);
 
         String result = GenAiAgentTracing.traceCreateAgent("MyAgent", TEST_ENDPOINT, "MyAgent:1", "1", "prompt",
@@ -70,7 +70,7 @@ public class GenAiAgentTracingTests {
 
     @Test
     void traceCreateAgent_operationThrows_propagatesException() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
 
         assertThrows(RuntimeException.class, () -> {
             GenAiAgentTracing.traceCreateAgent("MyAgent", TEST_ENDPOINT, "MyAgent:1", "1", "prompt", "gpt-4.1", null,
@@ -109,7 +109,7 @@ public class GenAiAgentTracingTests {
 
     @Test
     void traceCreateAgent_calledMultipleTimes_eachCallSucceeds() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         AtomicInteger callCount = new AtomicInteger(0);
 
         for (int i = 0; i < 3; i++) {
@@ -125,7 +125,7 @@ public class GenAiAgentTracingTests {
 
     @Test
     void traceCreateAgent_afterDisable_noTracingOverhead() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         GenAiTracingConfiguration.disableGenAiTracing();
 
         AtomicBoolean called = new AtomicBoolean(false);

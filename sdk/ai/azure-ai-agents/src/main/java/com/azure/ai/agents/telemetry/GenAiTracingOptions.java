@@ -12,7 +12,7 @@ package com.azure.ai.agents.telemetry;
 public final class GenAiTracingOptions {
 
     private Boolean contentRecording;
-    private Boolean traceContextPropagation;
+    private Boolean experimental;
 
     /**
      * Creates a new instance with all options unset (will resolve from environment or defaults).
@@ -43,23 +43,24 @@ public final class GenAiTracingOptions {
     }
 
     /**
-     * Gets the trace context propagation setting.
+     * Gets the experimental acknowledgement setting.
      *
-     * @return the trace context propagation setting, or {@code null} if not set.
+     * @return the experimental setting, or {@code null} if not set.
      */
-    public Boolean isTraceContextPropagation() {
-        return traceContextPropagation;
+    public Boolean isExperimental() {
+        return experimental;
     }
 
     /**
-     * Sets whether W3C trace context (traceparent/tracestate) headers should be injected
-     * into outgoing HTTP requests to the AI service. Default is {@code true}.
+     * Sets whether the caller acknowledges that GenAI tracing is experimental.
+     * Tracing will only be applied when this is set to {@code true} (either programmatically
+     * or via the {@code AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING} environment variable).
      *
-     * @param traceContextPropagation {@code false} to disable propagation.
+     * @param experimental {@code true} to acknowledge experimental status and enable tracing.
      * @return this options instance.
      */
-    public GenAiTracingOptions setTraceContextPropagation(Boolean traceContextPropagation) {
-        this.traceContextPropagation = traceContextPropagation;
+    public GenAiTracingOptions setExperimental(Boolean experimental) {
+        this.experimental = experimental;
         return this;
     }
 }

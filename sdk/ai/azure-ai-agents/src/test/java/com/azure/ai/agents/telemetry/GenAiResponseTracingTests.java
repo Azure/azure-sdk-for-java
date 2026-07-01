@@ -51,7 +51,7 @@ public class GenAiResponseTracingTests {
             // so test with a RuntimeException to verify the code path
             try {
                 GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT,
-                    inputMessages, () -> {
+                    inputMessages, null, null, () -> {
                         called.set(true);
                         return null; // Response would be returned here
                     });
@@ -65,7 +65,7 @@ public class GenAiResponseTracingTests {
 
     @Test
     void traceResponse_tracingEnabled_operationExecutes() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         AtomicBoolean called = new AtomicBoolean(false);
 
         String inputMessages = GenAiMessageFormatter.formatUserTextInput("Hello");
@@ -73,7 +73,7 @@ public class GenAiResponseTracingTests {
         assertDoesNotThrow(() -> {
             try {
                 GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT,
-                    inputMessages, () -> {
+                    inputMessages, null, null, () -> {
                         called.set(true);
                         return null;
                     });
@@ -91,7 +91,7 @@ public class GenAiResponseTracingTests {
 
         assertThrows(RuntimeException.class, () -> {
             GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT,
-                inputMessages, () -> {
+                inputMessages, null, null, () -> {
                     throw new RuntimeException("Network error");
                 });
         });
@@ -105,7 +105,7 @@ public class GenAiResponseTracingTests {
         assertDoesNotThrow(() -> {
             try {
                 GenAiResponseTracing.traceResponse(GenAiConstants.OPERATION_INVOKE_AGENT, "WeatherAgent",
-                    "WeatherAgent", TEST_ENDPOINT, inputMessages, () -> {
+                    "WeatherAgent", TEST_ENDPOINT, inputMessages, null, null, () -> {
                         called.set(true);
                         return null;
                     });
@@ -122,7 +122,7 @@ public class GenAiResponseTracingTests {
         String inputMessages = GenAiMessageFormatter.formatUserTextInput("Hello");
 
         TracedStreamIterable result = GenAiResponseTracing.traceStreamingResponse(GenAiConstants.OPERATION_CHAT,
-            "gpt-4.1", null, TEST_ENDPOINT, inputMessages, () -> {
+            "gpt-4.1", null, TEST_ENDPOINT, inputMessages, null, null, () -> {
                 called.set(true);
                 return java.util.Collections.emptyList();
             });
@@ -133,12 +133,12 @@ public class GenAiResponseTracingTests {
 
     @Test
     void traceStreamingResponse_tracingEnabled_returnsWrappedStream() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         AtomicBoolean called = new AtomicBoolean(false);
         String inputMessages = GenAiMessageFormatter.formatUserTextInput("Hello");
 
         TracedStreamIterable result = GenAiResponseTracing.traceStreamingResponse(GenAiConstants.OPERATION_CHAT,
-            "gpt-4.1", null, TEST_ENDPOINT, inputMessages, () -> {
+            "gpt-4.1", null, TEST_ENDPOINT, inputMessages, null, null, () -> {
                 called.set(true);
                 return java.util.Collections.emptyList();
             });
@@ -154,12 +154,12 @@ public class GenAiResponseTracingTests {
 
     @Test
     void traceStreamingResponse_operationThrows_propagatesException() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         String inputMessages = GenAiMessageFormatter.formatUserTextInput("Hello");
 
         assertThrows(RuntimeException.class, () -> {
             GenAiResponseTracing.traceStreamingResponse(GenAiConstants.OPERATION_CHAT, "gpt-4.1", null, TEST_ENDPOINT,
-                inputMessages, () -> {
+                inputMessages, null, null, () -> {
                     throw new RuntimeException("Stream error");
                 });
         });

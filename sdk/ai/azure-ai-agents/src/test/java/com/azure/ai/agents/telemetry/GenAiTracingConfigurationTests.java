@@ -34,57 +34,58 @@ public class GenAiTracingConfigurationTests {
     void defaultsAreCorrect() {
         assertFalse(GenAiTracingConfiguration.isTracingEnabled());
         assertFalse(GenAiTracingConfiguration.isContentRecordingEnabled());
-        assertTrue(GenAiTracingConfiguration.isTraceContextPropagationEnabled());
     }
 
     @Test
     void enableWithNullOptionsUsesDefaults() {
         GenAiTracingConfiguration.enableGenAiTracing(null);
 
+        // Without experimental acknowledged (env var not set), tracing is not applied
+        assertFalse(GenAiTracingConfiguration.isTracingEnabled());
+        assertFalse(GenAiTracingConfiguration.isContentRecordingEnabled());
+    }
+
+    @Test
+    void enableWithExperimentalAcknowledged() {
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
+
         assertTrue(GenAiTracingConfiguration.isTracingEnabled());
         assertFalse(GenAiTracingConfiguration.isContentRecordingEnabled());
-        assertTrue(GenAiTracingConfiguration.isTraceContextPropagationEnabled());
+    }
+
+    @Test
+    void enableWithoutExperimentalDoesNotApply() {
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(false));
+
+        assertFalse(GenAiTracingConfiguration.isTracingEnabled());
     }
 
     @Test
     void enableWithContentRecording() {
-        GenAiTracingOptions options = new GenAiTracingOptions().setContentRecording(true);
+        GenAiTracingOptions options = new GenAiTracingOptions().setExperimental(true).setContentRecording(true);
         GenAiTracingConfiguration.enableGenAiTracing(options);
 
         assertTrue(GenAiTracingConfiguration.isTracingEnabled());
         assertTrue(GenAiTracingConfiguration.isContentRecordingEnabled());
-    }
-
-    @Test
-    void enableWithPropagationDisabled() {
-        GenAiTracingOptions options = new GenAiTracingOptions().setTraceContextPropagation(false);
-        GenAiTracingConfiguration.enableGenAiTracing(options);
-
-        assertTrue(GenAiTracingConfiguration.isTracingEnabled());
-        assertFalse(GenAiTracingConfiguration.isTraceContextPropagationEnabled());
     }
 
     @Test
     void disableResetsToDefaults() {
-        GenAiTracingOptions options
-            = new GenAiTracingOptions().setContentRecording(true).setTraceContextPropagation(false);
+        GenAiTracingOptions options = new GenAiTracingOptions().setExperimental(true).setContentRecording(true);
         GenAiTracingConfiguration.enableGenAiTracing(options);
 
         assertTrue(GenAiTracingConfiguration.isTracingEnabled());
         assertTrue(GenAiTracingConfiguration.isContentRecordingEnabled());
-        assertFalse(GenAiTracingConfiguration.isTraceContextPropagationEnabled());
 
         GenAiTracingConfiguration.disableGenAiTracing();
 
         assertFalse(GenAiTracingConfiguration.isTracingEnabled());
         assertFalse(GenAiTracingConfiguration.isContentRecordingEnabled());
-        assertTrue(GenAiTracingConfiguration.isTraceContextPropagationEnabled());
     }
 
     @Test
     void programmaticContentRecordingFalseOverridesDefault() {
-        // Programmatic option explicitly sets content recording to false
-        GenAiTracingOptions options = new GenAiTracingOptions().setContentRecording(false);
+        GenAiTracingOptions options = new GenAiTracingOptions().setExperimental(true).setContentRecording(false);
         GenAiTracingConfiguration.enableGenAiTracing(options);
 
         assertTrue(GenAiTracingConfiguration.isTracingEnabled());
@@ -93,7 +94,7 @@ public class GenAiTracingConfigurationTests {
 
     @Test
     void programmaticContentRecordingTrue() {
-        GenAiTracingOptions options = new GenAiTracingOptions().setContentRecording(true);
+        GenAiTracingOptions options = new GenAiTracingOptions().setExperimental(true).setContentRecording(true);
         GenAiTracingConfiguration.enableGenAiTracing(options);
 
         assertTrue(GenAiTracingConfiguration.isContentRecordingEnabled());
@@ -101,20 +102,19 @@ public class GenAiTracingConfigurationTests {
 
     @Test
     void reEnableResetsAllOptions() {
-        // First enable with content recording ON
-        GenAiTracingOptions options1 = new GenAiTracingOptions().setContentRecording(true);
+        GenAiTracingOptions options1 = new GenAiTracingOptions().setExperimental(true).setContentRecording(true);
         GenAiTracingConfiguration.enableGenAiTracing(options1);
         assertTrue(GenAiTracingConfiguration.isContentRecordingEnabled());
 
-        // Re-enable with content recording explicitly OFF
-        GenAiTracingOptions options2 = new GenAiTracingOptions().setContentRecording(false);
+        GenAiTracingOptions options2 = new GenAiTracingOptions().setExperimental(true).setContentRecording(false);
         GenAiTracingConfiguration.enableGenAiTracing(options2);
         assertFalse(GenAiTracingConfiguration.isContentRecordingEnabled());
     }
 
     @Test
     void enableDisableEnableCycle() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setContentRecording(true));
+        GenAiTracingConfiguration
+            .enableGenAiTracing(new GenAiTracingOptions().setExperimental(true).setContentRecording(true));
         assertTrue(GenAiTracingConfiguration.isTracingEnabled());
         assertTrue(GenAiTracingConfiguration.isContentRecordingEnabled());
 
@@ -122,7 +122,7 @@ public class GenAiTracingConfigurationTests {
         assertFalse(GenAiTracingConfiguration.isTracingEnabled());
         assertFalse(GenAiTracingConfiguration.isContentRecordingEnabled());
 
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         assertTrue(GenAiTracingConfiguration.isTracingEnabled());
         assertFalse(GenAiTracingConfiguration.isContentRecordingEnabled());
     }

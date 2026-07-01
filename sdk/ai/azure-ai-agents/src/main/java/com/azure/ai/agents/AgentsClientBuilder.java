@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.net.URI;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -333,7 +334,8 @@ public final class AgentsClientBuilder
     public ResponsesClient buildResponsesClient() {
         return new ResponsesClient(getOpenAIClientBuilder(null).build()
             .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))),
+            toURI(this.endpoint));
     }
 
     /**
@@ -437,6 +439,14 @@ public final class AgentsClientBuilder
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentsClientBuilder.class);
 
+    private static URI toURI(String endpoint) {
+        try {
+            return endpoint != null ? URI.create(endpoint) : null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
     /**
      * Builds an instance of MemoryStoresAsyncClient class.
      *
@@ -472,9 +482,10 @@ public final class AgentsClientBuilder
      *
      * @return an instance of AgentsClient.
      */
-    @Generated
     public AgentsClient buildAgentsClient() {
-        return new AgentsClient(buildInnerClient().getAgents());
+        AgentsClient client = new AgentsClient(buildInnerClient().getAgents());
+        client.setEndpoint(toURI(this.endpoint));
+        return client;
     }
 
     /**

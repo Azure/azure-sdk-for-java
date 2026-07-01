@@ -24,11 +24,17 @@ public final class TracedStreamIterable implements Iterable<ResponseStreamEvent>
 
     private final Iterable<ResponseStreamEvent> inner;
     private final GenAiTracingScope scope;
+    private final boolean isInvokeAgent;
     private volatile boolean consumed;
 
     TracedStreamIterable(Iterable<ResponseStreamEvent> inner, GenAiTracingScope scope) {
+        this(inner, scope, false);
+    }
+
+    TracedStreamIterable(Iterable<ResponseStreamEvent> inner, GenAiTracingScope scope, boolean isInvokeAgent) {
         this.inner = inner;
         this.scope = scope;
+        this.isInvokeAgent = isInvokeAgent;
     }
 
     @Override
@@ -97,7 +103,7 @@ public final class TracedStreamIterable implements Iterable<ResponseStreamEvent>
                 Response response = accumulator.response();
                 if (response != null) {
                     String responseId = response.id();
-                    String responseModel = response.model() != null ? response.model().toString() : null;
+                    String responseModel = GenAiResponseTracing.extractModelString(response.model());
                     Long inputTokens = null;
                     Long outputTokens = null;
 
@@ -109,12 +115,20 @@ public final class TracedStreamIterable implements Iterable<ResponseStreamEvent>
                     }
 
                     scope.setResponseAttributes(responseId, responseModel, inputTokens, outputTokens, null);
+
+                    // Set request model only for chat operations (not invoke_agent)
+                    if (responseModel != null && !isInvokeAgent) {
+                        scope.setRequestModelAttributes(responseModel, null, null);
+                    }
+
+                    // Emit workflow action events for streaming responses
+                    GenAiResponseTracing.emitWorkflowActionEventsIfPresent(scope, response);
+
+                    // Format output messages from the accumulated response
+                    String outputMessages = GenAiResponseTracing.formatOutputFromResponse(response);
+                    scope.setOutputMessages(outputMessages);
                 }
 
-                // Format output messages
-                String outputMessages
-                    = "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\"}]," + "\"finish_reason\":\"completed\"}]";
-                scope.setOutputMessages(outputMessages);
                 scope.close();
             }
         }

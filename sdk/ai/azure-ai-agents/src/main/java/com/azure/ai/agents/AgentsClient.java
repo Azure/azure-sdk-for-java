@@ -26,6 +26,8 @@ import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionIndicator;
+import com.azure.ai.agents.telemetry.GenAiAgentTracing;
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -42,6 +44,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.openai.models.conversations.Conversation;
+import java.net.URI;
 import java.util.Map;
 
 /**
@@ -52,6 +55,8 @@ public final class AgentsClient {
 
     @Generated
     private final AgentsImpl serviceClient;
+
+    private URI endpoint;
 
     /**
      * Retrieves the agent.
@@ -425,15 +430,22 @@ public final class AgentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing)
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+                .toObject(AgentVersionDetails.class);
+        }
+
+        return GenAiAgentTracing.traceCreateAgentVersion(agentName, endpoint, definition, () -> {
+            return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+                .toObject(AgentVersionDetails.class);
+        });
     }
 
     /**
@@ -758,6 +770,15 @@ public final class AgentsClient {
     @Generated
     AgentsClient(AgentsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Sets the endpoint URI for tracing purposes.
+     *
+     * @param endpoint the service endpoint URI.
+     */
+    void setEndpoint(URI endpoint) {
+        this.endpoint = endpoint;
     }
 
     /**
@@ -2639,8 +2660,17 @@ public final class AgentsClient {
         if (foundryFeatures != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
         }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+                .toObject(AgentVersionDetails.class);
+        }
+
+        return GenAiAgentTracing.traceCreateAgentVersion(agentName, endpoint, createAgentVersionInput.getDefinition(),
+            () -> {
+                return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+                    .toObject(AgentVersionDetails.class);
+            });
     }
 
     /**

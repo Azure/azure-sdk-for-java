@@ -16,6 +16,7 @@ import com.azure.core.util.tracing.TracerProvider;
 
 import java.net.URI;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,15 +41,12 @@ public final class GenAiTracingScope implements AutoCloseable {
     static final String CLIENT_NAME = "Azure.AI.Agents";
     private static final String CLIENT_VERSION = "2.1.0-beta.2";
 
-    private static final Tracer TRACER;
+    private static volatile Tracer lazyTracer;
     private static final DoubleHistogram DURATION_HISTOGRAM;
     private static final DoubleHistogram TOKEN_USAGE_HISTOGRAM;
     private static final Meter METER;
 
     static {
-        TRACER
-            = TracerProvider.getDefaultProvider().createTracer(CLIENT_NAME, CLIENT_VERSION, AZ_NAMESPACE_VALUE, null);
-
         METER = MeterProvider.getDefaultProvider().createMeter(CLIENT_NAME, CLIENT_VERSION, null);
 
         DURATION_HISTOGRAM = METER.createDoubleHistogram(METRIC_OPERATION_DURATION, "Duration of GenAI operations",
@@ -56,6 +54,24 @@ public final class GenAiTracingScope implements AutoCloseable {
 
         TOKEN_USAGE_HISTOGRAM = METER.createDoubleHistogram(METRIC_TOKEN_USAGE,
             "Number of input and output tokens used", METRIC_UNIT_TOKENS);
+    }
+
+    /**
+     * Lazily initializes the tracer to ensure GlobalOpenTelemetry is registered before we resolve.
+     */
+    private static Tracer getTracer() {
+        Tracer local = lazyTracer;
+        if (local == null) {
+            synchronized (GenAiTracingScope.class) {
+                local = lazyTracer;
+                if (local == null) {
+                    local = TracerProvider.getDefaultProvider()
+                        .createTracer(CLIENT_NAME, CLIENT_VERSION, AZ_NAMESPACE_VALUE, null);
+                    lazyTracer = local;
+                }
+            }
+        }
+        return local;
     }
 
     private final Context spanContext;
@@ -128,7 +144,7 @@ public final class GenAiTracingScope implements AutoCloseable {
         if (!GenAiTracingConfiguration.isTracingEnabled()) {
             return null;
         }
-        if (!TRACER.isEnabled() && !DURATION_HISTOGRAM.isEnabled()) {
+        if (!getTracer().isEnabled() && !DURATION_HISTOGRAM.isEnabled()) {
             return null;
         }
 
@@ -149,7 +165,7 @@ public final class GenAiTracingScope implements AutoCloseable {
             options.setAttribute(SERVER_PORT, (long) serverPort);
         }
 
-        Context spanContext = TRACER.start(spanName, options, Context.NONE);
+        Context spanContext = getTracer().start(spanName, options, Context.NONE);
         return new GenAiTracingScope(spanContext, operationName, serverAddress, serverPort);
     }
 
@@ -168,6 +184,17 @@ public final class GenAiTracingScope implements AutoCloseable {
         setAttributeIfNotEmpty(GEN_AI_AGENT_NAME, agentName);
         setAttributeIfNotEmpty(GEN_AI_AGENT_VERSION, agentVersion);
         setAttributeIfNotEmpty(GEN_AI_AGENT_TYPE, agentType);
+    }
+
+    /**
+     * Sets the agent ID and version attributes from the response (after creation).
+     *
+     * @param agentId the agent ID (e.g., "name:version").
+     * @param agentVersion the agent version string.
+     */
+    public void setAgentIdAndVersion(String agentId, String agentVersion) {
+        setAttributeIfNotEmpty(GEN_AI_AGENT_ID, agentId);
+        setAttributeIfNotEmpty(GEN_AI_AGENT_VERSION, agentVersion);
     }
 
     /**
@@ -198,10 +225,10 @@ public final class GenAiTracingScope implements AutoCloseable {
     public void setRequestModelAttributes(String model, Double temperature, Double topP) {
         setAttributeIfNotEmpty(GEN_AI_REQUEST_MODEL, model);
         if (temperature != null) {
-            TRACER.setAttribute(GEN_AI_REQUEST_TEMPERATURE, String.valueOf(temperature), spanContext);
+            getTracer().setAttribute(GEN_AI_REQUEST_TEMPERATURE, String.valueOf(temperature), spanContext);
         }
         if (topP != null) {
-            TRACER.setAttribute(GEN_AI_REQUEST_TOP_P, String.valueOf(topP), spanContext);
+            getTracer().setAttribute(GEN_AI_REQUEST_TOP_P, String.valueOf(topP), spanContext);
         }
     }
 
@@ -215,12 +242,12 @@ public final class GenAiTracingScope implements AutoCloseable {
             return;
         }
         String value;
-        if (GenAiTracingConfiguration.isContentRecordingEnabled()) {
+        if (GenAiTracingConfiguration.isContentRecordingEnabled() && !instructions.isEmpty()) {
             value = "[{\"type\":\"text\",\"content\":" + jsonEscape(instructions) + "}]";
         } else {
             value = "[{\"type\":\"text\"}]";
         }
-        TRACER.setAttribute(GEN_AI_SYSTEM_INSTRUCTIONS, value, spanContext);
+        getTracer().setAttribute(GEN_AI_SYSTEM_INSTRUCTIONS, value, spanContext);
     }
 
     /**
@@ -230,7 +257,7 @@ public final class GenAiTracingScope implements AutoCloseable {
      */
     public void setInputMessages(String messages) {
         if (messages != null) {
-            TRACER.setAttribute(GEN_AI_INPUT_MESSAGES, messages, spanContext);
+            getTracer().setAttribute(GEN_AI_INPUT_MESSAGES, messages, spanContext);
         }
     }
 
@@ -241,7 +268,7 @@ public final class GenAiTracingScope implements AutoCloseable {
      */
     public void setOutputMessages(String messages) {
         if (messages != null) {
-            TRACER.setAttribute(GEN_AI_OUTPUT_MESSAGES, messages, spanContext);
+            getTracer().setAttribute(GEN_AI_OUTPUT_MESSAGES, messages, spanContext);
         }
     }
 
@@ -259,10 +286,10 @@ public final class GenAiTracingScope implements AutoCloseable {
         setAttributeIfNotEmpty(GEN_AI_RESPONSE_ID, responseId);
         setAttributeIfNotEmpty(GEN_AI_RESPONSE_MODEL, model);
         if (inputTokenCount != null) {
-            TRACER.setAttribute(GEN_AI_USAGE_INPUT_TOKENS, inputTokenCount, spanContext);
+            getTracer().setAttribute(GEN_AI_USAGE_INPUT_TOKENS, inputTokenCount, spanContext);
         }
         if (outputTokenCount != null) {
-            TRACER.setAttribute(GEN_AI_USAGE_OUTPUT_TOKENS, outputTokenCount, spanContext);
+            getTracer().setAttribute(GEN_AI_USAGE_OUTPUT_TOKENS, outputTokenCount, spanContext);
         }
         setAttributeIfNotEmpty(GEN_AI_RESPONSE_FINISH_REASONS, finishReasons);
 
@@ -282,6 +309,16 @@ public final class GenAiTracingScope implements AutoCloseable {
     }
 
     /**
+     * Adds a span event with the given name and attributes.
+     *
+     * @param eventName the event name (e.g., "gen_ai.agent.workflow").
+     * @param attributes the event attributes map.
+     */
+    public void addEvent(String eventName, Map<String, Object> attributes) {
+        getTracer().addEvent(eventName, attributes, OffsetDateTime.now(), spanContext);
+    }
+
+    /**
      * Records an error on the span.
      *
      * @param error the exception that occurred.
@@ -289,7 +326,7 @@ public final class GenAiTracingScope implements AutoCloseable {
     public void recordError(Throwable error) {
         if (error != null) {
             this.errorType = error.getClass().getName();
-            TRACER.setAttribute(ERROR_TYPE, this.errorType, spanContext);
+            getTracer().setAttribute(ERROR_TYPE, this.errorType, spanContext);
         }
     }
 
@@ -308,7 +345,7 @@ public final class GenAiTracingScope implements AutoCloseable {
      * @return an AutoCloseable scope that restores the previous context when closed.
      */
     public AutoCloseable makeSpanCurrent() {
-        return TRACER.makeSpanCurrent(spanContext);
+        return getTracer().makeSpanCurrent(spanContext);
     }
 
     /**
@@ -318,7 +355,7 @@ public final class GenAiTracingScope implements AutoCloseable {
     public void close() {
         if (ended.compareAndSet(0, 1)) {
             recordMetrics();
-            TRACER.end(errorType, errorType != null ? null : null, spanContext);
+            getTracer().end(errorType, errorType != null ? null : null, spanContext);
         }
     }
 
@@ -368,7 +405,7 @@ public final class GenAiTracingScope implements AutoCloseable {
 
     private void setAttributeIfNotEmpty(String key, String value) {
         if (value != null && !value.isEmpty()) {
-            TRACER.setAttribute(key, value, spanContext);
+            getTracer().setAttribute(key, value, spanContext);
         }
     }
 

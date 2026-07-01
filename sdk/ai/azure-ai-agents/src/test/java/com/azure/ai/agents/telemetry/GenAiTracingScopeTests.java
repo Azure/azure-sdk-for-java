@@ -64,7 +64,7 @@ public class GenAiTracingScopeTests {
 
     @Test
     void startScope_afterDisable_returnsNull() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
         GenAiTracingConfiguration.disableGenAiTracing();
 
         GenAiTracingScope scope = GenAiTracingScope.startChat("gpt-4.1", TEST_ENDPOINT);
@@ -77,7 +77,7 @@ public class GenAiTracingScopeTests {
 
     @Test
     void startCreateAgent_tracingEnabled_noException() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
 
         // With no-op tracer, scope may be null (no listeners), but should not throw
         assertDoesNotThrow(() -> {
@@ -93,7 +93,7 @@ public class GenAiTracingScopeTests {
 
     @Test
     void startChat_tracingEnabled_noException() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
 
         assertDoesNotThrow(() -> {
             GenAiTracingScope scope = GenAiTracingScope.startChat("gpt-4.1", TEST_ENDPOINT);
@@ -109,7 +109,7 @@ public class GenAiTracingScopeTests {
 
     @Test
     void scope_closeIsIdempotent() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
 
         assertDoesNotThrow(() -> {
             GenAiTracingScope scope = GenAiTracingScope.startChat("gpt-4.1", TEST_ENDPOINT);
@@ -122,7 +122,7 @@ public class GenAiTracingScopeTests {
 
     @Test
     void scope_recordError_noException() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
 
         assertDoesNotThrow(() -> {
             GenAiTracingScope scope = GenAiTracingScope.startChat("gpt-4.1", TEST_ENDPOINT);
@@ -135,7 +135,7 @@ public class GenAiTracingScopeTests {
 
     @Test
     void scope_hostedAgentAttributes_noException() {
-        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+        GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions().setExperimental(true));
 
         assertDoesNotThrow(() -> {
             GenAiTracingScope scope = GenAiTracingScope.startCreateAgent("HostedAgent", TEST_ENDPOINT);

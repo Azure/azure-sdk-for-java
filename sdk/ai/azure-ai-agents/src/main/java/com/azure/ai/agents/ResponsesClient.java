@@ -8,6 +8,9 @@ import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.telemetry.GenAiResponseTracing;
+import com.azure.ai.agents.telemetry.GenAiTracingConfiguration;
+import com.azure.ai.agents.telemetry.TracedStreamIterable;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
@@ -18,11 +21,14 @@ import com.openai.core.JsonValue;
 import com.openai.core.RequestOptions;
 import com.openai.core.http.HttpResponseFor;
 import com.openai.core.http.StreamResponse;
+import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
+import com.openai.services.blocking.ConversationService;
 import com.openai.services.blocking.ResponseService;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.Objects;
 
@@ -32,14 +38,19 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ResponsesClient {
     private final ResponseService responseService;
+    private final ConversationService conversationService;
+    private final URI endpoint;
 
     /**
      * Initializes an instance of ResponsesClient class using the official OpenAI client library.
      *
      * @param openAIClient the OpenAI client.
+     * @param endpoint the service endpoint URI.
      */
-    ResponsesClient(OpenAIClient openAIClient) {
+    ResponsesClient(OpenAIClient openAIClient, URI endpoint) {
         this.responseService = openAIClient.responses();
+        this.conversationService = openAIClient.conversations();
+        this.endpoint = endpoint;
     }
 
     /**
@@ -49,6 +60,31 @@ public final class ResponsesClient {
      */
     public ResponseService getResponseService() {
         return responseService;
+    }
+
+    /**
+     * Creates a conversation with tracing. Emits a {@code create_conversation} span.
+     *
+     * @return the created Conversation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Conversation createConversation() {
+        Conversation conversation = conversationService.create();
+        if (GenAiTracingConfiguration.isTracingEnabled()) {
+            GenAiResponseTracing.traceCreateConversation(endpoint, conversation.id());
+        }
+        return conversation;
+    }
+
+    /**
+     * Deletes a conversation.
+     *
+     * @param conversationId the ID of the conversation to delete.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteConversation(String conversationId) {
+        Objects.requireNonNull(conversationId, "conversationId cannot be null");
+        conversationService.delete(conversationId);
     }
 
     /**
@@ -67,7 +103,14 @@ public final class ResponsesClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return this.responseService.create(params.build());
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return this.responseService.create(params.build());
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return GenAiResponseTracing.traceResponse(createResponse, builtParams, endpoint,
+            () -> this.responseService.create(builtParams));
     }
 
     /**
@@ -86,7 +129,15 @@ public final class ResponsesClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+
+        if (!GenAiTracingConfiguration.isTracingEnabled()) {
+            return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        TracedStreamIterable traced = GenAiResponseTracing.traceStreamingResponse(createResponse, builtParams, endpoint,
+            () -> StreamingUtils.toIterableStream(this.responseService.createStreaming(builtParams)));
+        return new IterableStream<>(traced);
     }
 
     /**

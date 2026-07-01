@@ -754,7 +754,8 @@ This package supports OpenTelemetry-based tracing for GenAI operations. When ena
 // OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
 
 // 2. Enable GenAI tracing
-GenAiTracingConfiguration.enableGenAiTracing(new GenAiTracingOptions());
+GenAiTracingConfiguration.enableGenAiTracing(
+    new GenAiTracingOptions().setExperimental(true));
 
 // 3. Use the client normally — spans are emitted automatically
 AgentsClient client = new AgentsClientBuilder()
@@ -763,17 +764,32 @@ AgentsClient client = new AgentsClientBuilder()
     .buildAgentsClient();
 ```
 
+### Configuration
+
+All tracing settings follow the same precedence order:
+
+1. **Programmatic option** (highest priority) — value passed to `GenAiTracingOptions`
+2. **Environment variable** — read from the process environment
+3. **Default value** (lowest priority)
+
+| Setting | Programmatic | Environment Variable | Default |
+|---------|-------------|---------------------|---------|
+| Experimental opt-in | `setExperimental(true)` | `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` | `false` |
+| Content recording | `setContentRecording(true)` | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true` | `false` |
+
 ### Content Recording
 
-By default, message content is **NOT** recorded in traces (privacy-safe). To enable:
+By default, message content is **NOT** recorded in traces to avoid capturing sensitive user data. When enabled, full prompt and response text (which may include personal or confidential information) is included in trace spans. To enable:
 - Set environment variable `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`, or
 - Pass programmatically: `new GenAiTracingOptions().setContentRecording(true)`
 
 ### Trace Context Propagation
 
-W3C trace context headers (`traceparent`/`tracestate`) are injected into outgoing requests by default. To disable:
-- Set environment variable `AZURE_TRACING_GEN_AI_ENABLE_TRACE_CONTEXT_PROPAGATION=false`, or
-- Pass programmatically: `new GenAiTracingOptions().setTraceContextPropagation(false)`
+W3C trace context headers (`traceparent`/`tracestate`) are automatically injected into all outgoing HTTP requests by `azure-core-tracing-opentelemetry`. No additional configuration is needed — this is handled at the HTTP pipeline level.
+
+### Flushing Spans
+
+If using `BatchSpanProcessor` (the default for `AutoConfiguredOpenTelemetrySdk` and Azure Monitor), call `openTelemetry.close()` before your application exits to ensure all buffered spans are exported. This is not needed when using `SimpleSpanProcessor` (e.g., with the console exporter), which exports spans synchronously.
 
 ### Samples
 
