@@ -2,12 +2,6 @@ name: Update Spring Cloud Azure Support File
 on:
   schedule:
     - cron: '0 0 * * *'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/update-spring-cloud-azure-support-file.yml'
-      - 'sdk/spring/scripts/generate_spring_cloud_azure_support_file.py'
   workflow_dispatch:
 
 env:

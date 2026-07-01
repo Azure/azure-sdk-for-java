@@ -18,45 +18,50 @@ SPRING_VERSIONS_OUTPUT = "spring-versions.txt"
 PR_DESCRIPTIONS_OUTPUT = "pr-descriptions.txt"
 
 
+def version_key(version):
+    match = re.match(r"^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:[-.]?([A-Za-z]+)(\d*)?)?$", version)
+    if not match:
+        return (0, 0, 0, 0, 0, version)
+
+    major = int(match.group(1) or 0)
+    minor = int(match.group(2) or 0)
+    patch = int(match.group(3) or 0)
+    qualifier = (match.group(4) or "").upper()
+    qualifier_num = int(match.group(5) or 0)
+
+    # Higher rank means newer release status for the same base version.
+    if not qualifier:
+        qualifier_rank = 3  # GA
+    elif qualifier.startswith("RC"):
+        qualifier_rank = 2
+    elif qualifier.startswith("M"):
+        qualifier_rank = 1
+    elif qualifier.startswith("SNAPSHOT"):
+        qualifier_rank = 0
+    else:
+        qualifier_rank = 0
+
+    return (major, minor, patch, qualifier_rank, qualifier_num, qualifier)
+
+
 def fetch_json(url):
     req = urllib.request.Request(url, headers={"User-Agent": "spring-cloud-azure-tools-migration"})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
-def tokenize_version(version):
-    tokens = []
-    for part in re.split(r"[.\-]", version):
-        if part.isdigit():
-            tokens.append((0, int(part)))
-        else:
-            upper = part.upper()
-            if upper.startswith("SNAPSHOT"):
-                tokens.append((1, -3))
-            elif upper.startswith("M") and upper[1:].isdigit():
-                tokens.append((1, -2, int(upper[1:])))
-            elif upper.startswith("RC") and upper[2:].isdigit():
-                tokens.append((1, -1, int(upper[2:])))
-            else:
-                tokens.append((1, upper))
-    return tokens
-
-
 def compare_versions(a, b):
-    ta = tokenize_version(a)
-    tb = tokenize_version(b)
-    max_len = max(len(ta), len(tb))
-    for i in range(max_len):
-        va = ta[i] if i < len(ta) else (0, 0)
-        vb = tb[i] if i < len(tb) else (0, 0)
-        if va == vb:
-            continue
-        return -1 if va < vb else 1
-    return 0
+    ka = version_key(a)
+    kb = version_key(b)
+    if ka == kb:
+        return 0
+    if ka < kb:
+        return -1
+    return 1
 
 
 def sort_versions_desc(versions):
-    return sorted(versions, key=lambda v: tokenize_version(v), reverse=True)
+    return sorted(versions, key=version_key, reverse=True)
 
 
 def read_current_supported_versions():
