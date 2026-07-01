@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for ComputeBulkactionsManagementClient class.
+ * The interface for ComputeBulkActionsManagementClient class.
  */
-public interface ComputeBulkactionsManagementClient {
+public interface ComputeBulkActionsManagementClient {
     /**
      * Gets Service host.
      * 

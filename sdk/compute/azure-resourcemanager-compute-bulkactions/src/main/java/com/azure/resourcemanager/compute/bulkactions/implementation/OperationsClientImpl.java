@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final ComputeBulkactionsManagementClientImpl client;
+    private final ComputeBulkActionsManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(ComputeBulkactionsManagementClientImpl client) {
+    OperationsClientImpl(ComputeBulkActionsManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeBulkactionsManagementClientOperations to be used by the proxy
+     * The interface defining all the services for ComputeBulkActionsManagementClientOperations to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ComputeBulkactionsManagementClientOperations")
+    @ServiceInterface(name = "ComputeBulkActionsManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Compute/operations")

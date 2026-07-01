@@ -48,25 +48,25 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
     /**
      * The service client containing this operation class.
      */
-    private final ComputeBulkactionsManagementClientImpl client;
+    private final ComputeBulkActionsManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineBulkOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    VirtualMachineBulkOperationsClientImpl(ComputeBulkactionsManagementClientImpl client) {
+    VirtualMachineBulkOperationsClientImpl(ComputeBulkActionsManagementClientImpl client) {
         this.service = RestProxy.create(VirtualMachineBulkOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeBulkactionsManagementClientVirtualMachineBulkOperations to be
+     * The interface defining all the services for ComputeBulkActionsManagementClientVirtualMachineBulkOperations to be
      * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ComputeBulkactionsManagementClientVirtualMachineBulkOperations")
+    @ServiceInterface(name = "ComputeBulkActionsManagementClientVirtualMachineBulkOperations")
     public interface VirtualMachineBulkOperationsService {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkDeallocate")
         @ExpectedResponses({ 200 })

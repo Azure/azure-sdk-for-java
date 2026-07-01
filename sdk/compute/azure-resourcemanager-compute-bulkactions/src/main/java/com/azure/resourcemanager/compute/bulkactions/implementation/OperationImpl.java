@@ -13,10 +13,10 @@ import com.azure.resourcemanager.compute.bulkactions.models.Origin;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager serviceManager;
+    private final com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager;
 
     OperationImpl(OperationInner innerObject,
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager serviceManager) {
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -45,7 +45,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager manager() {
+    private com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager() {
         return this.serviceManager;
     }
 }

@@ -34,10 +34,10 @@ public final class VirtualMachineBulkOperationsImpl implements VirtualMachineBul
 
     private final VirtualMachineBulkOperationsClient innerClient;
 
-    private final com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager serviceManager;
+    private final com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager;
 
     public VirtualMachineBulkOperationsImpl(VirtualMachineBulkOperationsClient innerClient,
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager serviceManager) {
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -160,7 +160,7 @@ public final class VirtualMachineBulkOperationsImpl implements VirtualMachineBul
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager manager() {
+    private com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager() {
         return this.serviceManager;
     }
 }

@@ -24,8 +24,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkactionsManagementClient;
-import com.azure.resourcemanager.compute.bulkactions.implementation.ComputeBulkactionsManagementClientBuilder;
+import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsManagementClient;
+import com.azure.resourcemanager.compute.bulkactions.implementation.ComputeBulkActionsManagementClientBuilder;
 import com.azure.resourcemanager.compute.bulkactions.implementation.OperationsImpl;
 import com.azure.resourcemanager.compute.bulkactions.implementation.VirtualMachineBulkOperationsImpl;
 import com.azure.resourcemanager.compute.bulkactions.models.Operations;
@@ -39,19 +39,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to ComputeBulkactionsManager.
+ * Entry point to ComputeBulkActionsManager.
  */
-public final class ComputeBulkactionsManager {
+public final class ComputeBulkActionsManager {
     private Operations operations;
 
     private VirtualMachineBulkOperations virtualMachineBulkOperations;
 
-    private final ComputeBulkactionsManagementClient clientObject;
+    private final ComputeBulkActionsManagementClient clientObject;
 
-    private ComputeBulkactionsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private ComputeBulkActionsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new ComputeBulkactionsManagementClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new ComputeBulkActionsManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -59,38 +59,38 @@ public final class ComputeBulkactionsManager {
     }
 
     /**
-     * Creates an instance of Compute Bulkactions service API entry point.
+     * Creates an instance of Compute BulkActions service API entry point.
      * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the Compute Bulkactions service API instance.
+     * @return the Compute BulkActions service API instance.
      */
-    public static ComputeBulkactionsManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static ComputeBulkActionsManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of Compute Bulkactions service API entry point.
+     * Creates an instance of Compute BulkActions service API entry point.
      * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the Compute Bulkactions service API instance.
+     * @return the Compute BulkActions service API instance.
      */
-    public static ComputeBulkactionsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ComputeBulkActionsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new ComputeBulkactionsManager(httpPipeline, profile, null);
+        return new ComputeBulkActionsManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create ComputeBulkactionsManager with optional configuration.
+     * Gets a Configurable instance that can be used to create ComputeBulkActionsManager with optional configuration.
      * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new ComputeBulkactionsManager.Configurable();
+        return new ComputeBulkActionsManager.Configurable();
     }
 
     /**
@@ -198,13 +198,13 @@ public final class ComputeBulkactionsManager {
         }
 
         /**
-         * Creates an instance of Compute Bulkactions service API entry point.
+         * Creates an instance of Compute BulkActions service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the Compute Bulkactions service API instance.
+         * @return the Compute BulkActions service API instance.
          */
-        public ComputeBulkactionsManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public ComputeBulkActionsManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -257,7 +257,7 @@ public final class ComputeBulkactionsManager {
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
-            return new ComputeBulkactionsManager(httpPipeline, profile, defaultPollInterval);
+            return new ComputeBulkActionsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
@@ -287,12 +287,12 @@ public final class ComputeBulkactionsManager {
     }
 
     /**
-     * Gets wrapped service client ComputeBulkactionsManagementClient providing direct access to the underlying
+     * Gets wrapped service client ComputeBulkActionsManagementClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client ComputeBulkactionsManagementClient.
+     * @return Wrapped service client ComputeBulkActionsManagementClient.
      */
-    public ComputeBulkactionsManagementClient serviceClient() {
+    public ComputeBulkActionsManagementClient serviceClient() {
         return this.clientObject;
     }
 }

@@ -13,10 +13,10 @@ import java.util.List;
 public final class StartResourceOperationResponseImpl implements StartResourceOperationResponse {
     private StartResourceOperationResponseInner innerObject;
 
-    private final com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager serviceManager;
+    private final com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager;
 
     StartResourceOperationResponseImpl(StartResourceOperationResponseInner innerObject,
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager serviceManager) {
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -46,7 +46,7 @@ public final class StartResourceOperationResponseImpl implements StartResourceOp
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.compute.bulkactions.ComputeBulkactionsManager manager() {
+    private com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager() {
         return this.serviceManager;
     }
 }

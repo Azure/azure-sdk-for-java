@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the ComputeBulkactionsManagementClientImpl type.
+ * A builder for creating a new instance of the ComputeBulkActionsManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { ComputeBulkactionsManagementClientImpl.class })
-public final class ComputeBulkactionsManagementClientBuilder {
+@ServiceClientBuilder(serviceClients = { ComputeBulkActionsManagementClientImpl.class })
+public final class ComputeBulkActionsManagementClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class ComputeBulkactionsManagementClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the ComputeBulkactionsManagementClientBuilder.
+     * @return the ComputeBulkActionsManagementClientBuilder.
      */
-    public ComputeBulkactionsManagementClientBuilder endpoint(String endpoint) {
+    public ComputeBulkActionsManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class ComputeBulkactionsManagementClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the ComputeBulkactionsManagementClientBuilder.
+     * @return the ComputeBulkActionsManagementClientBuilder.
      */
-    public ComputeBulkactionsManagementClientBuilder subscriptionId(String subscriptionId) {
+    public ComputeBulkActionsManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class ComputeBulkactionsManagementClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the ComputeBulkactionsManagementClientBuilder.
+     * @return the ComputeBulkActionsManagementClientBuilder.
      */
-    public ComputeBulkactionsManagementClientBuilder environment(AzureEnvironment environment) {
+    public ComputeBulkActionsManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class ComputeBulkactionsManagementClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the ComputeBulkactionsManagementClientBuilder.
+     * @return the ComputeBulkActionsManagementClientBuilder.
      */
-    public ComputeBulkactionsManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public ComputeBulkActionsManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class ComputeBulkactionsManagementClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the ComputeBulkactionsManagementClientBuilder.
+     * @return the ComputeBulkActionsManagementClientBuilder.
      */
-    public ComputeBulkactionsManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public ComputeBulkActionsManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class ComputeBulkactionsManagementClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the ComputeBulkactionsManagementClientBuilder.
+     * @return the ComputeBulkActionsManagementClientBuilder.
      */
-    public ComputeBulkactionsManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public ComputeBulkActionsManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of ComputeBulkactionsManagementClientImpl with the provided parameters.
+     * Builds an instance of ComputeBulkActionsManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of ComputeBulkactionsManagementClientImpl.
+     * @return an instance of ComputeBulkActionsManagementClientImpl.
      */
-    public ComputeBulkactionsManagementClientImpl buildClient() {
+    public ComputeBulkActionsManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,7 +131,7 @@ public final class ComputeBulkactionsManagementClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ComputeBulkactionsManagementClientImpl client = new ComputeBulkactionsManagementClientImpl(localPipeline,
+        ComputeBulkActionsManagementClientImpl client = new ComputeBulkActionsManagementClientImpl(localPipeline,
             localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }

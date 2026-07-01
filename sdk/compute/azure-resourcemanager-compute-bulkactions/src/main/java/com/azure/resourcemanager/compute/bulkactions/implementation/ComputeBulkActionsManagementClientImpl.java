@@ -26,7 +26,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkactionsManagementClient;
+import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsManagementClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.VirtualMachineBulkOperationsClient;
 import java.io.IOException;
@@ -39,10 +39,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the ComputeBulkactionsManagementClientImpl type.
+ * Initializes a new instance of the ComputeBulkActionsManagementClientImpl type.
  */
-@ServiceClient(builder = ComputeBulkactionsManagementClientBuilder.class)
-public final class ComputeBulkactionsManagementClientImpl implements ComputeBulkactionsManagementClient {
+@ServiceClient(builder = ComputeBulkActionsManagementClientBuilder.class)
+public final class ComputeBulkActionsManagementClientImpl implements ComputeBulkActionsManagementClient {
     /**
      * Service host.
      */
@@ -156,7 +156,7 @@ public final class ComputeBulkactionsManagementClientImpl implements ComputeBulk
     }
 
     /**
-     * Initializes an instance of ComputeBulkactionsManagementClient client.
+     * Initializes an instance of ComputeBulkActionsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -165,7 +165,7 @@ public final class ComputeBulkactionsManagementClientImpl implements ComputeBulk
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    ComputeBulkactionsManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    ComputeBulkActionsManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -320,5 +320,5 @@ public final class ComputeBulkactionsManagementClientImpl implements ComputeBulk
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ComputeBulkactionsManagementClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComputeBulkActionsManagementClientImpl.class);
 }

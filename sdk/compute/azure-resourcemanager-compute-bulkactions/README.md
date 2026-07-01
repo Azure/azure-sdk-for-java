@@ -1,8 +1,8 @@
-# Azure Resource Manager Compute Bulkactions client library for Java
+# Azure Resource Manager Compute BulkActions client library for Java
 
-Azure Resource Manager Compute Bulkactions client library for Java.
+Azure Resource Manager Compute BulkActions client library for Java.
 
-This package contains Microsoft Azure SDK for Compute Bulkactions Management SDK.  Package api-version 2026-06-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-06-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -56,7 +56,7 @@ AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-ComputeBulkactionsManager manager = ComputeBulkactionsManager
+ComputeBulkActionsManager manager = ComputeBulkActionsManager
     .authenticate(credential, profile);
 ```
 
