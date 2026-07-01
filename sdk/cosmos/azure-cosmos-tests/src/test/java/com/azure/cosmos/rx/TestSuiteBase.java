@@ -169,7 +169,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final Duration STORED_PROCEDURE_QUERY_MAX_RETRY_DURATION = Duration.ofSeconds(30);
 
-    private static final Duration FEED_RANGE_WARMUP_MAX_WAIT = Duration.ofSeconds(50);
+    private static final Duration FEED_RANGE_WARMUP_MAX_WAIT = COLLECTION_READINESS_MAX_WAIT;
 
     private static final Duration FEED_RANGE_WARMUP_ATTEMPT_TIMEOUT = Duration.ofSeconds(30);
 
@@ -328,6 +328,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         if (cosmosException != null) {
             int statusCode = cosmosException.getStatusCode();
             return statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED
                 || statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
                 || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
                 || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
@@ -901,6 +902,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             database.getContainer(cosmosContainerProperties.getId()),
             probeClient,
             ensureContainerExists);
+        getFeedRangesWithRetry(
+            database.getContainer(cosmosContainerProperties.getId()),
+            "post-create feed range readiness for container " + cosmosContainerProperties.getId());
 
         return database.getContainer(cosmosContainerProperties.getId());
     }
@@ -946,11 +950,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosAsyncContainer probeContainer =
             client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
 
-        // Use the account's regions (not the client's preferred regions, which may be a subset).
         List<String> allRegions = new ArrayList<>();
         for (DatabaseAccountLocation location : databaseAccount.getReadableLocations()) {
             allRegions.add(location.getName());
         }
+
+        List<String> excludedRegions = getExcludedRegions(client);
 
         Duration maxWait = COLLECTION_READINESS_MAX_WAIT;
         long deadlineNanos = System.nanoTime() + maxWait.toNanos();
@@ -963,36 +968,53 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             maxWait,
             ensureContainerExistsOnReadFailure);
 
-        List<String> preferredRegions = ImplementationBridgeHelpers
+        List<String> probeRegions = ImplementationBridgeHelpers
             .CosmosAsyncClientHelper
             .getCosmosAsyncClientAccessor()
             .getPreferredRegions(client);
-        if (preferredRegions == null || preferredRegions.isEmpty() || allRegions.isEmpty()) {
+        if (probeRegions == null || probeRegions.isEmpty()) {
+            probeRegions = allRegions;
+        }
+
+        if (probeRegions == null || probeRegions.isEmpty() || allRegions.isEmpty()) {
             return;
         }
 
-        for (String preferredRegion : preferredRegions) {
+        for (String preferredRegion : probeRegions) {
             boolean readableRegion = allRegions
                 .stream()
                 .anyMatch(region -> region.equalsIgnoreCase(preferredRegion));
 
-            if (!readableRegion) {
+            if (!readableRegion || containsRegion(excludedRegions, preferredRegion)) {
                 continue;
             }
 
             final String target = preferredRegion;
-            List<String> excludedRegions = allRegions
+            List<String> perProbeExcludedRegions = allRegions
                 .stream()
                 .filter(other -> !other.equalsIgnoreCase(target))
                 .collect(Collectors.toList());
             awaitContainerReadableInRegion(
                 probeContainer,
                 preferredRegion,
-                excludedRegions,
+                perProbeExcludedRegions,
                 deadlineNanos,
                 maxWait,
                 ensureContainerExistsOnReadFailure);
         }
+    }
+
+    private static List<String> getExcludedRegions(CosmosAsyncClient client) {
+        return ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getExcludedRegions(client);
+    }
+
+    private static boolean containsRegion(List<String> regions, String regionToFind) {
+        return regions
+            .stream()
+            .anyMatch(region -> region.equalsIgnoreCase(regionToFind));
     }
 
     private static void awaitContainerReadableInRegion(
@@ -1109,6 +1131,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         if (cosmosException != null) {
             int statusCode = cosmosException.getStatusCode();
             return statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED
                 || statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS
                 || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
                 || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
@@ -1187,6 +1210,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             })
             .block();
         waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
+        getFeedRangesWithRetry(
+            database.getContainer(cosmosContainerProperties.getId()),
+            "post-create feed range readiness for container " + cosmosContainerProperties.getId());
         return database.getContainer(cosmosContainerProperties.getId());
     }
 

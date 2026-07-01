@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.InCompleteRoutingMapException;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -24,6 +25,7 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Fail.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +33,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 public class RxPartitionKeyRangeCacheTest {
     private RxDocumentClientImpl client;
@@ -274,5 +277,49 @@ public class RxPartitionKeyRangeCacheTest {
         StepVerifier.create(cache.tryLookupAsync(null, collection.getResourceId(), null, new HashMap<>()))
             .expectNextMatches(routingMapHolder -> routingMapHolder != null && routingMapHolder.v != null)
             .verifyComplete();
+    }
+
+    @Test(groups = "unit")
+    public void tryLookupAsync_RetainsDiagnosticsForPartitionKeyRangeNotFoundRetry() {
+        String collectionRid = "collection1";
+
+        PartitionKeyRange range = new PartitionKeyRange();
+        range.setId("0");
+        range.setMinInclusive(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY);
+        range.setMaxExclusive(PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY);
+
+        DocumentCollection collection = new DocumentCollection();
+        collection.setResourceId(collectionRid);
+        collection.setSelfLink("dbs/db1/colls/coll1");
+
+        FeedResponse<PartitionKeyRange> response = Mockito.mock(FeedResponse.class);
+        when(response.getResults()).thenReturn(Collections.singletonList(range));
+        when(response.getContinuationToken()).thenReturn(null);
+
+        when(collectionCache.resolveCollectionAsync(any(), any()))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(collection)));
+
+        AtomicInteger readPkRangesAttempts = new AtomicInteger();
+        when(client.readPartitionKeyRanges(eq(collection.getSelfLink()), any(CosmosQueryRequestOptions.class)))
+            .thenAnswer(invocation -> {
+                if (readPkRangesAttempts.incrementAndGet() == 1) {
+                    return Flux.error(new NotFoundException("Owner resource does not exist"));
+                }
+
+                return Flux.just(response);
+            });
+
+        MetadataDiagnosticsContext metadataDiagnosticsContext = new MetadataDiagnosticsContext();
+
+        StepVerifier.create(cache.tryLookupAsync(metadataDiagnosticsContext, collection.getResourceId(), null, new HashMap<>()))
+            .expectNextMatches(routingMapHolder -> routingMapHolder != null && routingMapHolder.v != null)
+            .verifyComplete();
+
+        assertEquals(readPkRangesAttempts.get(), 2);
+        assertNotNull(metadataDiagnosticsContext.metadataDiagnosticList);
+        assertTrue(metadataDiagnosticsContext.metadataDiagnosticList
+            .stream()
+            .anyMatch(metadataDiagnostics ->
+                metadataDiagnostics.metaDataName == MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP));
     }
 }
