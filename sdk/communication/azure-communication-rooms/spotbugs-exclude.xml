@@ -2,4 +2,26 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl" />
+      <Class name="com.azure.communication.rooms.implementation.models.CommunicationError" />
+      <Class name="com.azure.communication.rooms.implementation.models.CreateRoomRequest" />
+      <Class name="com.azure.communication.rooms.implementation.models.ParticipantsCollection" />
+      <Class name="com.azure.communication.rooms.implementation.models.RoomsCollection" />
+      <Class name="com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest" />
+      <Class name="com.azure.communication.rooms.models.CreateRoomOptions" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImplBuilder" />
+      <Class name="com.azure.communication.rooms.implementation.models.CreateRoomRequest" />
+      <Class name="com.azure.communication.rooms.implementation.models.ParticipantsCollection" />
+      <Class name="com.azure.communication.rooms.implementation.models.RoomsCollection" />
+      <Class name="com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest" />
+    </Or>
+  </Match>
 </FindBugsFilter>
