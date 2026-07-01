@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for ContainerServicePreparedImageSpecificationManagementClient class.
+ * The interface for PreparedImgSpecMgmtClient class.
  */
-public interface ContainerServicePreparedImageSpecificationManagementClient {
+public interface PreparedImgSpecMgmtClient {
     /**
      * Gets Service host.
      * 

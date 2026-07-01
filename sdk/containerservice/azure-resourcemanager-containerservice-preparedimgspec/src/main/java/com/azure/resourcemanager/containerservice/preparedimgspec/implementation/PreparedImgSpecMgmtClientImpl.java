@@ -26,9 +26,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.containerservice.preparedimgspec.fluent.ContainerServicePreparedImageSpecificationManagementClient;
 import com.azure.resourcemanager.containerservice.preparedimgspec.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.preparedimgspec.fluent.PreparedImageSpecificationsClient;
+import com.azure.resourcemanager.containerservice.preparedimgspec.fluent.PreparedImgSpecMgmtClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -39,11 +39,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the ContainerServicePreparedImageSpecificationManagementClientImpl type.
+ * Initializes a new instance of the PreparedImgSpecMgmtClientImpl type.
  */
-@ServiceClient(builder = ContainerServicePreparedImageSpecificationManagementClientBuilder.class)
-public final class ContainerServicePreparedImageSpecificationManagementClientImpl
-    implements ContainerServicePreparedImageSpecificationManagementClient {
+@ServiceClient(builder = PreparedImgSpecMgmtClientBuilder.class)
+public final class PreparedImgSpecMgmtClientImpl implements PreparedImgSpecMgmtClient {
     /**
      * Service host.
      */
@@ -157,7 +156,7 @@ public final class ContainerServicePreparedImageSpecificationManagementClientImp
     }
 
     /**
-     * Initializes an instance of ContainerServicePreparedImageSpecificationManagementClient client.
+     * Initializes an instance of PreparedImgSpecMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -166,9 +165,8 @@ public final class ContainerServicePreparedImageSpecificationManagementClientImp
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    ContainerServicePreparedImageSpecificationManagementClientImpl(HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter, Duration defaultPollInterval, AzureEnvironment environment,
-        String endpoint, String subscriptionId) {
+    PreparedImgSpecMgmtClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -322,6 +320,5 @@ public final class ContainerServicePreparedImageSpecificationManagementClientImp
         }
     }
 
-    private static final ClientLogger LOGGER
-        = new ClientLogger(ContainerServicePreparedImageSpecificationManagementClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PreparedImgSpecMgmtClientImpl.class);
 }

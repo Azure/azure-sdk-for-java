@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final ContainerServicePreparedImageSpecificationManagementClientImpl client;
+    private final PreparedImgSpecMgmtClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(ContainerServicePreparedImageSpecificationManagementClientImpl client) {
+    OperationsClientImpl(PreparedImgSpecMgmtClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ContainerServicePreparedImageSpecificationManagementClientOperations
-     * to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for PreparedImgSpecMgmtClientOperations to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerServicePreparedImageSpecificationManagementClientOperations")
+    @ServiceInterface(name = "PreparedImgSpecMgmtClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ContainerService/operations")

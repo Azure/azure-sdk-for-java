@@ -24,10 +24,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerservice.preparedimgspec.fluent.ContainerServicePreparedImageSpecificationManagementClient;
-import com.azure.resourcemanager.containerservice.preparedimgspec.implementation.ContainerServicePreparedImageSpecificationManagementClientBuilder;
+import com.azure.resourcemanager.containerservice.preparedimgspec.fluent.PreparedImgSpecMgmtClient;
 import com.azure.resourcemanager.containerservice.preparedimgspec.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservice.preparedimgspec.implementation.PreparedImageSpecificationsImpl;
+import com.azure.resourcemanager.containerservice.preparedimgspec.implementation.PreparedImgSpecMgmtClientBuilder;
 import com.azure.resourcemanager.containerservice.preparedimgspec.models.Operations;
 import com.azure.resourcemanager.containerservice.preparedimgspec.models.PreparedImageSpecifications;
 import java.time.Duration;
@@ -47,18 +47,17 @@ public final class ContainerServicePreparedImageSpecificationManager {
 
     private PreparedImageSpecifications preparedImageSpecifications;
 
-    private final ContainerServicePreparedImageSpecificationManagementClient clientObject;
+    private final PreparedImgSpecMgmtClient clientObject;
 
     private ContainerServicePreparedImageSpecificationManager(HttpPipeline httpPipeline, AzureProfile profile,
         Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject
-            = new ContainerServicePreparedImageSpecificationManagementClientBuilder().pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new PreparedImgSpecMgmtClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -294,12 +293,12 @@ public final class ContainerServicePreparedImageSpecificationManager {
     }
 
     /**
-     * Gets wrapped service client ContainerServicePreparedImageSpecificationManagementClient providing direct access to
-     * the underlying auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client PreparedImgSpecMgmtClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client ContainerServicePreparedImageSpecificationManagementClient.
+     * @return Wrapped service client PreparedImgSpecMgmtClient.
      */
-    public ContainerServicePreparedImageSpecificationManagementClient serviceClient() {
+    public PreparedImgSpecMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

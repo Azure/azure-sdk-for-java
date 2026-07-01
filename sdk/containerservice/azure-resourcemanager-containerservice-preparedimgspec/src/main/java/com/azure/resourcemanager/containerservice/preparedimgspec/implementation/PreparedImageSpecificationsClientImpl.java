@@ -55,26 +55,25 @@ public final class PreparedImageSpecificationsClientImpl implements PreparedImag
     /**
      * The service client containing this operation class.
      */
-    private final ContainerServicePreparedImageSpecificationManagementClientImpl client;
+    private final PreparedImgSpecMgmtClientImpl client;
 
     /**
      * Initializes an instance of PreparedImageSpecificationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PreparedImageSpecificationsClientImpl(ContainerServicePreparedImageSpecificationManagementClientImpl client) {
+    PreparedImageSpecificationsClientImpl(PreparedImgSpecMgmtClientImpl client) {
         this.service = RestProxy.create(PreparedImageSpecificationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerServicePreparedImageSpecificationManagementClientPreparedImageSpecifications to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PreparedImgSpecMgmtClientPreparedImageSpecifications to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerServicePreparedImageSpecificationManagementClientPreparedImageSpecifications")
+    @ServiceInterface(name = "PreparedImgSpecMgmtClientPreparedImageSpecifications")
     public interface PreparedImageSpecificationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}")

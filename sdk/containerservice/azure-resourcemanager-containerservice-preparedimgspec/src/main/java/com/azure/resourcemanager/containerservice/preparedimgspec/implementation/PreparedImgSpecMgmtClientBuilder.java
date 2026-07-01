@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the ContainerServicePreparedImageSpecificationManagementClientImpl type.
+ * A builder for creating a new instance of the PreparedImgSpecMgmtClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { ContainerServicePreparedImageSpecificationManagementClientImpl.class })
-public final class ContainerServicePreparedImageSpecificationManagementClientBuilder {
+@ServiceClientBuilder(serviceClients = { PreparedImgSpecMgmtClientImpl.class })
+public final class PreparedImgSpecMgmtClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class ContainerServicePreparedImageSpecificationManagementClientBui
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the ContainerServicePreparedImageSpecificationManagementClientBuilder.
+     * @return the PreparedImgSpecMgmtClientBuilder.
      */
-    public ContainerServicePreparedImageSpecificationManagementClientBuilder endpoint(String endpoint) {
+    public PreparedImgSpecMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class ContainerServicePreparedImageSpecificationManagementClientBui
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the ContainerServicePreparedImageSpecificationManagementClientBuilder.
+     * @return the PreparedImgSpecMgmtClientBuilder.
      */
-    public ContainerServicePreparedImageSpecificationManagementClientBuilder subscriptionId(String subscriptionId) {
+    public PreparedImgSpecMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class ContainerServicePreparedImageSpecificationManagementClientBui
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the ContainerServicePreparedImageSpecificationManagementClientBuilder.
+     * @return the PreparedImgSpecMgmtClientBuilder.
      */
-    public ContainerServicePreparedImageSpecificationManagementClientBuilder environment(AzureEnvironment environment) {
+    public PreparedImgSpecMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class ContainerServicePreparedImageSpecificationManagementClientBui
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the ContainerServicePreparedImageSpecificationManagementClientBuilder.
+     * @return the PreparedImgSpecMgmtClientBuilder.
      */
-    public ContainerServicePreparedImageSpecificationManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public PreparedImgSpecMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,10 +92,9 @@ public final class ContainerServicePreparedImageSpecificationManagementClientBui
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the ContainerServicePreparedImageSpecificationManagementClientBuilder.
+     * @return the PreparedImgSpecMgmtClientBuilder.
      */
-    public ContainerServicePreparedImageSpecificationManagementClientBuilder
-        defaultPollInterval(Duration defaultPollInterval) {
+    public PreparedImgSpecMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -109,21 +108,19 @@ public final class ContainerServicePreparedImageSpecificationManagementClientBui
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the ContainerServicePreparedImageSpecificationManagementClientBuilder.
+     * @return the PreparedImgSpecMgmtClientBuilder.
      */
-    public ContainerServicePreparedImageSpecificationManagementClientBuilder
-        serializerAdapter(SerializerAdapter serializerAdapter) {
+    public PreparedImgSpecMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of ContainerServicePreparedImageSpecificationManagementClientImpl with the provided
-     * parameters.
+     * Builds an instance of PreparedImgSpecMgmtClientImpl with the provided parameters.
      * 
-     * @return an instance of ContainerServicePreparedImageSpecificationManagementClientImpl.
+     * @return an instance of PreparedImgSpecMgmtClientImpl.
      */
-    public ContainerServicePreparedImageSpecificationManagementClientImpl buildClient() {
+    public PreparedImgSpecMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -134,9 +131,8 @@ public final class ContainerServicePreparedImageSpecificationManagementClientBui
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ContainerServicePreparedImageSpecificationManagementClientImpl client
-            = new ContainerServicePreparedImageSpecificationManagementClientImpl(localPipeline, localSerializerAdapter,
-                localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
+        PreparedImgSpecMgmtClientImpl client = new PreparedImgSpecMgmtClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }
