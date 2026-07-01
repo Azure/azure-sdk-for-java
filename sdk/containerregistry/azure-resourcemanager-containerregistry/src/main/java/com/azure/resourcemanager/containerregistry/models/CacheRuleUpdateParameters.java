@@ -88,6 +88,32 @@ public final class CacheRuleUpdateParameters implements JsonSerializable<CacheRu
     }
 
     /**
+     * Get the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @return the additionalAuthenticationProperties value.
+     */
+    public AdditionalAuthenticationProperties additionalAuthenticationProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalAuthenticationProperties();
+    }
+
+    /**
+     * Set the additionalAuthenticationProperties property: Authentication configuration used by the cache rule to
+     * access the upstream source repository.
+     * 
+     * @param additionalAuthenticationProperties the additionalAuthenticationProperties value to set.
+     * @return the CacheRuleUpdateParameters object itself.
+     */
+    public CacheRuleUpdateParameters
+        withAdditionalAuthenticationProperties(AdditionalAuthenticationProperties additionalAuthenticationProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheRuleUpdateProperties();
+        }
+        this.innerProperties().withAdditionalAuthenticationProperties(additionalAuthenticationProperties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

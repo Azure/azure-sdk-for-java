@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class ReplicationsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ReplicationGet.json
+     * x-ms-original-file: 2026-03-01-preview/ReplicationGet.json
      */
     /**
      * Sample code: ReplicationGet.
