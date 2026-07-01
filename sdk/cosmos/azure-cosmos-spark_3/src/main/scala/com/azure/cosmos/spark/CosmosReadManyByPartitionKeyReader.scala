@@ -165,13 +165,13 @@ private[spark] object CosmosReadManyByPartitionKeyReader {
 
   private[spark] trait CloseableIterator[+T] extends Iterator[T] with AutoCloseable
 
-  private[spark] def closeOnTaskCompletion[T](iterator: CloseableIterator[T], taskContext: TaskContext): Iterator[T] = {
+  private[spark] def closeOnTaskCompletion[T](sourceIterator: CloseableIterator[T], taskContext: TaskContext): Iterator[T] = {
     new Iterator[T] {
       private val isClosed = new AtomicBoolean(false)
 
       private def closeIterator(): Unit = {
         if (isClosed.compareAndSet(false, true)) {
-          iterator.close()
+          sourceIterator.close()
         }
       }
 
@@ -181,7 +181,7 @@ private[spark] object CosmosReadManyByPartitionKeyReader {
 
       override def hasNext: Boolean = {
         try {
-          val hasMore = !isClosed.get() && iterator.hasNext
+          val hasMore = !isClosed.get() && sourceIterator.hasNext
           if (!hasMore) {
             closeIterator()
           }
@@ -196,7 +196,7 @@ private[spark] object CosmosReadManyByPartitionKeyReader {
 
       override def next(): T = {
         try {
-          iterator.next()
+          sourceIterator.next()
         } catch {
           case error: Throwable =>
             closeIterator()
