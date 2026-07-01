@@ -297,7 +297,7 @@ com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.8;2.53.9
 com.azure.resourcemanager:azure-resourcemanager-resources;2.54.1;2.54.2
 com.azure.resourcemanager:azure-resourcemanager-redis;2.53.8;2.53.9
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-search;2.54.7;2.55.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-search;2.54.7;2.54.8
 com.azure.resourcemanager:azure-resourcemanager-servicebus;2.53.8;2.53.9
 com.azure.resourcemanager:azure-resourcemanager-sql;2.53.8;2.53.9
 com.azure.resourcemanager:azure-resourcemanager-storage;2.56.0;2.56.1
