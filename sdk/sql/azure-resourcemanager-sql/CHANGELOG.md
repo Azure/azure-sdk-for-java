@@ -1,17 +1,14 @@
 # Release History
 
-## 2.54.0-beta.2 (Unreleased)
-
-### Features Added
-
-- Supported `withAzureActiveDirectoryOnlyAuthentication` and `withExternalActiveDirectoryAdministrator` for `SqlServer`.
-- Supported `withManagedIdentity` for `SqlDatabase` import and export.
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.53.9 (2026-06-30)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.4` to version `2.56.1`.
+
 
 ## 2.53.8 (2026-05-05)
 
@@ -21,6 +18,7 @@
 
 - Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.5`.
 - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+
 
 ## 2.53.7 (2026-03-30)
 
@@ -40,13 +38,16 @@
 
 - Upgraded `azure-resourcemanager-storage` from `2.55.1` to version `2.55.2`.
 
+
 ## 2.53.5 (2025-11-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-storage` from `2.55.0` to version `2.55.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.53.3` to version `2.53.5`.
+
 
 ## 2.53.4 (2025-10-27)
 
@@ -54,7 +55,9 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-storage` from `2.54.0` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.53.3 (2025-09-24)
 
@@ -366,21 +369,21 @@
 
 ### Breaking Changes
 
-- Removed `NEW` from `SecurityAlertPolicyState`. The constant is non-functional.
+- Removed `NEW` from `SecurityAlertPolicyState`. The constant is non-functional. 
 - Removed `withPolicyNew` method from `SqlDatabaseThreatDetectionPolicy` since `NEW` is no longer supported in `SecurityAlertPolicyState`.
 - Removed `nextResetTime` and `resourceName` methods from `ServerMetric` and `SqlDatabase`. The methods are non-functional.
 - Removed `listMetricsDefinitions` and `listMetrics` methods from `SqlDatabase`. Metrics in SQL have been replaced by the Azure monitor shoebox metrics API. Not in SQL any more.
 - Removed `listServiceTierAdvisors` method from `SqlDatabase`. It's no longer supported.
 - Removed class `ElasticPoolDatabaseActivity`. It's removed from service definition.
-- Removed `listDatabaseActivities`, `listDatabaseMetricDefinitions` and `listDatabaseMetrics` methods from `SqlElasticPool`.
-- Removed `elasticPoolName` and `serviceLevelObjective` methods from `SqlRestorableDroppedDatabase`.
+- Removed `listDatabaseActivities`, `listDatabaseMetricDefinitions` and `listDatabaseMetrics` methods from `SqlElasticPool`. 
+- Removed `elasticPoolName` and `serviceLevelObjective` methods from `SqlRestorableDroppedDatabase`. 
 - Removed `getServiceObjective`, `listRecommendedElasticPools`, `listServiceObjectives` methods from `SqlServer`.
 - Removed `withCreationDate` and `withThumbprint` from SqlServerKeyOperations. The properties are no longer mutable.
 - Renamed class from `TransparentDataEncryptionInner` to `LogicalDatabaseTransparentDataEncryptionInner`.
 - Removed class `TransparentDataEncryptionActivity`. The class is no longer functional.
 - Removed `listActivities` from `TransparentDataEncryption` since `TransparentDataEncryptionActivity` is removed.
 - Renamed `TransparentDataEncryptionStatus` to `TransparentDataEncryptionState`.
-- Removed `location`, `requestedDatabaseDtuCap`, `requestedDatabaseDtuGuarantee`, `requestedDatabaseDtuMax`, `requestedDatabaseDtuMin`,
+- Removed `location`, `requestedDatabaseDtuCap`, `requestedDatabaseDtuGuarantee`, `requestedDatabaseDtuMax`, `requestedDatabaseDtuMin`, 
   `requestedDtu`, `requestedDtuGuarantee` and `requestedElasticPoolName`, `requestedStorageLimitInGB` and `requestedStorageLimitInMB` methods from `ElasticPoolActivity`. The properties are no longer functional.
 - Renamed class from `ElasticPoolActivityInner` to `ElasticPoolOperationInner`.
 - Removed `readReplicaCount` and `withReadReplicaCount` from `DatabaseUpdate`. The property is non-functional.
@@ -393,6 +396,7 @@
 - Renamed class `ImportExportResponseInner` to `ImportExportOperationResultInner`.
 - Renamed class `ImportExtensionRequest` to `ImportExistingDatabaseDefinition`.
 - Changed type of `StorageKeyType` from `enum` to `ExpandableStringEnum`.
+
 
 ## 2.22.0 (2022-12-23)
 

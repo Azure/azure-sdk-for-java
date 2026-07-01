@@ -1,14 +1,13 @@
 # Release History
 
-## 2.54.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.53.10 (2026-06-30)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
+
 
 ## 2.53.9 (2026-05-05)
 
@@ -18,17 +17,6 @@
 
 - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
 
-## 2.54.0-beta.1 (2026-04-09)
-
-### Features Added
-
-- Supported create and delete of "deny assignment".
-
-### Other Changes
-
-#### Dependency Updates
-
-- Updated `api-version` to `2024-09-01-preview`.
 
 ## 2.53.8 (2026-03-30)
 
@@ -38,6 +26,7 @@
 
 - Upgraded `azure-resourcemanager-resources` from `2.53.5` to version `2.54.0`.
 
+
 ## 2.53.7 (2026-01-29)
 
 ### Other Changes
@@ -46,13 +35,15 @@
 
 - Upgraded core dependencies.
 
+
 ## 2.53.6 (2025-11-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.4` to version `2.53.5`.
+
 
 ## 2.53.5 (2025-11-14)
 

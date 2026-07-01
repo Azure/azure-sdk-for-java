@@ -22,8 +22,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
-import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.models.ListIndexersResult;
 import com.azure.search.documents.indexes.models.ListSkillsetsResult;
@@ -31,7 +29,6 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.SkillNames;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -84,13 +81,6 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new datasource or updates a datasource if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -109,7 +99,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -120,9 +109,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -139,7 +125,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -153,7 +138,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -164,9 +148,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -183,7 +164,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -289,7 +269,6 @@ public final class SearchIndexerClient {
      *             name: String (Required)
      *             description: String (Optional)
      *             type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *             subType: String (Optional)
      *             credentials (Required): {
      *                 connectionString: String (Optional)
      *             }
@@ -300,9 +279,6 @@ public final class SearchIndexerClient {
      *             identity (Optional): {
      *                 &#64;odata.type: String (Required)
      *             }
-     *             indexerPermissionOptions (Optional): [
-     *                 String(userIds/groupIds/rbacScope) (Optional)
-     *             ]
      *             dataChangeDetectionPolicy (Optional): {
      *                 &#64;odata.type: String (Required)
      *             }
@@ -319,7 +295,6 @@ public final class SearchIndexerClient {
      *                     applicationSecret: String (Optional)
      *                 }
      *                 identity (Optional): (recursive schema, see identity above)
-     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *         }
      *     ]
@@ -376,15 +351,6 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new indexer or updates an indexer if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -465,13 +431,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -547,13 +506,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -721,13 +673,6 @@ public final class SearchIndexerClient {
      *                 identity (Optional): {
      *                     &#64;odata.type: String (Required)
      *                 }
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *             cache (Optional): {
-     *                 id: String (Optional)
-     *                 storageConnectionString: String (Optional)
-     *                 enableReprocessing: Boolean (Optional)
-     *                 identity (Optional): (recursive schema, see identity above)
      *             }
      *         }
      *     ]
@@ -750,15 +695,6 @@ public final class SearchIndexerClient {
 
     /**
      * Creates a new skillset in a search service or updates the skillset if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -849,12 +785,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -884,7 +814,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -970,12 +899,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -1005,7 +928,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -1183,12 +1105,6 @@ public final class SearchIndexerClient {
      *                 identity (Optional): {
      *                     &#64;odata.type: String (Required)
      *                 }
-     *                 parameters (Optional): {
-     *                     synthesizeGeneratedKeyName: Boolean (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
      *             }
      *             indexProjections (Optional): {
      *                 selectors (Required): [
@@ -1218,7 +1134,6 @@ public final class SearchIndexerClient {
      *                     applicationSecret: String (Optional)
      *                 }
      *                 identity (Optional): (recursive schema, see identity above)
-     *                 isServiceLevelKey: Boolean (Optional)
      *             }
      *         }
      *     ]
@@ -2074,7 +1989,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2085,9 +1999,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2104,7 +2015,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2136,7 +2046,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2147,9 +2056,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2166,7 +2072,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2180,7 +2085,6 @@ public final class SearchIndexerClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2191,9 +2095,6 @@ public final class SearchIndexerClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2210,7 +2111,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2304,13 +2204,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -2402,13 +2295,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -2484,13 +2370,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         isServiceLevelKey: Boolean (Optional)
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -2519,16 +2398,8 @@ public final class SearchIndexerClient {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
-     *         usedSeconds: long (Required)
-     *         remainingSeconds: Long (Optional)
-     *         beginningTime: OffsetDateTime (Required)
-     *         endingTime: OffsetDateTime (Required)
-     *     }
      *     lastResult (Optional): {
      *         status: String(transientFailure/success/inProgress/reset) (Required)
-     *         statusDetail: String(resetDocs/resync) (Optional)
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
      *         errorMessage: String (Optional)
      *         startTime: OffsetDateTime (Optional)
      *         endTime: OffsetDateTime (Optional)
@@ -2563,21 +2434,6 @@ public final class SearchIndexerClient {
      *         maxRunTime: Duration (Optional)
      *         maxDocumentExtractionSize: Long (Optional)
      *         maxDocumentContentCharactersToExtract: Long (Optional)
-     *     }
-     *     currentState (Optional): {
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
-     *         allDocsInitialTrackingState: String (Optional)
-     *         allDocsFinalTrackingState: String (Optional)
-     *         resetDocsInitialTrackingState: String (Optional)
-     *         resetDocsFinalTrackingState: String (Optional)
-     *         resyncInitialTrackingState: String (Optional)
-     *         resyncFinalTrackingState: String (Optional)
-     *         resetDocumentKeys (Optional): [
-     *             String (Optional)
-     *         ]
-     *         resetDatasourceDocumentIds (Optional): [
-     *             String (Optional)
-     *         ]
      *     }
      * }
      * }
@@ -2679,12 +2535,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -2714,7 +2564,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2816,12 +2665,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -2851,7 +2694,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -2937,12 +2779,6 @@ public final class SearchIndexerClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -2972,7 +2808,6 @@ public final class SearchIndexerClient {
      *             applicationSecret: String (Optional)
      *         }
      *         identity (Optional): (recursive schema, see identity above)
-     *         isServiceLevelKey: Boolean (Optional)
      *     }
      * }
      * }
@@ -3074,200 +2909,5 @@ public final class SearchIndexerClient {
                 false);
         }
         return getSkillsetsWithResponse(requestOptions).getValue().toObject(ListSkillsetsResult.class);
-    }
-
-    /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     options (Optional): [
-     *         String(permissions) (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> hiddenGeneratedResyncWithResponse(String name, BinaryData indexerResync,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resyncWithResponse(name, indexerResync, requestOptions);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>overwrite</td><td>Boolean</td><td>No</td><td>If false, keys or ids will be appended to existing ones. If
-     * true, only the keys or ids in this payload will be queued to be re-ingested.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     documentKeys (Optional): [
-     *         String (Optional)
-     *     ]
-     *     datasourceDocumentIds (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetDocumentsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.resetDocumentsWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skillNames (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> hiddenGeneratedResetSkillsWithResponse(String name, BinaryData skillNames,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resetSkillsWithResponse(name, skillNames, requestOptions);
-    }
-
-    /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resync(String name, IndexerResyncBody indexerResync) {
-        // Generated convenience method for hiddenGeneratedResyncWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        hiddenGeneratedResyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions).getValue();
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
-     * payload will be queued to be re-ingested.
-     * @param keysOrIds The keys or ids of the documents to be re-ingested. If keys are provided, the document key field
-     * must be specified in the indexer configuration. If ids are provided, the document key field is ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDocuments(String name, Boolean overwrite, DocumentKeysOrIds keysOrIds) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (overwrite != null) {
-            requestOptions.addQueryParam("overwrite", String.valueOf(overwrite), false);
-        }
-        if (keysOrIds != null) {
-            requestOptions.setBody(BinaryData.fromObject(keysOrIds));
-        }
-        resetDocumentsWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDocuments(String name) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        resetDocumentsWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetSkills(String name, SkillNames skillNames) {
-        // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        hiddenGeneratedResetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions).getValue();
     }
 }

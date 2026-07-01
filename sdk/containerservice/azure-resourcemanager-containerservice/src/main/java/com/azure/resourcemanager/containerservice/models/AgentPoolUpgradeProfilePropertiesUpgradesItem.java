@@ -27,11 +27,6 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem
      */
     private Boolean isPreview;
 
-    /*
-     * Whether the Kubernetes version is out of support.
-     */
-    private Boolean isOutOfSupport;
-
     /**
      * Creates an instance of AgentPoolUpgradeProfilePropertiesUpgradesItem class.
      */
@@ -57,15 +52,6 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem
     }
 
     /**
-     * Get the isOutOfSupport property: Whether the Kubernetes version is out of support.
-     * 
-     * @return the isOutOfSupport value.
-     */
-    public Boolean isOutOfSupport() {
-        return this.isOutOfSupport;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -81,7 +67,6 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
         jsonWriter.writeBooleanField("isPreview", this.isPreview);
-        jsonWriter.writeBooleanField("isOutOfSupport", this.isOutOfSupport);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,9 +90,6 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem
                     deserializedAgentPoolUpgradeProfilePropertiesUpgradesItem.kubernetesVersion = reader.getString();
                 } else if ("isPreview".equals(fieldName)) {
                     deserializedAgentPoolUpgradeProfilePropertiesUpgradesItem.isPreview
-                        = reader.getNullable(JsonReader::getBoolean);
-                } else if ("isOutOfSupport".equals(fieldName)) {
-                    deserializedAgentPoolUpgradeProfilePropertiesUpgradesItem.isOutOfSupport
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();

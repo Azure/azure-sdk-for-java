@@ -1,14 +1,14 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.54.2 (2026-06-30)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-management` from `1.19.4` to version `1.19.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
 
 ## 2.54.1 (2026-05-05)
 
@@ -18,6 +18,7 @@
 
 - Upgraded `azure-core-management` from `1.19.3` to version `1.19.4`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
 
 ## 2.54.0 (2026-03-19)
 

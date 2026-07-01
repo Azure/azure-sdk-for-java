@@ -13,27 +13,27 @@ public final class EventContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventContent model = BinaryData.fromString(
-            "{\"id\":\"vkzuhbxvvyhgso\",\"timestamp\":\"2020-12-29T01:37:17Z\",\"action\":\"qufegxuvwzfbn\",\"target\":{\"mediaType\":\"ctlpdngitvgb\",\"size\":5360902839879947019,\"digest\":\"kw\",\"length\":3784796118509954000,\"repository\":\"jvegrhbpnaixexcc\",\"url\":\"reaxhcexdr\",\"tag\":\"qahqkghtpwijn\",\"name\":\"jsvfycxzbfvoowv\",\"version\":\"mtg\"},\"request\":{\"id\":\"pyostronzmyhgfi\",\"addr\":\"sxkm\",\"host\":\"a\",\"method\":\"rrjreafxtsgu\",\"useragent\":\"jglikkxwslolb\"},\"actor\":{\"name\":\"uzlm\"},\"source\":{\"addr\":\"lfktgplcrpwjxe\",\"instanceID\":\"oi\"}}")
+            "{\"id\":\"qgsfraoyzkoow\",\"timestamp\":\"2021-01-01T04:06:13Z\",\"action\":\"guxawqaldsyuuxi\",\"target\":{\"mediaType\":\"qfobwyz\",\"size\":5853519584065251254,\"digest\":\"utwpfhp\",\"length\":622879403847581793,\"repository\":\"skdsnfdsdoakg\",\"url\":\"lmkk\",\"tag\":\"vdlhewpusdsttwv\",\"name\":\"vbbejdcng\",\"version\":\"m\"},\"request\":{\"id\":\"ufgmjzrwrdg\",\"addr\":\"wae\",\"host\":\"uzkopbminrfd\",\"method\":\"yuhhziu\",\"useragent\":\"fozbhdmsmlmzqhof\"},\"actor\":{\"name\":\"ae\"},\"source\":{\"addr\":\"ah\",\"instanceID\":\"cslfaoqzpiyylha\"}}")
             .toObject(EventContent.class);
-        Assertions.assertEquals("vkzuhbxvvyhgso", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-29T01:37:17Z"), model.timestamp());
-        Assertions.assertEquals("qufegxuvwzfbn", model.action());
-        Assertions.assertEquals("ctlpdngitvgb", model.target().mediaType());
-        Assertions.assertEquals(5360902839879947019L, model.target().size());
-        Assertions.assertEquals("kw", model.target().digest());
-        Assertions.assertEquals(3784796118509954000L, model.target().length());
-        Assertions.assertEquals("jvegrhbpnaixexcc", model.target().repository());
-        Assertions.assertEquals("reaxhcexdr", model.target().url());
-        Assertions.assertEquals("qahqkghtpwijn", model.target().tag());
-        Assertions.assertEquals("jsvfycxzbfvoowv", model.target().name());
-        Assertions.assertEquals("mtg", model.target().version());
-        Assertions.assertEquals("pyostronzmyhgfi", model.request().id());
-        Assertions.assertEquals("sxkm", model.request().addr());
-        Assertions.assertEquals("a", model.request().host());
-        Assertions.assertEquals("rrjreafxtsgu", model.request().method());
-        Assertions.assertEquals("jglikkxwslolb", model.request().useragent());
-        Assertions.assertEquals("uzlm", model.actor().name());
-        Assertions.assertEquals("lfktgplcrpwjxe", model.source().addr());
-        Assertions.assertEquals("oi", model.source().instanceId());
+        Assertions.assertEquals("qgsfraoyzkoow", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T04:06:13Z"), model.timestamp());
+        Assertions.assertEquals("guxawqaldsyuuxi", model.action());
+        Assertions.assertEquals("qfobwyz", model.target().mediaType());
+        Assertions.assertEquals(5853519584065251254L, model.target().size());
+        Assertions.assertEquals("utwpfhp", model.target().digest());
+        Assertions.assertEquals(622879403847581793L, model.target().length());
+        Assertions.assertEquals("skdsnfdsdoakg", model.target().repository());
+        Assertions.assertEquals("lmkk", model.target().url());
+        Assertions.assertEquals("vdlhewpusdsttwv", model.target().tag());
+        Assertions.assertEquals("vbbejdcng", model.target().name());
+        Assertions.assertEquals("m", model.target().version());
+        Assertions.assertEquals("ufgmjzrwrdg", model.request().id());
+        Assertions.assertEquals("wae", model.request().addr());
+        Assertions.assertEquals("uzkopbminrfd", model.request().host());
+        Assertions.assertEquals("yuhhziu", model.request().method());
+        Assertions.assertEquals("fozbhdmsmlmzqhof", model.request().useragent());
+        Assertions.assertEquals("ae", model.actor().name());
+        Assertions.assertEquals("ah", model.source().addr());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.source().instanceId());
     }
 }

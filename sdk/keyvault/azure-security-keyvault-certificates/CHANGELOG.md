@@ -1,24 +1,14 @@
 # Release History
 
-## 4.10.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.9.1 (2026-06-30)
 
 ### Other Changes
 
-## 4.10.0-beta.1 (2026-06-04)
+#### Dependency Updates
 
-### Features Added
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
 
-- Added an experimental PlatformManaged property on CertificatePolicy for Azure Key Vault internal usage. Any calls using this property will fail and it is not recommended to be used at this point. [#49210](https://github.com/Azure/azure-sdk-for-java/pull/49210)
-
-### Other Changes
-
-- Upgraded to API service version `2026-03-01-preview`
 
 ## 4.9.0 (2026-05-26)
 

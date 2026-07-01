@@ -6,7 +6,6 @@ package com.azure.communication.identity.implementation.models;
 
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,20 +22,17 @@ public final class CommunicationIdentityAccessTokenRequest
     /*
      * List of scopes attached to the token.
      */
-    @Generated
     private List<CommunicationTokenScope> scopes;
 
     /*
      * Optional custom validity period of the token within [60,1440] minutes range. If not provided, the default value
      * of 1440 minutes (24 hours) will be used.
      */
-    @Generated
     private Integer expiresInMinutes;
 
     /**
      * Creates an instance of CommunicationIdentityAccessTokenRequest class.
      */
-    @Generated
     public CommunicationIdentityAccessTokenRequest() {
     }
 
@@ -45,7 +41,6 @@ public final class CommunicationIdentityAccessTokenRequest
      * 
      * @return the scopes value.
      */
-    @Generated
     public List<CommunicationTokenScope> getScopes() {
         return this.scopes;
     }
@@ -56,7 +51,6 @@ public final class CommunicationIdentityAccessTokenRequest
      * @param scopes the scopes value to set.
      * @return the CommunicationIdentityAccessTokenRequest object itself.
      */
-    @Generated
     public CommunicationIdentityAccessTokenRequest setScopes(List<CommunicationTokenScope> scopes) {
         this.scopes = scopes;
         return this;
@@ -68,7 +62,6 @@ public final class CommunicationIdentityAccessTokenRequest
      * 
      * @return the expiresInMinutes value.
      */
-    @Generated
     public Integer getExpiresInMinutes() {
         return this.expiresInMinutes;
     }
@@ -80,16 +73,11 @@ public final class CommunicationIdentityAccessTokenRequest
      * @param expiresInMinutes the expiresInMinutes value to set.
      * @return the CommunicationIdentityAccessTokenRequest object itself.
      */
-    @Generated
     public CommunicationIdentityAccessTokenRequest setExpiresInMinutes(Integer expiresInMinutes) {
         this.expiresInMinutes = expiresInMinutes;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -108,7 +96,6 @@ public final class CommunicationIdentityAccessTokenRequest
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationIdentityAccessTokenRequest.
      */
-    @Generated
     public static CommunicationIdentityAccessTokenRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentityAccessTokenRequest deserializedCommunicationIdentityAccessTokenRequest

@@ -1,52 +1,13 @@
 # Release History
 
-## 2.54.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.53.9 (2026-06-30)
 
 ### Other Changes
 
-## 2.54.0-beta.1 (2026-05-08)
+#### Dependency Updates
 
-### Breaking Changes
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
 
-#### `models.ProfileListResult` was removed
-
-#### `models.TrafficFlow` was modified
-
-* `TrafficFlow()` was changed to private access
-* `withQueryExperiences(java.util.List)` was removed
-* `withSourceIp(java.lang.String)` was removed
-* `withLongitude(java.lang.Double)` was removed
-* `withLatitude(java.lang.Double)` was removed
-
-#### `models.QueryExperience` was modified
-
-* `QueryExperience()` was changed to private access
-* `withLatency(java.lang.Double)` was removed
-* `withEndpointId(int)` was removed
-* `withQueryCount(int)` was removed
-
-#### `models.HeatMapEndpoint` was modified
-
-* `HeatMapEndpoint()` was changed to private access
-* `withEndpointId(java.lang.Integer)` was removed
-* `withResourceId(java.lang.String)` was removed
-
-#### `models.Region` was modified
-
-* `Region()` was changed to private access
-* `withName(java.lang.String)` was removed
-* `withRegions(java.util.List)` was removed
-* `withCode(java.lang.String)` was removed
-
-### Features Added
-
-* `models.RecordType` was added
 
 ## 2.53.8 (2026-05-05)
 
@@ -55,6 +16,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+
 
 ## 2.53.7 (2026-03-30)
 
@@ -73,13 +35,15 @@
 
 - Upgraded core dependencies.
 
+
 ## 2.53.5 (2025-11-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.3` to version `2.53.5`.
+
 
 ## 2.53.4 (2025-10-27)
 
@@ -87,7 +51,8 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.53.3 (2025-09-24)
 

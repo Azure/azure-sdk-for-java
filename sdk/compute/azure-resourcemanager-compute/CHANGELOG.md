@@ -1,14 +1,17 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.58.1 (2026-06-30)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.58.2` to version `2.58.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-storage` from `2.56.0` to version `2.56.1`.
+
 
 ## 2.58.0 (2026-06-17)
 

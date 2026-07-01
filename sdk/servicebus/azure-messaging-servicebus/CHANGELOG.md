@@ -1,46 +1,15 @@
 # Release History
 
-## 7.18.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 7.17.19 (2026-06-30)
 
 ### Other Changes
 
-## 7.18.0-beta.2 (2026-06-22)
+#### Dependency Updates
 
-### Features Added
+- Upgraded `azure-core-amqp` from `2.11.4` to version `2.12.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
 
-- Added `drainTimeout(Duration)` to `ServiceBusProcessorClientBuilder` and `ServiceBusSessionProcessorClientBuilder` to configure the maximum wait time for in-flight message handlers during processor shutdown. Defaults to 30 seconds.
-
-### Bugs Fixed
-
-- Fixed `ServiceBusProcessorClient.close()` disposing the receiver before in-flight message handlers could complete settlement, causing `IllegalStateException`. The processor now drains active handlers before closing. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
-- Fixed the first call to `ServiceBusSenderClient.sendMessage()` (and `ServiceBusSenderAsyncClient.sendMessage()`) not recognizing the caller's current OpenTelemetry trace context, causing the `ServiceBus.send` span and the outgoing message's `traceparent` to start a new, disconnected trace. The send span is now started on the calling thread before the first send establishes the AMQP connection on a background thread. ([#44958](https://github.com/Azure/azure-sdk-for-java/issues/44958))
-- Fixed `ServiceBusMessageBatch` accepting messages beyond the service-enforced batch size limit on
-  Premium large-message entities by reading the `com.microsoft:max-message-batch-size` vendor property
-  from the AMQP sender link instead of using `max-message-size`. ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
-- Fixed `ServiceBusAdministrationClient.updateSubscription()` silently ignoring `defaultMessageTimeToLive` changes. The property was incorrectly nullified before serialization. ([#48495](https://github.com/Azure/azure-sdk-for-java/issues/48495))
-- Fixed session-enabled `ServiceBusProcessorClient` logging a spurious `DeliveryNotOnLinkException`
-  ("...does not exist in the link's DeliveryMap") at ERROR when a message handler settles a message
-  manually (e.g. `complete()`) while auto-complete is left enabled. The V2 session disposition path now
-  marks the message settled on success, so the redundant auto-settlement short-circuits at the
-  already-settled guard instead of attempting a second disposition on the receive-link. The message was
-  always settled correctly; only the misleading error log is removed. ([#47356](https://github.com/Azure/azure-sdk-for-java/issues/47356))
-
-### Other Changes
-
-- Implemented support for the `com.microsoft:max-message-batch-size` AMQP vendor property in
-  `createMessageBatch`. The Service Bus service has advertised this property on sender links for some
-  time to communicate the broker-enforced batch size limit; the SDK now reads it and sizes batches
-  against this value, falling back to `max-message-size` when the property is absent. Previously the
-  batch path used `max-message-size` directly, which on Premium large-message entities (link advertises
-  up to 100 MB while the batch limit stays at 1 MB) caused the broker to reject oversized batches.
-  Single-message sends (`sendMessage`, `scheduleMessage`) continue using `max-message-size`.
-  ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
 
 ## 7.17.18 (2026-05-05)
 
@@ -51,6 +20,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 - Upgraded `azure-core-amqp` from `2.11.3` to version `2.11.4`.
+
 
 ## 7.17.17 (2026-01-29)
 
@@ -63,6 +33,7 @@
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 - Upgraded `azure-xml` from `1.2.0` to version `1.2.1`.
 
+
 ## 7.17.16 (2025-10-27)
 
 ### Other Changes
@@ -72,6 +43,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
 - Upgraded `azure-core-amqp` from `2.11.1` to version `2.11.2`.
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+
 
 ## 7.17.15 (2025-09-25)
 
@@ -83,6 +55,7 @@
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 - Upgraded `azure-core-amqp` from `2.11.0` to version `2.11.1`.
 
+
 ## 7.17.14 (2025-08-21)
 
 ### Other Changes
@@ -92,6 +65,7 @@
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-amqp` from `2.10.2` to version `2.11.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
 
 ## 7.17.13 (2025-07-24)
 
@@ -140,6 +114,7 @@
 - Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
 - Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
 
 ## 7.17.8 (2025-01-09)
 
@@ -291,6 +266,8 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
 ## 7.15.2 (2024-03-11)
 
 ### Other Changes
@@ -431,6 +408,7 @@
 - Fixed mapping of `ServiceBusManagementError` to corresponding `AzureExceptions` in `ServiceBusAdministrationClient`. ([#33609](https://github.com/Azure/azure-sdk-for-java/issues/33609))
 
 - Fixed issue causing updates to TopicProperties with AuthorizationRules to return 400 Bad request. ([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
+
 
 ### Other Changes
 
@@ -982,4 +960,5 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 - Receive messages from an Azure Service Bus Queue or Subscriber.
 
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
+
 

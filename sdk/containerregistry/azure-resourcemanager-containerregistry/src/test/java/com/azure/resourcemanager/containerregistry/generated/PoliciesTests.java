@@ -13,7 +13,6 @@ import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.PolicyStatus;
 import com.azure.resourcemanager.containerregistry.models.QuarantinePolicy;
 import com.azure.resourcemanager.containerregistry.models.RetentionPolicy;
-import com.azure.resourcemanager.containerregistry.models.SoftDeletePolicy;
 import com.azure.resourcemanager.containerregistry.models.TrustPolicy;
 import com.azure.resourcemanager.containerregistry.models.TrustPolicyType;
 import org.junit.jupiter.api.Assertions;
@@ -22,40 +21,34 @@ public final class PoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Policies model = BinaryData.fromString(
-            "{\"quarantinePolicy\":{\"status\":\"enabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"enabled\"},\"retentionPolicy\":{\"days\":1500151010,\"lastUpdatedTime\":\"2021-07-23T00:34:49Z\",\"status\":\"enabled\"},\"exportPolicy\":{\"status\":\"disabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":1214648475,\"lastUpdatedTime\":\"2020-12-26T19:13:16Z\",\"status\":\"disabled\"}}")
+            "{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"enabled\"},\"retentionPolicy\":{\"days\":1951867342,\"lastUpdatedTime\":\"2021-10-31T08:55:11Z\",\"status\":\"enabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"disabled\"}}")
             .toObject(Policies.class);
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.quarantinePolicy().status());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.quarantinePolicy().status());
         Assertions.assertEquals(TrustPolicyType.NOTARY, model.trustPolicy().type());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.trustPolicy().status());
-        Assertions.assertEquals(1500151010, model.retentionPolicy().days());
+        Assertions.assertEquals(1951867342, model.retentionPolicy().days());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.retentionPolicy().status());
-        Assertions.assertEquals(ExportPolicyStatus.DISABLED, model.exportPolicy().status());
-        Assertions.assertEquals(AzureADAuthenticationAsArmPolicyStatus.ENABLED,
+        Assertions.assertEquals(ExportPolicyStatus.ENABLED, model.exportPolicy().status());
+        Assertions.assertEquals(AzureADAuthenticationAsArmPolicyStatus.DISABLED,
             model.azureADAuthenticationAsArmPolicy().status());
-        Assertions.assertEquals(1214648475, model.softDeletePolicy().retentionDays());
-        Assertions.assertEquals(PolicyStatus.DISABLED, model.softDeletePolicy().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Policies model = new Policies().withQuarantinePolicy(new QuarantinePolicy().withStatus(PolicyStatus.ENABLED))
+        Policies model = new Policies().withQuarantinePolicy(new QuarantinePolicy().withStatus(PolicyStatus.DISABLED))
             .withTrustPolicy(new TrustPolicy().withType(TrustPolicyType.NOTARY).withStatus(PolicyStatus.ENABLED))
-            .withRetentionPolicy(new RetentionPolicy().withDays(1500151010).withStatus(PolicyStatus.ENABLED))
-            .withExportPolicy(new ExportPolicy().withStatus(ExportPolicyStatus.DISABLED))
+            .withRetentionPolicy(new RetentionPolicy().withDays(1951867342).withStatus(PolicyStatus.ENABLED))
+            .withExportPolicy(new ExportPolicy().withStatus(ExportPolicyStatus.ENABLED))
             .withAzureADAuthenticationAsArmPolicy(
-                new AzureADAuthenticationAsArmPolicy().withStatus(AzureADAuthenticationAsArmPolicyStatus.ENABLED))
-            .withSoftDeletePolicy(
-                new SoftDeletePolicy().withRetentionDays(1214648475).withStatus(PolicyStatus.DISABLED));
+                new AzureADAuthenticationAsArmPolicy().withStatus(AzureADAuthenticationAsArmPolicyStatus.DISABLED));
         model = BinaryData.fromObject(model).toObject(Policies.class);
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.quarantinePolicy().status());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.quarantinePolicy().status());
         Assertions.assertEquals(TrustPolicyType.NOTARY, model.trustPolicy().type());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.trustPolicy().status());
-        Assertions.assertEquals(1500151010, model.retentionPolicy().days());
+        Assertions.assertEquals(1951867342, model.retentionPolicy().days());
         Assertions.assertEquals(PolicyStatus.ENABLED, model.retentionPolicy().status());
-        Assertions.assertEquals(ExportPolicyStatus.DISABLED, model.exportPolicy().status());
-        Assertions.assertEquals(AzureADAuthenticationAsArmPolicyStatus.ENABLED,
+        Assertions.assertEquals(ExportPolicyStatus.ENABLED, model.exportPolicy().status());
+        Assertions.assertEquals(AzureADAuthenticationAsArmPolicyStatus.DISABLED,
             model.azureADAuthenticationAsArmPolicy().status());
-        Assertions.assertEquals(1214648475, model.softDeletePolicy().retentionDays());
-        Assertions.assertEquals(PolicyStatus.DISABLED, model.softDeletePolicy().status());
     }
 }

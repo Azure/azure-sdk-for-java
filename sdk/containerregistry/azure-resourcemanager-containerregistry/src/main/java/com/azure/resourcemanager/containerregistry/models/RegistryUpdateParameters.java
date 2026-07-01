@@ -229,54 +229,6 @@ public final class RegistryUpdateParameters implements JsonSerializable<Registry
     }
 
     /**
-     * Get the regionalEndpoints property: Enable per-region endpoints for accessing registry.
-     * 
-     * @return the regionalEndpoints value.
-     */
-    public RegionalEndpoints regionalEndpoints() {
-        return this.innerProperties() == null ? null : this.innerProperties().regionalEndpoints();
-    }
-
-    /**
-     * Set the regionalEndpoints property: Enable per-region endpoints for accessing registry.
-     * 
-     * @param regionalEndpoints the regionalEndpoints value to set.
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withRegionalEndpoints(RegionalEndpoints regionalEndpoints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RegistryPropertiesUpdateParameters();
-        }
-        this.innerProperties().withRegionalEndpoints(regionalEndpoints);
-        return this;
-    }
-
-    /**
-     * Get the endpointProtocol property: The connectivity protocol for the registry, such as IPv4 or dual stack (IPv4
-     * and IPv6).
-     * 
-     * @return the endpointProtocol value.
-     */
-    public EndpointProtocol endpointProtocol() {
-        return this.innerProperties() == null ? null : this.innerProperties().endpointProtocol();
-    }
-
-    /**
-     * Set the endpointProtocol property: The connectivity protocol for the registry, such as IPv4 or dual stack (IPv4
-     * and IPv6).
-     * 
-     * @param endpointProtocol the endpointProtocol value to set.
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withEndpointProtocol(EndpointProtocol endpointProtocol) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RegistryPropertiesUpdateParameters();
-        }
-        this.innerProperties().withEndpointProtocol(endpointProtocol);
-        return this;
-    }
-
-    /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
      * 
      * @return the publicNetworkAccess value.
@@ -369,29 +321,6 @@ public final class RegistryUpdateParameters implements JsonSerializable<Registry
             this.innerProperties = new RegistryPropertiesUpdateParameters();
         }
         this.innerProperties().withAnonymousPullEnabled(anonymousPullEnabled);
-        return this;
-    }
-
-    /**
-     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @return the metadataSearch value.
-     */
-    public MetadataSearch metadataSearch() {
-        return this.innerProperties() == null ? null : this.innerProperties().metadataSearch();
-    }
-
-    /**
-     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @param metadataSearch the metadataSearch value to set.
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RegistryPropertiesUpdateParameters();
-        }
-        this.innerProperties().withMetadataSearch(metadataSearch);
         return this;
     }
 
