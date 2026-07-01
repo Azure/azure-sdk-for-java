@@ -83,14 +83,10 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                 PartitionKeyInternal partitionKeyInternal = null;
                 boolean isPrefixPartitionKeyQuery = false;
                 if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != PartitionKey.NONE) {
-                    // A partial (prefix) hierarchical partition key: partitionKeyInternal stays null (no
-                    // PARTITION_KEY header, which avoids the feedRange normalization in
-                    // createDocumentServiceRequestWithFeedRange below). The narrow prefix
-                    // effective-partition-key range is already carried on the feedRange passed below; mark
-                    // the request so downstream store models (e.g. ThinClientStoreModel) can reuse it as a
-                    // doc-level EPK filter instead of over-spanning to the whole physical partition.
-                    isPrefixPartitionKeyQuery =
-                        PartitionKeyInternal.isPartialPartitionKeyQuery(collection, cosmosQueryRequestOptions.getPartitionKey());
+                    // the next if statement is for the method `createDocumentServiceRequestWithFeedRange` below
+                    // with this added logic we don't have to remove the header (since the header never gets set) and
+                    // partitionKeyInternal gets passed as null which avoids the feedRange normalization.
+                    isPrefixPartitionKeyQuery = PartitionKeyInternal.isPartialPartitionKeyQuery(collection, cosmosQueryRequestOptions.getPartitionKey());
                     if (!isPrefixPartitionKeyQuery) {
                         partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
                         headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
