@@ -5,8 +5,6 @@ package com.azure.storage.blob.changefeed.models;
 
 import com.azure.storage.blob.models.BlobType;
 
-import java.time.OffsetDateTime;
-
 /**
  * This class contains properties of a BlobChangefeedEventData.
  */
@@ -102,32 +100,5 @@ public interface BlobChangefeedEventData {
      * @return The sequencer.
      */
     String getSequencer();
-
-    /**
-     * Gets the blob creation time. Present in schema V6 and later for AppendBlob data-updated events.
-     *
-     * @return The creation time, or null if not present.
-     */
-    default OffsetDateTime getCreationTime() {
-        return null;
-    }
-
-    /**
-     * Gets the last access time of the blob. Present in schema V7 and later.
-     *
-     * @return The last access time, or null if not present.
-     */
-    default OffsetDateTime getLastAccessTime() {
-        return null;
-    }
-
-    /**
-     * Gets the restored container version. Present in schema V8 and later for RestoreContainer events.
-     *
-     * @return The restored container version, or null if not present.
-     */
-    default String getRestoredContainerVersion() {
-        return null;
-    }
 
 }
