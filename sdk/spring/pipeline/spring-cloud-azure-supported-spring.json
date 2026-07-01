@@ -4,7 +4,7 @@
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
-    "spring-boot-version" : "4.0.0",
+    "spring-boot-version" : "4.1.0",
     "spring-cloud-version" : "2025.1.2"
   },
   {
