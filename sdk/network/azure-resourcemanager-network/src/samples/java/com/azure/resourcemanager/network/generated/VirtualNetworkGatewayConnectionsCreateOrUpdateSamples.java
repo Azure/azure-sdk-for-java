@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.CertificateAuthentication;
 import com.azure.resourcemanager.network.models.ConnectionAuthenticationType;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionTunnelProperties;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayConnectionCreate.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayConnectionCreate.json
      */
     /**
      * Sample code: CreateVirtualNetworkGatewayConnection_S2S.
@@ -102,7 +103,11 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                     .withOutboundAuthCertificate("https://customerKv.vault.azure.net/Certificates/outBoundcert/Version")
                     .withInboundAuthCertificateSubjectName("CN=rootCert.com")
                     .withInboundAuthCertificateChain(Arrays.asList("MIIC+TCCAeGgAwIBAgIQFOJUqDaxV5xJcKpTKO...",
-                        "MIIC+TCCAeGgAwIBAgIQPJerInitNblK7yBgkqh..."))),
+                        "MIIC+TCCAeGgAwIBAgIQPJerInitNblK7yBgkqh...")))
+                .withRoutingConfiguration(new RoutingConfiguration().withInboundRouteMap(new SubResource().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"))
+                    .withOutboundRouteMap(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"))),
                 com.azure.core.util.Context.NONE);
     }
 

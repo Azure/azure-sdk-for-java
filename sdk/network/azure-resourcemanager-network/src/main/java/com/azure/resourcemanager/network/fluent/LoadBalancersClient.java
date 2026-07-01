@@ -16,6 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BackendAddressInboundNatRulePortMappingsInner;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
 import com.azure.resourcemanager.network.fluent.models.MigratedPoolsInner;
+import com.azure.resourcemanager.network.models.LoadBalancerDetailLevel;
 import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequest;
 import com.azure.resourcemanager.network.models.MigrateLoadBalancerToIpBasedRequest;
 import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRequest;
@@ -38,6 +39,8 @@ public interface LoadBalancersClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
+     * @param detailLevel Controls verbosity of the returned load balancer resource. When set to 'Reduced', read-only
+     * back-reference collections (e.g., rules referencing frontendIPConfigurations) are omitted from the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -45,7 +48,7 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LoadBalancerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String loadBalancerName, String expand);
+        String loadBalancerName, String expand, LoadBalancerDetailLevel detailLevel);
 
     /**
      * Gets the specified load balancer.
@@ -66,6 +69,8 @@ public interface LoadBalancersClient
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
+     * @param detailLevel Controls verbosity of the returned load balancer resource. When set to 'Reduced', read-only
+     * back-reference collections (e.g., rules referencing frontendIPConfigurations) are omitted from the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -74,7 +79,7 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LoadBalancerInner> getByResourceGroupWithResponse(String resourceGroupName, String loadBalancerName,
-        String expand, Context context);
+        String expand, LoadBalancerDetailLevel detailLevel, Context context);
 
     /**
      * Gets the specified load balancer.

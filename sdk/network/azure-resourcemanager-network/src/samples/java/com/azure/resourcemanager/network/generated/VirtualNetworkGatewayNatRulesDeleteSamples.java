@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewayNatRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayNatRuleDelete.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayNatRuleDelete.json
      */
     /**
      * Sample code: VirtualNetworkGatewayNatRuleDelete.

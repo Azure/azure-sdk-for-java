@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PeerExpressRouteCircuitConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PeerExpressRouteCircuitConnectionList.json
+     * x-ms-original-file: 2025-07-01/PeerExpressRouteCircuitConnectionList.json
      */
     /**
      * Sample code: List Peer ExpressRouteCircuit Connection.

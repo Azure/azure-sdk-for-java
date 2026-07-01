@@ -124,7 +124,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter vpnSiteLinkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -167,7 +167,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter vpnSiteLinkName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -257,7 +257,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVpnSite(this.client.getEndpoint(), apiVersion,
@@ -297,7 +297,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -15,13 +15,13 @@ public final class ApplicationTrafficRoutingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTrafficRoutingPolicy model = BinaryData.fromString(
-            "{\"protocol\":\"FixedRatio\",\"rules\":[{\"ruleId\":\"uupb\",\"description\":\"qccydrtceukdq\",\"deploymentId\":\"yihztgeqmg\",\"trafficPercentage\":1149844590},{\"ruleId\":\"ldoychi\",\"description\":\"cecfehuwaoaguh\",\"deploymentId\":\"qllizstac\",\"trafficPercentage\":1721395359},{\"ruleId\":\"rweft\",\"description\":\"qejpmvssehaepwa\",\"deploymentId\":\"xtczhupeuknijd\",\"trafficPercentage\":1251720208},{\"ruleId\":\"spyd\",\"description\":\"bocyvhhul\",\"deploymentId\":\"ywikd\",\"trafficPercentage\":1818708935}]}")
+            "{\"protocol\":\"FixedRatio\",\"rules\":[{\"ruleId\":\"bhgau\",\"description\":\"dixmxufrsryjq\",\"deploymentId\":\"kfnozoeoqbvj\",\"trafficPercentage\":264605971},{\"ruleId\":\"gwbmqj\",\"description\":\"ntasfaymxbu\",\"deploymentId\":\"zealbmqkyo\",\"trafficPercentage\":1976793148},{\"ruleId\":\"fkmbtsuahxsgxj\",\"description\":\"mzrrscubiwsdrn\",\"deploymentId\":\"qwodiffjx\",\"trafficPercentage\":891955631}]}")
             .toObject(ApplicationTrafficRoutingPolicy.class);
         Assertions.assertEquals(TrafficRoutingProtocol.FIXED_RATIO, model.protocol());
-        Assertions.assertEquals("uupb", model.rules().get(0).ruleId());
-        Assertions.assertEquals("qccydrtceukdq", model.rules().get(0).description());
-        Assertions.assertEquals("yihztgeqmg", model.rules().get(0).deploymentId());
-        Assertions.assertEquals(1149844590, model.rules().get(0).trafficPercentage());
+        Assertions.assertEquals("bhgau", model.rules().get(0).ruleId());
+        Assertions.assertEquals("dixmxufrsryjq", model.rules().get(0).description());
+        Assertions.assertEquals("kfnozoeoqbvj", model.rules().get(0).deploymentId());
+        Assertions.assertEquals(264605971, model.rules().get(0).trafficPercentage());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,27 +29,23 @@ public final class ApplicationTrafficRoutingPolicyTests {
         ApplicationTrafficRoutingPolicy model
             = new ApplicationTrafficRoutingPolicy().withProtocol(TrafficRoutingProtocol.FIXED_RATIO)
                 .withRules(Arrays.asList(
-                    new TrafficRoutingRule().withRuleId("uupb")
-                        .withDescription("qccydrtceukdq")
-                        .withDeploymentId("yihztgeqmg")
-                        .withTrafficPercentage(1149844590),
-                    new TrafficRoutingRule().withRuleId("ldoychi")
-                        .withDescription("cecfehuwaoaguh")
-                        .withDeploymentId("qllizstac")
-                        .withTrafficPercentage(1721395359),
-                    new TrafficRoutingRule().withRuleId("rweft")
-                        .withDescription("qejpmvssehaepwa")
-                        .withDeploymentId("xtczhupeuknijd")
-                        .withTrafficPercentage(1251720208),
-                    new TrafficRoutingRule().withRuleId("spyd")
-                        .withDescription("bocyvhhul")
-                        .withDeploymentId("ywikd")
-                        .withTrafficPercentage(1818708935)));
+                    new TrafficRoutingRule().withRuleId("bhgau")
+                        .withDescription("dixmxufrsryjq")
+                        .withDeploymentId("kfnozoeoqbvj")
+                        .withTrafficPercentage(264605971),
+                    new TrafficRoutingRule().withRuleId("gwbmqj")
+                        .withDescription("ntasfaymxbu")
+                        .withDeploymentId("zealbmqkyo")
+                        .withTrafficPercentage(1976793148),
+                    new TrafficRoutingRule().withRuleId("fkmbtsuahxsgxj")
+                        .withDescription("mzrrscubiwsdrn")
+                        .withDeploymentId("qwodiffjx")
+                        .withTrafficPercentage(891955631)));
         model = BinaryData.fromObject(model).toObject(ApplicationTrafficRoutingPolicy.class);
         Assertions.assertEquals(TrafficRoutingProtocol.FIXED_RATIO, model.protocol());
-        Assertions.assertEquals("uupb", model.rules().get(0).ruleId());
-        Assertions.assertEquals("qccydrtceukdq", model.rules().get(0).description());
-        Assertions.assertEquals("yihztgeqmg", model.rules().get(0).deploymentId());
-        Assertions.assertEquals(1149844590, model.rules().get(0).trafficPercentage());
+        Assertions.assertEquals("bhgau", model.rules().get(0).ruleId());
+        Assertions.assertEquals("dixmxufrsryjq", model.rules().get(0).description());
+        Assertions.assertEquals("kfnozoeoqbvj", model.rules().get(0).deploymentId());
+        Assertions.assertEquals(264605971, model.rules().get(0).trafficPercentage());
     }
 }

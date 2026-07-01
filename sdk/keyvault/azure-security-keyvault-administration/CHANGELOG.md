@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added support for service version `2026-01-01-preview`
+- Added support for External Key Management (EKM) features using clients `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient`
+
 ### Breaking Changes
 
 ### Bugs Fixed

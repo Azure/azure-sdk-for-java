@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.ManagedNetworkProvisio
  */
 public final class ManagedNetworkProvisionsProvisionManagedNetworkSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ManagedNetwork/provisionManagedNetwork.json
+     * x-ms-original-file: 2026-05-15-preview/ManagedNetwork/provisionManagedNetwork.json
      */
     /**
      * Sample code: Provision ManagedNetwork.

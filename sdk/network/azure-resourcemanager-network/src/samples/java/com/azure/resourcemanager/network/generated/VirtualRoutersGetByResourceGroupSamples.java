@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualRoutersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualRouterGet.json
+     * x-ms-original-file: 2025-07-01/VirtualRouterGet.json
      */
     /**
      * Sample code: Get VirtualRouter.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysListAvailableResponseHeadersSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayAvailableResponseHeadersGet.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayAvailableResponseHeadersGet.json
      */
     /**
      * Sample code: Get Available Response Headers.

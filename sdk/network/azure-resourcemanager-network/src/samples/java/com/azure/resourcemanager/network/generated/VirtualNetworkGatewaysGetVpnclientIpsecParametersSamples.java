@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetVpnclientIpsecParametersSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
      */
     /**
      * Sample code: Get VirtualNetworkGateway VpnClientIpsecParameters.

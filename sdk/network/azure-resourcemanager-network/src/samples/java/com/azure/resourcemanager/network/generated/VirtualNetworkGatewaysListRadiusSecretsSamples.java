@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysListRadiusSecretsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
+     * x-ms-original-file: 2025-07-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
      */
     /**
      * Sample code: ListAllVirtualNetworkGatewayRadiusServerSecrets.

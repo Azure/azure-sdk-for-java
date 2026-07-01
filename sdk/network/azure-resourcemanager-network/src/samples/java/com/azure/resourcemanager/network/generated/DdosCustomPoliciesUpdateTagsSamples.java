@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class DdosCustomPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/DdosCustomPolicyUpdateTags.json
+     * x-ms-original-file: 2025-07-01/DdosCustomPolicyUpdateTags.json
      */
     /**
      * Sample code: DDoS Custom policy Update tags.

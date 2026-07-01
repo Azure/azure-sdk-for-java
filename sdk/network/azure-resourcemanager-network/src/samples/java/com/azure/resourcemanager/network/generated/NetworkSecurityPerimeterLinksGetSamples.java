@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterLinksGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspLinkGet.json
+     * x-ms-original-file: 2025-07-01/NspLinkGet.json
      */
     /**
      * Sample code: NspLinksGet.

@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/commvaultcontentstore/ci.yml
+      - sdk/commvaultcontentstore/azure-resourcemanager-commvaultcontentstore/
+    exclude:
+      - sdk/commvaultcontentstore/pom.xml
+      - sdk/commvaultcontentstore/azure-resourcemanager-commvaultcontentstore/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/commvaultcontentstore/ci.yml
+      - sdk/commvaultcontentstore/azure-resourcemanager-commvaultcontentstore/
+    exclude:
+      - sdk/commvaultcontentstore/pom.xml
+      - sdk/commvaultcontentstore/azure-resourcemanager-commvaultcontentstore/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercommvaultcontentstore
+    displayName: azure-resourcemanager-commvaultcontentstore
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: commvaultcontentstore
+    Artifacts:
+      - name: azure-resourcemanager-commvaultcontentstore
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercommvaultcontentstore
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercommvaultcontentstore }}

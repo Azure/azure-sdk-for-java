@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.ReachabilityAnalysisRunPropertie
  */
 public final class ReachabilityAnalysisRunsCreateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ReachabilityAnalysisRunPut.json
+     * x-ms-original-file: 2025-07-01/ReachabilityAnalysisRunPut.json
      */
     /**
      * Sample code: ReachabilityAnalysisRunCreate.

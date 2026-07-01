@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ResourceProviderCheckSkuAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/CheckSkuAvailability.json
+     * x-ms-original-file: 2026-05-15-preview/CheckSkuAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.

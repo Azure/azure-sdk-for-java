@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteGatewayGet.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteGatewayGet.json
      */
     /**
      * Sample code: ExpressRouteGatewayGet.

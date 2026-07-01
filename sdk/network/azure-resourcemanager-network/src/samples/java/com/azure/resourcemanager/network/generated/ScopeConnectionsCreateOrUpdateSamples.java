@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ScopeConnectionInner;
  */
 public final class ScopeConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerScopeConnectionPut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerScopeConnectionPut.json
      */
     /**
      * Sample code: Create or Update Network Manager Scope Connection.

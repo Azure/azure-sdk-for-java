@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimeterLinksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspLinkDelete.json
+     * x-ms-original-file: 2025-07-01/NspLinkDelete.json
      */
     /**
      * Sample code: NspLinkDelete.

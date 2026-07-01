@@ -20,7 +20,7 @@ public final class NetAppResourceUsagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"cvtlubseskvc\",\"name\":{\"value\":\"t\",\"localizedValue\":\"unlpirykycndz\"},\"properties\":{\"currentValue\":1017219676,\"limit\":1105579119,\"unit\":\"uykbbmn\"}}";
+            = "{\"id\":\"rk\",\"name\":{\"value\":\"gtznsvlrdsmovp\",\"localizedValue\":\"y\"},\"properties\":{\"currentValue\":1019369886,\"limit\":78179863,\"unit\":\"nrqa\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class NetAppResourceUsagesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        UsageResult response = manager.netAppResourceUsages()
-            .getWithResponse("zdbpqv", "befgvmxn", com.azure.core.util.Context.NONE)
-            .getValue();
+        UsageResult response
+            = manager.netAppResourceUsages().getWithResponse("b", "vd", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

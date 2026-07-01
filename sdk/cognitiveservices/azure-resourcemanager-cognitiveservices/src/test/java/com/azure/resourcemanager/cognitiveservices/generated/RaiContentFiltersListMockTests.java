@@ -23,7 +23,7 @@ public final class RaiContentFiltersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"name\":\"sci\",\"isMultiLevelFilter\":false,\"source\":\"Completion\"},\"id\":\"bennmfkbp\",\"name\":\"nrtekw\",\"type\":\"nthropmdudsyiu\"}]}";
+            = "{\"value\":[{\"properties\":{\"name\":\"yorjplbchych\",\"isMultiLevelFilter\":true,\"source\":\"PreRun\"},\"id\":\"bqvum\",\"name\":\"xqjsiuepm\",\"type\":\"xfnzlpq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class RaiContentFiltersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiContentFilter> response
-            = manager.raiContentFilters().list("ipnfdb", com.azure.core.util.Context.NONE);
+            = manager.raiContentFilters().list("pgidhzgyresgzsdt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sci", response.iterator().next().properties().name());
-        Assertions.assertFalse(response.iterator().next().properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, response.iterator().next().properties().source());
+        Assertions.assertEquals("yorjplbchych", response.iterator().next().properties().name());
+        Assertions.assertTrue(response.iterator().next().properties().isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN, response.iterator().next().properties().source());
     }
 }

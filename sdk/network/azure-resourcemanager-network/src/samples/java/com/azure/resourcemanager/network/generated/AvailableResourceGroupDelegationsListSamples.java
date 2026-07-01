@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AvailableResourceGroupDelegationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/AvailableDelegationsResourceGroupGet.json
+     * x-ms-original-file: 2025-07-01/AvailableDelegationsResourceGroupGet.json
      */
     /**
      * Sample code: Get available delegations in the resource group.
