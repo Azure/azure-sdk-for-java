@@ -1095,6 +1095,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
         rxDocumentServiceRequest.requestContext = this.requestContext.clone();
         rxDocumentServiceRequest.feedRange = this.feedRange;
+        rxDocumentServiceRequest.prefixPartitionKeyQuery = this.prefixPartitionKeyQuery;
         rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
         rxDocumentServiceRequest.isFeed = this.isFeed;
         rxDocumentServiceRequest.resourceId = this.resourceId;

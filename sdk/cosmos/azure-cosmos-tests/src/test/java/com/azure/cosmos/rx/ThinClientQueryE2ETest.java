@@ -1626,6 +1626,94 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         }
     }
 
+    // ==================== Partial (Prefix) HPK read Tests ====================
+    // Regression coverage for the thin-client MULTI_HASH prefix EPK over-span fix. A partial
+    // hierarchical key (only /tenantId, omitting /userId) must scope the read to that tenant's
+    // effective-partition-key sub-range [hash(prefix), hash(prefix)+"FF") as a doc-level filter,
+    // NOT resolve to the whole owning physical partition (which would return co-located documents
+    // from other tenants). Direct TCP is the baseline; the thin client must match it exactly, so a
+    // count/ID mismatch is exactly the over-span regression these tests guard against.
+
+    /**
+     * readAllItems (ReadFeed) with a partial (prefix) hierarchical partition key - only the first
+     * component (/tenantId). Must return exactly that tenant's {@code HIER_USERS_PER_TENANT}
+     * documents, matching the Direct baseline. If the thin client over-spanned to the physical
+     * partition it would return co-located docs from other tenants, which the count/ID parity and the
+     * per-doc tenant assertion catch.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testHierarchicalReadAllItemsPrefixPartitionKey() {
+        String tenant0 = hierarchicalKeys.get(0)[0];
+        PartitionKey prefixKey = new PartitionKeyBuilder().add(tenant0).build();
+
+        QueryResult<ObjectNode> directResult = drainReadAllItems(directHierarchicalContainer, prefixKey, ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainReadAllItems(thinClientHierarchicalContainer, prefixKey, ObjectNode.class);
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(directResult.results.size())
+            .as("Direct readAllItems prefix count").isEqualTo(HIER_USERS_PER_TENANT);
+        assertThat(tcResult.results.size())
+            .as("Thin-client readAllItems prefix over-span vs Direct").isEqualTo(directResult.results.size());
+        assertThat(idsSorted(tcResult.results))
+            .as("readAllItems prefix ID mismatch").isEqualTo(idsSorted(directResult.results));
+        // Every returned doc must belong to the prefixed tenant (no over-span into co-located tenants).
+        for (ObjectNode doc : tcResult.results) {
+            assertThat(doc.get(TENANT_FIELD).asText())
+                .as("readAllItems prefix returned a foreign tenant's document").isEqualTo(tenant0);
+        }
+    }
+
+    /**
+     * readAllItems (ReadFeed) with the FULL two-component hierarchical key resolves to a single
+     * logical partition - exactly one document - matching the Direct baseline. Guards that the prefix
+     * handling does not regress the full-key point path.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testHierarchicalReadAllItemsFullPartitionKey() {
+        String[] firstKey = hierarchicalKeys.get(0);
+        PartitionKey fullKey = new PartitionKeyBuilder().add(firstKey[0]).add(firstKey[1]).build();
+
+        QueryResult<ObjectNode> directResult = drainReadAllItems(directHierarchicalContainer, fullKey, ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainReadAllItems(thinClientHierarchicalContainer, fullKey, ObjectNode.class);
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(directResult.results.size()).as("Direct readAllItems full-key count").isEqualTo(1);
+        assertThat(tcResult.results.size())
+            .as("Thin-client readAllItems full-key vs Direct").isEqualTo(directResult.results.size());
+        assertThat(idsSorted(tcResult.results))
+            .as("readAllItems full-key ID mismatch").isEqualTo(idsSorted(directResult.results));
+    }
+
+    /**
+     * readManyByPartitionKeys with a partial (prefix) hierarchical key. groupPartitionKeysByPhysicalPartition
+     * expands the prefix to its effective-partition-key range; the thin client must apply that as a
+     * doc-level filter and return exactly the tenant's {@code HIER_USERS_PER_TENANT} documents,
+     * matching Direct rather than over-spanning the physical partition.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testHierarchicalReadManyByPartitionKeysPrefixPartitionKey() {
+        String tenant0 = hierarchicalKeys.get(0)[0];
+        PartitionKey prefixKey = new PartitionKeyBuilder().add(tenant0).build();
+        SqlQuerySpec selectAll = new SqlQuerySpec("SELECT * FROM c");
+
+        ReadManyResult<ObjectNode> directResult = drainReadMany(
+            directHierarchicalContainer, Collections.singletonList(prefixKey), selectAll, ObjectNode.class);
+        ReadManyResult<ObjectNode> tcResult = drainReadMany(
+            thinClientHierarchicalContainer, Collections.singletonList(prefixKey), selectAll, ObjectNode.class);
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(directResult.results.size())
+            .as("Direct readMany prefix count").isEqualTo(HIER_USERS_PER_TENANT);
+        assertThat(tcResult.results.size())
+            .as("Thin-client readMany prefix over-span vs Direct").isEqualTo(directResult.results.size());
+        assertThat(idsSorted(tcResult.results))
+            .as("readMany prefix ID mismatch").isEqualTo(idsSorted(directResult.results));
+        for (ObjectNode doc : tcResult.results) {
+            assertThat(doc.get(TENANT_FIELD).asText())
+                .as("readMany prefix returned a foreign tenant's document").isEqualTo(tenant0);
+        }
+    }
+
     // ==================== Assertion & Drain Helpers ====================
 
     private static void safeDeleteContainer(CosmosAsyncContainer container) {
@@ -1655,6 +1743,18 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         for (FeedResponse<T> page : c.readManyByPartitionKeys(partitionKeys, customQuery, type)
                                        .byPage()
                                        .toIterable()) {
+            result.results.addAll(page.getResults());
+            result.diagnostics.add(page.getCosmosDiagnostics());
+        }
+        return result;
+    }
+
+    private <T> QueryResult<T> drainReadAllItems(
+        CosmosAsyncContainer c,
+        PartitionKey partitionKey,
+        Class<T> type) {
+        QueryResult<T> result = new QueryResult<>();
+        for (FeedResponse<T> page : c.readAllItems(partitionKey, type).byPage().toIterable()) {
             result.results.addAll(page.getResults());
             result.diagnostics.add(page.getCosmosDiagnostics());
         }
