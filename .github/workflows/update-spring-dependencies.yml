@@ -63,29 +63,31 @@ jobs:
           elif grep -q -- '-' spring-versions.txt; then
             echo "Has non-GA version, cancel update!"
           else
-            echo "need_update_version=true" >> $GITHUB_ENV
-            echo "update_branch=update-spring-dependencies-$(date +%Y%m%d)-${GITHUB_RUN_ID}" >> $GITHUB_ENV
-            echo "spring_boot_version=$(sed -n '1p' spring-versions.txt)" >> $GITHUB_ENV
-            echo "spring_cloud_version=$(sed -n '2p' spring-versions.txt)" >> $GITHUB_ENV
-            echo "last_spring_boot_version=$(sed -n '3p' spring-versions.txt)" >> $GITHUB_ENV
-            echo "last_spring_cloud_version=$(sed -n '4p' spring-versions.txt)" >> $GITHUB_ENV
-            echo "pr_descriptions=$(cat pr-descriptions.txt)" >> $GITHUB_ENV
-            echo "PR_TITLE=${PR_TITLE_PREFIX} $(sed -n '1p' spring-versions.txt) and Spring Cloud $(sed -n '2p' spring-versions.txt)" >> $GITHUB_ENV
+            {
+              echo "need_update_version=true"
+              printf 'update_branch=update-spring-dependencies-%s-%s\n' "$(date +%Y%m%d)" "${GITHUB_RUN_ID}"
+              printf 'spring_boot_version=%s\n' "$(sed -n '1p' spring-versions.txt)"
+              printf 'spring_cloud_version=%s\n' "$(sed -n '2p' spring-versions.txt)"
+              printf 'last_spring_boot_version=%s\n' "$(sed -n '3p' spring-versions.txt)"
+              printf 'last_spring_cloud_version=%s\n' "$(sed -n '4p' spring-versions.txt)"
+              printf 'pr_descriptions=%s\n' "$(cat pr-descriptions.txt)"
+              printf 'PR_TITLE=%s %s and Spring Cloud %s\n' "${PR_TITLE_PREFIX}" "$(sed -n '1p' spring-versions.txt)" "$(sed -n '2p' spring-versions.txt)"
+            } >> "$GITHUB_ENV"
           fi
       - name: Generate spring_boot_managed_external_dependencies.txt
         if: ${{ env.need_update_version == 'true' }}
         run: |
-          echo Updating Spring Boot Dependencies Version: ${{ env.spring_boot_version }}
-          echo Updating Spring Cloud Dependencies Version: ${{ env.spring_cloud_version }}
+          echo "Updating Spring Boot Dependencies Version: ${{ env.spring_boot_version }}"
+          echo "Updating Spring Cloud Dependencies Version: ${{ env.spring_cloud_version }}"
           git checkout -b "${{ env.update_branch }}"
           pip install termcolor
-          python ./sdk/spring/scripts/get_spring_boot_managed_external_dependencies.py -b ${{ env.spring_boot_version }} -c ${{ env.spring_cloud_version }}
+          python ./sdk/spring/scripts/get_spring_boot_managed_external_dependencies.py -b "${{ env.spring_boot_version }}" -c "${{ env.spring_cloud_version }}"
       - name: Update external_dependencies.txt
         if: ${{ env.need_update_version == 'true' }}
         run: |
           pip install termcolor
           pip install in_place
-          python ./sdk/spring/scripts/sync_external_dependencies.py -b ${{ env.spring_boot_version }} -sbmvn 4
+          python ./sdk/spring/scripts/sync_external_dependencies.py -b "${{ env.spring_boot_version }}" -sbmvn 4
       - name: Update Versions
         if: ${{ env.need_update_version == 'true' }}
         run: |
@@ -93,7 +95,7 @@ jobs:
       - name: Update ChangeLog
         if: ${{ env.need_update_version == 'true' }}
         run: |
-          python ./sdk/spring/scripts/update_changelog.py -b ${{ env.spring_boot_version }} -c ${{ env.spring_cloud_version }}
+          python ./sdk/spring/scripts/update_changelog.py -b "${{ env.spring_boot_version }}" -c "${{ env.spring_cloud_version }}"
       - name: Push Commit
         if: ${{ env.need_update_version == 'true' }}
         run: |

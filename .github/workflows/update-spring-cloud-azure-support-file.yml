@@ -59,22 +59,22 @@ jobs:
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
           GITHUB_ACTION_URL="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
 
-          echo "BRANCH_NAME=update-spring-cloud-azure-support-file-${TIMESTAMP}" >> $GITHUB_ENV
-
-          echo "COMMIT_MESSAGE<<EOF" >> $GITHUB_ENV
-          echo "${PR_TITLE}." >> $GITHUB_ENV
-          echo "This commit is created by GitHub Action: ${GITHUB_ACTION_URL}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-          echo "PULL_REQUEST_BODY<<EOF" >> $GITHUB_ENV
-          echo "${PR_TITLE}." >> $GITHUB_ENV
-          echo "This commit is created by GitHub Action: ${GITHUB_ACTION_URL}" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "BRANCH_NAME=update-spring-cloud-azure-support-file-${TIMESTAMP}"
+            echo "COMMIT_MESSAGE<<EOF"
+            echo "${PR_TITLE}."
+            echo "This commit is created by GitHub Action: ${GITHUB_ACTION_URL}"
+            echo "EOF"
+            echo "PULL_REQUEST_BODY<<EOF"
+            echo "${PR_TITLE}."
+            echo "This commit is created by GitHub Action: ${GITHUB_ACTION_URL}"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
       - name: Make Decision Based on Git Diff
         run: |
           git checkout -b "${{ env.BRANCH_NAME }}"
           if [[ -n "$(git status -s)" ]]; then
-            echo "NEED_UPDATE_FILE=true" >> $GITHUB_ENV
+            echo "NEED_UPDATE_FILE=true" >> "$GITHUB_ENV"
           else
             echo "No file changes, no commits."
           fi
