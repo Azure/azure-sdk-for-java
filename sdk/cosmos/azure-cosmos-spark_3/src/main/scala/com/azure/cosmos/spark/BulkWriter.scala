@@ -1295,9 +1295,16 @@ private class BulkWriter
   }
 
   private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
+    val ignorePatchPreconditionFailures =
+      writeConfig.patchConfigs.exists(patchConfigs =>
+        patchConfigs.filterPredicateIgnorePreconditionFailures && patchConfigs.filter.exists(_.nonEmpty))
     val returnValue = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
-      case ItemWriteStrategy.ItemPatchIfExists => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+      case ItemWriteStrategy.ItemPatch =>
+        ignorePatchPreconditionFailures && Exceptions.isPreconditionFailedException(statusCode)
+      case ItemWriteStrategy.ItemPatchIfExists =>
+        Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
+          (ignorePatchPreconditionFailures && Exceptions.isPreconditionFailedException(statusCode))
       case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
       case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
         Exceptions.isPreconditionFailedException(statusCode)

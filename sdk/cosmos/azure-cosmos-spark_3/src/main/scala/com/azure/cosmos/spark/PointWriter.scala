@@ -375,6 +375,17 @@ private class PointWriter(container: CosmosAsyncContainer,
               case None => None
             })
           return
+        case e: CosmosException if cosmosWriteConfig.patchConfigs.exists(patchConfigs =>
+          patchConfigs.filterPredicateIgnorePreconditionFailures && patchConfigs.filter.exists(_.nonEmpty)) &&
+          Exceptions.isPreconditionFailedException(e.getStatusCode) =>
+          log.logItemWriteSkipped(patchOperation, "preConditionNotMet")
+          outputMetricsPublisher.trackWriteOperation(
+            0,
+            Option.apply(e.getDiagnostics) match {
+              case Some(diagnostics) => Option.apply(diagnostics.getDiagnosticsContext)
+              case None => None
+            })
+          return
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"patch item $patchOperation attempt #$attempt max remaining retries "
