@@ -1,5 +1,16 @@
 # Release History
 
+## 12.1.0 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+- Regenerated SDK from TypeSpec spec commit `18ebae7ea8f6aefd83268aacdb1f480b24842726`.
+
 ## 12.0.0 (2026-04-10)
 
 ### Features Added
