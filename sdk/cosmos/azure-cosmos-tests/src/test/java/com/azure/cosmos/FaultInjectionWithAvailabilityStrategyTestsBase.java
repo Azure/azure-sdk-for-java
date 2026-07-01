@@ -51,6 +51,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ArrayUtils;
+import reactor.core.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -97,6 +98,10 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     private final static CosmosRegionSwitchHint noRegionSwitchHint = null;
     private final static  ThresholdBasedAvailabilityStrategy defaultAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy();
     private final static ThresholdBasedAvailabilityStrategy noAvailabilityStrategy = null;
+    private final static CosmosEndToEndOperationLatencyPolicyConfig disabledEndToEndTimeoutPolicy =
+        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5))
+            .enable(false)
+            .build();
     private final static ThresholdBasedAvailabilityStrategy eagerThresholdAvailabilityStrategy =
         new ThresholdBasedAvailabilityStrategy(
             Duration.ofMillis(500), Duration.ofMillis(100)
@@ -1899,7 +1904,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
-                Duration.ofMillis(1100),
+                Duration.ofMillis(1600),
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -3113,12 +3118,11 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // retry on the first region will provide a successful response for the one partition and no hedging is
             // happening. There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
             // a single CosmosDiagnostics instance contacting both regions.
-            // In PR - https://github.com/Azure/azure-sdk-for-java/pull/41653 e2e timeout was increased from 1s to 1.1s to allow
-            // tests which use closer region as fault injected / outage region to get a success from a further away region
-            // with a cross-region retry
+            // E2E timeout allows tests which use closer region as fault injected / outage region to get a success
+            // from a further away region with a cross-region retry.
             new Object[] {
                 "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_SinglePartition_RemotePreferred_ReluctantAvailabilityStrategy",
-                Duration.ofMillis(1100),
+                Duration.ofSeconds(3),
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -5384,20 +5388,26 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                 CosmosAsyncContainer testContainer = clientWithPreferredRegions
                     .getDatabase(this.testDatabaseId)
                     .getContainer(this.testContainerId);
+                CosmosItemRequestOptions setupItemRequestOptions = new CosmosItemRequestOptions()
+                    .setCosmosEndToEndOperationLatencyPolicyConfig(disabledEndToEndTimeoutPolicy);
 
-                testContainer.createItem(createdItem).block();
+                testContainer.createItem(createdItem, setupItemRequestOptions).block();
 
                 List<Pair<String, String>> otherIdAndPkValues = new ArrayList<>();
                 for (int i = 0; i < numberOfOtherDocumentsWithSameId; i++) {
                     String additionalPK = UUID.randomUUID().toString();
-                    testContainer.createItem(new CosmosDiagnosticsTest.TestItem(documentId, additionalPK)).block();
+                    testContainer.createItem(
+                        new CosmosDiagnosticsTest.TestItem(documentId, additionalPK),
+                        setupItemRequestOptions).block();
                     otherIdAndPkValues.add(Pair.of(documentId, additionalPK));
                 }
 
                 for (int i = 0; i < numberOfOtherDocumentsWithSamePk; i++) {
                     String sharedPK = documentId;
                     String additionalDocumentId = UUID.randomUUID().toString();
-                    testContainer.createItem(new CosmosDiagnosticsTest.TestItem(additionalDocumentId, sharedPK)).block();
+                    testContainer.createItem(
+                        new CosmosDiagnosticsTest.TestItem(additionalDocumentId, sharedPK),
+                        setupItemRequestOptions).block();
                     otherIdAndPkValues.add(Pair.of(additionalDocumentId, sharedPK));
                 }
 
@@ -5471,8 +5481,9 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                         }
                     }
                 } catch (Exception e) {
-                    if (e instanceof CosmosException) {
-                        CosmosException cosmosException = Utils.as(e, CosmosException.class);
+                    Throwable unwrappedException = Exceptions.unwrap(e);
+                    if (unwrappedException instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(unwrappedException, CosmosException.class);
                         CosmosDiagnosticsContext diagnosticsContext = null;
                         if (cosmosException.getDiagnostics() != null) {
                             diagnosticsContext = cosmosException.getDiagnostics().getDiagnosticsContext();
