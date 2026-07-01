@@ -23,8 +23,11 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.CodeFileDetails;
 import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
+import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
+import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.SessionDirectoryEntry;
 import com.azure.ai.agents.models.SessionFileWriteResult;
@@ -3475,6 +3478,45 @@ public final class AgentsAsyncClient {
                 .getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+    }
+
+    /**
+     * Create a new code-based hosted agent version.
+     *
+     * <p>This convenience overload flattens the request: instead of assembling a
+     * {@link CreateAgentVersionFromCodeContent} that wraps a {@link CreateAgentVersionFromCodeMetadata}, the caller
+     * passes the {@link HostedAgentDefinition} and code zip directly. The required {@code x-ms-code-zip-sha256} value
+     * is computed from {@code code} automatically.</p>
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the
+     * agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The hosted agent definition, including {@code code_configuration}, {@code cpu},
+     * {@code memory}, and {@code protocol_versions}.
+     * @param code The code zip file to upload (max 250 MB).
+     * @param description An optional human-readable description of the agent. May be {@code null}.
+     * @param metadata An optional set of key-value pairs to attach to the agent version. May be {@code null}. Keys
+     * are strings with a maximum length of 64 characters and values are strings with a maximum length of 512
+     * characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the created agent version on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentVersionDetails> createAgentVersionFromCode(String agentName, HostedAgentDefinition definition,
+        CodeFileDetails code, String description, Map<String, String> metadata) {
+        return Mono.defer(() -> {
+            CreateAgentVersionFromCodeMetadata versionMetadata
+                = new CreateAgentVersionFromCodeMetadata(definition).setDescription(description).setMetadata(metadata);
+            CreateAgentVersionFromCodeContent content = new CreateAgentVersionFromCodeContent(versionMetadata, code);
+            return createAgentVersionFromCode(agentName, FileUtils.computeSha256(code.getContent()), content);
+        });
     }
 
     /**

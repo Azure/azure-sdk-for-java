@@ -16,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Internal utilities for file operations.
@@ -107,5 +109,27 @@ public final class FileUtils {
                 StandardOpenOption.TRUNCATE_EXISTING,
                 StandardOpenOption.WRITE }
             : new OpenOption[] { StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE };
+    }
+
+    /**
+     * Computes the lowercase hex-encoded SHA-256 digest of the given binary content.
+     *
+     * <p>The content is fully read in order to compute the digest.</p>
+     *
+     * @param content the binary content to hash.
+     * @return the lowercase hex-encoded SHA-256 digest of {@code content}.
+     */
+    public static String computeSha256(BinaryData content) {
+        try {
+            byte[] hash = MessageDigest.getInstance("SHA-256").digest(content.toBytes());
+            StringBuilder builder = new StringBuilder(hash.length * 2);
+            for (byte value : hash) {
+                builder.append(Character.forDigit((value >> 4) & 0xF, 16));
+                builder.append(Character.forDigit(value & 0xF, 16));
+            }
+            return builder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 is not available.", e);
+        }
     }
 }

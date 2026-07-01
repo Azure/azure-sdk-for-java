@@ -42,12 +42,13 @@ public class CodeAgentSample {
             // BEGIN: com.azure.ai.agents.hostedagents.CodeAgentSample.createAgentVersionFromCode_initial
 
             Path codeZipPath = CodeAgentSampleUtils.createCodeZip();
-            String codeZipSha256 = CodeAgentSampleUtils.sha256(codeZipPath);
 
             AgentVersionDetails version = agentsClient.createAgentVersionFromCode(
                 agentName,
-                codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath));
+                CodeAgentSampleUtils.createHostedAgentDefinition(),
+                CodeAgentSampleUtils.createCodeFileDetails(codeZipPath),
+                CodeAgentSampleUtils.SAMPLE_DESCRIPTION,
+                CodeAgentSampleUtils.sampleMetadata());
 
             System.out.printf("Created code-based agent: %s%n", version.getName());
             CodeAgentSampleUtils.printLatestVersion(version);
@@ -65,8 +66,10 @@ public class CodeAgentSample {
 
             AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(
                 agentName,
-                codeZipSha256,
-                CodeAgentSampleUtils.createAgentVersionFromCodeContent(codeZipPath));
+                CodeAgentSampleUtils.createHostedAgentDefinition(),
+                CodeAgentSampleUtils.createCodeFileDetails(codeZipPath),
+                CodeAgentSampleUtils.SAMPLE_DESCRIPTION,
+                CodeAgentSampleUtils.sampleMetadata());
 
             System.out.printf("Created code-based agent version: %s%n", newVersion.getVersion());
             CodeAgentSampleUtils.printLatestVersion(newVersion);

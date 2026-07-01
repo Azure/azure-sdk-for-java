@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added convenience methods on `AgentsClient` and `AgentsAsyncClient` to read and write hosted-agent files directly from and to disk using a `String` file path. `downloadAgentCode`, `downloadAgentCodeWithResponse`, and `downloadSessionFileWithResponse` write the downloaded content to the supplied path and accept an optional `overwrite` flag; when the flag is omitted the operation fails if a file already exists at the destination. `uploadSessionFileWithResponse` and the new `CodeFileDetails(String)` constructor read the upload content from a `String` file path.
+- Added a flattened convenience overload `createAgentVersionFromCode(String, HostedAgentDefinition, CodeFileDetails, String, Map)` on `AgentsClient` and `AgentsAsyncClient`. It accepts the hosted-agent definition, code zip, description, and metadata directly instead of a nested `CreateAgentVersionFromCodeContent`, and computes the required `x-ms-code-zip-sha256` value from the code automatically.
 - Added `deleteMemory(String, String)` to `BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` for deleting an individual memory item from a memory store.
 - Added `ToolboxesClient` and `ToolboxesAsyncClient` have been moved from `beta` to GA.
 - Added a toolbox-specific tool model hierarchy for toolbox versions, including `ToolboxTool`, `ToolboxToolType`, and related `*ToolboxTool` classes such as `CodeInterpreterToolboxTool`, `OpenApiToolboxTool`, and `ToolboxSearchPreviewToolboxTool`.

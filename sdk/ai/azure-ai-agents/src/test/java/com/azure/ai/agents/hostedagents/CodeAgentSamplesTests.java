@@ -13,8 +13,6 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeConfiguration;
 import com.azure.ai.agents.models.CodeDependencyResolution;
 import com.azure.ai.agents.models.CodeFileDetails;
-import com.azure.ai.agents.models.CreateAgentVersionFromCodeContent;
-import com.azure.ai.agents.models.CreateAgentVersionFromCodeMetadata;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -30,11 +28,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,8 +47,9 @@ import static com.azure.core.test.TestProxyTestBase.getHttpClients;
 public class CodeAgentSamplesTests extends ClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String TEST_AGENT_NAME = "java-code-agent-test";
+    private static final String TEST_DESCRIPTION
+        = "Code-based hosted agent test created by the Azure AI Agents Java SDK.";
     private static final String CODE_AGENT_ASSETS_PATH = "assets/";
-    private static final int READ_BUFFER_SIZE = 8192;
 
     static Stream<Arguments> getTestParameters() {
         List<Arguments> argumentsList = new ArrayList<>();
@@ -77,10 +73,9 @@ public class CodeAgentSamplesTests extends ClientTestBase {
 
         try {
             Path codeZipPath = createCodeZip();
-            String codeZipSha256 = sha256(codeZipPath);
 
-            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                createAgentVersionFromCodeContent(codeZipPath));
+            AgentVersionDetails version = agentsClient.createAgentVersionFromCode(agentName,
+                createHostedAgentDefinition(), createCodeFileDetails(codeZipPath), TEST_DESCRIPTION, testMetadata());
             Assertions.assertNotNull(version);
             Assertions.assertEquals(agentName, version.getName());
             Assertions.assertNotNull(version.getVersion());
@@ -89,8 +84,8 @@ public class CodeAgentSamplesTests extends ClientTestBase {
             agentsClient.downloadAgentCodeWithResponse(agentName, downloadPath.toString(), new RequestOptions());
             Assertions.assertTrue(Files.size(downloadPath) > 0);
 
-            AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                createAgentVersionFromCodeContent(codeZipPath));
+            AgentVersionDetails newVersion = agentsClient.createAgentVersionFromCode(agentName,
+                createHostedAgentDefinition(), createCodeFileDetails(codeZipPath), TEST_DESCRIPTION, testMetadata());
             Assertions.assertNotNull(newVersion);
             Assertions.assertEquals(agentName, newVersion.getName());
             Assertions.assertNotNull(newVersion.getVersion());
@@ -111,13 +106,12 @@ public class CodeAgentSamplesTests extends ClientTestBase {
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         String agentName = TEST_AGENT_NAME + "-async";
         Path codeZipPath = createCodeZip();
-        String codeZipSha256 = sha256(codeZipPath);
         Path downloadPath = Files.createTempDirectory(agentName + "-").resolve("code.zip");
 
         Mono<Void> testFlow = agentsAsyncClient.deleteAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
-            .then(agentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                createAgentVersionFromCodeContent(codeZipPath)))
+            .then(agentsAsyncClient.createAgentVersionFromCode(agentName, createHostedAgentDefinition(),
+                createCodeFileDetails(codeZipPath), TEST_DESCRIPTION, testMetadata()))
             .flatMap(version -> {
                 Assertions.assertNotNull(version);
                 Assertions.assertEquals(agentName, version.getName());
@@ -131,8 +125,8 @@ public class CodeAgentSamplesTests extends ClientTestBase {
                 return downloadPath;
             }))
             .flatMap(ignored -> {
-                return agentsAsyncClient.createAgentVersionFromCode(agentName, codeZipSha256,
-                    createAgentVersionFromCodeContent(codeZipPath));
+                return agentsAsyncClient.createAgentVersionFromCode(agentName, createHostedAgentDefinition(),
+                    createCodeFileDetails(codeZipPath), TEST_DESCRIPTION, testMetadata());
             })
             .doOnNext(newVersion -> {
                 Assertions.assertNotNull(newVersion);
@@ -144,8 +138,10 @@ public class CodeAgentSamplesTests extends ClientTestBase {
         StepVerifier.create(testFlow).verifyComplete();
     }
 
-    private static CreateAgentVersionFromCodeContent createAgentVersionFromCodeContent(Path codeZipPath) {
-        return new CreateAgentVersionFromCodeContent(createMetadata(), createCodeFileDetails(codeZipPath));
+    private static Map<String, String> testMetadata() {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("test", "code-agent");
+        return metadata;
     }
 
     private static Path createCodeZip() throws IOException {
@@ -156,36 +152,6 @@ public class CodeAgentSamplesTests extends ClientTestBase {
                 getTestResourcePath(CODE_AGENT_ASSETS_PATH + "requirements.txt"));
         }
         return codeZipPath;
-    }
-
-    private static String sha256(Path filePath) throws IOException {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] buffer = new byte[READ_BUFFER_SIZE];
-            try (InputStream inputStream = Files.newInputStream(filePath)) {
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    digest.update(buffer, 0, bytesRead);
-                }
-            }
-            byte[] hash = digest.digest();
-            StringBuilder builder = new StringBuilder(hash.length * 2);
-            for (byte value : hash) {
-                builder.append(String.format("%02x", value));
-            }
-            return builder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-256 is not available.", e);
-        }
-    }
-
-    private static CreateAgentVersionFromCodeMetadata createMetadata() {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("test", "code-agent");
-
-        return new CreateAgentVersionFromCodeMetadata(createHostedAgentDefinition())
-            .setDescription("Code-based hosted agent test created by the Azure AI Agents Java SDK.")
-            .setMetadata(metadata);
     }
 
     private static HostedAgentDefinition createHostedAgentDefinition() {
