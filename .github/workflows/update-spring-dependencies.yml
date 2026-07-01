@@ -1,0 +1,130 @@
+name: Update Spring Dependencies
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+env:
+  PR_TITLE_PREFIX: 'External dependencies upgrade - Spring Boot'
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  check:
+    name: Check for Open Spring Boot Upgrade PRs
+    runs-on: ubuntu-latest
+    outputs:
+      skip_pipeline: ${{ steps.check_prs.outputs.skip_pipeline }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for Open Spring Boot Upgrade PRs
+        id: check_prs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prTitlePrefix = process.env.PR_TITLE_PREFIX;
+            const { data: pullRequests } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+
+            const openPRs = pullRequests.filter(pr => pr.title.startsWith(prTitlePrefix));
+            core.setOutput('skip_pipeline', openPRs.length > 0 ? 'true' : 'false');
+
+  update:
+    name: Update Dependencies and Create PR
+    runs-on: ubuntu-latest
+    needs: check
+    if: ${{ needs.check.outputs.skip_pipeline != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate Version File
+        run: |
+          python ./sdk/spring/scripts/generate_spring_versions_and_pr_description.py
+      - name: Confirm Whether to Update
+        run: |
+          if [[ ! -f 'spring-versions.txt' ]]; then
+            echo "No new Spring Boot version, no updates."
+          elif grep -q -- '-' spring-versions.txt; then
+            echo "Has non-GA version, cancel update!"
+          else
+            echo "need_update_version=true" >> $GITHUB_ENV
+            echo "update_branch=update-spring-dependencies-$(date +%Y%m%d)-${GITHUB_RUN_ID}" >> $GITHUB_ENV
+            echo "spring_boot_version=$(sed -n '1p' spring-versions.txt)" >> $GITHUB_ENV
+            echo "spring_cloud_version=$(sed -n '2p' spring-versions.txt)" >> $GITHUB_ENV
+            echo "last_spring_boot_version=$(sed -n '3p' spring-versions.txt)" >> $GITHUB_ENV
+            echo "last_spring_cloud_version=$(sed -n '4p' spring-versions.txt)" >> $GITHUB_ENV
+            echo "pr_descriptions=$(cat pr-descriptions.txt)" >> $GITHUB_ENV
+            echo "PR_TITLE=${PR_TITLE_PREFIX} $(sed -n '1p' spring-versions.txt) and Spring Cloud $(sed -n '2p' spring-versions.txt)" >> $GITHUB_ENV
+          fi
+      - name: Generate spring_boot_managed_external_dependencies.txt
+        if: ${{ env.need_update_version == 'true' }}
+        run: |
+          echo Updating Spring Boot Dependencies Version: ${{ env.spring_boot_version }}
+          echo Updating Spring Cloud Dependencies Version: ${{ env.spring_cloud_version }}
+          git checkout -b "${{ env.update_branch }}"
+          pip install termcolor
+          python ./sdk/spring/scripts/get_spring_boot_managed_external_dependencies.py -b ${{ env.spring_boot_version }} -c ${{ env.spring_cloud_version }}
+      - name: Update external_dependencies.txt
+        if: ${{ env.need_update_version == 'true' }}
+        run: |
+          pip install termcolor
+          pip install in_place
+          python ./sdk/spring/scripts/sync_external_dependencies.py -b ${{ env.spring_boot_version }} -sbmvn 4
+      - name: Update Versions
+        if: ${{ env.need_update_version == 'true' }}
+        run: |
+          python ./eng/versioning/update_versions.py --sr
+      - name: Update ChangeLog
+        if: ${{ env.need_update_version == 'true' }}
+        run: |
+          python ./sdk/spring/scripts/update_changelog.py -b ${{ env.spring_boot_version }} -c ${{ env.spring_cloud_version }}
+      - name: Push Commit
+        if: ${{ env.need_update_version == 'true' }}
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git rm ./sdk/spring/scripts/spring_boot_${{ env.last_spring_boot_version }}_managed_external_dependencies.txt || true
+          git add -A
+          git commit -m "Upgrade external dependencies to align with Spring Boot ${{ env.spring_boot_version }}"
+          git push origin "HEAD:${{ env.update_branch }}"
+      - name: Create Pull Request
+        id: create_pr
+        if: ${{ env.need_update_version == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `Updates external dependencies to align with Spring Boot version [${process.env.spring_boot_version}](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/${process.env.spring_boot_version}/spring-boot-dependencies-${process.env.spring_boot_version}.pom) from [${process.env.last_spring_boot_version}](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/${process.env.last_spring_boot_version}/spring-boot-dependencies-${process.env.last_spring_boot_version}.pom) and Spring Cloud version [${process.env.spring_cloud_version}](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/${process.env.spring_cloud_version}/spring-cloud-dependencies-${process.env.spring_cloud_version}.pom) from [${process.env.last_spring_cloud_version}](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/${process.env.last_spring_cloud_version}/spring-cloud-dependencies-${process.env.last_spring_cloud_version}.pom).\n${process.env.pr_descriptions}\n\nThis PR is created by GitHub Actions: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: process.env.PR_TITLE,
+              head: process.env.update_branch,
+              base: 'main',
+              body,
+              draft: false
+            });
+            core.setOutput('pull_request_number', String(pr.data.number));
+      - name: Comment on Pull Request
+        if: ${{ env.need_update_version == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = Number('${{ steps.create_pr.outputs.pull_request_number }}');
+            if (!prNumber) {
+              console.log('No pull request was created, nothing to comment on.');
+              return;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: '/azp run java - spring - tests'
+            });
