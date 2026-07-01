@@ -204,16 +204,25 @@ public class ProjectsCustomizations extends Customization {
 
     /**
      * Resolves the {@code beta-annotations.csv} path. {@code tsp-client update} launches the customization with its
-     * working directory set to the library module, so the file lives at {@code <module>/customizations/...}.
+     * working directory set to the library module (so the file lives at {@code <module>/customizations/...}), while
+     * spec SDK-generation launches from the repo root; both locations are checked. Returns {@code null} (rather than
+     * failing) when the file cannot be found, in which case {@code @Beta} annotations are skipped.
      */
     private Path locateBetaCsv(Logger logger) {
-        Path csvPath = Paths.get(System.getProperty("user.dir"), "customizations", CSV_FILE_NAME).toAbsolutePath();
-        if (!Files.isRegularFile(csvPath)) {
-            logger.warn("Could not locate {} at expected path {} (user.dir={}); skipping @Beta annotations. "
-                + "The CSV is produced by internal tooling that does not run in spec SDK-generation CI.", CSV_FILE_NAME,
-                csvPath, System.getProperty("user.dir"));
-            return null;
+        // tsp-client update launches the customization from the module folder (user.dir = module).
+        Path modulePath = Paths.get(System.getProperty("user.dir"), "customizations", CSV_FILE_NAME).toAbsolutePath();
+        if (Files.isRegularFile(modulePath)) {
+            return modulePath;
         }
-        return csvPath;
+        // spec SDK-generation (spec-gen-sdk) launches from the repo root (user.dir = repo root).
+        Path repoRootPath = Paths
+            .get(System.getProperty("user.dir"), "sdk", "ai", "azure-ai-projects", "customizations", CSV_FILE_NAME)
+            .toAbsolutePath();
+        if (Files.isRegularFile(repoRootPath)) {
+            return repoRootPath;
+        }
+        logger.warn("Could not locate {} at {} or {} (user.dir={}); skipping @Beta annotations.", CSV_FILE_NAME,
+            modulePath, repoRootPath, System.getProperty("user.dir"));
+        return null;
     }
 }
