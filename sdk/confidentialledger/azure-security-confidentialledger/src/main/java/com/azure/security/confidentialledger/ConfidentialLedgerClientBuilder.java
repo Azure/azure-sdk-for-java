@@ -8,6 +8,8 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -16,6 +18,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -41,12 +44,17 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = { ConfidentialLedgerClient.class, ConfidentialLedgerAsyncClient.class })
 public final class ConfidentialLedgerClientBuilder
-    implements HttpTrait<ConfidentialLedgerClientBuilder>, ConfigurationTrait<ConfidentialLedgerClientBuilder> {
+    implements HttpTrait<ConfidentialLedgerClientBuilder>, ConfigurationTrait<ConfidentialLedgerClientBuilder>,
+    TokenCredentialTrait<ConfidentialLedgerClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
     @Generated
     private static final String SDK_VERSION = "version";
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES
+        = new String[] { "https://confidential-ledger.azure.com/.default" };
 
     @Generated
     private static final Map<String, String> PROPERTIES
@@ -61,6 +69,22 @@ public final class ConfidentialLedgerClientBuilder
     @Generated
     public ConfidentialLedgerClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
+    }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated
+    private TokenCredential tokenCredential;
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Generated
+    @Override
+    public ConfidentialLedgerClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
     }
 
     /*
@@ -273,10 +297,14 @@ public final class ConfidentialLedgerClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new ConfidentialLedgerRedirectPolicy());
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
