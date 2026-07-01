@@ -13,6 +13,7 @@ SPRING_INITIALIZR_INFO_URL = "https://start.spring.io/actuator/info"
 SPRING_BOOT_RELEASE_TAG_URL = "https://github.com/spring-projects/spring-boot/releases/tag/v{}"
 SPRING_BOOT_RELEASE_API_URL = "https://api.github.com/repos/spring-projects/spring-boot/releases/tags/v{}"
 EXTERNAL_DEPENDENCIES_FILE = "eng/versioning/external_dependencies.txt"
+SUPPORT_MATRIX_FILE = "sdk/spring/pipeline/spring-cloud-azure-supported-spring.json"
 SPRING_VERSIONS_OUTPUT = "spring-versions.txt"
 PR_DESCRIPTIONS_OUTPUT = "pr-descriptions.txt"
 
@@ -59,17 +60,47 @@ def sort_versions_desc(versions):
 
 
 def read_current_supported_versions():
+    # Prefer the support matrix because it reflects the current Spring compatibility target.
     boot = None
     cloud = None
+    try:
+        with open(SUPPORT_MATRIX_FILE, "r", encoding="utf-8") as f:
+            entries = json.load(f)
+        current_entries = [
+            e for e in entries
+            if e.get("current") and e.get("supportStatus") == "SUPPORTED"
+        ]
+        if current_entries:
+            current = current_entries[0]
+            boot = current.get("spring-boot-version")
+            cloud = current.get("spring-cloud-version")
+    except (FileNotFoundError, json.JSONDecodeError, TypeError):
+        pass
+
+    if boot and cloud:
+        return boot, cloud
+
+    # Fallback to external dependencies for compatibility with older layouts.
+    boot_candidates = {
+        "org.springframework.boot:spring-boot-dependencies",
+        "org.springframework.boot:spring-boot-starter-parent",
+        "org.springframework.boot:spring-boot-starter",
+        "org.springframework.boot:spring-boot-maven-plugin",
+    }
     with open(EXTERNAL_DEPENDENCIES_FILE, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            if line.startswith("org.springframework.boot:spring-boot-dependencies;"):
-                boot = line.split(";", 1)[1]
-            elif line.startswith("org.springframework.cloud:spring-cloud-dependencies;"):
-                cloud = line.split(";", 1)[1]
+            if not line or line.startswith("#") or ";" not in line:
+                continue
+            artifact, version = line.split(";", 1)
+            if artifact in boot_candidates and not boot:
+                boot = version
+            elif artifact == "org.springframework.cloud:spring-cloud-dependencies" and not cloud:
+                cloud = version
     if not boot or not cloud:
-        raise RuntimeError("Failed to read current Spring Boot/Cloud versions from external_dependencies.txt")
+        raise RuntimeError(
+            "Failed to read current Spring Boot/Cloud versions from support matrix and external_dependencies.txt"
+        )
     return boot, cloud
 
 
