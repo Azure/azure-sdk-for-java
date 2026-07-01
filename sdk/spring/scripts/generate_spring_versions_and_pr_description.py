@@ -137,7 +137,8 @@ def in_range(version, rules):
 
 
 def find_compatible_spring_cloud_version(spring_boot_version, spring_cloud_ranges):
-    for cloud_version, expr in spring_cloud_ranges.items():
+    for cloud_version in sort_versions_desc(list(spring_cloud_ranges.keys())):
+        expr = spring_cloud_ranges[cloud_version]
         if in_range(spring_boot_version, parse_range_expression(expr)):
             return cloud_version
     raise RuntimeError(

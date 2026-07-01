@@ -68,8 +68,10 @@ jobs:
               printf 'spring_cloud_version=%s\n' "$(sed -n '2p' spring-versions.txt)"
               printf 'last_spring_boot_version=%s\n' "$(sed -n '3p' spring-versions.txt)"
               printf 'last_spring_cloud_version=%s\n' "$(sed -n '4p' spring-versions.txt)"
-              printf 'pr_descriptions=%s\n' "$(cat pr-descriptions.txt)"
               printf 'PR_TITLE=%s %s and Spring Cloud %s\n' "${PR_TITLE_PREFIX}" "$(sed -n '1p' spring-versions.txt)" "$(sed -n '2p' spring-versions.txt)"
+              echo 'pr_descriptions<<EOF'
+              cat pr-descriptions.txt
+              echo 'EOF'
             } >> "$GITHUB_ENV"
           fi
       - name: Generate spring_boot_managed_external_dependencies.txt

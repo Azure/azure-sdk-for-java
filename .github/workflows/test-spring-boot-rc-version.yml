@@ -41,8 +41,10 @@ jobs:
               printf 'update_branch=update-spring-dependencies-%s-%s\n' "$(date +%Y%m%d)" "${GITHUB_RUN_ID}"
               printf 'spring_boot_version=%s\n' "${versions[0]}"
               printf 'spring_cloud_version=%s\n' "${versions[1]}"
-              printf 'pr_descriptions=%s\n' "$(<pr-descriptions.txt)"
               printf 'PR_TITLE=Test Spring Boot RC version %s and Spring Cloud %s\n' "${versions[0]}" "${versions[1]}"
+              echo 'pr_descriptions<<EOF'
+              cat pr-descriptions.txt
+              echo 'EOF'
             } >> "$GITHUB_ENV"
           else
             echo "No RC version, cancel update!"
@@ -100,17 +102,22 @@ jobs:
               break
 
           if not updated:
-            raise SystemExit(
-              "Did not find RC support-matrix entry for "
-              f"spring-boot-version={spring_boot_version} with placeholder cloud version"
+            print(
+              "No RC support-matrix placeholder entry found; "
+              "skipping support-file patch as a no-op."
             )
+            raise SystemExit(0)
 
           with matrix_path.open("w", encoding="utf-8") as f:
             json.dump(entries, f, indent=2)
             f.write("\n")
           PY
           git add ./sdk/spring/pipeline/spring-cloud-azure-supported-spring.json
-          git commit -m "Upgrade spring-cloud-azure-supported-spring"
+          if [[ -n "$(git diff --cached -- ./sdk/spring/pipeline/spring-cloud-azure-supported-spring.json)" ]]; then
+            git commit -m "Upgrade spring-cloud-azure-supported-spring"
+          else
+            echo "No support matrix changes detected, skip commit."
+          fi
           git push origin "HEAD:${{ env.update_branch }}"
       - name: Create Pull Request
         id: create_pr
