@@ -84,6 +84,12 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private ManagedClusterLoadBalancerProfile loadBalancerProfile;
 
     /*
+     * Profile of the Bastion Host associated with the managed cluster.
+     * See https://aka.ms/aks/BastionConnect for more details.
+     */
+    private BastionProfile bastionProfile;
+
+    /*
      * Profile of the cluster NAT gateway.
      */
     private ManagedClusterNatGatewayProfile natGatewayProfile;
@@ -391,6 +397,28 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
+     * Get the bastionProfile property: Profile of the Bastion Host associated with the managed cluster.
+     * See https://aka.ms/aks/BastionConnect for more details.
+     * 
+     * @return the bastionProfile value.
+     */
+    public BastionProfile bastionProfile() {
+        return this.bastionProfile;
+    }
+
+    /**
+     * Set the bastionProfile property: Profile of the Bastion Host associated with the managed cluster.
+     * See https://aka.ms/aks/BastionConnect for more details.
+     * 
+     * @param bastionProfile the bastionProfile value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withBastionProfile(BastionProfile bastionProfile) {
+        this.bastionProfile = bastionProfile;
+        return this;
+    }
+
+    /**
      * Get the natGatewayProfile property: Profile of the cluster NAT gateway.
      * 
      * @return the natGatewayProfile value.
@@ -568,6 +596,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         if (loadBalancerProfile() != null) {
             loadBalancerProfile().validate();
         }
+        if (bastionProfile() != null) {
+            bastionProfile().validate();
+        }
         if (natGatewayProfile() != null) {
             natGatewayProfile().validate();
         }
@@ -600,6 +631,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeStringField("loadBalancerSku",
             this.loadBalancerSku == null ? null : this.loadBalancerSku.toString());
         jsonWriter.writeJsonField("loadBalancerProfile", this.loadBalancerProfile);
+        jsonWriter.writeJsonField("bastionProfile", this.bastionProfile);
         jsonWriter.writeJsonField("natGatewayProfile", this.natGatewayProfile);
         jsonWriter.writeJsonField("staticEgressGatewayProfile", this.staticEgressGatewayProfile);
         jsonWriter.writeArrayField("podCidrs", this.podCidrs, (writer, element) -> writer.writeString(element));
@@ -659,6 +691,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("loadBalancerProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.loadBalancerProfile
                         = ManagedClusterLoadBalancerProfile.fromJson(reader);
+                } else if ("bastionProfile".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.bastionProfile = BastionProfile.fromJson(reader);
                 } else if ("natGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.natGatewayProfile
                         = ManagedClusterNatGatewayProfile.fromJson(reader);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualWansListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualWANList.json
+     * x-ms-original-file: 2025-07-01/VirtualWANList.json
      */
     /**
      * Sample code: VirtualWANList.

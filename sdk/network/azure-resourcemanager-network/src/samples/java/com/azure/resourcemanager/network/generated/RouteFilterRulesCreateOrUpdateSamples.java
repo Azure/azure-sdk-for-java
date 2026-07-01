@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class RouteFilterRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteFilterRuleCreate.json
+     * x-ms-original-file: 2025-07-01/RouteFilterRuleCreate.json
      */
     /**
      * Sample code: RouteFilterRuleCreate.

@@ -688,6 +688,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 }))
             .block();
         roundTripsContainer = createdDatabase.getContainer(containerName);
+        waitForCollectionToBeAvailableToRead(roundTripsContainer, /* probeClient */ null);
         setupRoundTripContainer();
 
         List<Map<String, Object>> keyValuePropsList = new ArrayList<>();

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteFilterRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteFilterRuleGet.json
+     * x-ms-original-file: 2025-07-01/RouteFilterRuleGet.json
      */
     /**
      * Sample code: RouteFilterRuleGet.

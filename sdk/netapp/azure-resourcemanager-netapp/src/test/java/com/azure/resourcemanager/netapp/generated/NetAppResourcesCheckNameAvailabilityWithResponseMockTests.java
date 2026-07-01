@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"rkdlb\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"rqbebjnfveglab\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,15 @@ public final class NetAppResourcesCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckAvailabilityResponse response = manager.netAppResources()
-            .checkNameAvailabilityWithResponse("byubhiqdxyurnpn",
-                new ResourceNameAvailabilityRequest().withName("hza")
-                    .withType(
-                        CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
-                    .withResourceGroup("cnuhiigbylbuigv"),
+            .checkNameAvailabilityWithResponse("ihyeseu",
+                new ResourceNameAvailabilityRequest().withName("gcigzh")
+                    .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_BACKUP_VAULTS_BACKUPS)
+                    .withResourceGroup("smg"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.isAvailable());
+        Assertions.assertFalse(response.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
-        Assertions.assertEquals("rkdlb", response.message());
+        Assertions.assertEquals("rqbebjnfveglab", response.message());
     }
 }

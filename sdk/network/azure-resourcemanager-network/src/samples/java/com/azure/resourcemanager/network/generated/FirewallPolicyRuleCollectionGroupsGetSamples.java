@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyNatRuleCollectionGroupGet.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyNatRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyNatRuleCollectionGroup.
@@ -24,7 +24,7 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With Web Categories.
@@ -39,7 +39,7 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyRuleCollectionGroupGet.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup.
@@ -53,7 +53,7 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With IpGroups.

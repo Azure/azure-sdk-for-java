@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitPeeringsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCircuitPeeringGet.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitPeeringGet.json
      */
     /**
      * Sample code: Get ExpressRouteCircuit Peering.

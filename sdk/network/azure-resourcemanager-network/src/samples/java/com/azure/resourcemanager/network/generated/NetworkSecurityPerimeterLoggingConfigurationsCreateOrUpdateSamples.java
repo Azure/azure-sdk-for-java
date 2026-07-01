@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class NetworkSecurityPerimeterLoggingConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NspLoggingConfigurationPut.json
+     * x-ms-original-file: 2025-07-01/NspLoggingConfigurationPut.json
      */
     /**
      * Sample code: NspLoggingConfigurationPut.

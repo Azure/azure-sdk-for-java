@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupDraftsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyRuleCollectionGroupDraftGet.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftGet.json
      */
     /**
      * Sample code: get rule collection group draft.

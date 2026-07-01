@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LocalNetworkGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LocalNetworkGatewayDelete.json
+     * x-ms-original-file: 2025-07-01/LocalNetworkGatewayDelete.json
      */
     /**
      * Sample code: DeleteLocalNetworkGateway.

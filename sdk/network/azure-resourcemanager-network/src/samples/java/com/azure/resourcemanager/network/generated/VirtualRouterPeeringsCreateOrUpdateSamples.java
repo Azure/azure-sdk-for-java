@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualRouterPeeringInner
  */
 public final class VirtualRouterPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualRouterPeeringPut.json
+     * x-ms-original-file: 2025-07-01/VirtualRouterPeeringPut.json
      */
     /**
      * Sample code: Create Virtual Router Peering.

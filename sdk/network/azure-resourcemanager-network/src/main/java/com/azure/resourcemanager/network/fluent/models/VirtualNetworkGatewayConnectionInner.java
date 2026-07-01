@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.ConnectionAuthenticationType;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
@@ -759,6 +760,31 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
         }
         this.innerProperties().withCertificateAuthentication(certificateAuthentication);
+        return this;
+    }
+
+    /**
+     * Get the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
+    }
+
+    /**
+     * Set the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @param routingConfiguration the routingConfiguration value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionPropertiesFormatInner();
+        }
+        this.innerProperties().withRoutingConfiguration(routingConfiguration);
         return this;
     }
 

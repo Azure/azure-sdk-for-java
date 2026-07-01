@@ -45,14 +45,14 @@
     "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]",
     "singleRegionConfiguration": [
       {
-        "locationName": "West Central US",
+        "locationName": "West US",
         "provisioningState": "Succeeded",
         "failoverPriority": 0,
         "isZoneRedundant": false
       }],
     "multiRegionConfiguration": [
       {
-        "locationName": "West Central US",
+        "locationName": "West US",
         "provisioningState": "Succeeded",
         "failoverPriority": 0,
         "isZoneRedundant": false

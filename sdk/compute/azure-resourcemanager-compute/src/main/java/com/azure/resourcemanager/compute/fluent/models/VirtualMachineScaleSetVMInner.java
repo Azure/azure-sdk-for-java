@@ -14,6 +14,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
+import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Plan;
@@ -667,6 +668,32 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public String virtualMachineResourceId() {
         return this.innerProperties() == null ? null : this.innerProperties().virtualMachineResourceId();
+    }
+
+    /**
+     * Get the interconnectBlockProfile property: Specifies the Interconnect Block related details of a Scale Set VM
+     * instance. Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectBlockProfile value.
+     */
+    public InterconnectBlockProfile interconnectBlockProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().interconnectBlockProfile();
+    }
+
+    /**
+     * Set the interconnectBlockProfile property: Specifies the Interconnect Block related details of a Scale Set VM
+     * instance. Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectBlockProfile the interconnectBlockProfile value to set.
+     * @return the VirtualMachineScaleSetVMInner object itself.
+     */
+    public VirtualMachineScaleSetVMInner
+        withInterconnectBlockProfile(InterconnectBlockProfile interconnectBlockProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
+        }
+        this.innerProperties().withInterconnectBlockProfile(interconnectBlockProfile);
+        return this;
     }
 
     /**

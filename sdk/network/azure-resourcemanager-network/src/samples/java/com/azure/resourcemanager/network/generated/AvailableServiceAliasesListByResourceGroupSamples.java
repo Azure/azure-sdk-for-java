@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AvailableServiceAliasesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/AvailableServiceAliasesListByResourceGroup.json
+     * x-ms-original-file: 2025-07-01/AvailableServiceAliasesListByResourceGroup.json
      */
     /**
      * Sample code: Get available service aliases in the resource group.

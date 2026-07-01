@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class HubVirtualNetworkConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/HubVirtualNetworkConnectionDelete.json
+     * x-ms-original-file: 2025-07-01/HubVirtualNetworkConnectionDelete.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionDelete.

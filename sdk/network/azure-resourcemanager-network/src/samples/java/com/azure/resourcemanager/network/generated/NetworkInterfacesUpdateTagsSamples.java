@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkInterfacesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceUpdateTags.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceUpdateTags.json
      */
     /**
      * Sample code: Update network interface tags.

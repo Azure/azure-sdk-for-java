@@ -29,6 +29,11 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     private DeploymentModel model;
 
     /*
+     * Speculative decoding settings for the deployment. This configuration applies to Fireworks model formats.
+     */
+    private DeploymentSpeculativeDecoding speculativeDecoding;
+
+    /*
      * Properties of Cognitive Services account deployment model. (Deprecated, please use Deployment.sku instead.)
      */
     private DeploymentScaleSettings scaleSettings;
@@ -137,6 +142,28 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
      */
     public DeploymentProperties withModel(DeploymentModel model) {
         this.model = model;
+        return this;
+    }
+
+    /**
+     * Get the speculativeDecoding property: Speculative decoding settings for the deployment. This configuration
+     * applies to Fireworks model formats.
+     * 
+     * @return the speculativeDecoding value.
+     */
+    public DeploymentSpeculativeDecoding speculativeDecoding() {
+        return this.speculativeDecoding;
+    }
+
+    /**
+     * Set the speculativeDecoding property: Speculative decoding settings for the deployment. This configuration
+     * applies to Fireworks model formats.
+     * 
+     * @param speculativeDecoding the speculativeDecoding value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withSpeculativeDecoding(DeploymentSpeculativeDecoding speculativeDecoding) {
+        this.speculativeDecoding = speculativeDecoding;
         return this;
     }
 
@@ -403,6 +430,7 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("model", this.model);
+        jsonWriter.writeJsonField("speculativeDecoding", this.speculativeDecoding);
         jsonWriter.writeJsonField("scaleSettings", this.scaleSettings);
         jsonWriter.writeStringField("raiPolicyName", this.raiPolicyName);
         jsonWriter.writeStringField("versionUpgradeOption",
@@ -438,6 +466,9 @@ public final class DeploymentProperties implements JsonSerializable<DeploymentPr
                         = DeploymentProvisioningState.fromString(reader.getString());
                 } else if ("model".equals(fieldName)) {
                     deserializedDeploymentProperties.model = DeploymentModel.fromJson(reader);
+                } else if ("speculativeDecoding".equals(fieldName)) {
+                    deserializedDeploymentProperties.speculativeDecoding
+                        = DeploymentSpeculativeDecoding.fromJson(reader);
                 } else if ("scaleSettings".equals(fieldName)) {
                     deserializedDeploymentProperties.scaleSettings = DeploymentScaleSettings.fromJson(reader);
                 } else if ("capabilities".equals(fieldName)) {

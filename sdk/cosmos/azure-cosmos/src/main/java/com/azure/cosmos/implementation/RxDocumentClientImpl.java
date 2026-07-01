@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.Http2PingHandler;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
@@ -1674,7 +1675,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentFeatureFlags.remove(UserAgentFeatureFlags.RegionScopedSessionCapturing);
         }
 
+        if (!isHttp2PingHealthEffectivelyEnabled()) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2PingHealth);
+        }
+
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
+    }
+
+    /**
+     * Returns true when HTTP/2 PING keepalive is effectively enabled for this client,
+     * delegating to {@link Http2PingHandler#isPingHealthEffectivelyEnabled} so the
+     * user-agent feature flag stays in lockstep with the transport install gate in
+     * {@code ReactorNettyClient}.
+     */
+    private boolean isHttp2PingHealthEffectivelyEnabled() {
+        return Http2PingHandler.isPingHealthEffectivelyEnabled(
+            this.connectionPolicy.getHttp2ConnectionConfig());
     }
 
     @Override
@@ -1988,16 +2004,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-        if (this.connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT
-            && readConsistencyStrategyName != null
-            && ! readConsistencyStrategyName.equalsIgnoreCase(ReadConsistencyStrategy.DEFAULT.toString())) {
-
-            logger.warn(
-                "ReadConsistencyStrategy {} defined in Gateway mode. "
-                    + "This version of the SDK only supports ReadConsistencyStrategy in DIRECT mode. "
-                    + "This setting will be ignored.",
-                readConsistencyStrategyName);
+    public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        if (readConsistencyStrategy == ReadConsistencyStrategy.GLOBAL_STRONG) {
+            ConsistencyLevel accountConsistency = this.getDefaultConsistencyLevelOfAccount();
+            if (accountConsistency != ConsistencyLevel.STRONG) {
+                throw new BadRequestException(
+                    String.format(
+                        RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
+                        readConsistencyStrategy,
+                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                        ConsistencyLevel.STRONG,
+                        accountConsistency));
+            }
         }
     }
 
@@ -2018,9 +2036,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // account's default consistency level in Compute Gateway will result in a 400 Bad Request
             // even when it is done for resource types / operations where this header should simply be ignored
             // making the change here to restrict adding the header to when it is relevant.
-            if ((operationType.isReadOnlyOperation() || operationType == OperationType.Batch) && (resourceType.isMasterResource() || resourceType == ResourceType.Document)) {
-                headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
-            }
+            putConsistencyLevelHeaderIfSupported(headers, consistencyLevel, resourceType, operationType);
         }
 
         if (readConsistencyStrategy != null
@@ -2029,8 +2045,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = readConsistencyStrategy.toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(readConsistencyStrategy);
             headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
         if (options == null) {
@@ -2040,6 +2060,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (!this.contentResponseOnWriteEnabled && resourceType.equals(ResourceType.Document) && operationType.isWriteOperation()) {
                 headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
             }
+
+            removeUnsupportedConsistencyLevelHeader(headers);
             return headers;
         }
 
@@ -2074,15 +2096,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             && operationType.isReadOnlyOperation()) {
 
             String readConsistencyStrategyName = options.getReadConsistencyStrategy().toString();
-            this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.validateReadConsistencyStrategy(options.getReadConsistencyStrategy());
             headers.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);
+            // Compute gateway rejects requests with both x-ms-consistency-level and
+            // x-ms-cosmos-read-consistency-strategy headers. When readConsistencyStrategy is set, remove
+            // consistency-level — readConsistencyStrategy takes precedence.
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
         }
 
-        if (options.getConsistencyLevel() != null) {
-            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, options.getConsistencyLevel().toString());
+        if (options.getConsistencyLevel() != null
+            && !headers.containsKey(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)) {
+            // Only set ConsistencyLevel when ReadConsistencyStrategy is NOT already present.
+            // readConsistencyStrategy takes precedence — setting both causes gateway rejection.
+            putConsistencyLevelHeaderIfSupported(headers, options.getConsistencyLevel(), resourceType, operationType);
         }
+
+        removeUnsupportedConsistencyLevelHeader(headers);
 
         if (options.getIndexingDirective() != null) {
             headers.put(HttpConstants.HttpHeaders.INDEXING_DIRECTIVE, options.getIndexingDirective().toString());
@@ -2167,6 +2198,39 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return headers;
     }
 
+    private void putConsistencyLevelHeaderIfSupported(
+        Map<String, String> headers,
+        ConsistencyLevel requestedConsistencyLevel,
+        ResourceType resourceType,
+        OperationType operationType) {
+
+        if (isConsistencyLevelHeaderApplicable(resourceType, operationType)
+            && !isUnsupportedConsistencyLevelUpgrade(requestedConsistencyLevel)) {
+            headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, requestedConsistencyLevel.toString());
+        }
+    }
+
+    private boolean isConsistencyLevelHeaderApplicable(ResourceType resourceType, OperationType operationType) {
+        return (operationType.isReadOnlyOperation() || operationType == OperationType.Batch)
+            && (resourceType.isMasterResource() || resourceType == ResourceType.Document);
+    }
+
+    private void removeUnsupportedConsistencyLevelHeader(Map<String, String> headers) {
+        String requestedConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        if (Strings.isNullOrEmpty(requestedConsistencyLevel)) {
+            return;
+        }
+
+        ConsistencyLevel consistencyLevelFromHeader = BridgeInternal.fromServiceSerializedFormat(requestedConsistencyLevel);
+        if (consistencyLevelFromHeader != null && isUnsupportedConsistencyLevelUpgrade(consistencyLevelFromHeader)) {
+            headers.remove(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        }
+    }
+
+    private boolean isUnsupportedConsistencyLevelUpgrade(ConsistencyLevel requestedConsistencyLevel) {
+        return Utils.isConsistencyLevelUpgrade(this.getDefaultConsistencyLevelOfAccount(), requestedConsistencyLevel);
+    }
+
     public IRetryPolicyFactory getResetSessionTokenRetryPolicy() {
         return this.resetSessionTokenRetryPolicy;
     }
@@ -2239,6 +2303,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             );
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+
             if (serializationDiagnosticsContext != null) {
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             } else if (crossRegionAvailabilityContextForRequest != null) {
@@ -5498,8 +5563,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName) {
-                RxDocumentClientImpl.this.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            public void validateReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+                RxDocumentClientImpl.this.validateReadConsistencyStrategy(readConsistencyStrategy);
             }
 
             @Override

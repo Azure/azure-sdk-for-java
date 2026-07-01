@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersListGuardrailsVersionsSamples {
     /*
-     * x-ms-original-file: 2026-03-02-preview/ListGuardrailsVersions.json
+     * x-ms-original-file: 2026-04-02-preview/ListGuardrailsVersions.json
      */
     /**
      * Sample code: List Guardrails Versions.

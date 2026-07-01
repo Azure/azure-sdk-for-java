@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DdosCustomPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/DdosCustomPolicyCreate.json
+     * x-ms-original-file: 2025-07-01/DdosCustomPolicyCreate.json
      */
     /**
      * Sample code: Create DDoS custom policy.
