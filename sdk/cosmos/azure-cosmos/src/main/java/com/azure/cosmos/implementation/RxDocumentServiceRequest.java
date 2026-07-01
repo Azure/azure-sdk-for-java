@@ -78,6 +78,12 @@ public class RxDocumentServiceRequest implements Cloneable {
     private Range<String> effectiveRange;
     private int numberOfItemsInBatchRequest;
 
+    // Marks a query whose partition key is a partial (prefix) hierarchical (MULTI_HASH) key. On this
+    // path the partial partition key is intentionally nulled upstream and the narrow prefix
+    // effective-partition-key range is carried on feedRange instead. Downstream store models reuse
+    // that range as a doc-level EPK filter rather than over-spanning the whole physical partition.
+    private boolean prefixPartitionKeyQuery;
+
     private byte[] contentAsByteArray;
 
     // NOTE: TODO: these fields are copied from .Net SDK
@@ -904,6 +910,14 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public FeedRangeInternal getFeedRange() {
         return this.feedRange;
+    }
+
+    public boolean isPrefixPartitionKeyQuery() {
+        return this.prefixPartitionKeyQuery;
+    }
+
+    public void setPrefixPartitionKeyQuery(boolean prefixPartitionKeyQuery) {
+        this.prefixPartitionKeyQuery = prefixPartitionKeyQuery;
     }
 
     public void applyFeedRangeFilter(FeedRangeInternal feedRange) {

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
@@ -257,12 +258,25 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // hex-string-as-bytes encoding). Without this filter the proxy resolves the request to the
         // owning physical partition and returns every co-located document (an over-span).
         Range<String> prefixEpkRange = null;
-        if (request.getOperationType() != OperationType.QueryPlan && partitionKey != null) {
-            PartitionKeyDefinition pkDefinition = request.getPartitionKeyDefinition();
-            if (pkDefinition != null
-                && pkDefinition.getKind() == PartitionKind.MULTI_HASH
-                && partitionKey.getComponents().size() < pkDefinition.getPaths().size()) {
-                prefixEpkRange = partitionKey.getEPKRangeForPrefixPartitionKey(pkDefinition);
+        if (request.getOperationType() != OperationType.QueryPlan) {
+            if (partitionKey != null) {
+                PartitionKeyDefinition pkDefinition = request.getPartitionKeyDefinition();
+                if (pkDefinition != null
+                    && pkDefinition.getKind() == PartitionKind.MULTI_HASH
+                    && partitionKey.getComponents().size() < pkDefinition.getPaths().size()) {
+                    prefixEpkRange = partitionKey.getEPKRangeForPrefixPartitionKey(pkDefinition);
+                }
+            } else if (request.isPrefixPartitionKeyQuery() && request.getFeedRange() instanceof FeedRangeEpkImpl) {
+                // Parallel prefix-query path: the partial hierarchical partition key was intentionally
+                // nulled upstream (ParallelDocumentQueryExecutionContextBase#initialize), but the narrow
+                // prefix effective-partition-key range was already computed and carried on the request's
+                // feedRange (DocumentQueryExecutionContextFactory#resolveFeedRangeBasedOnPrefixContainer).
+                // Reuse it directly instead of recomputing getEPKRangeForPrefixPartitionKey from a
+                // partition key we no longer have. This is what scopes the read on this path; without it
+                // the request falls through to the physical-partition steering below and over-spans.
+                prefixEpkRange = ((FeedRangeEpkImpl) request.getFeedRange()).getRange();
+            }
+            if (prefixEpkRange != null) {
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE,
                     ReadFeedKeyType.EffectivePartitionKeyRange.name());
@@ -278,18 +292,17 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
 
-        if (partitionKey != null) {
-            if (prefixEpkRange != null) {
-                // Partial (prefix) hierarchical partition key. StartEpk/EndEpk + ReadFeedKeyType were
-                // already set on the request headers above and serialized into the RNTBD request as the
-                // backend's doc-level EPK filter. StartEpkHash/EndEpkHash additionally steer the proxy to
-                // the owning physical partition(s), mirroring the Direct/RNTBD path.
-                rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, HexConvert.hexToBytes(prefixEpkRange.getMin()));
-                rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash, HexConvert.hexToBytes(prefixEpkRange.getMax()));
-            } else {
-                byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
-                rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
-            }
+        if (prefixEpkRange != null) {
+            // Partial (prefix) hierarchical partition key - either the PK-bearing path (point/scalar
+            // prefix) or the parallel path that reused request.getFeedRange(). StartEpk/EndEpk +
+            // ReadFeedKeyType were already set on the request headers above and serialized into the RNTBD
+            // request as the backend's doc-level EPK filter. StartEpkHash/EndEpkHash additionally steer the
+            // proxy to the owning physical partition(s), mirroring the Direct/RNTBD path.
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, HexConvert.hexToBytes(prefixEpkRange.getMin()));
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash, HexConvert.hexToBytes(prefixEpkRange.getMax()));
+        } else if (partitionKey != null) {
+            byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
         } else if (request.requestContext.resolvedPartitionKeyRange == null) {
             throw new IllegalStateException(
                 "Resolved partition key range should not be null at this point. ResourceType: "
