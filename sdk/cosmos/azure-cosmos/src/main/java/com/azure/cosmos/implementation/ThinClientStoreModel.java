@@ -251,21 +251,23 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // as the RNTBD EPK headers in the consolidated block after RntbdRequest.from() below.
         Range<String> prefixEpkRange = null;
         if (request.getOperationType() != OperationType.QueryPlan) {
-            if (partitionKey != null) {
+            if (request.isPrefixPartitionKeyQuery() && request.getFeedRange() instanceof FeedRangeEpkImpl) {
+                // Parallel prefix-query path (cached): the partial hierarchical partition key was
+                // intentionally nulled upstream (ParallelDocumentQueryExecutionContextBase#initialize), but
+                // the narrow prefix effective-partition-key range was already computed and carried on the
+                // request's feedRange (DocumentQueryExecutionContextFactory#resolveFeedRangeBasedOnPrefixContainer).
+                // Reuse that cached range directly instead of recomputing it from a partition key we no
+                // longer have.
+                prefixEpkRange = ((FeedRangeEpkImpl) request.getFeedRange()).getRange();
+            } else if (partitionKey != null) {
+                // PK-bearing prefix path: recompute the prefix range directly from the partial hierarchical
+                // partition key.
                 PartitionKeyDefinition pkDefinition = request.getPartitionKeyDefinition();
                 if (pkDefinition != null
                     && pkDefinition.getKind() == PartitionKind.MULTI_HASH
                     && partitionKey.getComponents().size() < pkDefinition.getPaths().size()) {
                     prefixEpkRange = partitionKey.getEPKRangeForPrefixPartitionKey(pkDefinition);
                 }
-            } else if (request.isPrefixPartitionKeyQuery() && request.getFeedRange() instanceof FeedRangeEpkImpl) {
-                // Parallel prefix-query path: the partial hierarchical partition key was intentionally
-                // nulled upstream (ParallelDocumentQueryExecutionContextBase#initialize), but the narrow
-                // prefix effective-partition-key range was already computed and carried on the request's
-                // feedRange (DocumentQueryExecutionContextFactory#resolveFeedRangeBasedOnPrefixContainer).
-                // Reuse it directly instead of recomputing getEPKRangeForPrefixPartitionKey from a
-                // partition key we no longer have.
-                prefixEpkRange = ((FeedRangeEpkImpl) request.getFeedRange()).getRange();
             }
         }
 
