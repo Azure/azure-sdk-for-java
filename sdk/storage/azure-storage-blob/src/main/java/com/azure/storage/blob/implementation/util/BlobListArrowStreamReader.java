@@ -52,9 +52,24 @@ final class BlobListArrowStreamReader {
     }
 
     /**
-         * The decoded contents of an Arrow IPC stream.
-         */
-        record DecodedArrowStream(Map<String, String> schemaMetadata, List<Batch> batches) {
+     * The decoded contents of an Arrow IPC stream.
+     */
+    static final class DecodedArrowStream {
+        private final Map<String, String> schemaMetadata;
+        private final List<Batch> batches;
+
+        DecodedArrowStream(Map<String, String> schemaMetadata, List<Batch> batches) {
+            this.schemaMetadata = schemaMetadata;
+            this.batches = batches;
+        }
+
+        Map<String, String> getSchemaMetadata() {
+            return schemaMetadata;
+        }
+
+        List<Batch> getBatches() {
+            return batches;
+        }
     }
 
     /**

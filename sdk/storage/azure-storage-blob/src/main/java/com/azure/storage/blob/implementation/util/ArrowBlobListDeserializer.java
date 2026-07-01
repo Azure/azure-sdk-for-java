@@ -91,7 +91,7 @@ public final class ArrowBlobListDeserializer {
 
         DecodedArrowStream decodedArrowStream = BlobListArrowStreamReader.read(arrowStream);
 
-        Map<String, String> schemaMetadata = decodedArrowStream.schemaMetadata();
+        Map<String, String> schemaMetadata = decodedArrowStream.getSchemaMetadata();
         if (schemaMetadata != null) {
             nextMarker = schemaMetadata.get("NextMarker");
             if (nextMarker != null && nextMarker.isEmpty()) {
@@ -109,7 +109,7 @@ public final class ArrowBlobListDeserializer {
             }
         }
 
-        for (Batch batch : decodedArrowStream.batches()) {
+        for (Batch batch : decodedArrowStream.getBatches()) {
             validateKnownColumns(batch);
             int rowCount = batch.getRowCount();
             for (int i = 0; i < rowCount; i++) {
