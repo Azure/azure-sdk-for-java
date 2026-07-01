@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class NetworkInterfacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create network interface with Gateway Load Balancer Consumer configured.
@@ -39,7 +39,7 @@ public final class NetworkInterfacesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceCreate.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceCreate.json
      */
     /**
      * Sample code: Create network interface.

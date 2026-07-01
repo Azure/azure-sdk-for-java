@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerDelete.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerDelete.json
      */
     /**
      * Sample code: Delete load balancer.

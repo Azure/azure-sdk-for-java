@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DscpConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/DscpConfigurationCreate.json
+     * x-ms-original-file: 2025-07-01/DscpConfigurationCreate.json
      */
     /**
      * Sample code: Create DSCP Configuration.

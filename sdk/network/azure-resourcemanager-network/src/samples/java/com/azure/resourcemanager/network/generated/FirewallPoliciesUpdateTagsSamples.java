@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class FirewallPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicyPatch.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicyPatch.json
      */
     /**
      * Sample code: Update FirewallPolicy Tags.

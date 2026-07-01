@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class DscpConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/DscpConfigurationDelete.json
+     * x-ms-original-file: 2025-07-01/DscpConfigurationDelete.json
      */
     /**
      * Sample code: Delete DSCP Configuration.

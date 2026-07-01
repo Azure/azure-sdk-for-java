@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkTapsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkTapUpdateTags.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkTapUpdateTags.json
      */
     /**
      * Sample code: Update virtual network tap tags.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.VpnClientParameters;
  */
 public final class VirtualNetworkGatewaysGeneratevpnclientpackageSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayGenerateVpnClientPackage.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayGenerateVpnClientPackage.json
      */
     /**
      * Sample code: GenerateVPNClientPackage.

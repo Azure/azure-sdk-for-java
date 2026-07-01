@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewayConnectionsGetIkeSasSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayConnectionGetIkeSas.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayConnectionGetIkeSas.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayConnectionIkeSa.
