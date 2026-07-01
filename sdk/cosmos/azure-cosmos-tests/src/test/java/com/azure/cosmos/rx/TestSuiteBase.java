@@ -1148,6 +1148,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
                 || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
                 || statusCode == HttpConstants.StatusCodes.GONE
+                || isStaleCollectionRidFailure(cosmosException)
                 || (statusCode == HttpConstants.StatusCodes.NOTFOUND
                     && (cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN
                         || cosmosException.getSubStatusCode() == 1013));
@@ -1160,6 +1161,18 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         return false;
+    }
+
+    private static boolean isStaleCollectionRidFailure(CosmosException cosmosException) {
+        if (cosmosException.getStatusCode() != HttpConstants.StatusCodes.BADREQUEST
+            || cosmosException.getSubStatusCode() != HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS) {
+
+            return false;
+        }
+
+        String message = cosmosException.getMessage();
+        return message != null
+            && message.contains("Collection rid provided by the user does not match the existing collection.");
     }
 
     private static String getCollectionReadinessErrorDetails(Throwable error) {
