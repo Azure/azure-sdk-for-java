@@ -1,6 +1,14 @@
 name: Test Spring Boot RC Version
 on:
   workflow_dispatch:
+    inputs:
+      base_branch:
+        description: 'Base branch for update branch and PR target. Defaults to trigger branch.'
+        required: false
+        type: string
+
+env:
+  BASE_BRANCH: ${{ github.event.inputs.base_branch || github.ref_name }}
 
 permissions:
   contents: write
@@ -44,8 +52,8 @@ jobs:
         run: |
           echo "Updating Spring Boot Dependencies Version: ${{ env.spring_boot_version }}"
           echo "Updating Spring Cloud Dependencies Version: ${{ env.spring_cloud_version }}"
-          git fetch origin main
-          git checkout -B "${{ env.update_branch }}" origin/main
+          git fetch origin "${{ env.BASE_BRANCH }}"
+          git checkout -B "${{ env.update_branch }}" "origin/${{ env.BASE_BRANCH }}"
           pip install termcolor
           python ./sdk/spring/scripts/get_spring_boot_managed_external_dependencies.py -b "${{ env.spring_boot_version }}" -c "${{ env.spring_cloud_version }}"
       - name: Update external_dependencies.txt
@@ -121,7 +129,7 @@ jobs:
               repo: context.repo.repo,
               title: process.env.PR_TITLE,
               head: process.env.update_branch,
-              base: 'main',
+              base: process.env.BASE_BRANCH,
               body,
               draft: true
             });

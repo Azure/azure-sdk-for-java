@@ -3,8 +3,14 @@ on:
   schedule:
     - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      base_branch:
+        description: 'Base branch for update branch and PR target. Defaults to trigger branch.'
+        required: false
+        type: string
 
 env:
+  BASE_BRANCH: ${{ github.event.inputs.base_branch || github.ref_name }}
   PR_TITLE: "Update Spring Boot and Spring Cloud versions for the Spring compatibility tests"
 
 permissions:
@@ -66,8 +72,8 @@ jobs:
           } >> "$GITHUB_ENV"
       - name: Make Decision Based on Git Diff
         run: |
-          git fetch origin main
-          git checkout -B "${{ env.BRANCH_NAME }}" origin/main
+          git fetch origin "${{ env.BASE_BRANCH }}"
+          git checkout -B "${{ env.BRANCH_NAME }}" "origin/${{ env.BASE_BRANCH }}"
           if [[ -n "$(git status -s)" ]]; then
             echo "NEED_UPDATE_FILE=true" >> "$GITHUB_ENV"
           else
@@ -126,7 +132,7 @@ jobs:
               repo: context.repo.repo,
               title: process.env.PR_TITLE,
               head: process.env.BRANCH_NAME,
-              base: 'main',
+              base: process.env.BASE_BRANCH,
               body: process.env.PULL_REQUEST_BODY
             });
             core.setOutput('pull_request_number', String(pr.data.number));
