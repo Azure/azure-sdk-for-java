@@ -2176,30 +2176,26 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         assertThat(requests).isNotNull();
         assertThat(requests.size()).isPositive();
 
-        boolean hasNonQueryPlanRequest = false;
+        // Validate every request rather than early-returning on the first thin-client match: a mixed
+        // scenario (some data requests via the thin-client endpoint, some via the classic gateway) must
+        // fail. Every non-QueryPlan (data) request must route through the thin-client proxy endpoint;
+        // QueryPlan calls are resolved via the classic gateway in thin-client mode, so they are the only
+        // requests allowed to target a non-thin-client endpoint.
         for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            if (requestInfo.getEndpoint() != null
-                && requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
-                // A thin-client request exists -> invariant satisfied.
-                return;
-            }
-
             // requestType has the form "<ResourceType>:<OperationType>" (OperationType.QueryPlan
-            // stringifies to "QueryPlan"). In thin-client mode QueryPlan calls are resolved via the
-            // classic gateway, so they are the only requests allowed to target a non-thin-client endpoint.
+            // stringifies to "QueryPlan").
             String requestType = requestInfo.getRequestType();
-            if (requestType == null || !requestType.endsWith(":QueryPlan")) {
-                hasNonQueryPlanRequest = true;
+            if (requestType != null && requestType.endsWith(":QueryPlan")) {
+                continue;
             }
-        }
 
-        // Reaching here means no request targeted the thin-client proxy endpoint. That is acceptable
-        // only when every request was a QueryPlan call; a non-QueryPlan (data) request on a non-thin-client
-        // endpoint violates the thin-client routing invariant.
-        assertThat(hasNonQueryPlanRequest)
-            .as("No request targeting thin client proxy endpoint (" + THIN_CLIENT_ENDPOINT_INDICATOR
-                + ") and at least one non-QueryPlan request was present")
-            .isFalse();
+            String endpoint = requestInfo.getEndpoint();
+            assertThat(endpoint != null && endpoint.contains(THIN_CLIENT_ENDPOINT_INDICATOR))
+                .as("Non-QueryPlan request must target the thin client proxy endpoint ("
+                    + THIN_CLIENT_ENDPOINT_INDICATOR + "), but was: " + endpoint
+                    + " (requestType: " + requestType + ")")
+                .isTrue();
+        }
     }
 
     protected static void safeClose(AsyncDocumentClient client) {
