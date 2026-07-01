@@ -302,10 +302,10 @@
 # ServiceOwners:                                                   @sebrenna
 
 # PRLabel: %Device Update
-/sdk/deviceupdate/                                                 @xinanqiu @Azure/azure-java-sdk
+/sdk/deviceupdate/                                                 @josephmsft @darkoa-msft @devlie @Azure/azure-java-sdk
 
 # ServiceLabel: %Device Update
-# ServiceOwners:                                                   @xinanqiu
+# ServiceOwners:                                                   @josephmsft @darkoa-msft @devlie
 
 # PRLabel: %Digital Twins
 /sdk/digitaltwins/                                                 @Aashish93-stack @abhinav-ghai @johngallardo @sjiherzig @Azure/azure-java-sdk
