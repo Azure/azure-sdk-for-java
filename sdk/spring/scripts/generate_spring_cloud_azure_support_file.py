@@ -103,8 +103,11 @@ def is_version_supported(version):
 
 
 def load_existing_support_map():
-    with open(SUPPORT_FILE, "r", encoding="utf-8") as f:
-        existing = json.load(f)
+    try:
+        with open(SUPPORT_FILE, "r", encoding="utf-8") as f:
+            existing = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError, TypeError):
+        return {}
     return {item.get("spring-boot-version"): item for item in existing if item.get("spring-boot-version")}
 
 

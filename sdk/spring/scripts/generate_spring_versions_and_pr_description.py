@@ -182,6 +182,11 @@ def write_outputs(target_boot, target_cloud, current_boot, current_cloud, notes)
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--target-major", default="4", help="Target Spring Boot major version.")
+    parser.add_argument(
+        "--prefer-prerelease",
+        action="store_true",
+        help="Prefer latest prerelease when both GA and prerelease updates are available.",
+    )
     args = parser.parse_args()
 
     spring_metadata = fetch_json(SPRING_METADATA_URL)
@@ -247,8 +252,14 @@ def main():
     if not spring_cloud_ranges:
         raise RuntimeError("Cannot locate spring-cloud compatibility map in Spring Initializr response")
 
-    target_boot = latest_ga if is_new_ga else latest_rc
-    if is_new_ga:
+    if args.prefer_prerelease and is_new_rc:
+        target_boot = latest_rc
+    elif is_new_ga:
+        target_boot = latest_ga
+    else:
+        target_boot = latest_rc
+
+    if target_boot == latest_ga:
         target_cloud = find_compatible_spring_cloud_version(target_boot, spring_cloud_ranges)
     else:
         try:

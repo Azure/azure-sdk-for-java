@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 0
       - name: Generate Version File
         run: |
-          python ./sdk/spring/scripts/generate_spring_versions_and_pr_description.py
+          python ./sdk/spring/scripts/generate_spring_versions_and_pr_description.py --prefer-prerelease
       - name: Generate Spring Cloud Azure Support File
         run: |
           python ./sdk/spring/scripts/generate_spring_cloud_azure_support_file.py --include-rc
