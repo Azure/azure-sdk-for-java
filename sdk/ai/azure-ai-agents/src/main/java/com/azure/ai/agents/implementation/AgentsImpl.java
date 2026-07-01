@@ -643,7 +643,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadSessionFile(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("path") String path, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/octet-stream") BinaryData content, RequestOptions requestOptions, Context context);
@@ -655,7 +655,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadSessionFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("path") String path, @HeaderParam("Content-Type") String contentType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/octet-stream") BinaryData content, RequestOptions requestOptions, Context context);
@@ -667,7 +667,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> downloadSessionFile(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -678,7 +678,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> downloadSessionFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -689,7 +689,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSessionFiles(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -700,7 +700,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listSessionFilesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -711,7 +711,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSessionFile(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -722,7 +722,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSessionFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String agentSessionId,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
@@ -5420,7 +5420,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5432,12 +5432,12 @@ public final class AgentsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadSessionFileWithResponseAsync(String agentName, String agentSessionId,
+    public Mono<Response<BinaryData>> uploadSessionFileWithResponseAsync(String agentName, String sessionId,
         String path, BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.uploadSessionFile(this.client.getEndpoint(), agentName, agentSessionId, path,
+        return FluxUtil
+            .withContext(context -> service.uploadSessionFile(this.client.getEndpoint(), agentName, sessionId, path,
                 contentType, this.client.getServiceVersion().getVersion(), accept, content, requestOptions, context));
     }
 
@@ -5466,7 +5466,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param path The destination file path within the sandbox, relative to the session home directory.
      * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5477,11 +5477,11 @@ public final class AgentsImpl {
      * @return response from uploading a file to a session sandbox along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+    public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String sessionId, String path,
         BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return service.uploadSessionFileSync(this.client.getEndpoint(), agentName, agentSessionId, path, contentType,
+        return service.uploadSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path, contentType,
             this.client.getServiceVersion().getVersion(), accept, content, requestOptions, Context.NONE);
     }
 
@@ -5499,7 +5499,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5509,11 +5509,11 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> downloadSessionFileWithResponseAsync(String agentName, String agentSessionId,
+    public Mono<Response<BinaryData>> downloadSessionFileWithResponseAsync(String agentName, String sessionId,
         String path, RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
         return FluxUtil.withContext(context -> service.downloadSessionFile(this.client.getEndpoint(), agentName,
-            agentSessionId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+            sessionId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -5530,7 +5530,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param path The file path to download from the sandbox, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5540,10 +5540,10 @@ public final class AgentsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String agentSessionId, String path,
+    public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String sessionId, String path,
         RequestOptions requestOptions) {
         final String accept = "application/octet-stream";
-        return service.downloadSessionFileSync(this.client.getEndpoint(), agentName, agentSessionId, path,
+        return service.downloadSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -5589,7 +5589,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5598,11 +5598,11 @@ public final class AgentsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSessionFilesSinglePageAsync(String agentName, String agentSessionId,
+    private Mono<PagedResponse<BinaryData>> listSessionFilesSinglePageAsync(String agentName, String sessionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSessionFiles(this.client.getEndpoint(), agentName, agentSessionId,
+            .withContext(context -> service.listSessionFiles(this.client.getEndpoint(), agentName, sessionId,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "entries"), null, null));
@@ -5650,7 +5650,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5659,9 +5659,9 @@ public final class AgentsImpl {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listSessionFilesAsync(String agentName, String agentSessionId,
+    public PagedFlux<BinaryData> listSessionFilesAsync(String agentName, String sessionId,
         RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listSessionFilesSinglePageAsync(agentName, agentSessionId, requestOptions));
+        return new PagedFlux<>(() -> listSessionFilesSinglePageAsync(agentName, sessionId, requestOptions));
     }
 
     /**
@@ -5706,7 +5706,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5715,10 +5715,10 @@ public final class AgentsImpl {
      * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSessionFilesSinglePage(String agentName, String agentSessionId,
+    private PagedResponse<BinaryData> listSessionFilesSinglePage(String agentName, String sessionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSessionFilesSync(this.client.getEndpoint(), agentName, agentSessionId,
+        Response<BinaryData> res = service.listSessionFilesSync(this.client.getEndpoint(), agentName, sessionId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "entries"), null, null);
@@ -5766,7 +5766,7 @@ public final class AgentsImpl {
      * </pre>
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5775,9 +5775,9 @@ public final class AgentsImpl {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listSessionFiles(String agentName, String agentSessionId,
+    public PagedIterable<BinaryData> listSessionFiles(String agentName, String sessionId,
         RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listSessionFilesSinglePage(agentName, agentSessionId, requestOptions));
+        return new PagedIterable<>(() -> listSessionFilesSinglePage(agentName, sessionId, requestOptions));
     }
 
     /**
@@ -5795,7 +5795,7 @@ public final class AgentsImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5805,10 +5805,10 @@ public final class AgentsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSessionFileWithResponseAsync(String agentName, String agentSessionId, String path,
+    public Mono<Response<Void>> deleteSessionFileWithResponseAsync(String agentName, String sessionId, String path,
         RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> service.deleteSessionFile(this.client.getEndpoint(), agentName,
-            agentSessionId, path, this.client.getServiceVersion().getVersion(), requestOptions, context));
+            sessionId, path, this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -5826,7 +5826,7 @@ public final class AgentsImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * 
      * @param agentName The name of the agent.
-     * @param agentSessionId The session ID.
+     * @param sessionId The session ID.
      * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5836,9 +5836,9 @@ public final class AgentsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSessionFileWithResponse(String agentName, String agentSessionId, String path,
+    public Response<Void> deleteSessionFileWithResponse(String agentName, String sessionId, String path,
         RequestOptions requestOptions) {
-        return service.deleteSessionFileSync(this.client.getEndpoint(), agentName, agentSessionId, path,
+        return service.deleteSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 

@@ -103,8 +103,6 @@ public class Tool implements JsonSerializable<Tool> {
                     return FabricIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
-                } else if ("reminder_preview".equals(discriminatorValue)) {
-                    return ReminderPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterTool.fromJson(readerToUse.reset());
                 } else if ("file_search".equals(discriminatorValue)) {
