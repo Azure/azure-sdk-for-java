@@ -184,7 +184,7 @@ def main():
 
     os.makedirs(os.path.dirname(SUPPORT_FILE), exist_ok=True)
     with open(SUPPORT_FILE, "w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2)
+        json.dump(result, f, indent=2, separators=(",", " : "))
         f.write("\n")
 
 
