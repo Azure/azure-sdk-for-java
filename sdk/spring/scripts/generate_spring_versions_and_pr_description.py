@@ -4,7 +4,6 @@
 import argparse
 import html
 import json
-import os
 import re
 import urllib.error
 import urllib.request

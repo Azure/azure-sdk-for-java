@@ -145,6 +145,9 @@ def main():
         cloud_version = existing.get("spring-cloud-version")
         if existing.get("supportStatus") != "END_OF_LIFE":
             cloud_version = find_compatible_spring_cloud_version(version, spring_cloud_ranges)
+            if cloud_version == NONE_SUPPORTED and support_status == "SUPPORTED":
+                # Keep matrix entries non-supported when Initializr does not provide a compatible Spring Cloud BOM.
+                support_status = "TODO"
 
         current_items.append(
             {
