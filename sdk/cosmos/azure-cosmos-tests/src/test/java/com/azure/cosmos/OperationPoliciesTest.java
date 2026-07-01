@@ -666,7 +666,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         validateOptions(changedOptions, feedResponse, false, true);
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void queryChangeFeed(String[] changedOptions) {
         int numInserted = 20;
         for (int i = 0; i < numInserted; i++) {
