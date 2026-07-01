@@ -161,7 +161,12 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const body = `Test Spring Boot RC version [${process.env.spring_boot_version}](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/${process.env.spring_boot_version}/spring-boot-dependencies-${process.env.spring_boot_version}.pom) and Spring Cloud version [${process.env.spring_cloud_version}](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/${process.env.spring_cloud_version}/spring-cloud-dependencies-${process.env.spring_cloud_version}.pom).\n${process.env.pr_descriptions}\n\nThis PR is created by GitHub Actions: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            const body = [
+              `Test Spring Boot RC version [${process.env.spring_boot_version}](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/${process.env.spring_boot_version}/spring-boot-dependencies-${process.env.spring_boot_version}.pom) and Spring Cloud version [${process.env.spring_cloud_version}](https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/${process.env.spring_cloud_version}/spring-cloud-dependencies-${process.env.spring_cloud_version}.pom).`,
+              process.env.pr_descriptions || '',
+              '',
+              `This PR is created by GitHub Actions: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${process.env.GITHUB_RUN_ID}`
+            ].join('\n');
             const pr = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
