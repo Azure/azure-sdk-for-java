@@ -28,6 +28,8 @@ import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -2314,7 +2316,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .flatMap(response -> {
                     // Verify Content-Type is Arrow
                     String contentType = response.getDeserializedHeaders().getContentType();
-                    assertTrue(contentType.contains("application/vnd.apache.arrow.stream"),
+                    assertTrue(
+                        StorageImplUtils.hasMatchingHeaderValue(contentType,
+                            Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
                         "Expected Arrow content type but got: " + contentType);
 
                     // Collect the Flux<ByteBuffer> body into a byte[] and feed it to the deserializer.

@@ -46,6 +46,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -2314,7 +2315,9 @@ public class ContainerApiTests extends BlobTestBase {
 
         // Verify Content-Type is Arrow
         String contentType = response.getDeserializedHeaders().getContentType();
-        assertTrue(contentType.contains("application/vnd.apache.arrow.stream"),
+        assertTrue(
+            StorageImplUtils.hasMatchingHeaderValue(contentType,
+                Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
             "Expected Arrow content type but got: " + contentType);
 
         // Deserialize using ArrowBlobListDeserializer

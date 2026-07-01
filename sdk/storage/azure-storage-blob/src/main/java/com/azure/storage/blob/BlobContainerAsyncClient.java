@@ -54,6 +54,7 @@ import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -1215,7 +1216,8 @@ public final class BlobContainerAsyncClient {
                 return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
                     java.io.ByteArrayInputStream inputStream = new java.io.ByteArrayInputStream(bytes);
 
-                    if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                    if (StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
                         ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(inputStream);
 
                         List<BlobItem> value = arrowResult.getBlobItems()
@@ -1455,7 +1457,8 @@ public final class BlobContainerAsyncClient {
                 return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
                     java.io.ByteArrayInputStream inputStream = new java.io.ByteArrayInputStream(bytes);
 
-                    if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                    if (StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
                         ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(inputStream);
 
                         List<BlobItem> value = arrowResult.getBlobItems()

@@ -59,6 +59,7 @@ import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -1041,7 +1042,8 @@ public final class BlobContainerClient {
                     .setDetails(options.getDetails());
 
                 if (options.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
-                    finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+                    finalOptions.setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                        .setEndBefore(options.getEndBefore());
                 }
 
             }
@@ -1069,7 +1071,8 @@ public final class BlobContainerClient {
                 // The response body is an InputStream backed by the network buffer. It must be closed to release the
                 // underlying buffer, otherwise the transport (e.g. Netty) will report a resource leak.
                 try (InputStream responseBody = response.getValue()) {
-                    if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                    if (StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
                         // Arrow response — parse with Arrow parser entrypoint
                         ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(responseBody);
 
@@ -1273,7 +1276,8 @@ public final class BlobContainerClient {
             // The response body is an InputStream backed by the network buffer. It must be closed to release the
             // underlying buffer, otherwise the transport (e.g. Netty) will report a resource leak.
             try (InputStream responseBody = response.getValue()) {
-                if (contentType != null && contentType.contentEquals("application/vnd.apache.arrow.stream")) {
+                if (StorageImplUtils.hasMatchingHeaderValue(contentType,
+                    Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
                     ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(responseBody);
 
                     List<BlobItem> value = arrowResult.getBlobItems()

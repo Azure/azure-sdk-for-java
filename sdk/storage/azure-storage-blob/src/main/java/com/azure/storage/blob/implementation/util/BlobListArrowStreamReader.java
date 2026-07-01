@@ -153,7 +153,7 @@ final class BlobListArrowStreamReader {
             long bodyLength = message.bodyLength();
             if (isMessageOutOfBounds(bodyLength, pos, length)) {
                 throw new BlobListArrowParseException(
-                    "ListBlobs Arrow parse failure: message steamBuffer length is out of bounds.");
+                    "ListBlobs Arrow parse failure: message body length is out of bounds.");
             }
             int bodyStart = pos;
             pos += (int) bodyLength;
