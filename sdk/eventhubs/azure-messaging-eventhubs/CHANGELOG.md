@@ -1,20 +1,14 @@
 # Release History
 
-## 5.22.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed `EventContext.updateCheckpointAsync()` so that the `offsetString` from the received `EventData` is propagated
-  to the `Checkpoint` passed to the `CheckpointStore`. Previously only the deprecated `offset` (Long) was set, which
-  caused checkpoint stores that read `offsetString` (such as `BlobCheckpointStore`) to persist a `null` offset, breaking
-  partition switch-over and consumer-group lag monitoring.
-  ([#46752](https://github.com/Azure/azure-sdk-for-java/issues/46752))
+## 5.21.5 (2026-07-01)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.11.4` to version `2.12.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
 
 ## 5.21.4 (2026-05-05)
 
@@ -25,6 +19,7 @@
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 - Upgraded `azure-core-amqp` from `2.11.3` to version `2.11.4`.
 
+
 ## 5.21.3 (2026-01-29)
 
 ### Other Changes
@@ -33,6 +28,7 @@
 
 - Upgraded `azure-core-amqp` from `2.11.2` to version `2.11.3`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
 
 ## 5.21.2 (2025-10-27)
 
@@ -43,6 +39,7 @@
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
 - Upgraded `azure-core-amqp` from `2.11.1` to version `2.11.2`.
 
+
 ## 5.21.1 (2025-09-25)
 
 ### Other Changes
@@ -51,6 +48,7 @@
 
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 - Upgraded `azure-core-amqp` from `2.11.0` to version `2.11.1`.
+
 
 ## 5.21.0 (2025-08-11)
 
@@ -103,6 +101,7 @@
 
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-amqp` from `2.9.15` to version `2.9.16`.
+
 
 ## 5.20.1 (2025-02-25)
 
@@ -317,6 +316,7 @@
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-amqp` from `2.9.1` to version `2.9.2`.
 
+
 ## 5.18.1 (2024-02-16)
 
 ### Bugs Fixed
@@ -409,6 +409,7 @@
 
 - Upgraded `azure-core-amqp` from `2.8.6` to version `2.8.7`.
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
 
 ## 5.15.6 (2023-06-20)
 
@@ -938,4 +939,5 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
   by calling `EventHubPublisher.close()` or `EventHubConsumer.close()`.
 - Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work. Limit usage of concurrent
   clients and consumers to two to avoid failures.
+
 

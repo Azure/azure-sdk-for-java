@@ -17,8 +17,8 @@ public class GetDocumentModels {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.list-models.get-document-models
+        // BEGIN:com.azure.ai.documentintelligence.generated.listmodels.getdocumentmodels
         PagedIterable<DocumentModelDetails> response = documentIntelligenceAdministrationClient.listModels();
-        // END:com.azure.ai.documentintelligence.generated.list-models.get-document-models
+        // END:com.azure.ai.documentintelligence.generated.listmodels.getdocumentmodels
     }
 }

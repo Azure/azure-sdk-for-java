@@ -6,7 +6,6 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
-import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -718,11 +717,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             .flatMap(storageAccountKey -> {
                 self.importRequestInner.withStorageUri(
                     String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
-                if (storageAccount.isSharedKeyAccessAllowed()
-                    && CoreUtils.isNullOrEmpty(self.importRequestInner.storageKey())) {
-                    self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                    self.importRequestInner.withStorageKey(storageAccountKey.value());
-                }
+                self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
+                self.importRequestInner.withStorageKey(storageAccountKey.value());
                 return context.voidMono();
             }));
         return this;
@@ -757,20 +753,6 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         this.importRequestInner.withAuthenticationType(AuthenticationType.ADPASSWORD.toString());
         this.importRequestInner.withAdministratorLogin(administratorLogin);
         this.importRequestInner.withAdministratorLoginPassword(administratorPassword);
-        return this;
-    }
-
-    @Override
-    public SqlDatabaseImpl withManagedIdentity(String managedIdentityResourceId) {
-        Objects.requireNonNull(managedIdentityResourceId);
-        this.importRequestInner.withAuthenticationType(AuthenticationType.MANAGED_IDENTITY.toString());
-        this.importRequestInner.withAdministratorLogin(managedIdentityResourceId);
-        // No administrator password is required for managed identity authentication.
-        this.importRequestInner.withAdministratorLoginPassword(null);
-
-        // Use the same MI for storage account access.
-        this.importRequestInner.withStorageKeyType(StorageKeyType.MANAGED_IDENTITY);
-        this.importRequestInner.withStorageKey(managedIdentityResourceId);
         return this;
     }
 

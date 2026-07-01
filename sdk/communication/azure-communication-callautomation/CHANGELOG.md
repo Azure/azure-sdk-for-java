@@ -1,14 +1,13 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.7.1 (2026-07-01)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.4.6` to version `1.4.7`.
+
 
 ## 1.7.0 (2026-06-18)
 
