@@ -487,6 +487,54 @@ public final class KeyClientImpl {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
             RequestOptions requestOptions, Context context);
 
+        @Post("/keys/{key-name}/{key-version}/securewrapkey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> secureWrapKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
+            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/keys/{key-name}/{key-version}/securewrapkey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> secureWrapKeySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
+            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/keys/{key-name}/{key-version}/secureunwrapkey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> secureUnwrapKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
+            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/keys/{key-name}/{key-version}/secureunwrapkey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> secureUnwrapKeySync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
+            @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData parameters,
+            RequestOptions requestOptions, Context context);
+
         @Post("/keys/{key-name}/{key-version}/unwrapkey")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -796,6 +844,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -851,6 +903,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -918,6 +974,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -973,6 +1033,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1052,6 +1116,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1127,6 +1195,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1203,6 +1275,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1257,6 +1333,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1338,6 +1418,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1392,6 +1476,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1472,6 +1560,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1552,6 +1644,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1615,6 +1711,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1669,6 +1769,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1734,6 +1838,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1788,6 +1896,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1867,6 +1979,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -1948,6 +2064,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2016,6 +2136,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2079,6 +2203,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2140,6 +2268,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2201,6 +2333,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2264,6 +2400,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2327,6 +2467,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2389,6 +2533,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2451,6 +2599,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2614,6 +2766,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -2709,6 +2865,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3277,6 +3437,216 @@ public final class KeyClientImpl {
     }
 
     /**
+     * Creates a new 256 bit AES key within the trusted execution environment and wraps this key using a specified key.
+     * 
+     * The SECURE WRAP operation creates a new 256 bit AES key within the trusted execution environment(TEE) and
+     * encrypts the same with a key encryption key that has previously been stored in an Azure Key Vault. The WRAP
+     * operation is only strictly necessary for symmetric keys stored in Azure Key Vault since protection with an
+     * asymmetric key can be performed using the public portion of the key. This operation is supported for asymmetric
+     * keys as a convenience for callers that have a key-reference but do not have access to the public key material.
+     * This operation requires the keys/wrapKey permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kid: String (Required)
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     *     value: Base64Url (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param keyName The name of the key.
+     * @param keyVersion The version of the key.
+     * @param parameters The parameters for wrap operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the secure key wrap operation result along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> secureWrapKeyWithResponseAsync(String keyName, String keyVersion,
+        BinaryData parameters, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.secureWrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+                keyName, keyVersion, contentType, accept, parameters, requestOptions, context));
+    }
+
+    /**
+     * Creates a new 256 bit AES key within the trusted execution environment and wraps this key using a specified key.
+     * 
+     * The SECURE WRAP operation creates a new 256 bit AES key within the trusted execution environment(TEE) and
+     * encrypts the same with a key encryption key that has previously been stored in an Azure Key Vault. The WRAP
+     * operation is only strictly necessary for symmetric keys stored in Azure Key Vault since protection with an
+     * asymmetric key can be performed using the public portion of the key. This operation is supported for asymmetric
+     * keys as a convenience for callers that have a key-reference but do not have access to the public key material.
+     * This operation requires the keys/wrapKey permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kid: String (Required)
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     *     value: Base64Url (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param keyName The name of the key.
+     * @param keyVersion The version of the key.
+     * @param parameters The parameters for wrap operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the secure key wrap operation result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> secureWrapKeyWithResponse(String keyName, String keyVersion, BinaryData parameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.secureWrapKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
+            keyVersion, contentType, accept, parameters, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Securely unwraps a previously wrapped symmetric key using a specified key, ensuring TEE attestation via Microsoft
+     * Azure Attestation (MAA) before unwrapping.
+     * 
+     * The SECURE UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the SECURE WRAP operation. The SECURE UNWRAP operation applies to asymmetric and
+     * symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires
+     * the keys/unwrapKey permission.
+     * The SECURE UNWRAP operation ensures that MAA (Microsoft Azure Attestation Service) is used to attest the TEE
+     * (Trusted Execution Environment) before the key is unwrapped.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     *     value: Base64Url (Required)
+     *     target: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kid: String (Required)
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     *     value: Base64Url (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param keyName The name of the key.
+     * @param keyVersion The version of the key.
+     * @param parameters The parameters for unwrap operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the secure key wrap operation result along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> secureUnwrapKeyWithResponseAsync(String keyName, String keyVersion,
+        BinaryData parameters, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.secureUnwrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
+                keyVersion, contentType, accept, parameters, requestOptions, context));
+    }
+
+    /**
+     * Securely unwraps a previously wrapped symmetric key using a specified key, ensuring TEE attestation via Microsoft
+     * Azure Attestation (MAA) before unwrapping.
+     * 
+     * The SECURE UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This
+     * operation is the reverse of the SECURE WRAP operation. The SECURE UNWRAP operation applies to asymmetric and
+     * symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires
+     * the keys/unwrapKey permission.
+     * The SECURE UNWRAP operation ensures that MAA (Microsoft Azure Attestation Service) is used to attest the TEE
+     * (Trusted Execution Environment) before the key is unwrapped.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     *     value: Base64Url (Required)
+     *     target: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kid: String (Required)
+     *     alg: String(RSA-OAEP-256/A128KW/A192KW/A256KW/A128KWPAD/A192KWPAD/A256KWPAD/CKM_AES_KEY_WRAP/CKM_AES_KEY_WRAP_PAD) (Required)
+     *     value: Base64Url (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param keyName The name of the key.
+     * @param keyVersion The version of the key.
+     * @param parameters The parameters for unwrap operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the secure key wrap operation result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> secureUnwrapKeyWithResponse(String keyName, String keyVersion, BinaryData parameters,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.secureUnwrapKeySync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
+            keyVersion, contentType, accept, parameters, requestOptions, Context.NONE);
+    }
+
+    /**
      * Unwraps a symmetric key using the specified key that was initially used for wrapping that key.
      * 
      * The UNWRAP operation supports decryption of a symmetric key using the target key encryption key. This operation
@@ -3516,6 +3886,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3583,6 +3957,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3648,6 +4026,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3713,6 +4095,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3788,6 +4174,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3870,6 +4260,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -3994,6 +4388,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4073,6 +4471,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4478,6 +4880,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4559,6 +4965,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4619,6 +5029,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4672,6 +5086,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4724,6 +5142,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4777,6 +5199,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4829,6 +5255,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
@@ -4886,6 +5316,10 @@ public final class KeyClientImpl {
      *             publicKeyAttestation: Base64Url (Optional)
      *             version: String (Optional)
      *         }
+     *         external_key (Optional): {
+     *             id: String (Required)
+     *         }
+     *         key_size: Integer (Optional)
      *     }
      *     tags (Optional): {
      *         String: String (Required)
