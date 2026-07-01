@@ -903,10 +903,22 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             probeClient,
             ensureContainerExists);
         getFeedRangesWithRetry(
-            database.getContainer(cosmosContainerProperties.getId()),
+            getContainerForReadinessProbe(database, cosmosContainerProperties.getId(), probeClient),
             "post-create feed range readiness for container " + cosmosContainerProperties.getId());
 
         return database.getContainer(cosmosContainerProperties.getId());
+    }
+
+    private static CosmosAsyncContainer getContainerForReadinessProbe(
+        CosmosAsyncDatabase database,
+        String containerId,
+        CosmosAsyncClient probeClient) {
+
+        if (probeClient != null) {
+            return probeClient.getDatabase(database.getId()).getContainer(containerId);
+        }
+
+        return database.getContainer(containerId);
     }
 
     private static void createCollectionIfNotExists(
@@ -1211,7 +1223,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .block();
         waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
         getFeedRangesWithRetry(
-            database.getContainer(cosmosContainerProperties.getId()),
+            getContainerForReadinessProbe(database, cosmosContainerProperties.getId(), probeClient),
             "post-create feed range readiness for container " + cosmosContainerProperties.getId());
         return database.getContainer(cosmosContainerProperties.getId());
     }
