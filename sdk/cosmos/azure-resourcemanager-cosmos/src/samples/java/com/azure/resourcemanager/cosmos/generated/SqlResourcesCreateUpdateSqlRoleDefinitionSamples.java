@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class SqlResourcesCreateUpdateSqlRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBSqlRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionCreateUpdate.
@@ -28,8 +28,8 @@ public final class SqlResourcesCreateUpdateSqlRoleDefinitionSamples {
                 new SqlRoleDefinitionCreateUpdateParameters().withRoleName("myRoleName")
                     .withType(RoleDefinitionType.CUSTOM_ROLE)
                     .withAssignableScopes(Arrays.asList(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales",
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"))
+                        "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/sales",
+                        "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases"))
                     .withPermissions(Arrays.asList(new Permission()
                         .withDataActions(
                             Arrays.asList("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/create",

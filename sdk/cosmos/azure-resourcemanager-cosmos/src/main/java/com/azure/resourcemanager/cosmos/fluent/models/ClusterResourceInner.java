@@ -26,14 +26,19 @@ public final class ClusterResourceInner extends ProxyResource {
     private ClusterResourceProperties properties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
+     * The location of the resource group to which the resource belongs.
      */
     private String location;
+
+    /*
+     * Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
+     * key no greater than 128 characters and value no greater than 256 characters. For example, the default experience
+     * for a template type is set with
+     * \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\"
+     * .
+     */
+    private Map<String, String> tags;
 
     /*
      * Identity for the resource.
@@ -87,27 +92,7 @@ public final class ClusterResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ClusterResourceInner object itself.
-     */
-    public ClusterResourceInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the location property: The location of the resource group to which the resource belongs.
      * 
      * @return the location value.
      */
@@ -116,13 +101,41 @@ public final class ClusterResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the location property: The geo-location where the resource lives.
+     * Set the location property: The location of the resource group to which the resource belongs.
      * 
      * @param location the location value to set.
      * @return the ClusterResourceInner object itself.
      */
     public ClusterResourceInner withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current
+     * \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\".
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current
+     * \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\".
+     * 
+     * @param tags the tags value to set.
+     * @return the ClusterResourceInner object itself.
+     */
+    public ClusterResourceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -206,8 +219,8 @@ public final class ClusterResourceInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -236,11 +249,11 @@ public final class ClusterResourceInner extends ProxyResource {
                     deserializedClusterResourceInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterResourceInner.properties = ClusterResourceProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterResourceInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedClusterResourceInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedClusterResourceInner.location = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedClusterResourceInner.identity = ManagedCassandraManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

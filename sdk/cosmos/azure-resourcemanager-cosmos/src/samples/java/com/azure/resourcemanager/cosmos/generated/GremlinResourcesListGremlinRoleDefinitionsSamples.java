@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GremlinResourcesListGremlinRoleDefinitionsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionList.json
+     * x-ms-original-file: 2026-03-15/gremlinrbac/CosmosDBGremlinRoleDefinitionList.json
      */
     /**
      * Sample code: CosmosDBGremlinRoleDefinitionList.

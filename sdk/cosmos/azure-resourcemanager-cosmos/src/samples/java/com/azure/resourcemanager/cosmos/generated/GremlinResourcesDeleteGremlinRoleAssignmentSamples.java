@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GremlinResourcesDeleteGremlinRoleAssignmentSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentDelete.json
+     * x-ms-original-file: 2026-03-15/gremlinrbac/CosmosDBGremlinRoleAssignmentDelete.json
      */
     /**
      * Sample code: CosmosDBGremlinRoleAssignmentDelete.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesGetSqlContainerThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlContainerThroughputGet.json
+     * x-ms-original-file: 2026-03-15/CosmosDBSqlContainerThroughputGet.json
      */
     /**
      * Sample code: CosmosDBSqlContainerThroughputGet.

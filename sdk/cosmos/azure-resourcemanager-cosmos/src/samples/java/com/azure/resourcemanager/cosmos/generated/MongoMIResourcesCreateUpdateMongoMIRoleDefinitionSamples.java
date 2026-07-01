@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class MongoMIResourcesCreateUpdateMongoMIRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoMIRoleDefinitionCreateUpdate.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
+     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseMigrateToManualThroughput.

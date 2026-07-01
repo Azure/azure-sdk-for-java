@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoMIRoleAssignmentResou
  */
 public final class MongoMIResourcesCreateUpdateMongoMIRoleAssignmentSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleAssignmentCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoMIRoleAssignmentCreateUpdate.

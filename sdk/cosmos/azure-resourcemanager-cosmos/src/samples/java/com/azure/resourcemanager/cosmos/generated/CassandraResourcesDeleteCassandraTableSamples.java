@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraResourcesDeleteCassandraTableSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBCassandraTableDelete.json
+     * x-ms-original-file: 2026-03-15/CosmosDBCassandraTableDelete.json
      */
     /**
      * Sample code: CosmosDBCassandraTableDelete.
