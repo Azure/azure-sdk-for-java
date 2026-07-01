@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceGatewaysGetServicesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceGatewayGetServicesResponse.json
+     * x-ms-original-file: 2025-07-01/ServiceGatewayGetServicesResponse.json
      */
     /**
      * Sample code: Get services in service gateway.

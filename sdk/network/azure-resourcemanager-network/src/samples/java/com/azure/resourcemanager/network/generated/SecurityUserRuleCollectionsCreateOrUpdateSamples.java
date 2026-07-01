@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class SecurityUserRuleCollectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerSecurityUserRuleCollectionPut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerSecurityUserRuleCollectionPut.json
      */
     /**
      * Sample code: Create or Update a Security User Rule Collection.

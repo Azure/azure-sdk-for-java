@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkWatchersListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherListAll.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherListAll.json
      */
     /**
      * Sample code: List all network watchers.

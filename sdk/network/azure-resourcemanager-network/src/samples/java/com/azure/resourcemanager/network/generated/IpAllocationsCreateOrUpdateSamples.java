@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class IpAllocationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpAllocationCreate.json
+     * x-ms-original-file: 2025-07-01/IpAllocationCreate.json
      */
     /**
      * Sample code: Create IpAllocation.

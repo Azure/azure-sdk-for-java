@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubnetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SubnetDelete.json
+     * x-ms-original-file: 2025-07-01/SubnetDelete.json
      */
     /**
      * Sample code: Delete subnet.

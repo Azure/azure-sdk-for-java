@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewayPrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayPrivateEndpointConnectionList.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayPrivateEndpointConnectionList.json
      */
     /**
      * Sample code: Lists all private endpoint connections on application gateway.

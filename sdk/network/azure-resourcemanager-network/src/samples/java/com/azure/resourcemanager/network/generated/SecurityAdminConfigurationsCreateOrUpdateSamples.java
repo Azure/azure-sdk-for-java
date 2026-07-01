@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class SecurityAdminConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerSecurityAdminConfigurationPut_ManualAggregation.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerSecurityAdminConfigurationPut_ManualAggregation.json
      */
     /**
      * Sample code: Create manual-mode security admin configuration.
@@ -34,7 +34,7 @@ public final class SecurityAdminConfigurationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerSecurityAdminConfigurationPut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerSecurityAdminConfigurationPut.json
      */
     /**
      * Sample code: Create network manager security admin configuration.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class RouteTablesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteTableUpdateTags.json
+     * x-ms-original-file: 2025-07-01/RouteTableUpdateTags.json
      */
     /**
      * Sample code: Update route table tags.

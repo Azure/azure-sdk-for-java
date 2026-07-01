@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysInvokeAbortMigrationSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGatewayAbortMigration.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayAbortMigration.json
      */
     /**
      * Sample code: VirtualNetworkGatewayAbortMigration.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VpnSitesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VpnSiteGet.json
+     * x-ms-original-file: 2025-07-01/VpnSiteGet.json
      */
     /**
      * Sample code: VpnSiteGet.

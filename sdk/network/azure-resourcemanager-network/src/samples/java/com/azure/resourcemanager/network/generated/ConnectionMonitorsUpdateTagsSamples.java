@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ConnectionMonitorsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherConnectionMonitorUpdateTags.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherConnectionMonitorUpdateTags.json
      */
     /**
      * Sample code: Update connection monitor tags.

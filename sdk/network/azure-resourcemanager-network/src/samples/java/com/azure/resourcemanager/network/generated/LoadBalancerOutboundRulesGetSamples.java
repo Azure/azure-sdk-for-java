@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerOutboundRulesGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerOutboundRuleGet.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerOutboundRuleGet.json
      */
     /**
      * Sample code: LoadBalancerOutboundRuleGet.

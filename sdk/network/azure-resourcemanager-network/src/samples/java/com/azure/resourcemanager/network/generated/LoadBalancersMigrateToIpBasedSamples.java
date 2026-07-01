@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersMigrateToIpBasedSamples {
     /*
-     * x-ms-original-file: 2025-05-01/MigrateLoadBalancerToIPBased.json
+     * x-ms-original-file: 2025-07-01/MigrateLoadBalancerToIPBased.json
      */
     /**
      * Sample code: Migrate load balancer to IP Based.

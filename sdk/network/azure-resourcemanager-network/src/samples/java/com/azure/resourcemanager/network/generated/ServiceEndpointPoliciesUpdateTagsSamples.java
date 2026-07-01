@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ServiceEndpointPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceEndpointPolicyUpdateTags.json
+     * x-ms-original-file: 2025-07-01/ServiceEndpointPolicyUpdateTags.json
      */
     /**
      * Sample code: Update service endpoint policy tags.

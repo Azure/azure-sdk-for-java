@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class StaticCidrsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/StaticCidrs_Delete.json
+     * x-ms-original-file: 2025-07-01/StaticCidrs_Delete.json
      */
     /**
      * Sample code: StaticCidrs_Delete.

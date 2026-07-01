@@ -23,7 +23,7 @@ public final class VolumesListQuotaReportMockTests {
     @Test
     public void testListQuotaReport() throws Exception {
         String responseStr
-            = "{\"properties\":{\"quotaReportRecords\":[{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"gpnrhgov\",\"quotaLimitUsedInKiBs\":6131768695545339790,\"quotaLimitTotalInKiBs\":8602443977258369217,\"percentageUsed\":30.748308,\"isDerivedQuota\":true},{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"mzvupor\",\"quotaLimitUsedInKiBs\":5235917180289982639,\"quotaLimitTotalInKiBs\":6437481648804620645,\"percentageUsed\":99.04068,\"isDerivedQuota\":true},{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"nq\",\"quotaLimitUsedInKiBs\":8747604723179169845,\"quotaLimitTotalInKiBs\":3069133497157477777,\"percentageUsed\":47.20034,\"isDerivedQuota\":false},{\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"gdhbe\",\"quotaLimitUsedInKiBs\":8008327052394351469,\"quotaLimitTotalInKiBs\":1286018993846993841,\"percentageUsed\":58.600147,\"isDerivedQuota\":false}]}}";
+            = "{\"properties\":{\"quotaReportRecords\":[{\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"fpwzyifrkgwltx\",\"quotaLimitUsedInKiBs\":7937479924655980500,\"quotaLimitTotalInKiBs\":5578823087156344145,\"percentageUsed\":63.663513,\"isDerivedQuota\":true},{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"yorpr\",\"quotaLimitUsedInKiBs\":1531468196728241369,\"quotaLimitTotalInKiBs\":1995086181838707776,\"percentageUsed\":70.84389,\"isDerivedQuota\":true},{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"jkwynqxaekqsykv\",\"quotaLimitUsedInKiBs\":9185732135922687355,\"quotaLimitTotalInKiBs\":2367029436981063348,\"percentageUsed\":28.452461,\"isDerivedQuota\":true},{\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"rspxklur\",\"quotaLimitUsedInKiBs\":2653661916731287234,\"quotaLimitTotalInKiBs\":1208047190142685150,\"percentageUsed\":3.5500765,\"isDerivedQuota\":false}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,20 +33,20 @@ public final class VolumesListQuotaReportMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListQuotaReportResult response = manager.volumes()
-            .listQuotaReport("rxmunjdxvgln", "vxlx", "aglqivbgkcvkh", "zvuqdflvon",
-                new QuotaReportFilterRequest().withQuotaType(QuotaType.INDIVIDUAL_USER_QUOTA)
-                    .withQuotaTarget("pubcpzgpxtivhjk")
-                    .withUsageThresholdPercentage(1660677245),
+            .listQuotaReport("udqll", "sauzpjlx", "ehuxiqhzlraym", "zxlskihmxr",
+                new QuotaReportFilterRequest().withQuotaType(QuotaType.INDIVIDUAL_GROUP_QUOTA)
+                    .withQuotaTarget("jrednwyysh")
+                    .withUsageThresholdPercentage(220468340),
                 com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(QuotaType.INDIVIDUAL_USER_QUOTA,
             response.properties().quotaReportRecords().get(0).quotaType());
-        Assertions.assertEquals("gpnrhgov", response.properties().quotaReportRecords().get(0).quotaTarget());
-        Assertions.assertEquals(6131768695545339790L,
+        Assertions.assertEquals("fpwzyifrkgwltx", response.properties().quotaReportRecords().get(0).quotaTarget());
+        Assertions.assertEquals(7937479924655980500L,
             response.properties().quotaReportRecords().get(0).quotaLimitUsedInKiBs());
-        Assertions.assertEquals(8602443977258369217L,
+        Assertions.assertEquals(5578823087156344145L,
             response.properties().quotaReportRecords().get(0).quotaLimitTotalInKiBs());
-        Assertions.assertEquals(30.748308F, response.properties().quotaReportRecords().get(0).percentageUsed());
+        Assertions.assertEquals(63.663513F, response.properties().quotaReportRecords().get(0).percentageUsed());
         Assertions.assertTrue(response.properties().quotaReportRecords().get(0).isDerivedQuota());
     }
 }

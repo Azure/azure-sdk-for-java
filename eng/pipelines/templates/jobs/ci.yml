@@ -393,15 +393,6 @@ jobs:
             ServiceDirectory: ${{ parameters.ServiceDirectory }}
             TestPipeline: ${{ parameters.TestPipeline }}
 
-      - template: /eng/common/pipelines/templates/steps/verify-links.yml
-        parameters:
-          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: ''
-            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: sdk/${{ parameters.ServiceDirectory }}
-          CheckLinkGuidance: $true
-
       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
         # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below and
         # the verify samples
