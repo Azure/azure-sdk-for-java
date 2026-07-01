@@ -167,16 +167,20 @@ private[spark] class CosmosReadManyByPartitionKeyReader(
             }
 
             override def hasNext: Boolean = {
-              try {
-                val hasMore = reader.next()
-                if (!hasMore) {
-                  closeReader()
+              if (isClosed.get()) {
+                false
+              } else {
+                try {
+                  val hasMore = reader.next()
+                  if (!hasMore) {
+                    closeReader()
+                  }
+                  hasMore
+                } catch {
+                  case error: Throwable =>
+                    closeReader()
+                    throw error
                 }
-                hasMore
-              } catch {
-                case error: Throwable =>
-                  closeReader()
-                  throw error
               }
             }
 
