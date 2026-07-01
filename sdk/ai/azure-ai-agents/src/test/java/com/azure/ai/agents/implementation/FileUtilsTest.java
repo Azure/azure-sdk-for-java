@@ -80,4 +80,67 @@ public class FileUtilsTest {
         Assertions.assertEquals("updated content",
             new String(Files.readAllBytes(destinationFile), StandardCharsets.UTF_8));
     }
+
+    @Test
+    public void computeSha256MatchesKnownVectorForAbc() {
+        // SHA-256("abc") standard test vector.
+        Assertions.assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+            FileUtils.computeSha256(BinaryData.fromString("abc")));
+    }
+
+    @Test
+    public void computeSha256MatchesKnownVectorForEmptyContent() {
+        // SHA-256("") standard test vector.
+        Assertions.assertEquals("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            FileUtils.computeSha256(BinaryData.fromBytes(new byte[0])));
+    }
+
+    @Test
+    public void computeSha256ReturnsLowercaseHexDigestOf64Characters() {
+        String hash = FileUtils.computeSha256(BinaryData.fromString("some code content"));
+
+        Assertions.assertTrue(hash.matches("[0-9a-f]{64}"),
+            "Expected a 64-character lowercase hex digest but was: " + hash);
+    }
+
+    @Test
+    public void computeSha256IsConsistentAcrossBinaryDataSources() throws IOException {
+        String text = "code-zip-content";
+        Path file = Files.write(temporaryDirectory.resolve("code.zip"), text.getBytes(StandardCharsets.UTF_8));
+
+        String fromBytes = FileUtils.computeSha256(BinaryData.fromBytes(text.getBytes(StandardCharsets.UTF_8)));
+        String fromString = FileUtils.computeSha256(BinaryData.fromString(text));
+        String fromFile = FileUtils.computeSha256(BinaryData.fromFile(file));
+
+        Assertions.assertEquals(fromBytes, fromString);
+        Assertions.assertEquals(fromBytes, fromFile);
+    }
+
+    @Test
+    public void computeSha256HashesFileBackedBinaryContent() throws IOException {
+        // Mimics the real code-zip path: bytes with all values (incl. > 0x7f) read from disk via BinaryData.fromFile.
+        byte[] binaryContent = new byte[256];
+        for (int i = 0; i < binaryContent.length; i++) {
+            binaryContent[i] = (byte) i;
+        }
+        Path file = Files.write(temporaryDirectory.resolve("binary.zip"), binaryContent);
+
+        Assertions.assertEquals(FileUtils.computeSha256(BinaryData.fromBytes(binaryContent)),
+            FileUtils.computeSha256(BinaryData.fromFile(file)));
+    }
+
+    @Test
+    public void computeSha256IsRepeatableForFileBackedContent() throws IOException {
+        // The client hashes the content and then re-reads it for upload, so hashing must be replayable/stable.
+        byte[] bytes = "repeatable".getBytes(StandardCharsets.UTF_8);
+        BinaryData content = BinaryData.fromFile(Files.write(temporaryDirectory.resolve("repeat.zip"), bytes));
+
+        Assertions.assertEquals(FileUtils.computeSha256(content), FileUtils.computeSha256(content));
+    }
+
+    @Test
+    public void computeSha256DiffersForDifferentContent() {
+        Assertions.assertNotEquals(FileUtils.computeSha256(BinaryData.fromString("content-a")),
+            FileUtils.computeSha256(BinaryData.fromString("content-b")));
+    }
 }
