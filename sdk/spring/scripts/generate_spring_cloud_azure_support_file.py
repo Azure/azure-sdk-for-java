@@ -11,6 +11,9 @@ SPRING_METADATA_URL = "https://spring.io/project_metadata/spring-boot"
 SPRING_INITIALIZR_INFO_URL = "https://start.spring.io/actuator/info"
 SUPPORT_FILE = "sdk/spring/pipeline/spring-cloud-azure-supported-spring.json"
 NONE_SUPPORTED = "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
+# Azure SDK for Java still keeps Spring Boot 2.7.18 as supported, even though other inactive
+# versions are marked END_OF_LIFE when they drop out of the current Spring metadata feed.
+LEGACY_SUPPORTED_VERSION = "2.7.18"
 
 
 def version_key(version):
@@ -178,7 +181,7 @@ def main():
             continue
         cloned = dict(metadata)
         cloned["current"] = False
-        if version != "2.7.18":
+        if version != LEGACY_SUPPORTED_VERSION:
             cloned["supportStatus"] = "END_OF_LIFE"
         snapshot_items.append(cloned)
 

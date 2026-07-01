@@ -14,9 +14,9 @@ env:
   PR_TITLE: "Update Spring Boot and Spring Cloud versions for the Spring compatibility tests"
 
 permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+  contents: read
+  pull-requests: read
+  issues: read
 
 jobs:
   check-open-pr:
@@ -47,6 +47,10 @@ jobs:
     needs: check-open-pr
     if: ${{ needs.check-open-pr.outputs.has_open_pr == 'false' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
         with:

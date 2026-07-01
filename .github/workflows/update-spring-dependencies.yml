@@ -14,9 +14,9 @@ env:
   PR_TITLE_PREFIX: 'External dependencies upgrade - Spring Boot'
 
 permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+  contents: read
+  pull-requests: read
+  issues: read
 
 jobs:
   check:
@@ -47,6 +47,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     if: ${{ needs.check.outputs.skip_pipeline != 'true' }}
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
         with:
