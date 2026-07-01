@@ -142,6 +142,9 @@ public class ProjectsCustomizations extends Customization {
      */
     private List<String[]> loadBetaAnnotations(Logger logger) {
         Path csvPath = locateBetaCsv(logger);
+        if (csvPath == null) {
+            return new ArrayList<>();
+        }
         logger.info("Loading @Beta annotations from {}", csvPath);
 
         List<String> lines;
@@ -206,9 +209,10 @@ public class ProjectsCustomizations extends Customization {
     private Path locateBetaCsv(Logger logger) {
         Path csvPath = Paths.get(System.getProperty("user.dir"), "customizations", CSV_FILE_NAME).toAbsolutePath();
         if (!Files.isRegularFile(csvPath)) {
-            logger.error("Could not locate {} at expected path {} (user.dir={})", CSV_FILE_NAME, csvPath,
-                System.getProperty("user.dir"));
-            throw new IllegalStateException("Could not locate " + CSV_FILE_NAME + " at " + csvPath);
+            logger.warn("Could not locate {} at expected path {} (user.dir={}); skipping @Beta annotations. "
+                + "The CSV is produced by internal tooling that does not run in spec SDK-generation CI.", CSV_FILE_NAME,
+                csvPath, System.getProperty("user.dir"));
+            return null;
         }
         return csvPath;
     }
