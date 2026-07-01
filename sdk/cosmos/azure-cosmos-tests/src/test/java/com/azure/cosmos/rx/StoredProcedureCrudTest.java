@@ -5,14 +5,13 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
-import com.azure.cosmos.CosmosStoredProcedure;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -63,7 +62,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         CosmosStoredProcedureResponse storedProcedureResponse = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block();
         CosmosAsyncStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureResponse.getProperties().getId());
 
-        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+        waitIfNeededForReplicasToCatchUp(null, ResourceType.StoredProcedure);
         Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
 
         CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
@@ -94,7 +93,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
         validateSuccess(deleteObservable, validator);
 
-        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+        waitIfNeededForReplicasToCatchUp(null, ResourceType.StoredProcedure);
 
         Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
