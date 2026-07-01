@@ -69,7 +69,38 @@ jobs:
           git config --global user.name github-actions
           git add -A
           git commit -m "Upgrade external dependencies to align with Spring Boot ${{ env.spring_boot_version }}"
-          sed -i "s/NONE_SUPPORTED_SPRING_CLOUD_VERSION/${spring_cloud_version}/g" "./sdk/spring/pipeline/spring-cloud-azure-supported-spring.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          spring_boot_version = "${{ env.spring_boot_version }}"
+          spring_cloud_version = "${{ env.spring_cloud_version }}"
+          placeholder = "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
+          matrix_path = Path("./sdk/spring/pipeline/spring-cloud-azure-supported-spring.json")
+
+          with matrix_path.open("r", encoding="utf-8") as f:
+            entries = json.load(f)
+
+          updated = False
+          for entry in entries:
+            if (
+              entry.get("spring-boot-version") == spring_boot_version
+              and entry.get("spring-cloud-version") == placeholder
+            ):
+              entry["spring-cloud-version"] = spring_cloud_version
+              updated = True
+              break
+
+          if not updated:
+            raise SystemExit(
+              "Did not find RC support-matrix entry for "
+              f"spring-boot-version={spring_boot_version} with placeholder cloud version"
+            )
+
+          with matrix_path.open("w", encoding="utf-8") as f:
+            json.dump(entries, f, indent=2)
+            f.write("\n")
+          PY
           git add ./sdk/spring/pipeline/spring-cloud-azure-supported-spring.json
           git commit -m "Upgrade spring-cloud-azure-supported-spring"
           git push origin "HEAD:${{ env.update_branch }}"

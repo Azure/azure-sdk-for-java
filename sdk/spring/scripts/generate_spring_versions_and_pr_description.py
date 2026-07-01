@@ -203,8 +203,8 @@ def main():
     latest_rc = sort_versions_desc(rc_versions)[0] if rc_versions else None
 
     current_boot, current_cloud = read_current_supported_versions()
-    is_new_ga = latest_ga is not None and compare_versions(latest_ga, current_boot) != 0
-    is_new_rc = latest_rc is not None and compare_versions(latest_rc, current_boot) != 0
+    is_new_ga = latest_ga is not None and compare_versions(latest_ga, current_boot) > 0
+    is_new_rc = latest_rc is not None and compare_versions(latest_rc, current_boot) > 0
 
     if not is_new_ga and not is_new_rc:
         return
@@ -253,6 +253,8 @@ def main():
         try:
             target_cloud = find_compatible_spring_cloud_version(target_boot, spring_cloud_ranges)
         except RuntimeError:
+            if latest_ga is None:
+                raise
             target_cloud = find_compatible_spring_cloud_version(latest_ga, spring_cloud_ranges)
 
     write_outputs(target_boot, target_cloud, current_boot, current_cloud, release_notes_html(target_boot))
