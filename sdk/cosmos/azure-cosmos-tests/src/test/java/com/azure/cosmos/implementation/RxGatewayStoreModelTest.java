@@ -15,7 +15,9 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -28,6 +30,7 @@ import reactor.test.StepVerifier;
 import java.lang.reflect.Method;
 import java.net.SocketException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -1039,6 +1042,94 @@ public class RxGatewayStoreModelTest {
         getGatewayRetryWithTimeoutInSeconds.setAccessible(true);
 
         return (int) getGatewayRetryWithTimeoutInSeconds.invoke(storeModel);
+    }
+
+    /**
+     * Error bodies that {@code validateOrThrow} must turn into a CosmosException carrying the
+     * real HTTP status (400 here) rather than leaking the parse failure as statusCode 0.
+     *
+     * Columns: description, rawBody, expectMessageContains (null = don't assert message content).
+     * The Gateway V2 / thin-client proxy can return a non-JSON body (optionally NUL-padded) or a
+     * valid-but-non-object JSON value (scalar / array) for query-plan failures; both must fall back
+     * cleanly. A valid CosmosError JSON body must still parse and preserve its message.
+     */
+    @DataProvider(name = "validateOrThrowErrorBodyProvider")
+    public Object[][] validateOrThrowErrorBodyProvider() {
+        return new Object[][]{
+            {"NUL-padded plain text", "Query plan generation failed\u0000\u0000\u0000\u0000", "Query plan generation failed"},
+            {"JSON scalar string", "\"BadRequest\"", null},
+            {"JSON array", "[1,2,3]", null},
+            {"JSON number", "42", null},
+            {"valid CosmosError JSON", "{\"code\":\"BadRequest\",\"message\":\"bad query syntax\"}", "bad query syntax"},
+            {"empty body", "", null},
+        };
+    }
+
+    /**
+     * Locks the contract of the {@code validateOrThrow} fallback: regardless of the shape of the
+     * error body the proxy returns, the thrown {@link CosmosException} must carry the real HTTP
+     * status code (400) and never the leaked statusCode 0. The non-object-JSON rows (scalar/array/
+     * number) specifically guard the ClassCastException path that previously escaped the catch.
+     */
+    @Test(groups = "unit", dataProvider = "validateOrThrowErrorBodyProvider")
+    public void validateOrThrowPreservesStatusCodeForMalformedBodies(
+        String description,
+        String rawBody,
+        String expectMessageContains) throws Exception {
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            mockDiagnosticsClientContext(),
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            Mockito.mock(GlobalEndpointManager.class),
+            Mockito.mock(HttpClient.class),
+            null,
+            null);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(),
+            OperationType.QueryPlan,
+            "/dbs/db/colls/col",
+            ResourceType.Document);
+        dsr.requestContext = new DocumentServiceRequestContext();
+
+        ByteBuf bodyBuf = Unpooled.wrappedBuffer(rawBody.getBytes(StandardCharsets.UTF_8));
+
+        try {
+            invokeValidateOrThrow(storeModel, dsr, HttpResponseStatus.BAD_REQUEST, new HttpHeaders(), bodyBuf);
+            fail("validateOrThrow should have thrown a CosmosException for: " + description);
+        } catch (java.lang.reflect.InvocationTargetException invocationTargetException) {
+            Throwable cause = invocationTargetException.getCause();
+            assertThat(cause)
+                .as("validateOrThrow should throw CosmosException for: " + description)
+                .isInstanceOf(CosmosException.class);
+            CosmosException cosmosException = (CosmosException) cause;
+            assertThat(cosmosException.getStatusCode())
+                .as("status code must be preserved (never statusCode 0) for: " + description)
+                .isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+            if (expectMessageContains != null) {
+                assertThat(cosmosException.getMessage())
+                    .as("error message should be preserved for: " + description)
+                    .contains(expectMessageContains);
+            }
+        }
+    }
+
+    private static void invokeValidateOrThrow(RxGatewayStoreModel storeModel,
+                                              RxDocumentServiceRequest request,
+                                              HttpResponseStatus status,
+                                              HttpHeaders headers,
+                                              ByteBuf retainedBodyAsByteBuf) throws Exception {
+        Method validateOrThrow = RxGatewayStoreModel.class.getDeclaredMethod(
+            "validateOrThrow",
+            RxDocumentServiceRequest.class,
+            HttpResponseStatus.class,
+            HttpHeaders.class,
+            ByteBuf.class);
+        validateOrThrow.setAccessible(true);
+        validateOrThrow.invoke(storeModel, request, status, headers, retainedBodyAsByteBuf);
     }
 
     enum SessionTokenType {

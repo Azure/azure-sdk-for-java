@@ -51,7 +51,7 @@ public class CustomerWorkflowPartitionLevelCircuitBreakerTest extends CustomerWo
         registerForCleanup(item);
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3))
-            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
+            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(300), Duration.ofMillis(200)))
             .build();
 
         FaultInjectionRule readFaultRule = configureServerErrorRule(

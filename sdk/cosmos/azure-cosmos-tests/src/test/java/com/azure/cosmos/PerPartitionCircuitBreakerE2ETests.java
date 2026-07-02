@@ -3597,6 +3597,25 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
+                    if (expectedRegionCountWithFailures == 1
+                        && hasReachedCircuitBreakingThreshold
+                        && executionCountAfterCircuitBreakingThresholdBreached == 1) {
+                        // The PPCB failure counter reaching the circuit-breaking threshold and the routing layer
+                        // actually marking the first preferred region Unavailable are asynchronous. Before exercising
+                        // the operations whose diagnostics assert short-circuit routing, wait once for the region to
+                        // be short-circuited so the operation does not still contact the not-yet-excluded region.
+                        // Gated on a single faulty region (expectedRegionCountWithFailures == 1) so configs that fault
+                        // every region - where no region can be short-circuited - are unaffected.
+                        long shortCircuitWaitDeadlineNanos = System.nanoTime() + Duration.ofSeconds(10).toNanos();
+                        while (!isAnyRegionShortCircuitedForPartition(
+                                partitionKeyRangeWrapper,
+                                partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+                                locationEndpointToLocationSpecificContextForPartitionField)
+                            && System.nanoTime() < shortCircuitWaitDeadlineNanos) {
+                            Thread.sleep(100);
+                        }
+                    }
+
                     ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
@@ -5195,6 +5214,30 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
         logger.warn("Class with simple name {} does not exist!", classSimpleName);
         return null;
+    }
+
+    private static boolean isAnyRegionShortCircuitedForPartition(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+        Field locationEndpointToLocationSpecificContextForPartitionField) throws IllegalAccessException {
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+
+        if (partitionAndLocationSpecificUnavailabilityInfo == null) {
+            return false;
+        }
+
+        ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+
+        for (LocationSpecificHealthContext locationSpecificHealthContext : locationEndpointToLocationSpecificContextForPartition.values()) {
+            if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static double getEstimatedFailureCountSeenPerRegionPerPartitionKeyRange(

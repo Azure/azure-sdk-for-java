@@ -123,9 +123,16 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         // In gateway mode, serverstoremodel is GatewayStoreModel/ThinClientStoreModel so below passes
         // In direct mode, serverStoreModel is ServerStoreModel. So queryPlan goes through gatewayProxy and the query
         // goes through the serverStoreModel
-        Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
-        if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
-            Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
+        if (asyncDocumentClient.useThinClient()) {
+            // In thin client mode both the QueryPlan request and the data query are routed through the thin proxy
+            // (RxDocumentClientImpl.useThinClientStoreModel now includes OperationType.QueryPlan), so the proxy is
+            // invoked twice: once for the QueryPlan and once for the query.
+            Mockito.verify(spyProxy, Mockito.times(2)).processMessage(Mockito.any());
+        } else {
+            Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
+            if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
+            }
         }
     }
 

@@ -9,12 +9,23 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.ByteBufferOutputStream;
 import com.azure.cosmos.implementation.Bytes;
 import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class PartitionKeyInternalHelper {
+
+    private static final Range.MinComparator<String> MIN_COMPARATOR = new Range.MinComparator<>();
 
     public static final String MinimumInclusiveEffectivePartitionKey = toHexEncodedBinaryString(PartitionKeyInternal.EmptyPartitionKey.components);
     public static final byte[] MinimumInclusiveEffectivePartitionKeyBytes = toBinary(PartitionKeyInternal.EmptyPartitionKey.components);
@@ -293,5 +304,112 @@ public class PartitionKeyInternalHelper {
         String minEPK = internalPartitionKey.getEffectivePartitionKeyString(internalPartitionKey, partitionKeyDefinition);
         String maxEPK = minEPK + MaximumExclusiveEffectivePartitionKey;
         return new Range<>(minEPK, maxEPK, true, false);
+    }
+
+    /**
+     * Converts query ranges from PartitionKeyInternal JSON format to sorted EPK hex string ranges.
+     *
+     * <p>The thin client proxy returns queryRanges as PartitionKeyInternal JSON arrays
+     * (e.g., {@code {"min": ["value"], "max": ["Infinity"]}}). This method parses each range,
+     * computes the EPK hex string via {@link #getEffectivePartitionKeyString}, and sorts the
+     * result using {@link Range.MinComparator} to satisfy
+     * {@link RoutingMapProviderHelper#getOverlappingRanges} which requires sorted, non-overlapping input.
+     *
+     * @param queryRangesProperty the name of the JSON property containing the ranges array
+     * @param queryPlanJson the raw query plan JSON containing PartitionKeyInternal ranges
+     * @param partitionKeyDefinition the container's partition key definition
+     * @return sorted list of EPK hex string ranges; empty list if the property is absent
+     */
+    public static List<Range<String>> convertToSortedEpkRanges(
+        String queryRangesProperty,
+        ObjectNode queryPlanJson,
+        PartitionKeyDefinition partitionKeyDefinition) {
+
+        JsonNode queryRangesNode = queryPlanJson.get(queryRangesProperty);
+        if (queryRangesNode == null || !queryRangesNode.isArray()) {
+            String actualType = queryRangesNode == null ? "null (property absent)" : queryRangesNode.getNodeType().name();
+            throw new IllegalStateException(
+                "Thin client proxy query plan response has missing or invalid '" + queryRangesProperty + "' property. "
+                + "Expected: JSON array of {min, max, isMinInclusive, isMaxInclusive} range objects. "
+                + "Actual node type: " + actualType + ". "
+                + "Response keys: " + StreamSupport.stream(
+                    Spliterators.spliteratorUnknownSize(queryPlanJson.fieldNames(), 0), false)
+                    .collect(Collectors.joining(", ")) + ". "
+                + "This indicates a protocol mismatch between the SDK and the thin client proxy.");
+        }
+
+        ArrayNode rawRanges = (ArrayNode) queryRangesNode;
+        if (rawRanges.isEmpty()) {
+            throw new IllegalStateException(
+                "Thin client proxy query plan response '" + queryRangesProperty + "' array must not be empty. "
+                + "Expected: at least one range covering the partitions to fan out to. "
+                + "An empty array would silently produce zero query results.");
+        }
+
+        List<Range<String>> epkRanges = new ArrayList<>(rawRanges.size());
+
+        for (JsonNode rangeNode : rawRanges) {
+            if (!rangeNode.isObject()) {
+                throw new IllegalStateException(
+                    "Thin client proxy query plan response contains a non-object element in queryRanges array. "
+                    + "Expected: JSON object with {min, max, isMinInclusive, isMaxInclusive}. "
+                    + "Array size: " + rawRanges.size() + ". "
+                    + "Actual node type: " + rangeNode.getNodeType().name() + ".");
+            }
+            ObjectNode rangeObj = (ObjectNode) rangeNode;
+
+            String minEpk = partitionKeyInternalToEpkString(rangeObj.get("min"), partitionKeyDefinition);
+            String maxEpk = partitionKeyInternalToEpkString(rangeObj.get("max"), partitionKeyDefinition);
+
+            JsonNode minInclusiveNode = rangeObj.get("isMinInclusive");
+            JsonNode maxInclusiveNode = rangeObj.get("isMaxInclusive");
+            if (minInclusiveNode == null || maxInclusiveNode == null) {
+                throw new IllegalStateException(
+                    "Thin client proxy query plan range missing required fields. "
+                    + "Expected: isMinInclusive and isMaxInclusive. "
+                    + "Range object fields: " + StreamSupport.stream(
+                        Spliterators.spliteratorUnknownSize(rangeObj.fieldNames(), 0), false)
+                        .collect(Collectors.joining(", ")) + ".");
+            }
+            boolean isMinInclusive = minInclusiveNode.asBoolean();
+            boolean isMaxInclusive = maxInclusiveNode.asBoolean();
+
+            epkRanges.add(new Range<>(minEpk, maxEpk, isMinInclusive, isMaxInclusive));
+        }
+
+        epkRanges.sort(MIN_COMPARATOR);
+        return epkRanges;
+    }
+
+    /**
+     * Converts a single PartitionKeyInternal JSON node to its EPK hex string representation.
+     *
+     * @param rangeBoundaryNode the JSON node representing a range boundary (min or max) in PartitionKeyInternal format
+     * @param partitionKeyDefinition the container's partition key definition
+     * @return the EPK hex string
+     */
+    private static String partitionKeyInternalToEpkString(JsonNode rangeBoundaryNode, PartitionKeyDefinition partitionKeyDefinition) {
+        if (rangeBoundaryNode == null || rangeBoundaryNode.isNull()) {
+            throw new IllegalStateException(
+                "Thin client proxy query plan range has null boundary value. "
+                + "Expected: PartitionKeyInternal JSON array (e.g., [\"value\"] or [{\"type\":\"Infinity\"}]).");
+        }
+
+        PartitionKeyInternal partitionKey;
+        try {
+            partitionKey = Utils.getSimpleObjectMapper().treeToValue(rangeBoundaryNode, PartitionKeyInternal.class);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(
+                "Failed to parse PartitionKeyInternal from range boundary. "
+                    + "Boundary node type: " + rangeBoundaryNode.getNodeType().name() + ".", e);
+        }
+
+        if (partitionKey.getComponents() == null) {
+            throw new IllegalStateException(
+                "Thin client proxy query plan range boundary deserialized to NonePartitionKey (null components). "
+                + "Boundary node type: " + rangeBoundaryNode.getNodeType().name() + ".");
+        }
+
+        return getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
     }
 }

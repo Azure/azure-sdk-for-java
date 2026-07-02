@@ -582,11 +582,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .CosmosAsyncClientHelper
             .getCosmosAsyncClientAccessor()
             .getPreferredRegions(client).size() > 1;
+        CosmosAsyncContainer createdContainer = database.getContainer(cosmosContainerProperties.getId());
         if (throughput > 6000 || isMultiRegional) {
             waitForCollectionToBeAvailableToRead(database.getContainer(cosmosContainerProperties.getId()), probeClient);
         }
 
-        return database.getContainer(cosmosContainerProperties.getId());
+        return createdContainer;
     }
 
     protected static void waitForCollectionToBeAvailableToRead(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
@@ -1456,6 +1457,22 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     @DataProvider
     public static Object[][] clientBuildersWithGatewayAndHttp2() {
+        return new Object[][]{
+            {createGatewayRxDocumentClient(TestConfigurations.HOST, null, true, null, true, true, true)},
+        };
+    }
+
+    /**
+     * Data provider for thin client tests. Returns a gateway + HTTP/2 builder.
+     * Tests using this provider should enable thin client mode in their @BeforeClass
+     * by calling {@code System.setProperty("COSMOS.THINCLIENT_ENABLED", "true")} and
+     * clean up in @AfterClass with {@code System.clearProperty("COSMOS.THINCLIENT_ENABLED")}.
+     *
+     * <p>This provider can be adopted by existing test classes (e.g., query, stored procedure tests)
+     * to gradually add thin client coverage using the same test logic.</p>
+     */
+    @DataProvider
+    public static Object[][] clientBuildersWithThinClient() {
         return new Object[][]{
             {createGatewayRxDocumentClient(TestConfigurations.HOST, null, true, null, true, true, true)},
         };

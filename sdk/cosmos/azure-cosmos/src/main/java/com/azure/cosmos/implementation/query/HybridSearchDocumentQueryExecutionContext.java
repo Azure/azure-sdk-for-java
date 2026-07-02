@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -173,6 +174,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             aggregatedGlobalStatistics = Flux.fromIterable(globalStatsProducers)
                 .flatMap(producer -> producer.produceAsync()
                     .map(documentProducerFeedResponse -> {
+                        this.captureClientSideRequestStatistics(documentProducerFeedResponse.pageResult);
                         List<Document> results = documentProducerFeedResponse.pageResult.getResults();
                         return new GlobalFullTextSearchQueryStatistics(results.get(0));
                     }))
@@ -443,8 +445,25 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
 
             return Flux.fromIterable(componentProducers)
                 .flatMap(DocumentProducer::produceAsync)
+                .doOnNext(response -> this.captureClientSideRequestStatistics(response.pageResult))
                 .flatMap(response -> Flux.fromIterable(response.pageResult.getResults()));
         });
+    }
+
+    private void captureClientSideRequestStatistics(FeedResponse<?> response) {
+        if (response == null || response.getCosmosDiagnostics() == null) {
+            return;
+        }
+
+        CosmosDiagnostics diagnostics = response.getCosmosDiagnostics();
+        Collection<ClientSideRequestStatistics> requestStatistics =
+            diagAccessor().getFeedResponseDiagnostics(diagnostics) != null
+                ? diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(diagnostics)
+                : diagAccessor().getClientSideRequestStatistics(diagnostics);
+
+        if (requestStatistics != null && !requestStatistics.isEmpty()) {
+            this.clientSideRequestStatistics.addAll(requestStatistics);
+        }
     }
 
     private Flux<QueryInfo> retrieveRewrittenQueryInfos(List<QueryInfo> componentQueryInfos) {

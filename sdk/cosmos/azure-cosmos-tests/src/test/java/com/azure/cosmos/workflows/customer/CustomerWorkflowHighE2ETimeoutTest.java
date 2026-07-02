@@ -76,7 +76,7 @@ public class CustomerWorkflowHighE2ETimeoutTest extends CustomerWorkflowTestBase
         }
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
-            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
+            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(300), Duration.ofMillis(200)))
             .build();
 
         // readMany resolves to a point read for a single item, so the QUERY_ITEM data-provider value alone would not
@@ -106,7 +106,7 @@ public class CustomerWorkflowHighE2ETimeoutTest extends CustomerWorkflowTestBase
         registerForCleanup(item);
 
         CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
-            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
+            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(300), Duration.ofMillis(200)))
             .build();
 
         FaultInjectionRule migratingRule = configureServerErrorRule(
