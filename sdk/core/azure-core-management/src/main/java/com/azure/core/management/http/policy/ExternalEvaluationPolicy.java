@@ -12,7 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.evaluation.PolicyToken;
-import com.azure.core.management.evaluation.PolicyTokenCredential;
+import com.azure.core.management.evaluation.PolicyTokenProvider;
 import com.azure.core.management.evaluation.PolicyTokenRequestContext;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
@@ -34,13 +34,13 @@ import java.util.regex.Pattern;
  * When a resource operation is disallowed by policy because an external evaluation policy token is missing, Azure
  * Resource Manager responds with {@code 403 RequestDisallowedByPolicy} and a {@code missingPolicyTokenDetails} object
  * in the response body. This policy detects that response, acquires a policy token via the supplied
- * {@link PolicyTokenCredential}, applies the token to the {@code x-ms-policy-external-evaluations} header and retries
+ * {@link PolicyTokenProvider}, applies the token to the {@code x-ms-policy-external-evaluations} header and retries
  * the original operation once.
  * <p>
  * The policy is positioned {@link HttpPipelinePosition#PER_CALL} so it observes the response after the retry policy
  * has exhausted its own retries. The original operation is retried by replaying the downstream pipeline (reusing the
  * retry and authentication policies), while the token acquisition is delegated out-of-band to the
- * {@link PolicyTokenCredential} so that this policy is never re-entered.
+ * {@link PolicyTokenProvider} so that this policy is never re-entered.
  */
 public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(ExternalEvaluationPolicy.class);
@@ -55,16 +55,16 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
 
     private static final byte[] EMPTY_BODY = new byte[0];
 
-    private final PolicyTokenCredential credential;
+    private final PolicyTokenProvider policyTokenProvider;
 
     /**
      * Creates an {@link ExternalEvaluationPolicy}.
      *
-     * @param credential the {@link PolicyTokenCredential} used to acquire a policy token when required.
-     * @throws NullPointerException if {@code credential} is {@code null}.
+     * @param policyTokenProvider the {@link PolicyTokenProvider} used to acquire a policy token when required.
+     * @throws NullPointerException if {@code policyTokenProvider} is {@code null}.
      */
-    public ExternalEvaluationPolicy(PolicyTokenCredential credential) {
-        this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public ExternalEvaluationPolicy(PolicyTokenProvider policyTokenProvider) {
+        this.policyTokenProvider = Objects.requireNonNull(policyTokenProvider, "'policyTokenProvider' cannot be null.");
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
                     // Unable to determine the subscription; surface the original response.
                     return Mono.just(bufferedResponse);
                 }
-                return credential.getPolicyToken(acquireContext)
+                return policyTokenProvider.getPolicyToken(acquireContext)
                     // If the token cannot be acquired, the operation remains denied by policy. Re-surface the original
                     // 403 as the ManagementException the caller would otherwise see, chaining the acquisition failure
                     // as its cause for diagnosability.
@@ -141,7 +141,7 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
         }
         PolicyToken policyToken;
         try {
-            policyToken = credential.getPolicyTokenSync(acquireContext);
+            policyToken = policyTokenProvider.getPolicyTokenSync(acquireContext);
         } catch (RuntimeException acquisitionError) {
             // If the token cannot be acquired, the operation remains denied by policy. Re-surface the original 403 as
             // the ManagementException the caller would otherwise see, chaining the acquisition failure as its cause.

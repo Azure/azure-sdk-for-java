@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * <p>
- * The {@link PolicyTokenCredential} interface serves as the component responsible for acquiring a {@link PolicyToken}
+ * The {@link PolicyTokenProvider} interface serves as the component responsible for acquiring a {@link PolicyToken}
  * required by the Azure Policy external evaluation ("Invoke") flow.
  * </p>
  *
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
  * @see PolicyTokenRequestContext
  */
 @FunctionalInterface
-public interface PolicyTokenCredential {
+public interface PolicyTokenProvider {
     /**
      * Asynchronously acquires a {@link PolicyToken} for the given resource operation.
      *

@@ -11,12 +11,12 @@ import java.time.OffsetDateTime;
  * </p>
  *
  * <p>
- * A policy token is acquired by a {@link PolicyTokenCredential} when a resource operation is disallowed by policy
+ * A policy token is acquired by a {@link PolicyTokenProvider} when a resource operation is disallowed by policy
  * because an external evaluation policy token is missing. The acquired {@link #getToken() token} is applied verbatim
  * to the {@code x-ms-policy-external-evaluations} header on the retried resource operation.
  * </p>
  *
- * @see PolicyTokenCredential
+ * @see PolicyTokenProvider
  * @see PolicyTokenRequestContext
  */
 public final class PolicyToken {

@@ -12,7 +12,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.evaluation.PolicyToken;
-import com.azure.core.management.evaluation.PolicyTokenCredential;
+import com.azure.core.management.evaluation.PolicyTokenProvider;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * {@code azure-resourcemanager-resources}, with Azure Resource Manager itself faked by WireMock.
  * <p>
  * This mirrors how a user would opt in: they import the policy library that exposes {@code acquirePolicyToken}, write
- * a small {@link PolicyTokenCredential} wrapper that converts the SDK-provided {@link com.azure.core.management.evaluation.PolicyTokenRequestContext}
+ * a small {@link PolicyTokenProvider} wrapper that converts the SDK-provided {@link com.azure.core.management.evaluation.PolicyTokenRequestContext}
  * into a {@link PolicyTokenRequest}, and add {@link ExternalEvaluationPolicy} to their client's pipeline.
  */
 public class ExternalEvaluationPolicyE2ETests {
@@ -141,7 +141,7 @@ public class ExternalEvaluationPolicyE2ETests {
 
             // The small opt-in wrapper the user writes to bridge the SDK context to the acquirePolicyToken API.
             AtomicInteger acquireCount = new AtomicInteger();
-            PolicyTokenCredential policyTokenCredential = context -> {
+            PolicyTokenProvider policyTokenProvider = context -> {
                 acquireCount.incrementAndGet();
                 Object content = context.getContent() == null ? null : context.getContent().toObject(Object.class);
                 PolicyTokenOperation operation = new PolicyTokenOperation().withUri(context.getUri())
@@ -167,7 +167,7 @@ public class ExternalEvaluationPolicyE2ETests {
                 = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
             StorageManager storageManager = StorageManager.configure()
                 .withHttpClient(httpClient)
-                .withPolicy(new ExternalEvaluationPolicy(policyTokenCredential))
+                .withPolicy(new ExternalEvaluationPolicy(policyTokenProvider))
                 .authenticate(credential, profile);
 
             StorageAccountInner result = storageManager.serviceClient()

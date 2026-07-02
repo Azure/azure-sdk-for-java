@@ -15,7 +15,7 @@ import com.azure.core.util.BinaryData;
  * <p>
  * When a resource operation is disallowed by policy because an external evaluation policy token is missing, the SDK
  * captures the original operation's request URI, HTTP method and payload, together with the subscription that the
- * operation targets, and passes them to a {@link PolicyTokenCredential} implementation to acquire a
+ * operation targets, and passes them to a {@link PolicyTokenProvider} implementation to acquire a
  * {@link PolicyToken}.
  * </p>
  *
@@ -26,7 +26,7 @@ import com.azure.core.util.BinaryData;
  * </p>
  *
  * @see PolicyToken
- * @see PolicyTokenCredential
+ * @see PolicyTokenProvider
  */
 public final class PolicyTokenRequestContext {
     private String uri;

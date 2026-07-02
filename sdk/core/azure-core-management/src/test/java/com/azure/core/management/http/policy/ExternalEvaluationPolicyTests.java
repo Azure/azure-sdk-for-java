@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.evaluation.PolicyToken;
-import com.azure.core.management.evaluation.PolicyTokenCredential;
+import com.azure.core.management.evaluation.PolicyTokenProvider;
 import com.azure.core.management.evaluation.PolicyTokenRequestContext;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.BinaryData;
@@ -58,97 +58,97 @@ public class ExternalEvaluationPolicyTests {
 
     @Test
     public void acquiresTokenAndRetriesAsync() {
-        RecordingPolicyTokenCredential credential
-            = new RecordingPolicyTokenCredential(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
         MockHttpClient client = new MockHttpClient(new int[] { 403, 200 }, new String[] { MISSING_DETAILS_BODY, "{}" });
 
-        HttpPipeline pipeline = pipeline(credential, client);
+        HttpPipeline pipeline = pipeline(provider, client);
 
         StepVerifier.create(pipeline.send(newRequest()))
             .assertNext(response -> Assertions.assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
-        assertHappyPath(credential, client);
+        assertHappyPath(provider, client);
     }
 
     @Test
     public void acquiresTokenAndRetriesSync() {
-        RecordingPolicyTokenCredential credential
-            = new RecordingPolicyTokenCredential(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
         MockHttpClient client = new MockHttpClient(new int[] { 403, 200 }, new String[] { MISSING_DETAILS_BODY, "{}" });
 
-        HttpPipeline pipeline = pipeline(credential, client);
+        HttpPipeline pipeline = pipeline(provider, client);
 
         HttpResponse response = pipeline.sendSync(newRequest(), Context.NONE);
         Assertions.assertEquals(200, response.getStatusCode());
 
-        assertHappyPath(credential, client);
+        assertHappyPath(provider, client);
     }
 
     @Test
     public void plainDenyIsPassedThrough() {
-        RecordingPolicyTokenCredential credential
-            = new RecordingPolicyTokenCredential(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
         MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { PLAIN_DENY_BODY });
 
-        HttpPipeline pipeline = pipeline(credential, client);
+        HttpPipeline pipeline = pipeline(provider, client);
 
         StepVerifier.create(pipeline.send(newRequest()))
             .assertNext(response -> Assertions.assertEquals(403, response.getStatusCode()))
             .verifyComplete();
 
-        Assertions.assertEquals(0, credential.invocations.get());
+        Assertions.assertEquals(0, provider.invocations.get());
         Assertions.assertEquals(1, client.requests.size());
     }
 
     @Test
     public void nonForbiddenIsPassedThrough() {
-        RecordingPolicyTokenCredential credential
-            = new RecordingPolicyTokenCredential(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
         MockHttpClient client = new MockHttpClient(new int[] { 200 }, new String[] { "{}" });
 
-        HttpPipeline pipeline = pipeline(credential, client);
+        HttpPipeline pipeline = pipeline(provider, client);
 
         StepVerifier.create(pipeline.send(newRequest()))
             .assertNext(response -> Assertions.assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
-        Assertions.assertEquals(0, credential.invocations.get());
+        Assertions.assertEquals(0, provider.invocations.get());
         Assertions.assertEquals(1, client.requests.size());
     }
 
     @Test
     public void acquirerErrorReSurfacesOriginalDenyAsync() {
-        RecordingPolicyTokenCredential credential
-            = new RecordingPolicyTokenCredential(request -> Mono.error(new IllegalStateException("policy denied")));
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.error(new IllegalStateException("policy denied")));
         MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { MISSING_DETAILS_BODY });
 
-        HttpPipeline pipeline = pipeline(credential, client);
+        HttpPipeline pipeline = pipeline(provider, client);
 
         StepVerifier.create(pipeline.send(newRequest())).verifyErrorMatches(this::isReSurfacedDeny);
 
-        Assertions.assertEquals(1, credential.invocations.get());
+        Assertions.assertEquals(1, provider.invocations.get());
         Assertions.assertEquals(1, client.requests.size());
     }
 
     @Test
     public void acquirerErrorReSurfacesOriginalDenySync() {
-        RecordingPolicyTokenCredential credential
-            = new RecordingPolicyTokenCredential(request -> Mono.error(new IllegalStateException("policy denied")));
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.error(new IllegalStateException("policy denied")));
         MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { MISSING_DETAILS_BODY });
 
-        HttpPipeline pipeline = pipeline(credential, client);
+        HttpPipeline pipeline = pipeline(provider, client);
 
         RuntimeException error
             = Assertions.assertThrows(RuntimeException.class, () -> pipeline.sendSync(newRequest(), Context.NONE));
         Assertions.assertTrue(isReSurfacedDeny(error));
 
-        Assertions.assertEquals(1, credential.invocations.get());
+        Assertions.assertEquals(1, provider.invocations.get());
         Assertions.assertEquals(1, client.requests.size());
     }
 
     // When a token cannot be acquired, the original 403 policy denial is re-surfaced as a ManagementException whose
-    // cause is the acquisition failure reported by the credential.
+    // cause is the acquisition failure reported by the provider.
     private boolean isReSurfacedDeny(Throwable t) {
         if (!(t instanceof ManagementException)) {
             return false;
@@ -163,22 +163,22 @@ public class ExternalEvaluationPolicyTests {
 
     @Test
     public void changeReferenceRequiredIsGuarded() {
-        RecordingPolicyTokenCredential credential
-            = new RecordingPolicyTokenCredential(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
+        RecordingPolicyTokenProvider provider
+            = new RecordingPolicyTokenProvider(request -> Mono.just(new PolicyToken(TOKEN_VALUE)));
         MockHttpClient client = new MockHttpClient(new int[] { 403 }, new String[] { CHANGE_REFERENCE_REQUIRED_BODY });
 
-        HttpPipeline pipeline = pipeline(credential, client);
+        HttpPipeline pipeline = pipeline(provider, client);
 
         StepVerifier.create(pipeline.send(newRequest())).verifyError(IllegalStateException.class);
 
-        Assertions.assertEquals(0, credential.invocations.get());
+        Assertions.assertEquals(0, provider.invocations.get());
         Assertions.assertEquals(1, client.requests.size());
     }
 
-    private void assertHappyPath(RecordingPolicyTokenCredential credential, MockHttpClient client) {
+    private void assertHappyPath(RecordingPolicyTokenProvider provider, MockHttpClient client) {
         // The acquirer is invoked exactly once with the operation details.
-        Assertions.assertEquals(1, credential.invocations.get());
-        PolicyTokenRequestContext acquireContext = credential.lastContext;
+        Assertions.assertEquals(1, provider.invocations.get());
+        PolicyTokenRequestContext acquireContext = provider.lastContext;
         Assertions.assertNotNull(acquireContext);
         Assertions.assertEquals("00000000-0000-0000-0000-000000000000", acquireContext.getSubscriptionId());
         Assertions.assertEquals(HttpMethod.PUT, acquireContext.getHttpMethod());
@@ -194,20 +194,20 @@ public class ExternalEvaluationPolicyTests {
         Assertions.assertEquals(REQUEST_BODY, client.requests.get(1).body);
     }
 
-    private static HttpPipeline pipeline(PolicyTokenCredential credential, HttpClient client) {
-        return new HttpPipelineBuilder().policies(new ExternalEvaluationPolicy(credential)).httpClient(client).build();
+    private static HttpPipeline pipeline(PolicyTokenProvider provider, HttpClient client) {
+        return new HttpPipelineBuilder().policies(new ExternalEvaluationPolicy(provider)).httpClient(client).build();
     }
 
     private static HttpRequest newRequest() {
         return new HttpRequest(HttpMethod.PUT, OPERATION_URL).setBody(BinaryData.fromString(REQUEST_BODY));
     }
 
-    private static final class RecordingPolicyTokenCredential implements PolicyTokenCredential {
+    private static final class RecordingPolicyTokenProvider implements PolicyTokenProvider {
         private final java.util.function.Function<PolicyTokenRequestContext, Mono<PolicyToken>> handler;
         private final AtomicInteger invocations = new AtomicInteger();
         private volatile PolicyTokenRequestContext lastContext;
 
-        RecordingPolicyTokenCredential(
+        RecordingPolicyTokenProvider(
             java.util.function.Function<PolicyTokenRequestContext, Mono<PolicyToken>> handler) {
             this.handler = handler;
         }
