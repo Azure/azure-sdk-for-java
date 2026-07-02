@@ -401,6 +401,22 @@ public final class KeyClient {
      * External keys are only supported on Managed HSM configured to use External Key Management (EKM), with service
      * version {@code 2026-01-01-preview} or newer. They are not supported on a standard Key Vault.</p>
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Registers an external key which activates in one day and expires in one year. Prints out the details of the
+     * {@link KeyVaultKey created key}.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createExternalKey#CreateExternalKeyOptions -->
+     * <pre>
+     * CreateExternalKeyOptions createExternalKeyOptions =
+     *     new CreateExternalKeyOptions&#40;&quot;keyName&quot;, new ExternalKey&#40;&quot;external-key-reference-id&quot;&#41;&#41;
+     *         .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * KeyVaultKey externalKey = keyClient.createExternalKey&#40;createExternalKeyOptions&#41;;
+     *
+     * System.out.printf&#40;&quot;Created external key with name: %s and id: %s%n&quot;, externalKey.getName&#40;&#41;,
+     *     externalKey.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createExternalKey#CreateExternalKeyOptions -->
+     *
      * @param createExternalKeyOptions The {@link CreateExternalKeyOptions options object} containing information about
      * the external key being registered.
      *
@@ -422,6 +438,23 @@ public final class KeyClient {
      * <p>External keys are mutually exclusive with a {@link KeyType key type}, so no key type is sent to the service.
      * External keys are only supported on Managed HSM configured to use External Key Management (EKM), with service
      * version {@code 2026-01-01-preview} or newer. They are not supported on a standard Key Vault.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Registers an external key which activates in one day and expires in one year. Prints out the details of the
+     * {@link KeyVaultKey created key} contained in the {@link Response HTTP response}.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createExternalKeyWithResponse#CreateExternalKeyOptions-Context -->
+     * <pre>
+     * CreateExternalKeyOptions options =
+     *     new CreateExternalKeyOptions&#40;&quot;keyName&quot;, new ExternalKey&#40;&quot;external-key-reference-id&quot;&#41;&#41;
+     *         .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * Response&lt;KeyVaultKey&gt; response =
+     *     keyClient.createExternalKeyWithResponse&#40;options, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created external key with name: %s and id: %s%n&quot;, response.getValue&#40;&#41;.getName&#40;&#41;,
+     *     response.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createExternalKeyWithResponse#CreateExternalKeyOptions-Context -->
      *
      * @param createExternalKeyOptions The {@link CreateExternalKeyOptions options object} containing information about
      * the external key being registered.

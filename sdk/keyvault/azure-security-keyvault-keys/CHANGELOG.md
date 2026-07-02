@@ -4,11 +4,10 @@
 
 ### Features Added
 
-- Added the `ExternalKey` model and the `CreateExternalKeyOptions` options class, along with the
-  `KeyClient.createExternalKey` and `KeyAsyncClient.createExternalKey` methods (and their `WithResponse` variants), for
-  registering a Managed HSM key whose material is held in an external HSM (External Key Management). Only supported on
-  Managed HSM with service version `2026-01-01-preview` or newer.
-- Added the read-only `KeyProperties.getExternalKey()` property.
+- Added the `ExternalKey` model and the `CreateExternalKeyOptions` options class, along with the `KeyClient.createExternalKey` and `KeyAsyncClient.createExternalKey` methods (and their `WithResponse` variants), for registering a Managed HSM key whose material is held in an external HSM (External Key Management). Only supported on
+Managed HSM with service version `2026-01-01-preview` or newer.
+
+- Added support for  service version `2026-01-01-preview`
 
 ### Breaking Changes
 
