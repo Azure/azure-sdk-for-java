@@ -209,65 +209,74 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void createItem_withBulk_after_collectionRecreate() {
         int totalRequest = getTotalRequest();
 
-        for(int x = 0; x < 2; x = x + 1) {
-            Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
-                Flux.range(0, totalRequest).map(i -> {
-                    String partitionKey = UUID.randomUUID().toString();
-                    TestDoc testDoc = this.populateTestDoc(partitionKey);
+        // This test deletes and recreates the container it operates on. Use a dedicated container
+        // (never the suite-shared container) so the delete/recreate cannot leave the shared container
+        // in a not-ready state and cascade CollectionRoutingMapNotFound failures into other test classes.
+        // Readiness uses a single default-route probe instead of the multi-region warm-up - this test does not
+        // need multi-region readiness, and skipping the per-region probes keeps the repeated create/recreate
+        // cycle cheap enough to avoid a metadata-request throttling storm.
+        CosmosAsyncDatabase db = bulkAsyncContainer.getDatabase();
+        String containerName = UUID.randomUUID().toString();
+        db.createContainer(containerName, "/mypk", ThroughputProperties.createManualThroughput(10_100)).block();
+        CosmosAsyncContainer recreateContainer = db.getContainer(containerName);
+        waitForCollectionToBeReadableOnDefaultRoute(recreateContainer, this.bulkClient);
 
-                    return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
-                }),
-                Flux.range(0, totalRequest).map(i -> {
-                    String partitionKey = UUID.randomUUID().toString();
-                    EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
+        try {
+            for (int x = 0; x < 2; x = x + 1) {
+                Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+                    Flux.range(0, totalRequest).map(i -> {
+                        String partitionKey = UUID.randomUUID().toString();
+                        TestDoc testDoc = this.populateTestDoc(partitionKey);
 
-                    return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
-                }));
+                        return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+                    }),
+                    Flux.range(0, totalRequest).map(i -> {
+                        String partitionKey = UUID.randomUUID().toString();
+                        EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
 
-            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+                        return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+                    }));
 
-            Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
-                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
+                CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
-            AtomicInteger processedDoc = new AtomicInteger(0);
-            responseFlux
-                .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+                Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = recreateContainer
+                    .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
 
-                    processedDoc.incrementAndGet();
+                AtomicInteger processedDoc = new AtomicInteger(0);
+                responseFlux
+                    .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
-                    com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
-                    if (cosmosBulkOperationResponse.getException() != null) {
-                        logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
-                        fail(cosmosBulkOperationResponse.getException().toString());
-                    }
+                        processedDoc.incrementAndGet();
 
-                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
-                    assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
-                    assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
-                    assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
-                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+                        com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                        if (cosmosBulkOperationResponse.getException() != null) {
+                            logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                            fail(cosmosBulkOperationResponse.getException().toString());
+                        }
 
-                    return Mono.just(cosmosBulkItemResponse);
-                }).blockLast();
+                        assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                        assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                        assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                        assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                        assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                        assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
 
-            assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+                        return Mono.just(cosmosBulkItemResponse);
+                    }).blockLast();
 
-            CosmosAsyncDatabase db = bulkAsyncContainer
-                .getDatabase();
-            String containerName = bulkAsyncContainer.getId();
+                assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
 
-            // Manually deleting and recreating the container
-            // on the same client (same async cache instances)
-            // to validate correct mitigation after delete and recreate
-            bulkAsyncContainer.delete().block();
-            db
-                .createContainer(
-                    containerName,
-                    "/mypk",
-                    ThroughputProperties.createManualThroughput(10_100))
-                .block();
-            bulkAsyncContainer = db.getContainer(containerName);
+                // Manually deleting and recreating the container (same name) on the same client (same async
+                // cache instances) to validate correct cache mitigation after delete and recreate. The
+                // single default-route readiness probe bridges the post-recreate window in which the routing
+                // map is not yet available (the SDK now surfaces that quickly instead of retrying).
+                recreateContainer.delete().block();
+                db.createContainer(containerName, "/mypk", ThroughputProperties.createManualThroughput(10_100)).block();
+                recreateContainer = db.getContainer(containerName);
+                waitForCollectionToBeReadableOnDefaultRoute(recreateContainer, this.bulkClient);
+            }
+        } finally {
+            recreateContainer.delete().onErrorResume(t -> Mono.empty()).block();
         }
     }
 

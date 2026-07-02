@@ -941,6 +941,38 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         waitForCollectionToBeAvailableToRead(container, probeClient, null);
     }
 
+    /**
+     * Issues a single collection-readiness probe through the caller's default route and returns once it succeeds,
+     * retrying transient / not-yet-ready failures via {@link #isRetryableCollectionReadinessFailure(Throwable)}.
+     *
+     * <p>Unlike {@link #waitForCollectionToBeAvailableToRead(CosmosAsyncContainer, CosmosAsyncClient)}, this does NOT
+     * additionally probe every preferred/readable region - it performs only the one default-route probe and does not
+     * pin the probe to a specific region (no excluded-regions filter is applied). A single query is routed by the
+     * client to one region; because the caller's own operations use the same client and route, that probe is enough
+     * to confirm the routing map is resolvable where the test will operate. Skipping the per-region probes keeps the
+     * warm-up cheap for tests that repeatedly create/recreate a dedicated collection, which would otherwise trigger a
+     * metadata-request storm (429/3200).
+     */
+    protected static void waitForCollectionToBeReadableOnDefaultRoute(CosmosAsyncContainer container, CosmosAsyncClient probeClient) {
+        CosmosAsyncClient client = probeClient != null
+            ? probeClient
+            : ImplementationBridgeHelpers
+                .CosmosAsyncDatabaseHelper
+                .getCosmosAsyncDatabaseAccessor()
+                .getCosmosAsyncClient(container.getDatabase());
+        CosmosAsyncContainer probeContainer =
+            client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
+        Duration maxWait = COLLECTION_READINESS_MAX_WAIT;
+        long deadlineNanos = System.nanoTime() + maxWait.toNanos();
+        awaitContainerReadableInRegion(
+            probeContainer,
+            null,
+            Collections.emptyList(),
+            deadlineNanos,
+            maxWait,
+            null);
+    }
+
     private static void waitForCollectionToBeAvailableToRead(
         CosmosAsyncContainer container,
         CosmosAsyncClient probeClient,
@@ -1151,7 +1183,8 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 || isStaleCollectionRidFailure(cosmosException)
                 || (statusCode == HttpConstants.StatusCodes.NOTFOUND
                     && (cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN
-                        || cosmosException.getSubStatusCode() == 1013));
+                        || cosmosException.getSubStatusCode() == 1013
+                        || cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
         }
 
         Throwable unwrappedException = Exceptions.unwrap(error);
@@ -2278,6 +2311,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean contentResponseOnWriteEnabled) {
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        // Metadata operations issued by the shared housekeeping client during suite setup/cleanup
+        // (create/delete/query databases and containers) can be throttled with 429 / substatus 3200
+        // ("high rate of metadata requests"). The SDK default caps throttle retries at 9 attempts, which
+        // this client can exceed; allow many more so transient metadata throttling does not fail setup/cleanup.
+        options.setMaxRetryAttemptsOnThrottledRequests(200);
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
@@ -2444,6 +2482,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static AsyncDocumentClient.Builder createGatewayHouseKeepingDocumentClient() {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        // Allow many more throttle retries than the SDK default (9) so transient metadata throttling
+        // (429 / substatus 3200) during setup/cleanup does not fail the housekeeping client.
+        options.setMaxRetryAttemptsOnThrottledRequests(200);
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setThrottlingRetryOptions(options);
