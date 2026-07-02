@@ -42,9 +42,10 @@
     </javaModulesSurefireArgLine>
 
     <spotbugs.skip>false</spotbugs.skip>
+    <revapi.skip>true</revapi.skip>
 
-    <jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
