@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service API version `2026-03-01-preview`. This is now the default service version used by the client.
 
 ## 4.11.0 (2026-05-26)
 

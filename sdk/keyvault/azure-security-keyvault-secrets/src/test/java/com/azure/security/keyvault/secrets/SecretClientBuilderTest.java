@@ -17,7 +17,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -80,6 +82,90 @@ public class SecretClientBuilderTest {
 
         assertNotNull(secretAsyncClient);
         assertEquals(SecretAsyncClient.class.getSimpleName(), secretAsyncClient.getClass().getSimpleName());
+    }
+
+    @Test
+    public void latestServiceVersionIs20260301Preview() {
+        assertEquals("2026-03-01-preview", SecretServiceVersion.V2026_03_01_PREVIEW.getVersion());
+        assertEquals(SecretServiceVersion.V2026_03_01_PREVIEW, SecretServiceVersion.getLatest());
+    }
+
+    @Test
+    public void defaultClientUsesLatestServiceVersion() {
+        AtomicReference<String> requestedUrl = new AtomicReference<>();
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                requestedUrl.set(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, 200,
+                    ("{\"value\":\"secret-value\","
+                        + "\"id\":\"https://key-vault-url.vault.azure.net/secrets/TestSecret/version\"}")
+                            .getBytes(StandardCharsets.UTF_8)));
+            })
+            .buildClient();
+
+        secretClient.getSecret(secretName);
+
+        assertTrue(requestedUrl.get().contains("api-version=2026-03-01-preview"));
+    }
+
+    @Test
+    public void configuredClientUses20260301PreviewServiceVersion() {
+        AtomicReference<String> requestedUrl = new AtomicReference<>();
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
+            .serviceVersion(SecretServiceVersion.V2026_03_01_PREVIEW)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                requestedUrl.set(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, 200,
+                    ("{\"value\":\"secret-value\","
+                        + "\"id\":\"https://key-vault-url.vault.azure.net/secrets/TestSecret/version\"}")
+                            .getBytes(StandardCharsets.UTF_8)));
+            })
+            .buildClient();
+
+        secretClient.getSecret(secretName);
+
+        assertTrue(requestedUrl.get().contains("api-version=2026-03-01-preview"));
+    }
+
+    @Test
+    public void defaultAsyncClientUsesLatestServiceVersion() {
+        AtomicReference<String> requestedUrl = new AtomicReference<>();
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                requestedUrl.set(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, 200,
+                    ("{\"value\":\"secret-value\","
+                        + "\"id\":\"https://key-vault-url.vault.azure.net/secrets/TestSecret/version\"}")
+                            .getBytes(StandardCharsets.UTF_8)));
+            })
+            .buildAsyncClient();
+
+        secretAsyncClient.getSecret(secretName).block();
+
+        assertTrue(requestedUrl.get().contains("api-version=2026-03-01-preview"));
+    }
+
+    @Test
+    public void configuredAsyncClientUses20260301PreviewServiceVersion() {
+        AtomicReference<String> requestedUrl = new AtomicReference<>();
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
+            .serviceVersion(SecretServiceVersion.V2026_03_01_PREVIEW)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                requestedUrl.set(request.getUrl().toString());
+                return Mono.just(new MockHttpResponse(request, 200,
+                    ("{\"value\":\"secret-value\","
+                        + "\"id\":\"https://key-vault-url.vault.azure.net/secrets/TestSecret/version\"}")
+                            .getBytes(StandardCharsets.UTF_8)));
+            })
+            .buildAsyncClient();
+
+        secretAsyncClient.getSecret(secretName).block();
+
+        assertTrue(requestedUrl.get().contains("api-version=2026-03-01-preview"));
     }
 
     @Test
