@@ -438,10 +438,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm,
-          options.getLength(), false);
+            options.getLength(), false);
 
         Context finalContext = context;
-      
+
         return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
             .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
                 options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
