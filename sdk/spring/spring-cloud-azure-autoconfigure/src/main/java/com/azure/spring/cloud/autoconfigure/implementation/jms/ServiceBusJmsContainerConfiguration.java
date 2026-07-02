@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
+import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryFactory;
 import jakarta.jms.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,9 +69,10 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
 
     private final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
     private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
+    private final AzureServiceBusJmsConnectionFactoryFactory instanceFactory;
     private final Environment environment;
     private final JmsProperties jmsProperties;
-    
+
     // Memoized dedicated listener container ConnectionFactory instances to avoid duplicates and enable lifecycle management
     // Use ConnectionFactory type instead of concrete types to avoid NoClassDefFoundError when optional dependencies are missing
     private volatile ConnectionFactory dedicatedCachingConnectionFactory;
@@ -79,10 +81,12 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
                                         ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
+                                        AzureServiceBusJmsConnectionFactoryFactory instanceFactory,
                                         Environment environment,
                                         JmsProperties jmsProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
         this.factoryCustomizers = factoryCustomizers;
+        this.instanceFactory = instanceFactory;
         this.environment = environment;
         this.jmsProperties = jmsProperties;
     }
@@ -199,7 +203,8 @@ class ServiceBusJmsContainerConfiguration implements DisposableBean {
     private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
         return ServiceBusJmsConnectionFactoryConfiguration.createServiceBusJmsConnectionFactory(
             azureServiceBusJMSProperties,
-            factoryCustomizers.orderedStream().collect(Collectors.toList()));
+            factoryCustomizers.orderedStream().collect(Collectors.toList()),
+            instanceFactory);
     }
 
     private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
