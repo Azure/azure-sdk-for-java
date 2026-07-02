@@ -3,6 +3,7 @@
 ### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added throughput bucket support for Change Feed Processor feed polling throughput control. - See [Issue 49487](https://github.com/Azure/azure-sdk-for-java/issues/49487)
 
 #### Breaking Changes
 
