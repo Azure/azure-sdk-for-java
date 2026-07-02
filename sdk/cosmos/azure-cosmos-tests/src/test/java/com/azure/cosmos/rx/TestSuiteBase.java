@@ -495,6 +495,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             })
             .blockLast();
 
+        // wait for the replication to catch up
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Wait for the replication to catch up but got interruption");
+        }
+
         expectCount(cosmosContainer, 0);
 
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);

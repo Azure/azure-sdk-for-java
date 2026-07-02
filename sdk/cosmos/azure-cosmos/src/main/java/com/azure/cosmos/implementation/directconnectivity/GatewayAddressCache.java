@@ -1130,6 +1130,11 @@ public class GatewayAddressCache implements IAddressCache {
                                 this.proactiveOpenConnectionsProcessor
                                         .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collection.getResourceId(), addressUrisAsString);
 
+                                logger.info(
+                                    "OpenConnectionsAndInitCaches: pkId {}, Addresses count {}",
+                                    pkrIdToAddressInfos.getLeft().getPartitionKeyRangeId(),
+                                    pkrIdToAddressInfos.getRight().length);
+
                                 return Flux.fromArray(pkrIdToAddressInfos.getRight());
                             }, Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3)
                             .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(new ImmutablePair<>(containerLink, collection), addressInformation)));
@@ -1156,6 +1161,8 @@ public class GatewayAddressCache implements IAddressCache {
                 this.serviceEndpoint,
                 address.getPhysicalUri(),
                 connectionsRequiredForEndpoint);
+        
+        logger.info("Submitting open connection task {}", address.getPhysicalUri().toString());
 
         return Mono.fromFuture(openConnectionTask);
     }
