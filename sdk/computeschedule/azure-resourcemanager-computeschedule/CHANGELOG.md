@@ -1,14 +1,442 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2026-06-04)
 
-### Features Added
+- Azure Resource Manager Compute Schedule client library for Java. This package contains Microsoft Azure SDK for Compute Schedule Management SDK. Microsoft.ComputeSchedule Resource Provider management API. Package api-version 2026-04-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OccurrenceResultSummary` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.ScheduledActionUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RetryPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.SubmitDeallocateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteDeallocateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.OccurrenceExtensionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DelayRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceAttachRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteCreateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CancelOccurrenceRequest` was modified
+
+* `validate()` was removed
+
+#### `models.InnerError` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceResultSummary` was modified
+
+* `validate()` was removed
+
+#### `models.GetOperationErrorsRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledActionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceProvisionPayload` was modified
+
+* `withBaseProfile(java.util.Map)` was removed
+* `baseProfile()` was removed
+* `validate()` was removed
+* `withResourceOverrides(java.util.List)` was removed
+* `resourceOverrides()` was removed
+
+#### `models.OccurrenceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationErrorDetails` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteDeleteRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteStartRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceOperation` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledActionsSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.SubmitHibernateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CancelOperationsRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceDetachRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Resources` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceStatus` was modified
+
+* `validate()` was removed
+
+#### `models.ExecutionParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Error` was modified
+
+* `validate()` was removed
+
+#### `models.GetOperationStatusRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteHibernateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledActionResources` was modified
+
+* `models.ScheduledActionProperties properties()` -> `models.ScheduledActionsExtensionProperties properties()`
+
+#### `models.ResourceOperationError` was modified
+
+* `validate()` was removed
+
+#### `models.OperationErrorsResult` was modified
+
+* `validate()` was removed
+
+#### `models.NotificationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SubmitStartRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceOperationDetails` was modified
+
+* `validate()` was removed
+
+#### `models.ResourcePatchRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Schedule` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledActionUpdate` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.StorageProfile` was added
+
+* `models.VirtualMachineNetworkInterfaceConfiguration` was added
+
+* `models.VaultSecretGroup` was added
+
+* `models.VmSizeProperties` was added
+
+* `models.SecurityEncryptionTypes` was added
+
+* `models.VMGalleryApplication` was added
+
+* `models.CapacityReservationProfile` was added
+
+* `models.DiffDiskOptions` was added
+
+* `models.WindowsVMGuestPatchAutomaticByPlatformSettings` was added
+
+* `models.UserInitiatedRedeploy` was added
+
+* `models.VirtualMachinePublicIPAddressConfigurationProperties` was added
+
+* `models.SshPublicKey` was added
+
+* `models.TerminateNotificationProfile` was added
+
+* `models.ZonePlacementPolicyType` was added
+
+* `models.DeleteOptions` was added
+
+* `models.FallbackOperationInfo` was added
+
+* `models.DiffDiskPlacement` was added
+
+* `models.ScheduledEventsAdditionalPublishingTargets` was added
+
+* `models.BulkActionVmExtensionProperties` was added
+
+* `models.PublicIPAddressSkuName` was added
+
+* `models.Modes` was added
+
+* `models.VirtualMachineNetworkInterfaceConfigurationProperties` was added
+
+* `models.FlexProperties` was added
+
+* `models.AllInstancesDown` was added
+
+* `models.SecurityProfile` was added
+
+* `models.ZoneAllocationPolicy` was added
+
+* `models.LinuxConfiguration` was added
+
+* `models.ScheduledEventsProfile` was added
+
+* `models.HostEndpointSettings` was added
+
+* `models.VirtualMachineNetworkInterfaceDnsSettingsConfiguration` was added
+
+* `models.WinRMListener` was added
+
+* `models.ScheduledActionsExtensionProperties` was added
+
+* `models.PriorityType` was added
+
+* `models.ApiEntityReference` was added
+
+* `models.WindowsConfiguration` was added
+
+* `models.OSProfile` was added
+
+* `models.StorageAccountTypes` was added
+
+* `models.ExtendedLocationType` was added
+
+* `models.SecurityTypes` was added
+
+* `models.UefiSettings` was added
+
+* `models.ResourceIdentityType` was added
+
+* `models.NetworkApiVersion` was added
+
+* `models.DiagnosticsProfile` was added
+
+* `models.VirtualMachineIdentity` was added
+
+* `models.ImageReference` was added
+
+* `models.NetworkInterfaceAuxiliarySku` was added
+
+* `models.ScheduledEventsPolicy` was added
+
+* `models.VaultCertificate` was added
+
+* `models.ProtocolTypes` was added
+
+* `models.NetworkProfile` was added
+
+* `models.Mode` was added
+
+* `models.VMDiskSecurityProfile` was added
+
+* `models.NetworkInterfaceReference` was added
+
+* `models.UserInitiatedReboot` was added
+
+* `models.ProxyAgentSettings` was added
+
+* `models.CachingTypes` was added
+
+* `models.VirtualMachineNetworkInterfaceIPConfiguration` was added
+
+* `models.BulkVMConfiguration` was added
+
+* `models.PublicIPAllocationMethod` was added
+
+* `models.CreateFlexResourceOperationResponse` was added
+
+* `models.DiffDiskSettings` was added
+
+* `models.DomainNameLabelScopeTypes` was added
+
+* `models.AdditionalUnattendContent` was added
+
+* `models.KeyVaultSecretReference` was added
+
+* `models.KeyVaultKeyReference` was added
+
+* `models.EventGridAndResourceGraph` was added
+
+* `models.LinuxVMGuestPatchAutomaticByPlatformRebootSetting` was added
+
+* `models.OperatingSystemTypes` was added
+
+* `models.AdditionalUnattendContentComponentName` was added
+
+* `models.DiskEncryptionSettings` was added
+
+* `models.DiskDetachOptionTypes` was added
+
+* `models.BootDiagnostics` was added
+
+* `models.PriorityProfile` was added
+
+* `models.HardwareProfile` was added
+
+* `models.NetworkInterfaceAuxiliaryMode` was added
+
+* `models.WinRMConfiguration` was added
+
+* `models.PublicIPAddressSku` was added
+
+* `models.Placement` was added
+
+* `models.LinuxVMGuestPatchAutomaticByPlatformSettings` was added
+
+* `models.SshConfiguration` was added
+
+* `models.UserAssignedIdentitiesValue` was added
+
+* `models.BulkActionVMExtension` was added
+
+* `models.OSDisk` was added
+
+* `models.VmSizeProfile` was added
+
+* `models.NetworkInterfaceReferenceProperties` was added
+
+* `models.Plan` was added
+
+* `models.ManagedDiskParameters` was added
+
+* `models.DiskDeleteOptionTypes` was added
+
+* `models.LinuxPatchSettings` was added
+
+* `models.BulkActionVMProperties` was added
+
+* `models.AdditionalCapabilities` was added
+
+* `models.ApplicationProfile` was added
+
+* `models.PatchSettings` was added
+
+* `models.AllocationStrategy` was added
+
+* `models.PublicIPAddressSkuTier` was added
+
+* `models.EncryptionIdentity` was added
+
+* `models.OSImageNotificationProfile` was added
+
+* `models.VirtualMachinePublicIPAddressDnsSettingsConfiguration` was added
+
+* `models.WindowsVMGuestPatchMode` was added
+
+* `models.LinuxVMGuestPatchMode` was added
+
+* `models.WindowsPatchAssessmentMode` was added
+
+* `models.IPVersions` was added
+
+* `models.LinuxPatchAssessmentMode` was added
+
+* `models.VirtualMachineIpTag` was added
+
+* `models.DiskCreateOptionTypes` was added
+
+* `models.SettingNames` was added
+
+* `models.AdditionalUnattendContentPassName` was added
+
+* `models.ResourceProvisionFlexPayload` was added
+
+* `models.VirtualMachineNetworkInterfaceIPConfigurationProperties` was added
+
+* `models.ExecuteCreateFlexRequest` was added
+
+* `models.VirtualMachinePublicIPAddressConfiguration` was added
+
+* `models.DiskEncryptionSetParameters` was added
+
+* `models.ZonePreference` was added
+
+* `models.VirtualHardDisk` was added
+
+* `models.DiskControllerTypes` was added
+
+* `models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting` was added
+
+* `models.DataDisk` was added
+
+* `models.DistributionStrategy` was added
+
+* `models.OsType` was added
+
+* `models.ExtendedLocation` was added
+
+#### `models.RetryPolicy` was modified
+
+* `onFailureAction()` was added
+* `withOnFailureAction(models.ResourceOperationType)` was added
+
+#### `models.ResourceOperationType` was modified
+
+* `DELETE` was added
+* `CREATE` was added
+
+#### `models.ScheduledActions` was modified
+
+* `virtualMachinesExecuteCreateFlex(java.lang.String,models.ExecuteCreateFlexRequest)` was added
+* `virtualMachinesExecuteCreateFlexWithResponse(java.lang.String,models.ExecuteCreateFlexRequest,com.azure.core.util.Context)` was added
+
+#### `models.ResourceProvisionPayload` was modified
+
+* `withVirtualMachineBaseProfile(models.BulkVMConfiguration)` was added
+* `virtualMachineBaseProfile()` was added
+* `virtualMachineOverrides()` was added
+* `withVirtualMachineOverrides(java.util.List)` was added
+
+#### `models.ResourceOperationDetails` was modified
+
+* `fallbackOperationInfo()` was added
 
 ## 1.2.0-beta.1 (2025-07-24)
 

@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -17,33 +18,36 @@ public final class ExecuteDeleteRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDeleteRequest model = BinaryData.fromString(
-            "{\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":265485,\"retryWindowInMinutes\":1581994668}},\"resources\":{\"ids\":[\"gibma\",\"gakeqsr\",\"yb\"]},\"correlationid\":\"qedqytbciqfoufl\",\"forceDeletion\":true}")
+            "{\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":549865384,\"retryWindowInMinutes\":1223650177,\"onFailureAction\":\"Hibernate\"}},\"resources\":{\"ids\":[\"pqwcciuqgbdbutau\"]},\"correlationid\":\"btkuwhh\",\"forceDeletion\":true}")
             .toObject(ExecuteDeleteRequest.class);
-        Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(265485, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1581994668, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("gibma", model.resources().ids().get(0));
-        Assertions.assertEquals("qedqytbciqfoufl", model.correlationid());
+        Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(549865384, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1223650177, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.HIBERNATE,
+            model.executionParameters().retryPolicy().onFailureAction());
+        Assertions.assertEquals("pqwcciuqgbdbutau", model.resources().ids().get(0));
+        Assertions.assertEquals("btkuwhh", model.correlationid());
         Assertions.assertTrue(model.forceDeletion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteDeleteRequest model = new ExecuteDeleteRequest()
-            .withExecutionParameters(
-                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.AVAILABILITY)
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(265485).withRetryWindowInMinutes(1581994668)))
-            .withResources(new Resources().withIds(Arrays.asList("gibma", "gakeqsr", "yb")))
-            .withCorrelationid("qedqytbciqfoufl")
+            .withExecutionParameters(new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
+                .withRetryPolicy(new RetryPolicy().withRetryCount(549865384)
+                    .withRetryWindowInMinutes(1223650177)
+                    .withOnFailureAction(ResourceOperationType.HIBERNATE)))
+            .withResources(new Resources().withIds(Arrays.asList("pqwcciuqgbdbutau")))
+            .withCorrelationid("btkuwhh")
             .withForceDeletion(true);
         model = BinaryData.fromObject(model).toObject(ExecuteDeleteRequest.class);
-        Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(265485, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1581994668, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("gibma", model.resources().ids().get(0));
-        Assertions.assertEquals("qedqytbciqfoufl", model.correlationid());
+        Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
+        Assertions.assertEquals(549865384, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1223650177, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.HIBERNATE,
+            model.executionParameters().retryPolicy().onFailureAction());
+        Assertions.assertEquals("pqwcciuqgbdbutau", model.resources().ids().get(0));
+        Assertions.assertEquals("btkuwhh", model.correlationid());
         Assertions.assertTrue(model.forceDeletion());
     }
 }

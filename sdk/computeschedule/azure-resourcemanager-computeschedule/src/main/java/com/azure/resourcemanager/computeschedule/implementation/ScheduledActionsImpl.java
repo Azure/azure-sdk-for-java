@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.CreateFlexResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
@@ -25,9 +26,11 @@ import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOper
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsResponse;
+import com.azure.resourcemanager.computeschedule.models.CreateFlexResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.CreateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeallocateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeleteResourceOperationResponse;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
@@ -173,6 +176,25 @@ public final class ScheduledActionsImpl implements ScheduledActions {
             = this.serviceClient().virtualMachinesExecuteStart(locationparameter, requestBody);
         if (inner != null) {
             return new StartResourceOperationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CreateFlexResourceOperationResponse> virtualMachinesExecuteCreateFlexWithResponse(
+        String locationparameter, ExecuteCreateFlexRequest body, Context context) {
+        Response<CreateFlexResourceOperationResponseInner> inner
+            = this.serviceClient().virtualMachinesExecuteCreateFlexWithResponse(locationparameter, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CreateFlexResourceOperationResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public CreateFlexResourceOperationResponse virtualMachinesExecuteCreateFlex(String locationparameter,
+        ExecuteCreateFlexRequest body) {
+        CreateFlexResourceOperationResponseInner inner
+            = this.serviceClient().virtualMachinesExecuteCreateFlex(locationparameter, body);
+        if (inner != null) {
+            return new CreateFlexResourceOperationResponseImpl(inner, this.manager());
         } else {
             return null;
         }
