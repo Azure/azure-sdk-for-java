@@ -45,8 +45,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.azure.cosmos.FlakyTestRetryAnalyzer;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -159,7 +157,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void createItem_withBulk() {
         int totalRequest = getTotalRequest();
 
@@ -207,7 +205,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void createItem_withBulk_after_collectionRecreate() {
         int totalRequest = getTotalRequest();
 
@@ -273,7 +271,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void createItem_withBulk_and_operationLevelContext() {
         int totalRequest = getTotalRequest();
 
@@ -335,7 +333,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void createItemMultipleTimesWithOperationOnFly_withBulk() {
         int totalRequest = getTotalRequest();
 

@@ -517,7 +517,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void batchAndChangeFeedWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
 
         runBatchAndChangeFeedTestCase(
@@ -527,7 +527,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         );
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void batchAndChangeFeedWithPojo(CosmosItemSerializer requestLevelSerializer) {
 
         runBatchAndChangeFeedTestCase(

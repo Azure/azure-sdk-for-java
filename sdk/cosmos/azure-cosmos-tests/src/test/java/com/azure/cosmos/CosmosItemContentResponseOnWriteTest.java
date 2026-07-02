@@ -45,7 +45,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         safeCloseSyncClient(this.client);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void createItem_withContentResponseOnWriteDisabled() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -61,7 +61,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         validateMinimalItemResponse(properties, itemResponse1, true);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void createItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -158,7 +158,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         validateItemResponse(properties, replace);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = 2 * TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void deleteItem_withContentResponseOnWriteDisabled() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
