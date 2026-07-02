@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class OccurrenceExtensionListOccurrenceByVmsSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
      */
     /**
      * Sample code: OccurrenceExtension_ListOccurrenceByVms_MaximumSet.
@@ -18,6 +18,6 @@ public final class OccurrenceExtensionListOccurrenceByVmsSamples {
      */
     public static void occurrenceExtensionListOccurrenceByVmsMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.occurrenceExtensions().listOccurrenceByVms("sazvpabfud", com.azure.core.util.Context.NONE);
+        manager.occurrenceExtensions().listOccurrenceByVms("rgdhjh", com.azure.core.util.Context.NONE);
     }
 }

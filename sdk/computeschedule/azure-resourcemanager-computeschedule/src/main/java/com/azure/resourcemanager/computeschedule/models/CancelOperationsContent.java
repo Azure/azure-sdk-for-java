@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This is the request to get operation status using operationids.
+ * This is the request to cancel running operations in scheduled actions using the operation ids.
  */
 @Fluent
-public final class GetOperationStatusRequest implements JsonSerializable<GetOperationStatusRequest> {
+public final class CancelOperationsContent implements JsonSerializable<CancelOperationsContent> {
     /*
-     * The list of operation ids to get the status of
+     * The list of operation ids to cancel operations on
      */
     private List<String> operationIds;
 
@@ -28,13 +28,13 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     private String correlationid;
 
     /**
-     * Creates an instance of GetOperationStatusRequest class.
+     * Creates an instance of CancelOperationsContent class.
      */
-    public GetOperationStatusRequest() {
+    public CancelOperationsContent() {
     }
 
     /**
-     * Get the operationIds property: The list of operation ids to get the status of.
+     * Get the operationIds property: The list of operation ids to cancel operations on.
      * 
      * @return the operationIds value.
      */
@@ -43,12 +43,12 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     }
 
     /**
-     * Set the operationIds property: The list of operation ids to get the status of.
+     * Set the operationIds property: The list of operation ids to cancel operations on.
      * 
      * @param operationIds the operationIds value to set.
-     * @return the GetOperationStatusRequest object itself.
+     * @return the CancelOperationsContent object itself.
      */
-    public GetOperationStatusRequest withOperationIds(List<String> operationIds) {
+    public CancelOperationsContent withOperationIds(List<String> operationIds) {
         this.operationIds = operationIds;
         return this;
     }
@@ -66,9 +66,9 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
      * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
-     * @return the GetOperationStatusRequest object itself.
+     * @return the CancelOperationsContent object itself.
      */
-    public GetOperationStatusRequest withCorrelationid(String correlationid) {
+    public CancelOperationsContent withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;
     }
@@ -85,32 +85,32 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     }
 
     /**
-     * Reads an instance of GetOperationStatusRequest from the JsonReader.
+     * Reads an instance of CancelOperationsContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of GetOperationStatusRequest if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of CancelOperationsContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the GetOperationStatusRequest.
+     * @throws IOException If an error occurs while reading the CancelOperationsContent.
      */
-    public static GetOperationStatusRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static CancelOperationsContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GetOperationStatusRequest deserializedGetOperationStatusRequest = new GetOperationStatusRequest();
+            CancelOperationsContent deserializedCancelOperationsContent = new CancelOperationsContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("operationIds".equals(fieldName)) {
                     List<String> operationIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedGetOperationStatusRequest.operationIds = operationIds;
+                    deserializedCancelOperationsContent.operationIds = operationIds;
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedGetOperationStatusRequest.correlationid = reader.getString();
+                    deserializedCancelOperationsContent.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedGetOperationStatusRequest;
+            return deserializedCancelOperationsContent;
         });
     }
 }

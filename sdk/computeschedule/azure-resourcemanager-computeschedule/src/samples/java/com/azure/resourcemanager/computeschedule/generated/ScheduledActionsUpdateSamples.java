@@ -11,6 +11,7 @@ import com.azure.resourcemanager.computeschedule.models.Month;
 import com.azure.resourcemanager.computeschedule.models.NotificationProperties;
 import com.azure.resourcemanager.computeschedule.models.NotificationType;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.ResourceType;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.ScheduledAction;
@@ -28,7 +29,7 @@ import java.util.Map;
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_Update_MaximumSet.
@@ -38,25 +39,28 @@ public final class ScheduledActionsUpdateSamples {
     public static void
         scheduledActionsUpdateMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         ScheduledAction resource = manager.scheduledActions()
-            .getByResourceGroupWithResponse("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgcomputeschedule", "scheduled-action-01",
+                com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key9989", "fakeTokenPlaceholder"))
+            .withTags(mapOf("key100", "fakeTokenPlaceholder"))
             .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                 .withActionType(ScheduledActionType.START)
-                .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("19:00:00")
-                    .withTimeZone("bni")
+                .withStartTime(OffsetDateTime.parse("2026-03-12T02:39:45.818Z"))
+                .withEndTime(OffsetDateTime.parse("2026-03-12T02:39:45.818Z"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("12:00:00")
+                    .withTimeZone("gythvwybzwqubqtmatezbxj")
                     .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
                     .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                    .withRequestedDaysOfTheMonth(Arrays.asList(15))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(18))
                     .withExecutionParameters(
                         new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                            .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                            .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                                .withRetryWindowInMinutes(3)
+                                .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                     .withDeadlineType(DeadlineType.UNKNOWN))
                 .withNotificationSettings(
-                    Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")
+                    Arrays.asList(new NotificationProperties().withDestination("zaaoabozbhyuhejwsrennfsxowp")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(true)))

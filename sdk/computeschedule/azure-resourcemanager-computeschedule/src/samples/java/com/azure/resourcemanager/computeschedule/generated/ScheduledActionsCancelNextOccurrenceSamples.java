@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsCancelNextOccurrenceSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_CancelNextOccurrence_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_CancelNextOccurrence_MaximumSet.
@@ -22,9 +22,9 @@ public final class ScheduledActionsCancelNextOccurrenceSamples {
     public static void scheduledActionsCancelNextOccurrenceMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .cancelNextOccurrenceWithResponse("rgcomputeschedule", "myScheduledAction",
+            .cancelNextOccurrenceWithResponse("rgcomputeschedule", "scheduled-action-01",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }

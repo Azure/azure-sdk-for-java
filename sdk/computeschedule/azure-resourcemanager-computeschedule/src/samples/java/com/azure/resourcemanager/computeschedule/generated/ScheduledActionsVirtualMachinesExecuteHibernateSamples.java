@@ -4,9 +4,10 @@
 
 package com.azure.resourcemanager.computeschedule.generated;
 
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
+import com.azure.resourcemanager.computeschedule.models.ResourceOperationType;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import java.util.Arrays;
@@ -16,25 +17,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_VirtualMachinesExecuteHibernate_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsVirtualMachinesExecuteHibernateMinimumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("xtmm", new ExecuteHibernateRequest()
-                .withExecutionParameters(new ExecutionParameters())
-                .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_VirtualMachinesExecuteHibernate_MaximumSet.
@@ -44,12 +27,14 @@ public final class ScheduledActionsVirtualMachinesExecuteHibernateSamples {
     public static void scheduledActionsVirtualMachinesExecuteHibernateMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesExecuteHibernateWithResponse("gztd", new ExecuteHibernateRequest()
+            .virtualMachinesExecuteHibernateWithResponse("zydcprtgybcyilgugfwtfp", new ExecuteHibernateContent()
                 .withExecutionParameters(
                     new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
-                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(19)
+                            .withRetryWindowInMinutes(3)
+                            .withOnFailureAction(ResourceOperationType.UNKNOWN)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")))
+                .withCorrelationid("miqcvaudnngdedocspkthnoo"), com.azure.core.util.Context.NONE);
     }
 }

@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ExecuteDeallocateRequest request for executeDeallocate operations.
+ * The ExecuteStartRequest request for executeStart operations.
  */
 @Fluent
-public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteDeallocateRequest> {
+public final class ExecuteStartContent implements JsonSerializable<ExecuteStartContent> {
     /*
      * The execution parameters for the request
      */
@@ -32,9 +32,9 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     private String correlationid;
 
     /**
-     * Creates an instance of ExecuteDeallocateRequest class.
+     * Creates an instance of ExecuteStartContent class.
      */
-    public ExecuteDeallocateRequest() {
+    public ExecuteStartContent() {
     }
 
     /**
@@ -50,9 +50,9 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * Set the executionParameters property: The execution parameters for the request.
      * 
      * @param executionParameters the executionParameters value to set.
-     * @return the ExecuteDeallocateRequest object itself.
+     * @return the ExecuteStartContent object itself.
      */
-    public ExecuteDeallocateRequest withExecutionParameters(ExecutionParameters executionParameters) {
+    public ExecuteStartContent withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
     }
@@ -70,9 +70,9 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * Set the resources property: The resources for the request.
      * 
      * @param resources the resources value to set.
-     * @return the ExecuteDeallocateRequest object itself.
+     * @return the ExecuteStartContent object itself.
      */
-    public ExecuteDeallocateRequest withResources(Resources resources) {
+    public ExecuteStartContent withResources(Resources resources) {
         this.resources = resources;
         return this;
     }
@@ -90,9 +90,9 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
      * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
-     * @return the ExecuteDeallocateRequest object itself.
+     * @return the ExecuteStartContent object itself.
      */
-    public ExecuteDeallocateRequest withCorrelationid(String correlationid) {
+    public ExecuteStartContent withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;
     }
@@ -110,33 +110,33 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     }
 
     /**
-     * Reads an instance of ExecuteDeallocateRequest from the JsonReader.
+     * Reads an instance of ExecuteStartContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ExecuteDeallocateRequest if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of ExecuteStartContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ExecuteDeallocateRequest.
+     * @throws IOException If an error occurs while reading the ExecuteStartContent.
      */
-    public static ExecuteDeallocateRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static ExecuteStartContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ExecuteDeallocateRequest deserializedExecuteDeallocateRequest = new ExecuteDeallocateRequest();
+            ExecuteStartContent deserializedExecuteStartContent = new ExecuteStartContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("executionParameters".equals(fieldName)) {
-                    deserializedExecuteDeallocateRequest.executionParameters = ExecutionParameters.fromJson(reader);
+                    deserializedExecuteStartContent.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
-                    deserializedExecuteDeallocateRequest.resources = Resources.fromJson(reader);
+                    deserializedExecuteStartContent.resources = Resources.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteDeallocateRequest.correlationid = reader.getString();
+                    deserializedExecuteStartContent.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedExecuteDeallocateRequest;
+            return deserializedExecuteStartContent;
         });
     }
 }

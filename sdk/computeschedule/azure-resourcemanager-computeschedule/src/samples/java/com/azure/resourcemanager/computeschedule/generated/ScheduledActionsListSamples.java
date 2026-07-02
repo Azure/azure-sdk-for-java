@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class ScheduledActionsListSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListBySubscription_MaximumSet.
@@ -17,19 +17,6 @@ public final class ScheduledActionsListSamples {
      * @param manager Entry point to ComputeScheduleManager.
      */
     public static void scheduledActionsListBySubscriptionMaximumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListBySubscription_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_ListBySubscription_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsListBySubscriptionMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions().list(com.azure.core.util.Context.NONE);
     }

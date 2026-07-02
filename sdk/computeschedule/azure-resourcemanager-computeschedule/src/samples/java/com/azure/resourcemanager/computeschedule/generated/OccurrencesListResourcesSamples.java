@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class OccurrencesListResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_ListResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_ListResources_MaximumSet.
@@ -19,7 +19,7 @@ public final class OccurrencesListResourcesSamples {
     public static void
         occurrencesListResourcesMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .listResources("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
+            .listResources("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111",
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Cancel_MaximumSet.
@@ -22,9 +22,9 @@ public final class OccurrencesCancelSamples {
     public static void
         occurrencesCancelMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .cancelWithResponse("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
+            .cancelWithResponse("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }

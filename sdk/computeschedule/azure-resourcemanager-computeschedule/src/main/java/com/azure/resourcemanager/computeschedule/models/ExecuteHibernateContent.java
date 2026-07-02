@@ -15,7 +15,7 @@ import java.io.IOException;
  * The ExecuteHibernateRequest request for executeHibernate operations.
  */
 @Fluent
-public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHibernateRequest> {
+public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHibernateContent> {
     /*
      * The execution parameters for the request
      */
@@ -32,9 +32,9 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     private String correlationid;
 
     /**
-     * Creates an instance of ExecuteHibernateRequest class.
+     * Creates an instance of ExecuteHibernateContent class.
      */
-    public ExecuteHibernateRequest() {
+    public ExecuteHibernateContent() {
     }
 
     /**
@@ -50,9 +50,9 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
      * Set the executionParameters property: The execution parameters for the request.
      * 
      * @param executionParameters the executionParameters value to set.
-     * @return the ExecuteHibernateRequest object itself.
+     * @return the ExecuteHibernateContent object itself.
      */
-    public ExecuteHibernateRequest withExecutionParameters(ExecutionParameters executionParameters) {
+    public ExecuteHibernateContent withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
     }
@@ -70,9 +70,9 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
      * Set the resources property: The resources for the request.
      * 
      * @param resources the resources value to set.
-     * @return the ExecuteHibernateRequest object itself.
+     * @return the ExecuteHibernateContent object itself.
      */
-    public ExecuteHibernateRequest withResources(Resources resources) {
+    public ExecuteHibernateContent withResources(Resources resources) {
         this.resources = resources;
         return this;
     }
@@ -90,9 +90,9 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
      * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
-     * @return the ExecuteHibernateRequest object itself.
+     * @return the ExecuteHibernateContent object itself.
      */
-    public ExecuteHibernateRequest withCorrelationid(String correlationid) {
+    public ExecuteHibernateContent withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;
     }
@@ -110,33 +110,33 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Reads an instance of ExecuteHibernateRequest from the JsonReader.
+     * Reads an instance of ExecuteHibernateContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ExecuteHibernateRequest if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of ExecuteHibernateContent if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ExecuteHibernateRequest.
+     * @throws IOException If an error occurs while reading the ExecuteHibernateContent.
      */
-    public static ExecuteHibernateRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static ExecuteHibernateContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ExecuteHibernateRequest deserializedExecuteHibernateRequest = new ExecuteHibernateRequest();
+            ExecuteHibernateContent deserializedExecuteHibernateContent = new ExecuteHibernateContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("executionParameters".equals(fieldName)) {
-                    deserializedExecuteHibernateRequest.executionParameters = ExecutionParameters.fromJson(reader);
+                    deserializedExecuteHibernateContent.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
-                    deserializedExecuteHibernateRequest.resources = Resources.fromJson(reader);
+                    deserializedExecuteHibernateContent.resources = Resources.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteHibernateRequest.correlationid = reader.getString();
+                    deserializedExecuteHibernateContent.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedExecuteHibernateRequest;
+            return deserializedExecuteHibernateContent;
         });
     }
 }

@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsAttachResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_AttachResources_MaximumSet.
@@ -26,11 +26,11 @@ public final class ScheduledActionsAttachResourcesSamples {
     public static void scheduledActionsAttachResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .attachResourcesWithResponse("rgcomputeschedule", "myScheduledAction", new ResourceAttachRequest()
+            .attachResourcesWithResponse("rgcomputeschedule", "scheduled-action-01", new ResourceAttachRequest()
                 .withResources(Arrays.asList(new ScheduledActionResourceInner().withResourceId(
                     "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")
                     .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("wbhryycyolvnypjxzlawwvb")
+                        Arrays.asList(new NotificationProperties().withDestination("zaaoabozbhyuhejwsrennfsxowp")
                             .withType(NotificationType.EMAIL)
                             .withLanguage(Language.EN_US)
                             .withDisabled(true))))),

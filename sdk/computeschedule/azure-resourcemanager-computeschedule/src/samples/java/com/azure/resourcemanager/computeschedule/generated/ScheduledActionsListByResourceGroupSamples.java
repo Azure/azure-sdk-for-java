@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class ScheduledActionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListByResourceGroup_MaximumSet.
@@ -17,19 +17,6 @@ public final class ScheduledActionsListByResourceGroupSamples {
      * @param manager Entry point to ComputeScheduleManager.
      */
     public static void scheduledActionsListByResourceGroupMaximumSet(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions().listByResourceGroup("rgcomputeschedule", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListByResourceGroup_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ScheduledActions_ListByResourceGroup_MinimumSet.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void scheduledActionsListByResourceGroupMinimumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions().listByResourceGroup("rgcomputeschedule", com.azure.core.util.Context.NONE);
     }

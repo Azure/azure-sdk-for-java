@@ -12,14 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ExecuteCreateRequest request for create operations.
+ * The ExecuteCreateFlexRequest request for executeCreateFlex operations.
  */
 @Fluent
-public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreateRequest> {
+public final class ExecuteCreateFlexContent implements JsonSerializable<ExecuteCreateFlexContent> {
     /*
-     * resource creation payload
+     * Resource creation payload with flex properties
      */
-    private ResourceProvisionPayload resourceConfigParameters;
+    private ResourceProvisionFlexPayload resourceConfigParameters;
 
     /*
      * The execution parameters for the request
@@ -27,32 +27,33 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
     private ExecutionParameters executionParameters;
 
     /*
-     * CorrelationId item
+     * Correlationid item
      */
     private String correlationid;
 
     /**
-     * Creates an instance of ExecuteCreateRequest class.
+     * Creates an instance of ExecuteCreateFlexContent class.
      */
-    public ExecuteCreateRequest() {
+    public ExecuteCreateFlexContent() {
     }
 
     /**
-     * Get the resourceConfigParameters property: resource creation payload.
+     * Get the resourceConfigParameters property: Resource creation payload with flex properties.
      * 
      * @return the resourceConfigParameters value.
      */
-    public ResourceProvisionPayload resourceConfigParameters() {
+    public ResourceProvisionFlexPayload resourceConfigParameters() {
         return this.resourceConfigParameters;
     }
 
     /**
-     * Set the resourceConfigParameters property: resource creation payload.
+     * Set the resourceConfigParameters property: Resource creation payload with flex properties.
      * 
      * @param resourceConfigParameters the resourceConfigParameters value to set.
-     * @return the ExecuteCreateRequest object itself.
+     * @return the ExecuteCreateFlexContent object itself.
      */
-    public ExecuteCreateRequest withResourceConfigParameters(ResourceProvisionPayload resourceConfigParameters) {
+    public ExecuteCreateFlexContent
+        withResourceConfigParameters(ResourceProvisionFlexPayload resourceConfigParameters) {
         this.resourceConfigParameters = resourceConfigParameters;
         return this;
     }
@@ -70,15 +71,15 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
      * Set the executionParameters property: The execution parameters for the request.
      * 
      * @param executionParameters the executionParameters value to set.
-     * @return the ExecuteCreateRequest object itself.
+     * @return the ExecuteCreateFlexContent object itself.
      */
-    public ExecuteCreateRequest withExecutionParameters(ExecutionParameters executionParameters) {
+    public ExecuteCreateFlexContent withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
     }
 
     /**
-     * Get the correlationid property: CorrelationId item.
+     * Get the correlationid property: Correlationid item.
      * 
      * @return the correlationid value.
      */
@@ -87,12 +88,12 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
     }
 
     /**
-     * Set the correlationid property: CorrelationId item.
+     * Set the correlationid property: Correlationid item.
      * 
      * @param correlationid the correlationid value to set.
-     * @return the ExecuteCreateRequest object itself.
+     * @return the ExecuteCreateFlexContent object itself.
      */
-    public ExecuteCreateRequest withCorrelationid(String correlationid) {
+    public ExecuteCreateFlexContent withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;
     }
@@ -110,34 +111,34 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
     }
 
     /**
-     * Reads an instance of ExecuteCreateRequest from the JsonReader.
+     * Reads an instance of ExecuteCreateFlexContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ExecuteCreateRequest if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of ExecuteCreateFlexContent if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ExecuteCreateRequest.
+     * @throws IOException If an error occurs while reading the ExecuteCreateFlexContent.
      */
-    public static ExecuteCreateRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static ExecuteCreateFlexContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ExecuteCreateRequest deserializedExecuteCreateRequest = new ExecuteCreateRequest();
+            ExecuteCreateFlexContent deserializedExecuteCreateFlexContent = new ExecuteCreateFlexContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceConfigParameters".equals(fieldName)) {
-                    deserializedExecuteCreateRequest.resourceConfigParameters
-                        = ResourceProvisionPayload.fromJson(reader);
+                    deserializedExecuteCreateFlexContent.resourceConfigParameters
+                        = ResourceProvisionFlexPayload.fromJson(reader);
                 } else if ("executionParameters".equals(fieldName)) {
-                    deserializedExecuteCreateRequest.executionParameters = ExecutionParameters.fromJson(reader);
+                    deserializedExecuteCreateFlexContent.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteCreateRequest.correlationid = reader.getString();
+                    deserializedExecuteCreateFlexContent.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedExecuteCreateRequest;
+            return deserializedExecuteCreateFlexContent;
         });
     }
 }

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class OccurrencesDelaySamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Occurrences_Delay_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Occurrences_Delay_MaximumSet_Gen.json
      */
     /**
      * Sample code: Occurrences_Delay_MaximumSet.
@@ -23,10 +23,10 @@ public final class OccurrencesDelaySamples {
     public static void
         occurrencesDelayMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.occurrences()
-            .delay("rgcomputeschedule", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", new DelayRequest()
-                .withDelay(OffsetDateTime.parse("2025-05-22T17:00:00.000-07:00"))
-                .withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+            .delay("rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111",
+                new DelayRequest().withDelay(OffsetDateTime.parse("2026-03-12T02:39:48.148Z"))
+                    .withResourceIds(Arrays.asList(
+                        "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1")),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -36,6 +36,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.models.CancelOperationsResponseInner;
+import com.azure.resourcemanager.computeschedule.fluent.models.CreateFlexResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.CreateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.computeschedule.fluent.models.DeleteResourceOperationResponseInner;
@@ -50,21 +51,22 @@ import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOper
 import com.azure.resourcemanager.computeschedule.implementation.models.ResourceListResponse;
 import com.azure.resourcemanager.computeschedule.implementation.models.ScheduledActionListResult;
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
-import com.azure.resourcemanager.computeschedule.models.CancelOperationsRequest;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateRequest;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateRequest;
-import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteRequest;
-import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateRequest;
-import com.azure.resourcemanager.computeschedule.models.ExecuteStartRequest;
-import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsRequest;
-import com.azure.resourcemanager.computeschedule.models.GetOperationStatusRequest;
+import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.ExecuteStartContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationErrorsContent;
+import com.azure.resourcemanager.computeschedule.models.GetOperationStatusContent;
 import com.azure.resourcemanager.computeschedule.models.ResourceAttachRequest;
 import com.azure.resourcemanager.computeschedule.models.ResourceDetachRequest;
 import com.azure.resourcemanager.computeschedule.models.ResourcePatchRequest;
 import com.azure.resourcemanager.computeschedule.models.ScheduledActionUpdate;
-import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateRequest;
-import com.azure.resourcemanager.computeschedule.models.SubmitHibernateRequest;
-import com.azure.resourcemanager.computeschedule.models.SubmitStartRequest;
+import com.azure.resourcemanager.computeschedule.models.SubmitDeallocateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitHibernateContent;
+import com.azure.resourcemanager.computeschedule.models.SubmitStartContent;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -108,7 +110,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitDeallocateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitDeallocateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitDeallocate")
@@ -118,7 +120,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitDeallocateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitDeallocateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitHibernate")
@@ -128,7 +130,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitHibernateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitHibernateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitHibernate")
@@ -138,7 +140,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitHibernateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitHibernateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitStart")
@@ -148,7 +150,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitStartRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitStartContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitStart")
@@ -158,7 +160,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitStartRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SubmitStartContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDeallocate")
@@ -168,7 +170,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeallocateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeallocateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDeallocate")
@@ -178,7 +180,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeallocateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeallocateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteHibernate")
@@ -188,7 +190,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteHibernateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteHibernateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteHibernate")
@@ -198,7 +200,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteHibernateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteHibernateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteStart")
@@ -208,7 +210,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteStartRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteStartContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteStart")
@@ -218,7 +220,27 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteStartRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteStartContent requestBody,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreateFlex")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CreateFlexResourceOperationResponseInner>> virtualMachinesExecuteCreateFlex(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexContent body,
+            Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreateFlex")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexContent body,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreate")
@@ -228,7 +250,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreate")
@@ -238,7 +260,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDelete")
@@ -248,7 +270,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeleteRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeleteContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDelete")
@@ -258,7 +280,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeleteRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteDeleteContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationStatus")
@@ -268,7 +290,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationStatusRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationStatusContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationStatus")
@@ -278,7 +300,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationStatusRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationStatusContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesCancelOperations")
@@ -288,7 +310,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") CancelOperationsRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CancelOperationsContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesCancelOperations")
@@ -298,7 +320,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") CancelOperationsRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") CancelOperationsContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationErrors")
@@ -308,7 +330,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationErrorsRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationErrorsContent requestBody,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationErrors")
@@ -318,7 +340,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationErrorsRequest requestBody,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") GetOperationErrorsContent requestBody,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -660,7 +682,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeallocateResourceOperationResponseInner>> virtualMachinesSubmitDeallocateWithResponseAsync(
-        String locationparameter, SubmitDeallocateRequest requestBody) {
+        String locationparameter, SubmitDeallocateContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -683,7 +705,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeallocateResourceOperationResponseInner>
-        virtualMachinesSubmitDeallocateAsync(String locationparameter, SubmitDeallocateRequest requestBody) {
+        virtualMachinesSubmitDeallocateAsync(String locationparameter, SubmitDeallocateContent requestBody) {
         return virtualMachinesSubmitDeallocateWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -702,7 +724,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesSubmitDeallocateWithResponse(
-        String locationparameter, SubmitDeallocateRequest requestBody, Context context) {
+        String locationparameter, SubmitDeallocateContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesSubmitDeallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -722,7 +744,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeallocateResourceOperationResponseInner virtualMachinesSubmitDeallocate(String locationparameter,
-        SubmitDeallocateRequest requestBody) {
+        SubmitDeallocateContent requestBody) {
         return virtualMachinesSubmitDeallocateWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -740,7 +762,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HibernateResourceOperationResponseInner>>
-        virtualMachinesSubmitHibernateWithResponseAsync(String locationparameter, SubmitHibernateRequest requestBody) {
+        virtualMachinesSubmitHibernateWithResponseAsync(String locationparameter, SubmitHibernateContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -763,7 +785,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HibernateResourceOperationResponseInner> virtualMachinesSubmitHibernateAsync(String locationparameter,
-        SubmitHibernateRequest requestBody) {
+        SubmitHibernateContent requestBody) {
         return virtualMachinesSubmitHibernateWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -782,7 +804,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesSubmitHibernateWithResponse(
-        String locationparameter, SubmitHibernateRequest requestBody, Context context) {
+        String locationparameter, SubmitHibernateContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesSubmitHibernateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -802,7 +824,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HibernateResourceOperationResponseInner virtualMachinesSubmitHibernate(String locationparameter,
-        SubmitHibernateRequest requestBody) {
+        SubmitHibernateContent requestBody) {
         return virtualMachinesSubmitHibernateWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -818,7 +840,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StartResourceOperationResponseInner>>
-        virtualMachinesSubmitStartWithResponseAsync(String locationparameter, SubmitStartRequest requestBody) {
+        virtualMachinesSubmitStartWithResponseAsync(String locationparameter, SubmitStartContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -840,7 +862,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StartResourceOperationResponseInner> virtualMachinesSubmitStartAsync(String locationparameter,
-        SubmitStartRequest requestBody) {
+        SubmitStartContent requestBody) {
         return virtualMachinesSubmitStartWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -858,7 +880,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesSubmitStartWithResponse(
-        String locationparameter, SubmitStartRequest requestBody, Context context) {
+        String locationparameter, SubmitStartContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesSubmitStartSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -877,7 +899,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartResourceOperationResponseInner virtualMachinesSubmitStart(String locationparameter,
-        SubmitStartRequest requestBody) {
+        SubmitStartContent requestBody) {
         return virtualMachinesSubmitStartWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -895,7 +917,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeallocateResourceOperationResponseInner>> virtualMachinesExecuteDeallocateWithResponseAsync(
-        String locationparameter, ExecuteDeallocateRequest requestBody) {
+        String locationparameter, ExecuteDeallocateContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -918,7 +940,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeallocateResourceOperationResponseInner>
-        virtualMachinesExecuteDeallocateAsync(String locationparameter, ExecuteDeallocateRequest requestBody) {
+        virtualMachinesExecuteDeallocateAsync(String locationparameter, ExecuteDeallocateContent requestBody) {
         return virtualMachinesExecuteDeallocateWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -937,7 +959,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeallocateResourceOperationResponseInner> virtualMachinesExecuteDeallocateWithResponse(
-        String locationparameter, ExecuteDeallocateRequest requestBody, Context context) {
+        String locationparameter, ExecuteDeallocateContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteDeallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -957,7 +979,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeallocateResourceOperationResponseInner virtualMachinesExecuteDeallocate(String locationparameter,
-        ExecuteDeallocateRequest requestBody) {
+        ExecuteDeallocateContent requestBody) {
         return virtualMachinesExecuteDeallocateWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -975,7 +997,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HibernateResourceOperationResponseInner>> virtualMachinesExecuteHibernateWithResponseAsync(
-        String locationparameter, ExecuteHibernateRequest requestBody) {
+        String locationparameter, ExecuteHibernateContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -998,7 +1020,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateAsync(String locationparameter,
-        ExecuteHibernateRequest requestBody) {
+        ExecuteHibernateContent requestBody) {
         return virtualMachinesExecuteHibernateWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1017,7 +1039,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HibernateResourceOperationResponseInner> virtualMachinesExecuteHibernateWithResponse(
-        String locationparameter, ExecuteHibernateRequest requestBody, Context context) {
+        String locationparameter, ExecuteHibernateContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteHibernateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1037,7 +1059,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HibernateResourceOperationResponseInner virtualMachinesExecuteHibernate(String locationparameter,
-        ExecuteHibernateRequest requestBody) {
+        ExecuteHibernateContent requestBody) {
         return virtualMachinesExecuteHibernateWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -1054,7 +1076,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StartResourceOperationResponseInner>>
-        virtualMachinesExecuteStartWithResponseAsync(String locationparameter, ExecuteStartRequest requestBody) {
+        virtualMachinesExecuteStartWithResponseAsync(String locationparameter, ExecuteStartContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1077,7 +1099,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StartResourceOperationResponseInner> virtualMachinesExecuteStartAsync(String locationparameter,
-        ExecuteStartRequest requestBody) {
+        ExecuteStartContent requestBody) {
         return virtualMachinesExecuteStartWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1096,7 +1118,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartResourceOperationResponseInner> virtualMachinesExecuteStartWithResponse(
-        String locationparameter, ExecuteStartRequest requestBody, Context context) {
+        String locationparameter, ExecuteStartContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteStartSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1116,13 +1138,93 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartResourceOperationResponseInner virtualMachinesExecuteStart(String locationparameter,
-        ExecuteStartRequest requestBody) {
+        ExecuteStartContent requestBody) {
         return virtualMachinesExecuteStartWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CreateFlexResourceOperationResponseInner>>
+        virtualMachinesExecuteCreateFlexWithResponseAsync(String locationparameter, ExecuteCreateFlexContent body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.virtualMachinesExecuteCreateFlex(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), locationparameter, contentType, accept,
+                body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CreateFlexResourceOperationResponseInner>
+        virtualMachinesExecuteCreateFlexAsync(String locationparameter, ExecuteCreateFlexContent body) {
+        return virtualMachinesExecuteCreateFlexWithResponseAsync(locationparameter, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexWithResponse(
+        String locationparameter, ExecuteCreateFlexContent body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.virtualMachinesExecuteCreateFlexSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), locationparameter, contentType, accept, body, context);
+    }
+
+    /**
+     * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
+     * this operation is triggered as soon as Computeschedule receives it.
+     * 
+     * @param locationparameter The location name.
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a create flex request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateFlexResourceOperationResponseInner virtualMachinesExecuteCreateFlex(String locationparameter,
+        ExecuteCreateFlexContent body) {
+        return virtualMachinesExecuteCreateFlexWithResponse(locationparameter, body, Context.NONE).getValue();
+    }
+
+    /**
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1133,7 +1235,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreateResourceOperationResponseInner>>
-        virtualMachinesExecuteCreateWithResponseAsync(String locationparameter, ExecuteCreateRequest requestBody) {
+        virtualMachinesExecuteCreateWithResponseAsync(String locationparameter, ExecuteCreateContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1144,8 +1246,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1156,14 +1258,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateAsync(String locationparameter,
-        ExecuteCreateRequest requestBody) {
+        ExecuteCreateContent requestBody) {
         return virtualMachinesExecuteCreateWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1175,7 +1277,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateResourceOperationResponseInner> virtualMachinesExecuteCreateWithResponse(
-        String locationparameter, ExecuteCreateRequest requestBody, Context context) {
+        String locationparameter, ExecuteCreateContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteCreateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1183,8 +1285,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1195,13 +1297,13 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateResourceOperationResponseInner virtualMachinesExecuteCreate(String locationparameter,
-        ExecuteCreateRequest requestBody) {
+        ExecuteCreateContent requestBody) {
         return virtualMachinesExecuteCreateWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1212,7 +1314,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteResourceOperationResponseInner>>
-        virtualMachinesExecuteDeleteWithResponseAsync(String locationparameter, ExecuteDeleteRequest requestBody) {
+        virtualMachinesExecuteDeleteWithResponseAsync(String locationparameter, ExecuteDeleteContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1223,8 +1325,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1235,14 +1337,14 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteAsync(String locationparameter,
-        ExecuteDeleteRequest requestBody) {
+        ExecuteDeleteContent requestBody) {
         return virtualMachinesExecuteDeleteWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1254,7 +1356,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteResourceOperationResponseInner> virtualMachinesExecuteDeleteWithResponse(
-        String locationparameter, ExecuteDeleteRequest requestBody, Context context) {
+        String locationparameter, ExecuteDeleteContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteDeleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1262,8 +1364,8 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
     }
 
     /**
-     * VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this operation is
-     * triggered as soon as Computeschedule receives it.
+     * [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines, this
+     * operation is triggered as soon as Computeschedule receives it.
      * 
      * @param locationparameter The location name.
      * @param requestBody The request body.
@@ -1274,7 +1376,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteResourceOperationResponseInner virtualMachinesExecuteDelete(String locationparameter,
-        ExecuteDeleteRequest requestBody) {
+        ExecuteDeleteContent requestBody) {
         return virtualMachinesExecuteDeleteWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -1291,7 +1393,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GetOperationStatusResponseInner>> virtualMachinesGetOperationStatusWithResponseAsync(
-        String locationparameter, GetOperationStatusRequest requestBody) {
+        String locationparameter, GetOperationStatusContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1313,7 +1415,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusAsync(String locationparameter,
-        GetOperationStatusRequest requestBody) {
+        GetOperationStatusContent requestBody) {
         return virtualMachinesGetOperationStatusWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1331,7 +1433,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusWithResponse(
-        String locationparameter, GetOperationStatusRequest requestBody, Context context) {
+        String locationparameter, GetOperationStatusContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesGetOperationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1350,7 +1452,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetOperationStatusResponseInner virtualMachinesGetOperationStatus(String locationparameter,
-        GetOperationStatusRequest requestBody) {
+        GetOperationStatusContent requestBody) {
         return virtualMachinesGetOperationStatusWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -1367,7 +1469,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CancelOperationsResponseInner>> virtualMachinesCancelOperationsWithResponseAsync(
-        String locationparameter, CancelOperationsRequest requestBody) {
+        String locationparameter, CancelOperationsContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1389,7 +1491,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CancelOperationsResponseInner> virtualMachinesCancelOperationsAsync(String locationparameter,
-        CancelOperationsRequest requestBody) {
+        CancelOperationsContent requestBody) {
         return virtualMachinesCancelOperationsWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1407,7 +1509,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelOperationsResponseInner> virtualMachinesCancelOperationsWithResponse(String locationparameter,
-        CancelOperationsRequest requestBody, Context context) {
+        CancelOperationsContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesCancelOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1426,7 +1528,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CancelOperationsResponseInner virtualMachinesCancelOperations(String locationparameter,
-        CancelOperationsRequest requestBody) {
+        CancelOperationsContent requestBody) {
         return virtualMachinesCancelOperationsWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
@@ -1444,7 +1546,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GetOperationErrorsResponseInner>> virtualMachinesGetOperationErrorsWithResponseAsync(
-        String locationparameter, GetOperationErrorsRequest requestBody) {
+        String locationparameter, GetOperationErrorsContent requestBody) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1467,7 +1569,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GetOperationErrorsResponseInner> virtualMachinesGetOperationErrorsAsync(String locationparameter,
-        GetOperationErrorsRequest requestBody) {
+        GetOperationErrorsContent requestBody) {
         return virtualMachinesGetOperationErrorsWithResponseAsync(locationparameter, requestBody)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1486,7 +1588,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetOperationErrorsResponseInner> virtualMachinesGetOperationErrorsWithResponse(
-        String locationparameter, GetOperationErrorsRequest requestBody, Context context) {
+        String locationparameter, GetOperationErrorsContent requestBody, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesGetOperationErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1506,7 +1608,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetOperationErrorsResponseInner virtualMachinesGetOperationErrors(String locationparameter,
-        GetOperationErrorsRequest requestBody) {
+        GetOperationErrorsContent requestBody) {
         return virtualMachinesGetOperationErrorsWithResponse(locationparameter, requestBody, Context.NONE).getValue();
     }
 
