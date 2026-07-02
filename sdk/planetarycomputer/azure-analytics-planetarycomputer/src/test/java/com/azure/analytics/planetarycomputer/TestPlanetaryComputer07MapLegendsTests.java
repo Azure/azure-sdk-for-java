@@ -95,4 +95,67 @@ public class TestPlanetaryComputer07MapLegendsTests extends PlanetaryComputerTes
 
         System.out.println("Interval legend validated successfully");
     }
+
+    /**
+     * Test getting a legend as PNG image.
+     * Python equivalent: get_legend (colormap_name="rdylgn")
+     * JS equivalent: should get legend as PNG image (rdylgn colormap)
+     */
+    @Test
+    @Tag("Legend")
+    public void test07_03_GetLegendAsPng() {
+        DataClient dataClient = getDataClient();
+        String colorMapName = "rdylgn";
+
+        System.out.println("Input - color_map_name: " + colorMapName);
+
+        BinaryData imageData = dataClient.getLegend(colorMapName);
+
+        assertNotNull(imageData, "Legend image should not be null");
+
+        byte[] imageBytes = imageData.toBytes();
+        System.out.println("Image size: " + imageBytes.length + " bytes");
+
+        assertTrue(imageBytes.length > 100,
+            String.format("Legend image should be substantial, got only %d bytes", imageBytes.length));
+
+        // Verify PNG magic bytes
+        byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
+        for (int i = 0; i < pngMagic.length; i++) {
+            assertEquals(pngMagic[i], imageBytes[i], String.format("PNG magic byte %d mismatch", i));
+        }
+
+        System.out.println("Legend PNG image validated successfully");
+    }
+
+    /**
+     * Test getting a legend as PNG image for viridis colormap.
+     * JS equivalent: should get legend as PNG image (viridis colormap)
+     */
+    @Test
+    @Tag("Legend")
+    public void test07_04_GetLegendViridis() {
+        DataClient dataClient = getDataClient();
+        String colorMapName = "viridis";
+
+        System.out.println("Input - color_map_name: " + colorMapName);
+
+        BinaryData imageData = dataClient.getLegend(colorMapName);
+
+        assertNotNull(imageData, "Legend image should not be null");
+
+        byte[] imageBytes = imageData.toBytes();
+        System.out.println("Image size: " + imageBytes.length + " bytes");
+
+        assertTrue(imageBytes.length > 100,
+            String.format("Legend image should be substantial, got only %d bytes", imageBytes.length));
+
+        // Verify PNG magic bytes
+        byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
+        for (int i = 0; i < pngMagic.length; i++) {
+            assertEquals(pngMagic[i], imageBytes[i], String.format("PNG magic byte %d mismatch", i));
+        }
+
+        System.out.println("Viridis legend PNG image validated successfully");
+    }
 }

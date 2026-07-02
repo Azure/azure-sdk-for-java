@@ -16,8 +16,8 @@ public class StacConformanceClassGet {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-conformance-class.stac-conformance-class-get
-        StacConformanceClasses response = stacClient.getConformanceClass();
-        // END:com.azure.analytics.planetarycomputer.generated.stac-get-conformance-class.stac-conformance-class-get
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-conformance-classes.stac-conformance-class-get
+        StacConformanceClasses response = stacClient.getConformanceClasses();
+        // END:com.azure.analytics.planetarycomputer.generated.stac-get-conformance-classes.stac-conformance-class-get
     }
 }

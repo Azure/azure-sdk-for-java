@@ -1,13 +1,13 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
-
-- Azure PlanetaryComputer client library for Java. This package contains Microsoft Azure PlanetaryComputer client library.
+## 1.0.0 (2026-06-29)
 
 ### Features Added
 
-### Breaking Changes
+- Initial GA release of the Azure Planetary Computer client library for Java targeting API version `2026-04-15`.
 
-### Bugs Fixed
+## 1.0.0-beta.1 (2026-06-08)
 
-### Other Changes
+- Initial preview release of the Azure Planetary Computer client library for Java.
+- Added `StacClient`, `DataClient`, `IngestionClient`, and `SharedAccessSignatureClient` with synchronous and asynchronous variants.
+- Targeting API version `2025-04-30-preview`.

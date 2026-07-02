@@ -43,7 +43,8 @@ public final class StacAssetTests {
         Assertions.assertEquals("data", model.getRoles().get(0));
         Assertions.assertEquals("visual", model.getRoles().get(1));
         Assertions.assertNotNull(model.getAdditionalProperties());
-        Assertions.assertEquals("extra_value", model.getAdditionalProperties().get("extra_field"));
+        Assertions.assertEquals("extra_value",
+            model.getAdditionalProperties().get("extra_field").toObject(String.class));
     }
 
     @Test
@@ -60,7 +61,7 @@ public final class StacAssetTests {
             .setHref("https://example.com/asset.tif")
             .setType("image/tiff")
             .setRoles(Arrays.asList("data", "visual"))
-            .setAdditionalProperties(mapOf("extra_field", "extra_value"));
+            .setAdditionalProperties(mapOf("extra_field", BinaryData.fromString("\"extra_value\"")));
         model = BinaryData.fromObject(model).toObject(StacAsset.class);
         Assertions.assertEquals("sentinel-2", model.getPlatform());
         Assertions.assertEquals(1, model.getInstruments().size());

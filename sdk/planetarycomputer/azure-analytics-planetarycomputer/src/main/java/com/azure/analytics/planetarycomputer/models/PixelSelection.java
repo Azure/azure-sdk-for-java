@@ -65,6 +65,12 @@ public final class PixelSelection extends ExpandableStringEnum<PixelSelection> {
     public static final PixelSelection LAST_BAND_HIGH = fromString("lastbandhigh");
 
     /**
+     * Count available pixels across sources.
+     */
+    @Generated
+    public static final PixelSelection COUNT = fromString("count");
+
+    /**
      * Creates a new instance of PixelSelection value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -93,7 +93,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -129,7 +129,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -155,7 +155,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -183,10 +183,10 @@ public final class StacAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -243,7 +243,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -279,7 +279,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -305,7 +305,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -333,10 +333,10 @@ public final class StacAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -394,7 +394,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -430,7 +430,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -456,7 +456,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -484,10 +484,10 @@ public final class StacAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -538,7 +538,7 @@ public final class StacAsyncClient {
      *                 description: String (Optional)
      *                 cql (Required): [
      *                      (Required){
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 ]
      *             }
@@ -580,7 +580,7 @@ public final class StacAsyncClient {
      *         ]
      *         defaultLocation (Optional): (recursive schema, see defaultLocation above)
      *         defaultCustomQuery (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      * }
@@ -619,7 +619,7 @@ public final class StacAsyncClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -636,7 +636,7 @@ public final class StacAsyncClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -674,7 +674,7 @@ public final class StacAsyncClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -691,7 +691,7 @@ public final class StacAsyncClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -751,7 +751,7 @@ public final class StacAsyncClient {
      *     description: String (Optional)
      *     cql (Required): [
      *          (Required){
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     ]
      * }
@@ -792,7 +792,7 @@ public final class StacAsyncClient {
      *         description: String (Optional)
      *         cql (Required): [
      *              (Required){
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         ]
      *     }
@@ -813,8 +813,8 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMosaicsWithResponse(String collectionId, RequestOptions requestOptions) {
-        return this.serviceClient.listMosaicsWithResponseAsync(collectionId, requestOptions);
+    public Mono<Response<BinaryData>> getMosaicsWithResponse(String collectionId, RequestOptions requestOptions) {
+        return this.serviceClient.getMosaicsWithResponseAsync(collectionId, requestOptions);
     }
 
     /**
@@ -848,7 +848,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -884,7 +884,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -910,7 +910,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -938,10 +938,10 @@ public final class StacAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -994,9 +994,9 @@ public final class StacAsyncClient {
     }
 
     /**
-     * Create or update Collection
+     * Replace Collection
      * 
-     * Create or replace a collection in the GeoCatalog instance.
+     * Replace an existing collection in the GeoCatalog instance.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1024,7 +1024,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1060,7 +1060,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1086,7 +1086,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1114,10 +1114,10 @@ public final class StacAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1150,7 +1150,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1186,7 +1186,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1212,7 +1212,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1240,10 +1240,10 @@ public final class StacAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1262,9 +1262,9 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceCollectionWithResponse(String collectionId, BinaryData body,
+    public Mono<Response<BinaryData>> replaceCollectionWithResponse(String collectionId, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceCollectionWithResponseAsync(collectionId, body, requestOptions);
+        return this.serviceClient.replaceCollectionWithResponseAsync(collectionId, body, requestOptions);
     }
 
     /**
@@ -1357,7 +1357,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1393,7 +1393,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1419,7 +1419,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -1447,10 +1447,10 @@ public final class StacAsyncClient {
      *         (recursive schema, see above)
      *     ]
      *     summaries (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -1503,7 +1503,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -1553,7 +1553,7 @@ public final class StacAsyncClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -1579,7 +1579,7 @@ public final class StacAsyncClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -1607,10 +1607,10 @@ public final class StacAsyncClient {
      *                 (recursive schema, see above)
      *             ]
      *             summaries (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     ]
@@ -2047,9 +2047,8 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listRenderOptionsWithResponse(String collectionId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.listRenderOptionsWithResponseAsync(collectionId, requestOptions);
+    public Mono<Response<BinaryData>> getRenderOptionsWithResponse(String collectionId, RequestOptions requestOptions) {
+        return this.serviceClient.getRenderOptionsWithResponseAsync(collectionId, requestOptions);
     }
 
     /**
@@ -2202,8 +2201,8 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConformanceClassWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getConformanceClassWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getConformanceClassesWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getConformanceClassesWithResponseAsync(requestOptions);
     }
 
     /**
@@ -2241,7 +2240,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2289,7 +2288,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2364,7 +2363,7 @@ public final class StacAsyncClient {
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2385,7 +2384,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2433,7 +2432,7 @@ public final class StacAsyncClient {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -2458,7 +2457,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2512,9 +2511,9 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrReplaceItem(String collectionId, String itemId,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateOrReplaceItemAsync(collectionId, itemId, body, requestOptions);
+    public PollerFlux<BinaryData, BinaryData> beginReplaceItem(String collectionId, String itemId, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginReplaceItemAsync(collectionId, itemId, body, requestOptions);
     }
 
     /**
@@ -2569,6 +2568,15 @@ public final class StacAsyncClient {
 
     /**
      * Fetch a single STAC Item.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2589,7 +2597,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2637,7 +2645,7 @@ public final class StacAsyncClient {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -2662,7 +2670,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -2751,6 +2759,10 @@ public final class StacAsyncClient {
      * If a feature has multiple temporal properties, it is the decision of the
      * server whether only a single temporal property is used to determine
      * the extent or all relevant temporal properties.</td></tr>
+     * <tr><td>sign</td><td>String</td><td>No</td><td>Whether to sign asset URLs in the response. Allowed values:
+     * "true", "false".</td></tr>
+     * <tr><td>duration</td><td>Integer</td><td>No</td><td>URL signature duration in minutes.</td></tr>
+     * <tr><td>token</td><td>String</td><td>No</td><td>Pagination token for fetching the next set of results.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2773,7 +2785,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2834,7 +2846,7 @@ public final class StacAsyncClient {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -2859,7 +2871,7 @@ public final class StacAsyncClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -2919,7 +2931,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -2967,7 +2979,7 @@ public final class StacAsyncClient {
      *         start_datetime: OffsetDateTime (Optional)
      *         end_datetime: OffsetDateTime (Optional)
      *          (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     assets (Optional, Required on create): {
@@ -2992,7 +3004,7 @@ public final class StacAsyncClient {
      *                 String (Optional)
      *             ]
      *              (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *         }
      *     }
@@ -3063,7 +3075,7 @@ public final class StacAsyncClient {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3080,7 +3092,7 @@ public final class StacAsyncClient {
      *      (Required){
      *         name: String (Required)
      *         definition (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         create_index: Boolean (Optional)
      *         data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3117,7 +3129,7 @@ public final class StacAsyncClient {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3132,7 +3144,7 @@ public final class StacAsyncClient {
      * {
      *     name: String (Required)
      *     definition (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     create_index: Boolean (Optional)
      *     data_type: String(string/number/boolean/timestamp/date) (Optional)
@@ -3189,7 +3201,7 @@ public final class StacAsyncClient {
      * {@code
      * {
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3204,8 +3216,8 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listQueryablesWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listQueryablesWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getQueryablesWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getQueryablesWithResponseAsync(requestOptions);
     }
 
     /**
@@ -3218,7 +3230,7 @@ public final class StacAsyncClient {
      * {@code
      * {
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -3275,10 +3287,10 @@ public final class StacAsyncClient {
      *     datetime: String (Optional)
      *     limit: Integer (Optional)
      *     conf (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     query (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     sortby (Optional): [
      *          (Optional){
@@ -3297,7 +3309,7 @@ public final class StacAsyncClient {
      *         }
      *     ]
      *     filter (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     filter-crs: String (Optional)
      *     filter-lang: String(cql-json/cql2-json/cql2-text) (Optional)
@@ -3326,7 +3338,7 @@ public final class StacAsyncClient {
      *                 String: String (Required)
      *             }
      *             body (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             merge: Boolean (Optional)
      *         }
@@ -3387,7 +3399,7 @@ public final class StacAsyncClient {
      *                 start_datetime: OffsetDateTime (Optional)
      *                 end_datetime: OffsetDateTime (Optional)
      *                  (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *             }
      *             assets (Optional, Required on create): {
@@ -3412,7 +3424,7 @@ public final class StacAsyncClient {
      *                         String (Optional)
      *                     ]
      *                      (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                 }
      *             }
@@ -3684,10 +3696,10 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<StacMosaic>> listMosaics(String collectionId) {
-        // Generated convenience method for listMosaicsWithResponse
+    public Mono<List<StacMosaic>> getMosaics(String collectionId) {
+        // Generated convenience method for getMosaicsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listMosaicsWithResponse(collectionId, requestOptions).flatMap(FluxUtil::toMono)
+        return getMosaicsWithResponse(collectionId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_STAC_MOSAIC));
     }
 
@@ -3714,9 +3726,9 @@ public final class StacAsyncClient {
     }
 
     /**
-     * Create or update Collection
+     * Replace Collection
      * 
-     * Create or replace a collection in the GeoCatalog instance.
+     * Replace an existing collection in the GeoCatalog instance.
      * 
      * @param collectionId Catalog collection id.
      * @param body Request collection body.
@@ -3732,10 +3744,10 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StacCollection> createOrReplaceCollection(String collectionId, StacCollection body) {
-        // Generated convenience method for createOrReplaceCollectionWithResponse
+    public Mono<StacCollection> replaceCollection(String collectionId, StacCollection body) {
+        // Generated convenience method for replaceCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceCollectionWithResponse(collectionId, BinaryData.fromObject(body), requestOptions)
+        return replaceCollectionWithResponse(collectionId, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(StacCollection.class));
     }
@@ -4049,10 +4061,10 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<RenderOption>> listRenderOptions(String collectionId) {
-        // Generated convenience method for listRenderOptionsWithResponse
+    public Mono<List<RenderOption>> getRenderOptions(String collectionId) {
+        // Generated convenience method for getRenderOptionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listRenderOptionsWithResponse(collectionId, requestOptions).flatMap(FluxUtil::toMono)
+        return getRenderOptionsWithResponse(collectionId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_RENDER_OPTION));
     }
 
@@ -4146,10 +4158,10 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StacConformanceClasses> getConformanceClass() {
-        // Generated convenience method for getConformanceClassWithResponse
+    public Mono<StacConformanceClasses> getConformanceClasses() {
+        // Generated convenience method for getConformanceClassesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getConformanceClassWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getConformanceClassesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(StacConformanceClasses.class));
     }
 
@@ -4209,7 +4221,7 @@ public final class StacAsyncClient {
     }
 
     /**
-     * Create or replace a STAC item in a collection.
+     * Replace a STAC item in a collection.
      * 
      * @param collectionId Catalog collection id.
      * @param itemId STAC Item id.
@@ -4224,10 +4236,10 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Operation, Void> beginCreateOrReplaceItem(String collectionId, String itemId, StacItem body) {
-        // Generated convenience method for beginCreateOrReplaceItemWithModel
+    public PollerFlux<Operation, Void> beginReplaceItem(String collectionId, String itemId, StacItem body) {
+        // Generated convenience method for beginReplaceItemWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateOrReplaceItemWithModelAsync(collectionId, itemId, BinaryData.fromObject(body),
+        return serviceClient.beginReplaceItemWithModelAsync(collectionId, itemId, BinaryData.fromObject(body),
             requestOptions);
     }
 
@@ -4250,6 +4262,38 @@ public final class StacAsyncClient {
         // Generated convenience method for beginDeleteItemWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginDeleteItemWithModelAsync(collectionId, itemId, requestOptions);
+    }
+
+    /**
+     * Fetch a single STAC Item.
+     * 
+     * @param collectionId Catalog collection id.
+     * @param itemId STAC Item id.
+     * @param sign Whether to sign asset URLs in the response.
+     * @param durationInMinutes URL signature duration in minutes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a STAC Item, which is a GeoJSON Feature with additional metadata on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StacItem> getItem(String collectionId, String itemId, StacAssetUrlSigningMode sign,
+        Integer durationInMinutes) {
+        // Generated convenience method for getItemWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (sign != null) {
+            requestOptions.addQueryParam("sign", sign.toString(), false);
+        }
+        if (durationInMinutes != null) {
+            requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
+        }
+        return getItemWithResponse(collectionId, itemId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(StacItem.class));
     }
 
     /**
@@ -4333,6 +4377,9 @@ public final class StacAsyncClient {
      * If a feature has multiple temporal properties, it is the decision of the
      * server whether only a single temporal property is used to determine
      * the extent or all relevant temporal properties.
+     * @param sign Whether to sign asset URLs in the response.
+     * @param durationInMinutes URL signature duration in minutes.
+     * @param token Pagination token for fetching the next set of results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4346,7 +4393,7 @@ public final class StacAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StacItemCollection> getItemCollection(String collectionId, Integer limit, List<String> boundingBox,
-        String datetime) {
+        String datetime, StacAssetUrlSigningMode sign, Integer durationInMinutes, String token) {
         // Generated convenience method for getItemCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -4361,6 +4408,15 @@ public final class StacAsyncClient {
         }
         if (datetime != null) {
             requestOptions.addQueryParam("datetime", datetime, false);
+        }
+        if (sign != null) {
+            requestOptions.addQueryParam("sign", sign.toString(), false);
+        }
+        if (durationInMinutes != null) {
+            requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
+        }
+        if (token != null) {
+            requestOptions.addQueryParam("token", token, false);
         }
         return getItemCollectionWithResponse(collectionId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(StacItemCollection.class));
@@ -4482,10 +4538,10 @@ public final class StacAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueryableDefinitionsResponse> listQueryables() {
-        // Generated convenience method for listQueryablesWithResponse
+    public Mono<QueryableDefinitionsResponse> getQueryables() {
+        // Generated convenience method for getQueryablesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listQueryablesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getQueryablesWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(QueryableDefinitionsResponse.class));
     }
 

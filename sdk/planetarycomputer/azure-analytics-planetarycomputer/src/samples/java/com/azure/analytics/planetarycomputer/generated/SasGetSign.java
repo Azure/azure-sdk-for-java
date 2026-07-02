@@ -16,10 +16,10 @@ public class SasGetSign {
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildSharedAccessSignatureClient();
-        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-sign.sas-get-sign
-        SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getSign(
+        // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-url.sas-get-sign
+        SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getUrl(
             "https://SANITIZED.blob.core.windows.net/naip-atl-00000000/collection-assets/thumbnail/thumbnail.png",
             null);
-        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-sign.sas-get-sign
+        // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-url.sas-get-sign
     }
 }

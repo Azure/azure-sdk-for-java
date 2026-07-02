@@ -21,7 +21,7 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
      * Geometry object defining the feature's shape
      */
     @Generated
-    private final Geometry geometry;
+    private final GeoJsonGeometry geometry;
 
     /*
      * GeoJSON type identifier for Feature
@@ -42,7 +42,7 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
      * @param type the type value to set.
      */
     @Generated
-    private StacItemStatisticsGeoJson(Geometry geometry, FeatureType type) {
+    private StacItemStatisticsGeoJson(GeoJsonGeometry geometry, FeatureType type) {
         this.geometry = geometry;
         this.type = type;
     }
@@ -53,7 +53,7 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
      * @return the geometry value.
      */
     @Generated
-    public Geometry getGeometry() {
+    public GeoJsonGeometry getGeometry() {
         return this.geometry;
     }
 
@@ -102,7 +102,7 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
     @Generated
     public static StacItemStatisticsGeoJson fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Geometry geometry = null;
+            GeoJsonGeometry geometry = null;
             FeatureType type = null;
             StacItemStatisticsGeoJsonProperties properties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -110,7 +110,7 @@ public final class StacItemStatisticsGeoJson implements JsonSerializable<StacIte
                 reader.nextToken();
 
                 if ("geometry".equals(fieldName)) {
-                    geometry = Geometry.fromJson(reader);
+                    geometry = GeoJsonGeometry.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = FeatureType.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {

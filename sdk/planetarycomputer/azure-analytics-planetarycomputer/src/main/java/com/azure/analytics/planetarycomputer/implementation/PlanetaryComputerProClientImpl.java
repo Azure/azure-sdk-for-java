@@ -17,12 +17,12 @@ import com.azure.core.util.serializer.SerializerAdapter;
  */
 public final class PlanetaryComputerProClientImpl {
     /**
-     * Service host.
+     * GeoCatalog endpoint, e.g. https://contoso-catalog.gwhqfdeddydpareu.uksouth.geocatalog.spatio.azure.com.
      */
     private final String endpoint;
 
     /**
-     * Gets Service host.
+     * Gets GeoCatalog endpoint, e.g. https://contoso-catalog.gwhqfdeddydpareu.uksouth.geocatalog.spatio.azure.com.
      * 
      * @return the endpoint value.
      */
@@ -131,7 +131,8 @@ public final class PlanetaryComputerProClientImpl {
     /**
      * Initializes an instance of PlanetaryComputerProClient client.
      * 
-     * @param endpoint Service host.
+     * @param endpoint GeoCatalog endpoint, e.g.
+     * https://contoso-catalog.gwhqfdeddydpareu.uksouth.geocatalog.spatio.azure.com.
      * @param serviceVersion Service version.
      */
     public PlanetaryComputerProClientImpl(String endpoint, PlanetaryComputerServiceVersion serviceVersion) {
@@ -143,7 +144,8 @@ public final class PlanetaryComputerProClientImpl {
      * Initializes an instance of PlanetaryComputerProClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Service host.
+     * @param endpoint GeoCatalog endpoint, e.g.
+     * https://contoso-catalog.gwhqfdeddydpareu.uksouth.geocatalog.spatio.azure.com.
      * @param serviceVersion Service version.
      */
     public PlanetaryComputerProClientImpl(HttpPipeline httpPipeline, String endpoint,
@@ -156,7 +158,8 @@ public final class PlanetaryComputerProClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Service host.
+     * @param endpoint GeoCatalog endpoint, e.g.
+     * https://contoso-catalog.gwhqfdeddydpareu.uksouth.geocatalog.spatio.azure.com.
      * @param serviceVersion Service version.
      */
     public PlanetaryComputerProClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
