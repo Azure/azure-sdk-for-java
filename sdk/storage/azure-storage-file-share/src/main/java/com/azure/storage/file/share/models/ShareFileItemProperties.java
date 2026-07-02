@@ -51,4 +51,31 @@ public interface ShareFileItemProperties {
      * @return ETag of this item.
      */
     String getETag();
+
+    /**
+     * Gets the owner user identifier (UID) for this item.
+     *
+     * @return The owner user identifier (UID), or {@code null} if not returned by the service.
+     */
+    default String getOwner() {
+        return null;
+    }
+
+    /**
+     * Gets the owning group identifier (GID) for this item.
+     *
+     * @return The owning group identifier (GID), or {@code null} if not returned by the service.
+     */
+    default String getGroup() {
+        return null;
+    }
+
+    /**
+     * Gets the POSIX file mode for this item.
+     *
+     * @return The POSIX file mode, or {@code null} if not returned by the service.
+     */
+    default String getFileMode() {
+        return null;
+    }
 }

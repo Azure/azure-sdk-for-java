@@ -23,14 +23,21 @@ import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryI
 import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileItemConstructorProxy;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
+import com.azure.storage.file.share.implementation.models.BlockDeviceItem;
+import com.azure.storage.file.share.implementation.models.CharDeviceItem;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoryItem;
+import com.azure.storage.file.share.implementation.models.FifoItem;
 import com.azure.storage.file.share.implementation.models.FileProperty;
+import com.azure.storage.file.share.implementation.models.FileItem;
+import com.azure.storage.file.share.implementation.models.FilesAndDirectoriesListSegment;
 import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
@@ -43,6 +50,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
@@ -50,7 +58,9 @@ import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.SocketItem;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
+import com.azure.storage.file.share.implementation.models.SymLinkItem;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FilePosixProperties;
@@ -58,6 +68,7 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
@@ -82,6 +93,7 @@ import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -96,6 +108,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
@@ -298,7 +311,8 @@ public class ModelHelper {
             return null;
         }
         return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
-            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
+            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag(),
+            property.getUid(), property.getGid(), property.getMode());
     }
 
     public static HandleItem
@@ -611,26 +625,110 @@ public class ModelHelper {
         convertResponseAndGetNumOfResults(Response<ListFilesAndDirectoriesSegmentResponse> res) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
+            FilesAndDirectoriesListSegment segment = res.getValue().getSegment();
 
-            res.getValue()
-                .getSegment()
-                .getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems
-                    .add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()), true,
-                        directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
-                        directoryItem.getPermissionKey(), null)));
-
-            res.getValue()
-                .getSegment()
-                .getFileItems()
-                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
-                    false, fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
-                    fileItem.getProperties().getContentLength())));
+            addShareFileItems(shareFileItems, segment.getDirectoryItems(), ModelHelper::createDirectoryShareItem);
+            addShareFileItems(shareFileItems, segment.getFileItems(), ModelHelper::createFileShareItem);
+            addShareFileItems(shareFileItems, segment.getSymLinkItems(), ModelHelper::createSymLinkShareItem);
+            addShareFileItems(shareFileItems, segment.getBlockDeviceItems(), ModelHelper::createBlockDeviceShareItem);
+            addShareFileItems(shareFileItems, segment.getCharDeviceItems(), ModelHelper::createCharDeviceShareItem);
+            addShareFileItems(shareFileItems, segment.getFifoItems(), ModelHelper::createFifoShareItem);
+            addShareFileItems(shareFileItems, segment.getSocketItems(), ModelHelper::createSocketShareItem);
         }
 
         return new ArrayList<>(shareFileItems);
+    }
+
+    private static <T> void addShareFileItems(Set<ShareFileItem> shareFileItems, List<T> items,
+        Function<T, ShareFileItem> mapper) {
+        if (items != null) {
+            items.forEach(item -> shareFileItems.add(mapper.apply(item)));
+        }
+    }
+
+    public static <T> void addOptionToList(List<T> includeTypes, boolean isInOptionsBag, T type) {
+        if (isInOptionsBag) {
+            includeTypes.add(type);
+        }
+    }
+
+    private static ShareFileItem toShareFileItem(StringEncoded name, boolean isDirectory, String fileId,
+        FileProperty properties, String attributes, String permissionKey, Long fileSize, Long linkCount,
+        NfsFileType fileType, String linkText, Long deviceMajor, Long deviceMinor) {
+        return ShareFileItemConstructorProxy.create(ModelHelper.decodeName(name), isDirectory, fileId,
+            ModelHelper.transformFileProperty(properties), NtfsFileAttributes.toAttributes(attributes), permissionKey,
+            fileSize, linkCount, fileType, linkText, deviceMajor, deviceMinor);
+    }
+
+    private static Long getContentLength(FileProperty properties) {
+        return properties == null ? null : properties.getContentLength();
+    }
+
+    private static NfsFileType getDirectoryFileType() {
+        return NfsFileType.DIRECTORY;
+    }
+
+    public static List<ListFilesIncludeType> getListFilesIncludeTypes(ShareListFilesAndDirectoriesOptions options) {
+        if (options == null) {
+            return null;
+        }
+
+        List<ListFilesIncludeType> includeTypes = new ArrayList<>();
+
+        if (options.includeAll()) {
+            includeTypes.add(ListFilesIncludeType.ALL);
+        } else {
+            addOptionToList(includeTypes, options.includeAttributes(), ListFilesIncludeType.ATTRIBUTES);
+            addOptionToList(includeTypes, options.includeETag(), ListFilesIncludeType.ETAG);
+            addOptionToList(includeTypes, options.includeTimestamps(), ListFilesIncludeType.TIMESTAMPS);
+            addOptionToList(includeTypes, options.includePermissionKey(), ListFilesIncludeType.PERMISSION_KEY);
+            addOptionToList(includeTypes, options.includeLinkCount(), ListFilesIncludeType.LINK_COUNT);
+            addOptionToList(includeTypes, options.includePermissions(), ListFilesIncludeType.PERMISSIONS);
+            addOptionToList(includeTypes, options.includeNfsAttributes(), ListFilesIncludeType.NFS_ATTRIBUTES);
+        }
+
+        return includeTypes.isEmpty() ? null : includeTypes;
+    }
+
+    private static boolean hasPosixProperties(FileProperty properties) {
+        return properties != null
+            && (properties.getUid() != null || properties.getGid() != null || properties.getMode() != null);
+    }
+
+    private static ShareFileItem createDirectoryShareItem(DirectoryItem item) {
+        return toShareFileItem(item.getName(), true, item.getFileId(), item.getProperties(), item.getAttributes(),
+            item.getPermissionKey(), null, item.getLinkCount(), getDirectoryFileType(), null, null, null);
+    }
+
+    private static ShareFileItem createFileShareItem(FileItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), item.getAttributes(),
+            item.getPermissionKey(), getContentLength(item.getProperties()), item.getLinkCount(),
+            item.getFileType() == null ? NfsFileType.REGULAR : item.getFileType(), null, null, null);
+    }
+
+    private static ShareFileItem createSymLinkShareItem(SymLinkItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.SYM_LINK, item.getLinkText(), null, null);
+    }
+
+    private static ShareFileItem createBlockDeviceShareItem(BlockDeviceItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.BLOCK_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
+    }
+
+    private static ShareFileItem createCharDeviceShareItem(CharDeviceItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.CHARACTER_DEVICE, null, item.getDeviceMajor(), item.getDeviceMinor());
+    }
+
+    private static ShareFileItem createFifoShareItem(FifoItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.FIFO, null, null, null);
+    }
+
+    private static ShareFileItem createSocketShareItem(SocketItem item) {
+        return toShareFileItem(item.getName(), false, item.getFileId(), item.getProperties(), null, null, null,
+            item.getLinkCount(), NfsFileType.SOCKET, null, null, null);
     }
 
     public static Response<ShareFileInfo>
@@ -731,4 +829,5 @@ public class ModelHelper {
         return new ShareStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
     }
+
 }

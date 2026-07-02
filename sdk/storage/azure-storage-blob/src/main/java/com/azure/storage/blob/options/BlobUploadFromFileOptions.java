@@ -8,7 +8,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.Map;
@@ -25,7 +24,6 @@ public class BlobUploadFromFileOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Constructs a {@link BlobUploadFromFileOptions}.
@@ -164,29 +162,6 @@ public class BlobUploadFromFileOptions {
      */
     public BlobUploadFromFileOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    public BlobUploadFromFileOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

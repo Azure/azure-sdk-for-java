@@ -32,6 +32,13 @@ public class ShareStorageCustomization extends Customization {
                     + "that all file/directory ACLs are bypassed and full permissions are granted. User must also have "
                     + "required RBAC permission.")));
 
+        customization.getClass("com.azure.storage.file.share.models", "NfsFileType")
+            .customizeAst(ast -> ast.getClassByName("NfsFileType").ifPresent(clazz -> clazz.setJavadocComment(
+                "Type of the file.\n\n"
+                    + "This enumeration represents the type of a file item in Azure Files shares. "
+                    + "The file type is populated for all item types in both SMB and NFS-enabled shares.\n\n"
+                    + "@see ShareFileItem#getFileType()")));
+
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
     }
 
