@@ -692,38 +692,41 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testExtractSuggestionMessagePreferred() {
-        // Should prefer messages containing 'Suggestion' (case-insensitive)
+    public void testExtractFirstNonEmptyDataMessage() {
+        // Real-world pre-v1.23.7 azd auth token output: the full ERROR/Suggestion blob is emitted
+        // inside a single consoleMessage data.message. The first non-empty data.message wins.
         String output
             = "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"\\nERROR: fetching token: AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access 'tenant-id'. Trace ID: trace-id Correlation ID: correlation-id Timestamp: 2025-08-18 22:08:14Z\\n\"}}\n"
                 + "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"Suggestion: re-authentication required, run `azd auth login` to acquire a new token.\\n\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Suggestion: re-authentication required, run `azd auth login` to acquire a new token.", result);
+        assertEquals(
+            "ERROR: fetching token: AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access 'tenant-id'. Trace ID: trace-id Correlation ID: correlation-id Timestamp: 2025-08-18 22:08:14Z",
+            result);
     }
 
     @Test
-    public void testExtractSuggestionCaseInsensitive() {
-        // Should find 'suggestion' in any case
+    public void testFirstMessageWinsOverSuggestionPrefix() {
+        // Suggestion preference was removed; first non-empty wins (matches Go/.NET/JS/Python).
         String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"First message\"}}\n"
             + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"SUGGESTION: Try running azd auth login\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("SUGGESTION: Try running azd auth login", result);
+        assertEquals("First message", result);
     }
 
     @Test
-    public void testExtractLastMessageWhenNoSuggestion() {
-        // Should return last message when multiple messages but no suggestion
+    public void testExtractFirstMessageWhenMultiplePresent() {
+        // Multiple consoleMessage lines: first non-empty wins.
         String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"First error message\"}}\n"
             + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"Second error message\"}}\n"
             + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"Third error message\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Third error message", result);
+        assertEquals("First error message", result);
     }
 
     @Test
@@ -747,24 +750,26 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testExtractMessageFromRootLevel() {
-        // Should extract message from root level of JSON
+    public void testRootLevelMessageFieldNotExtracted() {
+        // Only the structured "error" field or legacy data.message is extracted.
+        // Root-level "message" alone is the new friendly wrapper ("Authentication with Azure failed.")
+        // that we intentionally do not surface.
         String output = "{\"message\":\"Root level error message\"}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Root level error message", result);
+        assertNull(result);
     }
 
     @Test
-    public void testExtractMixedMessageLocations() {
-        // Should handle messages at different JSON levels
+    public void testRootLevelMessageNotExtractedWhenMixedWithData() {
+        // Root-level "message" is ignored; first non-empty data.message wins.
         String output = "{\"message\":\"Root level message\"}\n" + "{\"data\":{\"message\":\"Nested message\"}}\n"
             + "{\"data\":{\"message\":\"suggestion: Use this suggestion\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("suggestion: Use this suggestion", result);
+        assertEquals("Nested message", result);
     }
 
     @Test
@@ -780,13 +785,13 @@ public class IdentityClientTests {
 
     @Test
     public void testIgnoreNonJsonLines() {
-        // Should ignore lines that are not valid JSON
+        // Should ignore lines that are not valid JSON; first non-empty data.message wins.
         String output = "This is not JSON\n" + "{\"data\":{\"message\":\"Valid JSON message\"}}\n"
             + "Another non-JSON line\n" + "{\"data\":{\"message\":\"Suggestion: Another valid message\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Suggestion: Another valid message", result);
+        assertEquals("Valid JSON message", result);
     }
 
     @Test
@@ -802,13 +807,13 @@ public class IdentityClientTests {
 
     @Test
     public void testIgnoreEmptyLines() {
-        // Should ignore empty lines and whitespace-only lines
+        // Empty lines are skipped; first non-empty data.message wins.
         String output
             = "{\"data\":{\"message\":\"First message\"}}\n" + "\n" + "{\"data\":{\"message\":\"Second message\"}}\n";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Second message", result);
+        assertEquals("First message", result);
     }
 
     @Test
@@ -860,8 +865,9 @@ public class IdentityClientTests {
     }
 
     @Test
-    public void testComplexRealWorldExample() {
-        // Should handle complex real-world azd output
+    public void testComplexRealWorldPreV1237Example() {
+        // Pre-v1.23.7 real-world azd output: a single consoleMessage carrying the entire ERROR blob.
+        // First non-empty data.message wins; later progress events and Suggestion lines are ignored.
         String output
             = "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"\\nERROR: fetching token: AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access 'tenant-id'. Trace ID: trace-id Correlation ID: correlation-id Timestamp: 2025-08-18 22:08:14Z\\n\"}}\n"
                 + "{\"type\":\"consoleMessage\",\"timestamp\":\"2025-08-18T15:08:14.4849845-07:00\",\"data\":{\"message\":\"Suggestion: re-authentication required, run `azd auth login` to acquire a new token.\\n\"}}\n"
@@ -869,7 +875,9 @@ public class IdentityClientTests {
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Suggestion: re-authentication required, run `azd auth login` to acquire a new token.", result);
+        assertEquals(
+            "ERROR: fetching token: AADSTS50076: Due to a configuration change made by your administrator, or because you moved to a new location, you must use multi-factor authentication to access 'tenant-id'. Trace ID: trace-id Correlation ID: correlation-id Timestamp: 2025-08-18 22:08:14Z",
+            result);
     }
 
     @Test
@@ -884,37 +892,37 @@ public class IdentityClientTests {
 
     @Test
     public void testHandleMalformedJsonGracefully() {
-        // Should handle malformed JSON lines gracefully
+        // Malformed JSON lines should be skipped; first non-empty data.message wins.
         String output = "{\"data\":{\"message\":\"First valid message\"}}\n"
             + "{\"malformed\":\"json\"without\"closing\"brace\"\n"
-            + "{\"data\":{\"message\":\"suggestion: This should be found\"}}";
+            + "{\"data\":{\"message\":\"suggestion: This is ignored after first non-empty\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("suggestion: This should be found", result);
+        assertEquals("First valid message", result);
     }
 
     @Test
-    public void testMultipleSuggestionMessages() {
-        // Should return the first suggestion message found
+    public void testFirstNonEmptyWinsOverLaterSuggestionLines() {
+        // First non-empty data.message wins regardless of any later "Suggestion" content.
         String output = "{\"data\":{\"message\":\"First message\"}}\n"
             + "{\"data\":{\"message\":\"Suggestion: First suggestion\"}}\n"
             + "{\"data\":{\"message\":\"Another suggestion: Second suggestion\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Suggestion: First suggestion", result);
+        assertEquals("First message", result);
     }
 
     @Test
-    public void testSuggestionWithDifferentCasing() {
-        // Should find suggestion with various casing
+    public void testSuggestionCasingIgnored() {
+        // Different casings of "suggestion" no longer get special treatment.
         String output = "{\"data\":{\"message\":\"Regular message\"}}\n"
             + "{\"data\":{\"message\":\"sUgGeStIoN: Mixed case suggestion\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("sUgGeStIoN: Mixed case suggestion", result);
+        assertEquals("Regular message", result);
     }
 
     @Test
@@ -960,13 +968,13 @@ public class IdentityClientTests {
 
     @Test
     public void testMixedValidAndInvalidJson() {
-        // Should handle mix of valid and invalid JSON gracefully
+        // First non-empty parseable data.message wins regardless of later content.
         String output = "{\"data\":{\"message\":\"First valid message\"}}\n" + "not json at all\n"
             + "{\"incomplete\": \"json\n" + "{\"data\":{\"message\":\"Suggestion: Final message\"}}";
 
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.extractUserFriendlyErrorFromAzdOutput(output);
-        assertEquals("Suggestion: Final message", result);
+        assertEquals("First valid message", result);
     }
 
     @Test
@@ -994,6 +1002,143 @@ public class IdentityClientTests {
         IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
         String result = client.getAzdErrorMessage(output);
         assertEquals(output, result);
+    }
+
+    // --- Tests for new azd structured error format (v1.23.7+) ---
+
+    @Test
+    public void testExtractStructuredErrorFromSingleLine() {
+        // azd v1.24.0+ writes a single-line structured error to stderr.
+        String aadError
+            = "fetching token: failed to authenticate:\n(invalid_tenant) AADSTS90002: Tenant 'test' not found";
+        String output = "{\"error\":\"" + aadError.replace("\n", "\\n")
+            + "\",\"links\":[{\"title\":\"azd auth login reference\",\"url\":\"https://example.com\"}]"
+            + ",\"message\":\"Authentication with Azure failed.\""
+            + ",\"suggestion\":\"Run 'azd auth login' to sign in again.\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals(aadError, result);
+    }
+
+    @Test
+    public void testExtractStructuredErrorPrecededByEmptyConsoleMessage() {
+        // azd v1.23.7 - v1.23.15 emits an empty consoleMessage line preceding the structured error.
+        String aadError = "fetching token: failed to authenticate";
+        String output
+            = "{\"type\":\"consoleMessage\",\"timestamp\":\"2026-04-13T17:43:24.7558297-07:00\",\"data\":{\"message\":\"\\n\"}}\n"
+                + "{\"error\":\"" + aadError + "\",\"message\":\"Authentication with Azure failed.\""
+                + ",\"suggestion\":\"Run 'azd auth login' to sign in again.\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals(aadError, result);
+    }
+
+    @Test
+    public void testStructuredErrorOnSameLineAsConsoleMessage() {
+        // azd v1 path concatenates lines (redirectErrorStream + append without newline),
+        // so the two JSON objects can end up on the same physical line.
+        String aadError = "AADSTS90002: Tenant 'test' not found";
+        String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"\\n\"}}" + "{\"error\":\"" + aadError
+            + "\",\"message\":\"Authentication with Azure failed.\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals(aadError, result);
+    }
+
+    @Test
+    public void testStructuredErrorPreferredOverConsoleMessage() {
+        // The structured "error" line carries the actionable failure and should win over
+        // any consoleMessage data.message (which now just carries the friendly wrapper).
+        String aadError = "AADSTS70008: Refresh token expired";
+        String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"some informational console output\"}}\n"
+            + "{\"error\":\"" + aadError + "\",\"message\":\"Authentication with Azure failed.\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals(aadError, result);
+    }
+
+    @Test
+    public void testStructuredErrorPreferredOverTopLevelMessage() {
+        // When both "error" and top-level "message" are present on the same object,
+        // prefer the structured "error" field.
+        String aadError = "AADSTS50076: MFA required";
+        String output = "{\"error\":\"" + aadError + "\",\"message\":\"Authentication with Azure failed.\""
+            + ",\"suggestion\":\"Run 'azd auth login' to sign in again.\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals(aadError, result);
+    }
+
+    @Test
+    public void testEmptyStructuredErrorFallsBackToConsoleMessage() {
+        // An empty/whitespace "error" field should fall through to legacy data.message parsing.
+        String output = "{\"error\":\"\",\"message\":\"Authentication with Azure failed.\"}\n"
+            + "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"ERROR: real message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("ERROR: real message", result);
+    }
+
+    @Test
+    public void testNonStringStructuredErrorIgnored() {
+        // A non-string "error" field should be ignored and parsing should continue.
+        String output = "{\"error\":123,\"message\":\"Authentication with Azure failed.\"}\n"
+            + "{\"data\":{\"message\":\"ERROR: real message\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals("ERROR: real message", result);
+    }
+
+    @Test
+    public void testFirstStructuredErrorWinsAcrossLines() {
+        // The first encountered structured error wins.
+        String firstError = "AADSTS90002: Tenant 'test' not found";
+        String output = "{\"error\":\"" + firstError + "\",\"message\":\"Authentication with Azure failed.\"}\n"
+            + "{\"error\":\"Some later error\",\"message\":\"...\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String result = client.extractUserFriendlyErrorFromAzdOutput(output);
+        assertEquals(firstError, result);
+    }
+
+    // --- Dispatch invariant tests ---
+    // getTokenFromAzureDeveloperCLIAuthentication keys exception type off the parsed message
+    // containing "azd auth login" / "not logged in". These pin the parser contract that those
+    // substrings only survive parsing for genuine not-logged-in output.
+
+    @Test
+    public void testParsedStructuredAadErrorDoesNotContainAzdAuthLogin() {
+        // The "azd auth login" text lives in "suggestion" which the parser drops, so structured
+        // AAD errors surface as auth failures rather than credential-unavailable.
+        String output = "{\"error\":\"AADSTS50076: Multi-factor authentication required\""
+            + ",\"message\":\"Authentication with Azure failed.\""
+            + ",\"suggestion\":\"Run 'azd auth login' to sign in again.\"}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String parsed = client.getAzdErrorMessage(output);
+        assertEquals("AADSTS50076: Multi-factor authentication required", parsed);
+        assertFalse(parsed.contains("azd auth login"));
+        assertFalse(parsed.contains("not logged in"));
+    }
+
+    @Test
+    public void testParsedLegacyNotLoggedInRetainsAzdAuthLogin() {
+        // Pre-v1.23.7 "not logged in" output: substring is in data.message and must survive parsing
+        // so dispatch still routes it to CredentialUnavailableException.
+        String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":"
+            + "\"ERROR: not logged in, run `azd auth login` to login\"}}";
+
+        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+        String parsed = client.getAzdErrorMessage(output);
+        assertTrue(parsed.contains("azd auth login"));
+        assertTrue(parsed.contains("not logged in"));
     }
 
     @Test
