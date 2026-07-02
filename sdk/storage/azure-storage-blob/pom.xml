@@ -59,6 +59,10 @@
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
 
+    <!-- Exclude vendored Apache Arrow code from linting checks -->
+    <checkstyle.excludes>**/implementation/util/apachearrow/**/*.java</checkstyle.excludes>
+    <spotbugs.excludes>**/implementation/util/apachearrow/**/*.java</spotbugs.excludes>
+
     <spotbugs.skip>false</spotbugs.skip>
   </properties>
 
@@ -141,9 +145,9 @@
 
     <!-- Arrow dependency -->
     <!-- The internal ListBlobs Arrow reader decodes the IPC stream using vendored FlatBuffer metadata accessors
-         (com.azure.storage.blob.implementation.util.arrow) backed by flatbuffers-java, so flatbuffers-java is the sole
-         dependency needed to parse the Arrow format. The arrow-format artifact is deliberately NOT a dependency: it
-         ships Java 11 bytecode and would break the Java 8 baseline build. The reader's behavior is validated against
+         (com.azure.storage.blob.implementation.util.apachearrow) backed by flatbuffers-java, so flatbuffers-java is the
+         sole dependency needed to parse the Arrow format. The arrow-format artifact is deliberately NOT a dependency:
+         it ships Java 11 bytecode and would break the Java 8 baseline build. The reader's behavior is validated against
          committed golden base64 fixtures (src/test/resources/arrow) rather than the official arrow-vector writer, so no
          Apache Arrow test dependency is required. -->
     <dependency>
