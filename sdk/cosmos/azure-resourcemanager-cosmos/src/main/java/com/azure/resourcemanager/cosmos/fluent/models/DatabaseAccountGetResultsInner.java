@@ -14,8 +14,6 @@ import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.Capacity;
-import com.azure.resourcemanager.cosmos.models.CapacityMode;
-import com.azure.resourcemanager.cosmos.models.CapacityModeChangeTransitionState;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
@@ -24,7 +22,6 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
 import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
-import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -50,14 +47,19 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     private DatabaseAccountGetProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
+     * The location of the resource group to which the resource belongs.
      */
     private String location;
+
+    /*
+     * Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
+     * key no greater than 128 characters and value no greater than 256 characters. For example, the default experience
+     * for a template type is set with
+     * \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\"
+     * .
+     */
+    private Map<String, String> tags;
 
     /*
      * Identity for the resource.
@@ -105,27 +107,7 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the location property: The location of the resource group to which the resource belongs.
      *
      * @return the location value.
      */
@@ -134,13 +116,41 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
-     * Set the location property: The geo-location where the resource lives.
+     * Set the location property: The location of the resource group to which the resource belongs.
      *
      * @param location the location value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
     public DatabaseAccountGetResultsInner withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current
+     * \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\".
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with \"defaultExperience\": \"Cassandra\". Current
+     * \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\", and \"MongoDB\".
+     *
+     * @param tags the tags value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -852,31 +862,6 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
-     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
-     * Cosmos DB Account.
-     *
-     * @return the diagnosticLogSettings value.
-     */
-    public DiagnosticLogSettings diagnosticLogSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
-    }
-
-    /**
-     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
-     * Cosmos DB Account.
-     *
-     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountGetProperties();
-        }
-        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
-        return this;
-    }
-
-    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      *
@@ -923,80 +908,6 @@ public final class DatabaseAccountGetResultsInner extends Resource {
             this.innerProperties = new DatabaseAccountGetProperties();
         }
         this.innerProperties().withCapacity(capacity);
-        return this;
-    }
-
-    /**
-     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
-     *
-     * @return the capacityMode value.
-     */
-    public CapacityMode capacityMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().capacityMode();
-    }
-
-    /**
-     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
-     *
-     * @param capacityMode the capacityMode value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withCapacityMode(CapacityMode capacityMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountGetProperties();
-        }
-        this.innerProperties().withCapacityMode(capacityMode);
-        return this;
-    }
-
-    /**
-     * Get the capacityModeChangeTransitionState property: The object that represents the migration state for the
-     * CapacityMode of the Cosmos DB account.
-     *
-     * @return the capacityModeChangeTransitionState value.
-     */
-    public CapacityModeChangeTransitionState capacityModeChangeTransitionState() {
-        return this.innerProperties() == null ? null : this.innerProperties().capacityModeChangeTransitionState();
-    }
-
-    /**
-     * Set the capacityModeChangeTransitionState property: The object that represents the migration state for the
-     * CapacityMode of the Cosmos DB account.
-     *
-     * @param capacityModeChangeTransitionState the capacityModeChangeTransitionState value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner
-        withCapacityModeChangeTransitionState(CapacityModeChangeTransitionState capacityModeChangeTransitionState) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountGetProperties();
-        }
-        this.innerProperties().withCapacityModeChangeTransitionState(capacityModeChangeTransitionState);
-        return this;
-    }
-
-    /**
-     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
-     * account.
-     *
-     * @return the enableMaterializedViews value.
-     */
-    public Boolean enableMaterializedViews() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
-    }
-
-    /**
-     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
-     * account.
-     *
-     * @param enableMaterializedViews the enableMaterializedViews value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withEnableMaterializedViews(Boolean enableMaterializedViews) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountGetProperties();
-        }
-        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
         return this;
     }
 
@@ -1197,84 +1108,31 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
-     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
-     * feature is enabled on the account.
+     * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
      *
-     * @return the enableAllVersionsAndDeletesChangeFeed value.
+     * @return the enforceHierarchicalPartitionKeyIdLastLevel value.
      */
-    public Boolean enableAllVersionsAndDeletesChangeFeed() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableAllVersionsAndDeletesChangeFeed();
+    public Boolean enforceHierarchicalPartitionKeyIdLastLevel() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().enforceHierarchicalPartitionKeyIdLastLevel();
     }
 
     /**
-     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
-     * feature is enabled on the account.
+     * Set the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
+     * partition key ID last level enforcement on the account.
      *
-     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
+     * @param enforceHierarchicalPartitionKeyIdLastLevel the enforceHierarchicalPartitionKeyIdLastLevel value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
      */
     public DatabaseAccountGetResultsInner
-        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
+        withEnforceHierarchicalPartitionKeyIdLastLevel(Boolean enforceHierarchicalPartitionKeyIdLastLevel) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountGetProperties();
         }
-        this.innerProperties().withEnableAllVersionsAndDeletesChangeFeed(enableAllVersionsAndDeletesChangeFeed);
-        return this;
-    }
-
-    /**
-     * Get the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
-     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
-     * and dedicated throughput containers in the account for 1 region. READ ONLY.
-     *
-     * @return the throughputPoolDedicatedRUs value.
-     */
-    public Long throughputPoolDedicatedRUs() {
-        return this.innerProperties() == null ? null : this.innerProperties().throughputPoolDedicatedRUs();
-    }
-
-    /**
-     * Set the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
-     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
-     * and dedicated throughput containers in the account for 1 region. READ ONLY.
-     *
-     * @param throughputPoolDedicatedRUs the throughputPoolDedicatedRUs value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withThroughputPoolDedicatedRUs(Long throughputPoolDedicatedRUs) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountGetProperties();
-        }
-        this.innerProperties().withThroughputPoolDedicatedRUs(throughputPoolDedicatedRUs);
-        return this;
-    }
-
-    /**
-     * Get the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
-     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
-     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
-     * ONLY.
-     *
-     * @return the throughputPoolMaxConsumableRUs value.
-     */
-    public Long throughputPoolMaxConsumableRUs() {
-        return this.innerProperties() == null ? null : this.innerProperties().throughputPoolMaxConsumableRUs();
-    }
-
-    /**
-     * Set the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
-     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
-     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
-     * ONLY.
-     *
-     * @param throughputPoolMaxConsumableRUs the throughputPoolMaxConsumableRUs value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withThroughputPoolMaxConsumableRUs(Long throughputPoolMaxConsumableRUs) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountGetProperties();
-        }
-        this.innerProperties().withThroughputPoolMaxConsumableRUs(throughputPoolMaxConsumableRUs);
+        this.innerProperties()
+            .withEnforceHierarchicalPartitionKeyIdLastLevel(enforceHierarchicalPartitionKeyIdLastLevel);
         return this;
     }
 
@@ -1299,8 +1157,8 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -1331,11 +1189,11 @@ public final class DatabaseAccountGetResultsInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedDatabaseAccountGetResultsInner.innerProperties
                         = DatabaseAccountGetProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedDatabaseAccountGetResultsInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDatabaseAccountGetResultsInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedDatabaseAccountGetResultsInner.location = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedDatabaseAccountGetResultsInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {

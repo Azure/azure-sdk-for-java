@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesGetSqlContainerSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlContainerGet.json
+     * x-ms-original-file: 2026-03-15/CosmosDBSqlContainerGet.json
      */
     /**
      * Sample code: CosmosDBSqlContainerGet.

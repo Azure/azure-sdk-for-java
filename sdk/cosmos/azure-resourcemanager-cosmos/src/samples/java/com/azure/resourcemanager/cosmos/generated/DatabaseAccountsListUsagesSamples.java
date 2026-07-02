@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsListUsagesSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountGetUsages.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountGetUsages.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountGetUsages.
@@ -19,6 +19,6 @@ public final class DatabaseAccountsListUsagesSamples {
     public static void cosmosDBDatabaseAccountGetUsages(com.azure.resourcemanager.cosmos.CosmosManager manager) {
         manager.serviceClient()
             .getDatabaseAccounts()
-            .listUsages("rg1", "ddb1", "$filter=name.value eq 'Storage'", com.azure.core.util.Context.NONE);
+            .listUsages("rg1", "ddb1", "name.value eq 'Storage'", com.azure.core.util.Context.NONE);
     }
 }

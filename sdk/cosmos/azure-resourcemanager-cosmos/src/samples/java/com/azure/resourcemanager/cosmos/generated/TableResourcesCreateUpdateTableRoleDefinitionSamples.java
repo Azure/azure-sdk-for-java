@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class TableResourcesCreateUpdateTableRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/tablerbac/CosmosDBTableRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/tablerbac/CosmosDBTableRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBTableRoleDefinitionCreateUpdate.

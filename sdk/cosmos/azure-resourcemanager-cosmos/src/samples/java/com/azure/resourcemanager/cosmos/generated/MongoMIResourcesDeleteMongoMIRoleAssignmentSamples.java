@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoMIResourcesDeleteMongoMIRoleAssignmentSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentDelete.json
+     * x-ms-original-file: 2026-03-15/mongoMIrbac/CosmosDBMongoMIRoleAssignmentDelete.json
      */
     /**
      * Sample code: CosmosDBMongoMIRoleAssignmentDelete.

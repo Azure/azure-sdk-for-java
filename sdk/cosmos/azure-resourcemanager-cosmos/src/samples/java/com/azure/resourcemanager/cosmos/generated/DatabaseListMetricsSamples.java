@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseListMetricsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseGetMetrics.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseGetMetrics.
@@ -20,7 +20,7 @@ public final class DatabaseListMetricsSamples {
         manager.serviceClient()
             .getDatabases()
             .listMetrics("rg1", "ddb1", "rid",
-                "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z",
+                "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z",
                 com.azure.core.util.Context.NONE);
     }
 }

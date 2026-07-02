@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class CassandraClustersCreateUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBManagedCassandraClusterCreate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBManagedCassandraClusterCreate.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterCreate.
@@ -42,8 +42,8 @@ public final class CassandraClustersCreateUpdateSamples {
                     .withExternalSeedNodes(Arrays.asList(new SeedNode().withIpAddress("10.52.221.2"),
                         new SeedNode().withIpAddress("10.52.221.3"), new SeedNode().withIpAddress("10.52.221.4")))
                     .withHoursBetweenBackups(24))
-                .withTags(mapOf())
-                .withLocation("West US"), com.azure.core.util.Context.NONE);
+                .withLocation("West US")
+                .withTags(mapOf()), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

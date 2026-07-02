@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBManagedCassandraClusterListByResourceGroup.json
+     * x-ms-original-file: 2026-03-15/CosmosDBManagedCassandraClusterListByResourceGroup.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterListByResourceGroup.

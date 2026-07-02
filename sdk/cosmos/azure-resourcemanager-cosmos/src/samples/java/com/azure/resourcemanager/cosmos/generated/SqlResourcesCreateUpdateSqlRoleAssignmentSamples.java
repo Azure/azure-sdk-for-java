@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.SqlRoleAssignmentCreateUpdatePara
  */
 public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlRoleAssignmentCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBSqlRoleAssignmentCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlRoleAssignmentCreateUpdate.
@@ -23,9 +23,9 @@ public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
             .getSqlResources()
             .createUpdateSqlRoleAssignment("myRoleAssignmentId", "myResourceGroupName", "myAccountName",
                 new SqlRoleAssignmentCreateUpdateParameters().withRoleDefinitionId(
-                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId")
+                    "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId")
                     .withScope(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases")
+                        "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases")
                     .withPrincipalId("myPrincipalId"),
                 com.azure.core.util.Context.NONE);
     }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class TableResourcesDeleteTableRoleAssignmentSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/tablerbac/CosmosDBTableRoleAssignmentDelete.json
+     * x-ms-original-file: 2026-03-15/tablerbac/CosmosDBTableRoleAssignmentDelete.json
      */
     /**
      * Sample code: CosmosDBTableRoleAssignmentDelete.
