@@ -122,7 +122,7 @@ public class WorkflowTest {
             "SESSION",
             2,
             numberOfOperations,
-            0);
+            100);
         try {
             Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
         } finally {

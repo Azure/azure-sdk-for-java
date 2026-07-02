@@ -323,6 +323,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
         InternalObjectNode item = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(item).block();
 
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+
         CosmosItemResponse<InternalObjectNode> readResponse = container.readItem(item.getId(),
             new PartitionKey(item.get("mypk")),
             new CosmosItemRequestOptions(),
