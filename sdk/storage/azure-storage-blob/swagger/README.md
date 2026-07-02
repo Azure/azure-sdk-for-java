@@ -591,6 +591,24 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
+### Delete Container_ListBlobFlatSegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat&arrow"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete Container_ListBlobHierarchySegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
 ### BlobDeleteType expandable string enum
 ``` yaml
 directive:
