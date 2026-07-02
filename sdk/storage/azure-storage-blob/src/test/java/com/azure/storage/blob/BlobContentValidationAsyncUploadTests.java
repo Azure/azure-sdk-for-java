@@ -329,9 +329,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, UNDER_4MB).setContentValidationAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
+        StepVerifier.create(client.appendBlockWithResponse(data, UNDER_4MB, options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyCrc64Headers(recorded));
         }).verifyComplete();
@@ -349,9 +349,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(data, TEN_MB).setContentValidationAlgorithm(algorithm);
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
+        StepVerifier.create(client.appendBlockWithResponse(data, TEN_MB, options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
         }).verifyComplete();
@@ -367,10 +367,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
+        AppendBlobAppendBlockOptions options
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
 
-        StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
+        StepVerifier.create(client.appendBlockWithResponse(data, TEN_MB, options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasNoContentValidationHeaders(recorded));
         }).verifyComplete();
@@ -395,11 +395,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(algorithm);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
+        StepVerifier.create(client.uploadPagesWithResponse(pageRange, data, options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyCrc64Headers(recorded));
         }).verifyComplete();
@@ -416,11 +415,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(algorithm);
+        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
+        StepVerifier.create(client.uploadPagesWithResponse(pageRange, data, options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
         }).verifyComplete();
@@ -437,10 +435,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
+            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.NONE);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
+        StepVerifier.create(client.uploadPagesWithResponse(pageRange, data, options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasNoContentValidationHeaders(recorded));
         }).verifyComplete();
@@ -700,10 +698,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(TEN_MB);
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
-        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        AppendBlobAppendBlockOptions options
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
 
-        StepVerifier.create(client.appendBlockWithResponse(options).then(client.downloadContent()))
+        StepVerifier.create(client.appendBlockWithResponse(data, TEN_MB, options).then(client.downloadContent()))
             .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
             .verifyComplete();
     }
@@ -718,10 +716,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
 
         PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options).then(client.downloadContent()))
+        StepVerifier.create(client.uploadPagesWithResponse(pageRange, data, options).then(client.downloadContent()))
             .assertNext(downloaded -> assertArrayEquals(randomData, downloaded.toBytes()))
             .verifyComplete();
     }
@@ -824,10 +822,9 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                 try (AsynchronousFileChannel channel
                     = AsynchronousFileChannel.open(sourceFile.toPath(), StandardOpenOption.READ)) {
                     FluxUtil.readFile(channel, maxAppendBlockBytes, 0, chosenPayloadSizeBytes).concatMap(bb -> {
-                        AppendBlobAppendBlockOptions appendOptions
-                            = new AppendBlobAppendBlockOptions(Flux.just(bb), bb.remaining())
-                                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-                        return client.appendBlockWithResponse(appendOptions);
+                        AppendBlobAppendBlockOptions appendOptions = new AppendBlobAppendBlockOptions()
+                            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+                        return client.appendBlockWithResponse(Flux.just(bb), bb.remaining(), appendOptions);
                     }).then().block();
                 }
 
@@ -1039,15 +1036,15 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
         byte[] randomData = DATA.getDefaultBytes();
         AppendBlobAppendBlockOptions options
-            = new AppendBlobAppendBlockOptions(Flux.just(ByteBuffer.wrap(randomData)), randomData.length)
-                .setContentValidationAlgorithm(algorithm)
-                .setContentMd5(DEFAULT_MD5);
+            = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm).setContentMd5(DEFAULT_MD5);
 
-        StepVerifier.create(client.appendBlockWithResponse(options)).verifyErrorSatisfies(ex -> {
-            BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
-            assertEquals(400, e.getStatusCode());
-            assertTrue(e.getMessage().contains(MESSAGE));
-        });
+        StepVerifier
+            .create(client.appendBlockWithResponse(Flux.just(ByteBuffer.wrap(randomData)), randomData.length, options))
+            .verifyErrorSatisfies(ex -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
+                assertEquals(400, e.getStatusCode());
+                assertTrue(e.getMessage().contains(MESSAGE));
+            });
     }
 
     @ParameterizedTest
@@ -1061,13 +1058,14 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
         byte[] md5 = MessageDigest.getInstance("MD5").digest(randomData);
         PageBlobUploadPagesOptions options
-            = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1),
-                Flux.just(ByteBuffer.wrap(randomData))).setContentValidationAlgorithm(algorithm).setContentMd5(md5);
+            = new PageBlobUploadPagesOptions().setContentValidationAlgorithm(algorithm).setContentMd5(md5);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options)).verifyErrorSatisfies(ex -> {
-            BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
-            assertEquals(400, e.getStatusCode());
-            assertTrue(e.getMessage().contains(MESSAGE));
-        });
+        StepVerifier.create(client.uploadPagesWithResponse(pageRange, Flux.just(ByteBuffer.wrap(randomData)), options))
+            .verifyErrorSatisfies(ex -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, ex);
+                assertEquals(400, e.getStatusCode());
+                assertTrue(e.getMessage().contains(MESSAGE));
+            });
     }
 }

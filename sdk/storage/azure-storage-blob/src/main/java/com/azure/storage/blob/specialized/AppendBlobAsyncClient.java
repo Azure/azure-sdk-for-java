@@ -38,7 +38,6 @@ import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 
@@ -451,38 +450,33 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @param appendBlobRequestConditions {@link AppendBlobRequestConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
+     * @deprecated Use {@link #appendBlockWithResponse(Flux, long, AppendBlobAppendBlockOptions)}. The optional
+     * parameters are now carried by {@link AppendBlobAppendBlockOptions}, which is also forward-compatible with future
+     * optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
-        if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
-        }
-        return appendBlockWithResponse(new AppendBlobAppendBlockOptions(data, length).setContentMd5(contentMd5)
+        return appendBlockWithResponse(data, length, new AppendBlobAppendBlockOptions().setContentMd5(contentMd5)
             .setRequestConditions(appendBlobRequestConditions));
     }
 
     /**
      * Commits a new block of data to the end of the existing append blob with options.
      *
-     * @param options {@link AppendBlobAppendBlockOptions} containing the block data.
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @param options Optional parameters for the request. Pass {@code null} to use defaults.
      * @return A {@link Mono} containing {@link Response} whose value contains the append blob operation.
-     * @throws NullPointerException If {@code options} is null.
-     * @throws IllegalArgumentException If options were not constructed with Flux (async client).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
+        AppendBlobAppendBlockOptions options) {
         try {
-            if (options == null) {
-                return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
-            }
-            if (options.getDataFlux() == null) {
-                return monoError(LOGGER, new IllegalArgumentException(
-                    "AppendBlobAppendBlockOptions must be constructed with Flux for async client."));
-            }
-            return withContext(context -> appendBlockWithResponseInternal(options.getDataFlux(), options.getLength(),
-                options.getContentMd5(), options.getRequestConditions(), options.getContentValidationAlgorithm(),
-                context));
+            return withContext(context -> appendBlockWithResponseInternal(data, length, options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -491,28 +485,30 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
         // Prevents revapi visibility increased error
-        return appendBlockWithResponseInternal(data, length, contentMd5, appendBlobRequestConditions, null, context);
+        return appendBlockWithResponseInternal(data, length,
+            new AppendBlobAppendBlockOptions().setContentMd5(contentMd5)
+                .setRequestConditions(appendBlobRequestConditions),
+            context);
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponseInternal(Flux<ByteBuffer> data, long length,
-        byte[] contentMd5, AppendBlobRequestConditions appendBlobRequestConditions,
-        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
+        AppendBlobAppendBlockOptions options, Context context) {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
-
-        appendBlobRequestConditions
-            = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
-        context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm, length,
-            false);
+        AppendBlobAppendBlockOptions opts = options == null ? new AppendBlobAppendBlockOptions() : options;
+        AppendBlobRequestConditions requestConditions
+            = opts.getRequestConditions() == null ? new AppendBlobRequestConditions() : opts.getRequestConditions();
+        context = ContentValidationModeResolver.addContentValidationMode(context == null ? Context.NONE : context,
+            opts.getContentValidationAlgorithm(), length, false);
 
         return this.azureBlobStorage.getAppendBlobs()
-            .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,
-                appendBlobRequestConditions.getLeaseId(), appendBlobRequestConditions.getMaxSize(),
-                appendBlobRequestConditions.getAppendPosition(), appendBlobRequestConditions.getIfModifiedSince(),
-                appendBlobRequestConditions.getIfUnmodifiedSince(), appendBlobRequestConditions.getIfMatch(),
-                appendBlobRequestConditions.getIfNoneMatch(), appendBlobRequestConditions.getTagsConditions(), null,
-                null, null, getCustomerProvidedKey(), encryptionScope, context)
+            .appendBlockWithResponseAsync(containerName, blobName, length, data, null, opts.getContentMd5(), null,
+                requestConditions.getLeaseId(), requestConditions.getMaxSize(), requestConditions.getAppendPosition(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, null, null, getCustomerProvidedKey(), encryptionScope,
+                context)
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

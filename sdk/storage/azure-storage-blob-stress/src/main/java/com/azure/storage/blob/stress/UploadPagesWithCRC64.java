@@ -46,9 +46,8 @@ public class UploadPagesWithCRC64 extends PageBlobScenarioBase<StorageStressOpti
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             PageBlobClient pageBlobClient = syncClient.getPageBlobClient();
             PageRange range = new PageRange().setStart(0).setEnd(options.getSize() - 1);
-            pageBlobClient.uploadPagesWithResponse(
-                new PageBlobUploadPagesOptions(range, inputStream)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+            pageBlobClient.uploadPagesWithResponse(range, inputStream,
+                new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                 null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -60,9 +59,8 @@ public class UploadPagesWithCRC64 extends PageBlobScenarioBase<StorageStressOpti
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())
             .convertStreamToByteBuffer();
         PageRange range = new PageRange().setStart(0).setEnd(options.getSize() - 1);
-        return pageBlobAsyncClient.uploadPagesWithResponse(
-                new PageBlobUploadPagesOptions(range, byteBufferFlux)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
+        return pageBlobAsyncClient.uploadPagesWithResponse(range, byteBufferFlux,
+                new PageBlobUploadPagesOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
