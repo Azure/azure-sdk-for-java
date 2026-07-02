@@ -314,7 +314,9 @@ public final class BlockBlobClient extends BlobClientBase {
             options.getBlockSizeInBytes() != null
                 ? options.getBlockSizeInBytes().intValue()
                 : BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE,
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options, internalMode, null), startingPosition);
+            new StorageSeekableByteChannelBlockBlobWriteBehavior(this, options.getHeaders(), options.getMetadata(),
+                options.getTags(), options.getTier(), options.getRequestConditions(), internalMode, null),
+            startingPosition);
     }
 
     private BlobClientBuilder prepareBuilder() {
@@ -785,14 +787,11 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-
         Flux<ByteBuffer> fbb
             = Utility.convertStreamToByteBuffer(data, length, BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
-        Mono<Response<Void>> response = BinaryData.fromFlux(fbb, length, false)
-            .flatMap(binaryData -> client.stageBlockWithResponseInternal(
-                new BlockBlobStageBlockOptions(base64BlockId, binaryData).setContentMd5(contentMd5).setLeaseId(leaseId),
-                context));
+        Mono<Response<Void>> response
+            = client.stageBlockWithResponse(base64BlockId, fbb, length, contentMd5, leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
@@ -828,8 +827,8 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout,
         Context context) {
         Objects.requireNonNull(options, "options must not be null");
-
-        Mono<Response<Void>> response = client.stageBlockWithResponseInternal(options, context);
+        Mono<Response<Void>> response = client.stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
+            options.getContentMd5(), options.getLeaseId(), context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

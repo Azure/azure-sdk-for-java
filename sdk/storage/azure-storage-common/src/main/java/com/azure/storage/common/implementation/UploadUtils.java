@@ -98,9 +98,7 @@ public class UploadUtils {
                 }
                 int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
                 return Flux.range(0, numSplits).map(i -> {
-                    // While duplicate.asReadOnlyBuffer() is safer, it significantly slows down crc64 calculation because it forces a copy of the buffer.
-                    // No downstream buffers should be modifying the buffer anyways.
-                    ByteBuffer duplicate = buffer.duplicate();
+                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
                     duplicate.position(i * chunkSize);
                     duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
                     return duplicate;

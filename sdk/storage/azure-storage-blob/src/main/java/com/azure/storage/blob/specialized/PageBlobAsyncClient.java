@@ -56,12 +56,8 @@ import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
-import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 import com.azure.storage.common.implementation.StorageImplUtils;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -492,36 +488,18 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * operation will fail.
      * @param pageBlobRequestConditions {@link PageBlobRequestConditions}
      * @return A reactive response containing the information of the uploaded pages.
+     *
+     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
         if (body == null) {
-            return monoError(LOGGER, new NullPointerException("'body' cannot be null."));
-        }
-        return uploadPagesWithResponse(new PageBlobUploadPagesOptions(pageRange, body).setContentMd5(contentMd5)
-            .setRequestConditions(pageBlobRequestConditions));
-    }
-
-    /**
-     * Writes one or more pages to the page blob with options.
-     *
-     * @param options {@link PageBlobUploadPagesOptions} (must be constructed with {@link Flux} body for async).
-     * @return A reactive response containing the information of the uploaded pages.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageBlobUploadPagesOptions options) {
-        if (options == null) {
-            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
-        }
-        if (options.getDataFlux() == null) {
-            return monoError(LOGGER, new IllegalArgumentException(
-                "PageBlobUploadPagesOptions must be constructed with Flux for async client."));
+            return Mono.error(new NullPointerException("'body' cannot be null."));
         }
         try {
-            return withContext(context -> uploadPagesWithResponseInternal(options.getPageRange(), options.getDataFlux(),
-                options.getContentMd5(), options.getRequestConditions(), options.getContentValidationAlgorithm(),
-                context));
+            return withContext(
+                context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -529,13 +507,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Context context) {
-        // Prevents revapi visibility increased error
-        return uploadPagesWithResponseInternal(pageRange, body, contentMd5, pageBlobRequestConditions, null, context);
-    }
-
-    Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageRange pageRange, Flux<ByteBuffer> body,
-        byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions,
-        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         pageBlobRequestConditions
             = pageBlobRequestConditions == null ? new PageBlobRequestConditions() : pageBlobRequestConditions;
 
@@ -544,15 +515,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             // subscription.
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
-
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
-        long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm, length,
-            false);
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getPageBlobs()
-            .uploadPagesWithResponseAsync(containerName, blobName, length, body, contentMd5, null, null, pageRangeStr,
-                pageBlobRequestConditions.getLeaseId(),
+            .uploadPagesWithResponseAsync(containerName, blobName, pageRange.getEnd() - pageRange.getStart() + 1, body,
+                contentMd5, null, null, pageRangeStr, pageBlobRequestConditions.getLeaseId(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),
                 pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
