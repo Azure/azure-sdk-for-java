@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation;
+package com.azure.core.credential;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.implementation.AccessTokenCacheInfo;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -25,7 +23,45 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * A token cache that supports caching a token and refreshing it.
+ * <p>
+ * {@code AccessTokenCache} is a thread-safe token cache that wraps a {@link TokenCredential} and manages proactive
+ * token refresh. It supports both asynchronous and synchronous token retrieval via
+ * {@link #getToken(TokenRequestContext, boolean)} and {@link #getTokenSync(TokenRequestContext, boolean)}.
+ * </p>
+ *
+ * <p>
+ * The cache maintains a single cached {@link AccessToken} per instance and proactively refreshes it before expiry
+ * (by default 5 minutes before the expiry time, or at the {@code refreshAt} time if provided by the credential).
+ * If a refresh fails while a non-expired token is still available, the cached token continues to be returned until
+ * it expires.
+ * </p>
+ *
+ * <p>
+ * When the {@code checkToForceFetchToken} flag is {@code true}, the cache compares the incoming
+ * {@link TokenRequestContext} (scopes, tenant ID, claims) against the context used to acquire the current cached
+ * token. A mismatch causes an immediate token refresh regardless of expiry.
+ * </p>
+ *
+ * <p>
+ * <strong>Sample: Wrapping a TokenCredential with AccessTokenCache</strong>
+ * </p>
+ *
+ * <!-- src_embed com.azure.core.credential.accessTokenCache -->
+ * <pre>
+ * TokenCredential credential = new BasicAuthenticationCredential&#40;&quot;username&quot;, &quot;password&quot;&#41;;
+ * AccessTokenCache tokenCache = new AccessTokenCache&#40;credential&#41;;
+ * TokenRequestContext requestContext = new TokenRequestContext&#40;&#41;.addScopes&#40;&quot;https://management.azure.com/.default&quot;&#41;;
+ * &#47;&#47; Async usage
+ * Mono&lt;AccessToken&gt; tokenMono = tokenCache.getToken&#40;requestContext, false&#41;;
+ * &#47;&#47; Sync usage
+ * AccessToken token = tokenCache.getTokenSync&#40;requestContext, false&#41;;
+ * </pre>
+ * <!-- end com.azure.core.credential.accessTokenCache -->
+ *
+ * @see TokenCredential
+ * @see AccessToken
+ * @see TokenRequestContext
+ * @see SimpleTokenCache
  */
 public final class AccessTokenCache {
     // The delay after a refresh to attempt another token refresh

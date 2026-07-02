@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.AccessTokenCache;
+import com.azure.core.credential.AccessTokenCache;
 import com.azure.core.implementation.http.policy.AuthorizationChallengeParser;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
