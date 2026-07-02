@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) Microsoft Corporation. All rights reserved.
+ ~ Licensed under the MIT License.
+
+ Standalone Maven module that builds the cu-skill analyzer-authoring tool.
+
+ This module is intentionally NOT a child of azure-client-sdk-parent and is
+ NOT referenced from the package POM — it lives outside the published source
+ tree under .github/skills/_shared/ so it has zero effect on the published
+ azure-ai-contentunderstanding artifact. The skill SKILL.md files invoke it
+ via `mvn -f .../pom.xml exec:java -Dexec.mainClass=... -Dexec.args="..."`.
+
+ Dependencies are pulled from Maven Central using the standard published
+ versions; the tool builds against the public SDK rather than the local
+ reactor so that contributors can iterate without first running `mvn install`
+ on the parent.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.azure.ai.contentunderstanding.skills</groupId>
+    <artifactId>cu-skill</artifactId>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>cu-skill — Content Understanding analyzer-authoring tool</name>
+    <description>
+        Companion CLI for the cu-sdk-author-analyzer / cu-sdk-author-analyzer-classify-route
+        GitHub Copilot skills. Wraps the azure-ai-contentunderstanding Java SDK with three
+        subcommands (extract-layout, create-and-test, create-and-test-router) and a pure-Java
+        schema validator that catches structural mistakes before a service round-trip.
+    </description>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Skip Checkstyle / SpotBugs / javadoc enforcement; this is internal tooling. -->
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+    </properties>
+
+    <dependencies>
+        <!--
+          Pin published SDK versions; users only need network access to Maven Central
+          (no `mvn install` of the parent reactor required).
+        -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-ai-contentunderstanding</artifactId>
+            <version>1.1.0-beta.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.18.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core</artifactId>
+            <version>1.58.1</version>
+        </dependency>
+        <!-- Jackson is pulled in transitively by azure-core; pinning explicitly keeps the
+             validator's import set stable even if azure-core swaps serializers later. -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.18.7</version>
+        </dependency>
+
+        <!-- Test scope -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>com.azure.ai.contentunderstanding.skills.Cli</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>
