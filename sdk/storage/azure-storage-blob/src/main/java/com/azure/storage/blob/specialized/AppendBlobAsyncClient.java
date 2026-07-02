@@ -18,6 +18,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.accesshelpers.AppendBlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
@@ -515,9 +516,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 null, null, getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
-                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount());
+                AppendBlobItem item
+                    = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -663,9 +665,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobsAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
-                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount());
+                AppendBlobItem item
+                    = AppendBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsBlobAppendOffset(), hd.getXMsBlobCommittedBlockCount(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }

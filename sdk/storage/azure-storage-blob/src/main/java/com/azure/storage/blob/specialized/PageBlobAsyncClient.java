@@ -22,6 +22,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.accesshelpers.PageBlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsCreateHeaders;
@@ -561,9 +562,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 null, getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsBlobSequenceNumber());
+                PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsBlobSequenceNumber(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -752,8 +753,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 context)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), null);
+                PageBlobItem item = PageBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
+                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
+                    hd.getXMsEncryptionScope(), hd.getXMsBlobSequenceNumber(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
