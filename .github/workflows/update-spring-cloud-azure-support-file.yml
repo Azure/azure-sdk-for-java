@@ -1,0 +1,157 @@
+name: Update Spring Cloud Azure Support File
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      base_branch:
+        description: 'Base branch for update branch and PR target. Defaults to trigger branch.'
+        required: false
+        type: string
+
+env:
+  BASE_BRANCH: ${{ github.event.inputs.base_branch || github.ref_name }}
+  PR_TITLE: "Update Spring Boot and Spring Cloud versions for the Spring compatibility tests"
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+
+jobs:
+  check-open-pr:
+    name: Check Open Pull Request
+    runs-on: ubuntu-latest
+    outputs:
+      has_open_pr: ${{ steps.check.outputs.has_open_pr }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for Existing Open Pull Request
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prTitle = process.env.PR_TITLE;
+            const pullRequests = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+
+            const openPRs = pullRequests.filter(pr => pr.title === prTitle);
+            core.setOutput('has_open_pr', openPRs.length > 0 ? 'true' : 'false');
+
+  update:
+    name: Update Support File and Create PR
+    needs: check-open-pr
+    if: ${{ needs.check-open-pr.outputs.has_open_pr == 'false' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set Branch Name with Timestamp
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          GITHUB_ACTION_URL="https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"
+
+          {
+            echo "BRANCH_NAME=update-spring-cloud-azure-support-file-${TIMESTAMP}"
+            echo "COMMIT_MESSAGE<<EOF"
+            echo "${PR_TITLE}."
+            echo "This commit is created by GitHub Action: ${GITHUB_ACTION_URL}"
+            echo "EOF"
+            echo "PULL_REQUEST_BODY<<EOF"
+            echo "${PR_TITLE}."
+            echo "This commit is created by GitHub Action: ${GITHUB_ACTION_URL}"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+      - name: Make Decision Based on Git Diff
+        run: |
+          git fetch origin "${{ env.BASE_BRANCH }}"
+          git checkout -B "${{ env.BRANCH_NAME }}" "origin/${{ env.BASE_BRANCH }}"
+          python ./sdk/spring/scripts/generate_spring_cloud_azure_support_file.py
+          if [[ -n "$(git status -s)" ]]; then
+            echo "NEED_UPDATE_FILE=true" >> "$GITHUB_ENV"
+          else
+            echo "No file changes, no commits."
+          fi
+      - name: Update Spring Cloud Azure Timeline
+        if: ${{ env.NEED_UPDATE_FILE == 'true' }}
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          TIMELINE_FILE=docs/spring/Spring-Cloud-Azure-Timeline.md
+          SUPPORT_FILE=sdk/spring/pipeline/spring-cloud-azure-supported-spring.json
+
+          OLD_4X=$(git show "HEAD:${SUPPORT_FILE}" | jq -Sc '[.[] | select(."spring-boot-version" | startswith("4."))] | sort_by([."spring-boot-version", ."spring-cloud-version", .supportStatus, .current])')
+          NEW_4X=$(jq -Sc '[.[] | select(."spring-boot-version" | startswith("4."))] | sort_by([."spring-boot-version", ."spring-cloud-version", .supportStatus, .current])' "${SUPPORT_FILE}")
+
+          if [[ "${OLD_4X}" == "${NEW_4X}" ]]; then
+            echo "No Spring Boot 4.x changes detected, skip timeline update."
+            exit 0
+          fi
+
+          SUPPORTED_LINES=$(jq -r '
+            .[]
+            | select(.supportStatus == "SUPPORTED")
+            | select(.["spring-boot-version"] | startswith("4."))
+            | "   - spring-boot-dependencies:\(.["spring-boot-version"]) and spring-cloud-dependencies:\(.["spring-cloud-version"])."
+          ' "${SUPPORT_FILE}")
+
+          if [[ -z "${SUPPORTED_LINES}" ]]; then
+            echo "No supported Spring Boot 4.x entries found, skip timeline update."
+            exit 0
+          fi
+
+          NEW_ENTRY=$(printf ' - **%s**: In "java - spring - compatibility - tests" pipeline, run unit tests:\n%s' "$TODAY" "$SUPPORTED_LINES")
+          awk -v entry="$NEW_ENTRY" '
+            { print }
+            /^## Timeline$/ && !inserted { print entry; inserted=1 }
+          ' "$TIMELINE_FILE" > "$TIMELINE_FILE.tmp"
+          mv "$TIMELINE_FILE.tmp" "$TIMELINE_FILE"
+      - name: Push Commit
+        if: ${{ env.NEED_UPDATE_FILE == 'true' }}
+        run: |
+          git config --global user.email github-actions@github.com
+          git config --global user.name github-actions
+          git add sdk/spring/pipeline/spring-cloud-azure-supported-spring.json
+          git add docs/spring/Spring-Cloud-Azure-Timeline.md
+          git commit -m "$COMMIT_MESSAGE"
+          git push origin "${{ env.BRANCH_NAME }}"
+      - name: Create Pull Request
+        id: create_pr
+        if: ${{ env.NEED_UPDATE_FILE == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: process.env.PR_TITLE,
+              head: process.env.BRANCH_NAME,
+              base: process.env.BASE_BRANCH,
+              body: process.env.PULL_REQUEST_BODY
+            });
+            core.setOutput('pull_request_number', String(pr.data.number));
+      - name: Comment on Pull Request
+        if: ${{ env.NEED_UPDATE_FILE == 'true' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = Number('${{ steps.create_pr.outputs.pull_request_number }}');
+            if (!prNumber) {
+              console.log('No pull request was created, nothing to comment on.');
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: '/azp run java - spring - tests'
+            });
