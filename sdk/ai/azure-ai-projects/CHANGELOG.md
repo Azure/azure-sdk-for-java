@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updated version of `openai` client library to `4.41.0`.
+
 ## 2.2.0 (2026-07-01)
 
 ### Features Added
