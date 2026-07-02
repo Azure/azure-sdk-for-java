@@ -4,7 +4,7 @@
 package com.azure.v2.security.keyvault.administration;
 
 import com.azure.v2.core.http.polling.Poller;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 

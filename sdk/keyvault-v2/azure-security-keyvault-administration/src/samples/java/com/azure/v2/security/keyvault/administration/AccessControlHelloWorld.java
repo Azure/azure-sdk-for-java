@@ -3,7 +3,7 @@
 
 package com.azure.v2.security.keyvault.administration;
 
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultRoleScope;

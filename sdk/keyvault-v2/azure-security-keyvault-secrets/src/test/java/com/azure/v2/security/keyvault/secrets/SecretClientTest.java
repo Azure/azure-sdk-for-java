@@ -3,7 +3,7 @@
 
 package com.azure.v2.security.keyvault.secrets;
 
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.secrets.models.KeyVaultSecret;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import org.junit.jupiter.api.Disabled;

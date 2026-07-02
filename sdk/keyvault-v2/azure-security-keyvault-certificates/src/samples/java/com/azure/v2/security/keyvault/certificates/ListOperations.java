@@ -5,7 +5,7 @@ package com.azure.v2.security.keyvault.certificates;
 
 import com.azure.v2.core.http.polling.LongRunningOperationStatus;
 import com.azure.v2.core.http.polling.Poller;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.certificates.models.CertificateContact;
 import com.azure.v2.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.v2.security.keyvault.certificates.models.CertificateOperation;

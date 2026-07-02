@@ -3,7 +3,7 @@
 
 package com.azure.v2.security.keyvault.keys.cryptography;
 
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.v2.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult;

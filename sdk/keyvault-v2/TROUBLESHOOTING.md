@@ -41,7 +41,7 @@ com.azure.v2.core.exception.HttpResponseException: Status code 401, "{"error":{"
 
 This is most often caused by being logged into a different tenant than the Key Vault authenticates. See our [DefaultAzureCredential] documentation to see the order credentials are read. You may be logged into a different tenant for one credential that gets read before another credential. For example, you might be logged into Visual Studio under the wrong tenant even though you're logged into the Azure CLI under the correct tenant.
 
-Automatic tenant discovery support has been added when referencing package `azure-identity` version 1.4.0 or newer, and any of the following Key Vault SDK package versions or newer:
+Automatic tenant discovery support has been added when referencing package `azure-core` version 1.4.0 or newer, and any of the following Key Vault SDK package versions or newer:
 
 | Package                                  | Minimum Version |
 |------------------------------------------|-----------------|
@@ -80,7 +80,7 @@ The operation and inner `code` may vary, but the rest of the text will indicate 
    [INFO] c.azure.identity.DefaultAzureCredential  : Azure Identity => Attempted credential ManagedIdentityCredential is unavailable.
    [ERROR] c.a.identity.SharedTokenCacheCredential  : Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: SharedTokenCacheCredential authentication unavailable. No accounts were found in the cache.
    [INFO] c.azure.identity.DefaultAzureCredential  : Azure Identity => Attempted credential SharedTokenCacheCredential is unavailable.
-   [ERROR] com.azure.v2.identity.IntelliJCredential    : Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: Unrecognized field "tenantId" (class com.azure.v2.identity.implementation.IntelliJAuthMethodDetails), not marked as ignorable (4 known properties: "authMethod", "azureEnv", "accountEmail", "credFilePath"])
+   [ERROR] com.azure.v2.core.identity.IntelliJCredential    : Azure Identity => ERROR in getToken() call for scopes [https://management.core.windows.net//.default]: Unrecognized field "tenantId" (class com.azure.v2.core.implementation.identity.IntelliJAuthMethodDetails), not marked as ignorable (4 known properties: "authMethod", "azureEnv", "accountEmail", "credFilePath"])
    ```
 
 #### Access Denied to First Party Service
@@ -120,7 +120,7 @@ Check that the resource is expected - that you're not receiving an authenticatio
 
 ```java
 import com.azure.v2.core.TokenCredential;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.secrets.SecretClient;
 import com.azure.v2.security.keyvault.secrets.SecretClientBuilder;
 
@@ -159,16 +159,16 @@ For additional support, please search our [existing issues](https://github.com/A
 
 [access_policies]: https://docs.microsoft.com/azure/key-vault/general/assign-access-policy
 [azure_appconfiguration]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/README.md
-[azure-identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
-[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
+[azure-identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core-v2/azure-core/README.md
+[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core-v2/azure-core/README.md#defaultazurecredential
 [kv_admin_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault-v2/azure-security-keyvault-administration/TROUBLESHOOTING.md
 [kv_certs_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault-v2/azure-security-keyvault-certificates/TROUBLESHOOTING.md
 [kv_error_codes]: https://docs.microsoft.com/azure/key-vault/general/rest-error-codes
 [kv_keys_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault-v2/azure-security-keyvault-keys/TROUBLESHOOTING.md
 [kv_secrets_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault-v2/azure-security-keyvault-secrets/TROUBLESHOOTING.md
 [identity_logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
-[identity_troubleshooting]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md
-[identity_multitenant]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md#troubleshoot-multi-tenant-authentication-issues
+[identity_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core-v2/azure-core/README.md
+[identity_multitenant]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core-v2/azure-core/README.md
 [rbac]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [release_notes_resource]: https://aka.ms/azsdk/blog/vault-uri
 [release_notes_tenant]: https://aka.ms/azsdk/blog/multi-tenant-guidance

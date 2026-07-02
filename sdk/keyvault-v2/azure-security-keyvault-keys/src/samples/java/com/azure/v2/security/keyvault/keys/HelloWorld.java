@@ -5,7 +5,7 @@ package com.azure.v2.security.keyvault.keys;
 
 import com.azure.v2.core.http.polling.PollResponse;
 import com.azure.v2.core.http.polling.Poller;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.core.identity.DefaultAzureCredentialBuilder;
 import com.azure.v2.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.v2.security.keyvault.keys.models.DeletedKey;
 import com.azure.v2.security.keyvault.keys.models.KeyOperation;
