@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.models.ExternalKey;
 import com.azure.security.keyvault.keys.models.KeyAttestation;
 import java.io.IOException;
 import java.time.Instant;
@@ -83,6 +84,18 @@ public final class KeyAttributes implements JsonSerializable<KeyAttributes> {
      */
     @Generated
     private KeyAttestation attestation;
+
+    /*
+     * The external key information.
+     */
+    @Generated
+    private ExternalKey externalKey;
+
+    /*
+     * The optional key size in bits for symmetric keys. For example: 128, 192, or 256 for AES keys.
+     */
+    @Generated
+    private Integer keySize;
 
     /**
      * Creates an instance of KeyAttributes class.
@@ -265,6 +278,39 @@ public final class KeyAttributes implements JsonSerializable<KeyAttributes> {
     }
 
     /**
+     * Get the externalKey property: The external key information.
+     * 
+     * @return the externalKey value.
+     */
+    @Generated
+    public ExternalKey getExternalKey() {
+        return this.externalKey;
+    }
+
+    /**
+     * Set the externalKey property: The external key information.
+     * 
+     * @param externalKey the externalKey value to set.
+     * @return the KeyAttributes object itself.
+     */
+    @Generated
+    public KeyAttributes setExternalKey(ExternalKey externalKey) {
+        this.externalKey = externalKey;
+        return this;
+    }
+
+    /**
+     * Get the keySize property: The optional key size in bits for symmetric keys. For example: 128, 192, or 256 for AES
+     * keys.
+     * 
+     * @return the keySize value.
+     */
+    @Generated
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -275,6 +321,7 @@ public final class KeyAttributes implements JsonSerializable<KeyAttributes> {
         jsonWriter.writeNumberField("nbf", this.notBefore);
         jsonWriter.writeNumberField("exp", this.expires);
         jsonWriter.writeBooleanField("exportable", this.exportable);
+        jsonWriter.writeJsonField("external_key", this.externalKey);
         return jsonWriter.writeEndObject();
     }
 
@@ -314,6 +361,10 @@ public final class KeyAttributes implements JsonSerializable<KeyAttributes> {
                     deserializedKeyAttributes.hsmPlatform = reader.getString();
                 } else if ("attestation".equals(fieldName)) {
                     deserializedKeyAttributes.attestation = KeyAttestation.fromJson(reader);
+                } else if ("external_key".equals(fieldName)) {
+                    deserializedKeyAttributes.externalKey = ExternalKey.fromJson(reader);
+                } else if ("key_size".equals(fieldName)) {
+                    deserializedKeyAttributes.keySize = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
