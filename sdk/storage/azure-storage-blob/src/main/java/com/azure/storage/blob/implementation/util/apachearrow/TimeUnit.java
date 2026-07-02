@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util.arrow;
+package com.azure.storage.blob.implementation.util.apachearrow;
 
 /**
  * Values for the Arrow IPC {@code TimeUnit} enum.

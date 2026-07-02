@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util.arrow;
+package com.azure.storage.blob.implementation.util.apachearrow;
 
 import com.google.flatbuffers.Table;
 
 import java.nio.ByteBuffer;
 
 /**
- * Accessor for the Arrow IPC {@code Timestamp} type table.
+ * Accessor for the Arrow IPC {@code KeyValue} table (a single custom metadata entry).
  */
-public final class Timestamp extends Table {
+public final class KeyValue extends Table {
     /**
      * Positions this accessor at the given table offset.
      *
@@ -28,18 +28,28 @@ public final class Timestamp extends Table {
      * @param bb the backing buffer.
      * @return this accessor.
      */
-    public Timestamp __assign(int i, ByteBuffer bb) {
+    public KeyValue __assign(int i, ByteBuffer bb) {
         __init(i, bb);
         return this;
     }
 
     /**
-     * Gets the timestamp resolution (see {@link TimeUnit}).
+     * Gets the metadata key.
      *
-     * @return the time unit, or {@code 0} ({@link TimeUnit#SECOND}) when absent.
+     * @return the key, or {@code null} when absent.
      */
-    public short unit() {
+    public String key() {
         int o = __offset(4);
-        return o != 0 ? bb.getShort(o + bb_pos) : 0;
+        return o != 0 ? __string(o + bb_pos) : null;
+    }
+
+    /**
+     * Gets the metadata value.
+     *
+     * @return the value, or {@code null} when absent.
+     */
+    public String value() {
+        int o = __offset(6);
+        return o != 0 ? __string(o + bb_pos) : null;
     }
 }

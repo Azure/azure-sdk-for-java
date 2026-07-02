@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util.arrow;
+package com.azure.storage.blob.implementation.util.apachearrow;
 
 import com.google.flatbuffers.Struct;
 
 import java.nio.ByteBuffer;
 
 /**
- * Accessor for the Arrow IPC {@code Buffer} struct (offset/length of a buffer within a record batch body).
+ * Accessor for the Arrow IPC {@code FieldNode} struct (per-column metadata within a record batch).
  */
-public final class Buffer extends Struct {
+public final class FieldNode extends Struct {
     /**
      * Positions this accessor at the given struct offset.
      *
@@ -28,26 +28,26 @@ public final class Buffer extends Struct {
      * @param bb the backing buffer.
      * @return this accessor.
      */
-    public Buffer __assign(int i, ByteBuffer bb) {
+    public FieldNode __assign(int i, ByteBuffer bb) {
         __init(i, bb);
         return this;
     }
 
     /**
-     * Gets the byte offset of the buffer relative to the start of the record batch body.
+     * Gets the number of value slots in the column.
      *
-     * @return the buffer offset.
+     * @return the value count.
      */
-    public long offset() {
+    public long length() {
         return bb.getLong(bb_pos);
     }
 
     /**
-     * Gets the length, in bytes, of the buffer.
+     * Gets the number of null value slots in the column.
      *
-     * @return the buffer length.
+     * @return the null count.
      */
-    public long length() {
+    public long nullCount() {
         return bb.getLong(bb_pos + 8);
     }
 }

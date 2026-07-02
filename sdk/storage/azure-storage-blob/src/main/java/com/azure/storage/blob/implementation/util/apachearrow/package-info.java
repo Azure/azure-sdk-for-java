@@ -14,4 +14,4 @@
  * specification (see {@code Schema.fbs} and {@code Message.fbs} in the Apache Arrow project, licensed under the Apache
  * License, Version 2.0) and must match the on-the-wire layout produced by the Storage service.
  */
-package com.azure.storage.blob.implementation.util.arrow;
+package com.azure.storage.blob.implementation.util.apachearrow;

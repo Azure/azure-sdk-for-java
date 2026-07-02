@@ -4,19 +4,19 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.implementation.models.BlobListArrowParseException;
-import com.azure.storage.blob.implementation.util.arrow.Buffer;
-import com.azure.storage.blob.implementation.util.arrow.Endianness;
-import com.azure.storage.blob.implementation.util.arrow.Field;
-import com.azure.storage.blob.implementation.util.arrow.FieldNode;
-import com.azure.storage.blob.implementation.util.arrow.Int;
-import com.azure.storage.blob.implementation.util.arrow.KeyValue;
-import com.azure.storage.blob.implementation.util.arrow.Message;
-import com.azure.storage.blob.implementation.util.arrow.MessageHeader;
-import com.azure.storage.blob.implementation.util.arrow.RecordBatch;
-import com.azure.storage.blob.implementation.util.arrow.Schema;
-import com.azure.storage.blob.implementation.util.arrow.TimeUnit;
-import com.azure.storage.blob.implementation.util.arrow.Timestamp;
-import com.azure.storage.blob.implementation.util.arrow.Type;
+import com.azure.storage.blob.implementation.util.apachearrow.Buffer;
+import com.azure.storage.blob.implementation.util.apachearrow.Endianness;
+import com.azure.storage.blob.implementation.util.apachearrow.Field;
+import com.azure.storage.blob.implementation.util.apachearrow.FieldNode;
+import com.azure.storage.blob.implementation.util.apachearrow.Int;
+import com.azure.storage.blob.implementation.util.apachearrow.KeyValue;
+import com.azure.storage.blob.implementation.util.apachearrow.Message;
+import com.azure.storage.blob.implementation.util.apachearrow.MessageHeader;
+import com.azure.storage.blob.implementation.util.apachearrow.RecordBatch;
+import com.azure.storage.blob.implementation.util.apachearrow.Schema;
+import com.azure.storage.blob.implementation.util.apachearrow.TimeUnit;
+import com.azure.storage.blob.implementation.util.apachearrow.Timestamp;
+import com.azure.storage.blob.implementation.util.apachearrow.Type;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
