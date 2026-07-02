@@ -676,7 +676,7 @@ class FileApiTests extends FileShareTestBase {
         }
         outFile.deleteOnExit();
 
-        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5, 1);
 
         // Create a ShareFileClient for download using the custom pipeline
         ShareFileClient downloadClient
@@ -724,7 +724,7 @@ class FileApiTests extends FileShareTestBase {
         }
         outFile.deleteOnExit();
 
-        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6, 1);
 
         // Create a ShareFileClient for download using the custom pipeline
         ShareFileClient downloadClient
