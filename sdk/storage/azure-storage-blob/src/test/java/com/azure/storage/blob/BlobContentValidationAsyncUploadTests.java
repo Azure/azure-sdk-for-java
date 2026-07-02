@@ -351,7 +351,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         AppendBlobAppendBlockOptions options
             = new AppendBlobAppendBlockOptions().setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.appendBlockWithResponse(data, UNDER_4MB, options)).assertNext(response -> {
+        StepVerifier.create(client.appendBlockWithResponse(data, TEN_MB, options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
         }).verifyComplete();

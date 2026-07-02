@@ -469,7 +469,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
-     * @param options {@link AppendBlobAppendBlockOptions} containing the block data.
+     * @param options Optional parameters for the request. Pass {@code null} to use defaults.
      * @return A {@link Mono} containing {@link Response} whose value contains the append blob operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

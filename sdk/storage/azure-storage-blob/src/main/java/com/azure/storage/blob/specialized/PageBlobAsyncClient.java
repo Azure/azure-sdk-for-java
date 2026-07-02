@@ -514,9 +514,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
      * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
-     * default). In other words, the Flowable must produce the same data each time it is subscribed to.
-     * @param options {@link PageBlobUploadPagesOptions} (must be constructed with {@link Flux} body for async).
-     * @return A reactive response containing the information of the uploaded pages.
+     * default). In other words, the {@code Flux} must produce the same data each time it is subscribed to.
+     * @param options Optional parameters for the request. Pass {@code null} to use defaults.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
