@@ -9,6 +9,7 @@ import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.telemetry.AgentsClientTracer;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -511,7 +512,8 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsAsyncClient.
      */
     public AgentsAsyncClient buildAgentsAsyncClient() {
-        return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
+        return new AgentsAsyncClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
+            createAgentsTracer());
     }
 
     /**
@@ -520,7 +522,32 @@ public final class AgentsClientBuilder
      * @return an instance of AgentsClient.
      */
     public AgentsClient buildAgentsClient() {
-        return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents());
+        return new AgentsClient(buildInnerClient(allowPreview ? AGENT_PREVIEW_FEATURES : null).getAgents(),
+            createAgentsTracer());
+    }
+
+    /**
+     * Builds the azure-core {@link com.azure.core.util.tracing.Tracer} for the agents clients from the configured
+     * {@link ClientOptions#getTracingOptions()}. The tracer is a no-op unless an OpenTelemetry implementation is
+     * present and tracing is enabled for the process.
+     *
+     * @return the tracer instance.
+     */
+    private com.azure.core.util.tracing.Tracer createTracer() {
+        final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        final com.azure.core.util.LibraryTelemetryOptions telemetryOptions
+            = new com.azure.core.util.LibraryTelemetryOptions(clientName).setLibraryVersion(clientVersion)
+                .setResourceProviderNamespace("Microsoft.CognitiveServices")
+                .setSchemaUrl(AgentsClientTracer.OTEL_SCHEMA_URL);
+        final com.azure.core.util.TracingOptions tracingOptions
+            = this.clientOptions == null ? null : this.clientOptions.getTracingOptions();
+        return com.azure.core.util.tracing.TracerProvider.getDefaultProvider()
+            .createTracer(telemetryOptions, tracingOptions);
+    }
+
+    private AgentsClientTracer createAgentsTracer() {
+        return new AgentsClientTracer(this.endpoint, this.configuration, createTracer());
     }
 
     /**

@@ -1,5 +1,17 @@
 # Release History
 
+## 2.3.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added experimental OpenTelemetry GenAI tracing for the `createAgentVersion` convenience method on `AgentsClient` and `AgentsAsyncClient`. Spans follow the GenAI semantic conventions (`gen_ai.operation.name`, `gen_ai.system`, `gen_ai.agent.name`, `gen_ai.agent.id`, `server.address`) and are emitted automatically when an OpenTelemetry `Tracer` is configured for the process — there is no global switch or opt-in call. Tracing is configured per client through `AgentsClientBuilder.clientOptions(...)` / `TracingOptions`, and agent content (such as the agent description) is only captured when the `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable is set.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.2.0 (2026-07-01)
 
 ### Features Added
