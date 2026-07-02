@@ -93,7 +93,10 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
                     return Mono.just(bufferedResponse);
                 }
                 return credential.getPolicyToken(acquireContext).flatMap(policyToken -> {
-                    request.setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
+                    // Apply the token to the request currently held by the context. The retry policy below this
+                    // policy replaces the context's request with a fresh copy on each attempt, so mutating the
+                    // early-captured request instance would be lost on the replay.
+                    context.getHttpRequest().setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
                     bufferedResponse.close();
                     return replay.process();
                 });
@@ -126,7 +129,10 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
             return bufferedResponse;
         }
         PolicyToken policyToken = credential.getPolicyTokenSync(acquireContext);
-        request.setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
+        // Apply the token to the request currently held by the context. The retry policy below this policy replaces
+        // the context's request with a fresh copy on each attempt, so mutating the early-captured request instance
+        // would be lost on the replay.
+        context.getHttpRequest().setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
         bufferedResponse.close();
         return replay.processSync();
     }

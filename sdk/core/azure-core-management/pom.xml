@@ -48,6 +48,8 @@
     <jacoco.min.linecoverage>0.24</jacoco.min.linecoverage>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.management/com.azure.core.management.implementation.polling=ALL-UNNAMED
+      --add-opens com.azure.core.management/com.azure.resourcemanager.storage.models=com.azure.core,com.azure.json
+      --add-opens com.azure.core.management/com.azure.resourcemanager.storage.fluent.models=com.azure.core,com.azure.json
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
@@ -117,6 +119,15 @@
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-jre8-standalone</artifactId>
       <version>2.35.2</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-jre8-standalone;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Used only by the External Evaluation policy end-to-end test to exercise the real acquirePolicyToken API.
+         Referenced as a released binary (not built from source) to avoid a dependency cycle with this module. -->
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-resources</artifactId>
+      <version>2.54.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
