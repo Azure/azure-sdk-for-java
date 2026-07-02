@@ -51,7 +51,8 @@ public class Configs {
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
     private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
-    private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
+    // Tri-state default: null means the customer has neither opted in nor opted out of thin-client.
+    private static final Boolean DEFAULT_THINCLIENT_ENABLED = null;
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
@@ -571,7 +572,38 @@ public class Configs {
         return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
     }
 
+    /**
+     * @return whether thin-client is <em>effectively enabled</em>: {@code true} unless the customer
+     * explicitly opted out via {@code COSMOS.THINCLIENT_ENABLED=false}. This is a derived
+     * convenience over the tri-state {@link #isThinClientEnabledExplicitly()} for the many observers
+     * (diagnostics, user-agent, tests) that only need the effective on/off bit; the unset
+     * ({@code null}) default is treated as enabled. The probe-bypass decision instead consumes the
+     * raw tri-state via {@link #hasUserExplicitlyEnabledThinClient()}.
+     */
     public static boolean isThinClientEnabled() {
+        return !Boolean.FALSE.equals(isThinClientEnabledExplicitly());
+    }
+
+    /**
+     * Reads the raw thin-client enablement configuration from the
+     * {@code COSMOS.THINCLIENT_ENABLED} system property or {@code COSMOS_THINCLIENT_ENABLED}
+     * environment variable as a <em>nullable</em> {@link Boolean}. The {@code null} vs
+     * non-{@code null} distinction is what differentiates an explicit setting (enablement or
+     * disablement) from no setting at all — a plain {@code boolean} cannot express it.
+     *
+     * <p>A customer can configure thin-client three ways:
+     * <ul>
+     *   <li>{@code Boolean.TRUE}  — explicitly enabled. Hard opt-in: thin-client is used and the
+     *       connectivity probe is skipped (routing goes to the thin-client endpoints directly).</li>
+     *   <li>{@code Boolean.FALSE} — explicitly disabled. Hard opt-out: thin-client is not used and
+     *       no probe runs.</li>
+     *   <li>{@code null}          — not set: neither opt-in nor opt-out
+     *       ({@link #DEFAULT_THINCLIENT_ENABLED}). Thin-client is still treated as enabled (the
+     *       default-on behavior is the absence of an explicit opt-out) and the connectivity probe
+     *       gates routing (provided HTTP/2 is opted into).</li>
+     * </ul>
+     */
+    public static Boolean isThinClientEnabledExplicitly() {
         String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
             return Boolean.parseBoolean(valueFromSystemProperty);
@@ -583,6 +615,17 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    /**
+     * @return whether thin-client was <em>explicitly enabled</em> — {@code COSMOS.THINCLIENT_ENABLED}
+     * (or {@code COSMOS_THINCLIENT_ENABLED}) explicitly set to {@code true}. This is distinct from
+     * the default-on case where the flag is left unset (see {@link #isThinClientEnabledExplicitly()}
+     * for the underlying nullable value); an explicit {@code true} is a hard opt-in that bypasses
+     * the connectivity-probe gate.
+     */
+    public static boolean hasUserExplicitlyEnabledThinClient() {
+        return Boolean.TRUE.equals(isThinClientEnabledExplicitly());
     }
 
     public static boolean isNettyHttpClientMetricsEnabled() {

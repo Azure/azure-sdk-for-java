@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
@@ -50,11 +51,36 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         super(clientBuilder);
     }
 
+    /**
+     * The "fast"-group tests in this class exercise the legacy Gateway V1 routing path
+     * (no proxy). With thin-client enabled by default, an HTTP/2-capable Gateway client
+     * would be eligible to route data plane through the proxy on port 10250, which is
+     * NOT what these tests are validating. Override any Gateway-mode builder to use a
+     * fresh {@link GatewayConnectionConfig} with no HTTP/2 configured — the SDK then
+     * uses HTTP/1.1 for the Gateway transport, which the thin-client routing site
+     * explicitly excludes. DIRECT-mode builders are returned unchanged; their data
+     * plane goes over RNTBD and is never proxy-eligible.
+     */
+    private static CosmosClientBuilder forceHttp1IfGatewayMode(CosmosClientBuilder builder) {
+        ConnectionPolicy policy = CosmosBridgeInternal.getConnectionPolicy(builder);
+        if (policy != null && ConnectionMode.GATEWAY.equals(policy.getConnectionMode())) {
+            builder.gatewayMode(new GatewayConnectionConfig());
+        }
+        return builder;
+    }
+
     @BeforeClass(groups = {"fast", "thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosNotFoundTests() {
+        // The class validates that 3 distinct connection modes all surface a 404 with the
+        // expected substatus on a missing container:
+        //   - DIRECT  (from data provider; data plane over RNTBD, never proxy-eligible)
+        //   - Gateway V1 (from data provider; forced to HTTP/1.1 via forceHttp1IfGatewayMode
+        //                 so the thin-client routing site cannot select the proxy)
+        //   - Gateway V2 / thin client (built inline in "thinclient"-group tests with
+        //                               HTTP/2 explicitly enabled to opt in to the proxy)
         executeWithRetry(() -> {
             safeClose(this.commonAsyncClient);
-            this.commonAsyncClient = getClientBuilder().buildAsyncClient();
+            this.commonAsyncClient = forceHttp1IfGatewayMode(getClientBuilder()).buildAsyncClient();
 
             // Get shared container and create an item in it
             CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.commonAsyncClient);
@@ -96,9 +122,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         CosmosAsyncClient asyncClientToUse = null;
 
         try {
-            asyncClientToUse = getClientBuilder()
+            asyncClientToUse = forceHttp1IfGatewayMode(getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .key(TestConfigurations.MASTER_KEY))
                 .buildAsyncClient();
 
             // Try to read the item from a non-existent container
@@ -136,9 +162,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
         CosmosAsyncClient asyncClientToUse = null;
         try {
-            asyncClientToUse = getClientBuilder()
+            asyncClientToUse = forceHttp1IfGatewayMode(getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .key(TestConfigurations.MASTER_KEY))
                 .buildAsyncClient();
 
             // Try to read the item from a non-existent container
@@ -299,9 +325,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
             testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
 
-            clientToUse = getClientBuilder()
+            clientToUse = forceHttp1IfGatewayMode(getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .key(TestConfigurations.MASTER_KEY))
                 .buildAsyncClient();
 
             CosmosAsyncContainer testContainer = clientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
@@ -309,9 +335,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             Thread.sleep(5000);
 
             // Create a different client instance to delete the container
-            deletingAsyncClient = getClientBuilder()
+            deletingAsyncClient = forceHttp1IfGatewayMode(getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .key(TestConfigurations.MASTER_KEY))
                 .buildAsyncClient();
 
             // Delete the container using the different client instance
@@ -356,9 +382,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
             testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
 
-            clientToUse = getClientBuilder()
+            clientToUse = forceHttp1IfGatewayMode(getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .key(TestConfigurations.MASTER_KEY))
                 .buildAsyncClient();
 
             CosmosAsyncContainer containerToUse = clientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
@@ -370,9 +396,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             containerToUse.createItem(testObject).block();
 
             // Create a different client instance to delete the container
-            deletingAsyncClient = getClientBuilder()
+            deletingAsyncClient = forceHttp1IfGatewayMode(getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
+                .key(TestConfigurations.MASTER_KEY))
                 .buildAsyncClient();
 
             // Delete the container using the different client instance

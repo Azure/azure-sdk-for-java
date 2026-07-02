@@ -99,6 +99,7 @@ public class ClientRetryPolicyE2ETestsWithGatewayV2 extends TestSuiteBase {
 
         // Uncomment to enable thin client proxy for local testing
         // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+
         this.clientWithPreferredRegions = getClientBuilder()
             .preferredRegions(this.preferredRegions)
             .endpointDiscoveryEnabled(true)
