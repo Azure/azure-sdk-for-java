@@ -93,4 +93,9 @@ public class AppConfigurationConstants {
      * Constant for tracing AI Chat Completion configuration usage.
      */
     public static final String AI_CHAT_COMPLETION_FEATURE = "AICC";
+
+    /**
+     * Constant for tracing snapshot reference usage.
+     */
+    public static final String SNAPSHOT_REFERENCE_TAG = "SnapshotRef";
 }

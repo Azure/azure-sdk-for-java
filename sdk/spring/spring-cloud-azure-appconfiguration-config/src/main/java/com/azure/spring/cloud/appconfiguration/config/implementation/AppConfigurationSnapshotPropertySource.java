@@ -2,14 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
+import org.springframework.util.StringUtils;
 
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
@@ -23,18 +25,13 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
 
     private final String snapshotName;
 
-    private final FeatureFlagClient featureFlagClient;
-
-    private List<ConfigurationSetting> featureFlagsList = new ArrayList<>();
-
     AppConfigurationSnapshotPropertySource(String name, AppConfigurationReplicaClient replicaClient,
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName,
         FeatureFlagClient featureFlagClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(name, replicaClient, keyVaultClientFactory, null, null, null);
+        super(name, replicaClient, keyVaultClientFactory, null, null, null, featureFlagClient);
         this.snapshotName = snapshotName;
-        this.featureFlagClient = featureFlagClient;
     }
 
     /**
@@ -43,12 +40,29 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * </p>
      *
      * @param trim prefix to trim
-     * @param isRefresh true if a refresh triggered the loading of the Snapshot.
+     * @param context request context propagated to the App Configuration client.
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
+    @Override
     public void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException {
         replicaClient.getTracingInfo().resetAiConfigurationTracing();
-        processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName, context), null, trim);
+        List<ConfigurationSetting> settings = replicaClient.listSettingSnapshot(snapshotName, context);
+        
+        for (ConfigurationSetting setting : settings) {
+            String key = trimKey(setting.getKey(), trim);
+
+            if (setting instanceof SecretReferenceConfigurationSetting) {
+                handleKeyVaultReference(key, (SecretReferenceConfigurationSetting) setting);
+            } else if (setting instanceof FeatureFlagConfigurationSetting
+                && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
+                handleFeatureFlag(key, (FeatureFlagConfigurationSetting) setting, trim);
+            } else if (StringUtils.hasText(setting.getContentType())
+                && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                handleJson(setting, trim);
+            } else {
+                properties.put(key, setting.getValue());
+            }
+        }
 
         WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
         featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
