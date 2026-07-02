@@ -5,7 +5,6 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentSessionResource;
@@ -37,34 +36,33 @@ public class SessionsAsyncSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
         AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
-        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
 
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
-        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName, image)
+        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, agentName, image)
             .flatMap(resources -> {
                 resourcesRef.set(resources);
                 AgentSessionResource session = resources.getSession();
 
-                return betaAgentsAsyncClient.getSession(agentName, session.getAgentSessionId(), null)
+                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId())
                     .doOnNext(fetched -> System.out.printf("Retrieved session (id: %s, status: %s)%n",
                         fetched.getAgentSessionId(), fetched.getStatus()))
-                    .thenMany(betaAgentsAsyncClient.listSessions(agentName, null, null, null, null, null)
+                    .thenMany(agentsAsyncClient.listSessions(agentName, null, null, null, null)
                         .doOnSubscribe(unused -> System.out.println("Listing sessions for the agent..."))
                         .doOnNext(item -> System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(),
                             item.getStatus())))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-                        return betaAgentsAsyncClient.deleteSession(agentName, session.getAgentSessionId(), null)
+                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId())
                             .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n",
                                 session.getAgentSessionId()));
                     }));
             });
 
         workflow
-            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
+            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
                 resourcesRef.get()).then(Mono.error(error)))
-            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
+            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
                 resourcesRef.get())))
             .timeout(Duration.ofMinutes(15))
             .block();
