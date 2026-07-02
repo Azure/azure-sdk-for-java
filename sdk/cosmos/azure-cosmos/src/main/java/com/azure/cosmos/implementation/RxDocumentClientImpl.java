@@ -181,7 +181,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     }
 
-    private static final int MAX_COLLECTION_ROUTING_MAP_NOT_FOUND_RETRIES = 10;
+    // This outer retry deliberately uses a SMALL budget. The underlying partition key range ReadFeed issued by
+    // tryLookupAsync is already retried with exponential backoff by InCompleteRoutingMapRetryPolicy (see
+    // RxPartitionKeyRangeCache). Because AsyncCacheNonBlocking evicts the failed entry on error, each attempt here
+    // re-drives a full InCompleteRoutingMapRetryPolicy cycle - so the two retry budgets MULTIPLY. Keeping this at a
+    // single attempt (one collection cache refresh + re-lookup, to cover a stale collection cache) ensures the
+    // combined worst-case stays bounded instead of compounding to tens of seconds for a genuinely missing/deleted
+    // collection.
+    private static final int MAX_COLLECTION_ROUTING_MAP_NOT_FOUND_RETRIES = 1;
     private static final Duration COLLECTION_ROUTING_MAP_NOT_FOUND_RETRY_DELAY = Duration.ofMillis(100);
 
     Mono<Utils.ValueHolder<CollectionRoutingMap>> lookupCollectionRoutingMapWithRetry(

@@ -170,6 +170,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         if (isPartitionKeyRangeMetadataNotAvailable(clientException)) {
+            // Right after a container is (re)created the partition key range metadata can be materialized in one
+            // region before another, so the current regional endpoint may still return NotFound while a peer region
+            // already serves it. Unlike a data-plane 404 (which is authoritative), this metadata 404 is treated as a
+            // transient "backend service unavailable" for this region and a bounded cross-region failover is attempted
+            // so the operation can recover from the other region instead of failing fast on a lagging endpoint.
             logger.info(
                 "Partition key range metadata is not available on the current regional endpoint. Will retry metadata request. ",
                 clientException);
