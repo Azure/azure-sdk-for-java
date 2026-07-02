@@ -47,6 +47,7 @@
     <jacoco.min.branchcoverage>0.21</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.24</jacoco.min.linecoverage>
     <javaModulesSurefireArgLine>
+      --add-reads com.azure.core.management=com.azure.http.netty
       --add-opens com.azure.core.management/com.azure.core.management.implementation.polling=ALL-UNNAMED
       --add-opens com.azure.core.management/com.azure.resourcemanager.storage.models=com.azure.core,com.azure.json
       --add-opens com.azure.core.management/com.azure.resourcemanager.storage.fluent.models=com.azure.core,com.azure.json

@@ -3,8 +3,12 @@
 
 package com.azure.core.management.http.policy;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.evaluation.PolicyToken;
@@ -22,9 +26,13 @@ import com.azure.resourcemanager.storage.models.Sku;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.github.tomakehurst.wiremock.WireMockServer;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -84,11 +92,14 @@ public class ExternalEvaluationPolicyE2ETests {
     private static final String API_VERSION = "2026-04-01";
 
     @Test
-    public void endToEndAcquireAndRetry() {
-        WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
+    public void endToEndAcquireAndRetry() throws Exception {
+        // The manager's Configurable pipeline adds a BearerTokenAuthenticationPolicy, which requires HTTPS, so the
+        // mock service is served over TLS and the clients trust its self-signed certificate.
+        WireMockServer server = new WireMockServer(wireMockConfig().dynamicHttpsPort());
         server.start();
         try {
-            String endpoint = "http://localhost:" + server.port();
+            String endpoint = "https://localhost:" + server.httpsPort();
+            HttpClient httpClient = trustAllHttpClient();
 
             // The exact UTF-8 acquire request body: PolicyTokenRequest serializes {"operation":{...}} with the
             // operation's uri, httpMethod, and content in that order; content is the guarded request body echoed
@@ -122,9 +133,9 @@ public class ExternalEvaluationPolicyE2ETests {
             endpoints.put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(), endpoint);
             AzureProfile profile = new AzureProfile("tenant", SUBSCRIPTION_ID, new AzureEnvironment(endpoints));
 
-            // The user-provided policy library that knows how to call acquirePolicyToken. A plain pipeline is used so
-            // the acquire request can target the plain-HTTP WireMock endpoint (bearer auth requires HTTPS).
-            HttpPipeline acquirePipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).build();
+            // The user-provided policy library that knows how to call acquirePolicyToken.
+            HttpPipeline acquirePipeline
+                = new HttpPipelineBuilder().httpClient(httpClient).policies(new RetryPolicy()).build();
             ResourceManager resourceManager
                 = ResourceManager.authenticate(acquirePipeline, profile).withSubscription(SUBSCRIPTION_ID);
 
@@ -149,10 +160,15 @@ public class ExternalEvaluationPolicyE2ETests {
                     });
             };
 
-            // The guarded client, with the External Evaluation policy added to its pipeline.
-            HttpPipeline storagePipeline
-                = new HttpPipelineBuilder().policies(new ExternalEvaluationPolicy(wrapper), new RetryPolicy()).build();
-            StorageManager storageManager = StorageManager.authenticate(storagePipeline, profile);
+            // The guarded client opts in exactly as a user would: add the External Evaluation policy to the manager's
+            // pipeline via the Configurable builder. A dummy credential is enough because the mock service does not
+            // assert on the Authorization header.
+            TokenCredential credential
+                = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
+            StorageManager storageManager = StorageManager.configure()
+                .withHttpClient(httpClient)
+                .withPolicy(new ExternalEvaluationPolicy(wrapper))
+                .authenticate(credential, profile);
 
             StorageAccountInner result = storageManager.serviceClient()
                 .getResourceProviders()
@@ -179,5 +195,14 @@ public class ExternalEvaluationPolicyE2ETests {
         } finally {
             server.stop();
         }
+    }
+
+    // Builds a Netty HTTP client that trusts any certificate, so the clients can talk to the self-signed HTTPS mock.
+    private static HttpClient trustAllHttpClient() throws Exception {
+        SslContext sslContext
+            = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+        reactor.netty.http.client.HttpClient reactorClient
+            = reactor.netty.http.client.HttpClient.create().secure(spec -> spec.sslContext(sslContext));
+        return new NettyAsyncHttpClientBuilder(reactorClient).build();
     }
 }
