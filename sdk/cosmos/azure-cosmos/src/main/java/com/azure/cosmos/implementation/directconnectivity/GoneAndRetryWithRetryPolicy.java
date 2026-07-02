@@ -38,6 +38,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
     }
 
+    private static boolean isPartitionKeyRangeGoneExceptionWithRoutingMapRefresh(Exception exception) {
+        return exception instanceof PartitionKeyRangeGoneException &&
+            ((PartitionKeyRangeGoneException) exception).shouldRetryWithRoutingMapRefresh();
+    }
+
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
     private final GoneRetryPolicy goneRetryPolicy;
     private final RetryWithRetryPolicy retryWithRetryPolicy;
@@ -127,6 +132,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             if (exception instanceof GoneException ||
                 exception instanceof PartitionIsMigratingException ||
                 exception instanceof PartitionKeyRangeIsSplittingException ||
+                isPartitionKeyRangeGoneExceptionWithRoutingMapRefresh(exception) ||
                 exception instanceof LeaseNotFoundException) {
 
                 return false;
@@ -292,6 +298,8 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 return handlePartitionIsMigratingException((PartitionIsMigratingException)exception);
             } else if (exception instanceof PartitionKeyRangeIsSplittingException) {
                 return handlePartitionKeyIsSplittingException((PartitionKeyRangeIsSplittingException) exception);
+            } else if (isPartitionKeyRangeGoneExceptionWithRoutingMapRefresh(exception)) {
+                return handlePartitionKeyRangeGoneException((PartitionKeyRangeGoneException) exception);
             }
 
             throw new IllegalStateException("Invalid exception type", exception);
@@ -309,12 +317,26 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionKeyIsSplittingException(PartitionKeyRangeIsSplittingException exception) {
-            this.request.requestContext.resolvedPartitionKeyRange = null;
-            this.request.requestContext.quorumSelectedLSN = -1;
-            this.request.requestContext.quorumSelectedStoreResponse = null;
+            resetRequestContextForPartitionKeyRangeRefresh();
             logger.debug("Received partition key range splitting exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
             return Pair.of(null, false);
+        }
+
+        private Pair<Mono<ShouldRetryResult>, Boolean> handlePartitionKeyRangeGoneException(PartitionKeyRangeGoneException exception) {
+            // PartitionKeyRangeGoneException is generally treated as non-retriable, but when it is thrown while resolving
+            // addresses in direct mode it typically indicates stale routing/partition state; clear the cached target and
+            // force a routing-map (partition key range) refresh to allow the request to be re-routed.
+            resetRequestContextForPartitionKeyRangeRefresh();
+            logger.debug("Received partition key range gone exception, will retry, {}", exception.toString());
+            this.request.forcePartitionKeyRangeRefresh = true;
+            return Pair.of(null, false);
+        }
+
+        private void resetRequestContextForPartitionKeyRangeRefresh() {
+            this.request.requestContext.resolvedPartitionKeyRange = null;
+            this.request.requestContext.quorumSelectedLSN = -1;
+            this.request.requestContext.quorumSelectedStoreResponse = null;
         }
     }
 

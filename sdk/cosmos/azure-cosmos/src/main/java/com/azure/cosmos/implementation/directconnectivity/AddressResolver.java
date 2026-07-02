@@ -583,7 +583,9 @@ public class AddressResolver implements IAddressResolver {
                 RMResources.PartitionKeyRangeNotFound,
                 request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId(),
                 request.getPartitionKeyRangeIdentity().getCollectionRid());
-            throw BridgeInternal.setResourceAddress(new PartitionKeyRangeGoneException(errorMessage), request.requestContext.resourcePhysicalAddress);
+            throw BridgeInternal.setResourceAddress(
+                new PartitionKeyRangeGoneException(errorMessage).markRetryWithRoutingMapRefresh(),
+                request.requestContext.resourcePhysicalAddress);
         }
         logger.debug("handleRangeAddressResolutionFailure returns null");
         return null;
