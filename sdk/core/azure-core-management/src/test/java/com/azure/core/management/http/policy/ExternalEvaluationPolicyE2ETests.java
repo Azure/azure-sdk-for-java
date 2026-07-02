@@ -32,9 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.github.tomakehurst.wiremock.client.WireMock.absent;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.matching;
-import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
@@ -83,12 +81,20 @@ public class ExternalEvaluationPolicyE2ETests {
     private static final String EXPECTED_REQUEST_BODY
         = "{\"sku\":{\"name\":\"Standard_LRS\"},\"kind\":\"StorageV2\",\"location\":\"eastus\"}";
 
+    private static final String API_VERSION = "2026-04-01";
+
     @Test
     public void endToEndAcquireAndRetry() {
         WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
         server.start();
         try {
             String endpoint = "http://localhost:" + server.port();
+
+            // The exact UTF-8 acquire request body: PolicyTokenRequest serializes {"operation":{...}} with the
+            // operation's uri, httpMethod, and content in that order; content is the guarded request body echoed
+            // verbatim. The mock service asserts on this exact string (byte-for-byte), not a JSON-path match.
+            String expectedAcquireBody = "{\"operation\":{\"uri\":\"" + endpoint + STORAGE_PATH + "?api-version="
+                + API_VERSION + "\",\"httpMethod\":\"PUT\",\"content\":" + EXPECTED_REQUEST_BODY + "}}";
 
             // Guarded operation is denied when the external evaluation header is absent. The mock service asserts the
             // method (PUT), the exact URL path, and the exact request body.
@@ -104,13 +110,9 @@ public class ExternalEvaluationPolicyE2ETests {
                 .willReturn(
                     aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(STORAGE_BODY)));
 
-            // The acquirePolicyToken API issues the token. The mock service asserts the operation echoed to it matches
-            // the guarded request: same method, same URI, and byte-for-byte the same content.
-            server.stubFor(post(urlPathEqualTo(ACQUIRE_PATH))
-                .withRequestBody(matchingJsonPath("$.operation.httpMethod", equalTo("PUT")))
-                .withRequestBody(
-                    matchingJsonPath("$.operation.uri", equalTo(endpoint + STORAGE_PATH + "?api-version=2026-04-01")))
-                .withRequestBody(matchingJsonPath("$.operation.content", equalToJson(EXPECTED_REQUEST_BODY)))
+            // The acquirePolicyToken API issues the token. The mock service asserts the exact UTF-8 request body: the
+            // operation echoed to it must match the guarded request byte-for-byte (uri, method, and content).
+            server.stubFor(post(urlPathEqualTo(ACQUIRE_PATH)).withRequestBody(equalTo(expectedAcquireBody))
                 .willReturn(
                     aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(ACQUIRE_BODY)));
 
@@ -173,9 +175,7 @@ public class ExternalEvaluationPolicyE2ETests {
                     .withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
             // The token is acquired exactly once, with the operation echoing the guarded request verbatim.
             server.verify(1,
-                postRequestedFor(urlPathEqualTo(ACQUIRE_PATH))
-                    .withRequestBody(matchingJsonPath("$.operation.httpMethod", equalTo("PUT")))
-                    .withRequestBody(matchingJsonPath("$.operation.content", equalToJson(EXPECTED_REQUEST_BODY))));
+                postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)).withRequestBody(equalTo(expectedAcquireBody)));
         } finally {
             server.stop();
         }
