@@ -8,7 +8,7 @@ extends:
         parameters:
           TestName: 'Kafka_TestContainer_Integration'
           EnvVars:
-            ACCOUNT_TENANT_ID: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+            ACCOUNT_TENANT_ID: '70a036f6-8e4d-4615-bad6-149c02e7720d'
             ACCOUNT_AAD_CLIENT_ID: $(spark-databricks-cosmos-spn-clientId)
             ACCOUNT_AAD_CLIENT_SECRET: $(spark-databricks-cosmos-spn-clientSecret)
             COSMOS.CLIENT_TELEMETRY_ENDPOINT: $(cosmos-client-telemetry-endpoint)
@@ -17,7 +17,7 @@ extends:
             TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX: $(kafka-acr-login-server)/
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Kafka_TestContainer_Integration_Test
               Path: sdk/cosmos/kafka-testcontainer-matrix.json

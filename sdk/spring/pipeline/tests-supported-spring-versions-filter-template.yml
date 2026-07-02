@@ -14,6 +14,11 @@ parameters:
   - name: TestResourceDirectories
     type: object
     default: []
+  - name: CloudConfig
+    type: object
+    default:
+      Public:
+      Preview:
 
 stages:
   - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
@@ -22,6 +27,7 @@ stages:
       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
       TestOptions: ' ${{ parameters.TestOptions }} -Dit.test=${{ parameters.TestClassPatterns }} '
       TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
+      CloudConfig: ${{ parameters.CloudConfig }}
       Artifacts:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring

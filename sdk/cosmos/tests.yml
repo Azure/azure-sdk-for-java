@@ -8,7 +8,7 @@ extends:
         parameters:
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Cosmos_live_test
               Path: sdk/cosmos/live-platform-matrix.json
@@ -40,7 +40,7 @@ extends:
           TestName: 'Cosmos_Live_Test_Http2'
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Cosmos_live_test_http2
               Path: sdk/cosmos/live-http2-platform-matrix.json
@@ -110,7 +110,7 @@ extends:
           TestName: 'Cosmos_Live_Test_ThinClient'
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Cosmos_live_test_thinclient
               Path: sdk/cosmos/live-thinclient-platform-matrix.json
@@ -142,7 +142,7 @@ extends:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiRegion'
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Cosmos_live_test_thinclient_multiregion
               Path: sdk/cosmos/live-thinclient-multi-region-platform-matrix.json
@@ -174,7 +174,7 @@ extends:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiMaster'
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Cosmos_live_test_thinclient_multimaster
               Path: sdk/cosmos/live-thinclient-multi-master-platform-matrix.json
@@ -302,7 +302,7 @@ extends:
           TestName: 'Spring_Data_Cosmos_Integration'
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Cosmos_live_test_integration
               Path: sdk/spring/pipeline/cosmos-integration-matrix.json
@@ -327,7 +327,7 @@ extends:
           TestName: 'Kafka_Cosmos_Integration'
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests-cosmos
+              ServiceConnection: azure-sdk-tests-cosmos-tme
           MatrixConfigs:
             - Name: Kafka_Cosmos_Integration_Test
               Path: sdk/cosmos/kafka-cosmos-matrix.json
