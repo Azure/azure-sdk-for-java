@@ -70,7 +70,7 @@ In addition to this change, the **support for using auth file has been removed**
 ```java
 Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscription();
 ```
-**In new version, this feature has been removed.** If this creates concern on your side, please file an issue to let us know.
+**In new version, this feature has been removed and is not recommended.** File-based authentication relies on storing service principal credentials (such as client secrets) in a local file, which is considered insecure and discouraged by current Azure security best practices. If this creates concern on your side, please file an issue to let us know.
 
 For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md)
 
