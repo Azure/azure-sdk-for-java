@@ -1,14 +1,33 @@
 # Release History
 
-## 2.56.0-beta.2 (Unreleased)
+## 2.56.0-beta.2 (2026-07-01)
 
 ### Features Added
 
-### Breaking Changes
+* `models.GarAuthenticationProperties` was added
 
-### Bugs Fixed
+* `models.AdditionalAuthenticationProperties` was added
 
-### Other Changes
+* `models.WritableCacheRepos` was added
+
+* `models.VirtualNetworkRule` was added
+
+* `models.AdditionalAuthenticationType` was added
+
+#### `models.CacheRuleUpdateParameters` was modified
+
+* `additionalAuthenticationProperties()` was added
+* `withAdditionalAuthenticationProperties(models.AdditionalAuthenticationProperties)` was added
+
+#### `models.RegistryUpdateParameters` was modified
+
+* `withWritableCacheRepos(models.WritableCacheRepos)` was added
+* `writableCacheRepos()` was added
+
+#### `models.NetworkRuleSet` was modified
+
+* `withVirtualNetworkRules(java.util.List)` was added
+* `virtualNetworkRules()` was added
 
 ## 2.55.2 (2026-05-05)
 

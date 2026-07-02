@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class ConnectedRegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ConnectedRegistryUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/ConnectedRegistryUpdate.json
      */
     /**
      * Sample code: ConnectedRegistryUpdate.

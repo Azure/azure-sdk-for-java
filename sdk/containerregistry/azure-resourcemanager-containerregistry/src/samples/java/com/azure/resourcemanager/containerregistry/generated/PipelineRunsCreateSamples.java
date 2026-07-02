@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class PipelineRunsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PipelineRunCreate_Import.json
+     * x-ms-original-file: 2026-03-01-preview/PipelineRunCreate_Import.json
      */
     /**
      * Sample code: PipelineRunCreate_Import.
@@ -38,7 +38,7 @@ public final class PipelineRunsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/PipelineRunCreate_Export.json
+     * x-ms-original-file: 2026-03-01-preview/PipelineRunCreate_Export.json
      */
     /**
      * Sample code: PipelineRunCreate_Export.

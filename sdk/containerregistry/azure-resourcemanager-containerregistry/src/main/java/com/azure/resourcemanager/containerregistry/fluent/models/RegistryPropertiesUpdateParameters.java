@@ -18,6 +18,7 @@ import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.RegionalEndpoints;
 import com.azure.resourcemanager.containerregistry.models.RoleAssignmentMode;
+import com.azure.resourcemanager.containerregistry.models.WritableCacheRepos;
 import java.io.IOException;
 
 /**
@@ -84,6 +85,11 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
      * Determines whether registry artifacts are indexed for metadata search.
      */
     private MetadataSearch metadataSearch;
+
+    /*
+     * Whether to allow cache operations that write to repositories in this registry.
+     */
+    private WritableCacheRepos writableCacheRepos;
 
     /*
      * Determines registry role assignment mode.
@@ -345,6 +351,28 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     }
 
     /**
+     * Get the writableCacheRepos property: Whether to allow cache operations that write to repositories in this
+     * registry.
+     * 
+     * @return the writableCacheRepos value.
+     */
+    public WritableCacheRepos writableCacheRepos() {
+        return this.writableCacheRepos;
+    }
+
+    /**
+     * Set the writableCacheRepos property: Whether to allow cache operations that write to repositories in this
+     * registry.
+     * 
+     * @param writableCacheRepos the writableCacheRepos value to set.
+     * @return the RegistryPropertiesUpdateParameters object itself.
+     */
+    public RegistryPropertiesUpdateParameters withWritableCacheRepos(WritableCacheRepos writableCacheRepos) {
+        this.writableCacheRepos = writableCacheRepos;
+        return this;
+    }
+
+    /**
      * Get the roleAssignmentMode property: Determines registry role assignment mode.
      * 
      * @return the roleAssignmentMode value.
@@ -404,6 +432,8 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
         jsonWriter.writeBooleanField("anonymousPullEnabled", this.anonymousPullEnabled);
         jsonWriter.writeStringField("metadataSearch",
             this.metadataSearch == null ? null : this.metadataSearch.toString());
+        jsonWriter.writeStringField("writableCacheRepos",
+            this.writableCacheRepos == null ? null : this.writableCacheRepos.toString());
         jsonWriter.writeStringField("roleAssignmentMode",
             this.roleAssignmentMode == null ? null : this.roleAssignmentMode.toString());
         return jsonWriter.writeEndObject();
@@ -458,6 +488,9 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
                 } else if ("metadataSearch".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.metadataSearch
                         = MetadataSearch.fromString(reader.getString());
+                } else if ("writableCacheRepos".equals(fieldName)) {
+                    deserializedRegistryPropertiesUpdateParameters.writableCacheRepos
+                        = WritableCacheRepos.fromString(reader.getString());
                 } else if ("roleAssignmentMode".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.roleAssignmentMode
                         = RoleAssignmentMode.fromString(reader.getString());

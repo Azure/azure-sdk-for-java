@@ -345,7 +345,7 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-01-preview";
+        this.apiVersion = "2026-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.registries = new RegistriesClientImpl(this);
         this.archives = new ArchivesClientImpl(this);

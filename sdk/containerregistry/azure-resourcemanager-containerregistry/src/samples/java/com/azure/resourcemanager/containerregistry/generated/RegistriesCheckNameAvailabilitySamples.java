@@ -12,7 +12,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckReque
  */
 public final class RegistriesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryCheckNameAvailable.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryCheckNameAvailable.json
      */
     /**
      * Sample code: RegistryCheckNameAvailable.
@@ -31,7 +31,7 @@ public final class RegistriesCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryCheckNameNotAvailable.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryCheckNameNotAvailable.json
      */
     /**
      * Sample code: RegistryCheckNameNotAvailable.
