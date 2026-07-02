@@ -7,11 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseStreamEvent;
-import com.openai.models.responses.ResponseUsage;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 /**
  * A wrapper around a streaming response iterable that records tracing attributes and metrics as the stream is
@@ -105,26 +103,7 @@ public final class TracedStreamIterable implements Iterable<ResponseStreamEvent>
 
             Response response = accumulator.response();
             if (response != null) {
-                String responseId = response.id();
-                String responseModel = GenAiResponseTracing.extractModelString(response.model());
-                Long inputTokens = null;
-                Long outputTokens = null;
-
-                Optional<ResponseUsage> usageOpt = response.usage();
-                if (usageOpt.isPresent()) {
-                    ResponseUsage usage = usageOpt.get();
-                    inputTokens = usage.inputTokens();
-                    outputTokens = usage.outputTokens();
-                }
-
-                scope.setResponseAttributes(responseId, responseModel, inputTokens, outputTokens, null);
-
-                if (responseModel != null && !isInvokeAgent) {
-                    scope.setRequestModelAttributes(responseModel, null, null);
-                }
-
-                responseTracing.emitWorkflowActionEvents(scope, response);
-                scope.setOutputMessages(responseTracing.formatOutputFromResponse(response));
+                responseTracing.recordResponseAttributes(scope, response, isInvokeAgent);
             }
 
             scope.close();

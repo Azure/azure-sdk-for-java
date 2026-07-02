@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -16,9 +17,11 @@ import com.openai.core.JsonValue;
 import com.openai.core.RequestOptions;
 import com.openai.core.http.HttpResponseFor;
 import com.openai.core.http.StreamResponse;
+import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
+import com.openai.services.async.ConversationServiceAsync;
 import com.openai.services.async.ResponseServiceAsync;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,14 +35,44 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ResponsesAsyncClient {
     private final ResponseServiceAsync responseServiceAsync;
+    private final ConversationServiceAsync conversationServiceAsync;
+    private final GenAiResponseTracing tracer;
 
     /**
      * Initializes an instance of ResponsesAsyncClient class using the official OpenAI client library.
      *
      * @param openAIClientAsync the OpenAI async client.
+     * @param tracer the tracer used to emit GenAI spans for response operations.
      */
-    ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync) {
+    ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync, GenAiResponseTracing tracer) {
         this.responseServiceAsync = openAIClientAsync.responses();
+        this.conversationServiceAsync = openAIClientAsync.conversations();
+        this.tracer = tracer;
+    }
+
+    /**
+     * Creates a conversation, emitting a {@code create_conversation} span when tracing is enabled.
+     *
+     * @return a {@link Mono} emitting the created Conversation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Conversation> createConversation() {
+        return Mono.fromFuture(conversationServiceAsync.create()).map(conversation -> {
+            tracer.traceCreateConversation(conversation.id());
+            return conversation;
+        });
+    }
+
+    /**
+     * Deletes a conversation.
+     *
+     * @param conversationId the ID of the conversation to delete.
+     * @return a {@link Mono} that completes when the conversation is deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteConversation(String conversationId) {
+        Objects.requireNonNull(conversationId, "conversationId cannot be null");
+        return Mono.fromFuture(conversationServiceAsync.delete(conversationId)).then();
     }
 
     /**
@@ -67,7 +100,14 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+
+        if (!tracer.isEnabled()) {
+            return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return tracer.traceResponseAsync(createResponse, builtParams,
+            () -> Mono.fromFuture(this.responseServiceAsync.create(builtParams)));
     }
 
     /**
@@ -86,7 +126,14 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+
+        if (!tracer.isEnabled()) {
+            return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return tracer.traceStreamingResponseAsync(createResponse, builtParams,
+            () -> StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(builtParams)));
     }
 
     /**

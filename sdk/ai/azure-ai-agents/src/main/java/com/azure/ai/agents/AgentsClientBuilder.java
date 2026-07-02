@@ -402,8 +402,10 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder(null).build()
-            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
+        return new ResponsesAsyncClient(
+            getOpenAIAsyncClientBuilder(null).build()
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))),
+            new GenAiResponseTracing(createInstrumentation()));
     }
 
     /**
