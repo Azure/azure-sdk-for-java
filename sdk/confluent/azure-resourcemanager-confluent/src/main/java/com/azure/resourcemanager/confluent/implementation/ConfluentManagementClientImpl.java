@@ -27,11 +27,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.confluent.fluent.AccessClient;
+import com.azure.resourcemanager.confluent.fluent.AccessPointResourcesClient;
 import com.azure.resourcemanager.confluent.fluent.ClustersClient;
 import com.azure.resourcemanager.confluent.fluent.ConfluentManagementClient;
 import com.azure.resourcemanager.confluent.fluent.ConnectorsClient;
 import com.azure.resourcemanager.confluent.fluent.EnvironmentsClient;
 import com.azure.resourcemanager.confluent.fluent.MarketplaceAgreementsClient;
+import com.azure.resourcemanager.confluent.fluent.NetworkGatewayResourcesClient;
 import com.azure.resourcemanager.confluent.fluent.OrganizationOperationsClient;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
 import com.azure.resourcemanager.confluent.fluent.TopicsClient;
@@ -132,6 +134,34 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /**
+     * The NetworkGatewayResourcesClient object to access its operations.
+     */
+    private final NetworkGatewayResourcesClient networkGatewayResources;
+
+    /**
+     * Gets the NetworkGatewayResourcesClient object to access its operations.
+     * 
+     * @return the NetworkGatewayResourcesClient object.
+     */
+    public NetworkGatewayResourcesClient getNetworkGatewayResources() {
+        return this.networkGatewayResources;
+    }
+
+    /**
+     * The AccessPointResourcesClient object to access its operations.
+     */
+    private final AccessPointResourcesClient accessPointResources;
+
+    /**
+     * Gets the AccessPointResourcesClient object to access its operations.
+     * 
+     * @return the AccessPointResourcesClient object.
+     */
+    public AccessPointResourcesClient getAccessPointResources() {
+        return this.accessPointResources;
     }
 
     /**
@@ -277,7 +307,9 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-18-preview";
+        this.apiVersion = "2026-05-01-preview";
+        this.networkGatewayResources = new NetworkGatewayResourcesClientImpl(this);
+        this.accessPointResources = new AccessPointResourcesClientImpl(this);
         this.organizationOperations = new OrganizationOperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
         this.access = new AccessClientImpl(this);

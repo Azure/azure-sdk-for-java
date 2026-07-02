@@ -12,14 +12,14 @@ public final class AccessRoleBindingNameListSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessRoleBindingNameListSuccessResponseInner model = BinaryData.fromString(
-            "{\"kind\":\"utpwoqhihejqgw\",\"metadata\":{\"first\":\"fqntcyp\",\"last\":\"jv\",\"prev\":\"imwkslircizj\",\"next\":\"ydfce\",\"total_size\":818626124},\"data\":[\"vygdyft\",\"mrtwna\",\"jslb\"]}")
+            "{\"kind\":\"fzwiivwzjbhyz\",\"metadata\":{\"first\":\"rkambt\",\"last\":\"egv\",\"prev\":\"vuqeqvldspast\",\"next\":\"kkdmfl\",\"total_size\":922777},\"data\":[\"jlxr\",\"ilozapeewchpxlk\",\"wk\",\"ziycslevufuztck\"]}")
             .toObject(AccessRoleBindingNameListSuccessResponseInner.class);
-        Assertions.assertEquals("utpwoqhihejqgw", model.kind());
-        Assertions.assertEquals("fqntcyp", model.metadata().first());
-        Assertions.assertEquals("jv", model.metadata().last());
-        Assertions.assertEquals("imwkslircizj", model.metadata().prev());
-        Assertions.assertEquals("ydfce", model.metadata().next());
-        Assertions.assertEquals(818626124, model.metadata().totalSize());
-        Assertions.assertEquals("vygdyft", model.data().get(0));
+        Assertions.assertEquals("fzwiivwzjbhyz", model.kind());
+        Assertions.assertEquals("rkambt", model.metadata().first());
+        Assertions.assertEquals("egv", model.metadata().last());
+        Assertions.assertEquals("vuqeqvldspast", model.metadata().prev());
+        Assertions.assertEquals("kkdmfl", model.metadata().next());
+        Assertions.assertEquals(922777, model.metadata().totalSize());
+        Assertions.assertEquals("jlxr", model.data().get(0));
     }
 }

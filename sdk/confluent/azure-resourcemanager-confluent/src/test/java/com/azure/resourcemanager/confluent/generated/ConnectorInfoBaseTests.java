@@ -15,27 +15,27 @@ public final class ConnectorInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectorInfoBase model = BinaryData.fromString(
-            "{\"connectorType\":\"SINK\",\"connectorClass\":\"AZUREBLOBSOURCE\",\"connectorName\":\"jw\",\"connectorId\":\"wqiok\",\"connectorState\":\"PROVISIONING\"}")
+            "{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSOURCE\",\"connectorName\":\"ld\",\"connectorId\":\"obfirclnpk\",\"connectorState\":\"RUNNING\"}")
             .toObject(ConnectorInfoBase.class);
-        Assertions.assertEquals(ConnectorType.SINK, model.connectorType());
+        Assertions.assertEquals(ConnectorType.SOURCE, model.connectorType());
         Assertions.assertEquals(ConnectorClass.AZUREBLOBSOURCE, model.connectorClass());
-        Assertions.assertEquals("jw", model.connectorName());
-        Assertions.assertEquals("wqiok", model.connectorId());
-        Assertions.assertEquals(ConnectorStatus.PROVISIONING, model.connectorState());
+        Assertions.assertEquals("ld", model.connectorName());
+        Assertions.assertEquals("obfirclnpk", model.connectorId());
+        Assertions.assertEquals(ConnectorStatus.RUNNING, model.connectorState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectorInfoBase model = new ConnectorInfoBase().withConnectorType(ConnectorType.SINK)
+        ConnectorInfoBase model = new ConnectorInfoBase().withConnectorType(ConnectorType.SOURCE)
             .withConnectorClass(ConnectorClass.AZUREBLOBSOURCE)
-            .withConnectorName("jw")
-            .withConnectorId("wqiok")
-            .withConnectorState(ConnectorStatus.PROVISIONING);
+            .withConnectorName("ld")
+            .withConnectorId("obfirclnpk")
+            .withConnectorState(ConnectorStatus.RUNNING);
         model = BinaryData.fromObject(model).toObject(ConnectorInfoBase.class);
-        Assertions.assertEquals(ConnectorType.SINK, model.connectorType());
+        Assertions.assertEquals(ConnectorType.SOURCE, model.connectorType());
         Assertions.assertEquals(ConnectorClass.AZUREBLOBSOURCE, model.connectorClass());
-        Assertions.assertEquals("jw", model.connectorName());
-        Assertions.assertEquals("wqiok", model.connectorId());
-        Assertions.assertEquals(ConnectorStatus.PROVISIONING, model.connectorState());
+        Assertions.assertEquals("ld", model.connectorName());
+        Assertions.assertEquals("obfirclnpk", model.connectorId());
+        Assertions.assertEquals(ConnectorStatus.RUNNING, model.connectorState());
     }
 }

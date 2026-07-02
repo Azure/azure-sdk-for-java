@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class OrganizationGetClusterApiKeySamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetClusterAPIKey_MinimumSet.
@@ -24,7 +24,7 @@ public final class OrganizationGetClusterApiKeySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_GetClusterAPIKey_MaximumSet.

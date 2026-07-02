@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class MarketplaceAgreementsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: Create Confluent Marketplace agreement in the subscription. (MinimumSet).
@@ -25,7 +25,7 @@ public final class MarketplaceAgreementsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Create Confluent Marketplace agreement in the subscription. (Maximumset).

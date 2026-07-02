@@ -6,7 +6,6 @@ package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
-import com.azure.resourcemanager.confluent.models.SaaSOfferStatus;
 import com.azure.resourcemanager.confluent.models.UserDetail;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import java.util.Map;
  */
 public final class OrganizationCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Organization_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Organization_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_Create_MaximumSet.
@@ -38,8 +37,7 @@ public final class OrganizationCreateSamples {
                 .withTermId("vujdve")
                 .withPrivateOfferId(
                     "goshpcnjukfzfhubmynjxiulurrwplzcjpjstebtsiigbkovchcrlfmgoymqfuayhihnxruthwjywtedlcsqqsgaelqthvfzvafyjhsfzfjwotsiajpcogwrwylgcphxfhvvwemynoyovnvqcetftiofkthgdzfvybvhpviqlwlslaupndcxlvjssdap")
-                .withPrivateOfferIds(Arrays.asList("nrbzkbcpvsakewlgubfmej"))
-                .withStatus(SaaSOfferStatus.STARTED))
+                .withPrivateOfferIds(Arrays.asList("nrbzkbcpvsakewlgubfmej")))
             .withUserDetail(new UserDetail().withFirstName("gqxqhtniapwvnsliaifhvmbtvvrciebktpeadanapfcqzflomz")
                 .withLastName("vhdbyshxnnxivxbgzxscscdsvlwbsukqmcw")
                 .withEmailAddress("user@example.com")

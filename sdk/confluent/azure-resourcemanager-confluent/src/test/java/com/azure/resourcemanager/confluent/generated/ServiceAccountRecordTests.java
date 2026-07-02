@@ -12,16 +12,16 @@ public final class ServiceAccountRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceAccountRecord model = BinaryData.fromString(
-            "{\"kind\":\"ihleos\",\"id\":\"w\",\"metadata\":{\"self\":\"slyzrpzbchckqq\",\"resource_name\":\"ioxiysuiizyn\",\"created_at\":\"dy\",\"updated_at\":\"rwyhqmibzyhwitsm\",\"deleted_at\":\"yynpcdpumnzgmwz\"},\"display_name\":\"abikns\",\"description\":\"gj\"}")
+            "{\"kind\":\"shfwpracstwity\",\"id\":\"evxccedcp\",\"metadata\":{\"self\":\"yodnwzxltj\",\"resource_name\":\"nhltiugcxn\",\"created_at\":\"vwxqibyqunyo\",\"updated_at\":\"wlmdjrkv\",\"deleted_at\":\"bvfvpdbod\"},\"display_name\":\"izsjqlhkrr\",\"description\":\"deibqip\"}")
             .toObject(ServiceAccountRecord.class);
-        Assertions.assertEquals("ihleos", model.kind());
-        Assertions.assertEquals("w", model.id());
-        Assertions.assertEquals("slyzrpzbchckqq", model.metadata().self());
-        Assertions.assertEquals("ioxiysuiizyn", model.metadata().resourceName());
-        Assertions.assertEquals("dy", model.metadata().createdAt());
-        Assertions.assertEquals("rwyhqmibzyhwitsm", model.metadata().updatedAt());
-        Assertions.assertEquals("yynpcdpumnzgmwz", model.metadata().deletedAt());
-        Assertions.assertEquals("abikns", model.displayName());
-        Assertions.assertEquals("gj", model.description());
+        Assertions.assertEquals("shfwpracstwity", model.kind());
+        Assertions.assertEquals("evxccedcp", model.id());
+        Assertions.assertEquals("yodnwzxltj", model.metadata().self());
+        Assertions.assertEquals("nhltiugcxn", model.metadata().resourceName());
+        Assertions.assertEquals("vwxqibyqunyo", model.metadata().createdAt());
+        Assertions.assertEquals("wlmdjrkv", model.metadata().updatedAt());
+        Assertions.assertEquals("bvfvpdbod", model.metadata().deletedAt());
+        Assertions.assertEquals("izsjqlhkrr", model.displayName());
+        Assertions.assertEquals("deibqip", model.description());
     }
 }

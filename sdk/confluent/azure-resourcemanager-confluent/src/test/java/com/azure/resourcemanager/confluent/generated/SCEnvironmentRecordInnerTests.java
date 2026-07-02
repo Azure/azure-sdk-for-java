@@ -15,33 +15,33 @@ public final class SCEnvironmentRecordInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SCEnvironmentRecordInner model = BinaryData.fromString(
-            "{\"kind\":\"scjeypv\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"hcjrefovgmk\",\"resourceName\":\"leyyvx\",\"createdTimestamp\":\"jpkcattpng\",\"updatedTimestamp\":\"rcczsqpjhvmd\",\"deletedTimestamp\":\"v\"}},\"id\":\"sounqecanoaeu\",\"name\":\"fhyhltrpmopjmcma\",\"type\":\"u\"}")
+            "{\"kind\":\"qzbqjvsov\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"pkwlhz\",\"resourceName\":\"bpxjmfl\",\"createdTimestamp\":\"vnchrkcci\",\"updatedTimestamp\":\"zjuqkhrsaj\",\"deletedTimestamp\":\"ku\"}},\"id\":\"oskg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"}")
             .toObject(SCEnvironmentRecordInner.class);
-        Assertions.assertEquals("scjeypv", model.kind());
-        Assertions.assertEquals(Package.ADVANCED, model.streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("hcjrefovgmk", model.metadata().self());
-        Assertions.assertEquals("leyyvx", model.metadata().resourceName());
-        Assertions.assertEquals("jpkcattpng", model.metadata().createdTimestamp());
-        Assertions.assertEquals("rcczsqpjhvmd", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("v", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("qzbqjvsov", model.kind());
+        Assertions.assertEquals(Package.ESSENTIALS, model.streamGovernanceConfig().packageProperty());
+        Assertions.assertEquals("pkwlhz", model.metadata().self());
+        Assertions.assertEquals("bpxjmfl", model.metadata().resourceName());
+        Assertions.assertEquals("vnchrkcci", model.metadata().createdTimestamp());
+        Assertions.assertEquals("zjuqkhrsaj", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("ku", model.metadata().deletedTimestamp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCEnvironmentRecordInner model = new SCEnvironmentRecordInner().withKind("scjeypv")
-            .withStreamGovernanceConfig(new StreamGovernanceConfig().withPackageProperty(Package.ADVANCED))
-            .withMetadata(new SCMetadataEntity().withSelf("hcjrefovgmk")
-                .withResourceName("leyyvx")
-                .withCreatedTimestamp("jpkcattpng")
-                .withUpdatedTimestamp("rcczsqpjhvmd")
-                .withDeletedTimestamp("v"));
+        SCEnvironmentRecordInner model = new SCEnvironmentRecordInner().withKind("qzbqjvsov")
+            .withStreamGovernanceConfig(new StreamGovernanceConfig().withPackageProperty(Package.ESSENTIALS))
+            .withMetadata(new SCMetadataEntity().withSelf("pkwlhz")
+                .withResourceName("bpxjmfl")
+                .withCreatedTimestamp("vnchrkcci")
+                .withUpdatedTimestamp("zjuqkhrsaj")
+                .withDeletedTimestamp("ku"));
         model = BinaryData.fromObject(model).toObject(SCEnvironmentRecordInner.class);
-        Assertions.assertEquals("scjeypv", model.kind());
-        Assertions.assertEquals(Package.ADVANCED, model.streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("hcjrefovgmk", model.metadata().self());
-        Assertions.assertEquals("leyyvx", model.metadata().resourceName());
-        Assertions.assertEquals("jpkcattpng", model.metadata().createdTimestamp());
-        Assertions.assertEquals("rcczsqpjhvmd", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("v", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("qzbqjvsov", model.kind());
+        Assertions.assertEquals(Package.ESSENTIALS, model.streamGovernanceConfig().packageProperty());
+        Assertions.assertEquals("pkwlhz", model.metadata().self());
+        Assertions.assertEquals("bpxjmfl", model.metadata().resourceName());
+        Assertions.assertEquals("vnchrkcci", model.metadata().createdTimestamp());
+        Assertions.assertEquals("zjuqkhrsaj", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("ku", model.metadata().deletedTimestamp());
     }
 }

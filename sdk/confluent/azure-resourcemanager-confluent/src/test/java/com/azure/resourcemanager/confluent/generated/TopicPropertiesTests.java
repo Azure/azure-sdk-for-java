@@ -16,45 +16,44 @@ public final class TopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicProperties model = BinaryData.fromString(
-            "{\"kind\":\"in\",\"topicId\":\"owzfttsttkt\",\"metadata\":{\"self\":\"bqactxtgzukx\",\"resourceName\":\"mmqtgqqqxhr\"},\"partitions\":{\"related\":\"xcpjuisavokqdzf\"},\"configs\":{\"related\":\"ivjlfrqttbajlka\"},\"inputConfigs\":[{\"name\":\"yiopi\",\"value\":\"qqfkuv\"},{\"name\":\"xkdmligo\",\"value\":\"brxk\"},{\"name\":\"loazuruocbgoo\",\"value\":\"te\"}],\"partitionsReassignments\":{\"related\":\"fhjxakvvjgs\"},\"partitionsCount\":\"r\",\"replicationFactor\":\"lmywwtkgkxnyed\"}")
+            "{\"kind\":\"wifzmp\",\"topicId\":\"yivqikfxcvhrfsp\",\"metadata\":{\"self\":\"grttikteusqczk\",\"resourceName\":\"klxubyja\"},\"partitions\":{\"related\":\"mfblcqcuubg\"},\"configs\":{\"related\":\"rtalmet\"},\"inputConfigs\":[{\"name\":\"dslqxihhrmooizqs\",\"value\":\"pxiutc\"},{\"name\":\"pzhyr\",\"value\":\"togebjoxsl\"}],\"partitionsReassignments\":{\"related\":\"hlabrq\"},\"partitionsCount\":\"kzjcjbtrgae\",\"replicationFactor\":\"vibr\"}")
             .toObject(TopicProperties.class);
-        Assertions.assertEquals("in", model.kind());
-        Assertions.assertEquals("owzfttsttkt", model.topicId());
-        Assertions.assertEquals("bqactxtgzukx", model.metadata().self());
-        Assertions.assertEquals("mmqtgqqqxhr", model.metadata().resourceName());
-        Assertions.assertEquals("xcpjuisavokqdzf", model.partitions().related());
-        Assertions.assertEquals("ivjlfrqttbajlka", model.configs().related());
-        Assertions.assertEquals("yiopi", model.inputConfigs().get(0).name());
-        Assertions.assertEquals("qqfkuv", model.inputConfigs().get(0).value());
-        Assertions.assertEquals("fhjxakvvjgs", model.partitionsReassignments().related());
-        Assertions.assertEquals("r", model.partitionsCount());
-        Assertions.assertEquals("lmywwtkgkxnyed", model.replicationFactor());
+        Assertions.assertEquals("wifzmp", model.kind());
+        Assertions.assertEquals("yivqikfxcvhrfsp", model.topicId());
+        Assertions.assertEquals("grttikteusqczk", model.metadata().self());
+        Assertions.assertEquals("klxubyja", model.metadata().resourceName());
+        Assertions.assertEquals("mfblcqcuubg", model.partitions().related());
+        Assertions.assertEquals("rtalmet", model.configs().related());
+        Assertions.assertEquals("dslqxihhrmooizqs", model.inputConfigs().get(0).name());
+        Assertions.assertEquals("pxiutc", model.inputConfigs().get(0).value());
+        Assertions.assertEquals("hlabrq", model.partitionsReassignments().related());
+        Assertions.assertEquals("kzjcjbtrgae", model.partitionsCount());
+        Assertions.assertEquals("vibr", model.replicationFactor());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopicProperties model = new TopicProperties().withKind("in")
-            .withTopicId("owzfttsttkt")
-            .withMetadata(new TopicMetadataEntity().withSelf("bqactxtgzukx").withResourceName("mmqtgqqqxhr"))
-            .withPartitions(new TopicsRelatedLink().withRelated("xcpjuisavokqdzf"))
-            .withConfigs(new TopicsRelatedLink().withRelated("ivjlfrqttbajlka"))
-            .withInputConfigs(Arrays.asList(new TopicsInputConfig().withName("yiopi").withValue("qqfkuv"),
-                new TopicsInputConfig().withName("xkdmligo").withValue("brxk"),
-                new TopicsInputConfig().withName("loazuruocbgoo").withValue("te")))
-            .withPartitionsReassignments(new TopicsRelatedLink().withRelated("fhjxakvvjgs"))
-            .withPartitionsCount("r")
-            .withReplicationFactor("lmywwtkgkxnyed");
+        TopicProperties model = new TopicProperties().withKind("wifzmp")
+            .withTopicId("yivqikfxcvhrfsp")
+            .withMetadata(new TopicMetadataEntity().withSelf("grttikteusqczk").withResourceName("klxubyja"))
+            .withPartitions(new TopicsRelatedLink().withRelated("mfblcqcuubg"))
+            .withConfigs(new TopicsRelatedLink().withRelated("rtalmet"))
+            .withInputConfigs(Arrays.asList(new TopicsInputConfig().withName("dslqxihhrmooizqs").withValue("pxiutc"),
+                new TopicsInputConfig().withName("pzhyr").withValue("togebjoxsl")))
+            .withPartitionsReassignments(new TopicsRelatedLink().withRelated("hlabrq"))
+            .withPartitionsCount("kzjcjbtrgae")
+            .withReplicationFactor("vibr");
         model = BinaryData.fromObject(model).toObject(TopicProperties.class);
-        Assertions.assertEquals("in", model.kind());
-        Assertions.assertEquals("owzfttsttkt", model.topicId());
-        Assertions.assertEquals("bqactxtgzukx", model.metadata().self());
-        Assertions.assertEquals("mmqtgqqqxhr", model.metadata().resourceName());
-        Assertions.assertEquals("xcpjuisavokqdzf", model.partitions().related());
-        Assertions.assertEquals("ivjlfrqttbajlka", model.configs().related());
-        Assertions.assertEquals("yiopi", model.inputConfigs().get(0).name());
-        Assertions.assertEquals("qqfkuv", model.inputConfigs().get(0).value());
-        Assertions.assertEquals("fhjxakvvjgs", model.partitionsReassignments().related());
-        Assertions.assertEquals("r", model.partitionsCount());
-        Assertions.assertEquals("lmywwtkgkxnyed", model.replicationFactor());
+        Assertions.assertEquals("wifzmp", model.kind());
+        Assertions.assertEquals("yivqikfxcvhrfsp", model.topicId());
+        Assertions.assertEquals("grttikteusqczk", model.metadata().self());
+        Assertions.assertEquals("klxubyja", model.metadata().resourceName());
+        Assertions.assertEquals("mfblcqcuubg", model.partitions().related());
+        Assertions.assertEquals("rtalmet", model.configs().related());
+        Assertions.assertEquals("dslqxihhrmooizqs", model.inputConfigs().get(0).name());
+        Assertions.assertEquals("pxiutc", model.inputConfigs().get(0).value());
+        Assertions.assertEquals("hlabrq", model.partitionsReassignments().related());
+        Assertions.assertEquals("kzjcjbtrgae", model.partitionsCount());
+        Assertions.assertEquals("vibr", model.replicationFactor());
     }
 }

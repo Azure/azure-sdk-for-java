@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class MarketplaceAgreementsListSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: List Confluent marketplace agreements in the subscription. (Minimumset).
@@ -22,7 +22,7 @@ public final class MarketplaceAgreementsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: List Confluent marketplace agreements in the subscription. (Maximumset).

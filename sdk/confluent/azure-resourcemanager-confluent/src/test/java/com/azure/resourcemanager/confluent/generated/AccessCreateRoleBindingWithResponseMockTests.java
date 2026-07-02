@@ -22,7 +22,7 @@ public final class AccessCreateRoleBindingWithResponseMockTests {
     @Test
     public void testCreateRoleBindingWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"jylmbkzudnigr\",\"id\":\"hotj\",\"metadata\":{\"self\":\"pxuzzjg\",\"resource_name\":\"efqyhqotoihiqaky\",\"created_at\":\"wf\",\"updated_at\":\"kwpzdqtvh\",\"deleted_at\":\"podaq\"},\"principal\":\"sipi\",\"role_name\":\"gbebjf\",\"crn_pattern\":\"bmoichd\"}";
+            = "{\"kind\":\"awz\",\"id\":\"brttuiacl\",\"metadata\":{\"self\":\"xhajlfnth\",\"resource_name\":\"fyut\",\"created_at\":\"iygbpvn\",\"updated_at\":\"wmtxkyctwwgz\",\"deleted_at\":\"jlmec\"},\"principal\":\"gygzyvn\",\"role_name\":\"zaifghtmoqqtlff\",\"crn_pattern\":\"bkrkjj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,22 +32,22 @@ public final class AccessCreateRoleBindingWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RoleBindingRecord response = manager.access()
-            .createRoleBindingWithResponse("ubhvj", "lrocuyzlwh",
-                new AccessCreateRoleBindingRequestModel().withPrincipal("emhooclutnpq")
-                    .withRoleName("mczjkm")
-                    .withCrnPattern("kyujxsglhsrrr"),
+            .createRoleBindingWithResponse("ivensrpmeyyvpk", "atlb",
+                new AccessCreateRoleBindingRequestModel().withPrincipal("pzgsk")
+                    .withRoleName("fhfv")
+                    .withCrnPattern("mknbnxwcdommpv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jylmbkzudnigr", response.kind());
-        Assertions.assertEquals("hotj", response.id());
-        Assertions.assertEquals("pxuzzjg", response.metadata().self());
-        Assertions.assertEquals("efqyhqotoihiqaky", response.metadata().resourceName());
-        Assertions.assertEquals("wf", response.metadata().createdAt());
-        Assertions.assertEquals("kwpzdqtvh", response.metadata().updatedAt());
-        Assertions.assertEquals("podaq", response.metadata().deletedAt());
-        Assertions.assertEquals("sipi", response.principal());
-        Assertions.assertEquals("gbebjf", response.roleName());
-        Assertions.assertEquals("bmoichd", response.crnPattern());
+        Assertions.assertEquals("awz", response.kind());
+        Assertions.assertEquals("brttuiacl", response.id());
+        Assertions.assertEquals("xhajlfnth", response.metadata().self());
+        Assertions.assertEquals("fyut", response.metadata().resourceName());
+        Assertions.assertEquals("iygbpvn", response.metadata().createdAt());
+        Assertions.assertEquals("wmtxkyctwwgz", response.metadata().updatedAt());
+        Assertions.assertEquals("jlmec", response.metadata().deletedAt());
+        Assertions.assertEquals("gygzyvn", response.principal());
+        Assertions.assertEquals("zaifghtmoqqtlff", response.roleName());
+        Assertions.assertEquals("bkrkjj", response.crnPattern());
     }
 }

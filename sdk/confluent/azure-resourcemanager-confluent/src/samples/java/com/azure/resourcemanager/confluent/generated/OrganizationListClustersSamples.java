@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class OrganizationListClustersSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Organization_ListClusters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Organization_ListClusters_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListClusters_MaximumSet.

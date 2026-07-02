@@ -17,7 +17,7 @@ import com.azure.resourcemanager.confluent.models.SCMetadataEntity;
  */
 public final class ClusterCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Cluster_CreateOrUpdate_MaximumSet.

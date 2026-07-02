@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class AccessListClustersSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_ListClusters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_ListClusters_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListClusters_MaximumSet.
@@ -28,7 +28,7 @@ public final class AccessListClustersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_ListClusters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_ListClusters_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListClusters_MinimumSet.

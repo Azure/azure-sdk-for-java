@@ -24,7 +24,7 @@ public final class AccessListInvitationsWithResponseMockTests {
     @Test
     public void testListInvitationsWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"tctbrxkjzwrgxffm\",\"metadata\":{\"first\":\"wfbkgozxwo\",\"last\":\"bydpizqaclnapxb\",\"prev\":\"gn\",\"next\":\"j\",\"total_size\":1222669398},\"data\":[{\"kind\":\"cttuxuu\",\"id\":\"lflqoiqu\",\"metadata\":{\"self\":\"hmrnjhvsuj\",\"resource_name\":\"czytqjtwhauunfpr\",\"created_at\":\"letlx\",\"updated_at\":\"rpddouifamo\",\"deleted_at\":\"z\"},\"email\":\"nknlqwzdvpi\",\"auth_type\":\"xqszdtmaajquh\",\"status\":\"ylr\",\"accepted_at\":\"m\",\"expires_at\":\"g\"},{\"kind\":\"mzyospspshck\",\"id\":\"yjpmspbpssdfppyo\",\"metadata\":{\"self\":\"eyujtvczkcnyxrx\",\"resource_name\":\"njdxvglnkvxl\",\"created_at\":\"aglqivbgkcvkh\",\"updated_at\":\"vuqd\",\"deleted_at\":\"voniypfp\"},\"email\":\"cpzgpxtiv\",\"auth_type\":\"knidib\",\"status\":\"jxgpnrhgovfg\",\"accepted_at\":\"kqmhhaowjr\",\"expires_at\":\"vuporqzdfuydzv\"}]}";
+            = "{\"kind\":\"svbpavbopfppdbwn\",\"metadata\":{\"first\":\"ahxku\",\"last\":\"sjcaacfdmmcpugm\",\"prev\":\"qepvufhbzeh\",\"next\":\"hoqhnl\",\"total_size\":1923932304},\"data\":[{\"kind\":\"xeaclgsc\",\"id\":\"ri\",\"metadata\":{\"self\":\"srrm\",\"resource_name\":\"cso\",\"created_at\":\"dpuviyf\",\"updated_at\":\"abeolhbhlvbm\",\"deleted_at\":\"qi\"},\"email\":\"xtkcudfbsfar\",\"auth_type\":\"iowl\",\"status\":\"xnq\",\"accepted_at\":\"wgfstmhqykizm\",\"expires_at\":\"saoafcluqvox\"},{\"kind\":\"cjimryvwgcwwpbmz\",\"id\":\"esyds\",\"metadata\":{\"self\":\"fo\",\"resource_name\":\"cbvopwndyqleallk\",\"created_at\":\"tkhlowkxxpvbr\",\"updated_at\":\"jmzsyzfh\",\"deleted_at\":\"lhikcyychunsj\"},\"email\":\"jrtwsz\",\"auth_type\":\"vuicp\",\"status\":\"trrmhwrb\",\"accepted_at\":\"pyf\",\"expires_at\":\"bhvjglr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,30 +34,30 @@ public final class AccessListInvitationsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessListInvitationsSuccessResponse response = manager.access()
-            .listInvitationsWithResponse("wfl", "qmp",
-                new ListAccessRequestModel()
-                    .withSearchFilters(mapOf("saasiixtmkzj", "uwnpqxpxiwfcng", "irhgfgrwsdp", "kv", "zvzbglbyv", "ra")),
+            .listInvitationsWithResponse("bzxliohrdddtfgxq", "awpcbbnzqcykn",
+                new ListAccessRequestModel().withSearchFilters(mapOf("zb", "ofyuicd", "bdvibidmhmwffpl", "ybww",
+                    "ccrrvweyoxoyyu", "muvapc", "oqboshbragapyyr", "phaimmoi")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tctbrxkjzwrgxffm", response.kind());
-        Assertions.assertEquals("wfbkgozxwo", response.metadata().first());
-        Assertions.assertEquals("bydpizqaclnapxb", response.metadata().last());
-        Assertions.assertEquals("gn", response.metadata().prev());
-        Assertions.assertEquals("j", response.metadata().next());
-        Assertions.assertEquals(1222669398, response.metadata().totalSize());
-        Assertions.assertEquals("cttuxuu", response.data().get(0).kind());
-        Assertions.assertEquals("lflqoiqu", response.data().get(0).id());
-        Assertions.assertEquals("hmrnjhvsuj", response.data().get(0).metadata().self());
-        Assertions.assertEquals("czytqjtwhauunfpr", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("letlx", response.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("rpddouifamo", response.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("z", response.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("nknlqwzdvpi", response.data().get(0).email());
-        Assertions.assertEquals("xqszdtmaajquh", response.data().get(0).authType());
-        Assertions.assertEquals("ylr", response.data().get(0).status());
-        Assertions.assertEquals("m", response.data().get(0).acceptedAt());
-        Assertions.assertEquals("g", response.data().get(0).expiresAt());
+        Assertions.assertEquals("svbpavbopfppdbwn", response.kind());
+        Assertions.assertEquals("ahxku", response.metadata().first());
+        Assertions.assertEquals("sjcaacfdmmcpugm", response.metadata().last());
+        Assertions.assertEquals("qepvufhbzeh", response.metadata().prev());
+        Assertions.assertEquals("hoqhnl", response.metadata().next());
+        Assertions.assertEquals(1923932304, response.metadata().totalSize());
+        Assertions.assertEquals("xeaclgsc", response.data().get(0).kind());
+        Assertions.assertEquals("ri", response.data().get(0).id());
+        Assertions.assertEquals("srrm", response.data().get(0).metadata().self());
+        Assertions.assertEquals("cso", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("dpuviyf", response.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("abeolhbhlvbm", response.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("qi", response.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("xtkcudfbsfar", response.data().get(0).email());
+        Assertions.assertEquals("iowl", response.data().get(0).authType());
+        Assertions.assertEquals("xnq", response.data().get(0).status());
+        Assertions.assertEquals("wgfstmhqykizm", response.data().get(0).acceptedAt());
+        Assertions.assertEquals("saoafcluqvox", response.data().get(0).expiresAt());
     }
 
     // Use "Map.of" if available

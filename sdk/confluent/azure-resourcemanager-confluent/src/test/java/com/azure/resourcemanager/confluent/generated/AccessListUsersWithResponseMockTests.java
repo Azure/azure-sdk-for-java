@@ -24,7 +24,7 @@ public final class AccessListUsersWithResponseMockTests {
     @Test
     public void testListUsersWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"qzvnersbycucr\",\"metadata\":{\"first\":\"mikzeb\",\"last\":\"bsmswziqgf\",\"prev\":\"okzrus\",\"next\":\"vhczznvfby\",\"total_size\":1906628483},\"data\":[{\"kind\":\"wix\",\"id\":\"umwmxqhnd\",\"metadata\":{\"self\":\"amldseh\",\"resource_name\":\"hdjhhflz\",\"created_at\":\"xcoxpelnjet\",\"updated_at\":\"ltsxoatf\",\"deleted_at\":\"zpnpbswv\"},\"email\":\"loccsrmozihm\",\"full_name\":\"g\",\"auth_type\":\"txx\"}]}";
+            = "{\"kind\":\"ucoig\",\"metadata\":{\"first\":\"ncnwfepbnwgf\",\"last\":\"jgcgbjbgdlfgtdys\",\"prev\":\"quflqbctq\",\"next\":\"mzjr\",\"total_size\":1644832574},\"data\":[{\"kind\":\"qy\",\"id\":\"eziunjxdfzant\",\"metadata\":{\"self\":\"eg\",\"resource_name\":\"mlbnseq\",\"created_at\":\"jjvpilguooqja\",\"updated_at\":\"d\",\"deleted_at\":\"gueiookjbsahrtdt\"},\"email\":\"elqacslmot\",\"full_name\":\"bnfxofvc\",\"auth_type\":\"gdirazf\"},{\"kind\":\"ejwabmdujtmvco\",\"id\":\"xcmjurbu\",\"metadata\":{\"self\":\"kyqltqsrogt\",\"resource_name\":\"kffdjktsys\",\"created_at\":\"fvcl\",\"updated_at\":\"xnfuijtkbusqogs\",\"deleted_at\":\"kayi\"},\"email\":\"sharujtj\",\"full_name\":\"xfz\",\"auth_type\":\"qttv\"},{\"kind\":\"pqhjpenuygbqeqq\",\"id\":\"ewvnqvcdlgu\",\"metadata\":{\"self\":\"mfdjwn\",\"resource_name\":\"xpunjqi\",\"created_at\":\"zvvitacgxmfcs\",\"updated_at\":\"rxhtvso\",\"deleted_at\":\"lwntsjgqrs\"},\"email\":\"p\",\"full_name\":\"uuybnchrsz\",\"auth_type\":\"oyuelyetn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,28 +34,28 @@ public final class AccessListUsersWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessListUsersSuccessResponse response = manager.access()
-            .listUsersWithResponse("rtixokff", "yinljqe",
-                new ListAccessRequestModel().withSearchFilters(
-                    mapOf("monstshiyxgve", "hi", "wcobie", "fclduccbirdsv", "gshejjtbxqmulux", "stmninwjizcilng")),
+            .listUsersWithResponse("r", "cq",
+                new ListAccessRequestModel().withSearchFilters(mapOf("vyjtcvu", "idttgepus", "fuughtuqfec", "kasizie",
+                    "uewmrswnjlxuzrhw", "xeygtuhxuic", "dohzjq", "usxjbaqehg")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qzvnersbycucr", response.kind());
-        Assertions.assertEquals("mikzeb", response.metadata().first());
-        Assertions.assertEquals("bsmswziqgf", response.metadata().last());
-        Assertions.assertEquals("okzrus", response.metadata().prev());
-        Assertions.assertEquals("vhczznvfby", response.metadata().next());
-        Assertions.assertEquals(1906628483, response.metadata().totalSize());
-        Assertions.assertEquals("wix", response.data().get(0).kind());
-        Assertions.assertEquals("umwmxqhnd", response.data().get(0).id());
-        Assertions.assertEquals("amldseh", response.data().get(0).metadata().self());
-        Assertions.assertEquals("hdjhhflz", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("xcoxpelnjet", response.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("ltsxoatf", response.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("zpnpbswv", response.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("loccsrmozihm", response.data().get(0).email());
-        Assertions.assertEquals("g", response.data().get(0).fullName());
-        Assertions.assertEquals("txx", response.data().get(0).authType());
+        Assertions.assertEquals("ucoig", response.kind());
+        Assertions.assertEquals("ncnwfepbnwgf", response.metadata().first());
+        Assertions.assertEquals("jgcgbjbgdlfgtdys", response.metadata().last());
+        Assertions.assertEquals("quflqbctq", response.metadata().prev());
+        Assertions.assertEquals("mzjr", response.metadata().next());
+        Assertions.assertEquals(1644832574, response.metadata().totalSize());
+        Assertions.assertEquals("qy", response.data().get(0).kind());
+        Assertions.assertEquals("eziunjxdfzant", response.data().get(0).id());
+        Assertions.assertEquals("eg", response.data().get(0).metadata().self());
+        Assertions.assertEquals("mlbnseq", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("jjvpilguooqja", response.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("d", response.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("gueiookjbsahrtdt", response.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("elqacslmot", response.data().get(0).email());
+        Assertions.assertEquals("bnfxofvc", response.data().get(0).fullName());
+        Assertions.assertEquals("gdirazf", response.data().get(0).authType());
     }
 
     // Use "Map.of" if available

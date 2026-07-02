@@ -24,7 +24,7 @@ public final class AccessListEnvironmentsWithResponseMockTests {
     @Test
     public void testListEnvironmentsWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"ktvqylkmqpzoy\",\"metadata\":{\"first\":\"bcg\",\"last\":\"cloxo\",\"prev\":\"qinjipnwjf\",\"next\":\"qlafcbahhpzpofoi\",\"total_size\":86457454},\"data\":[{\"kind\":\"lkmkkholvdndvi\",\"id\":\"ogphuartvtiu\",\"metadata\":{\"self\":\"fchnmnah\",\"resource_name\":\"xhk\",\"created_at\":\"qirwrweoox\",\"updated_at\":\"i\",\"deleted_at\":\"xwrsnew\"},\"display_name\":\"zqvbubqm\"},{\"kind\":\"hsycxhxzgaz\",\"id\":\"abo\",\"metadata\":{\"self\":\"mfqhppubowse\",\"resource_name\":\"fgkmtdhern\",\"created_at\":\"tcjuahokqto\",\"updated_at\":\"auxofshfph\",\"deleted_at\":\"nulaiywzejywhsl\"},\"display_name\":\"ojpllndnpdwrpqaf\"},{\"kind\":\"ug\",\"id\":\"n\",\"metadata\":{\"self\":\"et\",\"resource_name\":\"ypococtfjgtixr\",\"created_at\":\"zuyt\",\"updated_at\":\"mlmuowol\",\"deleted_at\":\"uir\"},\"display_name\":\"ionszonwp\"}]}";
+            = "{\"kind\":\"qzolxrzvhqjw\",\"metadata\":{\"first\":\"tgvgzp\",\"last\":\"rkolawjm\",\"prev\":\"mwrokcdxfzzzwyja\",\"next\":\"tlhguynuchl\",\"total_size\":352511173},\"data\":[{\"kind\":\"whmozusgzvlnsnnj\",\"id\":\"pafolp\",\"metadata\":{\"self\":\"amxqzragpgdphtv\",\"resource_name\":\"lajv\",\"created_at\":\"jchcsrlzknmzla\",\"updated_at\":\"updwv\",\"deleted_at\":\"hcnzqt\"},\"display_name\":\"hmqrhvthlaiwdc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,26 +34,26 @@ public final class AccessListEnvironmentsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessListEnvironmentsSuccessResponse response = manager.access()
-            .listEnvironmentsWithResponse("pdkvg", "abuiy",
+            .listEnvironmentsWithResponse("koveof", "zrvjfnmjmvlwyzgi",
                 new ListAccessRequestModel()
-                    .withSearchFilters(mapOf("n", "uzphdugnei", "jiuqhibtozi", "gox", "edmurrxxge", "qw")),
+                    .withSearchFilters(mapOf("lfojuidjp", "ujr", "ovvtzejetjkln", "uyjucejikzo", "k", "ikyju")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ktvqylkmqpzoy", response.kind());
-        Assertions.assertEquals("bcg", response.metadata().first());
-        Assertions.assertEquals("cloxo", response.metadata().last());
-        Assertions.assertEquals("qinjipnwjf", response.metadata().prev());
-        Assertions.assertEquals("qlafcbahhpzpofoi", response.metadata().next());
-        Assertions.assertEquals(86457454, response.metadata().totalSize());
-        Assertions.assertEquals("lkmkkholvdndvi", response.data().get(0).kind());
-        Assertions.assertEquals("ogphuartvtiu", response.data().get(0).id());
-        Assertions.assertEquals("fchnmnah", response.data().get(0).metadata().self());
-        Assertions.assertEquals("xhk", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("qirwrweoox", response.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("i", response.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("xwrsnew", response.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("zqvbubqm", response.data().get(0).displayName());
+        Assertions.assertEquals("qzolxrzvhqjw", response.kind());
+        Assertions.assertEquals("tgvgzp", response.metadata().first());
+        Assertions.assertEquals("rkolawjm", response.metadata().last());
+        Assertions.assertEquals("mwrokcdxfzzzwyja", response.metadata().prev());
+        Assertions.assertEquals("tlhguynuchl", response.metadata().next());
+        Assertions.assertEquals(352511173, response.metadata().totalSize());
+        Assertions.assertEquals("whmozusgzvlnsnnj", response.data().get(0).kind());
+        Assertions.assertEquals("pafolp", response.data().get(0).id());
+        Assertions.assertEquals("amxqzragpgdphtv", response.data().get(0).metadata().self());
+        Assertions.assertEquals("lajv", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("jchcsrlzknmzla", response.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("updwv", response.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("hcnzqt", response.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("hmqrhvthlaiwdc", response.data().get(0).displayName());
     }
 
     // Use "Map.of" if available

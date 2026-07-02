@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class AccessListRoleBindingsSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_ListRoleBindings_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_ListRoleBindings_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_ListRoleBindings_MinimumSet.
@@ -27,7 +27,7 @@ public final class AccessListRoleBindingsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_ListRoleBindings_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_ListRoleBindings_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_ListRoleBindings_MaximumSet.

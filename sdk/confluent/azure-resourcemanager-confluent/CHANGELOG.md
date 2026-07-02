@@ -1,14 +1,39 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (2026-07-02)
+
+- Azure Resource Manager Confluent client library for Java. This package contains Microsoft Azure SDK for Confluent Management SDK.  Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.NetworkGatewayResources` was added
 
-### Bugs Fixed
+* `models.NetworkGatewayResource$DefinitionStages` was added
 
-### Other Changes
+* `models.AccessPointResources` was added
+
+* `models.NetworkGatewayProperties` was added
+
+* `models.AccessPointResource$Definition` was added
+
+* `models.NetworkGatewayResource` was added
+
+* `models.AccessPointProperties` was added
+
+* `models.NetworkGatewayResource$Definition` was added
+
+* `models.AccessPointResource$DefinitionStages` was added
+
+* `models.AccessPointResource` was added
+
+* `models.VnetInjectionDetails` was added
+
+* `models.KeyValuePair` was added
+
+#### `ConfluentManager` was modified
+
+* `accessPointResources()` was added
+* `networkGatewayResources()` was added
 
 ## 1.3.0-beta.1 (2026-02-10)
 

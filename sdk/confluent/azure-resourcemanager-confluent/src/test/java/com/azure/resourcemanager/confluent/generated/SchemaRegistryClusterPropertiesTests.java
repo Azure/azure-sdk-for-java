@@ -12,23 +12,23 @@ public final class SchemaRegistryClusterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryClusterProperties model = BinaryData.fromString(
-            "{\"metadata\":{\"self\":\"xrhdwbavxbniwdjs\",\"resourceName\":\"tsdbpgn\",\"createdTimestamp\":\"txhp\",\"updatedTimestamp\":\"bzpfzab\",\"deletedTimestamp\":\"cuh\"},\"spec\":{\"name\":\"ctyqik\",\"httpEndpoint\":\"bovpl\",\"package\":\"bhvgy\",\"region\":{\"id\":\"osvmk\",\"related\":\"sxqu\",\"resourceName\":\"fpl\"},\"environment\":{\"id\":\"sxnkjzkdeslpvlo\",\"related\":\"i\",\"resourceName\":\"ghxpkdw\"},\"cloud\":\"aiuebbaumnyqu\"},\"status\":{\"phase\":\"eojnabc\"}}")
+            "{\"metadata\":{\"self\":\"pjmkhfxobbc\",\"resourceName\":\"s\",\"createdTimestamp\":\"jriplrbpbewtghf\",\"updatedTimestamp\":\"lcgwxzvlvqh\",\"deletedTimestamp\":\"begibtnmxiebwwa\"},\"spec\":{\"name\":\"yqcgwrtzjuzgwy\",\"httpEndpoint\":\"htxongmtsavjc\",\"package\":\"wxqpsrknftguvri\",\"region\":{\"id\":\"rwmdyvxqtay\",\"related\":\"ww\",\"resourceName\":\"yqbexrmcqibycno\"},\"environment\":{\"id\":\"nmefqsgzvahapj\",\"related\":\"hpvgqz\",\"resourceName\":\"rvxdjzlmw\"},\"cloud\":\"kvugfhzovawjvzun\"},\"status\":{\"phase\":\"hnnpr\"}}")
             .toObject(SchemaRegistryClusterProperties.class);
-        Assertions.assertEquals("xrhdwbavxbniwdjs", model.metadata().self());
-        Assertions.assertEquals("tsdbpgn", model.metadata().resourceName());
-        Assertions.assertEquals("txhp", model.metadata().createdTimestamp());
-        Assertions.assertEquals("bzpfzab", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("cuh", model.metadata().deletedTimestamp());
-        Assertions.assertEquals("ctyqik", model.spec().name());
-        Assertions.assertEquals("bovpl", model.spec().httpEndpoint());
-        Assertions.assertEquals("bhvgy", model.spec().packageProperty());
-        Assertions.assertEquals("osvmk", model.spec().region().id());
-        Assertions.assertEquals("sxqu", model.spec().region().related());
-        Assertions.assertEquals("fpl", model.spec().region().resourceName());
-        Assertions.assertEquals("sxnkjzkdeslpvlo", model.spec().environment().id());
-        Assertions.assertEquals("i", model.spec().environment().related());
-        Assertions.assertEquals("ghxpkdw", model.spec().environment().resourceName());
-        Assertions.assertEquals("aiuebbaumnyqu", model.spec().cloud());
-        Assertions.assertEquals("eojnabc", model.status().phase());
+        Assertions.assertEquals("pjmkhfxobbc", model.metadata().self());
+        Assertions.assertEquals("s", model.metadata().resourceName());
+        Assertions.assertEquals("jriplrbpbewtghf", model.metadata().createdTimestamp());
+        Assertions.assertEquals("lcgwxzvlvqh", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("begibtnmxiebwwa", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("yqcgwrtzjuzgwy", model.spec().name());
+        Assertions.assertEquals("htxongmtsavjc", model.spec().httpEndpoint());
+        Assertions.assertEquals("wxqpsrknftguvri", model.spec().packageProperty());
+        Assertions.assertEquals("rwmdyvxqtay", model.spec().region().id());
+        Assertions.assertEquals("ww", model.spec().region().related());
+        Assertions.assertEquals("yqbexrmcqibycno", model.spec().region().resourceName());
+        Assertions.assertEquals("nmefqsgzvahapj", model.spec().environment().id());
+        Assertions.assertEquals("hpvgqz", model.spec().environment().related());
+        Assertions.assertEquals("rvxdjzlmw", model.spec().environment().resourceName());
+        Assertions.assertEquals("kvugfhzovawjvzun", model.spec().cloud());
+        Assertions.assertEquals("hnnpr", model.status().phase());
     }
 }

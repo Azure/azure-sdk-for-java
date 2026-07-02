@@ -13,16 +13,16 @@ public final class ConfluentAgreementResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentAgreementResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"ur\",\"name\":\"laecxndticok\",\"type\":\"zmlqtmldgxo\",\"properties\":{\"publisher\":\"clnpkci\",\"product\":\"zriykhy\",\"plan\":\"fvjlboxqvkjlmx\",\"licenseTextLink\":\"mdy\",\"privacyPolicyLink\":\"dwdigumb\",\"retrieveDatetime\":\"2021-04-19T06:10:37Z\",\"signature\":\"uzzptjazysdz\",\"accepted\":false}},{\"id\":\"wva\",\"name\":\"yuvvfonkp\",\"type\":\"qyikvy\",\"properties\":{\"publisher\":\"avluwmncs\",\"product\":\"ijf\",\"plan\":\"vpo\",\"licenseTextLink\":\"rsg\",\"privacyPolicyLink\":\"b\",\"retrieveDatetime\":\"2021-08-14T00:34:57Z\",\"signature\":\"qgnjdgkynscli\",\"accepted\":false}},{\"id\":\"h\",\"name\":\"komtkubotppn\",\"type\":\"xz\",\"properties\":{\"publisher\":\"frbbc\",\"product\":\"qagt\",\"plan\":\"dhlfkqojpykvgt\",\"licenseTextLink\":\"cnifm\",\"privacyPolicyLink\":\"sdymbrn\",\"retrieveDatetime\":\"2021-09-01T15:40:48Z\",\"signature\":\"m\",\"accepted\":false}},{\"id\":\"wgck\",\"name\":\"cxvdfffwafqrouda\",\"type\":\"avehhrvkbunzo\",\"properties\":{\"publisher\":\"cxgkmoyxcdyui\",\"product\":\"mfdn\",\"plan\":\"ydvfvfcjnae\",\"licenseTextLink\":\"srvhmgorffuki\",\"privacyPolicyLink\":\"vwmzhwplefaxvxil\",\"retrieveDatetime\":\"2021-10-23T15:17:09Z\",\"signature\":\"nhnzeyqxt\",\"accepted\":true}}],\"nextLink\":\"qlqhycavodg\"}")
+            "{\"value\":[{\"id\":\"ajc\",\"name\":\"m\",\"type\":\"hfcf\",\"properties\":{\"publisher\":\"gkn\",\"product\":\"vyi\",\"plan\":\"qodfvp\",\"licenseTextLink\":\"hoxgsgbpf\",\"privacyPolicyLink\":\"djtxvzflbq\",\"retrieveDatetime\":\"2021-03-04T21:04:20Z\",\"signature\":\"vl\",\"accepted\":false}},{\"id\":\"qusrdvetnws\",\"name\":\"utnw\",\"type\":\"uycvuzhyrmewip\",\"properties\":{\"publisher\":\"dxukuqgsjjxundxg\",\"product\":\"twzhhzjhfjmhv\",\"plan\":\"uvgp\",\"licenseTextLink\":\"neqsxvmh\",\"privacyPolicyLink\":\"uzjyihsasbhudypo\",\"retrieveDatetime\":\"2021-08-16T14:15:22Z\",\"signature\":\"ms\",\"accepted\":true}}],\"nextLink\":\"qyrp\"}")
             .toObject(ConfluentAgreementResourceListResponse.class);
-        Assertions.assertEquals("clnpkci", model.value().get(0).publisher());
-        Assertions.assertEquals("zriykhy", model.value().get(0).product());
-        Assertions.assertEquals("fvjlboxqvkjlmx", model.value().get(0).plan());
-        Assertions.assertEquals("mdy", model.value().get(0).licenseTextLink());
-        Assertions.assertEquals("dwdigumb", model.value().get(0).privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-19T06:10:37Z"), model.value().get(0).retrieveDatetime());
-        Assertions.assertEquals("uzzptjazysdz", model.value().get(0).signature());
+        Assertions.assertEquals("gkn", model.value().get(0).publisher());
+        Assertions.assertEquals("vyi", model.value().get(0).product());
+        Assertions.assertEquals("qodfvp", model.value().get(0).plan());
+        Assertions.assertEquals("hoxgsgbpf", model.value().get(0).licenseTextLink());
+        Assertions.assertEquals("djtxvzflbq", model.value().get(0).privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T21:04:20Z"), model.value().get(0).retrieveDatetime());
+        Assertions.assertEquals("vl", model.value().get(0).signature());
         Assertions.assertFalse(model.value().get(0).accepted());
-        Assertions.assertEquals("qlqhycavodg", model.nextLink());
+        Assertions.assertEquals("qyrp", model.nextLink());
     }
 }

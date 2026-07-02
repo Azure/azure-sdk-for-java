@@ -24,7 +24,7 @@ public final class AccessListRoleBindingNameListWithResponseMockTests {
     @Test
     public void testListRoleBindingNameListWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"giblkujrllf\",\"metadata\":{\"first\":\"idjpuuyju\",\"last\":\"jikzoeovvtzej\",\"prev\":\"jklntikyj\",\"next\":\"k\",\"total_size\":1015093902},\"data\":[\"lxrzvhqjwtr\"]}";
+            = "{\"kind\":\"sjuscvsfxigctmg\",\"metadata\":{\"first\":\"pbezqccydrtceu\",\"last\":\"qkkyihztgeqmg\",\"prev\":\"gwldo\",\"next\":\"hillce\",\"total_size\":1821360070},\"data\":[\"waoaguhi\",\"qllizstac\",\"jvhrweft\",\"wqejpmvsse\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class AccessListRoleBindingNameListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AccessRoleBindingNameListSuccessResponse response = manager.access()
-            .listRoleBindingNameListWithResponse("pnfpubntnbat", "viqsowsaaelcattc",
-                new ListAccessRequestModel().withSearchFilters(mapOf("ggcvk", "plrvkmjcwmjvlg", "izrzb", "y",
-                    "ztlvtmvagbwidqlv", "psfxsf", "rvjfnmjmvlw", "ukoveofi")),
+            .listRoleBindingNameListWithResponse("avfqnvhnqoewdogi", "etesypvidbztjhqt",
+                new ListAccessRequestModel().withSearchFilters(mapOf("etnjuhpsprkz", "vnynkb", "cxnafbwqrooh", "aupia",
+                    "mghihp", "uovmaonurjt", "jxl", "ecmslclbl")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("giblkujrllf", response.kind());
-        Assertions.assertEquals("idjpuuyju", response.metadata().first());
-        Assertions.assertEquals("jikzoeovvtzej", response.metadata().last());
-        Assertions.assertEquals("jklntikyj", response.metadata().prev());
-        Assertions.assertEquals("k", response.metadata().next());
-        Assertions.assertEquals(1015093902, response.metadata().totalSize());
-        Assertions.assertEquals("lxrzvhqjwtr", response.data().get(0));
+        Assertions.assertEquals("sjuscvsfxigctmg", response.kind());
+        Assertions.assertEquals("pbezqccydrtceu", response.metadata().first());
+        Assertions.assertEquals("qkkyihztgeqmg", response.metadata().last());
+        Assertions.assertEquals("gwldo", response.metadata().prev());
+        Assertions.assertEquals("hillce", response.metadata().next());
+        Assertions.assertEquals(1821360070, response.metadata().totalSize());
+        Assertions.assertEquals("waoaguhi", response.data().get(0));
     }
 
     // Use "Map.of" if available

@@ -13,36 +13,36 @@ public final class ConfluentAgreementResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentAgreementResourceInner model = BinaryData.fromString(
-            "{\"id\":\"dbeesmie\",\"name\":\"lrariaawiu\",\"type\":\"ydwqfbylyrf\",\"properties\":{\"publisher\":\"tcojocqwo\",\"product\":\"nzjvusfzldm\",\"plan\":\"uxylfsbtkadpy\",\"licenseTextLink\":\"wn\",\"privacyPolicyLink\":\"gkbugrjqct\",\"retrieveDatetime\":\"2021-11-30T05:10:39Z\",\"signature\":\"isofieypefojyqd\",\"accepted\":false}}")
+            "{\"id\":\"obrltt\",\"name\":\"sjnygqdnfwqzdzgt\",\"type\":\"axhnfh\",\"properties\":{\"publisher\":\"ijouwivkxoyzunb\",\"product\":\"xrtikvcpwpgclr\",\"plan\":\"vtsoxf\",\"licenseTextLink\":\"enxpmyyefr\",\"privacyPolicyLink\":\"pdnqqskawaoqvmmb\",\"retrieveDatetime\":\"2021-09-15T12:10:31Z\",\"signature\":\"rtql\",\"accepted\":false}}")
             .toObject(ConfluentAgreementResourceInner.class);
-        Assertions.assertEquals("tcojocqwo", model.publisher());
-        Assertions.assertEquals("nzjvusfzldm", model.product());
-        Assertions.assertEquals("uxylfsbtkadpy", model.plan());
-        Assertions.assertEquals("wn", model.licenseTextLink());
-        Assertions.assertEquals("gkbugrjqct", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T05:10:39Z"), model.retrieveDatetime());
-        Assertions.assertEquals("isofieypefojyqd", model.signature());
+        Assertions.assertEquals("ijouwivkxoyzunb", model.publisher());
+        Assertions.assertEquals("xrtikvcpwpgclr", model.product());
+        Assertions.assertEquals("vtsoxf", model.plan());
+        Assertions.assertEquals("enxpmyyefr", model.licenseTextLink());
+        Assertions.assertEquals("pdnqqskawaoqvmmb", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T12:10:31Z"), model.retrieveDatetime());
+        Assertions.assertEquals("rtql", model.signature());
         Assertions.assertFalse(model.accepted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentAgreementResourceInner model = new ConfluentAgreementResourceInner().withPublisher("tcojocqwo")
-            .withProduct("nzjvusfzldm")
-            .withPlan("uxylfsbtkadpy")
-            .withLicenseTextLink("wn")
-            .withPrivacyPolicyLink("gkbugrjqct")
-            .withRetrieveDatetime(OffsetDateTime.parse("2021-11-30T05:10:39Z"))
-            .withSignature("isofieypefojyqd")
+        ConfluentAgreementResourceInner model = new ConfluentAgreementResourceInner().withPublisher("ijouwivkxoyzunb")
+            .withProduct("xrtikvcpwpgclr")
+            .withPlan("vtsoxf")
+            .withLicenseTextLink("enxpmyyefr")
+            .withPrivacyPolicyLink("pdnqqskawaoqvmmb")
+            .withRetrieveDatetime(OffsetDateTime.parse("2021-09-15T12:10:31Z"))
+            .withSignature("rtql")
             .withAccepted(false);
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementResourceInner.class);
-        Assertions.assertEquals("tcojocqwo", model.publisher());
-        Assertions.assertEquals("nzjvusfzldm", model.product());
-        Assertions.assertEquals("uxylfsbtkadpy", model.plan());
-        Assertions.assertEquals("wn", model.licenseTextLink());
-        Assertions.assertEquals("gkbugrjqct", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T05:10:39Z"), model.retrieveDatetime());
-        Assertions.assertEquals("isofieypefojyqd", model.signature());
+        Assertions.assertEquals("ijouwivkxoyzunb", model.publisher());
+        Assertions.assertEquals("xrtikvcpwpgclr", model.product());
+        Assertions.assertEquals("vtsoxf", model.plan());
+        Assertions.assertEquals("enxpmyyefr", model.licenseTextLink());
+        Assertions.assertEquals("pdnqqskawaoqvmmb", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T12:10:31Z"), model.retrieveDatetime());
+        Assertions.assertEquals("rtql", model.signature());
         Assertions.assertFalse(model.accepted());
     }
 }

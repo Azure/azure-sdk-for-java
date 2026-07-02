@@ -15,15 +15,15 @@ public final class ListConnectorsSuccessResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListConnectorsSuccessResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSOURCE\",\"connectorName\":\"tiewdj\",\"connectorId\":\"bquwrbehw\",\"connectorState\":\"PROVISIONING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"f\",\"name\":\"kmr\",\"type\":\"emvvhm\"},{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SINK\",\"connectorClass\":\"AZURECOSMOSV2SOURCE\",\"connectorName\":\"tac\",\"connectorId\":\"bj\",\"connectorState\":\"FAILED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"znmwcp\",\"name\":\"guaadraufactkahz\",\"type\":\"v\"},{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSINK\",\"connectorName\":\"xps\",\"connectorId\":\"eekulfgslqubkwd\",\"connectorState\":\"FAILED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"utujba\",\"name\":\"pjuohminyfl\",\"type\":\"orwmduvwpklv\"},{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZURECOSMOSV2SOURCE\",\"connectorName\":\"pgpqchiszepnnb\",\"connectorId\":\"rxgibbd\",\"connectorState\":\"PAUSED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"ozauorsukokwb\",\"name\":\"plhlvnuuepzlrp\",\"type\":\"wzsoldweyuqdunv\"}],\"nextLink\":\"nrwrbiork\"}")
+            "{\"value\":[{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SINK\",\"connectorClass\":\"AZUREBLOBSINK\",\"connectorName\":\"ymbrnysuxmpraf\",\"connectorId\":\"ckh\",\"connectorState\":\"PROVISIONING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"ffwafq\",\"name\":\"oudaspavehhrvk\",\"type\":\"unzo\"},{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZUREBLOBSOURCE\",\"connectorName\":\"kmoyxcdyuibh\",\"connectorId\":\"dnbzydvfvfcjn\",\"connectorState\":\"FAILED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"vhmgorffukis\",\"name\":\"vwmzhwplefaxvxil\",\"type\":\"btgn\"}],\"nextLink\":\"zeyqxtjjfzqlqhyc\"}")
             .toObject(ListConnectorsSuccessResponse.class);
-        Assertions.assertEquals(ConnectorType.SOURCE, model.value().get(0).connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZUREBLOBSOURCE,
+        Assertions.assertEquals(ConnectorType.SINK, model.value().get(0).connectorBasicInfo().connectorType());
+        Assertions.assertEquals(ConnectorClass.AZUREBLOBSINK,
             model.value().get(0).connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("tiewdj", model.value().get(0).connectorBasicInfo().connectorName());
-        Assertions.assertEquals("bquwrbehw", model.value().get(0).connectorBasicInfo().connectorId());
+        Assertions.assertEquals("ymbrnysuxmpraf", model.value().get(0).connectorBasicInfo().connectorName());
+        Assertions.assertEquals("ckh", model.value().get(0).connectorBasicInfo().connectorId());
         Assertions.assertEquals(ConnectorStatus.PROVISIONING,
             model.value().get(0).connectorBasicInfo().connectorState());
-        Assertions.assertEquals("nrwrbiork", model.nextLink());
+        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.nextLink());
     }
 }

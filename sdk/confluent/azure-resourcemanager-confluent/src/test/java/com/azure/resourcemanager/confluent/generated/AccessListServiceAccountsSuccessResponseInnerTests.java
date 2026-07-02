@@ -12,22 +12,22 @@ public final class AccessListServiceAccountsSuccessResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessListServiceAccountsSuccessResponseInner model = BinaryData.fromString(
-            "{\"kind\":\"vypomgkopkwho\",\"metadata\":{\"first\":\"ajqgxy\",\"last\":\"ocmbqfqvmkcxoza\",\"prev\":\"helxprglya\",\"next\":\"dckcbc\",\"total_size\":1827810592},\"data\":[{\"kind\":\"gciqibrh\",\"id\":\"xsdqrhzoymibmrqy\",\"metadata\":{\"self\":\"hwflu\",\"resource_name\":\"dtmhrkwofyyvoqa\",\"created_at\":\"iexpbtgiwbwo\",\"updated_at\":\"washr\",\"deleted_at\":\"tkcnqxwb\"},\"display_name\":\"kulpiujwaasi\",\"description\":\"i\"},{\"kind\":\"byuqerpqlp\",\"id\":\"cciuqgbdbutau\",\"metadata\":{\"self\":\"tkuwhhmhykojo\",\"resource_name\":\"fnndl\",\"created_at\":\"chkoymkcdyh\",\"updated_at\":\"kkpwdreqnovvq\",\"deleted_at\":\"vljxywsu\"},\"display_name\":\"yrs\",\"description\":\"sytgadgvraea\"},{\"kind\":\"e\",\"id\":\"zar\",\"metadata\":{\"self\":\"q\",\"resource_name\":\"ijfqkacewiipfp\",\"created_at\":\"ji\",\"updated_at\":\"wifto\",\"deleted_at\":\"kvpuvksgplsaknyn\"},\"display_name\":\"ynl\",\"description\":\"huopxodlqiynto\"}]}")
+            "{\"kind\":\"gwol\",\"metadata\":{\"first\":\"zbwemh\",\"last\":\"rsbrgzdwm\",\"prev\":\"eypqwdxggicccn\",\"next\":\"huexmk\",\"total_size\":171161135},\"data\":[{\"kind\":\"lzywemhzrncsdtc\",\"id\":\"siypbs\",\"metadata\":{\"self\":\"tg\",\"resource_name\":\"lfeadcygq\",\"created_at\":\"yhejhzisxgfp\",\"updated_at\":\"olppvksrpqvujz\",\"deleted_at\":\"ehtwdwrft\"},\"display_name\":\"iby\",\"description\":\"dl\"}]}")
             .toObject(AccessListServiceAccountsSuccessResponseInner.class);
-        Assertions.assertEquals("vypomgkopkwho", model.kind());
-        Assertions.assertEquals("ajqgxy", model.metadata().first());
-        Assertions.assertEquals("ocmbqfqvmkcxoza", model.metadata().last());
-        Assertions.assertEquals("helxprglya", model.metadata().prev());
-        Assertions.assertEquals("dckcbc", model.metadata().next());
-        Assertions.assertEquals(1827810592, model.metadata().totalSize());
-        Assertions.assertEquals("gciqibrh", model.data().get(0).kind());
-        Assertions.assertEquals("xsdqrhzoymibmrqy", model.data().get(0).id());
-        Assertions.assertEquals("hwflu", model.data().get(0).metadata().self());
-        Assertions.assertEquals("dtmhrkwofyyvoqa", model.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("iexpbtgiwbwo", model.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("washr", model.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("tkcnqxwb", model.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("kulpiujwaasi", model.data().get(0).displayName());
-        Assertions.assertEquals("i", model.data().get(0).description());
+        Assertions.assertEquals("gwol", model.kind());
+        Assertions.assertEquals("zbwemh", model.metadata().first());
+        Assertions.assertEquals("rsbrgzdwm", model.metadata().last());
+        Assertions.assertEquals("eypqwdxggicccn", model.metadata().prev());
+        Assertions.assertEquals("huexmk", model.metadata().next());
+        Assertions.assertEquals(171161135, model.metadata().totalSize());
+        Assertions.assertEquals("lzywemhzrncsdtc", model.data().get(0).kind());
+        Assertions.assertEquals("siypbs", model.data().get(0).id());
+        Assertions.assertEquals("tg", model.data().get(0).metadata().self());
+        Assertions.assertEquals("lfeadcygq", model.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("yhejhzisxgfp", model.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("olppvksrpqvujz", model.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("ehtwdwrft", model.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("iby", model.data().get(0).displayName());
+        Assertions.assertEquals("dl", model.data().get(0).description());
     }
 }

@@ -11,22 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessCreateRoleBindingRequestModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessCreateRoleBindingRequestModel model
-            = BinaryData.fromString("{\"principal\":\"xmrhu\",\"role_name\":\"wp\",\"crn_pattern\":\"sutrgjup\"}")
-                .toObject(AccessCreateRoleBindingRequestModel.class);
-        Assertions.assertEquals("xmrhu", model.principal());
-        Assertions.assertEquals("wp", model.roleName());
-        Assertions.assertEquals("sutrgjup", model.crnPattern());
+        AccessCreateRoleBindingRequestModel model = BinaryData
+            .fromString("{\"principal\":\"jlyjtlvofq\",\"role_name\":\"vfcibyfmowux\",\"crn_pattern\":\"jpvd\"}")
+            .toObject(AccessCreateRoleBindingRequestModel.class);
+        Assertions.assertEquals("jlyjtlvofq", model.principal());
+        Assertions.assertEquals("vfcibyfmowux", model.roleName());
+        Assertions.assertEquals("jpvd", model.crnPattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessCreateRoleBindingRequestModel model = new AccessCreateRoleBindingRequestModel().withPrincipal("xmrhu")
-            .withRoleName("wp")
-            .withCrnPattern("sutrgjup");
+        AccessCreateRoleBindingRequestModel model
+            = new AccessCreateRoleBindingRequestModel().withPrincipal("jlyjtlvofq")
+                .withRoleName("vfcibyfmowux")
+                .withCrnPattern("jpvd");
         model = BinaryData.fromObject(model).toObject(AccessCreateRoleBindingRequestModel.class);
-        Assertions.assertEquals("xmrhu", model.principal());
-        Assertions.assertEquals("wp", model.roleName());
-        Assertions.assertEquals("sutrgjup", model.crnPattern());
+        Assertions.assertEquals("jlyjtlvofq", model.principal());
+        Assertions.assertEquals("vfcibyfmowux", model.roleName());
+        Assertions.assertEquals("jpvd", model.crnPattern());
     }
 }

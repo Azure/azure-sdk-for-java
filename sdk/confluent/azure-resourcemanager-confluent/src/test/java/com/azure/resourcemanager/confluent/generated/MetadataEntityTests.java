@@ -12,12 +12,12 @@ public final class MetadataEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetadataEntity model = BinaryData.fromString(
-            "{\"self\":\"mwyhr\",\"resource_name\":\"uyfta\",\"created_at\":\"cpwi\",\"updated_at\":\"vqtmnub\",\"deleted_at\":\"kpzksmondjmq\"}")
+            "{\"self\":\"l\",\"resource_name\":\"qhoftrmaequiah\",\"created_at\":\"cslfaoqzpiyylha\",\"updated_at\":\"swhccsphk\",\"deleted_at\":\"vwitqscyw\"}")
             .toObject(MetadataEntity.class);
-        Assertions.assertEquals("mwyhr", model.self());
-        Assertions.assertEquals("uyfta", model.resourceName());
-        Assertions.assertEquals("cpwi", model.createdAt());
-        Assertions.assertEquals("vqtmnub", model.updatedAt());
-        Assertions.assertEquals("kpzksmondjmq", model.deletedAt());
+        Assertions.assertEquals("l", model.self());
+        Assertions.assertEquals("qhoftrmaequiah", model.resourceName());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.createdAt());
+        Assertions.assertEquals("swhccsphk", model.updatedAt());
+        Assertions.assertEquals("vwitqscyw", model.deletedAt());
     }
 }

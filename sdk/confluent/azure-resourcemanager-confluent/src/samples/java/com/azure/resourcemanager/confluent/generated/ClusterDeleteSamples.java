@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class ClusterDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Cluster_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Cluster_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Cluster_Delete_MinimumSet.
@@ -23,7 +23,7 @@ public final class ClusterDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Cluster_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Cluster_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Cluster_Delete_MaximumSet.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class OrganizationListRegionsSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Organization_ListRegions_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Organization_ListRegions_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListRegions_MaximumSet.
@@ -28,7 +28,7 @@ public final class OrganizationListRegionsSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Organization_ListRegions_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Organization_ListRegions_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organization_ListRegions_MinimumSet.

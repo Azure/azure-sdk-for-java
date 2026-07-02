@@ -47,6 +47,20 @@ public interface ConfluentManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the NetworkGatewayResourcesClient object to access its operations.
+     * 
+     * @return the NetworkGatewayResourcesClient object.
+     */
+    NetworkGatewayResourcesClient getNetworkGatewayResources();
+
+    /**
+     * Gets the AccessPointResourcesClient object to access its operations.
+     * 
+     * @return the AccessPointResourcesClient object.
+     */
+    AccessPointResourcesClient getAccessPointResources();
+
+    /**
      * Gets the OrganizationOperationsClient object to access its operations.
      * 
      * @return the OrganizationOperationsClient object.

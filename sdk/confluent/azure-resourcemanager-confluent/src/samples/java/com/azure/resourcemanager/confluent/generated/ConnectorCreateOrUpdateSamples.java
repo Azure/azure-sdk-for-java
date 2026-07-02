@@ -16,7 +16,7 @@ import com.azure.resourcemanager.confluent.models.PartnerInfoBase;
  */
 public final class ConnectorCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Connector_CreateOrUpdate_MaximumSet.

@@ -14,17 +14,17 @@ public final class OrganizationResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrganizationResourceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"gbquxigj\":\"bhtqqrolfpfpsa\",\"lnerkujysvleju\":\"jgzjaoyfhrtx\",\"kcprbnw\":\"fqawrlyxw\",\"ysszdnrujqguh\":\"xgjvtbv\"}}")
+            "{\"tags\":{\"ghmewuam\":\"xuigdtopbobj\",\"gvdfgiotkftutq\":\"uhrzayvvt\",\"xlefgugnxkrx\":\"ln\",\"tthzrvqd\":\"qmi\"}}")
             .toObject(OrganizationResourceUpdate.class);
-        Assertions.assertEquals("bhtqqrolfpfpsa", model.tags().get("gbquxigj"));
+        Assertions.assertEquals("xuigdtopbobj", model.tags().get("ghmewuam"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceUpdate model = new OrganizationResourceUpdate().withTags(mapOf("gbquxigj", "bhtqqrolfpfpsa",
-            "lnerkujysvleju", "jgzjaoyfhrtx", "kcprbnw", "fqawrlyxw", "ysszdnrujqguh", "xgjvtbv"));
+        OrganizationResourceUpdate model = new OrganizationResourceUpdate().withTags(
+            mapOf("ghmewuam", "xuigdtopbobj", "gvdfgiotkftutq", "uhrzayvvt", "xlefgugnxkrx", "ln", "tthzrvqd", "qmi"));
         model = BinaryData.fromObject(model).toObject(OrganizationResourceUpdate.class);
-        Assertions.assertEquals("bhtqqrolfpfpsa", model.tags().get("gbquxigj"));
+        Assertions.assertEquals("xuigdtopbobj", model.tags().get("ghmewuam"));
     }
 
     // Use "Map.of" if available

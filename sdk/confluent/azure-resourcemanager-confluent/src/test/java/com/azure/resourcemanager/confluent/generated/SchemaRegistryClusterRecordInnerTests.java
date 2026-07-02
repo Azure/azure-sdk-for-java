@@ -12,25 +12,25 @@ public final class SchemaRegistryClusterRecordInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryClusterRecordInner model = BinaryData.fromString(
-            "{\"kind\":\"bnuqqkpik\",\"id\":\"rgvtqag\",\"properties\":{\"metadata\":{\"self\":\"nhijggmebfsi\",\"resourceName\":\"butr\",\"createdTimestamp\":\"pnazzm\",\"updatedTimestamp\":\"runmp\",\"deletedTimestamp\":\"tdbhrbnla\"},\"spec\":{\"name\":\"myskpbhenbtkcxy\",\"httpEndpoint\":\"y\",\"package\":\"rsyn\",\"region\":{\"id\":\"dybyxczfclhaa\",\"related\":\"babphlwrqlfk\",\"resourceName\":\"thsu\"},\"environment\":{\"id\":\"mnyyazt\",\"related\":\"twwrqp\",\"resourceName\":\"dckzywbiexz\"},\"cloud\":\"yueaxibxujwb\"},\"status\":{\"phase\":\"almuzyoxaepdkzja\"}}}")
+            "{\"kind\":\"wbnb\",\"id\":\"ldawkzbaliourqha\",\"properties\":{\"metadata\":{\"self\":\"ashsfwxos\",\"resourceName\":\"z\",\"createdTimestamp\":\"ugicjooxdjebw\",\"updatedTimestamp\":\"cwwfvovbvme\",\"deletedTimestamp\":\"civyhzceuo\"},\"spec\":{\"name\":\"rw\",\"httpEndpoint\":\"eiotwmcdytdx\",\"package\":\"txnrjaw\",\"region\":{\"id\":\"gxhnisk\",\"related\":\"bkpyc\",\"resourceName\":\"lwn\"},\"environment\":{\"id\":\"jdauwhvy\",\"related\":\"zbtd\",\"resourceName\":\"ujznb\"},\"cloud\":\"ow\"},\"status\":{\"phase\":\"rzqlveu\"}}}")
             .toObject(SchemaRegistryClusterRecordInner.class);
-        Assertions.assertEquals("bnuqqkpik", model.kind());
-        Assertions.assertEquals("rgvtqag", model.id());
-        Assertions.assertEquals("nhijggmebfsi", model.metadata().self());
-        Assertions.assertEquals("butr", model.metadata().resourceName());
-        Assertions.assertEquals("pnazzm", model.metadata().createdTimestamp());
-        Assertions.assertEquals("runmp", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("tdbhrbnla", model.metadata().deletedTimestamp());
-        Assertions.assertEquals("myskpbhenbtkcxy", model.spec().name());
-        Assertions.assertEquals("y", model.spec().httpEndpoint());
-        Assertions.assertEquals("rsyn", model.spec().packageProperty());
-        Assertions.assertEquals("dybyxczfclhaa", model.spec().region().id());
-        Assertions.assertEquals("babphlwrqlfk", model.spec().region().related());
-        Assertions.assertEquals("thsu", model.spec().region().resourceName());
-        Assertions.assertEquals("mnyyazt", model.spec().environment().id());
-        Assertions.assertEquals("twwrqp", model.spec().environment().related());
-        Assertions.assertEquals("dckzywbiexz", model.spec().environment().resourceName());
-        Assertions.assertEquals("yueaxibxujwb", model.spec().cloud());
-        Assertions.assertEquals("almuzyoxaepdkzja", model.status().phase());
+        Assertions.assertEquals("wbnb", model.kind());
+        Assertions.assertEquals("ldawkzbaliourqha", model.id());
+        Assertions.assertEquals("ashsfwxos", model.metadata().self());
+        Assertions.assertEquals("z", model.metadata().resourceName());
+        Assertions.assertEquals("ugicjooxdjebw", model.metadata().createdTimestamp());
+        Assertions.assertEquals("cwwfvovbvme", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("civyhzceuo", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("rw", model.spec().name());
+        Assertions.assertEquals("eiotwmcdytdx", model.spec().httpEndpoint());
+        Assertions.assertEquals("txnrjaw", model.spec().packageProperty());
+        Assertions.assertEquals("gxhnisk", model.spec().region().id());
+        Assertions.assertEquals("bkpyc", model.spec().region().related());
+        Assertions.assertEquals("lwn", model.spec().region().resourceName());
+        Assertions.assertEquals("jdauwhvy", model.spec().environment().id());
+        Assertions.assertEquals("zbtd", model.spec().environment().related());
+        Assertions.assertEquals("ujznb", model.spec().environment().resourceName());
+        Assertions.assertEquals("ow", model.spec().cloud());
+        Assertions.assertEquals("rzqlveu", model.status().phase());
     }
 }

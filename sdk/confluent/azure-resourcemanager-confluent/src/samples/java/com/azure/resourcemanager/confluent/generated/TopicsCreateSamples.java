@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class TopicsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Topics_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Topics_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Topics_Create_MaximumSet.

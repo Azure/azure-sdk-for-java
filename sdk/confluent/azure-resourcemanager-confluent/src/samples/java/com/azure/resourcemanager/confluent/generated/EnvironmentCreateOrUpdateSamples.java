@@ -13,7 +13,7 @@ import com.azure.resourcemanager.confluent.models.StreamGovernanceConfig;
  */
 public final class EnvironmentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Environment_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Environment_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Environment_CreateOrUpdate_MaximumSet.

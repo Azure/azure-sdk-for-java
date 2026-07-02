@@ -11,7 +11,7 @@ import com.azure.resourcemanager.confluent.models.AccessCreateRoleBindingRequest
  */
 public final class AccessCreateRoleBindingSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_CreateRoleBinding_MinimumSet.
@@ -25,7 +25,7 @@ public final class AccessCreateRoleBindingSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_CreateRoleBinding_MaximumSet.

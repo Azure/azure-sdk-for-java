@@ -9,7 +9,7 @@ package com.azure.resourcemanager.confluent.generated;
  */
 public final class AccessDeleteRoleBindingSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_DeleteRoleBinding_MaximumSet.
@@ -23,7 +23,7 @@ public final class AccessDeleteRoleBindingSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_DeleteRoleBinding_MinimumSet.

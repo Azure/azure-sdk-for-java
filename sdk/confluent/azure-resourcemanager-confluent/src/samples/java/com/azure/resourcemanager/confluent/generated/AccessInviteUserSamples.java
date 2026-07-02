@@ -12,7 +12,7 @@ import com.azure.resourcemanager.confluent.models.AccessInvitedUserDetails;
  */
 public final class AccessInviteUserSamples {
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_InviteUser_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_InviteUser_MinimumSet_Gen.json
      */
     /**
      * Sample code: Access_InviteUser_MinimumSet.
@@ -26,7 +26,7 @@ public final class AccessInviteUserSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-18-preview/Access_InviteUser_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Access_InviteUser_MaximumSet_Gen.json
      */
     /**
      * Sample code: Access_InviteUser_MaximumSet.

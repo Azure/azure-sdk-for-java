@@ -23,7 +23,7 @@ public final class AccessInviteUserWithResponseMockTests {
     @Test
     public void testInviteUserWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"s\",\"id\":\"gvriibakclac\",\"metadata\":{\"self\":\"nxo\",\"resource_name\":\"xauzlwvsgmwohqfz\",\"created_at\":\"vux\",\"updated_at\":\"kjsvthnwpzteko\",\"deleted_at\":\"ribi\"},\"email\":\"tgplucfota\",\"auth_type\":\"c\",\"status\":\"nykzcugswvxwlm\",\"accepted_at\":\"wmvtxnjm\",\"expires_at\":\"cuqudtcvclxy\"}";
+            = "{\"kind\":\"ihiqakydiw\",\"id\":\"rkwpzdqtvhcspod\",\"metadata\":{\"self\":\"xsi\",\"resource_name\":\"etgbebjfulb\",\"created_at\":\"ichdlpn\",\"updated_at\":\"ubntnbatzviqsow\",\"deleted_at\":\"aelcat\"},\"email\":\"ju\",\"auth_type\":\"lrvkmjc\",\"status\":\"jvlgfggcvkyyliz\",\"accepted_at\":\"bjpsfxsfuztlvtm\",\"expires_at\":\"gbwidqlvh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,26 +33,26 @@ public final class AccessInviteUserWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InvitationRecord response = manager.access()
-            .inviteUserWithResponse("fvxcnqmxqpswo", "mvkhlggd",
-                new AccessInviteUserAccountModel().withOrganizationId("em")
-                    .withEmail("kzsz")
-                    .withUpn("iwtglxxhljfpg")
+            .inviteUserWithResponse("cuyzlwhhmemhoocl", "tnpqmemczjk",
+                new AccessInviteUserAccountModel().withOrganizationId("ykyujxsg")
+                    .withEmail("srrryejylmbkzu")
+                    .withUpn("igrfihotjewl")
                     .withInvitedUserDetails(
-                        new AccessInvitedUserDetails().withInvitedEmail("rmnzhr").withAuthType("qgjsxvpqcbfrmbod")),
+                        new AccessInvitedUserDetails().withInvitedEmail("zzjgnr").withAuthType("qyhqo")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("s", response.kind());
-        Assertions.assertEquals("gvriibakclac", response.id());
-        Assertions.assertEquals("nxo", response.metadata().self());
-        Assertions.assertEquals("xauzlwvsgmwohqfz", response.metadata().resourceName());
-        Assertions.assertEquals("vux", response.metadata().createdAt());
-        Assertions.assertEquals("kjsvthnwpzteko", response.metadata().updatedAt());
-        Assertions.assertEquals("ribi", response.metadata().deletedAt());
-        Assertions.assertEquals("tgplucfota", response.email());
-        Assertions.assertEquals("c", response.authType());
-        Assertions.assertEquals("nykzcugswvxwlm", response.status());
-        Assertions.assertEquals("wmvtxnjm", response.acceptedAt());
-        Assertions.assertEquals("cuqudtcvclxy", response.expiresAt());
+        Assertions.assertEquals("ihiqakydiw", response.kind());
+        Assertions.assertEquals("rkwpzdqtvhcspod", response.id());
+        Assertions.assertEquals("xsi", response.metadata().self());
+        Assertions.assertEquals("etgbebjfulb", response.metadata().resourceName());
+        Assertions.assertEquals("ichdlpn", response.metadata().createdAt());
+        Assertions.assertEquals("ubntnbatzviqsow", response.metadata().updatedAt());
+        Assertions.assertEquals("aelcat", response.metadata().deletedAt());
+        Assertions.assertEquals("ju", response.email());
+        Assertions.assertEquals("lrvkmjc", response.authType());
+        Assertions.assertEquals("jvlgfggcvkyyliz", response.status());
+        Assertions.assertEquals("bjpsfxsfuztlvtm", response.acceptedAt());
+        Assertions.assertEquals("gbwidqlvh", response.expiresAt());
     }
 }

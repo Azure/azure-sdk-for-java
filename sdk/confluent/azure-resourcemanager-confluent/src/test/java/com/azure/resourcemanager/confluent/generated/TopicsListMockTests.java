@@ -22,7 +22,7 @@ public final class TopicsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"kind\":\"t\",\"topicId\":\"joqza\",\"metadata\":{\"self\":\"wqrjzfrg\",\"resourceName\":\"aohcmbuocn\"},\"partitions\":{\"related\":\"hmbpyryxamebly\"},\"configs\":{\"related\":\"kfkmrocxnehvsmt\"},\"inputConfigs\":[{\"name\":\"pyapucygvoav\",\"value\":\"nssxlgh\"},{\"name\":\"egjlgvvpa\",\"value\":\"ksgbuxan\"}],\"partitionsReassignments\":{\"related\":\"gdhg\"},\"partitionsCount\":\"i\",\"replicationFactor\":\"rpiwrqofulo\"},\"id\":\"jnlex\",\"name\":\"hcbjpibk\",\"type\":\"phuuuerctato\"}]}";
+            = "{\"value\":[{\"properties\":{\"kind\":\"xkrplbjaz\",\"topicId\":\"wwviyo\",\"metadata\":{\"self\":\"uhbrnnhjxsq\",\"resourceName\":\"hqkb\"},\"partitions\":{\"related\":\"t\"},\"configs\":{\"related\":\"ycyqiqyhgfsetzl\"},\"inputConfigs\":[{\"name\":\"fledynojpziu\",\"value\":\"bzkkd\"},{\"name\":\"hqsycljselp\",\"value\":\"bafvafhlbylcc\"},{\"name\":\"vxrh\",\"value\":\"d\"},{\"name\":\"rsofpltdbmairrh\",\"value\":\"fnrac\"}],\"partitionsReassignments\":{\"related\":\"qigtuujwouhdaws\"},\"partitionsCount\":\"rb\",\"replicationFactor\":\"xsjybvitvqk\"},\"id\":\"az\",\"name\":\"umtggmuwdchozfn\",\"type\":\"fexl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,19 +32,18 @@ public final class TopicsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TopicRecord> response = manager.topics()
-            .list("jj", "cqtjzmi", "vgbgatzuuvbxng", "ebwgga", 1794399403, "tzlswvaj",
-                com.azure.core.util.Context.NONE);
+            .list("jzwfb", "yay", "mmfz", "bfw", 627946275, "zxmdew", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("t", response.iterator().next().kind());
-        Assertions.assertEquals("joqza", response.iterator().next().topicId());
-        Assertions.assertEquals("wqrjzfrg", response.iterator().next().metadata().self());
-        Assertions.assertEquals("aohcmbuocn", response.iterator().next().metadata().resourceName());
-        Assertions.assertEquals("hmbpyryxamebly", response.iterator().next().partitions().related());
-        Assertions.assertEquals("kfkmrocxnehvsmt", response.iterator().next().configs().related());
-        Assertions.assertEquals("pyapucygvoav", response.iterator().next().inputConfigs().get(0).name());
-        Assertions.assertEquals("nssxlgh", response.iterator().next().inputConfigs().get(0).value());
-        Assertions.assertEquals("gdhg", response.iterator().next().partitionsReassignments().related());
-        Assertions.assertEquals("i", response.iterator().next().partitionsCount());
-        Assertions.assertEquals("rpiwrqofulo", response.iterator().next().replicationFactor());
+        Assertions.assertEquals("xkrplbjaz", response.iterator().next().kind());
+        Assertions.assertEquals("wwviyo", response.iterator().next().topicId());
+        Assertions.assertEquals("uhbrnnhjxsq", response.iterator().next().metadata().self());
+        Assertions.assertEquals("hqkb", response.iterator().next().metadata().resourceName());
+        Assertions.assertEquals("t", response.iterator().next().partitions().related());
+        Assertions.assertEquals("ycyqiqyhgfsetzl", response.iterator().next().configs().related());
+        Assertions.assertEquals("fledynojpziu", response.iterator().next().inputConfigs().get(0).name());
+        Assertions.assertEquals("bzkkd", response.iterator().next().inputConfigs().get(0).value());
+        Assertions.assertEquals("qigtuujwouhdaws", response.iterator().next().partitionsReassignments().related());
+        Assertions.assertEquals("rb", response.iterator().next().partitionsCount());
+        Assertions.assertEquals("xsjybvitvqk", response.iterator().next().replicationFactor());
     }
 }

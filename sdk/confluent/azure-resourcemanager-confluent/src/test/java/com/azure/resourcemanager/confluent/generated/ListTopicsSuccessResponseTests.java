@@ -12,19 +12,19 @@ public final class ListTopicsSuccessResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListTopicsSuccessResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"kind\":\"rkdbdgiogsjkmnwq\",\"topicId\":\"obaiyhddviaceg\",\"metadata\":{\"self\":\"ntfpmvmemfnc\",\"resourceName\":\"wvvb\"},\"partitions\":{\"related\":\"lllchpodb\"},\"configs\":{\"related\":\"wrd\"},\"inputConfigs\":[{\"name\":\"kuvsjcswsm\",\"value\":\"tuluq\"},{\"name\":\"fcvlerch\",\"value\":\"bm\"},{\"name\":\"jbabwidf\",\"value\":\"sspuunnoxyhkx\"},{\"name\":\"ddrihpf\",\"value\":\"qcaaewdaomdjvl\"}],\"partitionsReassignments\":{\"related\":\"xkzb\"},\"partitionsCount\":\"sgeivsiy\",\"replicationFactor\":\"kdncj\"},\"id\":\"onbzoggculapzwy\",\"name\":\"pgogtqxepny\",\"type\":\"b\"},{\"properties\":{\"kind\":\"jlyjtlvofq\",\"topicId\":\"vfcibyfmowux\",\"metadata\":{\"self\":\"pvdwxf\",\"resourceName\":\"iivwzjbhyzsxjrka\"},\"partitions\":{\"related\":\"rnegvmn\"},\"configs\":{\"related\":\"eqvldspast\"},\"inputConfigs\":[{\"name\":\"dmflv\",\"value\":\"tmjlx\"},{\"name\":\"ilozapeewchpxlk\",\"value\":\"kuziycsle\"}],\"partitionsReassignments\":{\"related\":\"uztcktyhjtqed\"},\"partitionsCount\":\"zulwmmrqzzrrj\",\"replicationFactor\":\"gl\"},\"id\":\"zgkrvqe\",\"name\":\"vtoepryutnw\",\"type\":\"tpzdmovzvfvaawzq\"}],\"nextLink\":\"f\"}")
+            "{\"value\":[{\"properties\":{\"kind\":\"wtwko\",\"topicId\":\"wculkbaw\",\"metadata\":{\"self\":\"jnjwltlwt\",\"resourceName\":\"guk\"},\"partitions\":{\"related\":\"hsnvkcdmxzrp\"},\"configs\":{\"related\":\"mlnwiaaomylweazu\"},\"inputConfigs\":[{\"name\":\"thwwn\",\"value\":\"hlf\"},{\"name\":\"wpchwahf\",\"value\":\"usnfepgfewet\"}],\"partitionsReassignments\":{\"related\":\"xgncxyk\"},\"partitionsCount\":\"djhlimm\",\"replicationFactor\":\"x\"},\"id\":\"bcporxvxcjzhqizx\",\"name\":\"pxtgqscjav\",\"type\":\"t\"}],\"nextLink\":\"hdqazkmtgguwp\"}")
             .toObject(ListTopicsSuccessResponse.class);
-        Assertions.assertEquals("rkdbdgiogsjkmnwq", model.value().get(0).kind());
-        Assertions.assertEquals("obaiyhddviaceg", model.value().get(0).topicId());
-        Assertions.assertEquals("ntfpmvmemfnc", model.value().get(0).metadata().self());
-        Assertions.assertEquals("wvvb", model.value().get(0).metadata().resourceName());
-        Assertions.assertEquals("lllchpodb", model.value().get(0).partitions().related());
-        Assertions.assertEquals("wrd", model.value().get(0).configs().related());
-        Assertions.assertEquals("kuvsjcswsm", model.value().get(0).inputConfigs().get(0).name());
-        Assertions.assertEquals("tuluq", model.value().get(0).inputConfigs().get(0).value());
-        Assertions.assertEquals("xkzb", model.value().get(0).partitionsReassignments().related());
-        Assertions.assertEquals("sgeivsiy", model.value().get(0).partitionsCount());
-        Assertions.assertEquals("kdncj", model.value().get(0).replicationFactor());
-        Assertions.assertEquals("f", model.nextLink());
+        Assertions.assertEquals("wtwko", model.value().get(0).kind());
+        Assertions.assertEquals("wculkbaw", model.value().get(0).topicId());
+        Assertions.assertEquals("jnjwltlwt", model.value().get(0).metadata().self());
+        Assertions.assertEquals("guk", model.value().get(0).metadata().resourceName());
+        Assertions.assertEquals("hsnvkcdmxzrp", model.value().get(0).partitions().related());
+        Assertions.assertEquals("mlnwiaaomylweazu", model.value().get(0).configs().related());
+        Assertions.assertEquals("thwwn", model.value().get(0).inputConfigs().get(0).name());
+        Assertions.assertEquals("hlf", model.value().get(0).inputConfigs().get(0).value());
+        Assertions.assertEquals("xgncxyk", model.value().get(0).partitionsReassignments().related());
+        Assertions.assertEquals("djhlimm", model.value().get(0).partitionsCount());
+        Assertions.assertEquals("x", model.value().get(0).replicationFactor());
+        Assertions.assertEquals("hdqazkmtgguwp", model.nextLink());
     }
 }

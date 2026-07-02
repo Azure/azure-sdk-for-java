@@ -18,30 +18,30 @@ public final class ConnectorResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectorResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SINK\",\"connectorClass\":\"AZURECOSMOSV2SOURCE\",\"connectorName\":\"yztsfmz\",\"connectorId\":\"aeqphchqnr\",\"connectorState\":\"PAUSED\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"uwrykqgaifmvikl\",\"name\":\"ydv\",\"type\":\"hbejdznxcvdsrhnj\"}")
+            "{\"properties\":{\"connectorBasicInfo\":{\"connectorType\":\"SOURCE\",\"connectorClass\":\"AZURECOSMOSV2SINK\",\"connectorName\":\"dcgzul\",\"connectorId\":\"mrqzzrrjvpgl\",\"connectorState\":\"RUNNING\"},\"connectorServiceTypeInfo\":{\"connectorServiceType\":\"ConnectorServiceTypeInfoBase\"},\"partnerConnectorInfo\":{\"partnerConnectorType\":\"PartnerInfoBase\"}},\"id\":\"vqeevtoep\",\"name\":\"yutnwytpzdmov\",\"type\":\"vf\"}")
             .toObject(ConnectorResourceInner.class);
-        Assertions.assertEquals(ConnectorType.SINK, model.connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SOURCE, model.connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("yztsfmz", model.connectorBasicInfo().connectorName());
-        Assertions.assertEquals("aeqphchqnr", model.connectorBasicInfo().connectorId());
-        Assertions.assertEquals(ConnectorStatus.PAUSED, model.connectorBasicInfo().connectorState());
+        Assertions.assertEquals(ConnectorType.SOURCE, model.connectorBasicInfo().connectorType());
+        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SINK, model.connectorBasicInfo().connectorClass());
+        Assertions.assertEquals("dcgzul", model.connectorBasicInfo().connectorName());
+        Assertions.assertEquals("mrqzzrrjvpgl", model.connectorBasicInfo().connectorId());
+        Assertions.assertEquals(ConnectorStatus.RUNNING, model.connectorBasicInfo().connectorState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectorResourceInner model = new ConnectorResourceInner()
-            .withConnectorBasicInfo(new ConnectorInfoBase().withConnectorType(ConnectorType.SINK)
-                .withConnectorClass(ConnectorClass.AZURECOSMOSV2SOURCE)
-                .withConnectorName("yztsfmz")
-                .withConnectorId("aeqphchqnr")
-                .withConnectorState(ConnectorStatus.PAUSED))
+            .withConnectorBasicInfo(new ConnectorInfoBase().withConnectorType(ConnectorType.SOURCE)
+                .withConnectorClass(ConnectorClass.AZURECOSMOSV2SINK)
+                .withConnectorName("dcgzul")
+                .withConnectorId("mrqzzrrjvpgl")
+                .withConnectorState(ConnectorStatus.RUNNING))
             .withConnectorServiceTypeInfo(new ConnectorServiceTypeInfoBase())
             .withPartnerConnectorInfo(new PartnerInfoBase());
         model = BinaryData.fromObject(model).toObject(ConnectorResourceInner.class);
-        Assertions.assertEquals(ConnectorType.SINK, model.connectorBasicInfo().connectorType());
-        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SOURCE, model.connectorBasicInfo().connectorClass());
-        Assertions.assertEquals("yztsfmz", model.connectorBasicInfo().connectorName());
-        Assertions.assertEquals("aeqphchqnr", model.connectorBasicInfo().connectorId());
-        Assertions.assertEquals(ConnectorStatus.PAUSED, model.connectorBasicInfo().connectorState());
+        Assertions.assertEquals(ConnectorType.SOURCE, model.connectorBasicInfo().connectorType());
+        Assertions.assertEquals(ConnectorClass.AZURECOSMOSV2SINK, model.connectorBasicInfo().connectorClass());
+        Assertions.assertEquals("dcgzul", model.connectorBasicInfo().connectorName());
+        Assertions.assertEquals("mrqzzrrjvpgl", model.connectorBasicInfo().connectorId());
+        Assertions.assertEquals(ConnectorStatus.RUNNING, model.connectorBasicInfo().connectorState());
     }
 }

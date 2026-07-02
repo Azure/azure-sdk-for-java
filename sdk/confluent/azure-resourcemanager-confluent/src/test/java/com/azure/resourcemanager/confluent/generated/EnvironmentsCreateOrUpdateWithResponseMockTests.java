@@ -24,7 +24,7 @@ public final class EnvironmentsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"wvnph\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ESSENTIALS\"},\"metadata\":{\"self\":\"hmqrhvthlaiwdc\",\"resourceName\":\"mlzzhzdtxetlgyd\",\"createdTimestamp\":\"qvlnnpxybafiqgea\",\"updatedTimestamp\":\"bgj\",\"deletedTimestamp\":\"glklb\"}},\"id\":\"lidwcwvmzegjon\",\"name\":\"hj\",\"type\":\"rwgdnqzbrfks\"}";
+            = "{\"kind\":\"sd\",\"properties\":{\"streamGovernanceConfig\":{\"package\":\"ADVANCED\"},\"metadata\":{\"self\":\"diffjxcjrmmuab\",\"resourceName\":\"bv\",\"createdTimestamp\":\"gjonmcy\",\"updatedTimestamp\":\"oyzbamwineofvf\",\"deletedTimestamp\":\"kpoldtvevboc\"}},\"id\":\"hzjkn\",\"name\":\"uxgvttxpnr\",\"type\":\"pzaamrdixtreki\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,23 +34,23 @@ public final class EnvironmentsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SCEnvironmentRecord response = manager.environments()
-            .define("wro")
-            .withExistingOrganization("tgvgzp", "rrkolawjmjs")
-            .withKind("dxfzzzwyjaf")
-            .withStreamGovernanceConfig(new StreamGovernanceConfig().withPackageProperty(Package.ESSENTIALS))
-            .withMetadata(new SCMetadataEntity().withSelf("nuchlgmltxdwhmo")
-                .withResourceName("sgzv")
-                .withCreatedTimestamp("snnjzfpafolpym")
-                .withUpdatedTimestamp("mxq")
-                .withDeletedTimestamp("agpgdph"))
+            .define("pydjfboc")
+            .withExistingOrganization("aepwamcxtcz", "upeuknijduyye")
+            .withKind("hhulrtywikdm")
+            .withStreamGovernanceConfig(new StreamGovernanceConfig().withPackageProperty(Package.ADVANCED))
+            .withMetadata(new SCMetadataEntity().withSelf("gbhgau")
+                .withResourceName("dixmxufrsryjq")
+                .withCreatedTimestamp("kfnozoeoqbvj")
+                .withUpdatedTimestamp("efgwbmqjc")
+                .withDeletedTimestamp("tasfaymxbulpzeal"))
             .create();
 
-        Assertions.assertEquals("wvnph", response.kind());
-        Assertions.assertEquals(Package.ESSENTIALS, response.streamGovernanceConfig().packageProperty());
-        Assertions.assertEquals("hmqrhvthlaiwdc", response.metadata().self());
-        Assertions.assertEquals("mlzzhzdtxetlgyd", response.metadata().resourceName());
-        Assertions.assertEquals("qvlnnpxybafiqgea", response.metadata().createdTimestamp());
-        Assertions.assertEquals("bgj", response.metadata().updatedTimestamp());
-        Assertions.assertEquals("glklb", response.metadata().deletedTimestamp());
+        Assertions.assertEquals("sd", response.kind());
+        Assertions.assertEquals(Package.ADVANCED, response.streamGovernanceConfig().packageProperty());
+        Assertions.assertEquals("diffjxcjrmmuab", response.metadata().self());
+        Assertions.assertEquals("bv", response.metadata().resourceName());
+        Assertions.assertEquals("gjonmcy", response.metadata().createdTimestamp());
+        Assertions.assertEquals("oyzbamwineofvf", response.metadata().updatedTimestamp());
+        Assertions.assertEquals("kpoldtvevboc", response.metadata().deletedTimestamp());
     }
 }

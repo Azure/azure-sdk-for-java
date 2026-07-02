@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class TopicsRelatedLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopicsRelatedLink model = BinaryData.fromString("{\"related\":\"ccybvp\"}").toObject(TopicsRelatedLink.class);
-        Assertions.assertEquals("ccybvp", model.related());
+        TopicsRelatedLink model = BinaryData.fromString("{\"related\":\"klf\"}").toObject(TopicsRelatedLink.class);
+        Assertions.assertEquals("klf", model.related());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopicsRelatedLink model = new TopicsRelatedLink().withRelated("ccybvp");
+        TopicsRelatedLink model = new TopicsRelatedLink().withRelated("klf");
         model = BinaryData.fromObject(model).toObject(TopicsRelatedLink.class);
-        Assertions.assertEquals("ccybvp", model.related());
+        Assertions.assertEquals("klf", model.related());
     }
 }

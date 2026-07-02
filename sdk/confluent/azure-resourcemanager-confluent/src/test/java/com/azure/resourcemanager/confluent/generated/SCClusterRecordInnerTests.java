@@ -19,97 +19,97 @@ public final class SCClusterRecordInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SCClusterRecordInner model = BinaryData.fromString(
-            "{\"kind\":\"ccm\",\"properties\":{\"metadata\":{\"self\":\"xy\",\"resourceName\":\"moyrxvwfudwpz\",\"createdTimestamp\":\"xhdzhlrqjbhckf\",\"updatedTimestamp\":\"hrxsbk\",\"deletedTimestamp\":\"pycanuzbpz\"},\"spec\":{\"name\":\"kuwbcrnwb\",\"availability\":\"hhseyv\",\"cloud\":\"srtslhspkdeem\",\"zone\":\"fm\",\"package\":\"ADVANCED\",\"region\":\"vt\",\"kafkaBootstrapEndpoint\":\"lmqkrhahvlj\",\"httpEndpoint\":\"haquhcdh\",\"apiEndpoint\":\"ualaexqpvfadmw\",\"config\":{\"kind\":\"r\"},\"environment\":{\"id\":\"pv\",\"environment\":\"mzlfmisgwb\",\"related\":\"beldawkzbaliourq\",\"resourceName\":\"kauhashsfwxo\"},\"network\":{\"id\":\"z\",\"environment\":\"ugicjooxdjebw\",\"related\":\"cwwfvovbvme\",\"resourceName\":\"civyhzceuo\"},\"byok\":{\"id\":\"rw\",\"related\":\"eiotwmcdytdx\",\"resourceName\":\"txnrjaw\"}},\"status\":{\"phase\":\"gxhnisk\",\"cku\":1319341047}},\"id\":\"py\",\"name\":\"gklwn\",\"type\":\"nhjdauw\"}")
+            "{\"kind\":\"tpnapnyiropuhpig\",\"properties\":{\"metadata\":{\"self\":\"lgqg\",\"resourceName\":\"xmedjvcsly\",\"createdTimestamp\":\"wwncwzzhxgk\",\"updatedTimestamp\":\"mgucna\",\"deletedTimestamp\":\"t\"},\"spec\":{\"name\":\"llwptfdy\",\"availability\":\"fqbuaceopzf\",\"cloud\":\"hhuao\",\"zone\":\"pcqeqx\",\"package\":\"ESSENTIALS\",\"region\":\"ahzxctobgbk\",\"kafkaBootstrapEndpoint\":\"oizpostmgrcfbun\",\"httpEndpoint\":\"fqjhhkxbpvjymj\",\"apiEndpoint\":\"xjyngudivk\",\"config\":{\"kind\":\"wbxqzvszjfau\"},\"environment\":{\"id\":\"dxxiv\",\"environment\":\"vtcqaqtdo\",\"related\":\"cbxvwvxyslqbh\",\"resourceName\":\"xoblytkbl\"},\"network\":{\"id\":\"wwwfbkr\",\"environment\":\"nsvs\",\"related\":\"johxcrsb\",\"resourceName\":\"vasrruvwb\"},\"byok\":{\"id\":\"fsubcgjbirxbpy\",\"related\":\"rfbjf\",\"resourceName\":\"w\"}},\"status\":{\"phase\":\"t\",\"cku\":1553831435}},\"id\":\"jzbexilzznfq\",\"name\":\"nvwpmqtaruouj\",\"type\":\"kcjhwqytjrybnwj\"}")
             .toObject(SCClusterRecordInner.class);
-        Assertions.assertEquals("ccm", model.kind());
-        Assertions.assertEquals("xy", model.metadata().self());
-        Assertions.assertEquals("moyrxvwfudwpz", model.metadata().resourceName());
-        Assertions.assertEquals("xhdzhlrqjbhckf", model.metadata().createdTimestamp());
-        Assertions.assertEquals("hrxsbk", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("pycanuzbpz", model.metadata().deletedTimestamp());
-        Assertions.assertEquals("kuwbcrnwb", model.spec().name());
-        Assertions.assertEquals("hhseyv", model.spec().availability());
-        Assertions.assertEquals("srtslhspkdeem", model.spec().cloud());
-        Assertions.assertEquals("fm", model.spec().zone());
-        Assertions.assertEquals(Package.ADVANCED, model.spec().packageProperty());
-        Assertions.assertEquals("vt", model.spec().region());
-        Assertions.assertEquals("lmqkrhahvlj", model.spec().kafkaBootstrapEndpoint());
-        Assertions.assertEquals("haquhcdh", model.spec().httpEndpoint());
-        Assertions.assertEquals("ualaexqpvfadmw", model.spec().apiEndpoint());
-        Assertions.assertEquals("r", model.spec().config().kind());
-        Assertions.assertEquals("pv", model.spec().environment().id());
-        Assertions.assertEquals("mzlfmisgwb", model.spec().environment().environment());
-        Assertions.assertEquals("beldawkzbaliourq", model.spec().environment().related());
-        Assertions.assertEquals("kauhashsfwxo", model.spec().environment().resourceName());
-        Assertions.assertEquals("z", model.spec().network().id());
-        Assertions.assertEquals("ugicjooxdjebw", model.spec().network().environment());
-        Assertions.assertEquals("cwwfvovbvme", model.spec().network().related());
-        Assertions.assertEquals("civyhzceuo", model.spec().network().resourceName());
-        Assertions.assertEquals("rw", model.spec().byok().id());
-        Assertions.assertEquals("eiotwmcdytdx", model.spec().byok().related());
-        Assertions.assertEquals("txnrjaw", model.spec().byok().resourceName());
-        Assertions.assertEquals("gxhnisk", model.status().phase());
-        Assertions.assertEquals(1319341047, model.status().cku());
+        Assertions.assertEquals("tpnapnyiropuhpig", model.kind());
+        Assertions.assertEquals("lgqg", model.metadata().self());
+        Assertions.assertEquals("xmedjvcsly", model.metadata().resourceName());
+        Assertions.assertEquals("wwncwzzhxgk", model.metadata().createdTimestamp());
+        Assertions.assertEquals("mgucna", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("t", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("llwptfdy", model.spec().name());
+        Assertions.assertEquals("fqbuaceopzf", model.spec().availability());
+        Assertions.assertEquals("hhuao", model.spec().cloud());
+        Assertions.assertEquals("pcqeqx", model.spec().zone());
+        Assertions.assertEquals(Package.ESSENTIALS, model.spec().packageProperty());
+        Assertions.assertEquals("ahzxctobgbk", model.spec().region());
+        Assertions.assertEquals("oizpostmgrcfbun", model.spec().kafkaBootstrapEndpoint());
+        Assertions.assertEquals("fqjhhkxbpvjymj", model.spec().httpEndpoint());
+        Assertions.assertEquals("xjyngudivk", model.spec().apiEndpoint());
+        Assertions.assertEquals("wbxqzvszjfau", model.spec().config().kind());
+        Assertions.assertEquals("dxxiv", model.spec().environment().id());
+        Assertions.assertEquals("vtcqaqtdo", model.spec().environment().environment());
+        Assertions.assertEquals("cbxvwvxyslqbh", model.spec().environment().related());
+        Assertions.assertEquals("xoblytkbl", model.spec().environment().resourceName());
+        Assertions.assertEquals("wwwfbkr", model.spec().network().id());
+        Assertions.assertEquals("nsvs", model.spec().network().environment());
+        Assertions.assertEquals("johxcrsb", model.spec().network().related());
+        Assertions.assertEquals("vasrruvwb", model.spec().network().resourceName());
+        Assertions.assertEquals("fsubcgjbirxbpy", model.spec().byok().id());
+        Assertions.assertEquals("rfbjf", model.spec().byok().related());
+        Assertions.assertEquals("w", model.spec().byok().resourceName());
+        Assertions.assertEquals("t", model.status().phase());
+        Assertions.assertEquals(1553831435, model.status().cku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCClusterRecordInner model = new SCClusterRecordInner().withKind("ccm")
-            .withMetadata(new SCMetadataEntity().withSelf("xy")
-                .withResourceName("moyrxvwfudwpz")
-                .withCreatedTimestamp("xhdzhlrqjbhckf")
-                .withUpdatedTimestamp("hrxsbk")
-                .withDeletedTimestamp("pycanuzbpz"))
-            .withSpec(new SCClusterSpecEntity().withName("kuwbcrnwb")
-                .withAvailability("hhseyv")
-                .withCloud("srtslhspkdeem")
-                .withZone("fm")
-                .withPackageProperty(Package.ADVANCED)
-                .withRegion("vt")
-                .withKafkaBootstrapEndpoint("lmqkrhahvlj")
-                .withHttpEndpoint("haquhcdh")
-                .withApiEndpoint("ualaexqpvfadmw")
-                .withConfig(new ClusterConfigEntity().withKind("r"))
-                .withEnvironment(new SCClusterNetworkEnvironmentEntity().withId("pv")
-                    .withEnvironment("mzlfmisgwb")
-                    .withRelated("beldawkzbaliourq")
-                    .withResourceName("kauhashsfwxo"))
-                .withNetwork(new SCClusterNetworkEnvironmentEntity().withId("z")
-                    .withEnvironment("ugicjooxdjebw")
-                    .withRelated("cwwfvovbvme")
-                    .withResourceName("civyhzceuo"))
+        SCClusterRecordInner model = new SCClusterRecordInner().withKind("tpnapnyiropuhpig")
+            .withMetadata(new SCMetadataEntity().withSelf("lgqg")
+                .withResourceName("xmedjvcsly")
+                .withCreatedTimestamp("wwncwzzhxgk")
+                .withUpdatedTimestamp("mgucna")
+                .withDeletedTimestamp("t"))
+            .withSpec(new SCClusterSpecEntity().withName("llwptfdy")
+                .withAvailability("fqbuaceopzf")
+                .withCloud("hhuao")
+                .withZone("pcqeqx")
+                .withPackageProperty(Package.ESSENTIALS)
+                .withRegion("ahzxctobgbk")
+                .withKafkaBootstrapEndpoint("oizpostmgrcfbun")
+                .withHttpEndpoint("fqjhhkxbpvjymj")
+                .withApiEndpoint("xjyngudivk")
+                .withConfig(new ClusterConfigEntity().withKind("wbxqzvszjfau"))
+                .withEnvironment(new SCClusterNetworkEnvironmentEntity().withId("dxxiv")
+                    .withEnvironment("vtcqaqtdo")
+                    .withRelated("cbxvwvxyslqbh")
+                    .withResourceName("xoblytkbl"))
+                .withNetwork(new SCClusterNetworkEnvironmentEntity().withId("wwwfbkr")
+                    .withEnvironment("nsvs")
+                    .withRelated("johxcrsb")
+                    .withResourceName("vasrruvwb"))
                 .withByok(
-                    new SCClusterByokEntity().withId("rw").withRelated("eiotwmcdytdx").withResourceName("txnrjaw")))
-            .withStatus(new ClusterStatusEntity().withPhase("gxhnisk").withCku(1319341047));
+                    new SCClusterByokEntity().withId("fsubcgjbirxbpy").withRelated("rfbjf").withResourceName("w")))
+            .withStatus(new ClusterStatusEntity().withPhase("t").withCku(1553831435));
         model = BinaryData.fromObject(model).toObject(SCClusterRecordInner.class);
-        Assertions.assertEquals("ccm", model.kind());
-        Assertions.assertEquals("xy", model.metadata().self());
-        Assertions.assertEquals("moyrxvwfudwpz", model.metadata().resourceName());
-        Assertions.assertEquals("xhdzhlrqjbhckf", model.metadata().createdTimestamp());
-        Assertions.assertEquals("hrxsbk", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("pycanuzbpz", model.metadata().deletedTimestamp());
-        Assertions.assertEquals("kuwbcrnwb", model.spec().name());
-        Assertions.assertEquals("hhseyv", model.spec().availability());
-        Assertions.assertEquals("srtslhspkdeem", model.spec().cloud());
-        Assertions.assertEquals("fm", model.spec().zone());
-        Assertions.assertEquals(Package.ADVANCED, model.spec().packageProperty());
-        Assertions.assertEquals("vt", model.spec().region());
-        Assertions.assertEquals("lmqkrhahvlj", model.spec().kafkaBootstrapEndpoint());
-        Assertions.assertEquals("haquhcdh", model.spec().httpEndpoint());
-        Assertions.assertEquals("ualaexqpvfadmw", model.spec().apiEndpoint());
-        Assertions.assertEquals("r", model.spec().config().kind());
-        Assertions.assertEquals("pv", model.spec().environment().id());
-        Assertions.assertEquals("mzlfmisgwb", model.spec().environment().environment());
-        Assertions.assertEquals("beldawkzbaliourq", model.spec().environment().related());
-        Assertions.assertEquals("kauhashsfwxo", model.spec().environment().resourceName());
-        Assertions.assertEquals("z", model.spec().network().id());
-        Assertions.assertEquals("ugicjooxdjebw", model.spec().network().environment());
-        Assertions.assertEquals("cwwfvovbvme", model.spec().network().related());
-        Assertions.assertEquals("civyhzceuo", model.spec().network().resourceName());
-        Assertions.assertEquals("rw", model.spec().byok().id());
-        Assertions.assertEquals("eiotwmcdytdx", model.spec().byok().related());
-        Assertions.assertEquals("txnrjaw", model.spec().byok().resourceName());
-        Assertions.assertEquals("gxhnisk", model.status().phase());
-        Assertions.assertEquals(1319341047, model.status().cku());
+        Assertions.assertEquals("tpnapnyiropuhpig", model.kind());
+        Assertions.assertEquals("lgqg", model.metadata().self());
+        Assertions.assertEquals("xmedjvcsly", model.metadata().resourceName());
+        Assertions.assertEquals("wwncwzzhxgk", model.metadata().createdTimestamp());
+        Assertions.assertEquals("mgucna", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("t", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("llwptfdy", model.spec().name());
+        Assertions.assertEquals("fqbuaceopzf", model.spec().availability());
+        Assertions.assertEquals("hhuao", model.spec().cloud());
+        Assertions.assertEquals("pcqeqx", model.spec().zone());
+        Assertions.assertEquals(Package.ESSENTIALS, model.spec().packageProperty());
+        Assertions.assertEquals("ahzxctobgbk", model.spec().region());
+        Assertions.assertEquals("oizpostmgrcfbun", model.spec().kafkaBootstrapEndpoint());
+        Assertions.assertEquals("fqjhhkxbpvjymj", model.spec().httpEndpoint());
+        Assertions.assertEquals("xjyngudivk", model.spec().apiEndpoint());
+        Assertions.assertEquals("wbxqzvszjfau", model.spec().config().kind());
+        Assertions.assertEquals("dxxiv", model.spec().environment().id());
+        Assertions.assertEquals("vtcqaqtdo", model.spec().environment().environment());
+        Assertions.assertEquals("cbxvwvxyslqbh", model.spec().environment().related());
+        Assertions.assertEquals("xoblytkbl", model.spec().environment().resourceName());
+        Assertions.assertEquals("wwwfbkr", model.spec().network().id());
+        Assertions.assertEquals("nsvs", model.spec().network().environment());
+        Assertions.assertEquals("johxcrsb", model.spec().network().related());
+        Assertions.assertEquals("vasrruvwb", model.spec().network().resourceName());
+        Assertions.assertEquals("fsubcgjbirxbpy", model.spec().byok().id());
+        Assertions.assertEquals("rfbjf", model.spec().byok().related());
+        Assertions.assertEquals("w", model.spec().byok().resourceName());
+        Assertions.assertEquals("t", model.status().phase());
+        Assertions.assertEquals(1553831435, model.status().cku());
     }
 }
