@@ -3,6 +3,7 @@
 ### 4.82.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for hierarchical (sub)partition keys whose last path is `/id`. When the last partition key path is `/id`, point operations (create/read/replace/upsert/delete/patch), bulk operations and `readMany` now automatically append the item's `id` to the partition key, so callers can address an item using only the prefix of the partition key. Transactional batch requires the fully specified partition key (including the `id`). - See [PR 5600](https://github.com/Azure/azure-cosmos-dotnet-v3/pull/5600) for the equivalent .NET change.
 
 #### Breaking Changes
 
