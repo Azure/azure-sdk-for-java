@@ -1,19 +1,36 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
+### Bugs Fixed
+
+### Other Changes
+
+## 2.2.0 (2026-07-01)
+
+### Features Added
+
+- Added `EndpointBasedEvaluatorDefinition` for custom evaluator definitions backed by customer-hosted endpoints and Project Connections.
+
+### Breaking Changes
+
 - Preview operation group clients now use beta-prefixed names and are built through `AIProjectClientBuilder.beta()`. `DataGenerationJobsClient` / `DataGenerationJobsAsyncClient` renamed to `BetaDatasetsClient` / `BetaDatasetsAsyncClient`; `EvaluationTaxonomies`, `Evaluators`, `Insights`, `Models`, `RedTeams`, `Routines`, `Schedules`, and `Skills` clients were renamed to their corresponding `Beta*Client` / `Beta*AsyncClient` names.
 - `Skill` renamed to `SkillDetails`. `SkillsClient` and `SkillsAsyncClient` methods such as `getSkill`, `listSkills`, and `updateSkill` now return `SkillDetails` / `PagedIterable<SkillDetails>` / `PagedFlux<SkillDetails>` instead of `Skill`.
+- `RoutineRun.getStatus()` now returns `BinaryData` instead of `String` to align with the current Routines preview contract.
+- `SystemDataV3` and `ModelVersion.getSystemData()` were removed because model versions no longer expose system data in the current service contract.
 
 ### Bugs Fixed
 
 - Fixed OpenAI clients built from `AIProjectClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
 
 ### Other Changes
+
+- Added routines samples covering CRUD (`RoutinesSample` / `RoutinesAsyncSample`), schedule trigger, timer trigger, and manual dispatch, with a shared `RoutinesSampleUtils` helper.
+- Marked preview clients, models, and methods with `@Beta` annotations so preview surface area is explicit in generated API docs.
 
 ## 2.1.0 (2026-06-01)
 

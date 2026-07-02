@@ -6,13 +6,13 @@ package com.azure.ai.projects.models;
 import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneOffset;
 
 /**
  * A one-shot timer routine trigger.
@@ -31,7 +31,7 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
      * The UTC date and time at which the timer fires.
      */
     @Generated
-    private OffsetDateTime at;
+    private Long at;
 
     /**
      * Get the type property: The trigger type.
@@ -51,7 +51,10 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
      */
     @Generated
     public OffsetDateTime getAt() {
-        return this.at;
+        if (this.at == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.at), ZoneOffset.UTC);
     }
 
     /**
@@ -62,8 +65,7 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("at",
-            this.at == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.at));
+        jsonWriter.writeNumberField("at", this.at);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,8 +87,7 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
                 if ("type".equals(fieldName)) {
                     deserializedTimerRoutineTrigger.type = RoutineTriggerType.fromString(reader.getString());
                 } else if ("at".equals(fieldName)) {
-                    deserializedTimerRoutineTrigger.at = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedTimerRoutineTrigger.at = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -110,7 +111,11 @@ public final class TimerRoutineTrigger extends RoutineTrigger {
      */
     @Generated
     public TimerRoutineTrigger setAt(OffsetDateTime at) {
-        this.at = at;
+        if (at == null) {
+            this.at = null;
+        } else {
+            this.at = at.toEpochSecond();
+        }
         return this;
     }
 }

@@ -310,12 +310,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -383,12 +377,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -453,12 +441,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -523,12 +505,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -593,12 +569,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -664,12 +634,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -733,12 +697,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -802,12 +760,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -871,12 +823,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -944,12 +890,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1072,12 +1012,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1158,12 +1092,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1231,12 +1159,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1316,12 +1238,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1620,12 +1536,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1693,12 +1603,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1763,12 +1667,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -1836,12 +1734,6 @@ public final class BetaModelsImpl {
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)

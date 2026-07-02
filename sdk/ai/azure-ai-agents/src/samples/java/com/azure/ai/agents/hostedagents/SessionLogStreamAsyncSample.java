@@ -5,12 +5,12 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.http.rest.RequestOptions;
@@ -48,10 +48,9 @@ public class SessionLogStreamAsyncSample {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
-        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
-        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName, image)
+        Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, agentName, image)
             .flatMap(resources -> {
                 resourcesRef.set(resources);
 
@@ -59,11 +58,11 @@ public class SessionLogStreamAsyncSample {
                     .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
                         new FixedRatioVersionSelectionRule(100)
                             .setAgentVersion(resources.getAgent().getVersion()))))
-                    .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                return betaAgentsAsyncClient.updateAgentDetails(agentName,
+                return agentsAsyncClient.updateAgentDetails(agentName,
                     new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
                     .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
                         updated.getName()))
@@ -73,7 +72,7 @@ public class SessionLogStreamAsyncSample {
                             JsonValue.from(resources.getSession().getAgentSessionId()))
                         .build())))
                     .doOnNext(HostedAgentsSampleUtils::printResponseOutput)
-                    .then(betaAgentsAsyncClient.getSessionLogStreamWithResponse(agentName, resources.getAgent().getVersion(),
+                    .then(agentsAsyncClient.getSessionLogStreamWithResponse(agentName, resources.getAgent().getVersion(),
                         resources.getSession().getAgentSessionId(), new RequestOptions()))
                     .flatMap(response -> Mono.fromRunnable(() -> {
                         try {
@@ -87,9 +86,9 @@ public class SessionLogStreamAsyncSample {
             });
 
         workflow
-            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
+            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
                 resourcesRef.get()).then(Mono.error(error)))
-            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient, agentName,
+            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName,
                 resourcesRef.get())))
             .timeout(Duration.ofMinutes(15))
             .block();

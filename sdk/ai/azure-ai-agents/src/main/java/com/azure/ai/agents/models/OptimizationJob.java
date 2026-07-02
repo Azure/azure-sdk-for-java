@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,13 +14,14 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 /**
  * Agent optimization job resource — a long-running job that optimizes an agent's configuration (instructions, model,
  * skills, tools) to maximize evaluation scores. On success, the result contains scored candidates.
  */
-@Immutable
-@Beta(warningText = "Preview API. AgentsOptimization=V1Preview")
+@Fluent
+@Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
 public final class OptimizationJob implements JsonSerializable<OptimizationJob> {
 
     /*
@@ -60,13 +61,13 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
     private long createdAt;
 
     /*
-     * The timestamp when the job was last updated (status, progress, or result change), represented in Unix time.
+     * The timestamp when the job was last updated, represented in Unix time.
      */
     @Generated
-    private Long updatedAt;
+    private long updatedAt;
 
     /*
-     * Progress while in flight. Absent in terminal states.
+     * Progress snapshot. May be present in terminal states reflecting last-known progress.
      */
     @Generated
     private OptimizationJobProgress progress;
@@ -75,7 +76,7 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
      * Creates an instance of OptimizationJob class.
      */
     @Generated
-    private OptimizationJob() {
+    public OptimizationJob() {
     }
 
     /**
@@ -139,21 +140,17 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
     }
 
     /**
-     * Get the updatedAt property: The timestamp when the job was last updated (status, progress, or result change),
-     * represented in Unix time.
+     * Get the updatedAt property: The timestamp when the job was last updated, represented in Unix time.
      *
      * @return the updatedAt value.
      */
     @Generated
     public OffsetDateTime getUpdatedAt() {
-        if (this.updatedAt == null) {
-            return null;
-        }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.updatedAt), ZoneOffset.UTC);
     }
 
     /**
-     * Get the progress property: Progress while in flight. Absent in terminal states.
+     * Get the progress property: Progress snapshot. May be present in terminal states reflecting last-known progress.
      *
      * @return the progress value.
      */
@@ -195,18 +192,19 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
                     deserializedOptimizationJob.status = JobStatus.fromString(reader.getString());
                 } else if ("created_at".equals(fieldName)) {
                     deserializedOptimizationJob.createdAt = reader.getLong();
-                } else if ("error".equals(fieldName)) {
-                    deserializedOptimizationJob.error = ApiError.fromJson(reader);
-                } else if ("result".equals(fieldName)) {
-                    deserializedOptimizationJob.result = OptimizationJobResult.fromJson(reader);
+                } else if ("updated_at".equals(fieldName)) {
+                    deserializedOptimizationJob.updatedAt = reader.getLong();
                 } else if ("inputs".equals(fieldName)) {
                     deserializedOptimizationJob.inputs = OptimizationJobInputs.fromJson(reader);
-                } else if ("updated_at".equals(fieldName)) {
-                    deserializedOptimizationJob.updatedAt = reader.getNullable(JsonReader::getLong);
+                } else if ("result".equals(fieldName)) {
+                    deserializedOptimizationJob.result = OptimizationJobResult.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedOptimizationJob.error = ApiError.fromJson(reader);
                 } else if ("progress".equals(fieldName)) {
                     deserializedOptimizationJob.progress = OptimizationJobProgress.fromJson(reader);
-                } else if ("dataset".equals(fieldName)) {
-                    deserializedOptimizationJob.dataset = DatasetInfo.fromJson(reader);
+                } else if ("warnings".equals(fieldName)) {
+                    List<String> warnings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOptimizationJob.warnings = warnings;
                 } else {
                     reader.skipChildren();
                 }
@@ -216,18 +214,30 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
     }
 
     /*
-     * Metadata about the dataset used for this optimization job.
+     * Non-fatal warnings emitted at any point during optimization.
      */
     @Generated
-    private DatasetInfo dataset;
+    private List<String> warnings;
 
     /**
-     * Get the dataset property: Metadata about the dataset used for this optimization job.
+     * Set the inputs property: Caller-supplied inputs.
      *
-     * @return the dataset value.
+     * @param inputs the inputs value to set.
+     * @return the OptimizationJob object itself.
      */
     @Generated
-    public DatasetInfo getDataset() {
-        return this.dataset;
+    public OptimizationJob setInputs(OptimizationJobInputs inputs) {
+        this.inputs = inputs;
+        return this;
+    }
+
+    /**
+     * Get the warnings property: Non-fatal warnings emitted at any point during optimization.
+     *
+     * @return the warnings value.
+     */
+    @Generated
+    public List<String> getWarnings() {
+        return this.warnings;
     }
 }
