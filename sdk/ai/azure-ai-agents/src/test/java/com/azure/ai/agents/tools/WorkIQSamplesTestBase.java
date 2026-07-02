@@ -35,9 +35,7 @@ abstract class WorkIQSamplesTestBase extends ClientTestBase {
     }
 
     PromptAgentDefinition createAgentDefinition() {
-        WorkIqPreviewTool workIqTool
-            = new WorkIqPreviewTool(getRecordedConfig("WORK_IQ_PROJECT_CONNECTION_ID")).setName("work_iq_lookup")
-                .setDescription("Use Work IQ to answer questions grounded in enterprise data.");
+        WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(getRecordedConfig("WORK_IQ_PROJECT_CONNECTION_ID"));
 
         return new PromptAgentDefinition(getRecordedConfig("FOUNDRY_MODEL_NAME"))
             .setInstructions("Use the available Work IQ tools to answer questions and perform tasks.")

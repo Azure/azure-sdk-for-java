@@ -103,20 +103,18 @@ public class Tool implements JsonSerializable<Tool> {
                     return FabricIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
-                } else if ("toolbox_search_preview".equals(discriminatorValue)) {
-                    return ToolboxSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterTool.fromJson(readerToUse.reset());
-                } else if ("function".equals(discriminatorValue)) {
-                    return FunctionTool.fromJson(readerToUse.reset());
                 } else if ("file_search".equals(discriminatorValue)) {
                     return FileSearchTool.fromJson(readerToUse.reset());
-                } else if ("computer_use_preview".equals(discriminatorValue)) {
-                    return ComputerUsePreviewTool.fromJson(readerToUse.reset());
                 } else if ("web_search".equals(discriminatorValue)) {
                     return WebSearchTool.fromJson(readerToUse.reset());
                 } else if ("mcp".equals(discriminatorValue)) {
                     return McpTool.fromJson(readerToUse.reset());
+                } else if ("function".equals(discriminatorValue)) {
+                    return FunctionTool.fromJson(readerToUse.reset());
+                } else if ("computer_use_preview".equals(discriminatorValue)) {
+                    return ComputerUsePreviewTool.fromJson(readerToUse.reset());
                 } else if ("image_generation".equals(discriminatorValue)) {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {
@@ -132,9 +130,9 @@ public class Tool implements JsonSerializable<Tool> {
                 } else if ("computer".equals(discriminatorValue)) {
                     return ComputerTool.fromJson(readerToUse.reset());
                 } else if ("namespace".equals(discriminatorValue)) {
-                    return NamespaceToolParam.fromJson(readerToUse.reset());
+                    return NamespaceTool.fromJson(readerToUse.reset());
                 } else if ("tool_search".equals(discriminatorValue)) {
-                    return ToolSearchToolParam.fromJson(readerToUse.reset());
+                    return ToolSearchTool.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

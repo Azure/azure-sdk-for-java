@@ -21,7 +21,7 @@ public final class ProtocolVersionRecord implements JsonSerializable<ProtocolVer
      * The protocol type.
      */
     @Generated
-    private final AgentProtocol protocol;
+    private final AgentEndpointProtocol protocol;
 
     /*
      * The version string for the protocol, e.g. 'v0.1.1'.
@@ -30,24 +30,12 @@ public final class ProtocolVersionRecord implements JsonSerializable<ProtocolVer
     private final String version;
 
     /**
-     * Creates an instance of ProtocolVersionRecord class.
-     *
-     * @param protocol the protocol value to set.
-     * @param version the version value to set.
-     */
-    @Generated
-    public ProtocolVersionRecord(AgentProtocol protocol, String version) {
-        this.protocol = protocol;
-        this.version = version;
-    }
-
-    /**
      * Get the protocol property: The protocol type.
      *
      * @return the protocol value.
      */
     @Generated
-    public AgentProtocol getProtocol() {
+    public AgentEndpointProtocol getProtocol() {
         return this.protocol;
     }
 
@@ -85,13 +73,13 @@ public final class ProtocolVersionRecord implements JsonSerializable<ProtocolVer
     @Generated
     public static ProtocolVersionRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgentProtocol protocol = null;
+            AgentEndpointProtocol protocol = null;
             String version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("protocol".equals(fieldName)) {
-                    protocol = AgentProtocol.fromString(reader.getString());
+                    protocol = AgentEndpointProtocol.fromString(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     version = reader.getString();
                 } else {
@@ -100,5 +88,17 @@ public final class ProtocolVersionRecord implements JsonSerializable<ProtocolVer
             }
             return new ProtocolVersionRecord(protocol, version);
         });
+    }
+
+    /**
+     * Creates an instance of ProtocolVersionRecord class.
+     *
+     * @param protocol the protocol value to set.
+     * @param version the version value to set.
+     */
+    @Generated
+    public ProtocolVersionRecord(AgentEndpointProtocol protocol, String version) {
+        this.protocol = protocol;
+        this.version = version;
     }
 }

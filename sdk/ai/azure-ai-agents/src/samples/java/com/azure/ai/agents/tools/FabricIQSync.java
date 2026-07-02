@@ -48,9 +48,7 @@ public class FabricIQSync {
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
             .setServerLabel("fabric_iq")
-            .setRequireApproval("never")
-            .setName("fabric_iq_lookup")
-            .setDescription("Use FabricIQ to answer questions grounded in enterprise data.");
+            .setRequireApproval("never");
 
         // END: com.azure.ai.agents.define_fabric_iq
 

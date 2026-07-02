@@ -129,6 +129,7 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("blueprint_reference", this.blueprintReference);
+        jsonWriter.writeBooleanField("draft", this.draft);
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +149,7 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
             Map<String, String> metadata = null;
             String description = null;
             AgentBlueprintReference blueprintReference = null;
+            Boolean draft = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -159,6 +161,8 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
                     description = reader.getString();
                 } else if ("blueprint_reference".equals(fieldName)) {
                     blueprintReference = AgentBlueprintReference.fromJson(reader);
+                } else if ("draft".equals(fieldName)) {
+                    draft = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -167,6 +171,7 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
             deserializedCreateAgentVersionRequest.metadata = metadata;
             deserializedCreateAgentVersionRequest.description = description;
             deserializedCreateAgentVersionRequest.blueprintReference = blueprintReference;
+            deserializedCreateAgentVersionRequest.draft = draft;
             return deserializedCreateAgentVersionRequest;
         });
     }
@@ -196,6 +201,40 @@ public final class CreateAgentVersionRequest implements JsonSerializable<CreateA
     @Generated
     public CreateAgentVersionRequest setBlueprintReference(AgentBlueprintReference blueprintReference) {
         this.blueprintReference = blueprintReference;
+        return this;
+    }
+
+    /*
+     * (Preview) Whether this agent version is a draft (candidate) rather than a release. The service defaults to
+     * `false` if a value is not specified by the caller. Draft versions are recorded but excluded from default 'latest'
+     * resolution and are not auto-promoted.
+     */
+    @Generated
+    private Boolean draft;
+
+    /**
+     * Get the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @return the draft value.
+     */
+    @Generated
+    public Boolean isDraft() {
+        return this.draft;
+    }
+
+    /**
+     * Set the draft property: (Preview) Whether this agent version is a draft (candidate) rather than a release. The
+     * service defaults to `false` if a value is not specified by the caller. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted.
+     *
+     * @param draft the draft value to set.
+     * @return the CreateAgentVersionRequest object itself.
+     */
+    @Generated
+    public CreateAgentVersionRequest setDraft(Boolean draft) {
+        this.draft = draft;
         return this;
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -18,7 +17,6 @@ import java.util.Set;
  * The FixedRatioVersionSelectionRule model.
  */
 @Fluent
-@Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
 public final class FixedRatioVersionSelectionRule extends VersionSelectionRule {
 
     /*
