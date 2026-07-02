@@ -401,6 +401,15 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
+### Delete File_GetRangeList x-ms-pageable as autorest does not currently support multiple return types for pageable
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}/{fileName}?comp=rangelist"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
 ### Change PutRange response file-last-write-time to ISO8601
 ``` yaml
 directive:
