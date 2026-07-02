@@ -25,12 +25,15 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -112,6 +115,42 @@ class AmqpReceiveLinkProcessorTest {
             () -> new AmqpReceiveLinkProcessor("ENTITY", -1, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
         Assertions.assertThrows(NullPointerException.class,
             () -> new AmqpReceiveLinkProcessor(null, PREFETCH, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
+    }
+
+    @Test
+    void boundsBufferedMessagesToTwicePrefetch() throws Exception {
+        final Field maxQueueSize = AmqpReceiveLinkProcessor.class.getDeclaredField("maxQueueSize");
+        maxQueueSize.setAccessible(true);
+
+        Assertions.assertEquals(PREFETCH * 2, maxQueueSize.get(linkProcessor));
+    }
+
+    @Test
+    void creditCalculationAccountsForQueuedMessages() throws Exception {
+        final Field requestedField = AmqpReceiveLinkProcessor.class.getDeclaredField("requested");
+        requestedField.setAccessible(true);
+        requestedField.setLong(linkProcessor, 3L);
+
+        final Field downstreamField = AmqpReceiveLinkProcessor.class.getDeclaredField("downstream");
+        downstreamField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        AtomicReference<org.reactivestreams.Subscriber<? super Message>> downstream
+            = (AtomicReference<org.reactivestreams.Subscriber<? super Message>>) downstreamField.get(linkProcessor);
+        downstream.set(new BaseSubscriber<Message>() {
+        });
+
+        final Field messageQueueField = AmqpReceiveLinkProcessor.class.getDeclaredField("messageQueue");
+        messageQueueField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        java.util.Deque<Message> queue = (java.util.Deque<Message>) messageQueueField.get(linkProcessor);
+        queue.add(mock(Message.class));
+        queue.add(mock(Message.class));
+        queue.add(mock(Message.class));
+
+        final Method getCreditsToAdd = AmqpReceiveLinkProcessor.class.getDeclaredMethod("getCreditsToAdd");
+        getCreditsToAdd.setAccessible(true);
+
+        Assertions.assertEquals(0, getCreditsToAdd.invoke(linkProcessor));
     }
 
     /**
