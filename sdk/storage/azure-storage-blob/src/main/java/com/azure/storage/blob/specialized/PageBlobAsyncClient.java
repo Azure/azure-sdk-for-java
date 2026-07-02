@@ -516,6 +516,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
      * default). In other words, the {@code Flux} must produce the same data each time it is subscribed to.
      * @param options Optional parameters for the request. Pass {@code null} to use defaults.
+     * @return A reactive response containing the information of the uploaded pages.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
