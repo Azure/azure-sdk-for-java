@@ -60,6 +60,25 @@ public class CryptographyClientBuilderTest {
     }
 
     @Test
+    public void serviceVersionIncludes20260301Preview() {
+        assertEquals("2026-03-01-preview", CryptographyServiceVersion.V2026_03_01_PREVIEW.getVersion());
+    }
+
+    @Test
+    public void clientUses20260301PreviewApiVersion() {
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(keyIdentifier)
+            .serviceVersion(CryptographyServiceVersion.V2026_03_01_PREVIEW)
+            .credential(new TestUtils.TestCredential())
+            .httpClient(request -> {
+                assertTrue(request.getUrl().getQuery().contains("api-version=2026-03-01-preview"));
+                return Mono.error(new HttpResponseException(new MockHttpResponse(request, 400)));
+            })
+            .buildClient();
+
+        assertThrows(RuntimeException.class, cryptographyClient::getKey);
+    }
+
+    @Test
     public void buildSyncClientWithoutKeyVersionTest() {
         String versionlessKeyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey";
         CryptographyClient cryptographyClient = new CryptographyClientBuilder().keyIdentifier(versionlessKeyIdentifier)

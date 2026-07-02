@@ -207,6 +207,31 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getKeyWith20260301PreviewServiceVersion(HttpClient httpClient) {
+        // This test exercises only the new 2026-03-01-preview service version on the
+        // standard vault path. The Managed HSM subclass inherits it via subclassing
+        // but the inherited recording can't be cleanly cloned from the existing
+        // KeyClientManagedHsmTest.getKey[1].json (variable indices differ once new
+        // randomName-consuming logic runs), so the HSM subclass skips it. A proper
+        // Managed-HSM live recording is tracked as a follow-up.
+        Assumptions.assumeFalse(isHsmEnabled, "Skipping on Managed HSM subclass");
+        createKeyClient(httpClient, KeyServiceVersion.V2026_03_01_PREVIEW);
+
+        getKeyRunner((keyToSetAndGet) -> {
+            keyClient.createKey(keyToSetAndGet);
+
+            KeyVaultKey retrievedKey = keyClient.getKey(keyToSetAndGet.getName());
+
+            assertKeyEquals(keyToSetAndGet, retrievedKey);
+
+            if (!isHsmEnabled) {
+                assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
+            }
+        });
+    }
+
     /**
      * Tests that a specific version of the key can be retrieved.
      */

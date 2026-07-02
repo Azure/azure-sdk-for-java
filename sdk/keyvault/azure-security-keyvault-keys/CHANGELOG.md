@@ -4,11 +4,16 @@
 
 ### Features Added
 
-### Breaking Changes
+- Added support for service version `2026-03-01-preview`.
+- The default service version is now `2026-03-01-preview` for both `KeyServiceVersion` and `CryptographyServiceVersion`.
 
-### Bugs Fixed
+#### `cryptography.CryptographyServiceVersion` was modified
 
-### Other Changes
+* `V2026_03_01_PREVIEW` was added
+
+#### `KeyServiceVersion` was modified
+
+* `V2026_03_01_PREVIEW` was added
 
 ## 4.11.0 (2026-05-27)
 
