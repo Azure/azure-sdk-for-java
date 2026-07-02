@@ -646,7 +646,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }
         outFile.deleteOnExit();
 
-        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5, 1);
 
         // Create a ShareFileAsyncClient for download using the custom pipeline
         ShareFileAsyncClient downloadClient = getFileAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
@@ -696,7 +696,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }
         outFile.deleteOnExit();
 
-        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6, 1);
 
         // Create a ShareFileAsyncClient for download using the custom pipeline
         ShareFileAsyncClient downloadClient = getFileAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
