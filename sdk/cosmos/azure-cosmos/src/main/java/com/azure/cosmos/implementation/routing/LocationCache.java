@@ -196,10 +196,11 @@ public class LocationCache {
             "RxDocumentServiceRequest.requestContext is required and cannot be null.");
 
         if (request.requestContext.regionalRoutingContextToRoute != null) {
-            return request.requestContext.regionalRoutingContextToRoute;
+            return this.resolveThinClientRoutingContextIfNeeded(request, request.requestContext.regionalRoutingContextToRoute);
         }
 
         int locationIndex = Utils.getValueOrDefault(request.requestContext.locationIndexToRoute, 0);
+        RegionalRoutingContext resolvedRoutingContext;
 
         boolean usePreferredLocations = request.requestContext.usePreferredLocations != null ? request.requestContext.usePreferredLocations : true;
         if (!usePreferredLocations || (request.getOperationType().isWriteOperation() && !this.canUseMultipleWriteLocations(request))) {
@@ -211,15 +212,92 @@ public class LocationCache {
             if (this.enableEndpointDiscovery && !currentLocationInfo.availableWriteLocations.isEmpty()) {
                 locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
-                return currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName.get(writeLocation);
+                resolvedRoutingContext = currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName.get(writeLocation);
             } else {
-                return this.defaultRoutingContext;
+                resolvedRoutingContext = this.defaultRoutingContext;
             }
         } else {
             UnmodifiableList<RegionalRoutingContext> endpoints =
                 request.getOperationType().isWriteOperation()? this.getApplicableWriteRegionRoutingContexts(request) : this.getApplicableReadRegionRoutingContexts(request);
-            return endpoints.get(locationIndex % endpoints.size());
+            resolvedRoutingContext = endpoints.get(locationIndex % endpoints.size());
         }
+
+        return this.resolveThinClientRoutingContextIfNeeded(request, resolvedRoutingContext);
+    }
+
+    private RegionalRoutingContext resolveThinClientRoutingContextIfNeeded(
+        RxDocumentServiceRequest request,
+        RegionalRoutingContext regionalRoutingContext) {
+
+        if (!request.useThinClientMode
+            || regionalRoutingContext == null
+            || regionalRoutingContext.getThinclientRegionalEndpoint() != null) {
+
+            return regionalRoutingContext;
+        }
+
+        DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
+        Iterable<RegionalRoutingContext> primaryRoutingContexts = request.getOperationType().isWriteOperation()
+            ? currentLocationInfo.availableWriteRegionalRoutingContexts
+            : currentLocationInfo.availableReadRegionalRoutingContexts;
+        Iterable<RegionalRoutingContext> secondaryRoutingContexts = request.getOperationType().isWriteOperation()
+            ? null
+            : currentLocationInfo.availableWriteRegionalRoutingContexts;
+
+        RegionalRoutingContext thinClientRoutingContext = this.getThinClientRoutingContextForGatewayEndpoint(
+            regionalRoutingContext,
+            primaryRoutingContexts);
+
+        if (thinClientRoutingContext == null) {
+            thinClientRoutingContext = this.getThinClientRoutingContextForGatewayEndpoint(
+                regionalRoutingContext,
+                secondaryRoutingContexts);
+        }
+
+        if (thinClientRoutingContext == null
+            && regionalRoutingContext.getGatewayRegionalEndpoint().equals(this.defaultRoutingContext.getGatewayRegionalEndpoint())) {
+
+            thinClientRoutingContext = this.getFirstThinClientRoutingContext(primaryRoutingContexts);
+
+            if (thinClientRoutingContext == null) {
+                thinClientRoutingContext = this.getFirstThinClientRoutingContext(secondaryRoutingContexts);
+            }
+        }
+
+        return thinClientRoutingContext != null ? thinClientRoutingContext : regionalRoutingContext;
+    }
+
+    private RegionalRoutingContext getThinClientRoutingContextForGatewayEndpoint(
+        RegionalRoutingContext regionalRoutingContext,
+        Iterable<RegionalRoutingContext> routingContexts) {
+
+        if (routingContexts == null) {
+            return null;
+        }
+
+        for (RegionalRoutingContext candidateRoutingContext : routingContexts) {
+            if (candidateRoutingContext.getThinclientRegionalEndpoint() != null
+                && candidateRoutingContext.getGatewayRegionalEndpoint().equals(regionalRoutingContext.getGatewayRegionalEndpoint())) {
+
+                return candidateRoutingContext;
+            }
+        }
+
+        return null;
+    }
+
+    private RegionalRoutingContext getFirstThinClientRoutingContext(Iterable<RegionalRoutingContext> routingContexts) {
+        if (routingContexts == null) {
+            return null;
+        }
+
+        for (RegionalRoutingContext candidateRoutingContext : routingContexts) {
+            if (candidateRoutingContext.getThinclientRegionalEndpoint() != null) {
+                return candidateRoutingContext;
+            }
+        }
+
+        return null;
     }
 
     public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(RxDocumentServiceRequest request) {
@@ -1026,7 +1104,20 @@ public class LocationCache {
                         URI endpoint = new URI(thinclientDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
                         RegionalRoutingContext regionalRoutingContext = endpointsByLocation.get(location);
-                        regionalRoutingContext.setThinclientRegionalEndpoint(endpoint);
+                        if (regionalRoutingContext != null) {
+                            regionalRoutingContext.setThinclientRegionalEndpoint(endpoint);
+
+                            if (this.defaultRoutingContext.getGatewayRegionalEndpoint()
+                                .equals(regionalRoutingContext.getGatewayRegionalEndpoint())) {
+
+                                this.defaultRoutingContext.setThinclientRegionalEndpoint(endpoint);
+                            }
+                        } else {
+                            logger.warn(
+                                "Skipping thin client endpoint add for location = [{}] and endpoint = [{}] because no matching gateway endpoint was found.",
+                                thinclientDbAccountLocation.getName(),
+                                thinclientDbAccountLocation.getEndpoint());
+                        }
                     } catch (Exception e) {
                         logger.warn("Skipping add for location = [{}] and endpoint = [{}] due to exception [{}]",
                             thinclientDbAccountLocation.getName(),
