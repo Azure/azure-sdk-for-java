@@ -5,11 +5,12 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.http.rest.RequestOptions;
@@ -46,7 +47,7 @@ public class SessionLogStreamAsyncSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
+        AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
         Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, agentName, image)
@@ -57,13 +58,12 @@ public class SessionLogStreamAsyncSample {
                     .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
                         new FixedRatioVersionSelectionRule(100)
                             .setAgentVersion(resources.getAgent().getVersion()))))
-                    .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
+                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
                 return agentsAsyncClient.updateAgentDetails(agentName,
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig),
-                    AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW)
+                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
                     .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
                         updated.getName()))
                     .then(Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()

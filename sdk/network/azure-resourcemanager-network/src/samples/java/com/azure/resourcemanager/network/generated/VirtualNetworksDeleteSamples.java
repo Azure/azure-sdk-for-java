@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkDelete.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkDelete.json
      */
     /**
      * Sample code: Delete virtual network.

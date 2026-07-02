@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class RouteMapsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/RouteMapPut.json
+     * x-ms-original-file: 2025-07-01/RouteMapPut.json
      */
     /**
      * Sample code: RouteMapPut.

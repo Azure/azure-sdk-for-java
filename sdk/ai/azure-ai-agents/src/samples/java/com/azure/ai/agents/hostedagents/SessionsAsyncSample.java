@@ -5,8 +5,8 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -32,10 +32,10 @@ public class SessionsAsyncSample {
         String image = Configuration.getGlobalConfiguration().get("FOUNDRY_AGENT_CONTAINER_IMAGE");
         String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME;
 
-        AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
+        AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildAgentsAsyncClient();
+            .endpoint(endpoint);
+        AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
 
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
@@ -44,19 +44,16 @@ public class SessionsAsyncSample {
                 resourcesRef.set(resources);
                 AgentSessionResource session = resources.getSession();
 
-                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId(),
-                    AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
+                return agentsAsyncClient.getSession(agentName, session.getAgentSessionId())
                     .doOnNext(fetched -> System.out.printf("Retrieved session (id: %s, status: %s)%n",
                         fetched.getAgentSessionId(), fetched.getStatus()))
-                    .thenMany(agentsAsyncClient.listSessions(agentName,
-                        AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null, null, null, null, null)
+                    .thenMany(agentsAsyncClient.listSessions(agentName, null, null, null, null)
                         .doOnSubscribe(unused -> System.out.println("Listing sessions for the agent..."))
                         .doOnNext(item -> System.out.printf("  - %s (status: %s)%n", item.getAgentSessionId(),
                             item.getStatus())))
                     .then(Mono.defer(() -> {
                         System.out.printf("Deleting session with id: %s...%n", session.getAgentSessionId());
-                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId(),
-                            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
+                        return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId())
                             .doOnSuccess(unused -> System.out.printf("Session with id: %s deleted.%n",
                                 session.getAgentSessionId()));
                     }));

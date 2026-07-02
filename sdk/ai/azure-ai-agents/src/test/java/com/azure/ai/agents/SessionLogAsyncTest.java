@@ -3,13 +3,11 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentSessionResource;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.SessionLogEventType;
 import com.azure.ai.agents.models.VersionRefIndicator;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
@@ -38,16 +36,14 @@ public class SessionLogAsyncTest extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     @Disabled
     public void validatesSessionLogStream(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        AgentsAsyncClient client = getAgentsAsyncClient(httpClient, serviceVersion);
-        RequestOptions featureOptions = new RequestOptions().setHeader(HttpHeaderName.fromString("Foundry-Features"),
-            AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW.toString());
+        AgentsAsyncClient client = getClientBuilder(httpClient, serviceVersion).buildAgentsAsyncClient();
 
         deleteSession(client);
         AgentSessionResource session = client
             .createSessionWithResponse(AGENT_NAME,
                 BinaryData.fromObject(new com.azure.ai.agents.implementation.models.CreateSessionRequest(
                     new VersionRefIndicator(AGENT_VERSION)).setAgentSessionId(SESSION_ID)),
-                featureOptions)
+                new RequestOptions())
             .map(response -> response.getValue().toObject(AgentSessionResource.class))
             .block(Duration.ofSeconds(60));
 
@@ -80,8 +76,7 @@ public class SessionLogAsyncTest extends ClientTestBase {
     }
 
     private static Mono<Void> deleteSessionAsync(AgentsAsyncClient client) {
-        return client.deleteSession(AGENT_NAME, SESSION_ID, AgentDefinitionOptInKeys.HOSTED_AGENTS_V1_PREVIEW, null)
-            .onErrorResume(error -> Mono.empty());
+        return client.deleteSession(AGENT_NAME, SESSION_ID).onErrorResume(error -> Mono.empty());
     }
 
     private static void assertSessionLogEvents(List<SessionLogEvent> events) {

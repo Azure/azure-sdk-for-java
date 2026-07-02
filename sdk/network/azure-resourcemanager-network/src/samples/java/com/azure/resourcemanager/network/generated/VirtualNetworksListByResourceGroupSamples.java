@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkList.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkList.json
      */
     /**
      * Sample code: List virtual networks in resource group.

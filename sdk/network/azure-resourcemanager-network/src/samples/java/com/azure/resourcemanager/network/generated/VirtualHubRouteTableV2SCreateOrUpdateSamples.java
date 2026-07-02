@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualHubRouteTableV2Put.json
+     * x-ms-original-file: 2025-07-01/VirtualHubRouteTableV2Put.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.

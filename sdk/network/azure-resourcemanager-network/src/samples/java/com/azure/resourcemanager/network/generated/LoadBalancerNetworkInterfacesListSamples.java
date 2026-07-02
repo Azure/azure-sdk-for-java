@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerNetworkInterfacesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerNetworkInterfaceListVmss.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerNetworkInterfaceListVmss.json
      */
     /**
      * Sample code: LoadBalancerNetworkInterfaceListVmss.
@@ -23,7 +23,7 @@ public final class LoadBalancerNetworkInterfacesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/LoadBalancerNetworkInterfaceListSimple.json
+     * x-ms-original-file: 2025-07-01/LoadBalancerNetworkInterfaceListSimple.json
      */
     /**
      * Sample code: LoadBalancerNetworkInterfaceListSimple.

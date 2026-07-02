@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class NetworkWatchersGetAzureReachabilityReportSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkWatcherAzureReachabilityReportGet.json
+     * x-ms-original-file: 2025-07-01/NetworkWatcherAzureReachabilityReportGet.json
      */
     /**
      * Sample code: Get Azure Reachability Report.

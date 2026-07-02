@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceTagInformationListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ServiceTagInformationListResultWithNoAddressPrefixes.json
+     * x-ms-original-file: 2025-07-01/ServiceTagInformationListResultWithNoAddressPrefixes.json
      */
     /**
      * Sample code: Get list of service tags with no address prefixes.
@@ -24,7 +24,7 @@ public final class ServiceTagInformationListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/ServiceTagInformationListResult.json
+     * x-ms-original-file: 2025-07-01/ServiceTagInformationListResult.json
      */
     /**
      * Sample code: Get list of service tags.
@@ -38,7 +38,7 @@ public final class ServiceTagInformationListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/ServiceTagInformationListResultWithTagname.json
+     * x-ms-original-file: 2025-07-01/ServiceTagInformationListResultWithTagname.json
      */
     /**
      * Sample code: Get list of service tags with tag name.

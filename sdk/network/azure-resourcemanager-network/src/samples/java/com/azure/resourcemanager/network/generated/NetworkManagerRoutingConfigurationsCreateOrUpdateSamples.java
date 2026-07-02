@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.RouteTableUsageMode;
  */
 public final class NetworkManagerRoutingConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerRoutingConfigurationPut.json
+     * x-ms-original-file: 2025-07-01/NetworkManagerRoutingConfigurationPut.json
      */
     /**
      * Sample code: Create network manager routing configuration.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpAllocationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpAllocationDelete.json
+     * x-ms-original-file: 2025-07-01/IpAllocationDelete.json
      */
     /**
      * Sample code: Delete IpAllocation.

@@ -186,11 +186,7 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
 
   readManyOptionsImpl.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
 
-  private trait CloseableSparkRowItemIterator {
-    def hasNext: Boolean
-    def next(): SparkRowItem
-    def close(): Unit
-  }
+  private trait CloseableSparkRowItemIterator extends CosmosReadManyByPartitionKeyReader.CloseableIterator[SparkRowItem]
 
   private object EmptySparkRowItemIterator extends CloseableSparkRowItemIterator {
     override def hasNext: Boolean = false
@@ -285,6 +281,16 @@ private[spark] case class ItemsPartitionReaderWithReadManyByPartitionKey
   }
 
   private var currentRow: Option[Row] = None
+
+  def rowIterator: CosmosReadManyByPartitionKeyReader.CloseableIterator[Row] = {
+    new CosmosReadManyByPartitionKeyReader.CloseableIterator[Row] {
+      override def hasNext: Boolean = getOrCreateIterator.hasNext
+
+      override def next(): Row = getOrCreateIterator.next().row
+
+      override def close(): Unit = ItemsPartitionReaderWithReadManyByPartitionKey.this.close()
+    }
+  }
 
   override def next(): Boolean = {
     val hasMore = getOrCreateIterator.hasNext

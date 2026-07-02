@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortAuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRoutePortAuthorizationDelete.json
+     * x-ms-original-file: 2025-07-01/ExpressRoutePortAuthorizationDelete.json
      */
     /**
      * Sample code: Delete ExpressRoutePort Authorization.

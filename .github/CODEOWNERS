@@ -175,10 +175,10 @@
 # ServiceLabel: %Azure.Identity
 
 # PRLabel: %Batch
-/sdk/batch/                                                        @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @Azure/azure-java-sdk
+/sdk/batch/                                                        @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @Azure/azure-java-sdk @lilinvictorms @iwang2 @xingwu1
 
 # ServiceLabel: %Batch
-# ServiceOwners:                                                   @dpwatrous @ReneOv-MSFT @skapur12 @wiboris
+# ServiceOwners:                                                   @dpwatrous @ReneOv-MSFT @skapur12 @wiboris @lilinvictorms
 
 # PRLabel: %clientcore
 /sdk/clientcore/                                                   @alzimmermsft @jonathangiles @samvaity @srnagar @vcolin7 @Azure/azure-java-sdk
@@ -975,6 +975,7 @@
 /.github/CODEOWNERS                                                @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                                @Azure/azure-sdk-eng
 /.github/copilot-instructions.md                                   @samvaity @praveenkuttappan @maririos
+/.github/skills/                                                   @Azure/azsdk-cli
 /.config/1espt/                                                    @benbp @mikeharder
 /eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @samvaity @praveenkuttappan @maririos @Azure/azure-sdk-eng
 

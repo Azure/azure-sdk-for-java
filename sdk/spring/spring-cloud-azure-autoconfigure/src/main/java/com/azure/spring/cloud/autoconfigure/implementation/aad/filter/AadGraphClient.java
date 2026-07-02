@@ -9,7 +9,6 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constant
 import com.azure.spring.cloud.autoconfigure.implementation.aad.utils.JacksonObjectMapperFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
@@ -28,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.client.RestOperations;
+import tools.jackson.databind.ObjectMapper;
 
 import javax.naming.ServiceUnavailableException;
 import java.io.IOException;

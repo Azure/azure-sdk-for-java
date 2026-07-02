@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesListCloudServiceNetworkInterfacesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/CloudServiceNetworkInterfaceList.json
+     * x-ms-original-file: 2025-07-01/CloudServiceNetworkInterfaceList.json
      */
     /**
      * Sample code: List cloud service network interfaces.

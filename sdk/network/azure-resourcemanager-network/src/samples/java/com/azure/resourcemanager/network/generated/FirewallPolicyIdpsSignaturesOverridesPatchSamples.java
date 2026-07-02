@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class FirewallPolicyIdpsSignaturesOverridesPatchSamples {
     /*
-     * x-ms-original-file: 2025-05-01/FirewallPolicySignatureOverridesPatch.json
+     * x-ms-original-file: 2025-07-01/FirewallPolicySignatureOverridesPatch.json
      */
     /**
      * Sample code: patch signature overrides.

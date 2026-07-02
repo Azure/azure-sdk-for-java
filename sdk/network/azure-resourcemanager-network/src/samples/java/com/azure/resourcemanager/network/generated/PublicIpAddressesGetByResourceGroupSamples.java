@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpAddressesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressGet.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressGet.json
      */
     /**
      * Sample code: Get public IP address.
@@ -23,7 +23,7 @@ public final class PublicIpAddressesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/PublicIpAddressGetStandardV2Sku.json
+     * x-ms-original-file: 2025-07-01/PublicIpAddressGetStandardV2Sku.json
      */
     /**
      * Sample code: Get public IP address with StandardV2 sku.

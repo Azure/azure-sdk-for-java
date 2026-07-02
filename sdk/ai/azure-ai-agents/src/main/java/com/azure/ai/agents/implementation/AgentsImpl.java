@@ -15,6 +15,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -467,6 +468,46 @@ public final class AgentsImpl {
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Post("/agents/{agent_name}:enable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> enableAgent(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}:enable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> enableAgentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}:disable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> disableAgent(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agents/{agent_name}:disable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> disableAgentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
         @Post("/agents/{agent_name}/endpoint/sessions")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -595,238 +636,94 @@ public final class AgentsImpl {
             @PathParam("session_id") String sessionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/agent_optimization_jobs")
+        @Put("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOptimizationJob(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> uploadSessionFile(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
+            @QueryParam("path") String path, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") BinaryData content, RequestOptions requestOptions, Context context);
 
-        @Post("/agent_optimization_jobs")
+        @Put("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOptimizationJobSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
-            RequestOptions requestOptions, Context context);
+        Response<BinaryData> uploadSessionFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
+            @QueryParam("path") String path, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/octet-stream") BinaryData content, RequestOptions requestOptions, Context context);
 
-        @Get("/agent_optimization_jobs/{jobId}")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOptimizationJob(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOptimizationJobSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs")
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOptimizationJobs(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> downloadSessionFile(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
+            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> downloadSessionFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
+            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listSessionFiles(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/agent_optimization_jobs")
+        @Get("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOptimizationJobsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSessionFilesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Post("/agent_optimization_jobs/{jobId}:cancel")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancelOptimizationJob(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Post("/agent_optimization_jobs/{jobId}:cancel")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelOptimizationJobSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Delete("/agent_optimization_jobs/{jobId}")
+        @Delete("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteOptimizationJob(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> deleteSessionFile(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
+            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
             RequestOptions requestOptions, Context context);
 
-        @Delete("/agent_optimization_jobs/{jobId}")
+        @Delete("/agents/{agent_name}/endpoint/sessions/{agent_session_id}/files")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> deleteOptimizationJobSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOptimizationCandidates(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listOptimizationCandidatesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOptimizationCandidate(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOptimizationCandidateSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/config")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOptimizationCandidateConfig(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/config")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOptimizationCandidateConfigSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/results")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOptimizationCandidateResults(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/results")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOptimizationCandidateResultsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOptimizationCandidateFile(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+        Response<Void> deleteSessionFileSync(@HostParam("endpoint") String endpoint,
+            @PathParam("agent_name") String agentName, @PathParam("agent_session_id") String sessionId,
             @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}/files")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getOptimizationCandidateFileSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("path") String path, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> promoteOptimizationCandidate(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData candidateRequest,
-            RequestOptions requestOptions, Context context);
-
-        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> promoteOptimizationCandidateSync(@HostParam("endpoint") String endpoint,
-            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData candidateRequest,
             RequestOptions requestOptions, Context context);
 
         @Get("/openai/v1/conversations")
@@ -849,7 +746,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     * 
+     * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -858,6 +757,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -875,6 +775,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -896,12 +797,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -935,7 +848,10 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent
+     * 
+     * Retrieves an agent definition by its unique name along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
@@ -945,7 +861,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves the agent.
+     * Get an agent
+     * 
+     * Retrieves an agent definition by its unique name.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -954,6 +872,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -971,6 +890,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -992,12 +912,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1031,7 +963,9 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return an agent
+     * 
+     * Retrieves an agent definition by its unique name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAgentWithResponse(String agentName, RequestOptions requestOptions) {
@@ -1041,23 +975,16 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates the agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent
+     * 
+     * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
@@ -1071,6 +998,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
      *             version_selection_rules (Optional, Required on create): [
@@ -1080,12 +1008,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1118,6 +1058,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1135,6 +1076,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1156,12 +1098,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1208,23 +1162,16 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates the agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent
+     * 
+     * Creates a new agent or a new version of an existing agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
@@ -1238,6 +1185,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      *     agent_endpoint (Optional): {
      *         version_selector (Optional): {
      *             version_selection_rules (Optional, Required on create): [
@@ -1247,12 +1195,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1285,6 +1245,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1302,6 +1263,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1323,12 +1285,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1373,22 +1347,14 @@ public final class AgentsImpl {
     }
 
     /**
+     * Create a new code-based agent
+     * 
      * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
      * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
      * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
      * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
      * irrelevant).
      * Maximum upload size is 250 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1397,6 +1363,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1414,6 +1381,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1435,12 +1403,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1491,22 +1471,14 @@ public final class AgentsImpl {
     }
 
     /**
+     * Create a new code-based agent
+     * 
      * Creates a new code-based agent. Uploads the code zip and creates the agent in a single call.
      * The agent name is provided in the `x-ms-agent-name` header since POST /agents has no name in the URL path.
      * The SHA-256 hex digest of the zip is provided in the `x-ms-code-zip-sha256` header for integrity and dedup.
      * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
      * irrelevant).
      * Maximum upload size is 250 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1515,6 +1487,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1532,6 +1505,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1553,12 +1527,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1608,18 +1594,10 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent
+     * 
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1650,6 +1628,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1667,6 +1646,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1688,12 +1668,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1741,18 +1733,10 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent
+     * 
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1783,6 +1767,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1800,6 +1785,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1821,12 +1807,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1874,21 +1872,13 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update a code-based agent
+     * 
      * Updates a code-based agent by uploading new code and creating a new version.
      * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
      * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
      * irrelevant).
      * Maximum upload size is 250 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1897,6 +1887,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1914,6 +1905,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -1935,12 +1927,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -1993,21 +1997,13 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update a code-based agent
+     * 
      * Updates a code-based agent by uploading new code and creating a new version.
      * If the code and definition are unchanged (matched by x-ms-code-zip-sha256 header), returns the existing version.
      * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
      * irrelevant).
      * Maximum upload size is 250 MB.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2016,6 +2012,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2033,6 +2030,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2054,12 +2052,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2111,7 +2121,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     * 
+     * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2138,6 +2150,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2155,6 +2168,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2176,12 +2190,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2228,7 +2254,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates an agent from a manifest.
+     * Create an agent from a manifest
+     * 
+     * Imports the provided manifest to create an agent and returns the created resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2255,6 +2283,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2272,6 +2301,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2293,12 +2323,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2345,6 +2387,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent from a manifest
+     * 
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
@@ -2372,6 +2416,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2389,6 +2434,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2410,12 +2456,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2463,6 +2521,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Update an agent from a manifest
+     * 
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      * <p><strong>Request Body Schema</strong></p>
@@ -2490,6 +2550,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2507,6 +2568,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2528,12 +2590,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2581,6 +2655,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Delete an agent
+     * 
      * Deletes an agent. For hosted agents, if any version has active sessions, the request
      * is rejected with HTTP 409 unless `force` is set to true. When force is true, all
      * associated sessions are cascade-deleted along with the agent and its versions.
@@ -2622,6 +2698,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Delete an agent
+     * 
      * Deletes an agent. For hosted agents, if any version has active sessions, the request
      * is rejected with HTTP 409 unless `force` is set to true. When force is true, all
      * associated sessions are cascade-deleted along with the agent and its versions.
@@ -2662,7 +2740,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2693,6 +2773,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2710,6 +2791,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2731,12 +2813,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2783,7 +2877,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2814,6 +2910,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2831,6 +2928,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2852,12 +2950,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -2898,7 +3008,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2929,6 +3041,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2946,6 +3059,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -2967,12 +3081,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -3017,7 +3143,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all agents.
+     * List agents
+     * 
+     * Returns a paged collection of agent resources.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3048,6 +3176,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3065,6 +3194,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -3086,12 +3216,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -3132,17 +3274,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version
+     * 
+     * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3161,6 +3295,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -3185,6 +3320,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3222,17 +3358,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version
+     * 
+     * Creates a new version for the specified agent and returns the created version resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3251,6 +3379,7 @@ public final class AgentsImpl {
      *     blueprint_reference (Optional): {
      *         type: String(ManagedAgentIdentityBlueprint) (Required)
      *     }
+     *     draft: Boolean (Optional)
      * }
      * }
      * </pre>
@@ -3275,6 +3404,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3312,7 +3442,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     * 
+     * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3350,6 +3482,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3387,7 +3520,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Create a new agent version from a manifest.
+     * Create an agent version from manifest
+     * 
+     * Imports the provided manifest to create a new version for the specified agent.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3425,6 +3560,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3462,7 +3598,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3483,6 +3621,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3504,7 +3643,10 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAgentVersionDetailsWithResponseAsync(String agentName, String agentVersion,
@@ -3515,7 +3657,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Get an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3536,6 +3680,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3557,7 +3702,9 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return an agent version
+     * 
+     * Retrieves the specified version of an agent by its agent name and version identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAgentVersionDetailsWithResponse(String agentName, String agentVersion,
@@ -3568,6 +3715,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Delete an agent version
+     * 
      * Deletes a specific version of an agent. For hosted agents, if the version has active
      * sessions, the request is rejected with HTTP 409 unless `force` is set to true. When
      * force is true, all sessions associated with this version are cascade-deleted.
@@ -3611,6 +3760,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Delete an agent version
+     * 
      * Deletes a specific version of an agent. For hosted agents, if the version has active
      * sessions, the request is rejected with HTTP 409 unless `force` is set to true. When
      * force is true, all sessions associated with this version are cascade-deleted.
@@ -3654,7 +3805,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3673,6 +3826,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3695,6 +3851,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3730,7 +3887,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3749,6 +3908,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3771,6 +3933,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3799,7 +3962,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3818,6 +3983,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3840,6 +4008,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3872,7 +4041,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of versions of an agent.
+     * List agent versions
+     * 
+     * Returns a paged collection of versions for the specified agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3891,6 +4062,9 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>include_drafts</td><td>Boolean</td><td>No</td><td>(Preview) Whether to include draft versions in the
+     * listing. The service defaults to `false` if a value is not specified by the caller (only non-draft versions are
+     * returned).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3913,6 +4087,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -3941,17 +4116,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Updates an agent endpoint.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Update an agent endpoint
+     * 
+     * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3966,12 +4133,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -4004,6 +4183,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -4021,6 +4201,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -4042,12 +4223,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -4075,7 +4268,9 @@ public final class AgentsImpl {
      * }
      * </pre>
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param agentName The name of the agent to retrieve
+     * 
+     * The name of the agent to retrieve.
      * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4095,17 +4290,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Updates an agent endpoint.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Update an agent endpoint
+     * 
+     * Applies a merge-patch update to the specified agent endpoint configuration.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4120,12 +4307,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -4158,6 +4357,7 @@ public final class AgentsImpl {
      *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
+     *     state: String(enabled/disabled) (Required)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -4175,6 +4375,7 @@ public final class AgentsImpl {
      *                     rai_policy_name: String (Required)
      *                 }
      *             }
+     *             draft: Boolean (Optional)
      *             status: String(creating/active/failed/deleting/deleted) (Optional)
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
@@ -4196,12 +4397,24 @@ public final class AgentsImpl {
      *                 }
      *             ]
      *         }
-     *         protocols (Optional): [
-     *             String(activity/responses/a2a/mcp/invocations/invocations_ws) (Optional)
-     *         ]
+     *         protocol_configuration (Optional): {
+     *             activity (Optional): {
+     *                 enable_m365_public_endpoint: Boolean (Optional)
+     *             }
+     *             responses (Optional): {
+     *             }
+     *             a2a (Optional): {
+     *             }
+     *             mcp (Optional): {
+     *             }
+     *             invocations (Optional): {
+     *             }
+     *             invocations_ws (Optional): {
+     *             }
+     *         }
      *         authorization_schemes (Optional): [
      *              (Optional){
-     *                 type: String(Entra/BotService/BotServiceRbac) (Required)
+     *                 type: String(Entra/BotService/BotServiceRbac/BotServiceTenant) (Required)
      *             }
      *         ]
      *     }
@@ -4229,7 +4442,9 @@ public final class AgentsImpl {
      * }
      * </pre>
      * 
-     * @param agentName The name of the agent to retrieve.
+     * @param agentName The name of the agent to retrieve
+     * 
+     * The name of the agent to retrieve.
      * @param patchAgentObjectRequest The patchAgentObjectRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4249,17 +4464,14 @@ public final class AgentsImpl {
     }
 
     /**
-     * The createAgentVersionFromCode operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version from code
+     * 
+     * Creates a new agent version from code. Uploads the code zip and creates a new version
+     * for an existing agent. The SHA-256 hex digest of the zip is provided in the
+     * `x-ms-code-zip-sha256` header for integrity and dedup.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4280,6 +4492,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -4319,17 +4532,14 @@ public final class AgentsImpl {
     }
 
     /**
-     * The createAgentVersionFromCode operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Create an agent version from code
+     * 
+     * Creates a new agent version from code. Uploads the code zip and creates a new version
+     * for an existing agent. The SHA-256 hex digest of the zip is provided in the
+     * `x-ms-code-zip-sha256` header for integrity and dedup.
+     * The request body is multipart/form-data with a JSON metadata part and a binary code part (part order is
+     * irrelevant).
+     * Maximum upload size is 250 MB.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4350,6 +4560,7 @@ public final class AgentsImpl {
      *             rai_policy_name: String (Required)
      *         }
      *     }
+     *     draft: Boolean (Optional)
      *     status: String(creating/active/failed/deleting/deleted) (Optional)
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
@@ -4388,7 +4599,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Download the code zip for a code-based hosted agent.
+     * Download agent code
+     * 
+     * Downloads the code zip for a code-based hosted agent.
      * Returns the previously-uploaded zip (`application/zip`).
      * 
      * If `agent_version` is supplied, returns that version's code zip; otherwise
@@ -4405,16 +4618,6 @@ public final class AgentsImpl {
      * If omitted, the latest version's code zip is returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4440,7 +4643,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Download the code zip for a code-based hosted agent.
+     * Download agent code
+     * 
+     * Downloads the code zip for a code-based hosted agent.
      * Returns the previously-uploaded zip (`application/zip`).
      * 
      * If `agent_version` is supplied, returns that version's code zip; otherwise
@@ -4457,16 +4662,6 @@ public final class AgentsImpl {
      * If omitted, the latest version's code zip is returned.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4491,21 +4686,93 @@ public final class AgentsImpl {
     }
 
     /**
+     * Enable an agent
+     * 
+     * Enables the specified agent, allowing it to accept new sessions and process requests.
+     * This operation is idempotent — enabling an already-enabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to enable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> enableAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.enableAgent(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Enable an agent
+     * 
+     * Enables the specified agent, allowing it to accept new sessions and process requests.
+     * This operation is idempotent — enabling an already-enabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to enable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> enableAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return service.enableAgentSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * Disable an agent
+     * 
+     * Disables the specified agent, preventing it from accepting new sessions or processing requests.
+     * Existing active sessions are allowed to drain gracefully but no new sessions can be created.
+     * This operation is idempotent — disabling an already-disabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to disable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.disableAgent(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Disable an agent
+     * 
+     * Disables the specified agent, preventing it from accepting new sessions or processing requests.
+     * Existing active sessions are allowed to drain gracefully but no new sessions can be created.
+     * This operation is idempotent — disabling an already-disabled agent returns success with no side effects.
+     * 
+     * @param agentName The name of the agent to disable.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> disableAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return service.disableAgentSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create a session
+     * 
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4557,21 +4824,11 @@ public final class AgentsImpl {
     }
 
     /**
+     * Create a session
+     * 
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
      * enforces session ownership using the provided isolation key for session-mutating operations.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4623,19 +4880,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves a session by ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Get a session
+     * 
+     * Retrieves the details of a hosted agent session by agent name and session identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4660,8 +4907,10 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return a session
+     * 
+     * Retrieves the details of a hosted agent session by agent name and session identifier along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSessionWithResponseAsync(String agentName, String sessionId,
@@ -4672,19 +4921,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Retrieves a session by ID.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Get a session
+     * 
+     * Retrieves the details of a hosted agent session by agent name and session identifier.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4709,8 +4948,9 @@ public final class AgentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an agent session providing a long-lived compute sandbox for hosted agent invocations along with
-     * {@link Response}.
+     * @return a session
+     * 
+     * Retrieves the details of a hosted agent session by agent name and session identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSessionWithResponse(String agentName, String sessionId,
@@ -4721,20 +4961,10 @@ public final class AgentsImpl {
     }
 
     /**
+     * Delete a session
+     * 
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -4753,20 +4983,10 @@ public final class AgentsImpl {
     }
 
     /**
+     * Delete a session
+     * 
      * Deletes a session synchronously.
      * Returns 204 No Content when the session is deleted or does not exist.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -4784,18 +5004,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Stop a session
+     * 
+     * Terminates the specified hosted agent session and returns 204 No Content when the request succeeds.
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -4814,18 +5025,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Stops a session.
-     * Returns 204 No Content when the stop succeeds.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Stop a session
+     * 
+     * Terminates the specified hosted agent session and returns 204 No Content when the request succeeds.
      * 
      * @param agentName The name of the agent.
      * @param sessionId The session identifier.
@@ -4843,7 +5045,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * List sessions for an agent
+     * 
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4864,18 +5068,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4914,7 +5106,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * List sessions for an agent
+     * 
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4935,18 +5129,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4978,7 +5160,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * List sessions for an agent
+     * 
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4999,18 +5183,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5046,7 +5218,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns a list of sessions for the specified agent.
+     * List sessions for an agent
+     * 
+     * Returns a paged collection of sessions associated with the specified agent endpoint.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -5067,18 +5241,6 @@ public final class AgentsImpl {
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5110,6 +5272,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Stream console logs for a hosted agent session
+     * 
      * Streams console logs (stdout / stderr) for a specific hosted agent session
      * as a Server-Sent Events (SSE) stream.
      * 
@@ -5137,16 +5301,6 @@ public final class AgentsImpl {
      * 
      * The stream remains open until the client disconnects or the server
      * terminates the connection. Clients should handle reconnection as needed.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5180,6 +5334,8 @@ public final class AgentsImpl {
     }
 
     /**
+     * Stream console logs for a hosted agent session
+     * 
      * Streams console logs (stdout / stderr) for a specific hosted agent session
      * as a Server-Sent Events (SSE) stream.
      * 
@@ -5207,16 +5363,6 @@ public final class AgentsImpl {
      * 
      * The stream remains open until the client disconnects or the server
      * terminates the connection. Clients should handle reconnection as needed.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
-     * "WorkflowAgents=V1Preview", "AgentEndpoints=V1Preview", "CodeAgents=V1Preview",
-     * "ExternalAgents=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5250,49 +5396,15 @@ public final class AgentsImpl {
     }
 
     /**
-     * Creates an agent optimization job.
+     * Upload a session file
      * 
-     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
-     * absent, the server creates the job unconditionally.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Uploads binary file content to the specified path in the session sandbox.
+     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
      * {@code
-     * {
-     *     agent (Required): {
-     *         agent_name: String (Required)
-     *         agent_version: String (Optional)
-     *     }
-     *     train_dataset_reference (Required): {
-     *         name: String (Required)
-     *         version: String (Optional)
-     *     }
-     *     validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *     evaluators (Optional): [
-     *         String (Optional)
-     *     ]
-     *     options (Optional): {
-     *         max_iterations: Integer (Optional)
-     *         optimization_config (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         eval_model: String (Optional)
-     *         optimization_model: String (Optional)
-     *         evaluation_level: String(turn/conversation) (Optional)
-     *     }
-     * }
+     * BinaryData
      * }
      * </pre>
      * 
@@ -5301,1198 +5413,152 @@ public final class AgentsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
+     *     path: String (Required)
+     *     bytes_written: long (Required)
      * }
      * }
      * </pre>
      * 
-     * @param inputs The optimization job inputs.
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param path The destination file path within the sandbox, relative to the session home directory.
+     * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOptimizationJobWithResponseAsync(BinaryData inputs,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOptimizationJob(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, context));
-    }
-
-    /**
-     * Creates an agent optimization job.
-     * 
-     * Create an optimization job. Returns 201 with the queued job. Honours `Operation-Id` for idempotent retry.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
-     * absent, the server creates the job unconditionally.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent (Required): {
-     *         agent_name: String (Required)
-     *         agent_version: String (Optional)
-     *     }
-     *     train_dataset_reference (Required): {
-     *         name: String (Required)
-     *         version: String (Optional)
-     *     }
-     *     validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *     evaluators (Optional): [
-     *         String (Optional)
-     *     ]
-     *     options (Optional): {
-     *         max_iterations: Integer (Optional)
-     *         optimization_config (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         eval_model: String (Optional)
-     *         optimization_model: String (Optional)
-     *         evaluation_level: String(turn/conversation) (Optional)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param inputs The optimization job inputs.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOptimizationJobWithResponse(BinaryData inputs, RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOptimizationJobSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Get info about an agent optimization job.
-     * 
-     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The ID of the job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about an agent optimization job.
-     * 
-     * Get an optimization job by id along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationJob(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Get info about an agent optimization job.
-     * 
-     * Get an optimization job by id. Returns 202 while in progress, 200 when terminal.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The ID of the job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return info about an agent optimization job.
-     * 
-     * Get an optimization job by id along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getOptimizationJobSync(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Returns a list of agent optimization jobs.
-     * 
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * @return response from uploading a file to a session sandbox along with {@link Response} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listOptimizationJobsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadSessionFileWithResponseAsync(String agentName, String sessionId,
+        String path, BinaryData content, RequestOptions requestOptions) {
+        final String contentType = "application/octet-stream";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listOptimizationJobs(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "data"), null, null));
+            .withContext(context -> service.uploadSessionFile(this.client.getEndpoint(), agentName, sessionId, path,
+                contentType, this.client.getServiceVersion().getVersion(), accept, content, requestOptions, context));
     }
 
     /**
-     * Returns a list of agent optimization jobs.
+     * Upload a session file
      * 
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * Uploads binary file content to the specified path in the session sandbox.
+     * The service stores the file relative to the session home directory and rejects payloads larger than 50 MB.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
+     *     path: String (Required)
+     *     bytes_written: long (Required)
      * }
      * }
      * </pre>
      * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param path The destination file path within the sandbox, relative to the session home directory.
+     * @param content The content parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOptimizationJobsAsync(RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listOptimizationJobsSinglePageAsync(requestOptions));
-    }
-
-    /**
-     * Returns a list of agent optimization jobs.
-     * 
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     * @return response from uploading a file to a session sandbox along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listOptimizationJobsSinglePage(RequestOptions requestOptions) {
+    public Response<BinaryData> uploadSessionFileWithResponse(String agentName, String sessionId, String path,
+        BinaryData content, RequestOptions requestOptions) {
+        final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listOptimizationJobsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "data"), null, null);
+        return service.uploadSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path, contentType,
+            this.client.getServiceVersion().getVersion(), accept, content, requestOptions, Context.NONE);
     }
 
     /**
-     * Returns a list of agent optimization jobs.
+     * Download a session file
      * 
-     * List optimization jobs. Supports cursor pagination and optional status / agent_name filters.
+     * Downloads the file at the specified sandbox path as a binary stream.
+     * The path is resolved relative to the session home directory.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> downloadSessionFileWithResponseAsync(String agentName, String sessionId,
+        String path, RequestOptions requestOptions) {
+        final String accept = "application/octet-stream";
+        return FluxUtil.withContext(context -> service.downloadSessionFile(this.client.getEndpoint(), agentName,
+            sessionId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Download a session file
+     * 
+     * Downloads the file at the specified sandbox path as a binary stream.
+     * The path is resolved relative to the session home directory.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param path The file path to download from the sandbox, relative to the session home directory.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> downloadSessionFileWithResponse(String agentName, String sessionId, String path,
+        RequestOptions requestOptions) {
+        final String accept = "application/octet-stream";
+        return service.downloadSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List session files
+     * 
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -6507,501 +5573,230 @@ public final class AgentsImpl {
      * defines your place in the list.
      * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
      * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
-     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
-     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
      * }
      * }
      * </pre>
      * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listOptimizationJobs(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listOptimizationJobsSinglePage(requestOptions));
-    }
-
-    /**
-     * Cancels an agent optimization job.
-     * 
-     * Request cancellation. Idempotent on terminal states.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The ID of the job to cancel.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelOptimizationJobWithResponseAsync(String jobId,
+    private Mono<PagedResponse<BinaryData>> listSessionFilesSinglePageAsync(String agentName, String sessionId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelOptimizationJob(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.listSessionFiles(this.client.getEndpoint(), agentName, sessionId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "entries"), null, null));
     }
 
     /**
-     * Cancels an agent optimization job.
+     * List session files
      * 
-     * Request cancellation. Idempotent on terminal states.
-     * <p><strong>Header Parameters</strong></p>
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Header Parameters</caption>
+     * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     result (Optional): {
-     *         baseline (Optional): {
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *         best (Optional): (recursive schema, see best above)
-     *         candidates (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         options (Optional): {
-     *             max_iterations: Integer (Optional)
-     *             optimization_config (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             eval_model: String (Optional)
-     *             optimization_model: String (Optional)
-     *             evaluation_level: String(turn/conversation) (Optional)
-     *         }
-     *         warnings (Optional): [
-     *             String (Optional)
-     *         ]
-     *         all_target_attributes_failed: Boolean (Optional)
-     *     }
-     *     inputs (Optional): {
-     *         agent (Required): {
-     *             agent_name: String (Required)
-     *             agent_version: String (Optional)
-     *         }
-     *         train_dataset_reference (Required): {
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *         validation_dataset_reference (Optional): (recursive schema, see validation_dataset_reference above)
-     *         evaluators (Optional): [
-     *             String (Optional)
-     *         ]
-     *         options (Optional): (recursive schema, see options above)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: Long (Optional)
-     *     progress (Optional): {
-     *         current_iteration: int (Required)
-     *         best_score: double (Required)
-     *         elapsed_seconds: double (Required)
-     *     }
-     *     dataset (Optional): {
-     *         name: String (Optional)
-     *         version: String (Optional)
-     *         task_count: int (Required)
-     *         is_inline: boolean (Required)
-     *     }
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
      * }
      * }
      * </pre>
      * 
-     * @param jobId The ID of the job to cancel.
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return agent optimization job resource — a long-running job that optimizes an agent's configuration
-     * (instructions, model, skills, tools) to maximize evaluation scores along with {@link Response}.
+     * @return the paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.cancelOptimizationJobSync(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listSessionFilesAsync(String agentName, String sessionId,
+        RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listSessionFilesSinglePageAsync(agentName, sessionId, requestOptions));
     }
 
     /**
-     * Deletes an agent optimization job.
+     * List session files
      * 
-     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>force</td><td>Boolean</td><td>No</td><td>When true, force-delete even if the job is in a non-terminal
-     * state.</td></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
      * 
-     * @param jobId The ID of the job to delete.
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSessionFilesSinglePage(String agentName, String sessionId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listSessionFilesSync(this.client.getEndpoint(), agentName, sessionId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "entries"), null, null);
+    }
+
+    /**
+     * List session files
+     * 
+     * Returns files and directories at the specified path in the session sandbox.
+     * The response includes only the immediate children of the target directory and defaults to the session home
+     * directory when no path is supplied.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>path</td><td>String</td><td>No</td><td>The directory path to list, relative to the session home
+     * directory. Defaults to the home directory if not provided.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     size: long (Required)
+     *     is_directory: boolean (Required)
+     *     modified_time: long (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listSessionFiles(String agentName, String sessionId,
+        RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listSessionFilesSinglePage(agentName, sessionId, requestOptions));
+    }
+
+    /**
+     * Delete a session file
+     * 
+     * Deletes the specified file or directory from the session sandbox.
+     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. The
+     * service defaults to `false` if a value is not specified by the caller.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * 
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7010,36 +5805,29 @@ public final class AgentsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteOptimizationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.deleteOptimizationJob(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    public Mono<Response<Void>> deleteSessionFileWithResponseAsync(String agentName, String sessionId, String path,
+        RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteSessionFile(this.client.getEndpoint(), agentName,
+            sessionId, path, this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
-     * Deletes an agent optimization job.
+     * Delete a session file
      * 
-     * Delete the job and its candidate artifacts. Cancels first if non-terminal.
+     * Deletes the specified file or directory from the session sandbox.
+     * When `recursive` is false, deleting a non-empty directory returns 409 Conflict.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>force</td><td>Boolean</td><td>No</td><td>When true, force-delete even if the job is in a non-terminal
-     * state.</td></tr>
+     * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to recursively delete directory contents. The
+     * service defaults to `false` if a value is not specified by the caller.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
-     * @param jobId The ID of the job to delete.
+     * @param agentName The name of the agent.
+     * @param sessionId The session ID.
+     * @param path The file or directory path to delete, relative to the session home directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7048,823 +5836,16 @@ public final class AgentsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
-        return service.deleteOptimizationJobSync(this.client.getEndpoint(), jobId,
+    public Response<Void> deleteSessionFileWithResponse(String agentName, String sessionId, String path,
+        RequestOptions requestOptions) {
+        return service.deleteSessionFileSync(this.client.getEndpoint(), agentName, sessionId, path,
             this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
     /**
-     * Returns a list of candidates for an optimization job.
+     * List conversations
      * 
-     * List candidates produced by a job.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     data (Required): [
-     *          (Required){
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *     ]
-     *     first_id: String (Optional)
-     *     last_id: String (Optional)
-     *     has_more: boolean (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listOptimizationCandidatesWithResponseAsync(String jobId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listOptimizationCandidates(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Returns a list of candidates for an optimization job.
-     * 
-     * List candidates produced by a job.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     data (Required): [
-     *          (Required){
-     *             candidate_id: String (Optional)
-     *             name: String (Required)
-     *             config (Required): {
-     *                 agent_name: String (Optional)
-     *                 agent_version: String (Optional)
-     *                 model: String (Optional)
-     *                 system_prompt: String (Optional)
-     *                 skills (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *                 tools (Optional): [
-     *                      (Optional){
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             mutations (Required): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             avg_score: double (Required)
-     *             avg_tokens: double (Required)
-     *             pass_rate: double (Required)
-     *             task_scores (Required): [
-     *                  (Required){
-     *                     task_name: String (Required)
-     *                     query: String (Optional)
-     *                     scores (Required): {
-     *                         String: double (Required)
-     *                     }
-     *                     composite_score: double (Required)
-     *                     tokens: long (Required)
-     *                     duration_seconds: double (Required)
-     *                     passed: boolean (Required)
-     *                     error_message: String (Optional)
-     *                     rationales (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     response: String (Optional)
-     *                     run_id: String (Optional)
-     *                 }
-     *             ]
-     *             is_pareto_optimal: boolean (Required)
-     *             eval_id: String (Optional)
-     *             eval_run_id: String (Optional)
-     *             promotion (Optional): {
-     *                 promoted_at: long (Required)
-     *                 agent_name: String (Required)
-     *                 agent_version: String (Required)
-     *             }
-     *         }
-     *     ]
-     *     first_id: String (Optional)
-     *     last_id: String (Optional)
-     *     has_more: boolean (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listOptimizationCandidatesWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.listOptimizationCandidatesSync(this.client.getEndpoint(), jobId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Get a candidate by id.
-     * 
-     * Get a single candidate's metadata, manifest, and promotion info.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     job_id: String (Required)
-     *     candidate_name: String (Required)
-     *     status: String (Required)
-     *     score: Double (Optional)
-     *     has_results: boolean (Required)
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     *     promotion (Optional): {
-     *         promoted_at: long (Required)
-     *         agent_name: String (Required)
-     *         agent_version: String (Required)
-     *     }
-     *     files (Required): [
-     *          (Required){
-     *             path: String (Required)
-     *             type: String (Required)
-     *             size_bytes: long (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate by id.
-     * 
-     * Get a single candidate's metadata, manifest, and promotion info along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateWithResponseAsync(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidate(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Get a candidate by id.
-     * 
-     * Get a single candidate's metadata, manifest, and promotion info.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     job_id: String (Required)
-     *     candidate_name: String (Required)
-     *     status: String (Required)
-     *     score: Double (Optional)
-     *     has_results: boolean (Required)
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     *     promotion (Optional): {
-     *         promoted_at: long (Required)
-     *         agent_name: String (Required)
-     *         agent_version: String (Required)
-     *     }
-     *     files (Required): [
-     *          (Required){
-     *             path: String (Required)
-     *             type: String (Required)
-     *             size_bytes: long (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate by id.
-     * 
-     * Get a single candidate's metadata, manifest, and promotion info along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOptimizationCandidateWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getOptimizationCandidateSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Get candidate deploy config.
-     * 
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     instructions: String (Optional)
-     *     model: String (Optional)
-     *     temperature: Double (Optional)
-     *     skills (Optional): [
-     *          (Optional){
-     *             String: BinaryData (Required)
-     *         }
-     *     ]
-     *     tools (Optional): [
-     *          (Optional){
-     *             String: BinaryData (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate deploy config.
-     * 
-     * Get the candidate's deploy config JSON along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateConfigWithResponseAsync(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidateConfig(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Get candidate deploy config.
-     * 
-     * Get the candidate's deploy config JSON. Used to compose `agents.create_version(...)` from a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     instructions: String (Optional)
-     *     model: String (Optional)
-     *     temperature: Double (Optional)
-     *     skills (Optional): [
-     *          (Optional){
-     *             String: BinaryData (Required)
-     *         }
-     *     ]
-     *     tools (Optional): [
-     *          (Optional){
-     *             String: BinaryData (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate deploy config.
-     * 
-     * Get the candidate's deploy config JSON along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOptimizationCandidateConfigWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getOptimizationCandidateConfigSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Get candidate evaluation results.
-     * 
-     * Get full per-task evaluation results for a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     results (Required): [
-     *          (Required){
-     *             task_name: String (Required)
-     *             query: String (Optional)
-     *             scores (Required): {
-     *                 String: double (Required)
-     *             }
-     *             composite_score: double (Required)
-     *             tokens: long (Required)
-     *             duration_seconds: double (Required)
-     *             passed: boolean (Required)
-     *             error_message: String (Optional)
-     *             rationales (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             response: String (Optional)
-     *             run_id: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate evaluation results.
-     * 
-     * Get full per-task evaluation results for a candidate along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateResultsWithResponseAsync(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidateResults(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Get candidate evaluation results.
-     * 
-     * Get full per-task evaluation results for a candidate.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     results (Required): [
-     *          (Required){
-     *             task_name: String (Required)
-     *             query: String (Optional)
-     *             scores (Required): {
-     *                 String: double (Required)
-     *             }
-     *             composite_score: double (Required)
-     *             tokens: long (Required)
-     *             duration_seconds: double (Required)
-     *             passed: boolean (Required)
-     *             error_message: String (Optional)
-     *             rationales (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             response: String (Optional)
-     *             run_id: String (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return candidate evaluation results.
-     * 
-     * Get full per-task evaluation results for a candidate along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOptimizationCandidateResultsWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getOptimizationCandidateResultsSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Get a candidate file.
-     * 
-     * Stream a specific file from the candidate's blob directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate file.
-     * 
-     * Stream a specific file from the candidate's blob directory along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOptimizationCandidateFileWithResponseAsync(String jobId, String candidateId,
-        String path, RequestOptions requestOptions) {
-        final String accept = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.getOptimizationCandidateFile(this.client.getEndpoint(), jobId,
-            candidateId, path, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
-    }
-
-    /**
-     * Get a candidate file.
-     * 
-     * Stream a specific file from the candidate's blob directory.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id.
-     * @param path Relative path of the file to download (e.g. 'files/examples.jsonl').
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate file.
-     * 
-     * Stream a specific file from the candidate's blob directory along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOptimizationCandidateFileWithResponse(String jobId, String candidateId, String path,
-        RequestOptions requestOptions) {
-        final String accept = "application/octet-stream";
-        return service.getOptimizationCandidateFileSync(this.client.getEndpoint(), jobId, candidateId, path,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Promote a candidate.
-     * 
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_name: String (Required)
-     *     agent_version: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     status: String (Required)
-     *     promoted_at: long (Required)
-     *     agent_name: String (Required)
-     *     agent_version: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param candidateRequest Promotion details.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response after successfully promoting a candidate along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> promoteOptimizationCandidateWithResponseAsync(String jobId, String candidateId,
-        BinaryData candidateRequest, RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.promoteOptimizationCandidate(this.client.getEndpoint(), jobId,
-            candidateId, this.client.getServiceVersion().getVersion(), contentType, accept, candidateRequest,
-            requestOptions, context));
-    }
-
-    /**
-     * Promote a candidate.
-     * 
-     * Promotes a candidate, recording the deployment timestamp and target agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "Evaluations=V1Preview",
-     * "Schedules=V1Preview", "RedTeams=V1Preview", "Insights=V1Preview", "MemoryStores=V1Preview",
-     * "Routines=V1Preview", "Toolboxes=V1Preview", "Skills=V1Preview", "DataGenerationJobs=V1Preview",
-     * "Models=V1Preview", "AgentsOptimization=V1Preview".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     agent_name: String (Required)
-     *     agent_version: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     status: String (Required)
-     *     promoted_at: long (Required)
-     *     agent_name: String (Required)
-     *     agent_version: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jobId The optimization job id.
-     * @param candidateId The candidate id to promote.
-     * @param candidateRequest Promotion details.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response after successfully promoting a candidate along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> promoteOptimizationCandidateWithResponse(String jobId, String candidateId,
-        BinaryData candidateRequest, RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.promoteOptimizationCandidateSync(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), contentType, accept, candidateRequest, requestOptions,
-            Context.NONE);
-    }
-
-    /**
-     * Returns the list of all conversations.
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -7893,8 +5874,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -7933,7 +5915,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     * 
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -7962,8 +5946,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -7996,7 +5981,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     * 
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -8025,8 +6012,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
@@ -8063,7 +6051,9 @@ public final class AgentsImpl {
     }
 
     /**
-     * Returns the list of all conversations.
+     * List conversations
+     * 
+     * Returns the conversations available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -8092,8 +6082,9 @@ public final class AgentsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-user-isolation-key</td><td>String</td><td>No</td><td>Opaque per-user isolation key used to scope
-     * endpoint-scoped data (responses, conversations, sessions) to a specific end user.</td></tr>
+     * <tr><td>x-ms-user-identity</td><td>String</td><td>No</td><td>Opaque per-user identity string used to scope
+     * endpoint-scoped data to a specific end user. The caller must have the
+     * `agents/endpoints/UserIdentityImpersonation/action` RBAC permission.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>

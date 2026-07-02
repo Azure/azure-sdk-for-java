@@ -5,8 +5,8 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.Tool;
-import com.azure.ai.agents.models.ToolboxSearchPreviewTool;
+import com.azure.ai.agents.models.ToolboxSearchPreviewToolboxTool;
+import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
@@ -39,7 +39,7 @@ public class ToolboxSearchToolboxSample {
         try {
             // BEGIN: com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
 
-            ToolboxSearchPreviewTool toolboxSearchTool = new ToolboxSearchPreviewTool()
+            ToolboxSearchPreviewToolboxTool toolboxSearchTool = new ToolboxSearchPreviewToolboxTool()
                 .setName("search_tools")
                 .setDescription("Search over available toolbox tools at runtime.");
 
@@ -53,7 +53,7 @@ public class ToolboxSearchToolboxSample {
 
             System.out.printf("Created toolbox: %s%n", version.getName());
             System.out.printf("Toolbox version: %s%n", version.getVersion());
-            for (Tool tool : version.getTools()) {
+            for (ToolboxTool tool : version.getTools()) {
                 System.out.printf("Tool type: %s%n", tool.getType());
             }
 

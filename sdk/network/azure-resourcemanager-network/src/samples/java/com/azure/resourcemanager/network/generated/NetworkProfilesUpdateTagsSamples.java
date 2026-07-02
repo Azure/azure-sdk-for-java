@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkProfilesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkProfileUpdateTags.json
+     * x-ms-original-file: 2025-07-01/NetworkProfileUpdateTags.json
      */
     /**
      * Sample code: Update network profile tags.

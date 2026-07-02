@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class IpGroupsUpdateGroupsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpGroupsUpdateTags.json
+     * x-ms-original-file: 2025-07-01/IpGroupsUpdateTags.json
      */
     /**
      * Sample code: Update_IpGroups.

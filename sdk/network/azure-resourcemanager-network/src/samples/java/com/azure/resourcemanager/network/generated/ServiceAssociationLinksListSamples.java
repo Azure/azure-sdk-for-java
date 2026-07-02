@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceAssociationLinksListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualNetworkGetServiceAssociationLinks.json
+     * x-ms-original-file: 2025-07-01/VirtualNetworkGetServiceAssociationLinks.json
      */
     /**
      * Sample code: Get Service Association Links.

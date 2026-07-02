@@ -96,14 +96,14 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIAsyncClient().responses();
     }
 
-    protected MemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
+    protected BetaMemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresClient();
     }
 
-    protected MemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
+    protected BetaMemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresAsyncClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresAsyncClient();
     }
 
     private void addTestRecordCustomSanitizers() {

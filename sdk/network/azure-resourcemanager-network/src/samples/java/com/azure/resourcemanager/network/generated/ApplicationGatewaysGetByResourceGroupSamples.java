@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ApplicationGatewayGet.json
+     * x-ms-original-file: 2025-07-01/ApplicationGatewayGet.json
      */
     /**
      * Sample code: Get ApplicationGateway.

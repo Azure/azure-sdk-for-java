@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthor
  */
 public final class ExpressRouteCircuitAuthorizationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ExpressRouteCircuitAuthorizationCreate.json
+     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitAuthorizationCreate.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit Authorization.

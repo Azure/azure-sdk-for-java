@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkInterfaceList.json
+     * x-ms-original-file: 2025-07-01/NetworkInterfaceList.json
      */
     /**
      * Sample code: List network interfaces in resource group.

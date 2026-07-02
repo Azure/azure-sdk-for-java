@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkProfileGetWithContainerNic.json
+     * x-ms-original-file: 2025-07-01/NetworkProfileGetWithContainerNic.json
      */
     /**
      * Sample code: Get network profile with container network interfaces.
@@ -24,7 +24,7 @@ public final class NetworkProfilesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-05-01/NetworkProfileGetConfigOnly.json
+     * x-ms-original-file: 2025-07-01/NetworkProfileGetConfigOnly.json
      */
     /**
      * Sample code: Get network profile.

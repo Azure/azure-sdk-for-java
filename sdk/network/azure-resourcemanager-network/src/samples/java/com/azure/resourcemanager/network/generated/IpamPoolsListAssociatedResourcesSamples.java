@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpamPoolsListAssociatedResourcesSamples {
     /*
-     * x-ms-original-file: 2025-05-01/IpamPools_ListAssociatedResources.json
+     * x-ms-original-file: 2025-07-01/IpamPools_ListAssociatedResources.json
      */
     /**
      * Sample code: IpamPools_ListAssociatedResources.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class VirtualHubsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualHubUpdateTags.json
+     * x-ms-original-file: 2025-07-01/VirtualHubUpdateTags.json
      */
     /**
      * Sample code: VirtualHubUpdate.

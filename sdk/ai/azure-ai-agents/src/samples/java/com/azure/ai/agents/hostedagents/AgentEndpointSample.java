@@ -5,11 +5,12 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.hostedagents.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
+import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentEndpointProtocol;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
+import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
@@ -42,7 +43,7 @@ public class AgentEndpointSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsClient agentsClient = builder.buildAgentsClient();
+        AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
 
         HostedAgentSessionResources resources = null;
         try {
@@ -52,11 +53,10 @@ public class AgentEndpointSample {
                 .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
                     new FixedRatioVersionSelectionRule(100)
                         .setAgentVersion(resources.getAgent().getVersion()))))
-                .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
+                .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
             agentsClient.updateAgentDetails(agentName,
-                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig),
-                AgentDefinitionOptInKeys.AGENT_ENDPOINT_V1_PREVIEW);
+                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
             System.out.printf("Agent endpoint configured for agent: %s%n", agentName);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);

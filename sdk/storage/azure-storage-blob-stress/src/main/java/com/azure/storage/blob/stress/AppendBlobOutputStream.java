@@ -15,6 +15,7 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -27,7 +28,9 @@ public class AppendBlobOutputStream extends BlobScenarioBase<StorageStressOption
     private final BlobAsyncClient tempSetupBlobClient;
 
     public AppendBlobOutputStream(StorageStressOptions options) {
-        super(options);
+        // Each logical op writes through many appendBlock requests plus
+        // scenario-level retry-from-scratch on failure; use an explicit timeout.
+        super(options, Duration.ofSeconds(30));
         String blobName = generateBlobName();
         String tempBlobName = generateBlobName();
 
