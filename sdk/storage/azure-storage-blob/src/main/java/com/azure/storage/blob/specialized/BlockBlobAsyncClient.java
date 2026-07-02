@@ -43,6 +43,8 @@ import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -416,6 +418,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
+
+        ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
+
         Mono<BinaryData> dataMono;
         BinaryData binaryData = options.getData();
         if (binaryData == null) {
@@ -429,10 +434,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
         BlobRequestConditions requestConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
-        Context finalContext = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
+        context = ContentValidationModeResolver.addContentValidationMode(context, contentValidationAlgorithm,
+          options.getLength(), false);
+
+        Context finalContext = context;
+      
         return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
             .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
                 options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
@@ -708,12 +717,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
-        try {
-            return withContext(
-                context -> stageBlockWithResponse(base64BlockId, data, length, contentMd5, leaseId, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> stageBlockWithResponse(
+                new BlockBlobStageBlockOptions(base64BlockId, binaryData).setContentMd5(contentMd5)
+                    .setLeaseId(leaseId)));
     }
 
     /**
@@ -746,27 +753,24 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options) {
         Objects.requireNonNull(options, "options must not be null");
         try {
-            return withContext(context -> stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
-                options.getContentMd5(), options.getLeaseId(), context));
+            return withContext(context -> stageBlockWithResponseInternal(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
-        byte[] contentMd5, String leaseId, Context context) {
-        return BinaryData.fromFlux(data, length, false)
-            .flatMap(binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
-    }
+    Mono<Response<Void>> stageBlockWithResponseInternal(BlockBlobStageBlockOptions options, Context context) {
+        Objects.requireNonNull(options.getData(), "data must not be null");
+        Objects.requireNonNull(options.getData().getLength(), "data must have defined length");
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,
-        String leaseId, Context context) {
-        Objects.requireNonNull(data, "data must not be null");
-        Objects.requireNonNull(data.getLength(), "data must have defined length");
-        context = context == null ? Context.NONE : context;
+        context = ContentValidationModeResolver.addContentValidationMode(context,
+            options.getContentValidationAlgorithm(), options.getData().getLength(), false);
+
         return this.azureBlobStorage.getBlockBlobs()
-            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, base64BlockId, data.getLength(), data,
-                contentMd5, null, null, leaseId, null, null, null, getCustomerProvidedKey(), encryptionScope, context);
+            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
+                options.getData().getLength(), options.getData(), options.getContentMd5(), null, null,
+                options.getLeaseId(), null, null, null, getCustomerProvidedKey(), encryptionScope, context);
+
     }
 
     /**

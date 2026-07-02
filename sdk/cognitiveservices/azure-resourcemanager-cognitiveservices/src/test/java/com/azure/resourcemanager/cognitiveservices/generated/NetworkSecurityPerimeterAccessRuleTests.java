@@ -13,15 +13,15 @@ public final class NetworkSecurityPerimeterAccessRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterAccessRule model = BinaryData.fromString(
-            "{\"name\":\"bcporxvxcjzhqizx\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"scjavftju\",\"dqazkmtgguwpijra\",\"civmmg\"],\"subscriptions\":[{\"id\":\"iwrxgkn\"}],\"networkSecurityPerimeters\":[{\"id\":\"inzqodfvpgs\",\"perimeterGuid\":\"xgsg\",\"location\":\"fgzdjtxvz\"}],\"fullyQualifiedDomainNames\":[\"q\",\"gaqvlgafcqusrd\"]}}")
+            "{\"name\":\"pv\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"iofrzgbzjedmstk\"],\"subscriptions\":[{\"id\":\"xbcuiiznkt\"}],\"networkSecurityPerimeters\":[{\"id\":\"snvpdibmi\",\"perimeterGuid\":\"stbz\",\"location\":\"iwbuqny\"},{\"id\":\"hzfylsgcrpfbc\",\"perimeterGuid\":\"ezzcez\",\"location\":\"fwyfwlwxjwet\"}],\"fullyQualifiedDomainNames\":[\"ihclafzv\",\"ylptrsqqwztcm\",\"qkc\",\"cxwaxfewz\"]}}")
             .toObject(NetworkSecurityPerimeterAccessRule.class);
-        Assertions.assertEquals("bcporxvxcjzhqizx", model.name());
-        Assertions.assertEquals(NspAccessRuleDirection.OUTBOUND, model.properties().direction());
-        Assertions.assertEquals("scjavftju", model.properties().addressPrefixes().get(0));
-        Assertions.assertEquals("iwrxgkn", model.properties().subscriptions().get(0).id());
-        Assertions.assertEquals("inzqodfvpgs", model.properties().networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals("xgsg", model.properties().networkSecurityPerimeters().get(0).perimeterGuid());
-        Assertions.assertEquals("fgzdjtxvz", model.properties().networkSecurityPerimeters().get(0).location());
-        Assertions.assertEquals("q", model.properties().fullyQualifiedDomainNames().get(0));
+        Assertions.assertEquals("pv", model.name());
+        Assertions.assertEquals(NspAccessRuleDirection.INBOUND, model.properties().direction());
+        Assertions.assertEquals("iofrzgbzjedmstk", model.properties().addressPrefixes().get(0));
+        Assertions.assertEquals("xbcuiiznkt", model.properties().subscriptions().get(0).id());
+        Assertions.assertEquals("snvpdibmi", model.properties().networkSecurityPerimeters().get(0).id());
+        Assertions.assertEquals("stbz", model.properties().networkSecurityPerimeters().get(0).perimeterGuid());
+        Assertions.assertEquals("iwbuqny", model.properties().networkSecurityPerimeters().get(0).location());
+        Assertions.assertEquals("ihclafzv", model.properties().fullyQualifiedDomainNames().get(0));
     }
 }

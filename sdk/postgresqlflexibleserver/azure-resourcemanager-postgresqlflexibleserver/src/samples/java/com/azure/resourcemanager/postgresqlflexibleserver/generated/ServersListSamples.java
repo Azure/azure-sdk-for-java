@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersListBySubscription.json
+     * x-ms-original-file: 2026-04-01-preview/ServersListBySubscription.json
      */
     /**
      * Sample code: List all servers in a subscription.

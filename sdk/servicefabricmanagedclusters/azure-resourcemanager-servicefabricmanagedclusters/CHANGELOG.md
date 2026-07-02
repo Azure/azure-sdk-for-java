@@ -1,14 +1,103 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-05-19)
 
-### Features Added
+- Azure Resource Manager Service Fabric Managed Clusters client library for Java. This package contains Microsoft Azure SDK for Service Fabric Managed Clusters Management SDK. Service Fabric Managed Clusters Management Client. Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedApplyMaintenanceWindows` was modified
 
-### Other Changes
+* `postWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.SfmcOperationStatus` was added
+
+* `models.FaultSimulationContentWrapper` was added
+
+* `models.HostEndpointSettings` was added
+
+* `models.FaultSimulationStatus` was added
+
+* `models.ZoneFaultSimulationContent` was added
+
+* `models.FaultSimulationDetails` was added
+
+* `models.ApplyMaintenanceWindowRequest` was added
+
+* `models.ScaleInPolicyMode` was added
+
+* `models.FaultSimulation` was added
+
+* `models.NodeTypeFaultSimulation` was added
+
+* `models.FaultKind` was added
+
+* `models.FaultSimulationContent` was added
+
+* `models.FaultSimulationIdContent` was added
+
+* `models.ProxyAgentSettings` was added
+
+* `models.FaultSimulationConstraints` was added
+
+* `models.ScaleInPolicy` was added
+
+#### `models.NodeType$Definition` was modified
+
+* `withScaleInPolicy(models.ScaleInPolicy)` was added
+* `withProxyAgentSettings(models.ProxyAgentSettings)` was added
+
+#### `models.NodeTypes` was modified
+
+* `listFaultSimulation(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getFaultSimulationWithResponse(java.lang.String,java.lang.String,java.lang.String,models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
+* `stopFaultSimulation(java.lang.String,java.lang.String,java.lang.String,models.FaultSimulationIdContent)` was added
+* `startFaultSimulation(java.lang.String,java.lang.String,java.lang.String,models.FaultSimulationContentWrapper,com.azure.core.util.Context)` was added
+* `getFaultSimulation(java.lang.String,java.lang.String,java.lang.String,models.FaultSimulationIdContent)` was added
+* `startFaultSimulation(java.lang.String,java.lang.String,java.lang.String,models.FaultSimulationContentWrapper)` was added
+* `listFaultSimulation(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `stopFaultSimulation(java.lang.String,java.lang.String,java.lang.String,models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
+
+#### `models.ManagedClusters` was modified
+
+* `startFaultSimulation(java.lang.String,java.lang.String,models.FaultSimulationContentWrapper)` was added
+* `listFaultSimulation(java.lang.String,java.lang.String)` was added
+* `stopFaultSimulation(java.lang.String,java.lang.String,models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
+* `startFaultSimulation(java.lang.String,java.lang.String,models.FaultSimulationContentWrapper,com.azure.core.util.Context)` was added
+* `stopFaultSimulation(java.lang.String,java.lang.String,models.FaultSimulationIdContent)` was added
+* `getFaultSimulationWithResponse(java.lang.String,java.lang.String,models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
+* `getFaultSimulation(java.lang.String,java.lang.String,models.FaultSimulationIdContent)` was added
+* `listFaultSimulation(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.NodeType` was modified
+
+* `proxyAgentSettings()` was added
+* `stopFaultSimulation(models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
+* `getFaultSimulationWithResponse(models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
+* `listFaultSimulation(com.azure.core.util.Context)` was added
+* `startFaultSimulation(models.FaultSimulationContentWrapper)` was added
+* `stopFaultSimulation(models.FaultSimulationIdContent)` was added
+* `scaleInPolicy()` was added
+* `getFaultSimulation(models.FaultSimulationIdContent)` was added
+* `listFaultSimulation()` was added
+* `startFaultSimulation(models.FaultSimulationContentWrapper,com.azure.core.util.Context)` was added
+
+#### `models.ManagedApplyMaintenanceWindows` was modified
+
+* `postWithResponse(java.lang.String,java.lang.String,models.ApplyMaintenanceWindowRequest,com.azure.core.util.Context)` was added
+
+#### `models.ManagedCluster` was modified
+
+* `getFaultSimulation(models.FaultSimulationIdContent)` was added
+* `listFaultSimulation()` was added
+* `startFaultSimulation(models.FaultSimulationContentWrapper)` was added
+* `listFaultSimulation(com.azure.core.util.Context)` was added
+* `stopFaultSimulation(models.FaultSimulationIdContent)` was added
+* `startFaultSimulation(models.FaultSimulationContentWrapper,com.azure.core.util.Context)` was added
+* `stopFaultSimulation(models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
+* `getFaultSimulationWithResponse(models.FaultSimulationIdContent,com.azure.core.util.Context)` was added
 
 ## 1.1.0 (2026-02-26)
 

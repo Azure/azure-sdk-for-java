@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class QuotaTiersGetSamples {
     /*
-     * x-ms-original-file: 2026-01-15-preview/GetQuotaTier.json
+     * x-ms-original-file: 2026-03-15-preview/GetQuotaTier.json
      */
     /**
      * Sample code: Get the Quota Tier information for a subscription.

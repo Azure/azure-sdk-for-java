@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class TableUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/TableOperationPutOrPatchAcls.json
+     * x-ms-original-file: 2026-04-01/TableOperationPutOrPatchAcls.json
      */
     /**
      * Sample code: TableOperationPutOrPatchAcls.
@@ -43,7 +43,7 @@ public final class TableUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/TableOperationPatch.json
+     * x-ms-original-file: 2026-04-01/TableOperationPatch.json
      */
     /**
      * Sample code: TableOperationPatch.

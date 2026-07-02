@@ -1354,7 +1354,8 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return describes a DNS resolver domain list along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> bulkWithResponseAsync(String resourceGroupName,
@@ -1381,7 +1382,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return describes a DNS resolver domain list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> bulkWithResponse(String resourceGroupName, String dnsResolverDomainListName,
@@ -1407,7 +1408,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return describes a DNS resolver domain list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> bulkWithResponse(String resourceGroupName, String dnsResolverDomainListName,
@@ -1432,7 +1433,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulkAsync(
@@ -1454,7 +1455,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulkAsync(
@@ -1481,7 +1482,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulk(
@@ -1502,7 +1503,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner>
@@ -1529,7 +1530,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverDomainListInner>, DnsResolverDomainListInner> beginBulk(
@@ -1554,7 +1555,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes a DNS resolver domain list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DnsResolverDomainListInner> bulkAsync(String resourceGroupName, String dnsResolverDomainListName,
@@ -1572,7 +1573,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return describes a DNS resolver domain list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DnsResolverDomainListInner> bulkAsync(String resourceGroupName, String dnsResolverDomainListName,
@@ -1592,7 +1593,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner bulk(String resourceGroupName, String dnsResolverDomainListName,
@@ -1617,7 +1618,7 @@ public final class DnsResolverDomainListsClientImpl implements DnsResolverDomain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return describes a DNS resolver domain list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverDomainListInner bulk(String resourceGroupName, String dnsResolverDomainListName,

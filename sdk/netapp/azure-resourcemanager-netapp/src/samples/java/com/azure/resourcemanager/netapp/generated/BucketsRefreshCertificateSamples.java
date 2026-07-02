@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BucketsRefreshCertificateSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Buckets_RefreshCertificate.json
+     * x-ms-original-file: 2026-04-01/Buckets_RefreshCertificate.json
      */
     /**
      * Sample code: Buckets_RefreshCertificate.

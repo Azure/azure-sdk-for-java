@@ -138,7 +138,9 @@ public final class DeploymentsImpl {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     * 
+     * Gets a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -156,7 +158,9 @@ public final class DeploymentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deployed model along with {@link Response} on successful completion of {@link Mono}.
+     * @return a deployment
+     * 
+     * Gets a deployed model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(String name, RequestOptions requestOptions) {
@@ -166,7 +170,9 @@ public final class DeploymentsImpl {
     }
 
     /**
-     * Get a deployed model.
+     * Get a deployment
+     * 
+     * Gets a deployed model.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -184,7 +190,9 @@ public final class DeploymentsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deployed model along with {@link Response}.
+     * @return a deployment
+     * 
+     * Gets a deployed model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentWithResponse(String name, RequestOptions requestOptions) {
@@ -194,7 +202,10 @@ public final class DeploymentsImpl {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     * 
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -236,7 +247,10 @@ public final class DeploymentsImpl {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     * 
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -276,7 +290,10 @@ public final class DeploymentsImpl {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     * 
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -316,7 +333,10 @@ public final class DeploymentsImpl {
     }
 
     /**
-     * List all deployed models in the project.
+     * List deployments
+     * 
+     * Returns the deployed models available in the current project, optionally filtered by publisher, model name, or
+     * deployment type.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -356,6 +376,8 @@ public final class DeploymentsImpl {
     }
 
     /**
+     * List deployments
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -389,6 +411,8 @@ public final class DeploymentsImpl {
     }
 
     /**
+     * List deployments
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

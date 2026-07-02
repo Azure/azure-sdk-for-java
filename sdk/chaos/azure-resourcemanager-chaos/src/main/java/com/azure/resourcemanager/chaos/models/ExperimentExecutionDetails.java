@@ -54,6 +54,13 @@ public interface ExperimentExecutionDetails {
     OffsetDateTime stoppedAt();
 
     /**
+     * Gets the provisioningState property: Resource provisioning state. Not currently in use for executions.
+     * 
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
      * Gets the failureReason property: The reason why the execution failed.
      * 
      * @return the failureReason value.

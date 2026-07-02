@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/DatabasesGet.json
+     * x-ms-original-file: 2026-04-01-preview/DatabasesGet.json
      */
     /**
      * Sample code: Get information about an existing database.

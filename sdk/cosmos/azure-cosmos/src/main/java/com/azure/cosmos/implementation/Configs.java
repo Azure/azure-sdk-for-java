@@ -145,6 +145,36 @@ public class Configs {
     private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS = "COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
     private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_MS_VARIABLE = "COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_MS";
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
+
+    // HTTP/2 PING keepalive — keeps connections alive for sparse workloads by preventing
+    // intermediate infrastructure (NAT gateways, firewalls, load balancers) from silently
+    // reaping idle connections. On PING timeout (no ACK within the configured timeout),
+    // the connection is closed — similar to Rust SDK's hyper-based PING behavior.
+    // Guarded by an explicit enable flag; default ON. Set COSMOS.HTTP2_PING_HEALTH_ENABLED=false to disable.
+    private static final boolean DEFAULT_HTTP2_PING_HEALTH_ENABLED = true;
+    private static final String HTTP2_PING_HEALTH_ENABLED = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
+    private static final String HTTP2_PING_HEALTH_ENABLED_VARIABLE = "COSMOS_HTTP2_PING_HEALTH_ENABLED";
+    // Aligned with Rust SDK (hyper): interval=1s, timeout=2s. A single missed PING round
+    // (~3s) marks one failure; the connection is closed after HTTP2_PING_FAILURE_THRESHOLD
+    // consecutive failures (see ~15s worst-case detection note below).
+    private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 1;
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS = 2;
+    private static final String HTTP2_PING_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_TIMEOUT_IN_SECONDS";
+    private static final String HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_TIMEOUT_IN_SECONDS";
+    // Consecutive PING failures (timeout without ACK) before closing the connection.
+    // Peer HTTP/2 stacks (Hyper / .NET SocketsHttpHandler / Go net/http) typically close
+    // on the first PING-ACK timeout. Java's threshold of 5 is intentionally more tolerant
+    // to absorb transient WAN jitter; with interval=1s and timeout=2s, worst-case
+    // detection = 5*(1+2) = ~15s.
+    // Note: this is NOT the same dimension as Rust SDK's
+    // `http2_consecutive_failure_threshold` (which gates per-HTTP-request shard health,
+    // not per-PING-ACK timeouts).
+    private static final int DEFAULT_HTTP2_PING_FAILURE_THRESHOLD = 5;
+    private static final String HTTP2_PING_FAILURE_THRESHOLD = "COSMOS.HTTP2_PING_FAILURE_THRESHOLD";
+    private static final String HTTP2_PING_FAILURE_THRESHOLD_VARIABLE = "COSMOS_HTTP2_PING_FAILURE_THRESHOLD";
+
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -395,6 +425,16 @@ public class Configs {
     private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
+
+    // Config to indicate the SETTINGS_MAX_FRAME_SIZE advertised by the HTTP/2 client to the remote peer.
+    // The value is expressed in kilobytes (KB) and is clamped to [64 KB, 16383 KB] — the lower bound matches
+    // the SDK's historical default so users can only grow the frame size, and the upper bound is the
+    // largest whole-KB value below the HTTP/2 spec max (RFC 7540: 2^24 - 1 bytes).
+    private static final int MIN_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;            // 64 KB
+    private static final int MAX_HTTP2_MAX_FRAME_SIZE_IN_KB = 16_383;        // 16383 KB
+    private static final int DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB = 64;        // 64 KB
+    private static final String HTTP2_MAX_FRAME_SIZE_IN_KB = "COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB";
+    private static final String HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE = "COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB";
 
     private static final boolean DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = false;
     private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = "COSMOS.IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
@@ -738,6 +778,71 @@ public class Configs {
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    public static boolean isHttp2PingHealthEnabled() {
+        String configValue = System.getProperty(
+            HTTP2_PING_HEALTH_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_PING_HEALTH_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_PING_HEALTH_ENABLED)));
+        return Boolean.parseBoolean(configValue);
+    }
+
+    public static int getHttp2PingIntervalInSeconds() {
+        return parseIntConfigOrDefault(
+            HTTP2_PING_INTERVAL_IN_SECONDS,
+            HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE,
+            DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
+    }
+
+    public static int getHttp2PingTimeoutInSeconds() {
+        return parseIntConfigOrDefault(
+            HTTP2_PING_TIMEOUT_IN_SECONDS,
+            HTTP2_PING_TIMEOUT_IN_SECONDS_VARIABLE,
+            DEFAULT_HTTP2_PING_TIMEOUT_IN_SECONDS);
+    }
+
+    public static int getHttp2PingFailureThreshold() {
+        return parseIntConfigOrDefault(
+            HTTP2_PING_FAILURE_THRESHOLD,
+            HTTP2_PING_FAILURE_THRESHOLD_VARIABLE,
+            DEFAULT_HTTP2_PING_FAILURE_THRESHOLD);
+    }
+
+    /**
+     * Reads an int system property first, then the env variable, falling back to the supplied default
+     * on either absence or a non-numeric value. Logs WARN on malformed input so an operator typo in a
+     * value like {@code COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS=1s} cannot throw {@link NumberFormatException}
+     * from inside a per-connection reactor-netty {@code doOnConnected} callback and break the channel.
+     */
+    private static int parseIntConfigOrDefault(String systemPropertyKey, String envVariableKey, int defaultValue) {
+        String valueFromSystemProperty = System.getProperty(systemPropertyKey);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    systemPropertyKey);
+            }
+        }
+
+        String valueFromEnvVariable = System.getenv(envVariableKey);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            try {
+                return Integer.parseInt(valueFromEnvVariable);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}.",
+                    valueFromEnvVariable,
+                    envVariableKey,
+                    defaultValue);
+            }
+        }
+
+        return defaultValue;
     }
 
     public static Integer getPendingAcquireMaxCount() {
@@ -1388,6 +1493,54 @@ public class Configs {
                 String.valueOf(DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS)));
 
         return Integer.parseInt(http2MaxConcurrentStreams);
+    }
+
+    /**
+     * Returns the HTTP/2 SETTINGS_MAX_FRAME_SIZE to advertise to the remote peer, in bytes.
+     *
+     * The customer-facing configuration is expressed in kilobytes (KB) via system property
+     * {@code COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB} or environment variable
+     * {@code COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB}. Resolution order is system property, then environment
+     * variable, then the SDK default of 64 KB. The configured value is clamped to the inclusive range
+     * [64 KB, 16383 KB]; an unparseable or out-of-range value falls back to the default (or is clamped)
+     * and a warning is logged. The returned value is converted to bytes for downstream Netty
+     * consumption.
+     */
+    public static int getHttp2MaxFrameSizeInBytes() {
+        String configuredValue = System.getProperty(
+            HTTP2_MAX_FRAME_SIZE_IN_KB,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB)));
+
+        int parsedInKb;
+        try {
+            parsedInKb = Integer.parseInt(configuredValue);
+        } catch (NumberFormatException ex) {
+            logger.warn(
+                "Invalid value '{}' for {} / {}; falling back to default {} KB.",
+                configuredValue,
+                HTTP2_MAX_FRAME_SIZE_IN_KB,
+                HTTP2_MAX_FRAME_SIZE_IN_KB_VARIABLE,
+                DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB);
+            return DEFAULT_HTTP2_MAX_FRAME_SIZE_IN_KB * 1024;
+        }
+
+        if (parsedInKb < MIN_HTTP2_MAX_FRAME_SIZE_IN_KB || parsedInKb > MAX_HTTP2_MAX_FRAME_SIZE_IN_KB) {
+            int clampedInKb = Math.min(
+                MAX_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                Math.max(MIN_HTTP2_MAX_FRAME_SIZE_IN_KB, parsedInKb));
+            logger.warn(
+                "Configured HTTP/2 max frame size {} KB is outside the allowed range [{}, {}] KB; "
+                    + "clamping to {} KB.",
+                parsedInKb,
+                MIN_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                MAX_HTTP2_MAX_FRAME_SIZE_IN_KB,
+                clampedInKb);
+            return clampedInKb * 1024;
+        }
+
+        return parsedInKb * 1024;
     }
 
     public static boolean isEmulatorServerCertValidationDisabled() {

@@ -118,7 +118,7 @@ public final class StorageAccountPropertiesUpdateParameters
 
     /*
      * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for
-     * this property.
+     * this property. Minimum TLS version 1.3 version is not supported.
      */
     private MinimumTlsVersion minimumTlsVersion;
 
@@ -512,7 +512,7 @@ public final class StorageAccountPropertiesUpdateParameters
 
     /**
      * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @return the minimumTlsVersion value.
      */
@@ -522,7 +522,7 @@ public final class StorageAccountPropertiesUpdateParameters
 
     /**
      * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * default interpretation is TLS 1.0 for this property. Minimum TLS version 1.3 version is not supported.
      * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.

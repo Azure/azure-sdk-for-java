@@ -269,6 +269,12 @@ public class ReflectionUtils {
         set(client, storeModel, "gatewayProxy");
     }
 
+    public static void setGatewayServiceConfigurationReader(
+        RxDocumentClientImpl client,
+        GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
+        set(client, gatewayServiceConfigurationReader, "gatewayConfigurationReader");
+    }
+
     public static void setServerStoreModel (RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "storeModel");
     }

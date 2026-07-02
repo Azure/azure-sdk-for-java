@@ -210,7 +210,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     private static Stream<Arguments> stageBlockIllegalArgumentsSupplier() {
         return Stream.of(
-            Arguments.of(false, DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), BlobStorageException.class),
+            Arguments.of(false, DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), NullPointerException.class),
             Arguments.of(true, null, DATA.getDefaultDataSize(), NullPointerException.class),
             Arguments.of(true, DATA.getDefaultInputStream(), DATA.getDefaultDataSize() + 1,
                 UnexpectedLengthException.class),

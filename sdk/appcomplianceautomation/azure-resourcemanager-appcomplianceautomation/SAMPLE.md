@@ -64,9 +64,7 @@
  */
 public final class EvidenceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Evidence_CreateOrUpdate.json
+     * x-ms-original-file: 2024-06-27/Evidence_CreateOrUpdate.json
      */
     /**
      * Sample code: Evidence_CreateOrUpdate.
@@ -90,9 +88,7 @@ public final class EvidenceCreateOrUpdateSamples {
  */
 public final class EvidenceDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Evidence_Delete.json
+     * x-ms-original-file: 2024-06-27/Evidence_Delete.json
      */
     /**
      * Sample code: Evidence_Delete.
@@ -116,9 +112,7 @@ public final class EvidenceDeleteSamples {
  */
 public final class EvidenceDownloadSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Evidence_Download.json
+     * x-ms-original-file: 2024-06-27/Evidence_Download.json
      */
     /**
      * Sample code: Evidence_Download.
@@ -140,9 +134,7 @@ public final class EvidenceDownloadSamples {
  */
 public final class EvidenceGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Evidence_Get.json
+     * x-ms-original-file: 2024-06-27/Evidence_Get.json
      */
     /**
      * Sample code: Evidence_Get.
@@ -164,9 +156,7 @@ public final class EvidenceGetSamples {
  */
 public final class EvidenceListByReportSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Evidence_ListByReport.json
+     * x-ms-original-file: 2024-06-27/Evidence_ListByReport.json
      */
     /**
      * Sample code: Evidence_ListByReport.
@@ -189,9 +179,7 @@ public final class EvidenceListByReportSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Operations_List.json
+     * x-ms-original-file: 2024-06-27/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -214,9 +202,7 @@ public final class OperationsListSamples {
  */
 public final class ProviderActionsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_CheckNameAvailability.json
+     * x-ms-original-file: 2024-06-27/Report_CheckNameAvailability.json
      */
     /**
      * Sample code: Report_CheckNameAvailability.
@@ -239,9 +225,7 @@ public final class ProviderActionsCheckNameAvailabilitySamples {
  */
 public final class ProviderActionsGetCollectionCountSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_GetCollectionCount.json
+     * x-ms-original-file: 2024-06-27/Report_GetCollectionCount.json
      */
     /**
      * Sample code: Report_GetCollectionCount.
@@ -264,9 +248,7 @@ public final class ProviderActionsGetCollectionCountSamples {
  */
 public final class ProviderActionsGetOverviewStatusSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_GetOverviewStatus.json
+     * x-ms-original-file: 2024-06-27/Report_GetOverviewStatus.json
      */
     /**
      * Sample code: Report_GetOverviewStatus.
@@ -289,9 +271,7 @@ public final class ProviderActionsGetOverviewStatusSamples {
  */
 public final class ProviderActionsListInUseStorageAccountsSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/ListInUseStorageAccountsWithSubscriptions.json
+     * x-ms-original-file: 2024-06-27/ListInUseStorageAccountsWithSubscriptions.json
      */
     /**
      * Sample code: ListInUseStorageAccountsWithSubscriptions.
@@ -304,9 +284,7 @@ public final class ProviderActionsListInUseStorageAccountsSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/ListInUseStorageAccountsWithoutSubscriptions.json
+     * x-ms-original-file: 2024-06-27/ListInUseStorageAccountsWithoutSubscriptions.json
      */
     /**
      * Sample code: ListInUseStorageAccountsWithoutSubscriptions.
@@ -329,9 +307,7 @@ public final class ProviderActionsListInUseStorageAccountsSamples {
  */
 public final class ProviderActionsOnboardSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Onboard.json
+     * x-ms-original-file: 2024-06-27/Onboard.json
      */
     /**
      * Sample code: Onboard.
@@ -354,9 +330,7 @@ public final class ProviderActionsOnboardSamples {
  */
 public final class ProviderActionsTriggerEvaluationSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/TriggerEvaluation.json
+     * x-ms-original-file: 2024-06-27/TriggerEvaluation.json
      */
     /**
      * Sample code: TriggerEvaluation.
@@ -379,9 +353,7 @@ public final class ProviderActionsTriggerEvaluationSamples {
  */
 public final class ReportCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_CreateOrUpdate.json
+     * x-ms-original-file: 2024-06-27/Report_CreateOrUpdate.json
      */
     /**
      * Sample code: Report_CreateOrUpdate.
@@ -403,9 +375,7 @@ public final class ReportCreateOrUpdateSamples {
  */
 public final class ReportDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_Delete.json
+     * x-ms-original-file: 2024-06-27/Report_Delete.json
      */
     /**
      * Sample code: Report_Delete.
@@ -427,9 +397,7 @@ public final class ReportDeleteSamples {
  */
 public final class ReportFixSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_Fix.json
+     * x-ms-original-file: 2024-06-27/Report_Fix.json
      */
     /**
      * Sample code: Report_Fix.
@@ -451,9 +419,7 @@ public final class ReportFixSamples {
  */
 public final class ReportGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_Get.json
+     * x-ms-original-file: 2024-06-27/Report_Get.json
      */
     /**
      * Sample code: Report_Get.
@@ -475,9 +441,7 @@ public final class ReportGetSamples {
  */
 public final class ReportGetScopingQuestionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_GetScopingQuestions.json
+     * x-ms-original-file: 2024-06-27/Report_GetScopingQuestions.json
      */
     /**
      * Sample code: Report_GetScopingQuestions.
@@ -499,9 +463,7 @@ public final class ReportGetScopingQuestionsSamples {
  */
 public final class ReportListSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_List.json
+     * x-ms-original-file: 2024-06-27/Report_List.json
      */
     /**
      * Sample code: Report_List.
@@ -527,8 +489,7 @@ public final class ReportListSamples {
 public final class ReportNestedResourceCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_NestedResourceCheckNameAvailability_Report_Snapshot_Check_Name_Availability.json
+     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Snapshot_Check_Name_Availability.json
      */
     /**
      * Sample code: Report_SnapshotCheckNameAvailability.
@@ -543,8 +504,7 @@ public final class ReportNestedResourceCheckNameAvailabilitySamples {
 
     /*
      * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_NestedResourceCheckNameAvailability_Report_Evidence_Check_Name_Availability.json
+     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Evidence_Check_Name_Availability.json
      */
     /**
      * Sample code: Report_EvidenceCheckNameAvailability.
@@ -559,8 +519,7 @@ public final class ReportNestedResourceCheckNameAvailabilitySamples {
 
     /*
      * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_NestedResourceCheckNameAvailability_Report_Webhook_Check_Name_Availability.json
+     * 2024-06-27/Report_NestedResourceCheckNameAvailability_Report_Webhook_Check_Name_Availability.json
      */
     /**
      * Sample code: Report_WebhookCheckNameAvailability.
@@ -584,9 +543,7 @@ public final class ReportNestedResourceCheckNameAvailabilitySamples {
  */
 public final class ReportSyncCertRecordSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_SyncCertRecord.json
+     * x-ms-original-file: 2024-06-27/Report_SyncCertRecord.json
      */
     /**
      * Sample code: Report_SyncCertRecord.
@@ -609,9 +566,7 @@ public final class ReportSyncCertRecordSamples {
  */
 public final class ReportUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_Update.json
+     * x-ms-original-file: 2024-06-27/Report_Update.json
      */
     /**
      * Sample code: Report_Update.
@@ -633,9 +588,7 @@ public final class ReportUpdateSamples {
  */
 public final class ReportVerifySamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Report_Verify.json
+     * x-ms-original-file: 2024-06-27/Report_Verify.json
      */
     /**
      * Sample code: Report_Verify.
@@ -658,9 +611,7 @@ public final class ReportVerifySamples {
  */
 public final class ScopingConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/ScopingConfiguration_CreateOrUpdate.json
+     * x-ms-original-file: 2024-06-27/ScopingConfiguration_CreateOrUpdate.json
      */
     /**
      * Sample code: ScopingConfiguration_CreateOrUpdate.
@@ -683,9 +634,7 @@ public final class ScopingConfigurationCreateOrUpdateSamples {
  */
 public final class ScopingConfigurationDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/ScopingConfiguration_Delete.json
+     * x-ms-original-file: 2024-06-27/ScopingConfiguration_Delete.json
      */
     /**
      * Sample code: ScopingConfiguration_Delete.
@@ -708,9 +657,7 @@ public final class ScopingConfigurationDeleteSamples {
  */
 public final class ScopingConfigurationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/ScopingConfiguration_Get.json
+     * x-ms-original-file: 2024-06-27/ScopingConfiguration_Get.json
      */
     /**
      * Sample code: ScopingConfiguration.
@@ -732,9 +679,7 @@ public final class ScopingConfigurationGetSamples {
  */
 public final class ScopingConfigurationListSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/ScopingConfiguration_List.json
+     * x-ms-original-file: 2024-06-27/ScopingConfiguration_List.json
      */
     /**
      * Sample code: ScopingConfiguration_List.
@@ -757,9 +702,7 @@ public final class ScopingConfigurationListSamples {
  */
 public final class SnapshotDownloadSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Snapshot_Download_Snapshot_Download_Compliance_Report.json
+     * x-ms-original-file: 2024-06-27/Snapshot_Download_Snapshot_Download_Compliance_Report.json
      */
     /**
      * Sample code: Snapshot_Download_ComplianceReport.
@@ -772,9 +715,7 @@ public final class SnapshotDownloadSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Snapshot_Download_Snapshot_Download_Resource_List.json
+     * x-ms-original-file: 2024-06-27/Snapshot_Download_Snapshot_Download_Resource_List.json
      */
     /**
      * Sample code: Snapshot_Download_ResourceList.
@@ -787,9 +728,7 @@ public final class SnapshotDownloadSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Snapshot_Download_Snapshot_Download_Compliance_Detailed_Pdf_Report.json
+     * x-ms-original-file: 2024-06-27/Snapshot_Download_Snapshot_Download_Compliance_Detailed_Pdf_Report.json
      */
     /**
      * Sample code: Snapshot_Download_ComplianceDetailedPdfReport.
@@ -802,9 +741,7 @@ public final class SnapshotDownloadSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Snapshot_Download_Snapshot_Download_Compliance_Pdf_Report.json
+     * x-ms-original-file: 2024-06-27/Snapshot_Download_Snapshot_Download_Compliance_Pdf_Report.json
      */
     /**
      * Sample code: Snapshot_Download_CompliancePdfReport.
@@ -826,9 +763,7 @@ public final class SnapshotDownloadSamples {
  */
 public final class SnapshotGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Snapshot_Get.json
+     * x-ms-original-file: 2024-06-27/Snapshot_Get.json
      */
     /**
      * Sample code: Snapshot_Get.
@@ -850,9 +785,7 @@ public final class SnapshotGetSamples {
  */
 public final class SnapshotListSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Snapshot_List.json
+     * x-ms-original-file: 2024-06-27/Snapshot_List.json
      */
     /**
      * Sample code: Snapshot_List.
@@ -877,9 +810,7 @@ public final class SnapshotListSamples {
  */
 public final class WebhookCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Webhook_CreateOrUpdate.json
+     * x-ms-original-file: 2024-06-27/Webhook_CreateOrUpdate.json
      */
     /**
      * Sample code: Webhook_CreateOrUpdate.
@@ -902,9 +833,7 @@ public final class WebhookCreateOrUpdateSamples {
  */
 public final class WebhookDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Webhook_Delete.json
+     * x-ms-original-file: 2024-06-27/Webhook_Delete.json
      */
     /**
      * Sample code: Webhook_Delete.
@@ -927,9 +856,7 @@ public final class WebhookDeleteSamples {
  */
 public final class WebhookGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Webhook_Get.json
+     * x-ms-original-file: 2024-06-27/Webhook_Get.json
      */
     /**
      * Sample code: Webhook_Get.
@@ -951,9 +878,7 @@ public final class WebhookGetSamples {
  */
 public final class WebhookListSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Webhook_List.json
+     * x-ms-original-file: 2024-06-27/Webhook_List.json
      */
     /**
      * Sample code: Webhook_List.
@@ -977,9 +902,7 @@ public final class WebhookListSamples {
  */
 public final class WebhookUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/appcomplianceautomation/resource-manager/Microsoft.AppComplianceAutomation/stable/2024-06-27/
-     * examples/Webhook_Update.json
+     * x-ms-original-file: 2024-06-27/Webhook_Update.json
      */
     /**
      * Sample code: Webhook_Update.

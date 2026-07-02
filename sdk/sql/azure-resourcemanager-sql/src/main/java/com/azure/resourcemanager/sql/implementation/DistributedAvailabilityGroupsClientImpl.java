@@ -1245,7 +1245,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName,
@@ -1296,7 +1297,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName,
@@ -1345,7 +1347,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
@@ -1369,7 +1372,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
@@ -1394,7 +1398,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginFailover(
@@ -1416,7 +1421,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginFailover(
@@ -1438,7 +1444,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributedAvailabilityGroupInner> failoverAsync(String resourceGroupName, String managedInstanceName,
@@ -1459,7 +1466,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DistributedAvailabilityGroupInner> failoverAsync(String resourceGroupName, String managedInstanceName,
@@ -1479,7 +1487,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return distributed availability group between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner failover(String resourceGroupName, String managedInstanceName,
@@ -1499,7 +1507,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return distributed availability group between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner failover(String resourceGroupName, String managedInstanceName,
@@ -1519,7 +1527,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> setRoleWithResponseAsync(String resourceGroupName,
@@ -1570,7 +1579,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> setRoleWithResponseAsync(String resourceGroupName,
@@ -1619,7 +1629,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
@@ -1643,7 +1654,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
@@ -1667,7 +1679,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginSetRole(
@@ -1689,7 +1702,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
+     * Instance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginSetRole(
@@ -1711,7 +1725,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributedAvailabilityGroupInner> setRoleAsync(String resourceGroupName, String managedInstanceName,
@@ -1732,7 +1747,8 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return distributed availability group between box and Sql Managed Instance on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DistributedAvailabilityGroupInner> setRoleAsync(String resourceGroupName, String managedInstanceName,
@@ -1751,7 +1767,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return distributed availability group between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner setRole(String resourceGroupName, String managedInstanceName,
@@ -1771,7 +1787,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return distributed availability group between box and Sql Managed Instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner setRole(String resourceGroupName, String managedInstanceName,

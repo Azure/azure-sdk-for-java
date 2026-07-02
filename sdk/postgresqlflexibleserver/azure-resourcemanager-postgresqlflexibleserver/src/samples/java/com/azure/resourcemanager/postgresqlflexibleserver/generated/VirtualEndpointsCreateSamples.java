@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualEndpointsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/VirtualEndpointCreate.json
+     * x-ms-original-file: 2026-04-01-preview/VirtualEndpointCreate.json
      */
     /**
      * Sample code: Create a pair of virtual endpoints for a server.
