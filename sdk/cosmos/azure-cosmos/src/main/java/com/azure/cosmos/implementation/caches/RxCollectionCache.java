@@ -124,15 +124,15 @@ public abstract class RxCollectionCache {
             this.collectionInfoByNameCache.refresh(
                     resourceFullName,
                     () -> {
-                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, properties);
+                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, properties, false);
                         return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(collection.getResourceId(), collection));
                     });
         }
     }
 
-    protected abstract Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties);
+    protected abstract Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties, boolean isColdStart);
 
-    protected abstract Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties);
+    protected abstract Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties, boolean isColdStart);
 
     private Mono<Utils.ValueHolder<DocumentCollection>> resolveByPartitionKeyRangeIdentityAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
                                                                                                 PartitionKeyRangeIdentity partitionKeyRangeIdentity,
@@ -166,7 +166,7 @@ public abstract class RxCollectionCache {
         Mono<DocumentCollection> async = this.collectionInfoByIdCache.getAsync(
             collectionResourceId,
             null,
-            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties));
+            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties, true));
         return async.map(Utils.ValueHolder::new);
     }
 
@@ -190,7 +190,7 @@ public abstract class RxCollectionCache {
             obsoleteValue,
             () -> {
                 Mono<DocumentCollection> collectionObs = this.getByNameAsync(
-                    metaDataDiagnosticsContext, resourceFullName, properties)
+                    metaDataDiagnosticsContext, resourceFullName, properties, obsoleteValue == null)
                     .onErrorMap(throwable -> {
 
                         if (throwable instanceof CosmosException) {
@@ -242,7 +242,7 @@ public abstract class RxCollectionCache {
                     resourceFullName,
                     obsoleteValue,
                     () -> {
-                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, request.properties);
+                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, request.properties, false);
                         return collectionObs.doOnSuccess(collection -> {
                             this.collectionInfoByIdCache.set(collection.getResourceId(), collection);
                         });

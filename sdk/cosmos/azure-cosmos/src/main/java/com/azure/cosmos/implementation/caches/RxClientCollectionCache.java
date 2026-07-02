@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.ClearingSessionContainerClientRetryPolicy
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
@@ -22,6 +23,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.metadatahedging.MetadataHedgingContext;
+import com.azure.cosmos.implementation.metadatahedging.MetadataHedgingStrategy;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
@@ -29,6 +32,7 @@ import java.net.URLEncoder;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Caches collection information.
@@ -42,6 +46,8 @@ public class RxClientCollectionCache extends RxCollectionCache {
     private final IAuthorizationTokenProvider tokenProvider;
     private final IRetryPolicyFactory retryPolicy;
     private final ISessionContainer sessionContainer;
+    private final GlobalEndpointManager globalEndpointManager;
+    private final MetadataHedgingStrategy metadataHedgingStrategy;
 
     public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
                                    ISessionContainer sessionContainer,
@@ -49,12 +55,27 @@ public class RxClientCollectionCache extends RxCollectionCache {
                                    IAuthorizationTokenProvider tokenProvider,
                                    IRetryPolicyFactory retryPolicy,
                                    AsyncCache<String, DocumentCollection> collectionInfoByNameCache, AsyncCache<String, DocumentCollection> collectionInfoByIdCache) {
+        this(diagnosticsClientContext, sessionContainer, storeModel, tokenProvider, retryPolicy,
+            collectionInfoByNameCache, collectionInfoByIdCache, null, null);
+    }
+
+    public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
+                                   ISessionContainer sessionContainer,
+                                   RxStoreModel storeModel,
+                                   IAuthorizationTokenProvider tokenProvider,
+                                   IRetryPolicyFactory retryPolicy,
+                                   AsyncCache<String, DocumentCollection> collectionInfoByNameCache,
+                                   AsyncCache<String, DocumentCollection> collectionInfoByIdCache,
+                                   GlobalEndpointManager globalEndpointManager,
+                                   MetadataHedgingStrategy metadataHedgingStrategy) {
         super(collectionInfoByNameCache, collectionInfoByIdCache);
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.storeModel = storeModel;
         this.tokenProvider = tokenProvider;
         this.retryPolicy = retryPolicy;
         this.sessionContainer = sessionContainer;
+        this.globalEndpointManager = globalEndpointManager;
+        this.metadataHedgingStrategy = metadataHedgingStrategy;
     }
 
     public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
@@ -62,31 +83,45 @@ public class RxClientCollectionCache extends RxCollectionCache {
                                    RxStoreModel storeModel,
                                    IAuthorizationTokenProvider tokenProvider,
                                    IRetryPolicyFactory retryPolicy) {
+        this(diagnosticsClientContext, sessionContainer, storeModel, tokenProvider, retryPolicy,
+            (GlobalEndpointManager) null, (MetadataHedgingStrategy) null);
+    }
+
+    public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
+                                   ISessionContainer sessionContainer,
+                                   RxStoreModel storeModel,
+                                   IAuthorizationTokenProvider tokenProvider,
+                                   IRetryPolicyFactory retryPolicy,
+                                   GlobalEndpointManager globalEndpointManager,
+                                   MetadataHedgingStrategy metadataHedgingStrategy) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.storeModel = storeModel;
         this.tokenProvider = tokenProvider;
         this.retryPolicy = retryPolicy;
         this.sessionContainer = sessionContainer;
+        this.globalEndpointManager = globalEndpointManager;
+        this.metadataHedgingStrategy = metadataHedgingStrategy;
     }
 
-    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties, boolean isColdStart) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties, isColdStart)
                 , retryPolicyInstance);
     }
 
-    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties, boolean isColdStart) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties),
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties, isColdStart),
                 retryPolicyInstance);
     }
 
     private Mono<DocumentCollection> readCollectionAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
                                                          String collectionLink,
                                                          DocumentClientRetryPolicy retryPolicyInstance,
-                                                         Map<String, Object> properties) {
+                                                         Map<String, Object> properties,
+                                                         boolean isColdStart) {
 
         String path = Utils.joinPath(collectionLink, null);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
@@ -119,14 +154,30 @@ public class RxClientCollectionCache extends RxCollectionCache {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
+        // Region-targeted sender shared by the primary-only path and the metadata hedge branches.
+        // The hedging strategy routes each cloned request to its target region before this runs.
+        final boolean isAadToken = tokenProvider.getAuthorizationTokenType() == AuthorizationTokenType.AadToken;
+        Function<RxDocumentServiceRequest, Mono<RxDocumentServiceResponse>> sender = serviceRequest -> {
+            if (isAadToken) {
+                return tokenProvider
+                    .populateAuthorizationHeader(serviceRequest)
+                    .flatMap(this.storeModel::processMessage);
+            }
+            return this.storeModel.processMessage(serviceRequest);
+        };
+
         Instant addressCallStartTime = Instant.now();
         Mono<RxDocumentServiceResponse> responseObs;
-        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
-            responseObs = this.storeModel.processMessage(request);
+        if (this.metadataHedgingStrategy != null && isColdStart) {
+            // Only cold-start metadata cache population (first read on a cache miss) hedges.
+            // Forced refresh paths pass isColdStart=false and fall through to the direct send.
+            MetadataHedgingContext hedgeContext = new MetadataHedgingContext();
+            hedgeContext.setColdStart(true);
+            responseObs = this.metadataHedgingStrategy
+                .executeAsync(request, sender, hedgeContext)
+                .map(hedgeResult -> hedgeResult.getResponse());
         } else {
-            responseObs = tokenProvider
-                .populateAuthorizationHeader(request)
-                .flatMap(serviceRequest -> this.storeModel.processMessage(serviceRequest));
+            responseObs = sender.apply(request);
         }
 
         return responseObs.map(response -> {
