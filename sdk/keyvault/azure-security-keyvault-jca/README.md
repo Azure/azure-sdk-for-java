@@ -544,6 +544,26 @@ az role assignment create \
              -J-Dazure.keyvault.client-secret=${CLIENT_SECRET}
  ```
 
+If you run `jarsigner` behind a proxy, pass the standard JVM proxy system properties with `-J`:
+
+```bash
+jarsigner   -keystore NONE -storetype AzureKeyVault \
+            -signedjar signerjar.jar ${PARAM_YOUR_JAR_FILE_PATH} "${CERT_NAME}" \
+            -verbose  -storepass "" \
+            -providerName AzureKeyVault \
+            -providerClass com.azure.security.keyvault.jca.KeyVaultJcaProvider \
+            -J-Dazure.keyvault.uri=${KEYVAULT_URL} \
+            -J-Dazure.keyvault.tenant-id=${TENANT} \
+            -J-Dazure.keyvault.client-id=${CLIENT_ID} \
+            -J-Dazure.keyvault.client-secret=${CLIENT_SECRET} \
+            -J-Dhttps.proxyHost=proxy.company.local \
+            -J-Dhttps.proxyPort=8080 \
+            '-J-Dhttp.nonProxyHosts=169.254.169.254|localhost|127.*'
+```
+
+`http.nonProxyHosts` may be needed for local or managed identity endpoints, such as `169.254.169.254`,
+that should bypass the proxy.
+
 replace ${PARAM_YOUR_JAR_FILE_PATH} with the path of your jar file, replace ${PARAM_JCA_PROVIDER_JAR_PATH} with the path of the jca provider jar.
 
 Check your output, if you see the `jar signed` message, it means the jar is signed successfully.
@@ -681,5 +701,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [jca_reference_guide]: https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [non-exportable]: https://learn.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-
-
